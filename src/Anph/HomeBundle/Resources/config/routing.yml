@@ -1,0 +1,3 @@
+anph_home_homepage:
+    pattern:  /
+    defaults: { _controller: AnphHomeBundle:Default:index }

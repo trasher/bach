@@ -1,3 +1,7 @@
+anph_home:
+    resource: "@AnphHomeBundle/Resources/config/routing.yml"
+    prefix:   /
+
 anph_indexation:
     resource: "@AnphIndexationBundle/Resources/config/routing.yml"
     prefix:   /

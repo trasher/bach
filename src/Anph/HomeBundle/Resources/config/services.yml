@@ -1,0 +1,7 @@
+parameters:
+#    anph_home.example.class: Anph\HomeBundle\Example
+
+services:
+#    anph_home.example:
+#        class: %anph_home.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
