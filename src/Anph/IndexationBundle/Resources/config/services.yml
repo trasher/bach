@@ -1,0 +1,6 @@
+parameters:
+    anph_indexation_file_driver_manager.class: Anph\IndexationBundle\Service\FileDriverManager
+
+services:
+    anph_indexation.file_driver_manager:
+        class: "%anph_indexation_file_driver_manager.class%"
