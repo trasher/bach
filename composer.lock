@@ -1,5 +1,5 @@
 {
-    "hash": "b78394f1ec4962495f7d88f36af2ff6a",
+    "hash": "8216307abd5861be7cd932241b9ac986",
     "packages": [
         {
             "name": "doctrine/common",
@@ -646,12 +646,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog",
-                "reference": "bcb51e01406965ebd030d4b99eb199a9226c3fef"
+                "reference": "b23cfd3d6ce0b6c050dda723040b83a1a6d7637e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Seldaek/monolog/archive/bcb51e01406965ebd030d4b99eb199a9226c3fef.zip",
-                "reference": "bcb51e01406965ebd030d4b99eb199a9226c3fef",
+                "url": "https://github.com/Seldaek/monolog/archive/b23cfd3d6ce0b6c050dda723040b83a1a6d7637e.zip",
+                "reference": "b23cfd3d6ce0b6c050dda723040b83a1a6d7637e",
                 "shasum": ""
             },
             "require": {
@@ -665,7 +665,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server"
             },
-            "time": "1352653384",
+            "time": "1352907970",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -694,114 +694,6 @@
             "keywords": [
                 "log",
                 "logging"
-            ]
-        },
-        {
-            "name": "mopa/bootstrap-bundle",
-            "version": "dev-master",
-            "target-dir": "Mopa/Bundle/BootstrapBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phiamo/MopaBootstrapBundle.git",
-                "reference": "14f7ae2da4723c77b6b383b2751d15cafca5d8e1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/phiamo/MopaBootstrapBundle/archive/14f7ae2da4723c77b6b383b2751d15cafca5d8e1.zip",
-                "reference": "14f7ae2da4723c77b6b383b2751d15cafca5d8e1",
-                "shasum": ""
-            },
-            "require": {
-                "mopa/composer-bridge": "dev-master",
-                "symfony/symfony": ">=2.1,<2.3-dev"
-            },
-            "suggest": {
-                "knplabs/knp-paginator-bundle": "dev-master",
-                "craue/formflow-bundle": "dev-master",
-                "twitter/bootstrap": "2.0.*",
-                "knplabs/knp-menu-bundle": "1.1.*",
-                "thomas-mcdonald/bootstrap-sass": "dev-master"
-            },
-            "time": "1352191925",
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1.x-dev"
-                }
-            },
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Mopa\\Bundle\\BootstrapBundle": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Philipp A. Mohrenweiser",
-                    "email": "phiamo@googlemail.com",
-                    "homepage": "http://bootstrap.mohrenweiserpartner.de"
-                },
-                {
-                    "name": "Community contributions",
-                    "homepage": "https://github.com/phiamo/MopaBootstrapBundle/contributors"
-                }
-            ],
-            "description": "Easy integration of twitters bootstrap into symfony2",
-            "keywords": [
-                "form",
-                "extra form",
-                "bootstrap",
-                "bootstrap form",
-                "template"
-            ]
-        },
-        {
-            "name": "mopa/composer-bridge",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git://github.com/phiamo/MopaComposerBridge.git",
-                "reference": "e07e6f3a3c922c70892590048b7ded72f525e547"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/phiamo/MopaComposerBridge/archive/e07e6f3a3c922c70892590048b7ded72f525e547.zip",
-                "reference": "e07e6f3a3c922c70892590048b7ded72f525e547",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/console": "2.*"
-            },
-            "time": "1349980189",
-            "type": "symfony-bridge",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Mopa\\Bridge\\Composer": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Philipp A. Mohrenweiser",
-                    "email": "phiamo@googlemail.com",
-                    "homepage": "http://bootstrap.mohrenweiserpartner.de"
-                },
-                {
-                    "name": "Community contributions",
-                    "homepage": "https://github.com/phiamo/MopaComposerBridge/contributors"
-                }
-            ],
-            "description": "Symfony2 Composer Bridge",
-            "homepage": "http://bootstrap.mohrenweiserpartner.de",
-            "keywords": [
-                "Symfony2",
-                "composer"
             ]
         },
         {
@@ -1270,12 +1162,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/symfony/symfony.git",
-                "reference": "938670d34b0e9822c5ac7c5ac7934c4d6591f7a1"
+                "reference": "2d488b79f2e46bfff057c73081a8e5c426b712a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/symfony/archive/938670d34b0e9822c5ac7c5ac7934c4d6591f7a1.zip",
-                "reference": "938670d34b0e9822c5ac7c5ac7934c4d6591f7a1",
+                "url": "https://github.com/symfony/symfony/archive/2d488b79f2e46bfff057c73081a8e5c426b712a7.zip",
+                "reference": "2d488b79f2e46bfff057c73081a8e5c426b712a7",
                 "shasum": ""
             },
             "require": {
@@ -1324,7 +1216,7 @@
                 "propel/propel1": "dev-master",
                 "monolog/monolog": "1.*"
             },
-            "time": "1352729061",
+            "time": "1352824146",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1410,22 +1302,22 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "b16765ce8f8edd227c6c90dba489326001fd348a"
+                "reference": "e1ad2bde9c2cf12e65a89ef5eadcccd048f1af0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/b16765ce8f8edd227c6c90dba489326001fd348a.zip",
-                "reference": "b16765ce8f8edd227c6c90dba489326001fd348a",
+                "url": "https://github.com/fabpot/Twig/archive/e1ad2bde9c2cf12e65a89ef5eadcccd048f1af0c.zip",
+                "reference": "e1ad2bde9c2cf12e65a89ef5eadcccd048f1af0c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1352654530",
+            "time": "1352899988",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11-dev"
+                    "dev-master": "1.12-dev"
                 }
             },
             "installation-source": "source",
@@ -1477,7 +1369,7 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "mopa/bootstrap-bundle": 20
-    }
+    "stability-flags": [
+
+    ]
 }

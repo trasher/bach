@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Nelmio\SolariumBundle\NelmioSolariumBundle(),
             new Anph\IndexationBundle\AnphIndexationBundle(),
             new Anph\HomeBundle\AnphHomeBundle(),
+            new Anph\AdministrationBundle\AdministrationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

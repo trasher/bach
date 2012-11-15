@@ -1,3 +1,7 @@
+administration:
+    resource: "@AdministrationBundle/Resources/config/routing.yml"
+    prefix:   /
+
 anph_home:
     resource: "@AnphHomeBundle/Resources/config/routing.yml"
     prefix:   /
