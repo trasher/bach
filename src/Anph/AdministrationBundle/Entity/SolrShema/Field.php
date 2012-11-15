@@ -36,53 +36,186 @@ class Field {
 		
 	}
 	
-	private function getName(){
+	/**
+	 * @return the $name
+	 */
+	private function getName() {
 		return $this->name;
 	}
 
-	private function getType(){
+	/**
+	 * @return the $type
+	 */
+	private function getType() {
 		return $this->type;
 	}
-	
-	private function isIndexed(){
+
+	/**
+	 * @return the $indexed
+	 */
+	private function getIndexed() {
 		return $this->indexed;
 	}
-	
-	private function isStored(){
+
+	/**
+	 * @return the $stored
+	 */
+	private function getStored() {
 		return $this->stored;
 	}
 
-	
-	private function isMultiValued(){
+	/**
+	 * @return the $multiValued
+	 */
+	private function getMultiValued() {
 		return $this->multiValued;
 	}
-	
-	private function isRequired(){
+
+	/**
+	 * @return the $required
+	 */
+	private function getRequired() {
 		return $this->required;
 	}
-	
-	private function isOmitNorms(){
+
+	/**
+	 * @return the $defaut
+	 */
+	private function getDefaut() {
+		return $this->defaut;
+	}
+
+	/**
+	 * @return the $omitNorms
+	 */
+	private function getOmitNorms() {
 		return $this->omitNorms;
 	}
-	
-	private function isOmitPosition(){
-		return $this->omitPosition;
-	}
-	
-	private function isOmitTermFreqAndPositions(){
+
+	/**
+	 * @return the $omitTermFreqAndPositions
+	 */
+	private function getOmitTermFreqAndPositions() {
 		return $this->omitTermFreqAndPositions;
 	}
-	
- 	private function isTermOffsets(){
-		return $this->termOffsets;
+
+	/**
+	 * @return the $omitPosition
+	 */
+	private function getOmitPosition() {
+		return $this->omitPosition;
 	}
-	
-	private function isTermPositions(){
+
+	/**
+	 * @return the $termVectors
+	 */
+	private function getTermVectors() {
+		return $this->termVectors;
+	}
+
+	/**
+	 * @return the $termPositions
+	 */
+	private function getTermPositions() {
 		return $this->termPositions;
 	}
-	
-	private function isTermVectors(){
-		return $this->termVectors;
+
+	/**
+	 * @return the $termOffsets
+	 */
+	private function getTermOffsets() {
+		return $this->termOffsets;
+	}
+
+	/**
+	 * @param field_type $name
+	 */
+	private function setName($name) {
+		$this->name = $name;
+	}
+
+	/**
+	 * @param field_type $type
+	 */
+	private function setType($type) {
+		$this->type = $type;
+	}
+
+	/**
+	 * @param field_type $indexed
+	 */
+	private function setIndexed($indexed) {
+		$this->indexed = $indexed;
+	}
+
+	/**
+	 * @param field_type $stored
+	 */
+	private function setStored($stored) {
+		$this->stored = $stored;
+	}
+
+	/**
+	 * @param field_type $multiValued
+	 */
+	private function setMultiValued($multiValued) {
+		$this->multiValued = $multiValued;
+	}
+
+	/**
+	 * @param field_type $required
+	 */
+	private function setRequired($required) {
+		$this->required = $required;
+	}
+
+	/**
+	 * @param field_type $defaut
+	 */
+	private function setDefaut($defaut) {
+		$this->defaut = $defaut;
+	}
+
+	/**
+	 * @param field_type $omitNorms
+	 */
+	private function setOmitNorms($omitNorms) {
+		$this->omitNorms = $omitNorms;
+	}
+
+	/**
+	 * @param field_type $omitTermFreqAndPositions
+	 */
+	private function setOmitTermFreqAndPositions($omitTermFreqAndPositions) {
+		$this->omitTermFreqAndPositions = $omitTermFreqAndPositions;
+	}
+
+	/**
+	 * @param field_type $omitPosition
+	 */
+	private function setOmitPosition($omitPosition) {
+		$this->omitPosition = $omitPosition;
+	}
+
+	/**
+	 * @param field_type $termVectors
+	 */
+	private function setTermVectors($termVectors) {
+		$this->termVectors = $termVectors;
+	}
+
+	/**
+	 * @param field_type $termPositions
+	 */
+	private function setTermPositions($termPositions) {
+		$this->termPositions = $termPositions;
+	}
+
+	/**
+	 * @param field_type $termOffsets
+	 */
+	private function setTermOffsets($termOffsets) {
+		$this->termOffsets = $termOffsets;
 	}
 	
 	
