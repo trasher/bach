@@ -58,30 +58,38 @@ class EADFileDriver implements FileDriverInterface
 	private function parseFile($fields){
 		$result = array();
 		
-		foreach($fields as $field){
-			$nodes = $this->domXPath->query("//".$field->getAttribute('name'));
-			$result[$field->getAttribute('name')] = array();
-			
-			if($nodes->length > 0){
-				foreach($nodes as $key=>$node){
-					//if (!in_array($node->nodeValue, $result)){
-						$result[$field->getAttribute('name')][] = $this->processNode($node);
-					//}
-				}		
+		
+		$cNodes = $this->dom->getElementsByTagName('c');
+		
+		foreach($cNodes as $cNode){
+			$result[$cNode->getAttribute('id')] = array();
+		
+			foreach($fields as $field){
+				//$nodes = $this->domXPath->query('//c[@id="'.$cNode->getAttribute('id').'"]//'.$field->getAttribute('name'));
+				$nodes = $cNode->getElementsByTagName($field->getAttribute('name'));
+				$result[$cNode->getAttribute('id')][$field->getAttribute('name')] = array();
+				
+				if($nodes->length > 0){
+					foreach($nodes as $key=>$node){
+						//if (!in_array($node->nodeValue, $result)){
+							$result[$cNode->getAttribute('id')][$field->getAttribute('name')][] = $this->processNode($node);
+						//}
+					}		
+				}
 			}
 		}
 		
-		$this->compterElement($result);
-		//return $result;
+		//$this->compterElement($result);
+		return $result;
 	}
 	
 	private function processNode(\DOMNode $node){
-		if(!method_exists($this,'processNode'.ucfirst(strtolower($node->nodeName)))){
+		//if(!method_exists($this,'processNode'.ucfirst(strtolower($node->nodeName)))){
 			return $node->nodeValue;
-		}else{
+		/*}else{
 			$method = 'processNode'.ucfirst(strtolower($node->nodeName));
 			return $this->$method($node);	
-		}
+		}*/
 	}
 	
 	private function processNodeControlaccess(\DOMNode $node){
