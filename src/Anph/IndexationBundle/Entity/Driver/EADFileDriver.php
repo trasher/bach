@@ -63,13 +63,14 @@ class EADFileDriver implements FileDriverInterface
 		
 		foreach($cNodes as $cNode){
 			$result[$cNode->getAttribute('id')] = array();
-		
+			
 			foreach($fields as $field){
 				//$nodes = $this->domXPath->query('//c[@id="'.$cNode->getAttribute('id').'"]//'.$field->getAttribute('name'));
 				$nodes = $cNode->getElementsByTagName($field->getAttribute('name'));
-				$result[$cNode->getAttribute('id')][$field->getAttribute('name')] = array();
+				
 				
 				if($nodes->length > 0){
+					$result[$cNode->getAttribute('id')][$field->getAttribute('name')] = array();
 					foreach($nodes as $key=>$node){
 						//if (!in_array($node->nodeValue, $result)){
 							$result[$cNode->getAttribute('id')][$field->getAttribute('name')][] = $this->processNode($node);
