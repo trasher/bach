@@ -64,12 +64,15 @@ class EADFileDriver implements FileDriverInterface
 			
 			if($nodes->length > 0){
 				foreach($nodes as $key=>$node){
-					$result[$field->getAttribute('name')][] = $this->processNode($node);
+					//if (!in_array($node->nodeValue, $result)){
+						$result[$field->getAttribute('name')][] = $this->processNode($node);
+					//}
 				}		
 			}
 		}
 		
-		return $result;
+		$this->compterElement($result);
+		//return $result;
 	}
 	
 	private function processNode(\DOMNode $node){
@@ -100,5 +103,38 @@ class EADFileDriver implements FileDriverInterface
 			}
 		}	
 		return $children;
+	}
+	
+	private function compterElement($array)
+	{
+		$tmp_array= array();
+		if(!empty($array) && is_array($array))
+		{
+			foreach($array as $value)
+			{
+				//$tmp_array[$value] = 0;
+				if(!in_array($value,$array))
+					$tmp_array[$value] = 1;
+				//else
+					//$tmp_array[$value]++;
+			}
+	
+			foreach($tmp_array as $value => $occurence)
+				print 'nombre de '.$value.' : '.$occurence.'<br/>';
+		}
+		else print 'Erreur';
+		
+		/*$occurence = array_count_values($array);
+		if(!empty($array) && is_array($array))
+		{
+			foreach($array as $value)
+			{
+				echo "L'élément".$value."apparait". $occurence[$value]." fois dans le tableau";
+			}
+		}
+		
+		//enlever les doublons
+		$array= array_unique($array);
+		return $array;*/
 	}
 }
