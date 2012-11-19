@@ -56,30 +56,35 @@ class EADFileDriver implements FileDriverInterface
 	}
 	
 	private function parseFile($fields){
+		return $this->recursiveCNodeSearch($this->dom->getElementsByTagName('ead')->item(0),$fields);
+	}
+	
+	
+	private function recursiveCNodeSearch(\DOMNode $node, $fields){
 		$result = array();
 		
-		
-		$cNodes = $this->dom->getElementsByTagName('c');
+		$cNodes = $node->getElementsByTagName('c');
 		
 		foreach($cNodes as $cNode){
 			$result[$cNode->getAttribute('id')] = array();
-			
-			foreach($fields as $field){
-				//$nodes = $this->domXPath->query('//c[@id="'.$cNode->getAttribute('id').'"]//'.$field->getAttribute('name'));
-				$nodes = $cNode->getElementsByTagName($field->getAttribute('name'));
 				
+			foreach($fields as $field){
+				$nodes = $cNode->getElementsByTagName($field->getAttribute('name'));
 				
 				if($nodes->length > 0){
 					$result[$cNode->getAttribute('id')][$field->getAttribute('name')] = array();
 					foreach($nodes as $key=>$node){
-						//if (!in_array($node->nodeValue, $result)){
 							$result[$cNode->getAttribute('id')][$field->getAttribute('name')][] = $this->processNode($node);
-						//}
-					}		
+					}
 				}
 			}
+			
+			$childrenCNodes = $cNode->getElementsByTagName($field->getAttribute('c'));
+			
+			foreach($childrenCNodes as $childrenCNode){
+				$result = array_merge($result,$this->recursiveCNodeSearch($childrenCNode, $fields));
+			}
 		}
-		
 		return $result;
 	}
 	

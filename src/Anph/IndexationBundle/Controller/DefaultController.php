@@ -12,8 +12,8 @@ class DefaultController extends Controller
     	$manager = $this->container->get('anph_indexation.file_driver_manager');
     	
     	//$fileInfo = new SplFileInfo("FRAD027_PC.xml",__DIR__.'/FRAD027_PC.xml',__DIR__);
-    	//$fileInfo = new SplFileInfo("FRAD027_404142R.xml",__DIR__.'/FRAD027_404142R.xml',__DIR__);
-    	$fileInfo = new SplFileInfo("fsor2709.c01",__DIR__.'/fsor2709.c01',__DIR__);
+    	$fileInfo = new SplFileInfo("FRAD027_404142R.xml",__DIR__.'/FRAD027_404142R.xml',__DIR__);
+    	//$fileInfo = new SplFileInfo("fsor2709.c01",__DIR__.'/fsor2709.c01',__DIR__);
     	
     	try{
     		$universalFileFormat = $manager->convert($fileInfo);

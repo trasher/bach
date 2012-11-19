@@ -9,7 +9,7 @@ use Anph\IndexationBundle\Entity\Unimarc\Parser;
 class UNIMARCFileDriver implements FileDriverInterface
 {
 	public function process(SplFileInfo $fileInfo){
-		new Parser($fileInfo);
+		//new Parser($fileInfo);
 	}
 	
 	public function getFileFormatName(){
