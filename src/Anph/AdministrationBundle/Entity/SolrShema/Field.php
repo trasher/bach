@@ -2,7 +2,7 @@
 namespace Anph\AdministrationBundle\Entity\SolrShema;
 
 class Field {
-	
+
 	private $name;
 	private $type;
 	private $indexed;
@@ -17,9 +17,7 @@ class Field {
 	private $termPositions;
 	private $termOffsets;
 	
-
-	
-	function __construct($name, $type, $indexed, $stored, $multiValued, $required, $defaut, $omitNorms,$omitTermFreqAndPositions,$omitPosition,$termVectors,$termPositions, $termOffsets ){
+	function __construct($name, $type, $indexed, $stored, $multiValued, $required, $defaut, $omitNorms,$omitTermFreqAndPositions,$omitPosition,$termVectors,$termPositions, $termOffsets){
 		$this->name=$name;
 		$this->type=$type;
 		$this->indexed = $indexed;
