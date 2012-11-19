@@ -80,7 +80,6 @@ class EADFileDriver implements FileDriverInterface
 			}
 		}
 		
-		//$this->compterElement($result);
 		return $result;
 	}
 	
