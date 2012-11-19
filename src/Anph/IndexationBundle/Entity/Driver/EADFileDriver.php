@@ -60,10 +60,10 @@ class EADFileDriver implements FileDriverInterface
 	}
 	
 	
-	private function recursiveCNodeSearch(\DOMNode $node, $fields){
+	private function recursiveCNodeSearch(\DOMNode $rootNode, $fields){
 		$result = array();
 		
-		$cNodes = $node->getElementsByTagName('c');
+		$cNodes = $rootNode->getElementsByTagName('c');
 		
 		foreach($cNodes as $cNode){
 			$result[$cNode->getAttribute('id')] = array();
