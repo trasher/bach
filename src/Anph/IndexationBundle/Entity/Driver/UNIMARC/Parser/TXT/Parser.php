@@ -1,6 +1,6 @@
 <?php 
 
-namespace Anph\IndexationBundle\Entity\Driver\UNIMARC\Parser\TXT
+namespace Anph\IndexationBundle\Entity\Driver\UNIMARC\Parser\TXT;
 
 use Anph\IndexationBundle\Entity\ObjectTree;
 use Anph\IndexationBundle\Entity\ObjectSheet;
@@ -28,7 +28,7 @@ class Parser implements ParserInterface{
 		$content = $bag->getData();
 		$labelPart = substr($content,0,24);
 		$label = new Label($labelPart);
-		$tree->append('label', $label);
+		$this->tree->append(new ObjectSheet('label', $label));
 		
 		$indice = strpos($content, '');
 		$size  = strlen($content);
@@ -37,7 +37,7 @@ class Parser implements ParserInterface{
 		$blocInfo = substr($content, $indice, $size - $indice);
 		$ident = new Identification($blocIdent, $blocInfo);
 		
-		$tree->append('identification',$ident);
+		$this->tree->append(new ObjectSheet('identification',$ident));
 	}
 	
 	/**

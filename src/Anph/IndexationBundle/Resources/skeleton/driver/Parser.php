@@ -1,6 +1,6 @@
 <?php 
 
-namespace {{ namespace }}
+namespace {{ namespace }};
 
 use Anph\IndexationBundle\Entity\ObjectTree;
 use Anph\IndexationBundle\Entity\ObjectSheet;
