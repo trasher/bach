@@ -1,3 +1,13 @@
 drivers:
     ead:
         mapper: Anph\IndexationBundle\Entity\Mapper\EADDriverMapper
+        fields:
+            header:  
+                - eadid
+                - filedesc/titlestmt/author
+                - filedesc/publicationstmt/publisher
+                - filedesc/publicationstmt/address/addressline
+                - filedesc/publicationstmt/date                
+                - profiledesc/langusage/language
+            archdesc:
+                - unitid

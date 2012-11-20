@@ -1,6 +1,9 @@
 parameters:
     anph_indexation_file_driver_manager.class: Anph\IndexationBundle\Service\FileDriverManager
-
+    anph_indexation_data_bag_factory.class: Anph\IndexationBundle\Service\DataBagFactory
+    
 services:
     anph_indexation.file_driver_manager:
         class: "%anph_indexation_file_driver_manager.class%"
+    anph_indexation.data_bag_factory:
+        class: "%anph_indexation_data_bag_factory.class%"

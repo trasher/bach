@@ -6,11 +6,12 @@
 
 namespace Anph\IndexationBundle\Service;
 
-use Anph\IndexationBundle\FileDriverInterface;
+use Anph\IndexationBundle\Entity\FileDriver;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Finder\SplFileInfo;
 use Anph\IndexationBundle\Entity\UniversalFileFormat;
+use Anph\IndexationBundle\Entity\DataBag;
 
 /**
 * FileDriverManager convert an input file into a UniversalFileFormat object
@@ -33,47 +34,47 @@ class FileDriverManager
     
     /**
     * Convert an input file into UniversalFileFormat object
-    *
     * @return UniversalFileFormat the normalized file object
     */
-    public function convert(SplFileInfo $fileInfo){
-    	if(!array_key_exists($fileInfo->getExtension(),$this->drivers)){
-			throw new \DomainException('Unsupported file format: ' . $fileInfo->getExtension());
-    	}else{
+    public function convert(DataBag $bag, $format)
+    {
+    	if (!array_key_exists($format,$this->drivers)) {
+			throw new \DomainException('Unsupported file format: ' . $format);
+    	} else {
     		$mapper = null;
     		//Importation configuration du driver
-    		if(array_key_exists('drivers',$this->configuration)){
-    			if(array_key_exists($fileInfo->getExtension(),$this->configuration['drivers'])){
-    				if(array_key_exists('mapper',$this->configuration['drivers'][$fileInfo->getExtension()])){    					
-    					try{
-	    					$reflection = new \ReflectionClass($this->configuration['drivers'][$fileInfo->getExtension()]['mapper']);
-	    					if(in_array('Anph\IndexationBundle\DriverMapperInterface',
-	    								$reflection->getInterfaceNames())){
+    		if (array_key_exists('drivers',$this->configuration)) {
+    			if (array_key_exists($format,$this->configuration['drivers'])) {
+    				if (array_key_exists('mapper',$this->configuration['drivers'][$format])) {    					
+    					try {
+	    					$reflection = new \ReflectionClass($this->configuration['drivers'][$format]['mapper']);
+	    					if (in_array('Anph\IndexationBundle\DriverMapperInterface',
+	    								$reflection->getInterfaceNames())) {
 	    						$mapper = $reflection->newInstance();
 	    					}
-    					}catch(\RuntimeException $e){}
+    					} catch (\RuntimeException $e) {}
     				}
     			}
     		}
     		
-    		$driver = $this->drivers[$fileInfo->getExtension()];
-    		$result = $driver->process($fileInfo);
-    		
-    		if(!is_null($mapper)){
-    			$result = $mapper->translate($result);
+    		$driver = $this->drivers[$format];
+    		$results = $driver->process($bag);
+    		if (!is_null($mapper)) {
+    			$results = $mapper->translate($results);
     		}
     	}
-    	
-    	return new UniversalFileFormat($result);
+    
+    	return new UniversalFileFormat($results);
     }
     
     /**
     * Register a FileDriver into the manager
     */
-    private function registerDriver(FileDriverInterface $driver){
-    	if(!array_key_exists($driver->getFileFormatName(),$this->drivers)){
+    private function registerDriver(FileDriver $driver)
+    {
+    	if (!array_key_exists($driver->getFileFormatName(),$this->drivers)) {
     		$this->drivers[$driver->getFileFormatName()] = $driver;
-    	}else{
+    	} else {
     		throw new \RuntimeException("A driver for this file format is already loaded");
     	}
     }
@@ -81,27 +82,36 @@ class FileDriverManager
     /**
     * Perform a research of available drivers
     */
-    private function searchDrivers(){
+    private function searchDrivers()
+    {
     	$finder = new Finder();
-    	$finder->files()->in(__DIR__.'/../Entity/Driver')->name('*.php');
+    	$finder->directories()->in(__DIR__.'/../Entity/Driver')->depth('== 0');
     	
-    	foreach($finder as $file){ 
-    		try{
+    	foreach ($finder as $file) { 
+    		try {
 	    		$reflection = new \ReflectionClass('Anph\IndexationBundle\Entity\Driver\\'.
-	    											$file->getBasename('.php'));
+	    											$file->getBasename().'\\Driver');
 	    	
-	    		if(in_array('Anph\IndexationBundle\FileDriverInterface',
-	    					$reflection->getInterfaceNames())){
-	    			$this->registerDriver($reflection->newInstance());
+	    		if ('Anph\IndexationBundle\Entity\FileDriver' == $reflection->getParentClass()->getName()) {
+	    			
+	    			$configuration = array();
+	    			if (array_key_exists('drivers',$this->configuration)) {
+	    				if (array_key_exists(strtolower($file->getBasename()),$this->configuration['drivers'])) {
+	    					$configuration = $this->configuration['drivers'][strtolower($file->getBasename())];
+	    				}
+	    			}
+	    			
+	    			$this->registerDriver($reflection->newInstanceArgs(array($configuration)));
 	    		}
-    		}catch(\RuntimeException $e){}
+    		} catch(\RuntimeException $e) {}
     	}
     }
     
     /**
     * Import drivers configuration file
     */
-    private function importConfiguration(){
+    private function importConfiguration()
+    {
     	$this->configuration = Yaml::parse(__DIR__.'/../Resources/config/drivers.yml');   	
     }
 }

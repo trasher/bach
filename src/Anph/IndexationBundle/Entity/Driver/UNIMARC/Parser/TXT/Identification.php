@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Anph\IndexationBundle\Entity\Unimarc;
+namespace Anph\IndexationBundle\Entity\Driver\UNIMARC\Parser\TXT;
 
 class Identification 
 {

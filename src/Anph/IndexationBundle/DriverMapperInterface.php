@@ -12,5 +12,10 @@ namespace Anph\IndexationBundle;
 */
 interface DriverMapperInterface
 {
+	/**
+	* Translate the input data
+	* @param array $data The input data
+	* @return array Translated data
+	*/
     public function translate($data);
 }
