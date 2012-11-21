@@ -36,7 +36,8 @@ class EADArchDesc
 			if($nodes->length > 0){
 				$results['root'][$field] = array();
 				foreach($nodes as $key=>$node){
-					$results['root'][$field][] = $node->nodeValue;
+					$results['root'][$field][] = array("value"			=>	$node->nodeValue,
+														"attributes"	=>	$this->parseAttributes($node->attributes));
 				}
 			}
 		}
@@ -63,7 +64,8 @@ class EADArchDesc
 				if($nodes->length > 0){						
 					$results[$cNode->getAttribute('id')][$field] = array();
 					foreach($nodes as $key=>$node){
-						$results[$cNode->getAttribute('id')][$field][] = $node->nodeValue;
+						$results[$cNode->getAttribute('id')][$field][] = array("value"			=>	$node->nodeValue,
+																				"attributes"	=>	$this->parseAttributes($node->attributes));
 					}
 				}
 			}
@@ -73,5 +75,15 @@ class EADArchDesc
 			}
 		}
 		return $results;
+	}
+	
+	private function parseAttributes(\DOMNamedNodeMap $attributes){
+		$return = array();
+		
+		foreach ($attributes as $key=>$attribute) {
+			$return[$key] = $attribute->value;
+		}
+		
+		return $return;
 	}
 }

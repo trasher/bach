@@ -30,9 +30,20 @@ class EADHeader
 			$this->values[$field] = array();
 			if($nodes->length > 0){
 				foreach($nodes as $key=>$node){
-					$this->values[$field][] = $node->nodeValue;
+					$this->values[$field][] = array("value"			=>	$node->nodeValue,
+													"attributes"	=>	$this->parseAttributes($node->attributes));
 				}
 			}
 		}
+	}
+	
+	private function parseAttributes(\DOMNamedNodeMap $attributes){
+		$return = array();
+	
+		foreach ($attributes as $key=>$attribute) {
+			$return[$key] = $attribute->value;
+		}
+	
+		return $return;
 	}
 }
