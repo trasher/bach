@@ -60,4 +60,13 @@ class ObjectTree implements ObjectTreeComponentInterface
             }
         }
     }
+    
+    /**
+    * Name Getter
+    * @return string The name of the sheet
+    */
+    public function getName()
+    {
+    	return $this->name;
+    }
 }
