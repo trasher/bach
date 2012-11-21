@@ -23,6 +23,10 @@ class KeyTranslator
 		return $this->recursive($this->data, 0);
 	}
 	
+	public function reset(){
+		$this->translations = array();
+	}
+	
 	private function recursive($data, $deep){
 		foreach($data as $key=>$value){			
 			if(is_array($value)){

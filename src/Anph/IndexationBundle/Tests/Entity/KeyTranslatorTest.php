@@ -16,6 +16,14 @@ class KeyTranslatorTest extends \PHPUnit_Framework_TestCase
 		$result = $translator->translate();
 		$this->assertTrue(array_key_exists("tl1",$result) && !array_key_exists("cle1",$result) && $result['tl1'] == "test");
 		
-		$translator->addTranslation("cle1","tl1");
+		$translator->reset();
+		$translator->addTranslation("cle1","tl1",1);
+		$result = $translator->translate();
+
+		$this->assertTrue(array_key_exists("cle1",$result) 
+						&& !array_key_exists("cle1",$result['cle2']) 
+						&& array_key_exists("tl1",$result['cle2'])
+						&& $result['cle2']['tl1'] == "test2");
+		
 	}
 }
