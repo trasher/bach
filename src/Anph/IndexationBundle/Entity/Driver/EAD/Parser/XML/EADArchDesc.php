@@ -25,8 +25,26 @@ class EADArchDesc
 	}
 	
 	private function parse(\DOMNode $archDescNode,$fields){
-		$results = $this->recursiveCNodeSearch($archDescNode->getElementsByTagName('dsc')->item(0),
-											$fields);
+		$results = array();
+		$results['root'] = array();
+		
+		$rootFields = $fields['root'];
+		
+		foreach($rootFields as $field){
+			$nodes = $this->xpath->query($field,$archDescNode);
+		
+			if($nodes->length > 0){
+				$results['root'][$field] = array();
+				foreach($nodes as $key=>$node){
+					$results['root'][$field][] = $node->nodeValue;
+				}
+			}
+		}
+		
+		// Let's go parsing C node recursively
+		
+		$results['c'] = $this->recursiveCNodeSearch($archDescNode->getElementsByTagName('dsc')->item(0),
+											$fields['c']);
 		
 		$this->values = $results;
 	}
@@ -45,7 +63,7 @@ class EADArchDesc
 				if($nodes->length > 0){						
 					$results[$cNode->getAttribute('id')][$field] = array();
 					foreach($nodes as $key=>$node){
-						$results[$cNode->getAttribute('id')][$field][] = $nodeValue;
+						$results[$cNode->getAttribute('id')][$field][] = $node->nodeValue;
 					}
 				}
 			}

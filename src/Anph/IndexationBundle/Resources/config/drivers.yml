@@ -10,29 +10,28 @@ drivers:
                 - filedesc/publicationstmt/date                
                 - profiledesc/langusage/language
             archdesc:
-                - did/unitid
-                - did/unittitle
-                - did/unitdate
-                - did/physdesc
-                - did/repository
-                - did/langmaterial
-                - did/origination
-                - acqinfo
-                - scopecontent
-                - accruals
-                - arrangement
-                - accessrestrict
-                - accessrestrict/legalstatus
-                - userestrict
-                - originalsloc
-                - relatedmaterial
-                - odd
-                - processinfo/processinfo
-                - controlaccess
-                - dsc
-                - dsc/c
-                - dsc/c/did/unittitle
-                - dsc/c/c/did/unitid
-                - dsc/c/c/did/unittitle
-                - dsc/c/c/scopcontent
-                - dsc/c/c/controlacces
+                root:
+                    - did/unitid
+                    - did/unittitle
+                    - did/unitdate
+                    - did/physdesc
+                    - did/repository
+                    - did/langmaterial
+                    - did/origination
+                    - acqinfo
+                    - scopecontent
+                    - accruals
+                    - arrangement
+                    - accessrestrict
+                    - accessrestrict/legalstatus
+                    - userestrict
+                    - originalsloc
+                    - relatedmaterial
+                    - odd
+                    - processinfo/processinfo
+                    - controlaccess
+                c:
+                    - did/unittitle
+                    - did/unitid
+                    - scopcontent
+                    - controlacces
