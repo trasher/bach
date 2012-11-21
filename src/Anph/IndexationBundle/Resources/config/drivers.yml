@@ -31,9 +31,8 @@ drivers:
                     - processinfo/processinfo
                     - controlaccess
                 c:
+                    - did/unitid
                     - did/unittitle
-                    - c/did/unitid
-                    - c/did/unittitle
                     - scopcontent
                     - controlacces
                     - daogrp/daoloc
