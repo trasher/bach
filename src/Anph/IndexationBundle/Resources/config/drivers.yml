@@ -32,6 +32,8 @@ drivers:
                     - controlaccess
                 c:
                     - did/unittitle
-                    - did/unitid
+                    - c/did/unitid
+                    - c/did/unittitle
                     - scopcontent
                     - controlacces
+                    - daogrp/daoloc
