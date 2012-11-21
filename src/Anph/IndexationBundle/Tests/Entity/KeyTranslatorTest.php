@@ -1,0 +1,21 @@
+<?php
+namespace Anph\IndexationBundle\Tests\Utility;
+
+use Anph\IndexationBundle\Entity\KeyTranslator;
+
+class KeyTranslatorTest extends \PHPUnit_Framework_TestCase
+{
+	public function testTranslate()
+	{
+		$temp = array(	"cle1"	=>	"test",
+						"cle2"	=>	array(	"cle1"	=>	"test2")
+					);
+		
+		$translator = new KeyTranslator($temp);
+		$translator->addTranslation("cle1","tl1");
+		$result = $translator->translate();
+		$this->assertTrue(array_key_exists("tl1",$result) && !array_key_exists("cle1",$result) && $result['tl1'] == "test");
+		
+		$translator->addTranslation("cle1","tl1");
+	}
+}
