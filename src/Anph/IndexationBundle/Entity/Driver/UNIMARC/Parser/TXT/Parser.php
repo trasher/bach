@@ -26,18 +26,15 @@ class Parser implements ParserInterface{
 	*/
 	public function parse(DataBag $bag){
 		$content = $bag->getData();
-		$labelPart = substr($content,0,24);
-		$label = new Label($labelPart);
-		$this->tree->append(new ObjectSheet('label', $label));
+
+		$noticesData = explode(chr(29),$content);
+		$notices = array();
 		
-		$indice = strpos($content, '');
-		$size  = strlen($content);
-		//echo ("jfolflflflfllflflfl" .$size);
-		$blocIdent = substr($content, 24, $indice-24);
-		$blocInfo = substr($content, $indice, $size - $indice);
-		$ident = new Identification($blocIdent, $blocInfo);
+		foreach($noticesData as $noticeData){
+			$notices[] = new Notice($noticeData);	
+		}
 		
-		$this->tree->append(new ObjectSheet('identification',$ident));
+		$this->tree->append(new ObjectSheet("notices"),$notices);		
 	}
 	
 	/**
