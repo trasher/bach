@@ -34,7 +34,7 @@ class Parser implements ParserInterface{
 			$notices[] = new Notice($noticeData);	
 		}
 		
-		$this->tree->append(new ObjectSheet("notices"),$notices);		
+		$this->tree->append(new ObjectSheet("notices",$notices));		
 	}
 	
 	/**
