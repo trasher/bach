@@ -22,7 +22,16 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
 		 */
 		protected $balise;
 		
+		/**
+		 * @ORM\ManyToOne(targetEntity="SolrXMLFile", inversedBy="elements", cascade={"remove"})
+		 * @ORM\JoinColumn(name="SolrXMLFIileID", referencedColumnName="SolrXMLFIileID")
+		 */
+		protected $file;
 		
+		/**
+		 * @ORM\OneToMany(targetEntity="SolrXMLAttribute", mappedBy="SolrXMLElement", cascade={"remove", "persist"})
+		 */
+		protected $attributes;
 		
 	
 		/**
@@ -86,5 +95,68 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
     public function getValue()
     {
         return $this->value;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set file
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile $file
+     * @return SolrXMLElement
+     */
+    public function setFile(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile $file = null)
+    {
+        $this->file = $file;
+    
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile 
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Add attributes
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute $attributes
+     * @return SolrXMLElement
+     */
+    public function addAttribute(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute $attributes)
+    {
+        $this->attributes[] = $attributes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove attributes
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute $attributes
+     */
+    public function removeAttribute(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute $attributes)
+    {
+        $this->attributes->removeElement($attributes);
+    }
+
+    /**
+     * Get attributes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
     }
 }

@@ -16,6 +16,12 @@ class SolrXMLAttribute
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $SolrXMLAttributeID;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="SolrXMLElement", inversedBy="attributes", cascade={"remove"})
+	 * @ORM\JoinColumn(name="SolrXMLElementID", referencedColumnName="SolrXMLElementID")
+	 */
+	protected $Element;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -82,5 +88,29 @@ class SolrXMLAttribute
     public function getAttributeValue()
     {
         return $this->attributeValue;
+    }
+    
+
+    /**
+     * Set Element
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $element
+     * @return SolrXMLAttribute
+     */
+    public function setElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $element = null)
+    {
+        $this->Element = $element;
+    
+        return $this;
+    }
+
+    /**
+     * Get Element
+     *
+     * @return \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement 
+     */
+    public function getElement()
+    {
+        return $this->Element;
     }
 }

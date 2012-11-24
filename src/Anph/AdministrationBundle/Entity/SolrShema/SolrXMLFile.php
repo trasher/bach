@@ -25,7 +25,7 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
 		/**
 		 * @ORM\OneToMany(targetEntity="SolrXMLElement", mappedBy="SolrXMLFile", cascade={"remove", "persist"})
 		 */
-		protected $solrXMLElement;
+		protected $elements;
 	
 		/**
 		 * @ORM\Column(type="text")
