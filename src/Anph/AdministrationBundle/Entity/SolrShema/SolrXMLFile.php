@@ -21,6 +21,11 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
 		 * @ORM\Column(type="string", length=100)
 		 */
 		protected $name;
+		
+		/**
+		 * @ORM\OneToMany(targetEntity="SolrXMLElement", mappedBy="SolrXMLFile", cascade={"remove", "persist"})
+		 */
+		protected $solrXMLElement;
 	
 		/**
 		 * @ORM\Column(type="text")
@@ -81,5 +86,45 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
     public function getPath()
     {
         return $this->path;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->solrXMLElement = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add solrXMLElement
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $solrXMLElement
+     * @return SolrXMLFile
+     */
+    public function addSolrXMLElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $solrXMLElement)
+    {
+        $this->solrXMLElement[] = $solrXMLElement;
+    
+        return $this;
+    }
+
+    /**
+     * Remove solrXMLElement
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $solrXMLElement
+     */
+    public function removeSolrXMLElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $solrXMLElement)
+    {
+        $this->solrXMLElement->removeElement($solrXMLElement);
+    }
+
+    /**
+     * Get solrXMLElement
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSolrXMLElement()
+    {
+        return $this->solrXMLElement;
     }
 }
