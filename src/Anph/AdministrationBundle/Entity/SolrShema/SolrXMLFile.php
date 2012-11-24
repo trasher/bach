@@ -1,0 +1,85 @@
+<?php
+namespace Anph\AdministrationBundle\Entity\SolrShema;
+
+	
+	use Doctrine\ORM\Mapping as ORM;
+	
+	/**
+	 * @ORM\Entity
+	 * @ORM\Table(name="SolrXMLFile")
+	 */
+	class SolrXMLFile
+	{
+		/**
+		 * @ORM\Id
+		 * @ORM\Column(type="integer")
+		 * @ORM\GeneratedValue(strategy="AUTO")
+		 */
+		protected $SolrXMLFileID;
+	
+		/**
+		 * @ORM\Column(type="string", length=100)
+		 */
+		protected $name;
+	
+		/**
+		 * @ORM\Column(type="text")
+		 */
+		protected $path;
+	
+    /**
+     * Get SolrXMLFileID
+     *
+     * @return integer 
+     */
+    public function getSolrXMLFileID()
+    {
+        return $this->SolrXMLFileID;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return SolrXMLFile
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return SolrXMLFile
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+}
