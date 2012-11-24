@@ -24,7 +24,7 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
 		
 		/**
 		 * @ORM\ManyToOne(targetEntity="SolrXMLFile", inversedBy="elements", cascade={"remove"})
-		 * @ORM\JoinColumn(name="SolrXMLFIileID", referencedColumnName="SolrXMLFIileID")
+		 * @ORM\JoinColumn(name="SolrXMLFileID", referencedColumnName="SolrXMLFileID")
 		 */
 		protected $file;
 		
@@ -32,6 +32,17 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
 		 * @ORM\OneToMany(targetEntity="SolrXMLAttribute", mappedBy="SolrXMLElement", cascade={"remove", "persist"})
 		 */
 		protected $attributes;
+		
+		/**
+		 * @ORM\OneToMany(targetEntity="SolrXMLElement", mappedBy="SolrXMLElements", cascade={"remove", "persist"})
+		 */
+		protected $elements;
+		
+		/**
+		 * @ORM\ManyToOne(targetEntity="SolrXMLElement", inversedBy="elements", cascade={"remove"})
+		 * @ORM\JoinColumn(name="root", referencedColumnName="SolrXMLElementID")
+		 */
+		protected $root;
 		
 	
 		/**
@@ -158,5 +169,61 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * Add elements
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements
+     * @return SolrXMLElement
+     */
+    public function addElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements)
+    {
+        $this->elements[] = $elements;
+    
+        return $this;
+    }
+
+    /**
+     * Remove elements
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements
+     */
+    public function removeElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements)
+    {
+        $this->elements->removeElement($elements);
+    }
+
+    /**
+     * Get elements
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getElements()
+    {
+        return $this->elements;
+    }
+
+    /**
+     * Set root
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $root
+     * @return SolrXMLElement
+     */
+    public function setRoot(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $root = null)
+    {
+        $this->root = $root;
+    
+        return $this;
+    }
+
+    /**
+     * Get root
+     *
+     * @return \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement 
+     */
+    public function getRoot()
+    {
+        return $this->root;
     }
 }

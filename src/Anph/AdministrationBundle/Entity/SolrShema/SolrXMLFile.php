@@ -127,4 +127,37 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
     {
         return $this->solrXMLElement;
     }
+
+    /**
+     * Add elements
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements
+     * @return SolrXMLFile
+     */
+    public function addElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements)
+    {
+        $this->elements[] = $elements;
+    
+        return $this;
+    }
+
+    /**
+     * Remove elements
+     *
+     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements
+     */
+    public function removeElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements)
+    {
+        $this->elements->removeElement($elements);
+    }
+
+    /**
+     * Get elements
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getElements()
+    {
+        return $this->elements;
+    }
 }
