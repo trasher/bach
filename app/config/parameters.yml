@@ -2,9 +2,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: null
-    database_name: symfony
+    database_name: SolrConfig_DB
     database_user: root
-    database_password: azerty
+    database_password: $esi@l
     mailer_transport: smtp
     mailer_host: localhost
     mailer_user: null
