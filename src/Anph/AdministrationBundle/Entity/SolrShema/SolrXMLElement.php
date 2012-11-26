@@ -34,7 +34,7 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
 		protected $attributes;
 		
 		/**
-		 * @ORM\OneToMany(targetEntity="SolrXMLElement", mappedBy="SolrXMLElements", cascade={"remove", "persist"})
+		 * @ORM\OneToMany(targetEntity="SolrXMLElement", mappedBy="SolrXMLElement", cascade={"remove", "persist"})
 		 */
 		protected $elements;
 		
