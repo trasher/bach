@@ -49,9 +49,10 @@ class XMLProcess{
 			$textNode->setBalise($node->tagName);
 			$textNode->setFile($sxf->getSolrXMLFileID());
 			if($root!=Null){
-		  $textNode->setRoot($root);
+		  	$textNode->setRoot($root);
 			}else $textNode->setRoot("none");
-			$this->sxf->save();
+			$textNode->save();
+			
 			if($node->hasAttributes()) {
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($textNode);
@@ -71,6 +72,7 @@ class XMLProcess{
 				}
 			}
 		}else{
+			
 			$newNode = new SolrXMLElement();
 			$newNode->setValue($node->nodeValue);
 			$newNode->setBalise($node->tagName);
@@ -79,14 +81,12 @@ class XMLProcess{
 				$textNode->setRoot($root);
 			}else $textNode->setRoot("none");
 			$newNode->save();
-				
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($newNode);
+			$em->flush();
+			
 			if($node->hasAttributes()) {
-				$em = $this->getDoctrine()->getManager();
-				$em->persist($newNode);
-				$em->flush();
-					
-				$attributes = $node->attributes;
-					
+				$attributes = $node->attributes;	
 				if(!is_null($attributes)) {
 					foreach ($attributes as $key => $attr) {
 						
@@ -101,9 +101,6 @@ class XMLProcess{
 			}
 				
 			if($node->hasChildNodes()){
-				$em = $this->getDoctrine()->getManager();
-				$em->persist($newNode);
-				$em->flush();
 				$this->root=$newNode->getSolrXMLElementID();
 				foreach($node->childNodes as $doc){
 					importXML($doc);
