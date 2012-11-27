@@ -1,7 +1,7 @@
 parameters:
-#    administration.example.class: Anph\AdministrationBundle\Example
+    administration.xmlimport.class: Anph\AdministrationBundle\Service\XMLImport
 
 services:
-#    administration.example:
-#        class: %administration.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    anph.administration.xmlimport:
+         class: %administration.xmlimport.class%
+         arguments: [ @doctrine.orm.entity_manager ]

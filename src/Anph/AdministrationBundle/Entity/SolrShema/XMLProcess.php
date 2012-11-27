@@ -4,7 +4,6 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
 
 use Doctrine\Tests\Common\Annotations;
 
-
 use Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile;
 
 use Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement;
@@ -12,8 +11,6 @@ use Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement;
 use Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute;
 
 use Symfony\Component\HttpFoundation\Response;
-
-use Doctrine\ORM\Mapping as ORM;
 
 class XMLProcess{
 
@@ -32,11 +29,18 @@ class XMLProcess{
 		$this->sxf->setPath($file);
 	}
 
+	public function getSXF()
+	{
+		return $this->sxf;
+	}
+	
 	public function importXML(){
 		$this->importXMLHelper($this->xmlRoot,null);
-		$em = $this->getDoctrine()->getManager();
+		/*
+		$em = $this->get('doctrine')->getEntityManager();
 		$em->persist($this->$sxf);
 		$em->flush();
+		*/
 	}
 
 	public function importXMLHelper($node, $parent){

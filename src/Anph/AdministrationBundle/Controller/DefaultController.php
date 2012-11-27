@@ -16,6 +16,7 @@ class DefaultController extends Controller
 		$process = new XMLProcess(__DIR__.'/../Resources/config/schema.xml');
 		
 		$process->importXML();
+		$this->get("anph.administration.xmlimport")->importXML($process->getSXF());
 		return $this->render('AdministrationBundle:Default:index.html.twig');
 	}
 
