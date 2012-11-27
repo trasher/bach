@@ -2,7 +2,8 @@
 
 namespace Anph\AdministrationBundle\Entity\SolrShema;
 
- use Doctrine\Tests\Common\Annotations\Null;
+use Doctrine\Tests\Common\Annotations;
+
 
 use Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile;
 
@@ -22,41 +23,35 @@ class XMLProcess{
 	protected $request;
 	protected $sxf;
 
-	 public function __construct($file){
-		$this->dom = new DomDocument();
+	public function __construct($file){
+		$this->dom = new \DomDocument();
 		$this->dom->load($file);
-		$this->xmlRoot=$dom->documentElement;
+		$this->xmlRoot=$this->dom->documentElement;
 		$this->sxf = new SolrXMLFile();
 		$this->sxf->setName($file);
 		$this->sxf->setPath($file);
 	}
 
 	public function importXML(){
-		importXMLHelper($xmlRoot);
+		$this->importXMLHelper($this->xmlRoot,null);
 		$em = $this->getDoctrine()->getManager();
 		$em->persist($this->$sxf);
 		$em->flush();
 	}
 
-	public function importXMLHelper($node){
-
+	public function importXMLHelper($node, $parent){
 		if($node->nodeType == XML_TEXT_NODE){
 			$textNode = new SolrXMLElement();
 			$textNode->setValue($node->nodeValue);
-			$textNode->setBalise($node->tagName);
-			
-			if($root!=Null){
-		  	$textNode->setRoot($root);
-			}else $textNode->setRoot("none");
-			
-			
+			$textNode->setBalise($node->nodeName);
+				
 			if($node->hasAttributes()) {
 
 				$attributes = $node->attributes;
-				 
+					
 				if(!is_null($attributes)) {
 					foreach ($attributes as $key => $attr) {
-				
+
 						$newAttribute= new SolrXMLAttribute();
 						$newAttribute->setAttributeName($attr->name);
 						$newAttribute->setAttributeValue($attr->value);
@@ -65,49 +60,46 @@ class XMLProcess{
 					}
 				}
 			}
-			
-			$this->sxf->addElement($textNode);
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($textNode);
-			$em->flush();
-			
-			
+			if($parent!=null){
+				$parent->addElement($textNode);
+				$this->sxf->addElement($parent);
+			}
+			else $this->sxf->addElement($textNode);
+
+				
 		}else{
-			
+				
 			$newNode = new SolrXMLElement();
 			$newNode->setValue($node->nodeValue);
-			$newNode->setBalise($node->tagName);
+			$newNode->setBalise($node->nodeName);
 			//$newNode->setFile($sxf->getSolrXMLFileID());
-			$this->sxf->addElement($newNode);
-			if($root!=Null){
-				$textNode->setRoot($root);
-			}else $textNode->setRoot("none");
-			
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($newNode);
-			$em->flush();
-			
+				
 			if($node->hasAttributes()) {
-				$attributes = $node->attributes;	
+				$attributes = $node->attributes;
 				if(!is_null($attributes)) {
 					foreach ($attributes as $key => $attr) {
-						
+
 						$newAttribute= new SolrXMLAttribute();
 						$newAttribute->setAttributeName($attr->name);
 						$newAttribute->setAttributeValue($attr->value);
-						$newAttribute->setElement($newNode->getSolrXMLElementID());
 						$newNode->addAttribute($newAttribute);
-	
+						 
 					}
 				}
 			}
 				
 			if($node->hasChildNodes()){
-				$this->root=$newNode->getSolrXMLElementID();
-				foreach($node->childNodes as $doc){
-					importXMLHelper($doc);
+
+				foreach($node->childNodes as $child){
+					$this->importXMLHelper($child,$newNode);
 				}
 			}
+				
+			if($parent!=null){
+				$parent->addElement($newNode);
+				$this->sxf->addElement($parent);
+			}
+			else $this->sxf->addElement($newNode);
 		}
 	}
 
