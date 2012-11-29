@@ -6,3 +6,4 @@ build/
 vendor
 .settings
 composer.phar
+.DS_Store
