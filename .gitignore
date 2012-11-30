@@ -1,14 +1,32 @@
-web/bundles/
-app/bootstrap*
-app/cache/*
+# Some Symfony files + composer.phar #
+######################
 app/logs/*
-vendor/
+app/cache/*
+app/spool/*
+app/bootstrap/*
+app/config/parameters.ini
 app/config/parameters.yml
+app/bootstrap.php.cache
+web/bundles/
+vendor/
+build/
 .settings
 composer.phar
-.DS_Store
+
+# Eclipse generated files #
+######################
 .project
 .gitignore
 .buildpath
 .travis.yml
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
 *~
