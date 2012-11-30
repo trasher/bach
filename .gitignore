@@ -1,9 +1,14 @@
 web/bundles/
-app/bootstrap.php.cache
+app/bootstrap*
 app/cache/*
 app/logs/*
-build/
-vendor
+vendor/
+app/config/parameters.yml
 .settings
 composer.phar
 .DS_Store
+.project
+.gitignore
+.buildpath
+.travis.yml
+*~
