@@ -15,7 +15,7 @@ class XMLDataBag extends DataBag
 	{
 		$this->type = "xml";
 		$dom = new \DOMDocument();
-		$dom->load($fileInfo->getRelativePath());
+		$dom->load($fileInfo->getRealPath());
 		$this->data = $dom;
 	}
 }

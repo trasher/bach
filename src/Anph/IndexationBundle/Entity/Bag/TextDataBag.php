@@ -14,6 +14,6 @@ class TextDataBag extends DataBag
 	public function __construct(SplFileInfo $fileInfo)
 	{
 		$this->type = "txt";
-		$this->data = file_get_contents($fileInfo->getRelativePath());
+		$this->data = file_get_contents($fileInfo->getRealPath());
 	}
 }
