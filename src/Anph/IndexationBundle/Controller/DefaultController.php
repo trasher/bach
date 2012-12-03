@@ -18,7 +18,8 @@ class DefaultController extends Controller
     	//$fileInfo = new \SplFileInfo(__DIR__.'/fsor2709.c01');
     	
     	try{
-    		$universalFileFormat = $manager->convert($factory->encapsulate($fileInfo),'ead');
+    		$universalFileFormats = $manager->convert($factory->encapsulate($fileInfo),'ead');
+		//	var_dump($universalFileFormats);
     	}catch(BadInputFileFormatException $e){
     		echo $e->getMessage();
     	}

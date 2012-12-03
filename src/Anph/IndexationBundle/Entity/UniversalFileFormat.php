@@ -55,27 +55,36 @@ class UniversalFileFormat
     	$this->parseData($data,$this->configuration);
     }
     
-    private function parseData($data, $configuration, $keys = array())
+    public function __call($function,$args)
     {
-    	foreach ($configuration as $key=>$config) {
-    		if (is_array($config)) {
-    			$this->parseData(array($key=>$data[$key]),$config,array_merge($keys,array($key)));
-    		} else {
-    			$method = "set".implode(array_map('ucfirst',$keys)).ucfirst($config);
-    			$this->$method($this->lookForKeys($keys,$data));
+    	if ( strlen($function) > 3 ) {
+    		$prefix = substr($function, 0, 3);
+			$name = substr($function,3);
+    		$property = strtolower($name[0]).substr($name,1);
+    		
+    		if ($prefix == "get") {	
+    			return $this->$property;
+    		} elseif ($prefix == "set") {
+    			$this->$property = $args[0];
     		}
     	}
     }
     
-    private function lookForKeys($keys, $data) {
-    	$key = array_shift($keys);
-    	
-    	if ( !is_null($key) ) {
-    		if (array_key_exists($key,$data) ) {
-    			$this->lookForKeys($keys, $data);
-    		}
-    	} else {
-    		return $data;
+    private function parseData($data, $configuration, $keys = array())
+    {
+    	foreach ($configuration as $key=>$config) {
+    		if (is_array($config)) {
+    			if (array_key_exists($key,$data)) {
+    				$this->parseData($data[$key],$config,array_merge($keys,array($key)));
+    			}
+    		} else {
+    			$method = "set".implode(array_map('ucfirst',$keys)).ucfirst($config);
+    			if (array_key_exists($config,$data)) {
+    				$this->$method($data[$config]);
+    			} else {
+    				$this->$method(null);
+    			}
+    		}    		
     	}
     }
     
@@ -84,7 +93,7 @@ class UniversalFileFormat
     */
     private function importConfiguration()
     {
-    	$this->configuration = Yaml::parse(__DIR__.'/../Resources/config/universalff.yml');
+    	$this->configuration = Yaml::parse(__DIR__.'/../Resources/config/universal.yml');
     	$this->configuration = $this->configuration['fields'];
     }
 }
