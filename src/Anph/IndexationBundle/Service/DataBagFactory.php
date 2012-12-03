@@ -6,7 +6,6 @@
 
 namespace Anph\IndexationBundle\Service;
 
-use Symfony\Component\Finder\SplFileInfo;
 use Anph\IndexationBundle\Entity\DataBag;
 use Anph\IndexationBundle\Entity\Bag\TextDataBag;
 use Anph\IndexationBundle\Entity\Bag\XMLDataBag;
@@ -16,7 +15,7 @@ use Anph\IndexationBundle\Entity\Bag\XMLDataBag;
 */
 class DataBagFactory
 {
-    public function encapsulate(SplFileInfo $fileInfo)
+    public function encapsulate(\SplFileInfo $fileInfo)
     {
 		switch ($fileInfo->getExtension()) {
 			

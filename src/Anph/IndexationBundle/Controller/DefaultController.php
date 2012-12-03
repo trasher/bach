@@ -13,9 +13,9 @@ class DefaultController extends Controller
     	$manager = $this->container->get('anph_indexation.file_driver_manager');
     	$factory = $this->container->get('anph_indexation.data_bag_factory'); // Fourni le bon DataBag pour le fichier à indexer
     	
-    	//$fileInfo = new SplFileInfo("FRAD027_PC.xml",__DIR__.'/FRAD027_PC.xml',__DIR__);
-    	$fileInfo = new SplFileInfo("FRAD027_404142R.xml",__DIR__.'/FRAD027_404142R.xml',__DIR__);
-    	//$fileInfo = new SplFileInfo("fsor2709.c01",__DIR__.'/fsor2709.c01',__DIR__);
+    	//$fileInfo = new \SplFileInfo(__DIR__.'/FRAD027_PC.xml');
+    	$fileInfo = new \SplFileInfo(__DIR__.'/FRAD027_404142R.xml');
+    	//$fileInfo = new \SplFileInfo(__DIR__.'/fsor2709.c01');
     	
     	try{
     		$universalFileFormat = $manager->convert($factory->encapsulate($fileInfo),'ead');

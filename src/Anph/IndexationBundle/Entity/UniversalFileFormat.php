@@ -11,6 +11,6 @@ class UniversalFileFormat
     public function __construct($data)
     {
     	//file_put_contents(__DIR__.'../../../../../test.txt',var_export($data,true));
-    	var_dump($data);
+    	//var_dump($data);
     }
 }
