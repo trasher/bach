@@ -60,11 +60,19 @@ class FileDriverManager
     		$driver = $this->drivers[$format];
     		$results = $driver->process($bag);
     		if (!is_null($mapper)) {
-    			$results = $mapper->translate($results);
+    			foreach ($results as $key=>$result) {
+    				$results[$key] = $mapper->translate($result);
+    			}
     		}
     	}
-    
-    	return new UniversalFileFormat($results);
+    	
+    	$output = array();
+    	
+    	foreach ($results as $result) {
+    		$output[] = new UniversalFileFormat($result);
+    	}
+    	
+    	return $output;
     }
     
     /**

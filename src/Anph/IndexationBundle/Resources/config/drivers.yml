@@ -4,35 +4,17 @@ drivers:
         fields:
             header:  
                 - eadid
-                - filedesc/titlestmt/titleproper
-                - filedesc/titlestmt/subtitle
                 - filedesc/titlestmt/author
                 - filedesc/publicationstmt/publisher
                 - filedesc/publicationstmt/address/addressline
                 - filedesc/publicationstmt/date                
                 - profiledesc/langusage/language
-                - filedesc/editionstmt/edition
-                - filedesc/editionstmt/p
-                - profiledesc/creation
-                - profiledesc/descrules
-                - revisiondesc/change/date
-                - revisiondesc/change/item
-                - archdesc/runner
             archdesc:
                 root:
                     - did/unitid
                     - did/unittitle
                     - did/unitdate
                     - did/physdesc
-                    - did/physdesc/genreform 
-                    - did/physdesc/extent 
-                    - did/physdesc/physfacet 
-                    - did/physdesc/dimensions 
-                    - did/materialspec 
-                    - did/container 
-                    - did/repository 
-                    - did/physloc 
-                    - did/abstract 
                     - did/repository
                     - did/langmaterial
                     - did/origination

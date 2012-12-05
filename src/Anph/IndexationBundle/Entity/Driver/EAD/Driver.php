@@ -32,8 +32,12 @@ class Driver extends FileDriver
 	*/
 	private function processTree(ObjectTree $tree){
 		$results = array();
-		$results['header'] = $tree->get('header')->getContent()->getValues();
-		$results['archdesc'] = $tree->get('archdesc')->getContent()->getValues();
+		
+		$result = array();
+		$result['header'] = $tree->get('header')->getContent()->getValues();
+		$result['archdesc'] = $tree->get('archdesc')->getContent()->getValues();
+		$results[] = $result;
+		
 		return $results;
 	}
 }
