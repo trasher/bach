@@ -1,57 +1,70 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\SolrShema;
 
-	
-	use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="SolrXMLElement")
+ */
+class SolrXMLElement
+{
+	/**
+	 * @ORM\Id
+	 * @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	protected $SolrXMLElementID;
+
+	/**
+	 * @ORM\Column(type="string", length=100)
+	 */
+	protected $balise;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="SolrXMLFile", inversedBy="elements", cascade={"remove"})
+	 * @ORM\JoinColumn(name="id", referencedColumnName="SolrXMLFileID")
+	 */
+	protected $file;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="SolrXMLAttribute", mappedBy="Element", cascade={"remove", "persist"})
+	 */
+	protected $attributes;
+
 	
 	/**
-	 * @ORM\Entity
-	 * @ORM\Table(name="SolrXMLElement")
+	 * @ORM\OneToMany(targetEntity="SolrXMLElement", mappedBy="SolrXMLElementID", cascade={"remove", "persist"})
 	 */
-	class SolrXMLElement
-	{
-		/**
-		 * @ORM\Id
-		 * @ORM\Column(type="integer")
-		 * @ORM\GeneratedValue(strategy="AUTO")
-		 */
-		protected $SolrXMLElementID;
-	
-		/**
-		 * @ORM\Column(type="string", length=100)
-		 */
-		protected $balise;
-		
-		/**
-		 * @ORM\ManyToOne(targetEntity="SolrXMLFile", inversedBy="elements", cascade={"remove"})
-		 * @ORM\JoinColumn(name="SolrXMLFileID", referencedColumnName="SolrXMLFileID")
-		 */
-		protected $file;
-		
-		/**
-		 * @ORM\OneToMany(targetEntity="SolrXMLAttribute", mappedBy="SolrXMLElement", cascade={"remove", "persist"})
-		 */
-		protected $attributes;
-		
-		/**
-		 * @ORM\OneToMany(targetEntity="SolrXMLElement", mappedBy="SolrXMLElement", cascade={"remove", "persist"})
-		 */
-		protected $elements;
-		
-		/**
-		 * @ORM\ManyToOne(targetEntity="SolrXMLElement", inversedBy="elements", cascade={"remove"})
-		 * @ORM\JoinColumn(name="root", referencedColumnName="SolrXMLElementID")
-		 */
-		protected $root;
-		
-	
-		/**
-		 * @ORM\Column(type="text")
-		 */
-		protected $value;
-	
+	 protected $elements;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="SolrXMLElement", inversedBy="elements", cascade={"remove"})
+	 * @ORM\JoinColumn(name="root", referencedColumnName="SolrXMLElementID")
+	 */
+	protected $root;
 
 
+	/**
+	 * @ORM\Column(type="text")
+	 */
+	protected $value;
+
+
+
+	
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->elements = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get SolrXMLElementID
      *
@@ -107,14 +120,7 @@ namespace Anph\AdministrationBundle\Entity\SolrShema;
     {
         return $this->value;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+
     /**
      * Set file
      *

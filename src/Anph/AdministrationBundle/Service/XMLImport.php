@@ -83,6 +83,7 @@ class XMLImport{
 			if ($node->nodeType ==XML_ELEMENT_NODE){
 				
 				$newNode = new SolrXMLElement();
+				$newNode->setRoot($parent);
 			    $newNode->setValue($node->nodeValue);
 				$newNode->setBalise($node->tagName);
 				//$newNode->setFile($sxf->getSolrXMLFileID());
@@ -95,6 +96,7 @@ class XMLImport{
 							$newAttribute= new SolrXMLAttribute();
 							$newAttribute->setAttributeName($attr->name);
 							$newAttribute->setAttributeValue($attr->value);
+							$newAttribute->setElement($newNode);
 							$newNode->addAttribute($newAttribute);
 						}
 					}
@@ -109,9 +111,13 @@ class XMLImport{
 
 				if($parent!=null){
 					$parent->addElement($newNode);
+					$newNode->setFile($this->sxf);
 					$this->sxf->addElement($parent);
 				}
-				else $this->sxf->addElement($newNode);
+				else {
+					$newNode->setFile($this->sxf);
+					$this->sxf->addElement($newNode);
+				}
 			}
 		}
 	}
