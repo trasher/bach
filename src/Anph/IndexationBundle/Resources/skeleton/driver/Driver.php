@@ -5,6 +5,7 @@ namespace {{ namespace }};
 use Anph\IndexationBundle\Entity\FileDriver;
 use Anph\IndexationBundle\Entity\DataBag;
 use Anph\IndexationBundle\Entity\ObjectTree;
+use Anph\IndexationBundle\Exception\UnknownDriverParserException;
 
 class Driver extends FileDriver
 {	
@@ -13,6 +14,11 @@ class Driver extends FileDriver
 	*/
 	public function process(DataBag $bag){
 		$parserClass = "Anph\IndexationBundle\Entity\Driver\{{ format_uppercase }}\Parser\\".strtoupper($bag->getType())."\Parser";
+		
+		if (!class_exists($parserClass)) {
+			throw new UnknownDriverParserException(strtoupper($bag->getType()));
+		}
+		
 		$parser = new $parserClass($bag, $this->configuration);
 		$tree = $parser->getTree();
 		return $this->processTree($tree);

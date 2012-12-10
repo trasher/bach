@@ -1,5 +1,56 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
-<a href="#" class="btn">test</a>
+<div class="span3">
+	<div class="well sidebar-nav" >
+		<ul class="nav nav-list">
+			<li class="nav-header">Indexation</li>
+			<li class="active"><a href="#"><i class="icon-tasks"></i> Liste des taches inventaires</a></li>
+            <li><a href="#"><i class="icon-download-alt"></i> Indexer un fichier</a></li>
+			<li class="divider"></li>
+			<li><a href="#"><i class="icon-question-sign"></i> Aide</a></li>
+		</ul>
+	</div><!--/.well -->
+</div><!--/span-->
+<div class="span9">
+	<div class="row-fluid">
+		<div class="span9">
+			<h4>Liste des tâches d'indexation en attente</h4>
+		</div>
+		<div class="span3">
+			<button type="button" class="btn pull-right" data-toggle="button"><i class="icon-refresh"></i> Mise à jour automatique</button>
+		</div>
+	</div>
+	<div class="row-fluid">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>Nom du fichier</th>
+							<th>Format</th>
+							<th>Taille</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if tasks|length > 0 %}
+						{% for task in tasks %}
+						<tr class="{{ task.status }}">
+							{% if task.status > 0 %}
+							<td data-toggle="popover" data="test">{{ task.filename }}</td>
+							{% else %}
+							<td>{{ task.filename }}</td>
+							{% endif %}
+							<td>{{ task.format }}</td>
+							<td>{{ task.size }}</td>
+						</tr>
+						{% endfor %}
+						{% else %}
+						<tr>
+							<td colspan="3">Aucune tache d'indexation en cours</td>
+						</tr>
+						{% endif %}
+					</tbody>
+				</table>
+		</div>
+	</div>
+</div><!--/span-->
 {% endblock %}
