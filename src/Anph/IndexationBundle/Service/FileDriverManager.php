@@ -22,14 +22,16 @@ class FileDriverManager
 {
     private $drivers = array();
     private $configuration = array();
+    private $fileFormatFactory;
 
     /**
     * Constructor
     */
-    public function __construct()
+    public function __construct(UniversalFileFormatFactory $fileFormatFactory)
     {
 		$this->importConfiguration();
 		$this->searchDrivers();
+		$this->fileFormatFactory = $fileFormatFactory;
     }
     
     /**
@@ -42,6 +44,8 @@ class FileDriverManager
 			throw new \DomainException('Unsupported file format: ' . $format);
     	} else {
     		$mapper = null;
+    		$universalFileFormatClass = null;
+    		
     		//Importation configuration du driver
     		if (array_key_exists('drivers',$this->configuration)) {
     			if (array_key_exists($format,$this->configuration['drivers'])) {
@@ -53,6 +57,16 @@ class FileDriverManager
 	    						$mapper = $reflection->newInstance();
 	    					}
     					} catch (\RuntimeException $e) {}
+    				}
+    				
+    				if (array_key_exists('universalfileformat',$this->configuration['drivers'][$format])) {
+    					try {
+	    					$reflection = new \ReflectionClass($this->configuration['drivers'][$format]['universalfileformat']);
+	    					if ($reflection->getParentClass()->getName() == 'Anph\IndexationBundle\Entity\UniversalFileFormat') {
+	    						$universalFileFormatClass = $this->configuration['drivers'][$format]['universalfileformat'];
+	    					}
+	    				}
+	    				catch (\RuntimeException $e) {}
     				}
     			}
     		}
@@ -69,7 +83,7 @@ class FileDriverManager
     	$output = array();
     	
     	foreach ($results as $result) {
-    		$output[] = new UniversalFileFormat($result);
+    		$output[] = $this->fileFormatFactory->build($result, $universalFileFormatClass);
     	}
     	
     	return $output;

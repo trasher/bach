@@ -32,6 +32,11 @@ class ArchFileIntegration
 			
 			try{
 				$universalFileFormats = $this->manager->convert($this->factory->encapsulate($spl),$format);
+				
+				foreach ($universalFileFormats as $universalFileFormat) {
+					$this->entityManager->persist($universalFileFormat);
+				}
+				
 				$task->setStatus(1);
 				//$this->entityManager->remove($task);
 				$this->entityManager->persist($task);
