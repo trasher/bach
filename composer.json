@@ -19,7 +19,8 @@
         "jms/security-extra-bundle": "1.2.*",
         "jms/di-extra-bundle": "1.1.*",
         "nelmio/solarium-bundle": "1.*",
-        "twitter/bootstrap": "master"
+        "twitter/bootstrap": "master",
+	"aura/http": "dev-develop"
     },
     "scripts": {
         "post-install-cmd": [

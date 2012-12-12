@@ -1,6 +1,92 @@
 {
-    "hash": "8216307abd5861be7cd932241b9ac986",
+    "hash": "13b35a4290092de9dee20c1317f07bcc",
     "packages": [
+        {
+            "name": "aura/http",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/auraphp/Aura.Http",
+                "reference": "df5696a8f698e19a5574caf3091be967d895252f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/auraphp/Aura.Http/archive/df5696a8f698e19a5574caf3091be967d895252f.zip",
+                "reference": "df5696a8f698e19a5574caf3091be967d895252f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "aura/installer-default": "1.0.0"
+            },
+            "time": "2012-12-07 23:42:53",
+            "type": "aura-package",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Aura\\Http": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Aura Contributors",
+                    "homepage": "https://github.com/auraphp/Aura.Http/contributors"
+                }
+            ],
+            "description": "The Aura HTTP package provides objects to build and send HTTP responses from the server to the client.",
+            "homepage": "http://auraphp.github.com/Aura.Http",
+            "keywords": [
+                "http",
+                "http response",
+                "response"
+            ]
+        },
+        {
+            "name": "aura/installer-default",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/auraphp/installer-default",
+                "reference": "1.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/auraphp/installer-default/archive/1.0.0.zip",
+                "reference": "1.0.0",
+                "shasum": ""
+            },
+            "time": "2012-11-26 21:35:57",
+            "type": "composer-installer",
+            "extra": {
+                "class": "Aura\\Composer\\DefaultInstaller"
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Aura\\Composer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul M. Jones",
+                    "email": "pmjones88@gmail.com",
+                    "homepage": "http://paul-m-jones.com"
+                }
+            ],
+            "description": "Installs Aura packages using the Composer defaults.",
+            "keywords": [
+                "installer",
+                "aura"
+            ]
+        },
         {
             "name": "doctrine/common",
             "version": "2.3.x-dev",
@@ -1172,12 +1258,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/symfony/symfony.git",
-                "reference": "74c8b0150a66ff092b294ca6d29f285ccdba72e4"
+                "reference": "a1734ddf72d9bd85df7bf334fdb1126f9e24b19e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/symfony/archive/74c8b0150a66ff092b294ca6d29f285ccdba72e4.zip",
-                "reference": "74c8b0150a66ff092b294ca6d29f285ccdba72e4",
+                "url": "https://github.com/symfony/symfony/archive/a1734ddf72d9bd85df7bf334fdb1126f9e24b19e.zip",
+                "reference": "a1734ddf72d9bd85df7bf334fdb1126f9e24b19e",
                 "shasum": ""
             },
             "require": {
@@ -1226,7 +1312,7 @@
                 "propel/propel1": "dev-master",
                 "monolog/monolog": "1.*"
             },
-            "time": "2012-12-07 13:34:54",
+            "time": "2012-12-10 12:46:54",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -1308,18 +1394,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "3ca17acb4aaf6add233390741d3ac5198a98d602"
+                "reference": "de5aaf2c1d43baafde255a042f5c7cf6122ea3ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/3ca17acb4aaf6add233390741d3ac5198a98d602.zip",
-                "reference": "3ca17acb4aaf6add233390741d3ac5198a98d602",
+                "url": "https://github.com/fabpot/Twig/archive/de5aaf2c1d43baafde255a042f5c7cf6122ea3ce.zip",
+                "reference": "de5aaf2c1d43baafde255a042f5c7cf6122ea3ce",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2012-12-07 15:14:24",
+            "time": "2012-12-10 14:12:12",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1376,7 +1462,7 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "aura/http": 20
+    }
 }
