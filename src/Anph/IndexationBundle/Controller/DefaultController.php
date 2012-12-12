@@ -4,17 +4,19 @@ namespace Anph\IndexationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\SplFileInfo;
-use Anph\IndexationBundle\Entity\Bag\XMLDataBag;
+use Symfony\Component\Process\Process;
+use Anph\IndexationBundle\Entity\ArchFileIntegrationTask;
 
 class DefaultController extends Controller
 {
     public function indexAction()
     {
-    	$manager = $this->container->get('anph_indexation.file_driver_manager');
-    	$factory = $this->container->get('anph_indexation.data_bag_factory'); // Fourni le bon DataBag pour le fichier à indexer
+    	/*
+    	$manager = $this->container->get('anph.indexation.file_driver_manager');
+    	$factory = $this->container->get('anph.indexation.data_bag_factory'); // Fourni le bon DataBag pour le fichier à indexer
     
     	//$fileInfo = new \SplFileInfo(__DIR__.'/FRAD027_PC.xml');
-    	$fileInfo = new \SplFileInfo(__DIR__.'/FRAD027_404142R.xml');
+    	$fileInfo = new \SplFileInfo(__DIR__.'/../Resources/benchmark/data/EAD/6_FRAD027_404142R_220mo.xml');
     	//$fileInfo = new \SplFileInfo(__DIR__.'/fsor2709.c01');
     	
     	try{
@@ -23,7 +25,53 @@ class DefaultController extends Controller
     	}catch(BadInputFileFormatException $e){
     		echo $e->getMessage();
     	}
+    	echo memory_get_usage() . "\n"; // 36640
+    	   /**/
+    	$em = $this->getDoctrine()->getEntityManager();
+    	
+    	$file = __DIR__.'/../Resources/benchmark/data/EAD/2_FRAD027_404142R_11mo.xml';
+    	$format = 'unimarc';
+    	
+    	
+    	$task = new ArchFileIntegrationTask($file, $format);
+    	$em->persist($task);
+    	//$em->flush();
+    	
+    	$repository = $em
+    				->getRepository('AnphIndexationBundle:ArchFileIntegrationTask');
+    	
+    	$entities = $repository
+    				->createQueryBuilder('t')
+    				->orderBy('t.taskId', 'DESC')
+    				->getQuery()
+    				->getResult();
+    	$tasks = array();
     
-		return $this->render('AnphIndexationBundle:Indexation:index.html.twig');
+    	foreach ($entities as $entity) {
+    		$spl = new \SplFileInfo($entity->getFilename());
+    		$tasks[] = array(	'filename'	=>	$spl->getBasename(),
+    							'format'	=>	$entity->getFormat(),
+    							'size'		=>	$spl->getSize());
+   
+    		switch ((int)$entity->getStatus()) {
+    			default:
+    			case 0:
+    				$status = "";
+    				break;
+    				
+    			case 1:
+    				$status = "success";
+    				break;
+    				
+    			case 2:
+    			case 3:
+    				$status = "error";
+    				break;
+    		}
+    		
+    		$tasks[count($tasks)-1]['status'] = $status;
+    	}
+    	
+		return $this->render('AnphIndexationBundle:Indexation:index.html.twig',array('tasks'=>$tasks));
     }
 }

@@ -12,9 +12,7 @@ use Symfony\Component\Finder\Finder;
 
 class BenchmarkCommand extends ContainerAwareCommand
 {
-	protected $generator = null;
-	
-    protected function configure()
+	 protected function configure()
     {
         $this
             ->setName('anph:benchmark')
