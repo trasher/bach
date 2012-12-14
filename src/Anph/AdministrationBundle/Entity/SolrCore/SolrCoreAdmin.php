@@ -1,6 +1,9 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\SolrCore;
-use Aura\Http\Message\Response\Stack, Aura\Http\Message\Request;
+
+use Aura\Http\Message\Response\Stack;
+use Aura\Http\Message\Request;
+use Exception;
 
 class SolrCoreAdmin
 {
@@ -24,70 +27,62 @@ class SolrCoreAdmin
 
     public function create($coreName)
     {
-        if (!$this->createCoreDir($coreName)) {
+        if (!SolrCoreAdmin::createCoreDir($coreName)) {
             return false;
         }
-        $response = $this->sendGetRequest(SolrCoreAdmin::CORE_HTTP . '?' .
-                        'action=CREATE&' .
-                        'name=' . $coreName . '&' .
-                        'instanceDir=' . $coreName . '&' .
-                        'config=' . SolrCoreAdmin::SOLRCONFIG_FILE_NAME . '&' .
-                        'schema=' . SolrCoreAdmin::SCHEMA_FILE_NAME . '&' .
-                        'dataDir=' . SolrCoreAdmin::DATA_DIR);
-        $responseObj = new SolrCoreResponse($response);
-        return $responseObj->getStatus() == 0 ? true : $responseObj;
+        
+        return $this->send(SolrCoreAdmin::CORE_HTTP . '?' .
+                    'action=CREATE&' .
+                    'name=' . $coreName . '&' .
+                    'instanceDir=' . $coreName . '&' .
+                    'config=' . SolrCoreAdmin::SOLRCONFIG_FILE_NAME . '&' .
+                    'schema=' . SolrCoreAdmin::SCHEMA_FILE_NAME . '&' .
+                    'dataDir=' . SolrCoreAdmin::DATA_DIR);
     }
 
     public function getStatus($coreName = null)
     {
         if ($coreName != null) {
-            $response = $this->sendGetRequest(SolrCoreAdmin::CORE_HTTP . '?' .
-                                        'action=STATUS&' .
-                                        'core=' . $coreName);
+           return $this->send(SolrCoreAdmin::CORE_HTTP . '?' .
+                                'action=STATUS&' .
+                                'core=' . $coreName);
         } else {
-           $response = $this->sendGetRequest(SolrCoreAdmin::CORE_HTTP . '?' .
-                                       'action=STATUS&');
+           return $this->send(SolrCoreAdmin::CORE_HTTP . '?' .
+                                'action=STATUS');
         }
-        $responseObj = new SolrCoreResponse($response);
-        return $responseObj->getStatus() == 0 ? true : $responseObj;
     }
 
     public function reload($coreName)
     {
-        $response = $this->sendGetRequest(SolrCoreAdmin::CORE_HTTP . '?' .
-                                    'action=RELOAD&' .
-                                    'core' . $coreName);
-        $responseObj = new SolrCoreResponse($response);
-        return $responseObj->getStatus() == 0 ? true : $responseObj;
+        return $this->send(SolrCoreAdmin::CORE_HTTP . '?' .
+                                'action=RELOAD&' .
+                                'core=' . $coreName);
     }
 
     public function rename($oldCoreName, $newCoreName)
     {
-        $response = $this->sendGetRequest(SolrCoreAdmin::CORE_HTTP . '?' .
-                                    'action=RENAME&' .
-                                    'core=' . $oldCoreName .'&' .
-                                    'other=' . $newCoreName);
-        $responseObj = new SolrCoreResponse($response);
-        return $responseObj->getStatus() == 0 ? true : $responseObj;
+        if (!$this->isCoreExist($newCoreName)) {
+                return $this->send(SolrCoreAdmin::CORE_HTTP . '?' .
+                        'action=RENAME&' .
+                        'core=' . $oldCoreName .'&' .
+                        'other=' . $newCoreName);
+        }
+        return false;
     }
 
     public function swap($core1, $core2)
     {
-        $response = $this->sendGetRequest(SolrCoreAdmin::CORE_HTTP . '?' .
-                                    'action=SWAP&' .
-                                    'core=' . $oldCoreName .'&' .
-                                    'other=' . $newCoreName);
-        $responseObj = new SolrCoreResponse($response);
-        return $responseObj->getStatus() == 0 ? true : $responseObj;
+        return $this->send(SolrCoreAdmin::CORE_HTTP . '?' .
+                                'action=SWAP&' .
+                                'core=' . $oldCoreName .'&' .
+                                'other=' . $newCoreName);
     }
 
     public function unload($coreName)
     {
-        $response = $this->sendGetRequest(SolrCoreAdmin::CORE_HTTP . '?' .
-                                    'action=UNLOAD&' .
-                                    'core=' . $coreName);
-        $responseObj = new SolrCoreResponse($response);
-        return $responseObj->getStatus() == 0 ? true : $responseObj;
+        return $this->send(SolrCoreAdmin::CORE_HTTP . '?' .
+                                'action=UNLOAD&' .
+                                'core=' . $coreName);
     }
 
     public function delete($coreName, $type = SolrCoreAdmin::DELETE_CORE)
@@ -102,20 +97,18 @@ class SolrCoreAdmin
             case SolrCoreAdmin::DELETE_DATA:
                 $url .= 'deleteDataDir=true';
                 break;
-            // Following case does not work properly (Solr bug)
+            // Following case does not work properly due to Solr bug
             case SolrCoreAdmin::DELETE_CORE:
                 $url .= 'deleteInstanceDir=true';
                 break;
         }
-        $response = $this->sendGetRequest($url);
-        $responseObj = new SolrCoreResponse($response);
-        return $responseObj->getStatus() == 0 ? true : $responseObj;
+        return $this->send($url);
     }
 
     private function createCoreDir($coreName)
     {
         $dest = SolrCoreAdmin::CORE_PATH . $coreName;
-        if (!is_dir($dest)) {
+        if (!is_dir($dest) && !$this->isCoreExist($coreName)) {
             $src = SolrCoreAdmin::CORE_PATH . SolrCoreAdmin::CORE_DIR_TEMPLATE;
             $output = shell_exec('cp -r -a ' . $src . ' ' . $dest);
             return true;
@@ -131,13 +124,35 @@ class SolrCoreAdmin
             return (array_reduce(glob($path.'/*'), function ($r, $i) { return $r && deleteDir($i); }, true)) && @rmdir($path);
         }
     }
-   */ 
-    private function sendGetRequest($url)
+   */
+    
+    private function isCoreExist()
+    {
+        try {
+            $status = $this->getStatus();
+            if ($status->isOk()) {
+                $cores = $status->getCoreNames();
+                $isExist = false;
+                foreach ($cores as $c) {
+                    if ($c == $newCoreName) {
+                        return true;
+                    }
+                }
+                return false;
+            } else {
+                throw new Exception('Can not obtain Solr cores status');
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception : ' .  $e->getMessage() . '\n';
+        }
+    }
+    
+    private function send($url)
     {
         $request = $this->http->newRequest();
         $request->setMethod(Request::METHOD_GET);
         $request->setUrl($url);
-        $response = $this->http->send($request);
-        return $response[0]->content;
+        $stack = $this->http->send($request);
+        return new SolrCoreResponse($stack[0]->content);
     }
 }

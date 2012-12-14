@@ -18,8 +18,10 @@ class SolrCoreResponseTest extends \PHPUnit_Framework_TestCase
 	                        </lst>
                         </response>';
         $res = new SolrCoreResponse($XMLResponse);
+        $this->assertTrue($res->getStatus() == '0');
         $this->assertTrue($res->getMessage() == 'Error handling "reload" action');
         $this->assertTrue($res->getTrace() == 'org.apache.solr.common.SolrException');
         $this->assertTrue($res->getCode() == '500');
+        $this->assertTrue($res->isOk());
     }
 }

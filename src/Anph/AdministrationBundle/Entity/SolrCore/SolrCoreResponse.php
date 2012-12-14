@@ -1,55 +1,31 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\SolrCore;
+
 use DOMDocument;
+use DOMXPath;
 
 class SolrCoreResponse
 {
+    const STATUS_XPATH = '/response/lst[@name="responseHeader"]/int[@name="status"]';
+    const ERROR_CODE_XPATH = '/response/lst[@name="error"]/int[@name="code"]';
+    const ERROR_MSG_XPATH = '/response/lst[@name="error"]/str[@name="msg"]';
+    const ERROR_TRACE_XPATH = '/response/lst[@name="error"]/str[@name="trace"]';
+    const CORE_NAMES = '/response/lst[@name="status"]/lst[@name]/@name';
+    
     private $status;
-    private $code;
-    private $message;
-    private $trace;
+    private $doc;
+    private $xpath;
 
-    public function __construct($XMLresponse)
+    public function __construct($XMLResponse)
     {
         $doc = new DOMDocument();
-        $doc->loadXML($XMLresponse);
-        $lstList = $doc->getElementsByTagName('lst');
-        foreach ($lstList as $l) {
-            if ($l->hasAttribute('name')) {
-                switch ($l->getAttribute('name')) {
-                    case 'responseHeader':
-                        $intList = $l->getElementsByTagName('int');
-                        foreach ($intList as $i) {
-                            if ($i->hasAttribute('name') && $i->getAttribute('name') === 'status') {
-                                $this->status = $i->nodeValue;
-                                break;
-                            }
-                        }
-                        break;
-                    case 'error':
-                        $strList = $l->getElementsByTagName('str');
-                        foreach ($strList as $s) {
-                            if ($s->hasAttribute('name')) {
-                                switch ($s->getAttribute('name')) {
-                                    case 'msg':
-                                        $this->message = $s->nodeValue;
-                                        break;
-                                    case 'trace':
-                                        $this->trace = $s->nodeValue;
-                                        break;
-                                }
-                            }
-                        }
-                        $intList = $l->getElementsByTagName('int');
-                        foreach ($intList as $i) {
-                            if ($i->hasAttribute('name') && $i->getAttribute('name') === 'code') {
-                                $this->code = $i->nodeValue;
-                                break;
-                            }
-                        }
-                        break;
-                }
-            }
+        $doc->loadXML($XMLResponse);
+        $this->xpath = new DOMXPath($doc);
+        $nodeList = $this->xpath->query(SolrCoreResponse::STATUS_XPATH);
+        if ($nodeList->length == 0) {
+            $this->status = null;
+        } else {
+            $this->status = $nodeList->item(0)->nodeValue;
         }
     }
     
@@ -60,16 +36,43 @@ class SolrCoreResponse
     
     public function getCode()
     {
-        return $this->code;
+        $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_CODE_XPATH);
+        return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
     }
     
     public function getMessage()
     {
-        return $this->message;
+        $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_MSG_XPATH);
+        return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
     }
     
     public function getTrace()
     {
-        return $this->trace;
+        $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_TRACE_XPATH);
+        return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
+    }
+    
+    public function isOk()
+    {
+        return $this->status == 0 ? true : false;
+    }
+    
+    public function getCoreNames()
+    {
+        $nodeList = $this->xpath->query(SolrCoreResponse::CORE_NAMES);
+        foreach($nodeList as $n) {
+            $coreNameArray[] = $n->nodeValue;
+        }
+        return $coreNameArray;
+    }
+    
+    private function getNodeValue($xpath)
+    {
+        $nodeList = $this->xpath->query($xpath);
+        if ($nodeList->length == 0) {
+            return null;
+        } else {
+           return $nodeList->item(0)->nodeValue;
+        }
     }
 }
