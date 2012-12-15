@@ -2,8 +2,6 @@
 
 namespace Anph\IndexationBundle\Entity;
 
-use Symfony\Component\Yaml\Yaml;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,38 +10,43 @@ use Doctrine\ORM\Mapping as ORM;
 */
 class UniversalFileFormat
 {
-	private $configuration = array();
 	
 	/**
 	* @ORM\Id
-	* @ORM\Column(type="string", length=100)
+	* @ORM\Column(type="integer", length=10)
+	* @ORM\GeneratedValue(strategy="AUTO")
 	*/
-	private $headerId;
+	protected $uniqid;
 	
 	/**
-	* @ORM\Column(type="string", length=100)
+	* @ORM\Column(type="string", nullable=true, length=100)
 	*/
-	private $headerAuthor;
+	protected $headerId;
 	
 	/**
-	* @ORM\Column(type="date")
+	* @ORM\Column(type="string", nullable=true, length=100)
 	*/
-	private $headerDate;
+	protected $headerAuthor;
 	
 	/**
-	* @ORM\Column(type="string", length=100)
+	* @ORM\Column(type="string", nullable=true, length=100)
 	*/
-	private $headerPublisher;
+	protected $headerDate;
 	
 	/**
-	* @ORM\Column(type="text")
+	* @ORM\Column(type="string", nullable=true, length=100)
 	*/
-	private $headerAddress;
+	protected $headerPublisher;
 	
 	/**
-	* @ORM\Column(type="string", length=3)
+	* @ORM\Column(type="text", nullable=true)
 	*/
-	private $headerLanguage;
+	protected $headerAddress;
+	
+	/**
+	* @ORM\Column(type="string", nullable=true, length=3)
+	*/
+	protected $headerLanguage;
 	
 	/**
 	* The constructor
@@ -51,52 +54,18 @@ class UniversalFileFormat
 	*/
     public function __construct($data)
     {
-    	$this->importConfiguration();
-    	$this->parseData($data,$this->configuration);
+    	$this->parseData($data);
     }
-    
-    public function __call($function,$args)
+        
+    protected function parseData($data)
     {
-    	if ( strlen($function) > 3 ) {
-    		$prefix = substr($function, 0, 3);
-			$name = substr($function,3);
-    		$property = strtolower($name[0]).substr($name,1);
-    		
-    		if ($prefix == "get") {	
-    			return $this->$property;
-    		} elseif ($prefix == "set") {
-    			$this->$property = $args[0];
-    		}
-    	}
-    }
-    
-    private function parseData($data, $configuration, $keys = array())
-    {
-    	foreach ($configuration as $key=>$config) {
-    		if (is_array($config)) {
-    			if (array_key_exists($key,$data)) {
-    				$this->parseData($data[$key],$config,array_merge($keys,array($key)));
-    			}
-    		} else {
-    			$method = "set".implode(array_map('ucfirst',$keys)).ucfirst($config);
-    			if (array_key_exists($config,$data)) {
-    				$this->$method($data[$config]);
-    			} else {
-    				$this->$method(null);
-    			}
+    	foreach ($data as $key=>$datum) {
+    		if (property_exists($this, $key)) {
+    			$this->$key = $datum;
     		}    		
     	}
     }
-    
-    /**
-    * Import universalff configuration file
-    */
-    private function importConfiguration()
-    {
-    	$this->configuration = Yaml::parse(__DIR__.'/../Resources/config/universal.yml');
-    	$this->configuration = $this->configuration['fields'];
-    }
-
+   
     /**
      * Set headerId
      *

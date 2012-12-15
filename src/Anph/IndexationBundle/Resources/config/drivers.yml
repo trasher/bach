@@ -1,6 +1,7 @@
 drivers:
     ead:
         mapper: Anph\IndexationBundle\Entity\Mapper\EADDriverMapper
+        universalfileformat: Anph\IndexationBundle\Entity\UniversalFileFormat\EADFileFormat
         fields:
             header:  
                 - eadid

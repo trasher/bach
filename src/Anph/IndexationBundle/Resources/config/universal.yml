@@ -1,4 +1,6 @@
 fields:
+    common:
+        
     header:
         - id #Identifiant de l'instrument de recherche
         - author #Auteur(s) de l’instrument de recherche 
