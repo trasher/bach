@@ -1,18 +1,63 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
+
 <div class="span3">
 	<div class="well sidebar-nav" >
 		<ul class="nav nav-list">
 			<li class="nav-header">Indexation</li>
 			<li class="active"><a href="#"><i class="icon-tasks"></i> Liste des taches inventaires</a></li>
-            <li><a href="#"><i class="icon-download-alt"></i> Indexer un fichier</a></li>
+            <li><a href="#"><i class="icon-download-alt"></i> Indexer des fichiers</a></li>
 			<li class="divider"></li>
 			<li><a href="#"><i class="icon-question-sign"></i> Aide</a></li>
 		</ul>
 	</div><!--/.well -->
 </div><!--/span-->
+
+
+<!-- Our CSS stylesheet file -->
+        <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+  <body>   
 <div class="span9">
+
+	<div>
+		<h4>Indexer des fichiers</h4>
+		{# <button type="button" class="btn btn-primary start">
+                    <i class="icon-plus icon-white"></i>
+                    <span>Add files...</span>
+         </button>
+         <br/>#}
+         <br/>
+         <div id="dropbox">
+			<span class="message"><i>Pour charger vos fichiers, glissez les ici !</i></span>		
+		</div>
+		<br/>
+		
+		<div class="preview done">
+		
+			<span class="imageHolder">
+				<img src="" />
+				<span class="uploaded"></span>
+			</span>
+		
+			<div class="progressHolder">
+				<div class="progress"></div>
+			</div>
+		</div>
+		
+        
+        <!-- Including The jQuery Library -->
+		<script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+		
+		<!-- Including the HTML5 Uploader plugin -->
+		<script src="{{ asset('bundles/Uploader/js/jquery.filedrop.js') }}"></script>
+		
+		<!-- The main script file -->
+        <script src="{{ asset('bundles/Uploader/js/script.js') }}"></script>
+        
+		
+	</div>
+	
 	<div class="row-fluid">
 		<div class="span9">
 			<h4>Liste des tâches d'indexation en attente</h4>
@@ -50,7 +95,13 @@
 						{% endif %}
 					</tbody>
 				</table>
+				
+		
+		
+  
+            
 		</div>
 	</div>
 </div><!--/span-->
+</body>   
 {% endblock %}

@@ -2,9 +2,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: null
-    database_name: SolrConfig_DB
+    database_name: bach
     database_user: root
-    database_password: $esi@l
+    database_password: asics505u
     mailer_transport: smtp
     mailer_host: localhost
     mailer_user: null
