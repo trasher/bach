@@ -29,7 +29,7 @@ class DefaultController extends Controller
     	   /**/
     	$em = $this->getDoctrine()->getEntityManager();
     	
-    	$file = __DIR__.'/../Resources/benchmark/data/EAD/2_FRAD027_404142R_11mo.xml';
+    	$file = __DIR__.'/FRAD027_404142R.xml';
     	$format = 'unimarc';
     	
     	

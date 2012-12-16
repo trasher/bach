@@ -1,13 +1,17 @@
 parameters:
     anph_indexation_file_driver_manager.class: Anph\IndexationBundle\Service\FileDriverManager
     anph_indexation_data_bag_factory.class: Anph\IndexationBundle\Service\DataBagFactory
+    anph_indexation_universal_file_format_factory.class: Anph\IndexationBundle\Service\UniversalFileFormatFactory
     anph_indexation_process_arch_file_integration.class: Anph\IndexationBundle\Service\ArchFileIntegration
     
 services:
     anph.indexation.file_driver_manager:
         class: "%anph_indexation_file_driver_manager.class%"
+        arguments: [ @anph.indexation.universal_file_format_factory ]
     anph.indexation.data_bag_factory:
         class: "%anph_indexation_data_bag_factory.class%"
+    anph.indexation.universal_file_format_factory:
+        class: "%anph_indexation_universal_file_format_factory.class%"
     anph.indexation.process.arch_file_integration:
         class: "%anph_indexation_process_arch_file_integration.class%"
         arguments: [ @anph.indexation.file_driver_manager, @anph.indexation.data_bag_factory, @doctrine.orm.entity_manager ]
