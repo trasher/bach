@@ -15,8 +15,9 @@ class SolrCoreAdminTest extends \PHPUnit_Framework_TestCase
     }
     
     public function testCreate() {
-        $response = $this->sca->create('coreTest');
-        $this->assertTrue($response->isOk()); 
+        $response = $this->sca->create('coreTestCreate');
+        $this->assertTrue($response === false ? false : $response->isOk()); 
+        $this->sca->delete('coreTestCreate');
     }
     
     public function testGetStatusAllCore() {
@@ -25,12 +26,15 @@ class SolrCoreAdminTest extends \PHPUnit_Framework_TestCase
     }
     
     public function testGetStatusOneCore() {
-        $response = $this->sca->getStatus('core0');
+        $this->sca->create('coreTestStatusOneCore');
+        $response = $this->sca->getStatus('coreTestStatusOneCore');
         $this->assertTrue($response->isOk());
+        $this->sca->delete('coreTestStatusOneCore');
     }
     
     public function testReload() {
-        $response = $this->sca->reload('core0');
+        $this->sca->create('coreTestReload');
+        $response = $this->sca->reload('coreTestReload');
         if ($response->isOk()) {
             $this->assertTrue(true);
         } else {
@@ -40,12 +44,50 @@ class SolrCoreAdminTest extends \PHPUnit_Framework_TestCase
             echo 'TRACE :' . $response->getTrace() . '#####';
             $this->assertTrue(false);
         }
+        $this->sca->delete('coreTestReload');
     }
-/*    
+    
     public function testRename() {
-        $response = $this->sca->create('coreTest');
-        $response = $this->sca->rename('coreTest', 'coreNewTest');
-        echo 'RENAME : ###' . $response . '###';
-        $this->assertTrue(true);
-    }*/
+        $this->sca->create('coreTestRename');
+        $response = $this->sca->rename('coreTestRename', 'coreNewTestRename');
+        $this->assertTrue($response === false ? false : $response->isOk());
+        $this->sca->unload('coreNewTestRename');
+        $this->sca->delete('coreTestRename');
+    }
+    
+    public function testSwap() {
+        $this->sca->create('coreTestSwap1');
+        $this->sca->create('coreTestSwap2');
+        $response = $this->sca->swap('core1', 'core0');
+        $this->assertTrue($response->isOk());
+        $this->sca->delete('coreTestSwap1');
+        $this->sca->delete('coreTestSwap2');
+    }
+    
+    public function testUnload() {
+        $this->sca->create('coreTestUnload');
+        $response = $this->sca->unload('coreTestUnload');
+        $this->assertTrue($response->isOk());
+        $this->sca->delete('coreTestUnload');
+    }
+    
+    public function testDeleteIndex() {
+        $this->sca->create('coreTestDeleteIndex');
+        $response = $this->sca->delete('coreTestDeleteIndex', SolrCoreAdmin::DELETE_INDEX);
+        $this->assertTrue($response === false ? false : $response->isOk());
+        $this->sca->delete('coreTestDeleteIndex');
+    }
+    
+    public function testDeleteData() {
+        $this->sca->create('coreTestDeleteData');
+        $response = $this->sca->delete('coreTestDeleteData', SolrCoreAdmin::DELETE_DATA);
+        $this->assertTrue($response === false ? false : $response->isOk());
+        $this->sca->delete('coreTestDeleteData');
+    }
+    
+    public function testDeleteCore() {
+        $this->sca->create('coreTestDeleteCore');
+        $response = $this->sca->delete('coreTestDeleteCore');
+        $this->assertTrue($response);
+    }
 }
