@@ -16,7 +16,7 @@ class SolrCoreAdminTest extends \PHPUnit_Framework_TestCase
     
     public function testCreate() {
         $response = $this->sca->create('coreTestCreate');
-        $this->assertTrue($response === false ? false : $response->isOk()); 
+        $this->assertTrue($response === false ? false : $response->isOk());
         $this->sca->delete('coreTestCreate');
     }
     

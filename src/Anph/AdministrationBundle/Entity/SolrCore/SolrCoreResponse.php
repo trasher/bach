@@ -4,6 +4,9 @@ namespace Anph\AdministrationBundle\Entity\SolrCore;
 use DOMDocument;
 use DOMXPath;
 
+/**
+ * Represents Solr response to administration queries (error code, message, trace; core status)
+ */
 class SolrCoreResponse
 {
     const STATUS_XPATH = '/response/lst[@name="responseHeader"]/int[@name="status"]';
@@ -92,6 +95,14 @@ class SolrCoreResponse
             $coreNameArray[] = $n->nodeValue;
         }
         return $coreNameArray;
+    }
+    
+    /**
+     * Get status of a Solr core.
+     * @return SolrCoreStatus
+     */
+    public function getCoreStatus($coreName) {
+        return new SolrCoreStatus($this->xpath, $coreName);
     }
     
     private function getNodeValue($xpath)

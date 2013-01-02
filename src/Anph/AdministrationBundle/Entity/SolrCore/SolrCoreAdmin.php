@@ -6,7 +6,6 @@ use Aura\Http\Message\Request;
 use Exception;
 
 /**
- * @author Philippe Kalitine
  * This class allows to manage Solr cores
  */
 class SolrCoreAdmin
@@ -128,7 +127,7 @@ class SolrCoreAdmin
      * DELETE_INDEX : deletes the index
      * DELETE_DATA : removes "data" and all sub-directories
      * DELETE_CORE : removes core directory and all sub-directories. NOTE: it does not work if you had changed
-     * core name before (because core directory does not equal to core name)
+     * core's name before (because core's directory does not equal to its name)
      * @param string $coreName
      * @param int $type
      * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
@@ -149,6 +148,7 @@ class SolrCoreAdmin
                 $boolResponse = $this->deleteCoreDir($coreName);
                 return $boolResponse;
         }
+        
         return $this->send($url);
     }
 
@@ -162,8 +162,10 @@ class SolrCoreAdmin
         $dest = SolrCoreAdmin::CORE_PATH . $dirName;
         if (!is_dir($dest)) {
             exec('cp -r -a "' . SolrCoreAdmin::CORE_DIR_TEMPLATE_PATH . '" "' . $dest . '"', $output, $status);
+            
             return $status == 0 ? true : false;
         }
+        
         return false;
     }
 
@@ -177,8 +179,10 @@ class SolrCoreAdmin
         $path = SolrCoreAdmin::CORE_PATH . $dirName;
         if (is_dir($path)) {
             exec('rm -r "' . $path . '"', $output, $status);
+            
             return $status == 0 ? true : false;
         }
+        
         return true;
     }
     
@@ -197,9 +201,11 @@ class SolrCoreAdmin
                 $isExist = false;
                 foreach ($cores as $c) {
                     if ($c == $coreName) {
+                        
                         return true;
                     }
                 }
+                
                 return false;
             } else {
                 throw new Exception('Can not obtain Solr cores status');
@@ -220,6 +226,7 @@ class SolrCoreAdmin
         $request->setMethod(Request::METHOD_GET);
         $request->setUrl($url);
         $stack = $this->http->send($request);
+        
         return new SolrCoreResponse($stack[0]->content);
     }
 }
