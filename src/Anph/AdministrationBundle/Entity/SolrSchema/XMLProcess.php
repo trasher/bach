@@ -1,5 +1,4 @@
 <?php
-
 namespace Anph\AdministrationBundle\Entity\SolrSchema;
 
 use Doctrine\Tests\Common\Annotations;
@@ -20,9 +19,7 @@ class XMLProcess
     	$this->dom = new \DomDocument();
     	$this->dom->load($file);
     	$this->xmlRoot=$this->dom->documentElement;
-    	$this->sxf = new SolrXMLFile();
-    	$this->sxf->setName($file);
-    	$this->sxf->setPath($file);
+    	$this->sxf = new SolrXMLFile(null, $file);
     }
     
     public function getSXF()

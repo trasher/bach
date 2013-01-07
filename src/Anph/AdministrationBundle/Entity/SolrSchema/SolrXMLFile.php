@@ -19,7 +19,7 @@ class SolrXMLFile
     /**
      * @ORM\Column(type="string", length=100)
      */
-    protected $name;
+    protected $core;
     
     /**
      * @ORM\OneToMany(targetEntity="SolrXMLElement", mappedBy="file", cascade={"remove", "persist"})
@@ -34,9 +34,11 @@ class SolrXMLFile
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($core = null, $path = null)
     {
         $this->elements = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->core = $core;
+        $this->path = $path;
     }
     
     /**
@@ -52,24 +54,24 @@ class SolrXMLFile
     /**
      * Set name
      *
-     * @param string $name
+     * @param string $core
      * @return SolrXMLFile
      */
-    public function setName($name)
+    public function setCore($core)
     {
-        $this->name = $name;
+        $this->core = $core;
     
         return $this;
     }
     
     /**
-     * Get name
+     * Get core's name
      *
      * @return string 
      */
-    public function getName()
+    public function getCore()
     {
-        return $this->name;
+        return $this->core;
     }
     
     /**

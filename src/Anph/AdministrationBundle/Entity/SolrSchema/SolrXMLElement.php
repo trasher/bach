@@ -22,7 +22,7 @@ class SolrXMLElement
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 */
-	protected $balise;
+	protected $tag;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="SolrXMLFile", inversedBy="elements", cascade={"remove"})
@@ -76,26 +76,26 @@ class SolrXMLElement
     }
 
     /**
-     * Set balise
+     * Set tag
      *
-     * @param string $balise
+     * @param string $tag
      * @return SolrXMLElement
      */
-    public function setBalise($balise)
+    public function setTag($tag)
     {
-        $this->balise = $balise;
+        $this->tag = $tag;
     
         return $this;
     }
 
     /**
-     * Get balise
+     * Get tag
      *
      * @return string 
      */
-    public function getBalise()
+    public function getTag()
     {
-        return $this->balise;
+        return $this->tag;
     }
 
     /**
