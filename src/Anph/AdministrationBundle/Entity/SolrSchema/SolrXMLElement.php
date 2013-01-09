@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\SolrShema;
+namespace Anph\AdministrationBundle\Entity\SolrSchema;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -22,7 +22,7 @@ class SolrXMLElement
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 */
-	protected $balise;
+	protected $tag;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="SolrXMLFile", inversedBy="elements", cascade={"remove"})
@@ -76,26 +76,26 @@ class SolrXMLElement
     }
 
     /**
-     * Set balise
+     * Set tag
      *
-     * @param string $balise
+     * @param string $tag
      * @return SolrXMLElement
      */
-    public function setBalise($balise)
+    public function setTag($tag)
     {
-        $this->balise = $balise;
+        $this->tag = $tag;
     
         return $this;
     }
 
     /**
-     * Get balise
+     * Get tag
      *
      * @return string 
      */
-    public function getBalise()
+    public function getTag()
     {
-        return $this->balise;
+        return $this->tag;
     }
 
     /**
@@ -124,10 +124,10 @@ class SolrXMLElement
     /**
      * Set file
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile $file
+     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLFile $file
      * @return SolrXMLElement
      */
-    public function setFile(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile $file = null)
+    public function setFile(\Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLFile $file = null)
     {
         $this->file = $file;
     
@@ -137,7 +137,7 @@ class SolrXMLElement
     /**
      * Get file
      *
-     * @return \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile 
+     * @return \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLFile 
      */
     public function getFile()
     {
@@ -147,10 +147,10 @@ class SolrXMLElement
     /**
      * Add attributes
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute $attributes
+     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes
      * @return SolrXMLElement
      */
-    public function addAttribute(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute $attributes)
+    public function addAttribute(\Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes)
     {
         $this->attributes[] = $attributes;
     
@@ -160,9 +160,9 @@ class SolrXMLElement
     /**
      * Remove attributes
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute $attributes
+     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes
      */
-    public function removeAttribute(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute $attributes)
+    public function removeAttribute(\Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes)
     {
         $this->attributes->removeElement($attributes);
     }
@@ -180,10 +180,10 @@ class SolrXMLElement
     /**
      * Add elements
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements
+     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $elements
      * @return SolrXMLElement
      */
-    public function addElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements)
+    public function addElement(\Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $elements)
     {
         $this->elements[] = $elements;
     
@@ -193,9 +193,9 @@ class SolrXMLElement
     /**
      * Remove elements
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements
+     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $elements
      */
-    public function removeElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $elements)
+    public function removeElement(\Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $elements)
     {
         $this->elements->removeElement($elements);
     }
@@ -213,10 +213,10 @@ class SolrXMLElement
     /**
      * Set root
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $root
+     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $root
      * @return SolrXMLElement
      */
-    public function setRoot(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $root = null)
+    public function setRoot(\Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $root = null)
     {
         $this->root = $root;
     
@@ -226,7 +226,7 @@ class SolrXMLElement
     /**
      * Get root
      *
-     * @return \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement 
+     * @return \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement 
      */
     public function getRoot()
     {

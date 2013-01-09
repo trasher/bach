@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\SolrShema;
+namespace Anph\AdministrationBundle\Entity\SolrSchema;
 
 
 use Doctrine\ORM\Mapping as ORM;
@@ -21,17 +21,17 @@ class SolrXMLAttribute
 	 * @ORM\ManyToOne(targetEntity="SolrXMLElement", inversedBy="attributes", cascade={"remove"})
 	 * @ORM\JoinColumn(name="SolrXMLElementID", referencedColumnName="SolrXMLElementID")
 	 */
-	protected $Element;
+	protected $element;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 */
-	protected $attributeName;
+	protected $name;
 
 	/**
 	 * @ORM\Column(type="text")
 	 */
-	protected $attributeValue;
+	protected $value;
 
 
     /**
@@ -45,72 +45,72 @@ class SolrXMLAttribute
     }
 
     /**
-     * Set attributeName
+     * Set attribute's name
      *
-     * @param string $attributeName
+     * @param string $name
      * @return SolrXMLAttribute
      */
-    public function setAttributeName($attributeName)
+    public function setName($name)
     {
-        $this->attributeName = $attributeName;
+        $this->name = $name;
     
         return $this;
     }
 
     /**
-     * Get attributeName
+     * Get name
      *
      * @return string 
      */
-    public function getAttributeName()
+    public function getName()
     {
-        return $this->attributeName;
+        return $this->name;
     }
 
     /**
-     * Set attributeValue
+     * Set attribute's value
      *
-     * @param string $attributeValue
+     * @param string $value
      * @return SolrXMLAttribute
      */
-    public function setAttributeValue($attributeValue)
+    public function setValue($value)
     {
-        $this->attributeValue = $attributeValue;
+        $this->value = $value;
     
         return $this;
     }
 
     /**
-     * Get attributeValue
+     * Get attribute's value
      *
      * @return string 
      */
-    public function getAttributeValue()
+    public function getValue()
     {
-        return $this->attributeValue;
+        return $this->value;
     }
     
 
     /**
-     * Set Element
+     * Set element
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $element
+     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $element
      * @return SolrXMLAttribute
      */
-    public function setElement(\Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement $element = null)
+    public function setElement(\Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $element = null)
     {
-        $this->Element = $element;
+        $this->element = $element;
     
         return $this;
     }
 
     /**
-     * Get Element
+     * Get element
      *
-     * @return \Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement 
+     * @return \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement 
      */
     public function getElement()
     {
-        return $this->Element;
+        return $this->element;
     }
 }
