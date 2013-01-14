@@ -1,5 +1,6 @@
 <?php
 namespace Anph\AdministrationBundle\Tests\Entity\SolrCore;
+
 use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 class SolrCoreAdminTest extends \PHPUnit_Framework_TestCase
