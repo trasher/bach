@@ -38,7 +38,7 @@ class Driver extends FileDriver
 	*/
 	private function processTree(ObjectTree $tree){
 		$results = array();
-		
+		$results = $tree->get("notices")->getContent();
 		return $results;
 	}
 }

@@ -37,3 +37,6 @@ drivers:
                     - scopcontent
                     - controlacces
                     - daogrp/daoloc
+    unimarc:
+        mapper: Anph\IndexationBundle\Entity\Mapper\UNIMARCDriverMapper
+        universalfileformat: Anph\IndexationBundle\Entity\UniversalFileFormat\UNIMARCFileFormat
