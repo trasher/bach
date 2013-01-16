@@ -8,6 +8,8 @@ abstract class DataBag
 	
 	protected $data;
 	
+	protected $fileInfo;
+	
 	/**
 	* Type Getter
 	* @return string The type of bag
@@ -17,10 +19,26 @@ abstract class DataBag
 	}
 	
 	/**
+	* fileInfo Getter
+	* @return SplFileInfo The spl object of the bag file
+	*/
+	public function getFileInfo(){
+		return $this->fileInfo;
+	}
+	
+	/**
 	* Data Getter
 	* @return mixed The content of bag
 	*/
 	public function getData(){
 		return $this->data;
+	}
+	
+	/**
+	* Data Setter
+	* @param mixed The content of bag
+	*/
+	public function setData($data){
+		$this->data = $data;
 	}
 }

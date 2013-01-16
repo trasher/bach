@@ -50,14 +50,14 @@ class EADArchDesc
 		$this->values = $results;
 	}
 	
-	private function recursiveCNodeSearch(\DOMNode $rootNode, $fields){
+	private function recursiveCNodeSearch(\DOMNode $rootNode, $fields, $parents = array()){
 		$results = array();
 	
 		$cNodes = $this->xpath->query('c',$rootNode);
 	
 		foreach($cNodes as $cNode){
-			$results[$cNode->getAttribute('id')] = array();
-	
+			$results[$cNode->getAttribute('id')] = array(	"parents"	=>	$parents);
+			
 			foreach($fields as $field){
 				$nodes = $this->xpath->query($field,$cNode);
 	
@@ -71,7 +71,15 @@ class EADArchDesc
 			}
 				
 			if($this->xpath->query('c',$cNode)->length > 0){
-				$results = array_merge($results,$this->recursiveCNodeSearch($cNode, $fields));
+				$results = array_merge(	$results,
+										$this->recursiveCNodeSearch($cNode, 
+																	$fields, 
+																	array_merge($parents,
+																				array($cNode->getAttribute('id'))
+																				)
+																	)
+									);
+				//$results['c'] = $this->recursiveCNodeSearch($cNode, $fields);
 			}
 		}
 		return $results;
