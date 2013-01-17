@@ -58,7 +58,17 @@ class SolrPerformanceTest extends \PHPUnit_Framework_TestCase
         }
     }
     
-    public function testQueryResultMaxDocsCachedWhenNotExist()
+    public function testGetQueryResultWindowsSize()
+    {
+        $this->sp->setQueryResultWindowsSize(1001);
+        $actual = $this->sp->getQueryResultWindowsSize();
+        $this->assertNotNull($actual);
+        if ($actual != null) {
+            $this->assertEquals('1001', $actual);
+        }
+    }
+    
+    public function testSetQueryResultMaxDocsCachedWhenNotExist()
     {
         $expected = 1000;
         $response = $this->sp->setQueryResultMaxDocsCached($expected);
@@ -73,7 +83,7 @@ class SolrPerformanceTest extends \PHPUnit_Framework_TestCase
         }
     }
     
-    public function testQueryResultMaxDocsCachedWhenExist()
+    public function testSetQueryResultMaxDocsCachedWhenExist()
     {
         $expected = 1000;
         $this->sp->setQueryResultMaxDocsCached(2000);
@@ -87,6 +97,16 @@ class SolrPerformanceTest extends \PHPUnit_Framework_TestCase
         } else {
             $actual = $nodeList->item(0)->nodeValue;
             $this->assertEquals($expected, $actual);
+        }
+    }
+    
+    public function testGetQueryResultMaxDocsCached()
+    {
+        $this->sp->setQueryResultMaxDocsCached(1002);
+        $actual = $this->sp->getQueryResultMaxDocsCached();
+        $this->assertNotNull($actual);
+        if ($actual != null) {
+            $this->assertEquals('1002', $actual);
         }
     }
     
@@ -119,6 +139,18 @@ class SolrPerformanceTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('MyClass', $nodeList->item(0)->getAttribute('class'));
             $this->assertEquals('100', $nodeList->item(0)->getAttribute('size'));
             $this->assertEquals('80', $nodeList->item(0)->getAttribute('initialSize'));
+        }
+    }
+    
+    public function testGetDocumentCacheParameters()
+    {
+        $this->sp->setDocumentCacheParameters('bambam', 1, 2);
+        $actual = $this->sp->getDocumentCacheParameters();
+        $this->assertNotNull($actual);
+        if ($actual != null) {
+            $this->assertEquals('bambam', $actual[0]);
+            $this->assertEquals('1', $actual[1]);
+            $this->assertEquals('2', $actual[2]);
         }
     }
     
@@ -156,6 +188,19 @@ class SolrPerformanceTest extends \PHPUnit_Framework_TestCase
         }
     }
     
+    public function testGetQueryResultCacheParameters()
+    {
+        $this->sp->setQueryResultCacheParameters('bambam', 1, 2, 3);
+        $actual = $this->sp->getQueryResultCacheParameters();
+        $this->assertNotNull($actual);
+        if ($actual != null) {
+            $this->assertEquals('bambam', $actual[0]);
+            $this->assertEquals('1', $actual[1]);
+            $this->assertEquals('2', $actual[2]);
+            $this->assertEquals('3', $actual[3]);
+        }
+    }
+    
     public function testSetFilterCacheParametersNotExist()
     {
         $response = $this->sp->setFilterCacheParameters('MyClass', 100, 80, 70);
@@ -187,6 +232,19 @@ class SolrPerformanceTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('100', $nodeList->item(0)->getAttribute('size'));
             $this->assertEquals('80', $nodeList->item(0)->getAttribute('initialSize'));
             $this->assertEquals('70', $nodeList->item(0)->getAttribute('autowarmCount'));
+        }
+    }
+    
+    public function testGetFilterCacheParameters()
+    {
+        $this->sp->setFilterCacheParameters('bambam', 1, 2, 3);
+        $actual = $this->sp->getFilterCacheParameters();
+        $this->assertNotNull($actual);
+        if ($actual != null) {
+            $this->assertEquals('bambam', $actual[0]);
+            $this->assertEquals('1', $actual[1]);
+            $this->assertEquals('2', $actual[2]);
+            $this->assertEquals('3', $actual[3]);
         }
     }
     
