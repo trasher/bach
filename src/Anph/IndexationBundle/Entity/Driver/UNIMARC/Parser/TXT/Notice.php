@@ -8,10 +8,10 @@ class Notice
 	private $sticks;
 	
 	public function __construct($block){
-		$labelLength = 24;
-		$stickLength = 12;
+		$labelLength = 24; //longueur du label
+		$stickLength = 12; //longueur d'un premier bloc d'étiquette
 		
-		$this->label = new Label(substr($block,0,$labelLength));
+		$this->label = new Label(substr($block,0,$labelLength)); //création du label
 				
 		$stickEnd = strpos($block, chr(30));
 		$size  = strlen($block);
@@ -19,7 +19,7 @@ class Notice
 		$sticksData = substr($block, $labelLength, $stickEnd-$labelLength);
 		$areasData = substr($block, $stickEnd, $size - $stickEnd);
 		
-		$sticksData = str_split($sticksData,$stickLength);
+		$sticksData = str_split($sticksData,$stickLength); //split tous les 12 fois.
 		$sticks = array();
 		
 		foreach($sticksData as $stickData){

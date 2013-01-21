@@ -29,6 +29,11 @@ class ArchFileIntegrationTask
 	private $format;
 	
 	/**
+	* @ORM\Column(type="string", length=200, nullable=true)
+	*/
+	private $preprocessor;
+	
+	/**
 	* @ORM\Column(type="integer", length=1)
 	*/
 	private $status;
@@ -96,6 +101,29 @@ class ArchFileIntegrationTask
         return $this->format;
     }
 
+    /**
+    * Set preprocessor
+    *
+    * @param string $preprocessor
+    * @return ArchFileIntegrationTask
+    */
+    public function setPreprocessor($preprocessor)
+    {
+    	$this->preprocessor = $preprocessor;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get preprocessor
+     *
+     * @return string
+     */
+    public function getPreprocessor()
+    {
+    	return $this->preprocessor;
+    }
+    
     /**
      * Set status
      *
