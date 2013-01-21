@@ -24,7 +24,7 @@
 <div class="span9">
 
 	<div>
-		<h4>Indexer des fichiers</h4>
+		{#<h4>Indexer des fichiers</h4>
 		
 		
 		<form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
@@ -71,7 +71,9 @@
 		        <!-- The table listing the files available for upload/download -->
 		        <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
 		    </form>
+		#}
 		
+		{# {% include 'AnphIndexationBundle:Indexation:upload.html.twig' %} #}
         
         <!-- Including The jQuery Library -->
 		<script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>

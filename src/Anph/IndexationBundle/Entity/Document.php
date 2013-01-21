@@ -30,6 +30,11 @@ class Document
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	public $path;
+	
+	/**
+	 * @Assert\File(maxSize="6000000")
+	 */
+	public $file;
 
 	public function getAbsolutePath()
 	{

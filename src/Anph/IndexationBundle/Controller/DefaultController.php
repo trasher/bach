@@ -1,6 +1,8 @@
 <?php
 
 namespace Anph\IndexationBundle\Controller;
+use Anph\IndexationBundle\Entity\Document;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\SplFileInfo;
@@ -72,6 +74,35 @@ class DefaultController extends Controller
     		$tasks[count($tasks)-1]['status'] = $status;
     	}
     	
+    	
 		return $this->render('AnphIndexationBundle:Indexation:index.html.twig',array('tasks'=>$tasks));
     }
+    
+	/**
+	 * @Template()
+	 */
+	public function uploadAction()
+	{
+	    $document = new Document();
+	    $form = $this->createFormBuilder($document)
+	        ->add('name')
+	        ->add('file')
+	        ->getForm()
+	    ;
+	
+	    if ($this->getRequest()->isMethod('POST')) {
+	        $form->bind($this->getRequest());
+	        if ($form->isValid()) {
+	            $em = $this->getDoctrine()->getManager();
+	
+	            $em->persist($document);
+	            $em->flush();
+	
+	            //$this->redirect($this->generateUrl(...));
+	        }
+	    }
+	
+	    return array('form' => $form->createView());
+	   // return $this->render('AnphIndexationBundle:Indexation:index.html.twig',array('form' => $form->createView()));
+	}
 }
