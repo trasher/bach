@@ -40,7 +40,7 @@ $(function () {
             
             //EAD -> .xml
             //UNIMARC -> .c01 .c02      .e01 .e02
-            
+            // Test pour git
             acceptFileTypes: /(\.|\/)(xml|c0|e0)$/i,
             process: [
                 {
