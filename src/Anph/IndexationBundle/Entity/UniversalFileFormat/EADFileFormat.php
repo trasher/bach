@@ -32,7 +32,11 @@ class EADFileFormat extends UniversalFileFormat
                     $archeDescRootProcessinfo,
                     $archeDescRootControlaccess;
 	
-	
+	protected $cUnitid,
+                    $cUnittitle,
+                    $cCopcontent,
+                    $cControlacces,
+                    $cDaoloc;
 	
 }
 ?>
