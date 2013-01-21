@@ -37,8 +37,10 @@ $(function () {
         $('#fileupload').fileupload('option', {
             url: '//jquery-file-upload.appspot.com/',
             maxFileSize: 5000000,
+            
             //EAD -> .xml
             //UNIMARC -> .c01 .c02      .e01 .e02
+            
             acceptFileTypes: /(\.|\/)(xml|c0|e0)$/i,
             process: [
                 {
