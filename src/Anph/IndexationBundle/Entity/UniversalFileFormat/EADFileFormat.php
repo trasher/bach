@@ -32,7 +32,9 @@ class EADFileFormat extends UniversalFileFormat
 	protected $custodhist;
 	protected $date;
 	protected $daodesc;
-	
+	protected $did;
+	protected $dimensions;
+	protected $edition, $expan, $extent, $extref, $ext, $extrefloc, $fileplan, $frontmatter, $imprint, $index, $indexentry, $langmaterial, $language, $legalstatus, $materialspec, $note, $num, $odd, $originals ;
 	
 	
 	
