@@ -23,29 +23,30 @@ class FileDriverManager
     private $drivers = array();
     private $configuration = array();
     private $fileFormatFactory;
+    private $preProcessorFactory;
 
     /**
     * Constructor
     */
-    public function __construct(UniversalFileFormatFactory $fileFormatFactory)
+    public function __construct(UniversalFileFormatFactory $fileFormatFactory, PreProcessorFactory $preProcessorFactory)
     {
 		$this->importConfiguration();
 		$this->searchDrivers();
 		$this->fileFormatFactory = $fileFormatFactory;
+		$this->preProcessorFactory = $preProcessorFactory;
     }
     
     /**
     * Convert an input file into UniversalFileFormat object
     * @return UniversalFileFormat the normalized file object
     */
-    public function convert(DataBag $bag, $format)
+    public function convert(DataBag $bag, $format, $preprocessor = null)
     {
     	if (!array_key_exists($format,$this->drivers)) {
 			throw new \DomainException('Unsupported file format: ' . $format);
     	} else {
     		$mapper = null;
     		$universalFileFormatClass = null;
-    		
     		//Importation configuration du driver
     		if (array_key_exists('drivers',$this->configuration)) {
     			if (array_key_exists($format,$this->configuration['drivers'])) {
@@ -68,10 +69,21 @@ class FileDriverManager
 	    				}
 	    				catch (\RuntimeException $e) {}
     				}
+    				
+    				if (array_key_exists('preprocessor',$this->configuration['drivers'][$format])
+    					&& is_null($preprocessor)) {
+    					$preprocessor = $this->configuration['drivers'][$format]['preprocessor'];
+    				}
     			}
     		}
     		
     		$driver = $this->drivers[$format];
+    		
+    		if(!is_null($preprocessor))
+    		{
+    			$bag = $this->preProcessorFactory->preProcess($bag, $preprocessor);
+    		}
+    		
     		$results = $driver->process($bag);
     		if (!is_null($mapper)) {
     			foreach ($results as $key=>$result) {

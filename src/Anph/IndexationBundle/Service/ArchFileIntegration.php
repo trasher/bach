@@ -29,9 +29,10 @@ class ArchFileIntegration
 		foreach ($tasks as $task) {
 			$spl = new \SplFileInfo($task->getFilename());
 			$format = $task->getFormat();
+			$preprocessor = $task->getPreprocessor();
 			
 			try{
-				$universalFileFormats = $this->manager->convert($this->factory->encapsulate($spl),$format);
+				$universalFileFormats = $this->manager->convert($this->factory->encapsulate($spl),$format, $preprocessor);
 				
 				foreach ($universalFileFormats as $universalFileFormat) {
 					$this->entityManager->persist($universalFileFormat);
