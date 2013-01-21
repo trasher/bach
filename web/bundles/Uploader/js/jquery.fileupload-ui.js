@@ -54,7 +54,7 @@
             acceptFileTypes:  /.+$/i,
             // The regular expression to define for which files a preview
             // image is shown, matched against the file type:
-            previewSourceFileTypes: /^image\/(gif|jpeg|png)$/,
+            previewSourceFileTypes: /^document\/(xml|jpeg|png)$/,
             // The maximum file size of images that are to be displayed as preview:
             previewSourceMaxFileSize: 5000000, // 5MB
             // The maximum width of the preview images:
