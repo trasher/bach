@@ -20,8 +20,11 @@ class Document
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
-	public $id;
+	public $id; 
+	//Utiliser ID pour avoir le nom de fichier??
+	// => sauvegarder l'extension dans la propriété path, à la place du nom de fichier actuel
 
+	
 	/**
 	 * @ORM\Column(type="string", length=255)
 	 * @Assert\NotBlank

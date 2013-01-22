@@ -1,6 +1,8 @@
 <?php
 
 namespace Anph\IndexationBundle\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 use Anph\IndexationBundle\Entity\Document;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -79,6 +81,7 @@ class DefaultController extends Controller
     }
     
 	/**
+	 * @Route("/upload", name="upload")
 	 * @Template()
 	 */
 	public function uploadAction()
