@@ -94,11 +94,14 @@ class DefaultController extends Controller
 	        $form->bind($this->getRequest());
 	        if ($form->isValid()) {
 	            $em = $this->getDoctrine()->getManager();
+
+    			//$document->upload();
 	
 	            $em->persist($document);
 	            $em->flush();
 	
 	            //$this->redirect($this->generateUrl(...));
+	            return $this->render('AnphIndexationBundle:Indexation:upload.html.twig',array('form'=>$form));
 	        }
 	    }
 	
