@@ -1,1 +1,45 @@
-fait
+{% extends '::base.html.twig' %}
+
+{% block container %}
+
+<div class="span3">
+<div class="well sidebar-nav">
+<ul class="nav nav-list">  
+        <li class="nav-header" >Solr Schema Config</li>  
+        <li class="active"><a href="#"><i class="icon-white icon-book"></i> Fields</a></li>  
+        <li><a href="#"><i class="icon-book"></i>   Dynamic Fields</a></li>  
+        <li><a href="#"><i class="icon-book"></i> Fields Type</a></li> 
+        <li><a href="#"><i class="icon-book"></i> Analazers</a></li>  
+        <li><a href="#"><i class="icon-book"></i> Tockenizers</a></li>  
+        <li><a href="#"><i class="icon-book"></i> Filters</a></li>  
+        <li class="divider"></li>
+        <li class="nav-header">Solr Core Config</li> 
+   		<li><a href="#"><i class="icon-book"></i> Core Admin</a></li>  
+        <li class="divider"></li>  
+        <li class="nav-header">Solr Performance Config</li> 
+   		<li><a href="#"><i class="icon-book"></i> Performance Admin</a></li>   
+</ul>  
+          </div> 
+</div><!--/span-->
+
+
+<!-- Our CSS stylesheet file -->
+        <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
+        <!-- CSS adjustments for browsers with JavaScript disabled -->
+		<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
+  <body>   
+<div class="span9">
+
+		
+		<div class="span3">
+			<button type="button" class="btn pull-right" data-toggle="button"><i class="icon-refresh"></i> Mise à jour automatique</button>
+		</div>
+		<div class="span3">
+			<button type="button" class="btn pull-right" data-toggle="button"><i class="icon-refresh"></i> Mise à jour automatique</button>
+		</div>
+	
+</div><!--/span-->
+</body>   
+{% endblock %}
+
