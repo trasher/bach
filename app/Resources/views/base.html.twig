@@ -67,8 +67,10 @@
         margin: 20px 0;
       }
     </style>
+    
 <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet" media="screen" />
 <link href="{{ asset('css/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
+
 
 
 {% endstylesheets %}
@@ -143,8 +145,27 @@
 
 {% block javascripts %}
 	<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
-    <script src="{{ asset('js/bootstrap-dropdown.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/bootstrap-button.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('js/bootstrap-dropdown.js') }}" type="text/javascript"></script>
+        <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js" type="text/javascript"></script>
+        <script src="{{ asset('js/bootstrap-button.js') }}" type="text/javascript"></script>
+    
+    	<script type="text/javascript">
+         function editable(amount,amount_entry){
+amount.click(function() {
+    amount.css('display', 'none');
+    amount_entry
+        .val($('#amount').text())
+        .css('display', '')
+        .focus();
+});
+
+amount_entry.blur(function() {
+    amount_entry.css('display', 'none');
+    amount
+        .text(amount.val())
+        .css('display', '');
+});}
+</script>
  
 {% endblock %}
 </body>
