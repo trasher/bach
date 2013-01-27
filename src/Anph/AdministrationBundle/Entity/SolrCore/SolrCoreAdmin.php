@@ -151,6 +151,12 @@ class SolrCoreAdmin
         
         return $this->send($url);
     }
+    
+    public function getSchemaPath($coreName)
+    {
+        $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
+        return $coreInstanceDir . self::CONFIG_DIR . '/' . self::SCHEMA_FILE_NAME;
+    }
 
     /**
      * Create core directory with the same name as core name. If a such directory already exist, returns false.
