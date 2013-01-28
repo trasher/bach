@@ -24,6 +24,11 @@ class UniversalFileFormat
 	protected $headerId;
 	
 	/**
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	protected $headerSubtitle;
+	
+	/**
 	* @ORM\Column(type="string", nullable=true, length=100)
 	*/
 	protected $headerAuthor;
@@ -47,6 +52,90 @@ class UniversalFileFormat
 	* @ORM\Column(type="string", nullable=true, length=3)
 	*/
 	protected $headerLanguage;
+	
+	/**
+	 * 
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	protected $archDescUnitId;
+	
+	/**
+	 * 
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	protected $archDescUnitTitle;
+	
+	
+	/**
+	 * 
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	protected $archDescUnitDate;
+	
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	protected $archDescDimension;
+
+	
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	protected $archDescRepository;
+	
+	
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	protected $archDescLangMaterial; 
+	
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=15)
+	 */
+	protected $archDescLangOrigination;
+	 
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=1000)
+	 */
+	protected $archDescAcqInfo;
+
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	protected $archDescScopeContent;
+
+	
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=1000)
+	 */
+	protected $archDescAccruals; 
+	
+	
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=1000)
+	 */
+	protected $archDescArrangement;
+	
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=1000)
+	 */
+	protected $archDescAccessRestrict; 
+	
+	
+	/**
+	 *
+	 * @ORM\Column(type="string", nullable=true, length=1000)
+	 */
+	protected $archDescLegalStatus;  
 	
 	/**
 	* The constructor
@@ -180,6 +269,23 @@ class UniversalFileFormat
     {
         return $this->headerAddress;
     }
+    
+    
+    /**
+     * Get headerSubtitle
+     *
+     * @return string
+     */
+    public function getHeaderSubtitle() {
+    	
+    	return $this->headerSubtitle;
+    	
+    }
+    
+    public function setHeaderSubtitle($headerSubtitle) {
+    	$this->headerSubtitle = $headerSubtitle;
+    	return $this;
+    }
 
     /**
      * Set headerLanguage
@@ -202,5 +308,314 @@ class UniversalFileFormat
     public function getHeaderLanguage()
     {
         return $this->headerLanguage;
+    }
+
+    /**
+     * Get uniqid
+     *
+     * @return integer 
+     */
+    public function getUniqid()
+    {
+        return $this->uniqid;
+    }
+
+    /**
+     * Set archDescUnitId
+     *
+     * @param string $archDescUnitId
+     * @return UniversalFileFormat
+     */
+    public function setArchDescUnitId($archDescUnitId)
+    {
+        $this->archDescUnitId = $archDescUnitId;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescUnitId
+     *
+     * @return string 
+     */
+    public function getArchDescUnitId()
+    {
+        return $this->archDescUnitId;
+    }
+
+    /**
+     * Set archDescUnitTitle
+     *
+     * @param string $archDescUnitTitle
+     * @return UniversalFileFormat
+     */
+    public function setArchDescUnitTitle($archDescUnitTitle)
+    {
+        $this->archDescUnitTitle = $archDescUnitTitle;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescUnitTitle
+     *
+     * @return string 
+     */
+    public function getArchDescUnitTitle()
+    {
+        return $this->archDescUnitTitle;
+    }
+
+    /**
+     * Set archDescUnitDate
+     *
+     * @param string $archDescUnitDate
+     * @return UniversalFileFormat
+     */
+    public function setArchDescUnitDate($archDescUnitDate)
+    {
+        $this->archDescUnitDate = $archDescUnitDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescUnitDate
+     *
+     * @return string 
+     */
+    public function getArchDescUnitDate()
+    {
+        return $this->archDescUnitDate;
+    }
+
+    /**
+     * Set archDescDimension
+     *
+     * @param string $archDescDimension
+     * @return UniversalFileFormat
+     */
+    public function setArchDescDimension($archDescDimension)
+    {
+        $this->archDescDimension = $archDescDimension;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescDimension
+     *
+     * @return string 
+     */
+    public function getArchDescDimension()
+    {
+        return $this->archDescDimension;
+    }
+
+    /**
+     * Set archDescRepository
+     *
+     * @param string $archDescRepository
+     * @return UniversalFileFormat
+     */
+    public function setArchDescRepository($archDescRepository)
+    {
+        $this->archDescRepository = $archDescRepository;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescRepository
+     *
+     * @return string 
+     */
+    public function getArchDescRepository()
+    {
+        return $this->archDescRepository;
+    }
+
+    /**
+     * Set archDescLangMaterial
+     *
+     * @param string $archDescLangMaterial
+     * @return UniversalFileFormat
+     */
+    public function setArchDescLangMaterial($archDescLangMaterial)
+    {
+        $this->archDescLangMaterial = $archDescLangMaterial;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescLangMaterial
+     *
+     * @return string 
+     */
+    public function getArchDescLangMaterial()
+    {
+        return $this->archDescLangMaterial;
+    }
+
+    /**
+     * Set archDescLangOrigination
+     *
+     * @param string $archDescLangOrigination
+     * @return UniversalFileFormat
+     */
+    public function setArchDescLangOrigination($archDescLangOrigination)
+    {
+        $this->archDescLangOrigination = $archDescLangOrigination;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescLangOrigination
+     *
+     * @return string 
+     */
+    public function getArchDescLangOrigination()
+    {
+        return $this->archDescLangOrigination;
+    }
+
+    /**
+     * Set archDescAcqInfo
+     *
+     * @param string $archDescAcqInfo
+     * @return UniversalFileFormat
+     */
+    public function setArchDescAcqInfo($archDescAcqInfo)
+    {
+        $this->archDescAcqInfo = $archDescAcqInfo;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescAcqInfo
+     *
+     * @return string 
+     */
+    public function getArchDescAcqInfo()
+    {
+        return $this->archDescAcqInfo;
+    }
+
+    /**
+     * Set archDescScopeContent
+     *
+     * @param string $archDescScopeContent
+     * @return UniversalFileFormat
+     */
+    public function setArchDescScopeContent($archDescScopeContent)
+    {
+        $this->archDescScopeContent = $archDescScopeContent;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescScopeContent
+     *
+     * @return string 
+     */
+    public function getArchDescScopeContent()
+    {
+        return $this->archDescScopeContent;
+    }
+
+    /**
+     * Set archDescAccruals
+     *
+     * @param string $archDescAccruals
+     * @return UniversalFileFormat
+     */
+    public function setArchDescAccruals($archDescAccruals)
+    {
+        $this->archDescAccruals = $archDescAccruals;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescAccruals
+     *
+     * @return string 
+     */
+    public function getArchDescAccruals()
+    {
+        return $this->archDescAccruals;
+    }
+
+    /**
+     * Set archDescArrangement
+     *
+     * @param string $archDescArrangement
+     * @return UniversalFileFormat
+     */
+    public function setArchDescArrangement($archDescArrangement)
+    {
+        $this->archDescArrangement = $archDescArrangement;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescArrangement
+     *
+     * @return string 
+     */
+    public function getArchDescArrangement()
+    {
+        return $this->archDescArrangement;
+    }
+
+    /**
+     * Set archDescAccessRestrict
+     *
+     * @param string $archDescAccessRestrict
+     * @return UniversalFileFormat
+     */
+    public function setArchDescAccessRestrict($archDescAccessRestrict)
+    {
+        $this->archDescAccessRestrict = $archDescAccessRestrict;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescAccessRestrict
+     *
+     * @return string 
+     */
+    public function getArchDescAccessRestrict()
+    {
+        return $this->archDescAccessRestrict;
+    }
+
+    /**
+     * Set archDescLegalStatus
+     *
+     * @param string $archDescLegalStatus
+     * @return UniversalFileFormat
+     */
+    public function setArchDescLegalStatus($archDescLegalStatus)
+    {
+        $this->archDescLegalStatus = $archDescLegalStatus;
+    
+        return $this;
+    }
+
+    /**
+     * Get archDescLegalStatus
+     *
+     * @return string 
+     */
+    public function getArchDescLegalStatus()
+    {
+        return $this->archDescLegalStatus;
     }
 }
