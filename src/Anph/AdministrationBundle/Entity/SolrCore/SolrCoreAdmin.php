@@ -32,23 +32,40 @@ class SolrCoreAdmin
     }
 
     /**
-     * Create core with specified name. If a core directory or corewith such name
+     * Create core with specified name. If a core directory or core with such name
      * already exists this function returns false otherwise it returns SolrCoreResponse object.
      * @param string $coreName
+     * @param string $coreInstanceDir directory of core instance
+     * @param boolean $evenIfInstanceDirAlreadyExist 
      * @return boolean|\Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
      */
-    public function create($coreName)
+    public function create($coreName, $coreInstanceDir, $evenIfInstanceDirAlreadyExist = false)
     {
-        if ($this->isCoreExist($coreName) || !$this->createCoreDir($coreName)) {
+        $coreInstanceDirPath = self::CORE_PATH . $coreInstanceDir;
+        // Test if the core does not already exist.
+        if ($this->isCoreExist($coreName)) {
             return false;
         }
-        
-        return $this->send(SolrCoreAdmin::CORE_HTTP . '?action=CREATE&' .
+        // Test if we want create core even if the directory $coreInstanceDir already exist.
+        if ($evenIfInstanceDirAlreadyExist) {
+            if (!is_dir($coreInstanceDirPath) && !$this->createCoreDir($coreInstanceDirPath)) {
+                return false;
+            }
+        } else {
+            if (is_dir($coreInstanceDirPath)) {
+                return false;
+            } else {
+                if (!$this->createCoreDir($coreInstanceDirPath)) {
+                    return false;
+                }
+            }
+        }
+        return $this->send(self::CORE_HTTP . '?action=CREATE&' .
                             'name=' . $coreName . '&' .
-                            'instanceDir=' . $coreName . '&' .
-                            'config=' . SolrCoreAdmin::SOLRCONFIG_FILE_NAME . '&' .
-                            'schema=' . SolrCoreAdmin::SCHEMA_FILE_NAME . '&' .
-                            'dataDir=' . SolrCoreAdmin::DATA_DIR);
+                            'instanceDir=' . $coreInstanceDir . '&' .
+                            'config=' . self::SOLRCONFIG_FILE_NAME . '&' .
+                            'schema=' . self::SCHEMA_FILE_NAME . '&' .
+                            'dataDir=' . self::DATA_DIR);
     }
 
     /**
@@ -60,12 +77,10 @@ class SolrCoreAdmin
     public function getStatus($coreName = null)
     {
         if ($coreName != null) {
-            
-           return $this->send(SolrCoreAdmin::CORE_HTTP . '?action=STATUS&' .
+           return $this->send(self::CORE_HTTP . '?action=STATUS&' .
                                 'core=' . $coreName);
         } else {
-            
-           return $this->send(SolrCoreAdmin::CORE_HTTP . '?action=STATUS');
+           return $this->send(self::CORE_HTTP . '?action=STATUS');
         }
     }
 
@@ -76,7 +91,7 @@ class SolrCoreAdmin
      */
     public function reload($coreName)
     {
-        return $this->send(SolrCoreAdmin::CORE_HTTP . '?action=RELOAD&' .
+        return $this->send(self::CORE_HTTP . '?action=RELOAD&' .
                             'core=' . $coreName);
     }
 
@@ -90,7 +105,7 @@ class SolrCoreAdmin
     {
         if (!$this->isCoreExist($newCoreName)) {
             
-            return $this->send(SolrCoreAdmin::CORE_HTTP . '?action=RENAME&' .
+            return $this->send(self::CORE_HTTP . '?action=RENAME&' .
                                 'core=' . $oldCoreName .'&' .
                                 'other=' . $newCoreName);
         }
@@ -106,7 +121,7 @@ class SolrCoreAdmin
      */
     public function swap($core1, $core2)
     {
-        return $this->send(SolrCoreAdmin::CORE_HTTP . '?action=SWAP&' .
+        return $this->send(self::CORE_HTTP . '?action=SWAP&' .
                             'core=' . $core1 .'&' .
                             'other=' . $core2);
     }
@@ -118,7 +133,7 @@ class SolrCoreAdmin
      */
     public function unload($coreName)
     {
-        return $this->send(SolrCoreAdmin::CORE_HTTP . '?action=UNLOAD&' .
+        return $this->send(self::CORE_HTTP . '?action=UNLOAD&' .
                             'core=' . $coreName);
     }
 
@@ -132,24 +147,35 @@ class SolrCoreAdmin
      * @param int $type
      * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
      */
-    public function delete($coreName, $type = SolrCoreAdmin::DELETE_CORE)
+    public function delete($coreName, $type = self::DELETE_CORE)
     {
-        $url = SolrCoreAdmin::CORE_HTTP . '?action=UNLOAD&' .
+        $url = self::CORE_HTTP . '?action=UNLOAD&' .
                 'core=' . $coreName . '&';
         switch ($type) {
-            case SolrCoreAdmin::DELETE_INDEX:
+            case self::DELETE_INDEX:
                 $url .= 'deleteIndex=true';
-                break;
-            case SolrCoreAdmin::DELETE_DATA:
+                return $this->send($url);
+            case self::DELETE_DATA:
                 $url .= 'deleteDataDir=true';
-                break;
-            case SolrCoreAdmin::DELETE_CORE:
+                return $this->send($url);
+            case self::DELETE_CORE:
+                // Get core status for retreive core instance directory.
+                $responseStatus = $this->getStatus($coreName);
+                $coreInstanceDir = $responseStatus->getCoreStatus($coreName)->getInstanceDir();
+                // Unload core
                 $response = $this->unload($coreName);
-                $boolResponse = $this->deleteCoreDir($coreName);
-                return $boolResponse;
+                if (!$response->isOk()) {
+                    return false;
+                }
+                // Delete core instance directory. If we do not succeed, we recreate the core we have just unloaded
+                $result = $this->deleteCoreDir($coreInstanceDir);
+                if (!$result) {
+                    $this->create($coreName, $coreInstanceDir);
+                }
+                return $result;
+            default :
+                return false;
         }
-        
-        return $this->send($url);
     }
     
     public function getSchemaPath($coreName)
@@ -163,15 +189,13 @@ class SolrCoreAdmin
      * @param string $coreName
      * @return boolean
      */
-    private function createCoreDir($dirName)
+    private function createCoreDir($coreInstanceDirPath)
     {
-        $dest = SolrCoreAdmin::CORE_PATH . $dirName;
-        if (!is_dir($dest)) {
-            exec('cp -r -a "' . SolrCoreAdmin::CORE_DIR_TEMPLATE_PATH . '" "' . $dest . '"', $output, $status);
+        if (!is_dir($coreInstanceDirPath)) {
+            exec('cp -r -a "' . self::CORE_DIR_TEMPLATE_PATH . '" "' . $coreInstanceDirPath . '"', $output, $status);
             
             return $status == 0 ? true : false;
         }
-        
         return false;
     }
 
@@ -180,11 +204,10 @@ class SolrCoreAdmin
      * @param string $dirName
      * @return boolean
      */
-    private function deleteCoreDir($dirName)
+    private function deleteCoreDir($coreInstanceDirPath)
     {
-        $path = SolrCoreAdmin::CORE_PATH . $dirName;
-        if (is_dir($path)) {
-            exec('rm -r "' . $path . '"', $output, $status);
+        if (is_dir($coreInstanceDirPath)) {
+            exec('rm -r "' . $coreInstanceDirPath . '"', $output, $status);
             
             return $status == 0 ? true : false;
         }
@@ -232,7 +255,6 @@ class SolrCoreAdmin
         $request->setMethod(Request::METHOD_GET);
         $request->setUrl($url);
         $stack = $this->http->send($request);
-        
         return new SolrCoreResponse($stack[0]->content);
     }
 }
