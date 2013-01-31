@@ -36,6 +36,9 @@ class Document {
 	 */
 	public $file;
 
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
 	public $extension;
 
 	public function getAbsolutePath() {
@@ -123,7 +126,9 @@ class Document {
 	}
 
 	public function getExtension() {
-		// return $this->extension = $file->guessExtension();
+		if (isset($this->file)){
+			return $this->file->guessExtension();
+		}
 	}
 
 

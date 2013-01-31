@@ -107,6 +107,7 @@ class DefaultController extends Controller
 	            $em->flush();
 
 	            $em2 = $this->getDoctrine()->getManager();
+	            
 	            $format = $document->getExtension();
 	             
 	            $task = new ArchFileIntegrationTask($name, $format);
