@@ -19,9 +19,8 @@
         "jms/security-extra-bundle": "1.2.*",
         "jms/di-extra-bundle": "1.1.*",
         "nelmio/solarium-bundle": "1.*",
-        "twitter/bootstrap": "master",
-	"aura/http": "dev-develop"
-    },
+        "twitter/bootstrap": "master"
+  },
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",

@@ -1,4 +1,7 @@
 <?php
+# Add path prefix required for running behind the proxy
+$_SERVER['SCRIPT_NAME'] = '/bachdev' . $_SERVER['SCRIPT_NAME'];
+$_SERVER['REQUEST_URI'] = '/bachdev' . $_SERVER['REQUEST_URI'];
 
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +18,7 @@ $loader->register(true);
 require_once __DIR__.'/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
 
-$kernel = new AppKernel('prod', false);
+$kernel = new AppKernel('prod', true);
 $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
 $request = Request::createFromGlobals();
