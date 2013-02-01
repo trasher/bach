@@ -18,10 +18,8 @@ class DefaultController extends Controller
     	$document = new Document();
 	    $form = $this->createFormBuilder($document)
 	       // ->add('name')
-	        ->add('file')/*,'file',array(
-            "label" => "Fichiers",
-            "attr" => array(
-                "multiple" => "multiple")))*/
+	        ->add('file','file',array(
+            "label" => "Fichiers : "))
 	        ->getForm()
 	    ;
 	    
