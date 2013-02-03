@@ -1,6 +1,7 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\SolrCore;
 
+use Anph\AdministrationBundle\Entity\BachCoreAdminConfigReader;
 use Aura\Http\Message\Response\Stack;
 use Aura\Http\Message\Request;
 use Exception;
@@ -10,24 +11,30 @@ use Exception;
  */
 class SolrCoreAdmin
 {
-    const CORE_PATH = '/var/solr/';
+    /*const CORE_PATH = '/var/solr/';
     const CORE_HTTP = 'http://localhost:8080/solr/admin/cores';
     const CORE_DIR_TEMPLATE_PATH = '/var/solr/coreTemplate';
     const DATA_DIR = 'data';
     const CONFIG_DIR = 'conf';
     const SOLRCONFIG_FILE_NAME = 'solrconfig.xml';
-    const SCHEMA_FILE_NAME = 'schema.xml';
+    const SCHEMA_FILE_NAME = 'schema.xml';*/
     const DELETE_INDEX = 0;
     const DELETE_DATA = 1;
     const DELETE_CORE = 2;
 
     private $http;
+    private $reader;
     
     /**
      * Constructor. Creates a necessary object to send queries.
      */
-    public function __construct()
+    public function __construct(BachCoreAdminConfigReader $reader = null)
     {
+        if ($reader == null) {
+            $this->reader = new BachCoreAdminConfigReader();
+        } else {
+            $this->reader = $reader;
+        }
         $this->http = include 'vendor/aura/http/scripts/instance.php';
     }
 
@@ -41,7 +48,7 @@ class SolrCoreAdmin
      */
     public function create($coreName, $coreInstanceDir, $evenIfInstanceDirAlreadyExist = false)
     {
-        $coreInstanceDirPath = self::CORE_PATH . $coreInstanceDir;
+        $coreInstanceDirPath = $this->reader->getCoresPath() . $coreInstanceDir;
         // Test if the core does not already exist.
         if ($this->isCoreExist($coreName)) {
             return false;
@@ -60,12 +67,12 @@ class SolrCoreAdmin
                 }
             }
         }
-        return $this->send(self::CORE_HTTP . '?action=CREATE&' .
+        return $this->send($this->reader->getCoresURL() . '?action=CREATE&' .
                             'name=' . $coreName . '&' .
                             'instanceDir=' . $coreInstanceDir . '&' .
-                            'config=' . self::SOLRCONFIG_FILE_NAME . '&' .
-                            'schema=' . self::SCHEMA_FILE_NAME . '&' .
-                            'dataDir=' . self::DATA_DIR);
+                            'config=' . $this->reader->getConfigFileName() . '&' .
+                            'schema=' . $this->reader->getSchemaFileName() . '&' .
+                            'dataDir=' . $this->reader->getCoreDataDir());
     }
 
     /**
@@ -77,10 +84,10 @@ class SolrCoreAdmin
     public function getStatus($coreName = null)
     {
         if ($coreName != null) {
-           return $this->send(self::CORE_HTTP . '?action=STATUS&' .
+           return $this->send($this->reader->getCoresURL() . '?action=STATUS&' .
                                 'core=' . $coreName);
         } else {
-           return $this->send(self::CORE_HTTP . '?action=STATUS');
+           return $this->send($this->reader->getCoresURL() . '?action=STATUS');
         }
     }
 
@@ -91,7 +98,7 @@ class SolrCoreAdmin
      */
     public function reload($coreName)
     {
-        return $this->send(self::CORE_HTTP . '?action=RELOAD&' .
+        return $this->send($this->reader->getCoresURL() . '?action=RELOAD&' .
                             'core=' . $coreName);
     }
 
@@ -105,7 +112,7 @@ class SolrCoreAdmin
     {
         if (!$this->isCoreExist($newCoreName)) {
             
-            return $this->send(self::CORE_HTTP . '?action=RENAME&' .
+            return $this->send($this->reader->getCoresURL() . '?action=RENAME&' .
                                 'core=' . $oldCoreName .'&' .
                                 'other=' . $newCoreName);
         }
@@ -121,7 +128,7 @@ class SolrCoreAdmin
      */
     public function swap($core1, $core2)
     {
-        return $this->send(self::CORE_HTTP . '?action=SWAP&' .
+        return $this->send($this->reader->getCoresURL() . '?action=SWAP&' .
                             'core=' . $core1 .'&' .
                             'other=' . $core2);
     }
@@ -133,7 +140,7 @@ class SolrCoreAdmin
      */
     public function unload($coreName)
     {
-        return $this->send(self::CORE_HTTP . '?action=UNLOAD&' .
+        return $this->send($this->reader->getCoresURL() . '?action=UNLOAD&' .
                             'core=' . $coreName);
     }
 
@@ -149,7 +156,7 @@ class SolrCoreAdmin
      */
     public function delete($coreName, $type = self::DELETE_CORE)
     {
-        $url = self::CORE_HTTP . '?action=UNLOAD&' .
+        $url = $this->reader->getCoresURL() . '?action=UNLOAD&' .
                 'core=' . $coreName . '&';
         switch ($type) {
             case self::DELETE_INDEX:
@@ -181,7 +188,7 @@ class SolrCoreAdmin
     public function getSchemaPath($coreName)
     {
         $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
-        return $coreInstanceDir . self::CONFIG_DIR . '/' . self::SCHEMA_FILE_NAME;
+        return $coreInstanceDir . $this->reader->getCoreConfigDir() . '/' . $this->reader->getSchemaFileName();
     }
 
     /**
@@ -192,7 +199,7 @@ class SolrCoreAdmin
     private function createCoreDir($coreInstanceDirPath)
     {
         if (!is_dir($coreInstanceDirPath)) {
-            exec('cp -r -a "' . self::CORE_DIR_TEMPLATE_PATH . '" "' . $coreInstanceDirPath . '"', $output, $status);
+            exec('cp -r -a "' . $this->reader->getCoreTemplatePath() . '" "' . $coreInstanceDirPath . '"', $output, $status);
             
             return $status == 0 ? true : false;
         }
