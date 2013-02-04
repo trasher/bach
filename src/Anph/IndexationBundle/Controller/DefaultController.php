@@ -97,7 +97,7 @@ class DefaultController extends Controller
     	->add('file','file',array(
     			"label" => "Fichiers : "))
     	->add('extension','choice',array("choices"	=>	array("ead"	=>	"EAD","unimarc"	=>	"UNIMARC"),
-    									"label"	=>	"Format"))
+    									"label"	=>	"Format :"))
     			->getForm()
     			;
     	
