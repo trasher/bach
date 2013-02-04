@@ -75,7 +75,7 @@ class DefaultController extends Controller
     	
     			$em->persist($document);
     			$em->flush();
-    			$task = new ArchFileIntegrationTask(realpath($document->getAbsolutePath()), "ead");
+    			$task = new ArchFileIntegrationTask(realpath($document->getAbsolutePath()), $document->getExtension());
     			$em->persist($task);
 
     			$em->flush();
@@ -96,6 +96,8 @@ class DefaultController extends Controller
     	// ->add('name')
     	->add('file','file',array(
     			"label" => "Fichiers : "))
+    	->add('extension','choice',array("choices"	=>	array("ead"	=>	"EAD","unimarc"	=>	"UNIMARC"),
+    									"label"	=>	"Format"))
     			->getForm()
     			;
     	
