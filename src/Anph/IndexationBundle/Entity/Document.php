@@ -159,14 +159,12 @@ class Document {
         return $this->path;
     }
 
+    /*
 	public function getName() {
 		return $this->file->getClientOriginalName();
 	}
-
-	public function setName($name) {
-		$this->name = $name;
-	}
-
+	*/
+    
 	public function getFile() {
 		return $this->file;
 	}
