@@ -1,100 +1,139 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\SolrSchema;
 
-use Doctrine\Tests\Common\Annotations;
-use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLFile;
-use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
-use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
-use Symfony\Component\HttpFoundation\Response;
+use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use DOMDocument;
+use DOMNode;
+use DOMElement;
 
+/**
+ * This class depends on SolrCoreAdmin class and use SolrXMLAttribute and SolrXMLElement classes
+ * to work with schema.xml file (load, save, retreive information).
+ * @author TELECOM Nancy group
+ *
+ */
 class XMLProcess
 {
-    protected $dom;
-    protected $root;
-    protected $xmlRoot;
-    protected $request;
-    protected $sxf;
+    protected $doc;
+    protected $xmlVersion;
+    protected $xmlEncoding;
+    protected $filePath;
+    protected $rootElement;
     
-    public function __construct($file){
-    	$this->dom = new \DomDocument();
-    	$this->dom->load($file);
-    	$this->xmlRoot=$this->dom->documentElement;
-    	$this->sxf = new SolrXMLFile(null, $file);
-    }
-    
-    public function getSXF()
+    /**
+     * XMLProcess constructor. Retreive path to schema.xml file with the $coreName parameter and
+     * load this file.
+     * @param string $coreName
+     */
+    public function __construct($coreName)
     {
-    	return $this->sxf;
+        $solrCore = new SolrCoreAdmin();
+        $this->filePath = $solrCore->getSchemaPath($coreName);
+        $this->rootElement = $this->loadXML();
     }
     
-    public function importXML(){
-    	$this->importXMLHelper($this->xmlRoot,null);
-    	/*
-    	$em = $this->get('doctrine')->getEntityManager();
-    	$em->persist($this->$sxf);
-    	$em->flush();
-    	*/
+    /**
+     * Load schema.xml file.
+     * @return \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement
+     */
+    public function loadXML()
+    {
+        $this->doc = new DOMDocument();
+        $this->doc->load($this->filePath);
+        $this->xmlVersion = $this->doc->version;
+        $this->xmlEncoding = $this->doc->encoding;
+    	return $this->loadXMLHelper($this->doc->documentElement);
     }
     
-    public function importXMLHelper($node, $parent){
-    	if($node->nodeType == XML_TEXT_NODE){
-    		$textNode = new SolrXMLElement();
-    		$textNode->setValue($node->nodeValue);
-    		$textNode->setBalise($node->nodeName);
-    			
-    		if($node->hasAttributes()) {
+    /**
+     * Save schema.xml file.
+     * @return DOMDocument
+     */
+    public function saveXML()
+    {
+        $this->doc = new DOMDocument($this->xmlVersion, $this->xmlEncoding);
+        $rootNode = $this->saveXMLHelper($this->rootElement);
+        $this->doc->appendChild($rootNode);
+        $this->doc->save($this->filePath);
+        return $this->doc;
+    }
     
-    			$attributes = $node->attributes;
-    				
-    			if(!is_null($attributes)) {
-    				foreach ($attributes as $key => $attr) {
+    /**
+     * Get path to schema.xml file.
+     * @return string
+     */
+    public function getFilePath()
+    {
+        return $this->filePath;
+    }
     
-    					$newAttribute= new SolrXMLAttribute();
-    					$newAttribute->setAttributeName($attr->name);
-    					$newAttribute->setAttributeValue($attr->value);
-    					//$newAttribute->setElement($textNode->getSolrXMLElementID());
-    					$textNode->addAttribute($newAttribute);
-    				}
-    			}
-    		}
-    		if($parent!=null){
-    			$parent->addElement($textNode);
-    			$this->sxf->addElement($parent);
-    		}
-    		else $this->sxf->addElement($textNode);
+    /**
+     * Get all elements with the name $name.
+     * @param string $name
+     * @return array(SolrXMLElement)
+     */
+    public function getElementsByName($name)
+    {
+        $elements = array();
+        if ($this->rootElement->getName() === $name) {
+            $elements[] = $this->rootElement;
+            return $elements;
+        }
+        return $this->rootElement->getElementsByName($name);
+    }
     
-    			
-    	}else{
-    			
-    		$newNode = new SolrXMLElement();
-    		$newNode->setValue($node->nodeValue);
-    		$newNode->setBalise($node->nodeName);
-    		//$newNode->setFile($sxf->getSolrXMLFileID());
-    			
-    		if ($node->hasAttributes()) {
-    			$attributes = $node->attributes;
-    			if(!is_null($attributes)) {
-    				foreach ($attributes as $key => $attr) {
-    					$newAttribute= new SolrXMLAttribute();
-    					$newAttribute->setAttributeName($attr->name);
-    					$newAttribute->setAttributeValue($attr->value);
-    					$newNode->addAttribute($newAttribute);
-    				}
-    			}
-    		}
-    			
-    		if ($node->hasChildNodes()) {
-    			foreach($node->childNodes as $child){
-    				$this->importXMLHelper($child,$newNode);
-    			}
-    		}
-    			
-    		if ($parent!=null) {
-    			$parent->addElement($newNode);
-    			$this->sxf->addElement($parent);
-    		} else {
-    		    $this->sxf->addElement($newNode);
-    		}
-    	}
+    /**
+     * Recursive algorithm of loading schema.xml file.
+     * @param DOMNode $node 
+     * @param SolrXMLElement $parent
+     * @return \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement
+     */
+    private function loadXMLHelper(DOMNode $node, SolrXMLElement $parent = null)
+    {
+        switch ($node->nodeType) {
+            case XML_ELEMENT_NODE :
+                $newNode = new SolrXMLElement($node->nodeName, $node->nodeValue);
+                foreach ($node->attributes as $key => $attr) {
+                    $this->loadXMLHelper($attr, $newNode);
+                }
+                foreach($node->childNodes as $child){
+                    $this->loadXMLHelper($child, $newNode);
+                }
+                if ($parent != null) {
+                    $parent->addElement($newNode);
+                } else {
+                    return $newNode;
+                }
+                break;
+            case XML_ATTRIBUTE_NODE :
+                $newAttribute= new SolrXMLAttribute($node->name, $node->value);
+                $parent->addAttribute($newAttribute);
+                break;
+            case XML_TEXT_NODE :
+                $parent->setValue($node->wholeText);
+                break;
+        }
+    }
+    
+    /**
+     * Recursive algorithm of saving schema.xml file.
+     * @param SolrXMLElement $element
+     * @param DOMNode $parent
+     * @return DOMElement
+     */
+    private function saveXMLHelper(SolrXMLElement $element, DOMNode $parent = null)
+    {
+        $domElement = $this->doc->createElement($element->getName(), $element->getValue());
+        foreach ($element->getAttributes() as $a) {
+            $domElement->setAttribute($a->getName(), $a->getValue());
+        }
+        foreach ($element->getElements() as $e) {
+            $this->saveXMLHelper($e, $domElement);
+        }
+        if ($parent != null) {
+            $parent->appendChild($domElement);
+        } else {
+            return $domElement;
+        }
     }
 }

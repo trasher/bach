@@ -17,7 +17,7 @@ class SolrCoreStatusTest extends \PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        $this->sca->create('TestCoreStatus');
+        $this->sca->create('TestCoreStatus', 'TestCoreStatus');
         $scr = $this->sca->getStatus('TestCoreStatus');
         $this->scs = $scr->getCoreStatus('TestCoreStatus');
     }

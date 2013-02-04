@@ -1,3 +1,30 @@
 administration_homepage:
     pattern:  /administration
     defaults: { _controller: AdministrationBundle:Default:index }
+administration_dashboard:
+    pattern:  /dashboard
+    defaults: { _controller: AdministrationBundle:Default:dashboard }
+administration_fields:
+    pattern:  /fields
+    defaults: { _controller: AdministrationBundle:Default:fields }
+administration_fieldstype:
+    pattern:  /fieldstype
+    defaults: { _controller: AdministrationBundle:Default:fieldstype }
+administration_dynamicfields:
+    pattern:  /dynamicfields
+    defaults: { _controller: AdministrationBundle:Default:dynamicfields }
+administration_tockenizers:
+    pattern:  /tockenyzers
+    defaults: { _controller: AdministrationBundle:Default:tockenizers }
+administration_analyzers:
+    pattern:  /analyzers
+    defaults: { _controller: AdministrationBundle:Default:analyzers }
+administration_performance:
+    pattern:  /performance
+    defaults: { _controller: AdministrationBundle:Default:performance }
+administration_coreadmin:
+    pattern:  /coreadmin
+    defaults: { _controller: AdministrationBundle:Default:coreadmin }
+administration_filters:
+    pattern:  /filters
+    defaults: { _controller: AdministrationBundle:Default:filters }
