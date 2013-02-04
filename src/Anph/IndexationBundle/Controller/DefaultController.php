@@ -41,9 +41,9 @@ class DefaultController extends Controller
 		            
 		            $format = $document->getExtension();
 		             
-		            $task = new ArchFileIntegrationTask($name, $format);
+		            $task = new ArchFileIntegrationTask($document->getAbsolutePath(), $format);
 		            $em2->persist($task);
-		            
+		            $em2->flush();
 		
 		           $repository = $em2
 	    				->getRepository('AnphIndexationBundle:ArchFileIntegrationTask');

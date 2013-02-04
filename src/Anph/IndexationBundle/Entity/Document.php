@@ -126,9 +126,7 @@ class Document {
 	}
 
 	public function getExtension() {
-		if (isset($this->file)){
-			return $this->file->guessExtension();
-		}
+		return $this->extension;
 	}
 
 
