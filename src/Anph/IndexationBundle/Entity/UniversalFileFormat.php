@@ -67,7 +67,6 @@ class UniversalFileFormat
 	
 	
 	/**
-	 * 
 	 * @ORM\Column(type="string", nullable=true, length=100)
 	 */
 	protected $archDescUnitDate;
