@@ -1,3 +1,10 @@
 anph_indexation_homepage:
     pattern:  /indexation
     defaults: { _controller: AnphIndexationBundle:Default:index }
+
+anph_indexation_upload_process:
+    pattern:  /indexation/uploadProcess
+    defaults: { _controller: AnphIndexationBundle:Default:indexProcess }
+    requirements:
+        _method:  POST
+  
