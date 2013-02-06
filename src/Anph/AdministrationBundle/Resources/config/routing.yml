@@ -28,3 +28,6 @@ administration_coreadmin:
 administration_filters:
     pattern:  /filters
     defaults: { _controller: AdministrationBundle:Default:filters }
+administration_fiel:
+    pattern:  /fiel
+    defaults: { _controller: AdministrationBundle:Default:contact }
