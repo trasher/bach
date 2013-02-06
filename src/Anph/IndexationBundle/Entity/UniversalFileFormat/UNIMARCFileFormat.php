@@ -10,8 +10,5 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="UNIMARCUniversalFileFormat")
 */
-class UNIMARCFileFormat extends UniversalFileFormat
-{
-	protected $accessRestrict;
+class UNIMARCFileFormat extends UniversalFileFormat{
 }
-?>

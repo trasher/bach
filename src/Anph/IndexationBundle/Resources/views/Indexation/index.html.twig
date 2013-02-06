@@ -62,7 +62,7 @@
 		<div id="upload" style="display: none">
 		<h4>Indexer des fichiers - Upload</h4>
 		
-		<form action="#" method="post" {{ form_enctype(form) }} >
+		<form action="{{ path("anph_indexation_upload_process") }}" method="post" {{ form_enctype(form) }} >
 		    {{ form_widget(form) }}
 		
 		    

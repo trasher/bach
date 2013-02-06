@@ -12,8 +12,6 @@ class UNIMARCDriverMapper implements DriverMapperInterface
 		if($data->getSticks[0] == '001') {
 			$mappedData['headerId'] = $data->getSticks[0].getArea();
 		}
-		
-		
 		return $mappedData;
 	}
 	
