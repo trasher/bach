@@ -1,11 +1,11 @@
 administration_homepage:
-    pattern:  /administration
+    pattern: /administration
     defaults: { _controller: AdministrationBundle:Default:index }
 administration_dashboard:
-    pattern:  /dashboard
+    pattern: /dashboard
     defaults: { _controller: AdministrationBundle:Default:dashboard }
 administration_fields:
-    pattern:  /fields
+    pattern: /fields/{name}
     defaults: { _controller: AdministrationBundle:Default:fields }
 administration_fieldstype:
     pattern:  /fieldstype

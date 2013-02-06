@@ -3,7 +3,8 @@
 namespace Anph\AdministrationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Anph\AdministrationBundle\Entity\SolrShema\XMLProcess;
 
@@ -20,13 +21,25 @@ class DefaultController extends Controller
 		return $this->render('AdministrationBundle:Default:index.html.twig');
 	}
 	
-	public function fieldsAction()
+	public function fieldsAction($name)
 	{
-		return $this->render('AdministrationBundle:Default:fields.html.twig');
+		//return $this->render('AdministrationBundle:Default:fields.html.twig');
+	    $templating = $this->get('templating');
+        $content = $templating->render(
+            'AdministrationBundle:Default:fields.html.twig',
+            array('name' => $name)
+        );
+	    return new Response($content);
+	    //return new Response('<html><body>Hello '.$name.'!</body></html>');
+	    /*return $this->render(
+	            'AdministrationBundle:Default:fields.html.twig',
+	            array('name' => 'lala')
+	    );*/
 	}
 
 	public function dynamicfieldsAction()
 	{
+	    
 		return $this->render('AdministrationBundle:Default:dynamicfields.html.twig');
 	}
 	

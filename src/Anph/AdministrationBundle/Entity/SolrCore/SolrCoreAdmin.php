@@ -1,7 +1,7 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\SolrCore;
 
-use Anph\AdministrationBundle\Entity\BachCoreAdminConfigReader;
+use Anph\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
 use Aura\Http\Message\Response\Stack;
 use Aura\Http\Message\Request;
 use Exception;
