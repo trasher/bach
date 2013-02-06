@@ -99,6 +99,21 @@ class SolrXMLElement
     {
         return $this->attributes;
     }
+    
+    /**
+     * Get attribute by its name.
+     * @param string $name
+     * @return Ambigous <multitype:, SolrXMLAttribute>|NULL
+     */
+    public function getAttribute($name)
+    {
+        foreach ($this->attributes as $a) {
+            if ($a->getName() == $name) {
+                return $a;
+            }
+        }
+        return null;
+    }
 
     /**
      * Add elements

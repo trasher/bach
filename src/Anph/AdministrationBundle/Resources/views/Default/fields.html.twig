@@ -31,20 +31,17 @@
         <!-- CSS adjustments for browsers with JavaScript disabled -->
 		<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
   <body>
-	
-	
+
 	 <div class="container-fluid">
 		<div class="row-fluid">
-		
-	<!--/span-->
-	
+
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="{{ url('administration_fields') }}"> Select all fields </a>  |
 	<a href="{{ url('administration_fields') }}"> Deselect all fields </a>  |
-	<a href="{{ url('administration_fields') }}"> Add</a>  |
+	
+	<a data-toggle="modal" href="#addFieldDialog" >Add</a> |
 	<a href="{{ url('administration_fields') }}"> Remove </a>  |</p>
 	<div class="span9">
-	{% for i in range(0, 9) %}
         
 		<div class="well">
           <form>
@@ -55,7 +52,7 @@
 			<label class="checkbox inline">
 				<input type="checkbox">
 			</label>
-		  <span id="amount">Name :</span>
+		  <span id="amount">Name :{{ champ }}  </span>
 		  <input id="amount_entry" name="amount1" style="display:none;"></input></div>
                   <div class="span3">
                     <select class="span10">
@@ -93,13 +90,43 @@
           </form>
         </div>
 
-	
-{% endfor %}
 </div>
 	
 		</div>
 </div>
-	
+	<div id="addFieldDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none; ">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">×</a>
+					<h3>Please enter a new title for this window.</h3>
+					</div>
+				<div class="modal-body">
+					<div class="divDialogElements">
+						<input class="xlarge" id="xlInput" name="xlInput" type="text">
+						</div>
+					</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
+					<a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
+					</div>
+		</div>
+		
+		<script>
+			$(document).ready(function() {
+				$('#addFieldDialog').bind('show', function () {
+					document.getElementById ("xlInput").value = document.title;
+					});
+				});
+			function closeDialog () {
+				$('#addFieldDialog').modal('hide'); 
+				};
+			function okClicked () {
+				document.title = document.getElementById ("xlInput").value;
+				closeDialog ();
+				};
+			</script>
+		
+		
+		
 </body>   
 {% endblock %}
 

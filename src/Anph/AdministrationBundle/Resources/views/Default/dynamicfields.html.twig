@@ -32,13 +32,31 @@
         <!-- CSS adjustments for browsers with JavaScript disabled -->
 		<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
   <body>
-        <div class="well span9">
+  
+  
+  
+  <div class="container-fluid">
+		<div class="row-fluid">
+
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{{ url('administration_fiel') }}"> Select all fields </a>  |
+	<a href="{{ url('administration_fields') }}"> Deselect all fields </a>  |
+	
+	<a href="{{ url('administration_fields', { 'champ': 'index1' }) }}">Add</a> |
+	<a href="{{ url('administration_fields') }}"> Remove </a>  |</p>
+	<div class="span9">
+	{% for i in range(0, 9) %}
+        
+		<div class="well">
           <form>
             <div class="control-group">
               <div class="controls">
                 <div class="row-fluid show-grid">
                   <div class="span3">
-		  <span id="amount">Name :</span>
+			<label class="checkbox inline">
+				<input type="checkbox">
+			</label>
+		  <span id="amount">Name : </span>
 		  <input id="amount_entry" name="amount1" style="display:none;"></input></div>
                   <div class="span3">
                     <select class="span10">
@@ -75,51 +93,17 @@
             </div>
           </form>
         </div>
+
+	
+{% endfor %}
+</div>
+	
+		</div>
+</div>
+     
 	
 
-	<div class="well span9">
-          <form>
-            <div class="control-group">
-              <div class="controls">
-                <div class="row-fluid show-grid">
-		<div class="span3">
-		  <span id="amount">Name :</span>
-		  <input id="amount_entry" name="amount" style="display:none;"></input></div>
-                  <div class="span3">
-                    <select class="span10">
-                      <option>Option 1</option>
-                      <option>Option 2</option>
-                      <option>Option 3</option>
-                    </select>
-                  </div>
-                  <div class="span3">
-                    <label class="checkbox" for="checkbox">
-                      <input type="checkbox" value="true" id="checkbox" name="checkbox"> Indexed</label>
-                  </div>
-                  <div class="span3">
-                    <label class="checkbox" for="checkbox">
-                      <input type="checkbox" value="true" id="checkbox" name="checkbox"> Stored</label>
-                  </div>
-                </div>
-                <div class=" show-grid">
-                  <div class="span3"></div>
-                  <div class="span3">
-                    <label class="checkbox" for="checkbox">
-                      <input type="checkbox" value="true" id="checkbox" name="checkbox"> Multivalued</label>
-                  </div>
-                  <div class="span3">
-                    <label class="checkbox" for="checkbox">
-                      <input type="checkbox" value="true" id="checkbox" name="checkbox"> Stored</label>
-                  </div>
-                  <div class="span3">
-                    <label class="checkbox" for="checkbox">
-                      <input type="checkbox" value="true" id="checkbox" name="checkbox"> Omnit Norms</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
+
 	
 </body>   
 {% endblock %}

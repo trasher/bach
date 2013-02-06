@@ -70,7 +70,7 @@ class Document {
 		if (null !== $this->file) {
 			 $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
 			 $this->name = $this->getName();
-			 $this->extension = $this->file->guessExtension();
+			// $this->extension = $this->file->guessExtension();
 		}
 	}
 
@@ -120,15 +120,24 @@ class Document {
 	public function getPath() {
 		return $this->path;
 	}
+	
+	public function __construct() {
+		$file = array();
+	}
 
 	public function setPath($path) {
 		$this->path = $path;
 	}
 
 	public function getExtension() {
-		if (isset($this->file)){
-			return $this->file->guessExtension();
-		}
+	//	if (isset($this->file)){
+	//		return $this->file->guessExtension();
+	//	}
+		return $this->extension;
+	}
+	
+	public function setExtension($extension){
+		$this->extension = $extension;
 	}
 
 
