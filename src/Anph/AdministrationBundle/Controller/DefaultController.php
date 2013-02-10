@@ -2,6 +2,8 @@
 
 namespace Anph\AdministrationBundle\Controller;
 
+use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\FieldForm;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +23,12 @@ class DefaultController extends Controller
 		return $this->render('AdministrationBundle:Default:index.html.twig');
 	}
 	
-	public function fieldsAction($name)
+	public function fieldsAction()
 	{
-		$champ='test';
-		return $this->render('AdministrationBundle:Default:fields.html.twig',array('champ' => $champ,));
+	    $form = $this->createForm(new FieldForm());
+		return $this->render('AdministrationBundle:Default:fields.html.twig', array(
+            'form' => $form->createView(),
+        ));
 	}
 
 	public function dynamicfieldsAction()

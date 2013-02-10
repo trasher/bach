@@ -1,6 +1,8 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute;
 use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
@@ -11,31 +13,48 @@ class FieldForm extends AbstractType
 {
     const TYPE = 'field';
     
+    /**
+     * Field form creation
+     * @see \Symfony\Component\Form\AbstractType::buildForm()
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $bachTagType = BachSchemaConfigReader::FIELD_TAG;
         $reader = new BachSchemaConfigReader();
+        
+        // Attribute "name" required
         $attr = $reader->getAttributeByTag($bachTagType, 'name');
-        $builder->add('name', 'text', array(
-                'label' => $attr->getLabel(),
+        $builder = $builder->add('name', 'text', array(
+                'label'    => $attr->getLabel(),
                 'required' => $attr->isRequired()));
+        // Attribute "type" required
         $attr = $reader->getAttributeByTag($bachTagType, 'type');
         $builder->add('type', 'choice', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired(),
                 'choices' => $this->retreiveTypeAttributeValues()));
+        // Attribute "indexed" required
         $attr = $reader->getAttributeByTag($bachTagType, 'indexed');
         $builder->add('indexed', 'checkbox', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
+        // Attribute "stored" required
         $attr = $reader->getAttributeByTag($bachTagType, 'stored');
         $builder->add('stored', 'checkbox', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
+        // Attribute multiValued" required
         $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
         $builder->add('multiValued', 'checkbox', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
+        // Attribute "default" required
+        $attr = $reader->getAttributeByTag($bachTagType, 'default');
+        $builder->add('default', 'text', array(
+                'label' => $attr->getLabel(),
+                'required' => $attr->isRequired()));
+        
+        // Other Attributes that can be added to the application in the future
         $attr = $reader->getAttributeByTag($bachTagType, 'omitNorms');
         $builder->add('omitNorms', 'checkbox', array(
                 'label' => $attr->getLabel(),
@@ -64,10 +83,6 @@ class FieldForm extends AbstractType
         $builder->add('required', 'checkbox', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'default');
-        $builder->add('default', 'text', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
     }
 
     public function getName()
@@ -75,6 +90,11 @@ class FieldForm extends AbstractType
         return self::TYPE;
     }
     
+    /**
+     * Get available values for type attribute. Only values from the schema.xml in typeField tags
+     * can be used.
+     * @return multitype:NULL
+     */
     private function retreiveTypeAttributeValues()
     {
         $session = new Session();

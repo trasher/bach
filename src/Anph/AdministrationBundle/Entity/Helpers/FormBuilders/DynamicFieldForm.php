@@ -7,35 +7,51 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class DynamicFieldForm
+class DynamicFieldForm extends AbstractType
 {
     const TYPE = 'dynamicField';
     
+    /**
+     * DynamicField form creation
+     * @see \Symfony\Component\Form\AbstractType::buildForm()
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $bachTagType = BachSchemaConfigReader::DYNAMIC_FIELD_TAG;
         $reader = new BachSchemaConfigReader();
+        // Attribute "name" required
         $attr = $reader->getAttributeByTag($bachTagType, 'name');
         $builder->add('name', 'text', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
+        // Attribute "type" required
         $attr = $reader->getAttributeByTag($bachTagType, 'type');
         $builder->add('type', 'choice', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired(),
                 'choices' => $this->retreiveTypeAttributeValues()));
+        // Attribute "indexed" required
         $attr = $reader->getAttributeByTag($bachTagType, 'indexed');
         $builder->add('indexed', 'checkbox', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
+        // Attribute "stored" required
         $attr = $reader->getAttributeByTag($bachTagType, 'stored');
         $builder->add('stored', 'checkbox', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
+        // Attribute multiValued" required
         $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
         $builder->add('multiValued', 'checkbox', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
+        // Attribute "default" required
+        $attr = $reader->getAttributeByTag($bachTagType, 'default');
+        $builder->add('default', 'text', array(
+                'label' => $attr->getLabel(),
+                'required' => $attr->isRequired()));
+        
+        // Other Attributes that can be added to the application in the future
         $attr = $reader->getAttributeByTag($bachTagType, 'omitNorms');
         $builder->add('omitNorms', 'checkbox', array(
                 'label' => $attr->getLabel(),
@@ -62,10 +78,6 @@ class DynamicFieldForm
                 'required' => $attr->isRequired()));
         $attr = $reader->getAttributeByTag($bachTagType, 'required');
         $builder->add('required', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'default');
-        $builder->add('default', 'text', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
     }
