@@ -18,7 +18,7 @@ class BachCoreAdminConfigReader
      */
     public function __construct() {
         $this->doc = new DOMDocument();
-        $this->doc->load(__DIR__.'/../Resources/config/' . self::CONFIG_FILE_NAME);
+        $this->doc->load(__DIR__.'/../../Resources/config/' . self::CONFIG_FILE_NAME);
     }
     
     /**

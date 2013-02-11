@@ -4,7 +4,6 @@ namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
 use Symfony\Component\Form\AbstractType;
 use Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute;
 use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class FieldTypeForm extends AbstractType

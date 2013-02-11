@@ -13,7 +13,7 @@ class XMLProcessTest extends \PHPUnit_Framework_TestCase
     public function __construct()
     {
         $this->sca = new SolrCoreAdmin();
-        $this->sca->create('testCore');
+        $this->sca->create('testCore', 'testCoreFolder');
         $this->xmlP = new XMLProcess('testCore');
     }
     
@@ -54,10 +54,10 @@ class XMLProcessTest extends \PHPUnit_Framework_TestCase
     public function testExportXML()
     {
         $doc = new DOMDocument();
-        $doc->load('/var/solr/testCore/conf/schema.xml');
+        $doc->load('/var/solr/testCoreFolder/conf/schema.xml');
         $expected = $doc->saveXML();
         $test = $this->xmlP->saveXML();
-        $doc->load('/var/solr/testCore/conf/schema.xml');
+        $doc->load('/var/solr/testCoreFolder/conf/schema.xml');
         $actual = $doc->saveXML();
         $this->assertXmlStringEqualsXmlString($expected, $actual);
     }
