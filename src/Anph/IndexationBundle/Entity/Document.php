@@ -18,16 +18,14 @@ class Document {
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	public $id;
-	//Utiliser ID pour avoir le nom de fichier??
-	// => sauvegarder l'extension dans la propriété path, à la place du nom de fichier actuel
-
+	
 	/**
 	 * @ORM\Column(type="string", length=255)
 	 */
 	public $name;
 
 	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @ORM\Column(type="string", length=255)
 	 */
 	public $path;
 
@@ -69,7 +67,7 @@ class Document {
 	public function preUpload() {
 		if (null !== $this->file) {
 			 $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
-			 $this->name = $this->getName();
+			 $this->name = $this->file->getClientOriginalName();
 			// $this->extension = $this->file->guessExtension();
 		}
 	}
@@ -92,23 +90,79 @@ class Document {
 		unset($this->file);
 	}
 
-	/**
-	 * @ORM\PostRemove()
-	 */
-	public function removeUpload() {
-		if ($file = $this->getAbsolutePath()) {
-			unlink($file);
-		}
-	}
+   
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
+    }
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Document
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return Document
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /*
 	public function getName() {
 		return $this->file->getClientOriginalName();
 	}
-
-	public function setName($name) {
-		$this->name = $name;
-	}
-
+	*/
+    
 	public function getFile() {
 		return $this->file;
 	}
@@ -117,28 +171,22 @@ class Document {
 		$this->file = $file;
 	}
 
-	public function getPath() {
-		return $this->path;
-	}
-	
-	public function __construct() {
-		$file = array();
-	}
-
-	public function setPath($path) {
-		$this->path = $path;
-	}
-
 	public function getExtension() {
-	//	if (isset($this->file)){
-	//		return $this->file->guessExtension();
-	//	}
 		return $this->extension;
 	}
-	
-	public function setExtension($extension){
-		$this->extension = $extension;
-	}
 
 
+
+    /**
+     * Set extension
+     *
+     * @param string $extension
+     * @return Document
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+    
+        return $this;
+    }
 }

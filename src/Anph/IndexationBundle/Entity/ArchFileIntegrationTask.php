@@ -19,9 +19,14 @@ class ArchFileIntegrationTask
 	private $taskId;
 	
 	/**
-	* @ORM\Column(type="string", length=200, unique=true)
+	* @ORM\Column(type="string", length=200)
 	*/
 	private $filename;
+	
+	/**
+	 * @ORM\Column(type="string", length=200, unique=true)
+	 */
+	private $path;
 	
 	/**
 	* @ORM\Column(type="string", length=30)
@@ -38,9 +43,10 @@ class ArchFileIntegrationTask
 	*/
 	private $status;
 	
-	public function __construct($filename, $format)
+	public function __construct($filename, $path, $format)
 	{
 		$this->filename = $filename;
+		$this->path = $path;
 		$this->format = $format;
 		$this->status = 0;
 	}
@@ -76,6 +82,29 @@ class ArchFileIntegrationTask
     public function getFilename()
     {
         return $this->filename;
+    }
+    
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return ArchFileIntegrationTask
+     */
+    public function setPath($path)
+    {
+    	$this->path = $path;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get path
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+    	return $this->path;
     }
 
     /**
