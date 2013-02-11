@@ -42,6 +42,16 @@ class SolrXMLAttribute
      */
     public function getValue()
     {
+        if ($this->name !== 'name' && $this->name !== 'type' && $this->name !== 'default') {
+            switch ($this->value) {
+                case 'true' :
+                    return true;
+                case 'false' :
+                    return false;
+                default :
+                    return $this->value;
+            }
+        }
         return $this->value;
     }
 }
