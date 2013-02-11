@@ -27,7 +27,7 @@ class ArchFileIntegration
 		$tasks = $repository->findByStatus(0);
 		
 		foreach ($tasks as $task) {
-			$spl = new \SplFileInfo($task->getFilename());
+			$spl = new \SplFileInfo($task->getPath());
 			$format = $task->getFormat();
 			$preprocessor = $task->getPreprocessor();
 			
@@ -49,6 +49,10 @@ class ArchFileIntegration
 				$this->entityManager->flush();
 			}catch(UnknownDriverParserException $e){
 				$task->setStatus(3);
+				$this->entityManager->persist($task);
+				$this->entityManager->flush();
+			}catch(\DomainException $e){
+				$task->setStatus(4);
 				$this->entityManager->persist($task);
 				$this->entityManager->flush();
 			}	
