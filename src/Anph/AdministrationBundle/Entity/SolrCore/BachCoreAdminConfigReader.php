@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity;
+namespace Anph\AdministrationBundle\Entity\SolrCore;
 
 use DOMDocument;
 

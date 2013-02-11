@@ -29,9 +29,9 @@ class BachSchemaConfigReader
     public function __construct()
     {
         $this->doc = new DOMDocument();
-        $this->doc->load(__DIR__.'/../Resources/config/' . self::CONFIG_FILE_NAME);
-        $this->lang = $this->doc->getElementsByTagName('lang')->nodeValue;
-        $this->defaultLang = $this->doc->getElementsByTagName('defaultLang')->nodeValue;
+        $this->doc->load(__DIR__.'/../../Resources/config/' . self::CONFIG_FILE_NAME);
+        $this->lang = $this->doc->getElementsByTagName('lang')->item(0)->nodeValue;
+        $this->defaultLang = $this->doc->getElementsByTagName('defaultLang')->item(0)->nodeValue;
     }
     
     /**
@@ -126,7 +126,7 @@ class BachSchemaConfigReader
     private function retreiveAttribute(DOMNodeList $nodeList, $name)
     {
         foreach ($nodeList as $e) {
-            if ($e.getAttribute("name") == $name) {
+            if ($e->getAttribute("name") == $name) {
                 return new BachAttribute($e, $this->lang, $this->defaultLang);
             }
         }
