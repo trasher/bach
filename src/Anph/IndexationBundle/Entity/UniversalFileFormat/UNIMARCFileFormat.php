@@ -11,4 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Table(name="UNIMARCUniversalFileFormat")
 */
 class UNIMARCFileFormat extends UniversalFileFormat{
+	
+	
 }
