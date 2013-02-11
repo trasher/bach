@@ -2,11 +2,11 @@
 
 namespace Anph\AdministrationBundle\Service;
 
-use Anph\AdministrationBundle\Entity\SolrShema\SolrXMLFile;
+use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLFile;
 
-use Anph\AdministrationBundle\Entity\SolrShema\SolrXMLAttribute;
+use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
 
-use Anph\AdministrationBundle\Entity\SolrShema\SolrXMLElement;
+use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 use Doctrine\ORM\EntityManager;
 

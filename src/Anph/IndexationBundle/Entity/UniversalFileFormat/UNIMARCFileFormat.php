@@ -12,6 +12,5 @@ use Doctrine\ORM\Mapping as ORM;
 */
 class UNIMARCFileFormat extends UniversalFileFormat
 {
-	protected $accessRestrict;
+	
 }
-?>
