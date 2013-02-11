@@ -12,7 +12,7 @@ administration_fieldstype:
     defaults: { _controller: AdministrationBundle:Default:fieldstype }
 administration_dynamicfields:
     pattern:  /dynamicfields
-    defaults: { _controller: AdministrationBundle:DinamicFields:refresh }
+    defaults: { _controller: AdministrationBundle:DynamicFields:refresh }
 administration_tockenizers:
     pattern:  /tockenyzers
     defaults: { _controller: AdministrationBundle:Default:tockenizers }

@@ -7,6 +7,7 @@ use Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute;
 use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class DynamicFieldForm extends AbstractType
@@ -26,7 +27,7 @@ class DynamicFieldForm extends AbstractType
         $builder->add('type', 'choice', array(
                 'label'    => $attr->getLabel(),
                 'required' => $attr->isRequired(),
-                'choices'  => $this->retreiveTypeAttributeValues()
+                'choices'  => $this->retreiveTypeAttributeValues(),
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'indexed');
         $builder->add('indexed', 'checkbox', array(
@@ -48,8 +49,14 @@ class DynamicFieldForm extends AbstractType
                 'label'    => $attr->getLabel(),
                 'required' => $attr->isRequired()
                 ));
-        
-        // Other Attributes that can be added to the application in the future
+        $attr = $reader->getAttributeByTag($bachTagType, 'required');
+        $builder->add('required', 'checkbox', array(
+                'label'    => $attr->getLabel(),
+                'required' => $attr->isRequired()
+                ));
+        /*
+         * Other Attributes that can be added to the application in the future
+         */
         /*$attr = $reader->getAttributeByTag($bachTagType, 'omitNorms');
         $builder->add('omitNorms', 'checkbox', array(
                 'label' => $attr->getLabel(),
@@ -73,10 +80,6 @@ class DynamicFieldForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'termOffsets');
         $builder->add('termOffsets', 'checkbox', array(
                 'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'required');
-        $builder->add('required', 'checkbox', array(
-                'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));*/
     }
     
@@ -94,19 +97,21 @@ class DynamicFieldForm extends AbstractType
     
     private function retreiveTypeAttributeValues()
     {
-        $session = new Session();
         $choices = array();
+        /*$session = new Session();
         if ($session->has('schema')) {
-            $xmlProcess = $session->get('schema');
-            $types = $xmlProcess->getElementsByName('types');
+            $xmlProcess = $session->get('schema');*/
+            $xmlP = new XMLProcess('core0');
+            $types = $xmlP->getElementsByName('types');
+            $types = $types[0];
             $types = $types->getElementsByName('fieldType');
             foreach ($types as $t) {
                 $schemaAttr = $t->getAttribute('name');
                 if (!$this->isContains($choices, $schemaAttr->getValue())) {
-                    $choices [$schemaAttr->getValue()] = $schemaAttr->getValue();
+                    $choices[$schemaAttr->getValue()] = $schemaAttr->getValue();
                 }
             }
-        }
+        //}
         return $choices;
     }
     

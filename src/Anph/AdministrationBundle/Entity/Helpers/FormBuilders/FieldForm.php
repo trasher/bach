@@ -2,11 +2,8 @@
 namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
 
 use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Field;
-
 use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
-
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute;
 use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
