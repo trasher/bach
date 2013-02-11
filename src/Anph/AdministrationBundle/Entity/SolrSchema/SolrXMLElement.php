@@ -156,13 +156,13 @@ class SolrXMLElement
     public function getElementsByName($name)
     {
         $elements = array();
-        if ($this->name === $name) {
+        if ($this->name == $name) {
             $elements[] = $this;
         }
         foreach($this->elements as $e) {
-            $elmts = $e.getElementsByName($name);
+            $elmts = $e->getElementsByName($name);
             if (count($elmts) != 0) {
-                array_merge($elements, $elmts);
+                $elements = array_merge($elements, $elmts);
             }
         }
         return $elements;

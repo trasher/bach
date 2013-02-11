@@ -1,6 +1,8 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute;
 use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
@@ -9,50 +11,46 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class DynamicFieldForm extends AbstractType
 {
-    const TYPE = 'dynamicField';
-    
-    /**
-     * DynamicField form creation
-     * @see \Symfony\Component\Form\AbstractType::buildForm()
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $bachTagType = BachSchemaConfigReader::DYNAMIC_FIELD_TAG;
         $reader = new BachSchemaConfigReader();
-        // Attribute "name" required
+        
+        // Form attributes
         $attr = $reader->getAttributeByTag($bachTagType, 'name');
         $builder->add('name', 'text', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        // Attribute "type" required
+                'label'    => $attr->getLabel(),
+                'required' => $attr->isRequired()
+                ));
         $attr = $reader->getAttributeByTag($bachTagType, 'type');
         $builder->add('type', 'choice', array(
-                'label' => $attr->getLabel(),
+                'label'    => $attr->getLabel(),
                 'required' => $attr->isRequired(),
-                'choices' => $this->retreiveTypeAttributeValues()));
-        // Attribute "indexed" required
+                'choices'  => $this->retreiveTypeAttributeValues()
+                ));
         $attr = $reader->getAttributeByTag($bachTagType, 'indexed');
         $builder->add('indexed', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        // Attribute "stored" required
+                'label'    => $attr->getLabel(),
+                'required' => $attr->isRequired()
+                ));
         $attr = $reader->getAttributeByTag($bachTagType, 'stored');
         $builder->add('stored', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        // Attribute multiValued" required
+                'label'    => $attr->getLabel(),
+                'required' => $attr->isRequired()
+                ));
         $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
         $builder->add('multiValued', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        // Attribute "default" required
+                'label'    => $attr->getLabel(),
+                'required' => $attr->isRequired()
+                ));
         $attr = $reader->getAttributeByTag($bachTagType, 'default');
         $builder->add('default', 'text', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
+                'label'    => $attr->getLabel(),
+                'required' => $attr->isRequired()
+                ));
         
         // Other Attributes that can be added to the application in the future
-        $attr = $reader->getAttributeByTag($bachTagType, 'omitNorms');
+        /*$attr = $reader->getAttributeByTag($bachTagType, 'omitNorms');
         $builder->add('omitNorms', 'checkbox', array(
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));
@@ -79,12 +77,19 @@ class DynamicFieldForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'required');
         $builder->add('required', 'checkbox', array(
                 'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
+                'required' => $attr->isRequired()));*/
+    }
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+                'data_class' => 'Anph\AdministrationBundle\Entity\Helpers\FormObjects\DynamicField',
+        ));
     }
     
     public function getName()
     {
-        return self::TYPE;
+        return 'dynamicField';
     }
     
     private function retreiveTypeAttributeValues()
@@ -98,7 +103,7 @@ class DynamicFieldForm extends AbstractType
             foreach ($types as $t) {
                 $schemaAttr = $t->getAttribute('name');
                 if (!$this->isContains($choices, $schemaAttr->getValue())) {
-                    $choices [] = $schemaAttr->getValue();
+                    $choices [$schemaAttr->getValue()] = $schemaAttr->getValue();
                 }
             }
         }
