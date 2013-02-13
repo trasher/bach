@@ -23,7 +23,7 @@ class BachAttribute
         $this->values = array();
         $nodeList = $elt->getElementsByTagName('value');
         foreach ($nodeList as $e) {
-            $values[] = $e->nodeValue;
+            $this->values[$e->nodeValue] = $e->nodeValue;
         }
         $this->desc = $this->retreiveNodeValueByLang($elt, 'desc', $lang, $defaultLang);
         

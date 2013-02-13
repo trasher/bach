@@ -191,6 +191,8 @@
 				Determines the real behavior of the fieldType.
 			</descr>
 			<value>solr.TextField</value>
+			<value>solr.StrField</value>
+			<value>solr.TrieLongField</value>
 			<value>solr.CurrencyField</value>
 			<value>solr.SpatialRecursivePrefixTreeFieldType</value>
 			<value>solr.PointType</value>

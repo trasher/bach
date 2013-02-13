@@ -9,7 +9,7 @@ administration_fields:
     defaults: { _controller: AdministrationBundle:Fields:refresh }
 administration_fieldstype:
     pattern:  /fieldstype
-    defaults: { _controller: AdministrationBundle:Default:fieldstype }
+    defaults: { _controller: AdministrationBundle:Types:refresh }
 administration_dynamicfields:
     pattern:  /dynamicfields
     defaults: { _controller: AdministrationBundle:DynamicFields:refresh }
