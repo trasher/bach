@@ -21,10 +21,11 @@ class DefaultController extends Controller
 		return $this->render('AdministrationBundle:Default:index.html.twig');
 	}
 	
-	public function fieldsAction($name)
+	public function fieldsAction()
 	{
-		$champ='test';
-		return $this->render('AdministrationBundle:Default:fields.html.twig',array('champ' => $champ,));
+		
+		$a= 'Solarium library version: ' . \Solarium_Version::VERSION . ' - ';
+		return $this->render('AdministrationBundle:Default:fields.html.twig',array('var' => $a,));
 	}
 
 	public function dynamicfieldsAction()
