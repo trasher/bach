@@ -6,7 +6,7 @@ use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class AnalyzerForm
+class AnalyzerForm extends AbstractType
 {
     const TYPE = 'analyzerType';
     
@@ -14,6 +14,7 @@ class AnalyzerForm
     {
         $bachTagType = BachSchemaConfigReader::ANALYZER_TAG;
         $reader = new BachSchemaConfigReader();
+        // Attribute "class" required
         $attr = $reader->getAttributeByTag($bachTagType, 'class');
         $builder->add('class', 'choice', array(
                 'label' => $attr->getLabel(),

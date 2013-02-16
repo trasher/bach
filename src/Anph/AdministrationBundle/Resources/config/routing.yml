@@ -6,13 +6,13 @@ administration_dashboard:
     defaults: { _controller: AdministrationBundle:Default:dashboard }
 administration_fields:
     pattern: /fields
-    defaults: { _controller: AdministrationBundle:Default:fields }
+    defaults: { _controller: AdministrationBundle:Fields:refresh }
 administration_fieldstype:
     pattern:  /fieldstype
-    defaults: { _controller: AdministrationBundle:Default:fieldstype }
+    defaults: { _controller: AdministrationBundle:Types:refresh }
 administration_dynamicfields:
     pattern:  /dynamicfields
-    defaults: { _controller: AdministrationBundle:Default:dynamicfields }
+    defaults: { _controller: AdministrationBundle:DynamicFields:refresh }
 administration_tockenizers:
     pattern:  /tockenyzers
     defaults: { _controller: AdministrationBundle:Default:tockenizers }

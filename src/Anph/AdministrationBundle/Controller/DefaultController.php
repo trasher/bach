@@ -2,6 +2,9 @@
 
 namespace Anph\AdministrationBundle\Controller;
 
+use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
+use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Fields;
+use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,19 +22,6 @@ class DefaultController extends Controller
 		//$process->importXML();
 		//$this->get("anph.administration.xmlimport")->importXML(__DIR__.'/../Resources/config/schema.xml');
 		return $this->render('AdministrationBundle:Default:index.html.twig');
-	}
-	
-	public function fieldsAction()
-	{
-		
-		$a= 'Solarium library version: ' . \Solarium_Version::VERSION . ' - ';
-		return $this->render('AdministrationBundle:Default:fields.html.twig',array('var' => $a,));
-	}
-
-	public function dynamicfieldsAction()
-	{
-	    
-		return $this->render('AdministrationBundle:Default:dynamicfields.html.twig');
 	}
 	
 	public function fieldstypeAction()

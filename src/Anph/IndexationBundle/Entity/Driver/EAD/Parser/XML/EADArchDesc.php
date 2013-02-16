@@ -60,9 +60,9 @@ class EADArchDesc
 			
 			foreach($fields as $field){
 				$nodes = $this->xpath->query($field,$cNode);
-	
-				if($nodes->length > 0){						
-					$results[$cNode->getAttribute('id')][$field] = array();
+				$results[$cNode->getAttribute('id')][$field] = array();
+				
+				if($nodes->length > 0){					
 					foreach($nodes as $key=>$node){
 						$results[$cNode->getAttribute('id')][$field][] = array("value"			=>	$node->nodeValue,
 																				"attributes"	=>	$this->parseAttributes($node->attributes));

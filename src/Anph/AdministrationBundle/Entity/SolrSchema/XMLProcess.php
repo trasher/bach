@@ -74,11 +74,6 @@ class XMLProcess
      */
     public function getElementsByName($name)
     {
-        $elements = array();
-        if ($this->rootElement->getName() === $name) {
-            $elements[] = $this->rootElement;
-            return $elements;
-        }
         return $this->rootElement->getElementsByName($name);
     }
     

@@ -5,30 +5,68 @@
 <div class="span3">
 	<div class="well sidebar-nav" >
 		<ul class="nav nav-list">
-			<li class="nav-header">Indexation</li>
-			<li class="active"><a href="#"><i class="icon-tasks"></i> Liste des taches inventaires</a></li>
-            <li><a href="#" onClick="cachervisible()"><i class="icon-download-alt"></i> Indexer des fichiers</a></li>
+			<li class="nav-header">Gestion de l'indexation</li>
+			<li class="divider"></li>
+			<li class="active"><a href="#"><i class="icon-tasks"></i> File d'attente des tâches d'indexation</a></li>
+            <li><a href="#" onClick="cachervisible()"><i class="icon-download-alt"></i> Indexer un nouveau fichier</a></li>
             {#<li><a href="{{ path('upload') }}"><i class="icon-download-alt"></i> Indexer des fichiers</a></li>#}
 			<li class="divider"></li>
-			<li><a href="#"><i class="icon-question-sign"></i> Aide</a></li>
+			<li><a href="javascript:openInfoFromHTMLFile('{{ asset('aide.html') }}');"><i class="icon-question-sign"></i> Aide</a></li>
 		</ul>
 	</div><!--/.well -->
 </div><!--/span-->
 
 
-  <body>   
 <div class="span9">
+	<div id="upload" style="display: none">
+		<fieldset>
+			<legend>Indexer un nouveau fichier</legend>
+			<div class="row-fluid">
+				<div class="span7 well">
+					<form action="{{ path("anph_indexation_upload_process") }}" class="form-horizontal" method="post" {{ form_enctype(form) }} >
+					  <div class="control-group">
+					  	<label class="control-label" for="file">{{ form_label(form.file) }}</label>
+					  	<div class="controls">
+					   		{{ form_widget(form.file) }}
+					   	</div>	
+			          </div>
+			          <div class="control-group">
+			          	<label class="control-label" for="extension">{{ form_label(form.extension) }}</label>
+			            <div class="controls">
+			            	{{ form_widget(form.extension) }}		 
+			            </div>   
+					  </div>
+				    	{{ form_widget(form._token) }}
 
-	
-	<div class="row-fluid">
-		<div class="span9">
-			<h4>Liste des tâches d'indexation en attente</h4>
-		</div>
-		<div class="span3">
-			<button type="button" class="btn pull-right" data-toggle="button"><i class="icon-refresh"></i> Mise à jour automatique</button>
-		</div>
+					<div class="control-group">
+						<div class="controls">
+							<input type="submit"  class="btn btn-primary" value="Ajouter le fichier à la file d'attente" />
+						</div>
+					</div>
+					</form>
+				</div>
+				<div class="span5">
+					<p>Selectionnez le fichier que vous souhaiter indexer. Il sera ajouté ensuite à la file d'attente du processus d'indexation.</p>
+					<p>La file d'attente est traitée toute les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation</p>
+				</div>
+			</div>
+		</fieldset>
 	</div>
-	<div class="row-fluid">
+	<fieldset>
+		<legend>
+			<div class="row-fluid">
+				<div class="span8">File d'attente des tâches d'indexation</div>
+				<div class="span4">
+					<div class="btn-groups pull-right">
+						<button class="btn btn-danger " title="Supprimer les tâches traitées"><i class="icon-trash icon-white"></i></button>
+						<button id="refresh" class="btn"><i class="icon-refresh"></i></button>
+					</div>
+				</div>
+			</div>
+		</legend>
+
+		<div class="row-fluid">
+			<div class="span12">
 				<table class="table table-bordered table-striped">
 					<thead>
 						<tr>
@@ -41,11 +79,7 @@
 						{% if tasks|length > 0 %}
 						{% for task in tasks %}
 						<tr class="{{ task.status }}">
-							{% if task.status > 0 %}
-							<td data-toggle="popover" data="test">{{ task.filename }}</td>
-							{% else %}
 							<td>{{ task.filename }}</td>
-							{% endif %}
 							<td>{{ task.format }}</td>
 							<td>{{ task.size }}</td>
 						</tr>
@@ -55,38 +89,25 @@
 							<td colspan="3">Aucune tache d'indexation en cours</td>
 						</tr>
 						{% endif %}
-					</tbody>
-				</table>
-		</div>	
-			
-		<div id="upload" style="display: none">
-		<h4>Indexer des fichiers - Upload</h4>
-		
-		<form action="{{ path("anph_indexation_upload_process") }}" method="post" {{ form_enctype(form) }} >
-		    {{ form_widget(form) }}
-		
-		    
-		    <input type="submit"  value="Upload Document" />
-	
-		</form>
-		
-			
-	        <!-- Including The jQuery Library -->
-			<script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
-			
-			
-		</div>
-		
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</fieldset>
 	</div>
-</div><!--/span-->
-</body>  
-
-<script>
-function cachervisible() {
-    
-         document.getElementById("upload").style.display="block";
-    
-}
-</script>
-
+</div>
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+	$(document).ready(function(){
+		$("#refresh").click(function(){
+			location.reload();
+		});
+	});
+	
+	function cachervisible() {
+		$("#upload").toggle();
+	}
+	</script>
+{% endblock %}
 {% endblock %}

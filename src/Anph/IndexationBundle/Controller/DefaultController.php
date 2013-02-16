@@ -33,10 +33,10 @@ class DefaultController extends Controller
 	    	$tasks = array();
 	    	 
 	    	foreach ($entities as $entity) {
-	    		$spl = new \SplFileInfo($entity->getFilename());
-	    		$tasks[] = array(	'filename'	=>	$spl->getBasename(),
-	    				'format'	=>	$entity->getFormat(),
-	    				'size'		=>	$spl->getSize());
+	    		$spl = new \SplFileInfo($entity->getPath());
+	    		$tasks[] = array(	'filename'	=>	$entity->getFilename(),
+				    				'format'	=>	$entity->getFormat(),
+				    				'size'		=>	$spl->getSize());
 	    	
 	    		switch ((int)$entity->getStatus()) {
 	    			default:
@@ -52,6 +52,10 @@ class DefaultController extends Controller
 	    			case 3:
 	    				$status = "error";
 	    				break;
+	    			
+	    			case 4:
+	    				$status = "warning";
+	    				break;
 	    		}
 	    		 
 	    		$tasks[count($tasks)-1]['status'] = $status;
@@ -65,7 +69,7 @@ class DefaultController extends Controller
     {  	
     	$document = new Document();
   		$form = $this->getDocumentForm($document);
-    	
+
     	if ($this->getRequest()->isMethod('POST')) {
     		$form->bind($this->getRequest());
     		if ($form->isValid()) {
@@ -75,32 +79,27 @@ class DefaultController extends Controller
     	
     			$em->persist($document);
     			$em->flush();
-    			$task = new ArchFileIntegrationTask(realpath($document->getAbsolutePath()), $document->getExtension());
+    			$task = new ArchFileIntegrationTask($document->getName(), realpath($document->getAbsolutePath()), $document->getExtension());
     			$em->persist($task);
 
     			$em->flush();
-    			    	
-    			//$format = $document->getExtension();
-    			$tasks = null;
-    			 return new RedirectResponse($this->get("router")->generate("anph_indexation_homepage"));
-		//return $this->render('AnphIndexationBundle:Indexation:index.html.twig',array('tasks'=>$tasks,'form' => $form->createView()));
+    		}else{
     			
-    	
-    		}
+    		}		
     	}
+    	
+    	return new RedirectResponse($this->get("router")->generate("anph_indexation_homepage"));
     }
     
     private function getDocumentForm($document)
     {
-		$form = $this->createFormBuilder($document)
-    	// ->add('name')
-    	->add('file','file',array(
-    			"label" => "Fichiers : "))
-    	->add('extension','choice',array("choices"	=>	array("ead"	=>	"EAD","unimarc"	=>	"UNIMARC"),
-    									"label"	=>	"Format :"))
-    			->getForm()
-    			;
-    	
+		$form = $this	->createFormBuilder($document)
+    					->add('file','file',array("label" => "Fichier à indexer"))
+    					->add('extension','choice',array(	"choices"	=>	array(	"ead"	=>	"EAD",
+    																				"unimarc"	=>	"UNIMARC"),
+    														"label"	=>	"Format du fichier"))
+    					->getForm();    	
+
     	return $form;
     }
 }

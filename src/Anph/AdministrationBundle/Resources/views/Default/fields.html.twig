@@ -32,8 +32,8 @@
 		<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
   <body>
 
-	 <div class="container-fluid">
-		<div class="row-fluid">
+	<div class="container-fluid">
+        <div class="row-fluid">
 
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="{{ url('administration_fields') }}"> Select all fields </a>  |
@@ -44,7 +44,22 @@
 	<div class="span9">
         
 		<div class="well">
-          <form>
+		<form action="..." method="POST" {{ form_enctype(form) }}>
+            <h3>Fields</h3>
+            <ul class="fields">
+                {# iterate over each existing tag and render its only field: name #}
+                {% for field in form.fields %}
+                    <li>{{ form_row(field.name) }}</li>
+                    <li>{{ form_row(field.type) }}</li>
+                    <li>{{ form_row(field.default) }}</li>
+                    <li>{{ form_row(field.indexed) }}</li>
+                    <li>{{ form_row(field.stored) }}</li>
+                    <li>{{ form_row(field.multiValued) }}</li>
+                    <li>{{ form_row(field.required) }}</li>
+                {% endfor %}
+            </ul>
+        </form>
+          <!-- <form>
             <div class="control-group">
               <div class="controls">
                 <div class="row-fluid show-grid">
@@ -52,7 +67,8 @@
 			<label class="checkbox inline">
 				<input type="checkbox">
 			</label>
-		  <span id="amount">Name :{{ var }}  </span>
+			
+		  <span id="amount">Name : GOOD  </span>
 		  <input id="amount_entry" name="amount1" style="display:none;"></input></div>
                   <div class="span3">
                     <select class="span10">
@@ -87,7 +103,7 @@
                 </div>
               </div>
             </div>
-          </form>
+          </form> -->
         </div>
 
 </div>
@@ -129,4 +145,3 @@
 		
 </body>   
 {% endblock %}
-

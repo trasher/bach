@@ -35,7 +35,7 @@ class SolrCoreAdmin
         } else {
             $this->reader = $reader;
         }
-        $this->http = include 'vendor/aura/http/scripts/instance.php';
+        $this->http = include __DIR__ . '/../../../../../vendor/aura/http/scripts/instance.php';
     }
 
     /**
