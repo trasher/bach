@@ -99,18 +99,18 @@
 		</div>
     		
 		<script>
-            $(document).ready(function() {
-            	$('#addFieldDialog').bind('show', function () {
-            		document.getElementById ("xlInput").value = document.title;
-            		});
-            	});
-            function closeDialog () {
-            	$('#addFieldDialog').modal('hide'); 
-            	};
-            function okClicked () {
-            	document.title = document.getElementById ("xlInput").value;
-            	closeDialog ();
-            	};
-        </script>
+			$(document).ready(function() {
+				$('#addFieldDialog').bind('show', function () {
+					document.getElementById ("xlInput").value = document.title;
+					});
+				});
+			function closeDialog () {
+				$('#addFieldDialog').modal('hide'); 
+				};
+			function okClicked () {
+				document.title = document.getElementById ("xlInput").value;
+				closeDialog ();
+				};
+		</script>	
     </body>
 {% endblock %}
