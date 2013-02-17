@@ -13,21 +13,21 @@ administration_fieldstype:
 administration_dynamicfields:
     pattern:  /dynamicfields
     defaults: { _controller: AdministrationBundle:DynamicFields:refresh }
-administration_tockenizers:
-    pattern:  /tockenyzers
-    defaults: { _controller: AdministrationBundle:Default:tockenizers }
+administration_copyfields:
+    pattern: /copyfields
+    defaults: { _controller: AdministrationBundle:CopyFields:refresh }
+administration_uniquekey:
+    pattern:  /uniquekey
+    defaults: { _controller: AdministrationBundle:UniqueKey:refresh }
 administration_analyzers:
     pattern:  /analyzers
-    defaults: { _controller: AdministrationBundle:Default:analyzers }
+    defaults: { _controller: AdministrationBundle:Analyzers:refresh }
 administration_performance:
     pattern:  /performance
     defaults: { _controller: AdministrationBundle:Default:performance }
 administration_coreadmin:
     pattern:  /coreadmin
     defaults: { _controller: AdministrationBundle:Default:coreadmin }
-administration_filters:
-    pattern:  /filters
-    defaults: { _controller: AdministrationBundle:Default:filters }
 administration_fiel:
     pattern:  /fiel
     defaults: { _controller: AdministrationBundle:Default:contact }

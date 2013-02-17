@@ -305,36 +305,28 @@
 		</descr>
 	</copyField>
 	<uniqueKey parent="schema">
-		<label lang="en">Unique Key</label>
-		<descr lang="en">
-			The "unique key" declaration can be used to inform Solr that there is a field in your index which should be
-			unique for all documents. If a document is added that contains the same value for this field as an existing
-			document, the old document will be deleted. It is not mandatory for a schema to have a uniqueKey field,
-			but an overwhelming majority of them do. It shouldn't matter whether you rename this to something else
-			(and change the "unique key" value), but occasionally it has in the past. We recommend that you just
-			leave this definition alone. 
-		</descr>
+		<attribute name="uniqueKey">
+			<label lang="en">Unique Key</label>
+			<descr lang="en">
+				The "unique key" declaration can be used to inform Solr that there is a field in your index which should be
+				unique for all documents. If a document is added that contains the same value for this field as an existing
+				document, the old document will be deleted. It is not mandatory for a schema to have a uniqueKey field,
+				but an overwhelming majority of them do. It shouldn't matter whether you rename this to something else
+				(and change the "unique key" value), but occasionally it has in the past. We recommend that you just
+				leave this definition alone. 
+			</descr>
+		</attribute>
 	</uniqueKey>
 	<analyzer parent="fieldType">
-		<class value="solr.TextField" />
 		<attribute name="class" type="string" required="false">
 			<label lang="en">Class</label>
 			<descr lang="en">
 				Specifying the class name of an Analyzer — anything extending org.apache.lucene.analysis.Analyzer.
 			</descr>
-			<value v="org.apache.lucene.analysis.WhitespaceAnalyzer">
-				An Analyzer that uses WhitespaceTokenizer. A WhitespaceTokenizer is a tokenizer that divides text at whitespace.
-			</value>
-			<value v="org.apache.lucene.analysis.FrenchAnalyzer">
-				<descr lang="en">
-					Analyzer for French.
-				</descr>
-			</value>
-			<value v="org.apache.lucene.analysis.EnglishAnalyzer">
-				<descr lang="en">
-					Analyzer for English.
-				</descr>
-			</value>
+			<value>org.apache.lucene.analysis.WhitespaceAnalyzer</value>
+			<value>org.apache.lucene.analysis.FrenchAnalyzer</value>
+			<value>org.apache.lucene.analysis.EnglishAnalyzer</value>
+			<value>org.apache.lucene.analysis.standard.StandardAnalyzer</value>
 		</attribute>
 	</analyzer>
 </conf>

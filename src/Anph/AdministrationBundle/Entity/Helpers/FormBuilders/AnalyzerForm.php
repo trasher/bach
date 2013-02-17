@@ -1,6 +1,7 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute;
 use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
@@ -8,13 +9,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class AnalyzerForm extends AbstractType
 {
-    const TYPE = 'analyzerType';
-    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $bachTagType = BachSchemaConfigReader::ANALYZER_TAG;
         $reader = new BachSchemaConfigReader();
-        // Attribute "class" required
+        
+        // Form attributes
+        $builder->add('name', 'text', array(
+                'label'    => 'Field type name',
+                'disabled' => true
+                ));
         $attr = $reader->getAttributeByTag($bachTagType, 'class');
         $builder->add('class', 'choice', array(
                 'label' => $attr->getLabel(),
@@ -22,9 +26,16 @@ class AnalyzerForm extends AbstractType
                 'choices' => $this->retreiveClassAttributeValues($reader)));
     }
     
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+                'data_class' => 'Anph\AdministrationBundle\Entity\Helpers\FormObjects\Analyzer',
+        ));
+    }
+    
     public function getName()
     {
-        return self::TYPE;
+        return 'analyzerType';
     }
     
     private function retreiveClassAttributeValues(BachSchemaConfigReader $reader)

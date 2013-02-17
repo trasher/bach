@@ -11,8 +11,7 @@ class DynamicFieldsController extends Controller
     public function refreshAction()
     {
         $xmlP = new XMLProcess('core0');
-        $dynamicFields =  new DynamicFields($xmlP);
-        $form = $this->createForm(new DynamicFieldsForm(), $dynamicFields);
+        $form = $this->createForm(new DynamicFieldsForm(), new DynamicFields($xmlP));
         return $this->render('AdministrationBundle:Default:dynamicfields.html.twig', array(
                 'form' => $form->createView(),
         ));

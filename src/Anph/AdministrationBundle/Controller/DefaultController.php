@@ -24,16 +24,6 @@ class DefaultController extends Controller
 		return $this->render('AdministrationBundle:Default:index.html.twig');
 	}
 	
-	public function fieldstypeAction()
-	{
-		return $this->render('AdministrationBundle:Default:fieldstype.html.twig');
-	}
-	
-	public function tockenizersAction()
-	{
-		return $this->render('AdministrationBundle:Default:tockenizers.html.twig');
-	}
-	
 	public function analyzersAction(Request $request)
 	{
 		$defaultData = array('name' => 'bonjour');
@@ -114,11 +104,6 @@ class DefaultController extends Controller
 		return $this->render('AdministrationBundle:Default:analyzers.html.twig', array(
 				'form' => $form->createView(),
 		));
-	}
-	
-	public function filtersAction()
-	{
-		return $this->render('AdministrationBundle:Default:filters.html.twig');
 	}
 	
 	public function coreadminAction()
