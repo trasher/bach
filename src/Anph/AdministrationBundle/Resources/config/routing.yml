@@ -23,8 +23,8 @@ administration_analyzers:
     pattern:  /analyzers
     defaults: { _controller: AdministrationBundle:Analyzers:refresh }
 administration_performance:
-    pattern:  /performance
-    defaults: { _controller: AdministrationBundle:Default:performance }
+    pattern:  /performance/index
+    defaults: { _controller: AdministrationBundle:Performance:refresh }  
 administration_coreadmin:
     pattern:  /coreadmin
     defaults: { _controller: AdministrationBundle:Default:coreadmin }

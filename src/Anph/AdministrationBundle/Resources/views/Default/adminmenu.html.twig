@@ -19,7 +19,7 @@
        		  
             <li class="divider"></li>  
             <li class="nav-header">Solr Performance Config</li> 
-           	<li><a href="{{ url('administration_performance') }}"><i class="icon-book"></i> Performance Admin</a></li>   
+           	<li{% if (page == 'performance') %} class="active" {% endif %}><a href="{{ url('administration_performance') }}"><i class="icon-book"></i> Performance Admin</a></li>   
         </ul>  
     </div> 
 </div>

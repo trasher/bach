@@ -14,7 +14,7 @@ class TypesController extends Controller
         $types =  new Types($xmlP);
         $form = $this->createForm(new TypesForm(), $types);
         return $this->render('AdministrationBundle:Default:fieldstype.html.twig', array(
-                'form' => $form->createView(),
+                'form' => $form->createView()
         ));
     }
 }

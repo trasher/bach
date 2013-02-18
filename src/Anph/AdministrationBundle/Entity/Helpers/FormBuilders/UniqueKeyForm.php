@@ -19,7 +19,7 @@ class UniqueKeyForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'uniqueKey');
         $builder->add('uniqueKey', 'choice', array(
                 'label'    => $attr->getLabel(),
-                'choices'  => $this->retreiveUniqueKeyValues(),
+                'choices'  => $this->retreiveUniqueKeyValues()
                 ));
     }
     

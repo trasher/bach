@@ -190,6 +190,12 @@ class SolrCoreAdmin
         $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
         return $coreInstanceDir . $this->reader->getCoreConfigDir() . '/' . $this->reader->getSchemaFileName();
     }
+    
+    public function getConfigPath($coreName)
+    {
+        $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
+        return $coreInstanceDir . $this->reader->getCoreConfigDir() . '/' . $this->reader->getConfigFileName();
+    }
 
     /**
      * Create core directory with the same name as core name. If a such directory already exist, returns false.
