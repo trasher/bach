@@ -1,0 +1,68 @@
+{% extends '::base.html.twig' %}
+
+{% block container %}
+    <!-- MENU -->
+    {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'copyfields'}%}
+    <!-- Our CSS stylesheet file -->
+    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
+    <!-- CSS adjustments for browsers with JavaScript disabled -->
+	<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
+    
+    <body>
+        <div class="container-fluid">
+            <div class="row-fluid">
+            	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="{{ url('administration_copyfields') }}"> Select all fields </a>  |
+                	<a href="{{ url('administration_copyfields') }}"> Deselect all fields </a>  |
+                	
+                	<a data-toggle="modal" href="#addFieldDialog" >Add</a> |
+                	<a href="{{ url('administration_fields') }}"> Remove </a>  |
+            	</p>
+    	        <div class="span9">
+    	            <div class="well">
+                		<form action="..." method="POST" {{ form_enctype(form) }}>
+                            <h3>CopyFields</h3>
+                            <ul class="fields">
+                                {# iterate over each existing tag and render its only field: name #}
+                                {% for field in form.copyFields %}
+                                    <li>{{ form_row(field.source) }}</li>
+                                    <li>{{ form_row(field.dest) }}</li>
+                                    <li>{{ form_row(field.maxChars) }}</li>
+                                {% endfor %}
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    	<div id="addFieldDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none; ">
+    		<div class="modal-header">
+    			<a href="#" class="close" data-dismiss="modal">×</a>
+    			<h3>Please enter a new title for this window.</h3>
+    		</div>
+    		<div class="modal-body">
+    			<div class="divDialogElements"><input class="xlarge" id="xlInput" name="xlInput" type="text"></div>
+    		</div>
+    		<div class="modal-footer">
+    			<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
+    			<a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
+			</div>
+		</div>
+    		
+		<script>
+            $(document).ready(function() {
+            	$('#addFieldDialog').bind('show', function () {
+            		document.getElementById ("xlInput").value = document.title;
+            		});
+            	});
+            function closeDialog () {
+            	$('#addFieldDialog').modal('hide'); 
+            	};
+            function okClicked () {
+            	document.title = document.getElementById ("xlInput").value;
+            	closeDialog ();
+            	};
+        </script>
+    </body>
+{% endblock %}

@@ -4,19 +4,17 @@ namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
 use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
-class DynamicFields
+class CopyFields
 {
-    public $dynamicFields;
+    public $copyFields;
     
     public function __construct(XMLProcess $xmlP = null)
     {
-        $this->dynamicFields = array();
+        $this->copyFields = array();
         if ($xmlP != null) {
-            $elements = $xmlP->getElementsByName('fields');
-            $elements = $elements[0];
-            $elements = $elements->getElementsByName('dynamicField');
+            $elements = $xmlP->getElementsByName('copyField');
             foreach ($elements as $f) {
-                $this->dynamicFields[] = new DynamicField($f);
+                $this->copyFields[] = new CopyField($f);
             }
         }
     }

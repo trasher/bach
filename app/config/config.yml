@@ -71,7 +71,7 @@ nelmio_solarium:
     clients:
         default:
             host: localhost
-            port: 8080
+            port: 8983
             path: /solr
             core: core0
             timeout: 5

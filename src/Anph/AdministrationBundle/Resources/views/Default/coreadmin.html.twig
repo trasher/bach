@@ -120,19 +120,5 @@
 	
 </body>   
 
-<script>
-			$(document).ready(function() {
-				$('#coreTitleDialog').bind('show', function () {
-					document.getElementById ("xlInput").value = document.title;
-					});
-				});
-			function closeDialog () {
-				$('#coreTitleDialog').modal('hide'); 
-				};
-			function okClicked () {
-				document.title = document.getElementById ("xlInput").value;
-				closeDialog ();
-				};
-			</script>
 {% endblock %}
 

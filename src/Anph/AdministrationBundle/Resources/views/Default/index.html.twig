@@ -1,43 +1,16 @@
-
 {% extends '::base.html.twig' %}
 
 {% block container %}
-
-<div class="span3">
-<div class="well sidebar-nav">
-<ul class="nav nav-list">  
-        <li class="nav-header" >Solr Admin</li>
-	<li ><a href="{{ url('administration_dashboard') }}"><i class="icon-book"></i> Dashboard </a></li>
-	<li class="divider"></li>  
-	<li class="nav-header" >Solr Schema Config</li>  
-        <li ><a href="{{ url('administration_fields') }}"><i class="icon-book"></i> Fields</a></li>  
-        <li class="active"><a href="{{ url('administration_dynamicfields') }}"><i class="icon-book"></i>   Dynamic Fields</a></li>  
-        <li><a href="{{ url('administration_fieldstype') }}"><i class="icon-book"></i> Fields Type</a></li> 
-        <li><a href="{{ url('administration_analyzers') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-book"></i> Analizers</a></li>  
-        <li><a href="{{ url('administration_tockenizers') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-book"></i> Tockenizers</a></li>  
-        <li><a href="{{ url('administration_filters') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-book"></i> Filters</a></li>  
-        <li class="divider"></li>
-        <li class="nav-header">Solr Core Config</li> 
-   		<li><a href="{{ url('administration_coreadmin') }}"><i class="icon-book"></i> Core Admin</a></li>  
-        <li class="divider"></li>  
-        <li class="nav-header">Solr Performance Config</li> 
-   	<li><a href="{{ url('administration_performance') }}"><i class="icon-book"></i> Performance Admin</a></li>   
-</ul>  
-          </div> 
-</div><!--/span-->
-
-
-<!-- Our CSS stylesheet file -->
-        <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
-        <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
-        <!-- CSS adjustments for browsers with JavaScript disabled -->
-		<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
-  <body>
-	
-	
-	
-	<!--for ($i = 1; $i <= 3; $i++) {-->
-
+    <!-- MENU -->
+    {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'index'}%}
+    <!-- Our CSS stylesheet file -->
+    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
+    <!-- CSS adjustments for browsers with JavaScript disabled -->
+    <noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
+    
+    <body>
+	    <!--for ($i = 1; $i <= 3; $i++) {-->
         <div class='well span9'>
           <form>
             <div class='control-group'>
@@ -81,10 +54,5 @@
             </div>
           </form>
         </div>
-	
-
-
-	
-</body>   
+    </body>
 {% endblock %}
-

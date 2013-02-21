@@ -2,7 +2,7 @@
 
 {% block container %}
     <!-- MENU -->
-    {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'analyzers'}%}
+    {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'uniquekey'}%}
     <!-- Our CSS stylesheet file -->
     <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
@@ -12,16 +12,12 @@
     <body>
         <div class="well span9">
             <form action="..." method="POST" {{ form_enctype(form) }}>
-                <h3>Analyzers</h3>
+                <h3>UniqueKey</h3>
                 <ul class="fields">
                     {# iterate over each existing tag and render its only field: name #}
-                    {% for field in form.analyzers %}
-                        <li>{{ form_row(field.name) }}</li>
-                        <li>{{ form_row(field.class) }}</li>
-                    {% endfor %}
+                    <li>{{ form_row(form.uniqueKey) }}</li>
                 </ul>
             </form>
         </div>
     </body>   
 {% endblock %}
-

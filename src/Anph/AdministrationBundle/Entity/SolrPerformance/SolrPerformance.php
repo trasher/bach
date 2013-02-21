@@ -1,6 +1,8 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\SolrPerformance;
 
+use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+
 use JMS\DiExtraBundle\Annotation\AfterSetup;
 use DOMDocument;
 use DOMNodeList;
@@ -24,11 +26,12 @@ class SolrPerformance
     private $doc;
     private $path;
     
-    public function __construct($path)
+    public function __construct($coreName)
     {
-        $this->path = $path;
+        $solrCore = new SolrCoreAdmin();
+        $this->path = $solrCore->getConfigPath($coreName);
         $this->doc = new DOMDocument();
-        $this->doc->load($path);
+        $this->doc->load($this->path);
     }
     
     /**
@@ -54,7 +57,7 @@ class SolrPerformance
      * requests matching documents 10 through 19, and queryWindowSize is 50,
      * then documents 0 through 49 will be collected and cached.  Any further
      * requests in that range can be satisfied via the cache. Returns NULL if
-     * can not find the appropriate tag;.
+     * can not find the appropriate tag.
      * @param int $number
      * @return NULL|\Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
      */
