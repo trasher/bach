@@ -20,19 +20,27 @@
                 	<a href="{{ url('administration_fields') }}"> Remove </a>  |
             	</p>
     	        <div class="span9">
-    	            <div class="well">
-                		<form action="..." method="POST" {{ form_enctype(form) }}>
+    	            
+                		<form class="form-inline" action="..." method="POST" {{ form_enctype(form) }}>
                             <h3>CopyFields</h3>
                             <ul class="fields">
                                 {# iterate over each existing tag and render its only field: name #}
                                 {% for field in form.copyFields %}
-                                    <li>{{ form_row(field.source) }}</li>
-                                    <li>{{ form_row(field.dest) }}</li>
-                                    <li>{{ form_row(field.maxChars) }}</li>
+				    <div class="well row-fluid show-grid">
+					<div class="span4">
+                                    source&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;{{ form_widget(field.source) }}
+					</div>
+					<div class="span4">
+                                    destination&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;{{ form_widget(field.dest) }}
+					</div>
+					<div class="span4">
+                                    Max Chars&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;{{ form_widget(field.maxChars) }}
+					</div>
+				    </div>
                                 {% endfor %}
                             </ul>
                         </form>
-                    </div>
+                    
                 </div>
             </div>
         </div>
