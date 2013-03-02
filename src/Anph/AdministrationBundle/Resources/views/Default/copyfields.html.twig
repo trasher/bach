@@ -12,17 +12,17 @@
     <body>
         <div class="container-fluid">
             <div class="row-fluid">
-            	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="{{ url('administration_copyfields') }}"> Select all fields </a>  |
-                	<a href="{{ url('administration_copyfields') }}"> Deselect all fields </a>  |
-                	
+            	 <div class="row-fluid"><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy fields</h3>
+            	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="{{ url('administration_fields') }}"> Select all fields </a>  |
+                	<a href="{{ url('administration_fields') }}"> Deselect all fields </a>  |
                 	<a data-toggle="modal" href="#addFieldDialog" >Add</a> |
                 	<a href="{{ url('administration_fields') }}"> Remove </a>  |
             	</p>
     	        <div class="span9">
     	            
                 		<form class="form-inline" action="..." method="POST" {{ form_enctype(form) }}>
-                            <h3>CopyFields</h3>
+                            
                             <ul class="fields">
                                 {# iterate over each existing tag and render its only field: name #}
                                 {% for field in form.copyFields %}
