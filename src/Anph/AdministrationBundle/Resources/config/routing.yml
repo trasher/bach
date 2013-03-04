@@ -31,3 +31,6 @@ administration_coreadmin:
 administration_fiel:
     pattern:  /fiel
     defaults: { _controller: AdministrationBundle:Default:contact }
+administration_indexer:
+    pattern:  /indexer
+    defaults: { _controller: AdministrationBundle:Indexer:indexer }
