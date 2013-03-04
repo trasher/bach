@@ -1,3 +1,4 @@
+
 {
     "name": "symfony/framework-standard-edition",
     "description": "The \"Symfony Standard Edition\" distribution",
@@ -20,8 +21,8 @@
         "jms/di-extra-bundle": "1.1.*",
         "nelmio/solarium-bundle": "1.*",
         "twitter/bootstrap": "master",
-	"aura/http": "dev-develop"
-    },
+        "aura/http": "dev-develop"
+  },
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",

@@ -8,7 +8,7 @@ anph_home:
 
 anph_indexation:
     resource: "@AnphIndexationBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   //
 
 # Internal routing configuration to handle ESI
 #_internal:
