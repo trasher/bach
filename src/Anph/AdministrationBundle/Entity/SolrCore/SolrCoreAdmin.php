@@ -5,19 +5,14 @@ use Anph\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
 use Aura\Http\Message\Response\Stack;
 use Aura\Http\Message\Request;
 use Exception;
+use DOMDocument;
+use DOMElement;
 
 /**
  * This class allows to manage Solr cores
  */
 class SolrCoreAdmin
 {
-    /*const CORE_PATH = '/var/solr/';
-    const CORE_HTTP = 'http://localhost:8080/solr/admin/cores';
-    const CORE_DIR_TEMPLATE_PATH = '/var/solr/coreTemplate';
-    const DATA_DIR = 'data';
-    const CONFIG_DIR = 'conf';
-    const SOLRCONFIG_FILE_NAME = 'solrconfig.xml';
-    const SCHEMA_FILE_NAME = 'schema.xml';*/
     const DELETE_INDEX = 0;
     const DELETE_DATA = 1;
     const DELETE_CORE = 2;
@@ -206,10 +201,41 @@ class SolrCoreAdmin
     {
         if (!is_dir($coreInstanceDirPath)) {
             exec('cp -r -a "' . $this->reader->getCoreTemplatePath() . '" "' . $coreInstanceDirPath . '"', $output, $status);
-            
+            $this->addFieldsByDefault($coreInstanceDirPath);
             return $status == 0 ? true : false;
         }
         return false;
+    }
+    
+    private function addFieldsByDefault($coreInstanceDirPath)
+    {
+        $schemaFilePath = $this->reader->getCoreConfigDir() . $this->reader->getSchemaFileName();
+        $doc = new DOMDocument();
+        $doc->load($schemaFilePath);
+        // Creation of fieldType
+        $elt = $doc->getElementsByTagName("types");
+        $elt = $elt[0];
+        $newFieldType = new DOMElement("fieldType");
+        $newFieldType->setAttribute("name", "text");
+        $newFieldType->setAttribute("class", "solr.TextField");
+        $elt->appendChild($newFieldType);
+        // Creation of fields
+        $doc->documentElement->removeChild($doc->getElementsByTagName("fields"));
+        $elt = new DOMElement("fields");
+        $fields = $this->reader->getFieldsFromDataBase();
+        foreach ($fields as $f) {
+            $newFieldType = new DOMElement("field");
+            $newFieldType->setAttribute("name", $f);
+            $newFieldType->setAttribute("type", "text");
+            $elt->appendChild($newFieldType);
+        }
+        $doc->documentElement->appendChild($elt);
+        $doc->save($schemaFilePath);
+    }
+    
+    private function createDataConfigFile()
+    {
+        
     }
 
     /**
