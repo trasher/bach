@@ -10,18 +10,32 @@
 	<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
     
     <body>
-        <div class="well span9">
-            <form action="..." method="POST" {{ form_enctype(form) }}>
-                <h3>Analyzers</h3>
+	<div class="container-fluid">
+            <div class="row-fluid">
+          <div class="span9">
+            <form class="form-inline" action="..." method="POST" {{ form_enctype(form) }}>
+	      
+              <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analyzers</h1>
+	    
+            
                 <ul class="fields">
-                    {# iterate over each existing tag and render its only field: name #}
+                   
                     {% for field in form.analyzers %}
-                        <li>{{ form_row(field.name) }}</li>
-                        <li>{{ form_row(field.class) }}</li>
+			
+			<div class="well row-fluid show-grid">
+			<div class="span6">
+                        Field type name &nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp; {{ form_widget(field.name) }}
+			</div>
+			<div class="span6">
+                        class &nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{ form_widget(field.class) }}
+			</div>
+			</div>
                     {% endfor %}
                 </ul>
             </form>
         </div>
+	    </div>
+	</div>
     </body>   
 {% endblock %}
 
