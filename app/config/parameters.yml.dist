@@ -1,0 +1,15 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: bach
+    database_user: bach
+    database_password: A_PASSWORD
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: fcfe28f4f96b6167f7e541210b30616ac
+    database_path: null
+
