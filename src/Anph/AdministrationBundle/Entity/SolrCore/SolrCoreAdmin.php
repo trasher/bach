@@ -212,6 +212,7 @@ class SolrCoreAdmin
         return false;
     }
 
+
     /**
      * Deletes core directory and all sub-directories. Returns true in successe or false in case of failure
      * @param string $dirName
@@ -227,6 +228,10 @@ class SolrCoreAdmin
         
         return true;
     }
+    
+    
+    
+    
     
     /**
      * Verify whether a core exist. Throw an exception if can not obtain Solr cores status.
@@ -270,4 +275,17 @@ class SolrCoreAdmin
         $stack = $this->http->send($request);
         return new SolrCoreResponse($stack[0]->content);
     }
+    
+    private function InitCore($CoreConfPath,$TableName){
+    	$sql = "SELECT COLUMN_NAME AS name FROM information_schema.COLUMNS WHERE TABLE_NAME ='".$TableName."'";
+    	$connection = $this->getDoctrine()->getConnection();
+    	$result = $connection->query($sql);
+    	while ($row = $result->fetch()){
+    		$res[]=$row;
+    	}
+    }
+    
+    
+    
+    
 }
