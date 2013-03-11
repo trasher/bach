@@ -22,6 +22,7 @@ class PerformanceController extends Controller
     
     private function changeAction(Request $request)
     {
+        // TODO voir la validation du formulaire, mettre le code au propre
         $perf = new Performance();
         $form = $this->createForm(new PerformanceForm(), $perf)->bind($request);
         $perf->saveAll('core0');

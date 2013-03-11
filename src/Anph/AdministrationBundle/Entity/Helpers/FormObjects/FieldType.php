@@ -1,6 +1,10 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
 
+use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
+
+use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+
 use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 class FieldType
@@ -39,5 +43,30 @@ class FieldType
             $attr = $fieldElt->getAttribute('autoGeneratePhraseQueries');
             $this->autoGeneratePhraseQueries = $attr !== null ? $attr->getValue() : null;
         }
+    }
+    
+    public function addField(XMLProcess $xmlP)
+    {
+        $solrXMLElt = new SolrXMLElement('dynamicField');
+        $attr = new SolrXMLAttribute('name');
+        $attr->setValue($this->name);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('class');
+        $attr->setValue($this->class);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('sortMissingLast');
+        $attr->setValue($this->sortMissingLast);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('sortMissingFirst');
+        $attr->setValue($this->sortMissingFirst);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('positionIncrementGap');
+        $attr->setValue($this->positionIncrementGap);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('autoGeneratePhraseQueries');
+        $attr->setValue($this->autoGeneratePhraseQueries);
+        $solrXMLElt->addAttribute($attr);
+        $fields = $xmlP->getElementsByName('types');
+        $fields->addElement($solrXMLElt);
     }
 }

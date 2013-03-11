@@ -17,4 +17,18 @@ class FieldsController extends Controller
                 'form' => $form->createView(),
         ));
     }
+    
+    public function saveAction()
+    {
+        $fields = new Fields();
+        $form = $this->createFormBuilder($fields)->getForm();
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                // We save the modifications into the schema.xml file of corresponding core
+                $xmlP->saveXML();
+                return $this->redirect($this->generateUrl('administration_fields'));
+            }
+        }
+    }
 }

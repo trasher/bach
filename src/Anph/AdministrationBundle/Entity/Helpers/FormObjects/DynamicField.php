@@ -1,6 +1,10 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
 
+use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+
+use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
+
 use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 class DynamicField
@@ -49,5 +53,33 @@ class DynamicField
             $this->termPositions = $element->getAttribute('termPositions')->getValue();
             $this->termOffsets = $element->getAttribute('termOffsets')->getValue();*/
         }
+    }
+    
+    public function addField(XMLProcess $xmlP)
+    {
+        $solrXMLElt = new SolrXMLElement('dynamicField');
+        $attr = new SolrXMLAttribute('name');
+        $attr->setValue($this->name);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('type');
+        $attr->setValue($this->type);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('indexed');
+        $attr->setValue($this->indexed);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('stored');
+        $attr->setValue($this->stored);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('multiValued');
+        $attr->setValue($this->multiValued);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('default');
+        $attr->setValue($this->default);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('required');
+        $attr->setValue($this->required);
+        $solrXMLElt->addAttribute($attr);
+        $fields = $xmlP->getElementsByName('fields');
+        $fields->addElement($solrXMLElt);
     }
 }

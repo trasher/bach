@@ -1,6 +1,8 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
 
+use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
+
 use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 class CopyField
@@ -19,5 +21,21 @@ class CopyField
             $attr = $fieldElt->getAttribute('maxChars');
             $this->maxChars = $attr !== null ? $attr->getValue() : null;
         }
+    }
+    
+    public function addField(XMLProcess $xmlP)
+    {
+        $solrXMLElt = new SolrXMLElement('copyField');
+        $attr = new SolrXMLAttribute('source');
+        $attr->setValue($this->source);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('dest');
+        $attr->setValue($this->dest);
+        $solrXMLElt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('maxChars');
+        $attr->setValue($this->maxChars);
+        $solrXMLElt->addAttribute($attr);
+        $schema = $xmlP->getElementsByName('schema');
+        $schema->addElement($solrXMLElt);
     }
 }

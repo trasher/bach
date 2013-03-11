@@ -17,4 +17,18 @@ class AnalyzersController extends Controller
                 'form' => $form->createView(),
         ));
     }
+    
+    public function saveAction()
+    {
+        $analyzers = new Analyzers();
+        $form = $this->createFormBuilder($analyzers)->getForm();
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                // If the data is valid, we save new field into the schema.xml file of corresponding core
+                $xmlP->saveXML();
+                return $this->redirect($this->generateUrl('administration_fieldstype'));
+            }
+        }
+    }
 }
