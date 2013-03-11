@@ -83,4 +83,9 @@ class BachCoreAdminConfigReader
     {
         return $this->doc->getElementsByTagName('solrSchemaFileName')->item(0)->nodeValue;
     }
+    
+    public function getFieldsFromDataBase()
+    {
+        return array();
+    }
 }
