@@ -92,8 +92,7 @@ class BachCoreAdminConfigReader
     public function getDatabaseParameters()
     {
         $data = array();
-        $elt = $this->doc->getElementsByTagName('databaseConfig');
-        $elt = $elt[0];
+        $elt = $this->doc->getElementsByTagName('databaseConfig')->item(0);
         $eltChilds = $elt->childNodes;
         foreach ($eltChilds as $e) {
             $data[$e->nodeName] = $e->nodeValue;
