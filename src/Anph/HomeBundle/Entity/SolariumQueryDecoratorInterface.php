@@ -4,7 +4,7 @@ namespace Anph\HomeBundle\Entity;
 
 class SolariumQueryDecorator
 {
-	abstract protected $_targetField;
+	protected $_targetField;
 	
 	public function getTargetField(){
 		return $this->targetField;
