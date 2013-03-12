@@ -1,6 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
+
  
 <div class="span3">
 	<div class="well sidebar-nav" >
@@ -46,8 +47,8 @@
 					</form>
 				</div>
 				<div class="span5">
-					<p>Selectionnez le fichier que vous souhaiter indexer. Il sera ajouté ensuite à la file d'attente du processus d'indexation.</p>
-					<p>La file d'attente est traitée toute les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation</p>
+					<p>Selectionnez le fichier que vous souhaitez indexer. Il sera ajouté ensuite à la file d'attente du processus d'indexation.</p>
+					<p>La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation</p>
 				</div>
 			</div>
 		</fieldset>
@@ -108,6 +109,61 @@
 	function cachervisible() {
 		$("#upload").toggle();
 	}
+
+	$( "#erreurPopup" ).dialog({
+		modal: true,
+		autoOpen: false,
+		height: 'auto',
+		width: 'auto',
+		buttons: {
+			Ok: function() {
+				$( this ).dialog( "close" );
+				//hideVoile();
+			}
+		}
+	});
+	
+	$( "#infopopup" ).dialog({
+		autoOpen: false,
+		resizable: true,
+		modal: true,
+		height: 'auto',
+		width: 'auto',
+		position: ['center','center'],
+		buttons: {
+			Ok: function() {
+				$( this ).dialog( "close" );
+				//hideVoile();
+			}
+		}
+	});
+
+	//ouvre une popup d'information avec le contenu du fichier passé en paramètre
+	function openInfoFromHTMLFile(url){
+		var message = '' ;
+		$.get(url, function(data) {
+			message = data;
+		})
+		.success(function() { 
+			
+		})
+		.error(function() { 
+			message = "Erreur d'affchage";
+		})
+		.complete(function() { 
+			$( "#infopopup" ).dialog( "option", "modal", false );
+			openInfo(message);
+		})
+	}
+
+	//ouvre une popup d'information avec le message passé en paramètre
+	function openInfo(message){
+		$( "#infopopup" ).dialog( "open" ) ;
+		document.getElementById('infopopup').innerHTML = message ;
+	}
+
+	
+	
 	</script>
 {% endblock %}
 {% endblock %}
