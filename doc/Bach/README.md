@@ -13,7 +13,7 @@ On se place dans notre dossier on et clone notre dépôt :
     cd ~/git
     git clone git@dev.anaphore.eu:bach.git bachdev
     sudo chmod -R 777 bachdev/
-    cd backdev/app/config
+    cd bachdev/app/config
     cp parameters.yml.dist parameters.yml
 
 Editez ensuite parameters.yml pour définir vos paramètres de connexion à la base de données.
