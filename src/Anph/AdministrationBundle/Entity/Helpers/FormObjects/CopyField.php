@@ -1,6 +1,8 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
 
+use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+
 use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
 
 use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;

@@ -27,7 +27,10 @@ administration_performance:
     defaults: { _controller: AdministrationBundle:Performance:refresh }  
 administration_coreadmin:
     pattern:  /coreadmin
-    defaults: { _controller: AdministrationBundle:Default:coreadmin }
+    defaults: { _controller: AdministrationBundle:CoreAdmin:refresh }
+administration_core_creation:
+    pattern: /coreadmin/create
+    defaults: { _controller: AdministrationBundle:CoreAdmin:createCore }
 administration_fiel:
     pattern:  /fiel
     defaults: { _controller: AdministrationBundle:Default:contact }
