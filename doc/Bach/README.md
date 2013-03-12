@@ -40,8 +40,9 @@ Passons ensuite à la configuration d'apache, on doit d'abord créer le lien sym
 
 Ensuite copiez la configuration de apache pour l'activer :
 
-    sudo cp ~/git/bachdev/app/config/bachdev /etc/apache2/site-available
+    sudo cp ~/git/bachdev/app/config/bachdev /etc/apache2/sites-available/
     sudo a2ensite bachdev
+    sudo service apache2 restart
 
 Actuellement il y a une erreur dans la version de twig installée pour y remédier éditez : ~/git/bachdev/vendor/symfony/symfony/src/Symfony/Bridge/Twig/NodeVisitor/Scope.php
 
