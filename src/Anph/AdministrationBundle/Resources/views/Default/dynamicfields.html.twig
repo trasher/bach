@@ -16,17 +16,24 @@
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dynamic fields</h3>
 			
 			<div class="span9 span-fixed-sidebar">
-<p>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
-					href="{{ url('administration_fields') }}"> Select all fields </a> |
-				<a href="{{ url('administration_fields') }}"> Deselect all fields </a>
-				| <a data-toggle="modal" href="#addFieldDialog">Add</a> | <a
-					href="{{ url('administration_fields') }}"> Remove </a> |
-			</p>
-
+			<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dynamic fields</h3>
+			<div align="right">
+					<div class="btn-toolbar">
+					<button type="submit" value="selectAll" class="btn btn-warning btn-small"><i
+							class="icon-white icon-pencil"></i> Tout séléctionner</a> 
+							<button type="submit" value="deselectAll"  class="btn btn-danger btn-small"><i
+							class="icon-white icon-repeat"></i> Ne rien séléctionner</a> 
+							<button type="submit" value="add" 
+							class="btn btn-primary btn-small"><i
+							class="icon-white icon-random"></i> ajouter</a> 
+							<button type="submit" value="remove" 
+							class="btn btn-inverse btn-small"><i
+							class="icon-white icon-ban-circle"></i> supprimer</a>
+					</div>
+				</div>
+				
 				<ul class="fields">
 
 
@@ -35,16 +42,24 @@
 						 {{ form_enctype(form) }}>
 
 						{% for field in form.dynamicFields %}
-
+                      
 						<div class="well control-group">
 							<div class="controls">
 								<div class="row-fluid show-grid">
 									<div class="span3">Name {{ form_widget(field.name) }}</div>
 									<div class="span3">Type {{ form_widget(field.type) }}</div>
 									<div class="span3">Default {{ form_widget(field.default) }}</div>
-									<div class="span3">{{ form_widget(field.indexed)
+									<div class="span2">{{ form_widget(field.indexed)
 										}}&nbsp;&nbsp;Indexed</div>
+								<div class="span1">
+									<label class="checkbox">
+   									 <input type="checkbox" name="test" class="largerCheckbox"/>
+   									 <span></span>
+									</label>
 								</div>
+								</div>
+								
+								
 								<p></p>
 								<div class="row-fluid show-grid">
 
@@ -53,7 +68,7 @@
 										}}&nbsp;&nbsp;Stored</div>
 									<div class="span3">{{ form_widget(field.multiValued)
 										}}&nbsp;&nbsp;Multivalued</div>
-									<div class="span3">{{ form_widget(field.required)
+									<div class="span2">{{ form_widget(field.required)
 										}}&nbsp;&nbsp;Required</div>
 
 								</div>
