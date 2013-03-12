@@ -1,76 +1,73 @@
-{% extends '::base.html.twig' %}
+{% extends '::base.html.twig' %} {% block container %}
+<!-- MENU -->
+{% include 'AdministrationBundle:Default:adminmenu.html.twig' with
+{'page': 'dynamicfields'}%}
+<!-- Our CSS stylesheet file -->
+<link
+	rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+<link
+	rel="stylesheet"
+	href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
+<!-- CSS adjustments for browsers with JavaScript disabled -->
+<noscript>
+	<link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
+</noscript>
 
-{% block container %}
-    <!-- MENU -->
-    {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'dynamicfields'}%}
-    <!-- Our CSS stylesheet file -->
-    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
-    <!-- CSS adjustments for browsers with JavaScript disabled -->
-	<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
-    
-    <body>
-        <div class="container-fluid">
-		<div class="row-fluid"><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dynamic fields</h3>
-            	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="{{ url('administration_fields') }}"> Select all fields </a>  |
-                	<a href="{{ url('administration_fields') }}"> Deselect all fields </a>  |
-                	<a data-toggle="modal" href="#addFieldDialog" >Add</a> |
-                	<a href="{{ url('administration_fields') }}"> Remove </a>  |
-            	</p>
-    	        <div class="span9">
-    	            
-                            
-                            <ul class="fields">
-                               
-                            
-                        <form class="form-inline" action="..." method="POST" {{ form_enctype(form) }}>
-
-                        {% for field in form.dynamicFields %}
-		
-                        <div class="well control-group">
-                          <div class="controls">
-                            <div class="row-fluid show-grid">
-                              <div class="span3">
- 
-			      Name {{ form_widget(field.name) }}
-			      </div>
-                              <div class="span3">
-                               
-                               Type   {{ form_widget(field.type) }}
-                               
-                              </div>
-                              <div class="span3">
-                              Default {{ form_widget(field.default) }}
-			      </div>
-                              <div class="span3">
-                                {{ form_widget(field.indexed) }}&nbsp;&nbsp;Indexed
-                            </div>
-			    </div><p></p>
-                            <div class="row-fluid show-grid">
-			    
-                              <div class="span3">&nbsp;&nbsp;&nbsp;</div>
-                              <div class="span3">
-                             {{ form_widget(field.stored) }}&nbsp;&nbsp;Stored
-				</div>
-                              <div class="span3">
-                                {{ form_widget(field.multiValued) }}&nbsp;&nbsp;Multivalued
-				</div>
-                              <div class="span3">
-                               {{ form_widget(field.required) }}&nbsp;&nbsp;Required
-			       </div>
-			      
-                            </div>
-                          <!--</div>-->
-                        </div>
-                         
-                    </div>
-		{% endfor %}
-			</form>
-			    </ul>
+<body>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dynamic fields</h3>
 			
-                </div>
-            </div>
-        </div>
-    </body>
+			<div class="span9 span-fixed-sidebar">
+<p>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
+					href="{{ url('administration_fields') }}"> Select all fields </a> |
+				<a href="{{ url('administration_fields') }}"> Deselect all fields </a>
+				| <a data-toggle="modal" href="#addFieldDialog">Add</a> | <a
+					href="{{ url('administration_fields') }}"> Remove </a> |
+			</p>
+
+				<ul class="fields">
+
+
+					<form class="form-inline" action="..." method="POST"
+						
+						 {{ form_enctype(form) }}>
+
+						{% for field in form.dynamicFields %}
+
+						<div class="well control-group">
+							<div class="controls">
+								<div class="row-fluid show-grid">
+									<div class="span3">Name {{ form_widget(field.name) }}</div>
+									<div class="span3">Type {{ form_widget(field.type) }}</div>
+									<div class="span3">Default {{ form_widget(field.default) }}</div>
+									<div class="span3">{{ form_widget(field.indexed)
+										}}&nbsp;&nbsp;Indexed</div>
+								</div>
+								<p></p>
+								<div class="row-fluid show-grid">
+
+									<div class="span3">&nbsp;&nbsp;&nbsp;</div>
+									<div class="span3">{{ form_widget(field.stored)
+										}}&nbsp;&nbsp;Stored</div>
+									<div class="span3">{{ form_widget(field.multiValued)
+										}}&nbsp;&nbsp;Multivalued</div>
+									<div class="span3">{{ form_widget(field.required)
+										}}&nbsp;&nbsp;Required</div>
+
+								</div>
+								<!--</div>-->
+							</div>
+
+						</div>
+						{% endfor %}
+						<button type="submit" class="btn btn-fixed btn-success">Valider</button>
+					</form>
+				</ul>
+
+			</div>
+		</div>
+	</div>
+</body>
 {% endblock %}

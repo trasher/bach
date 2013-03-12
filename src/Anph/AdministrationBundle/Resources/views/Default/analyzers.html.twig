@@ -1,41 +1,46 @@
-{% extends '::base.html.twig' %}
+{% extends '::base.html.twig' %} {% block container %}
+<!-- MENU -->
+{% include 'AdministrationBundle:Default:adminmenu.html.twig' with
+{'page': 'analyzers'}%}
+<!-- Our CSS stylesheet file -->
+<link
+	rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+<link
+	rel="stylesheet"
+	href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
+<!-- CSS adjustments for browsers with JavaScript disabled -->
+<noscript>
+	<link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
+</noscript>
 
-{% block container %}
-    <!-- MENU -->
-    {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'analyzers'}%}
-    <!-- Our CSS stylesheet file -->
-    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
-    <!-- CSS adjustments for browsers with JavaScript disabled -->
-	<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
-    
-    <body>
+<body>
 	<div class="container-fluid">
-            <div class="row-fluid">
-          <div class="span9">
-            <form class="form-inline" action="..." method="POST" {{ form_enctype(form) }}>
-	      
-              <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analyzers</h1>
-	    
-            
-                <ul class="fields">
-                   
-                    {% for field in form.analyzers %}
-			
-			<div class="well row-fluid show-grid">
-			<div class="span6">
-                        Field type name &nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp; {{ form_widget(field.name) }}
+		<div class="row-fluid">
+			<div class="span9">
+				<form class="form-inline" action="..." method="POST"
+					
+					 {{ form_enctype(form) }}>
+
+					<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analyzers</h1>
+
+
+					<ul class="fields">
+
+						{% for field in form.analyzers %}
+
+						<div class="well row-fluid show-grid">
+							<div class="span6">Field type name
+								&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp; {{ form_widget(field.name)
+								}}</div>
+							<div class="span6">class &nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{
+								form_widget(field.class) }}</div>
+						</div>
+						{% endfor %}
+					</ul>
+				</form>
 			</div>
-			<div class="span6">
-                        class &nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{ form_widget(field.class) }}
-			</div>
-			</div>
-                    {% endfor %}
-                </ul>
-            </form>
-        </div>
-	    </div>
+		</div>
 	</div>
-    </body>   
+</body>
 {% endblock %}
 
