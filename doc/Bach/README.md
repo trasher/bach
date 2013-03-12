@@ -32,7 +32,7 @@ Une fois que tout est terminé, exécutez la commande suivante pour supprimer le
 Créez votre base de données sql puis exécutez : 
     
     cd ~/git/bachdev
-    php app/console doctrine:schema:generate
+    php app/console doctrine:schema:create
 
 Passons ensuite à la configuration d'apache, on doit d'abord créer le lien symbolique pour y accèder :
 
@@ -61,3 +61,10 @@ Si vous rencontrez des erreurs, cela peut provenir des droits ou du cache de sym
     cd ~/git/bachdev
     sudo rm -R app/cache/*
     sudo chmod -R 777 .
+    
+Après la création du projet dans Eclipse, il arrive que git veuillent commiter plein de choses, dans ce cas, la seule solution trouvée actuellement est de faire (après avoir sauvegarder ses modifications) : 
+    
+    git fetch --all
+    git reset --hard
+    
+Puis de remettre les fichiers que vous aviez modifié. A ce moment les commits suivant se passeront normalement.
