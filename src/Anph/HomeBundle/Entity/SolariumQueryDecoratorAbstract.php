@@ -2,7 +2,7 @@
 
 namespace Anph\HomeBundle\Entity;
 
-abstract class SolariumQueryDecoratorInterface
+abstract class SolariumQueryDecoratorAbstract
 {
 	protected $_targetField;
 	
