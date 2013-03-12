@@ -15,7 +15,8 @@ class Field
     /*
      * These attributes can be added to the application in the future.
      */
-    /*public $omitNorms;
+    /*
+    public $omitNorms;
     public $omitTermFreqAndPositions;
     public $omitPositions;
     public $termVectors;

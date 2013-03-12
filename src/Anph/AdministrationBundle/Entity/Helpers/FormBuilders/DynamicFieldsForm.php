@@ -21,6 +21,6 @@ class DynamicFieldsForm extends AbstractType
     
     public function getName()
     {
-        return 'fields';
+        return 'dynamicFields';
     }
 }

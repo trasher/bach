@@ -5,19 +5,14 @@ use Anph\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
 use Aura\Http\Message\Response\Stack;
 use Aura\Http\Message\Request;
 use Exception;
+use DOMDocument;
+use DOMElement;
 
 /**
  * This class allows to manage Solr cores
  */
 class SolrCoreAdmin
 {
-    /*const CORE_PATH = '/var/solr/';
-    const CORE_HTTP = 'http://localhost:8080/solr/admin/cores';
-    const CORE_DIR_TEMPLATE_PATH = '/var/solr/coreTemplate';
-    const DATA_DIR = 'data';
-    const CONFIG_DIR = 'conf';
-    const SOLRCONFIG_FILE_NAME = 'solrconfig.xml';
-    const SCHEMA_FILE_NAME = 'schema.xml';*/
     const DELETE_INDEX = 0;
     const DELETE_DATA = 1;
     const DELETE_CORE = 2;
@@ -46,7 +41,7 @@ class SolrCoreAdmin
      * @param boolean $evenIfInstanceDirAlreadyExist 
      * @return boolean|\Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
      */
-    public function create($coreName, $coreInstanceDir, $evenIfInstanceDirAlreadyExist = false)
+    public function create($coreName, $coreInstanceDir, $tableName, $evenIfInstanceDirAlreadyExist = false)
     {
         $coreInstanceDirPath = $this->reader->getCoresPath() . $coreInstanceDir;
         // Test if the core does not already exist.
@@ -55,14 +50,14 @@ class SolrCoreAdmin
         }
         // Test if we want create core even if the directory $coreInstanceDir already exist.
         if ($evenIfInstanceDirAlreadyExist) {
-            if (!is_dir($coreInstanceDirPath) && !$this->createCoreDir($coreInstanceDirPath)) {
+            if (!is_dir($coreInstanceDirPath) && !$this->createCoreDir($coreInstanceDirPath, $tableName)) {
                 return false;
             }
         } else {
             if (is_dir($coreInstanceDirPath)) {
                 return false;
             } else {
-                if (!$this->createCoreDir($coreInstanceDirPath)) {
+                if (!$this->createCoreDir($coreInstanceDirPath, $tableName)) {
                     return false;
                 }
             }
@@ -190,20 +185,57 @@ class SolrCoreAdmin
         $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
         return $coreInstanceDir . $this->reader->getCoreConfigDir() . '/' . $this->reader->getSchemaFileName();
     }
+    
+    public function getConfigPath($coreName)
+    {
+        $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
+        return $coreInstanceDir . $this->reader->getCoreConfigDir() . '/' . $this->reader->getConfigFileName();
+    }
+    
+    public function getTableNamesFromDataBase()
+    {
+        $sql = "SELECT table_name AS name FROM TABLES WHERE TABLE_SCHEMA LIKE 'SolrConfig_DB'";
+        $connection = $this->getDoctrine()->getConnection();
+        $result = $connection->query($sql);
+        while ($row = $result->fetch()){
+            $res[]=$row;
+        }
+        return $res;
+    }
 
     /**
      * Create core directory with the same name as core name. If a such directory already exist, returns false.
      * @param string $coreName
      * @return boolean
      */
-    private function createCoreDir($coreInstanceDirPath)
+    private function createCoreDir($coreInstanceDirPath, $tableName)
     {
         if (!is_dir($coreInstanceDirPath)) {
             exec('cp -r -a "' . $this->reader->getCoreTemplatePath() . '" "' . $coreInstanceDirPath . '"', $output, $status);
-            
+            $this->addFieldsByDefault($coreInstanceDirPath, $tableName);
+            $this->createDataConfigFile($tableName);
             return $status == 0 ? true : false;
         }
         return false;
+    }
+    
+    private function addFieldsByDefault($coreInstanceDirPath, $tableName)
+    {
+        $schemaFilePath = $this->reader->getCoreConfigDir() . $this->reader->getSchemaFileName();
+        $doc = new DOMDocument();
+        $doc->load($schemaFilePath);
+        // Creation of fields
+        $doc->documentElement->removeChild($doc->getElementsByTagName("fields"));
+        $elt = new DOMElement("fields");
+        $fields = $this->getFieldsFromDataBase($tableName);
+        foreach ($fields as $f) {
+            $newFieldType = new DOMElement("field");
+            $newFieldType->setAttribute("name", $f);
+            $newFieldType->setAttribute("type", "string");
+            $elt->appendChild($newFieldType);
+        }
+        $doc->documentElement->appendChild($elt);
+        $doc->save($schemaFilePath);
     }
 
     /**
@@ -220,7 +252,7 @@ class SolrCoreAdmin
         }
         
         return true;
-    }
+    } 
     
     /**
      * Verify whether a core exist. Throw an exception if can not obtain Solr cores status.
@@ -263,5 +295,49 @@ class SolrCoreAdmin
         $request->setUrl($url);
         $stack = $this->http->send($request);
         return new SolrCoreResponse($stack[0]->content);
+    }
+    
+    private function getFieldsFromDataBase($tableName)
+    {
+        $sql = "SELECT COLUMN_NAME AS name FROM information_schema.COLUMNS WHERE TABLE_NAME ='".$tableName."'";
+        $connection = $this->getDoctrine()->getConnection();
+        $result = $connection->query($sql);
+        while ($row = $result->fetch()){
+            $res[]=$row;
+        }
+        return $res;
+    }
+    
+    private function createDataConfigFile($tableName)
+    {
+        $fields = $this->getFieldsFromDataBase($tableName);
+        $dataConfigFilePath = $this->reader->getCoreConfigDir() . $this->reader->getDataConfigFileName();
+        $doc = new DOMDocument();
+        $doc->load($dataConfigFilePath);
+        $databaseParameters = $this->reader->getDatabaseParameters();
+        $elt = $doc->getElementsByTagName('dataSource');
+        $elt = $elt[0];
+        $elt->setAttribute('type', $databaseParameters['type']);
+        $elt->setAttribute('driver', $databaseParameters['driver']);
+        $elt->setAttribute('url', $databaseParameters['url']);
+        $elt->setAttribute('user', $databaseParameters['user']);
+        $elt->setAttribute('password', $databaseParameters['password']);
+        $newField = new DOMElement('field');
+        $newField->setAttribute('column', $fields[0]);
+        $newField->setAttribute('name', $fields[0]);
+        $elt = $doc->getElementsByTagName('entity');
+        $elt = $elt[0];
+        $elt->appendChild($newField);
+        $query = 'SELECT ' . $fields[0];
+        for ($i = 1; $i < count($fields); $i++) {
+            $query .= ',' . $fields[$i];
+            $newField = new DOMElement('field');
+            $newField->setAttribute('column', $fields[$i]);
+            $newField->setAttribute('name', $fields[$i]);
+            $elt->appendChild($newField);
+        }
+        $query .= ' FROM ' . $tableName; 
+        $elt->setAttribute('query', $query);
+        $doc->save($dataConfigFilePath);
     }
 }

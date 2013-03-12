@@ -1,0 +1,26 @@
+<div class="span3">
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">  
+            <li class="nav-header" >Solr Admin</li>
+        	<li ><a href="{{ url('administration_dashboard') }}"><i class="icon-book"></i> Dashboard </a></li>
+        	<li class="divider"></li>
+        	
+        	<li class="nav-header" >Solr Schema Config</li>  
+            <li{% if (page == 'index' or page == 'fields') %} class="active" {% endif %}><a href="{{ url('administration_fields') }}"><i class="icon-book"></i>Fields</a></li>  
+            <li{% if (page == 'dynamicfields') %} class="active" {% endif %}><a href="{{ url('administration_dynamicfields') }}"><i class="icon-book"></i>Dynamic Fields</a></li>
+            <li{% if (page == 'copyfields') %} class="active" {% endif %}><a href="{{ url('administration_copyfields') }}"><i class="icon-book"></i>Copy fields</a></li>
+            <li{% if (page == 'fieldstype') %} class="active" {% endif %}><a href="{{ url('administration_fieldstype') }}"><i class="icon-book"></i>Fields Type</a></li> 
+            <li{% if (page == 'analyzers') %} class="active" {% endif %}><a href="{{ url('administration_analyzers') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-book"></i> Analizers</a></li>  
+            <li{% if (page == 'uniquekey') %} class="active" {% endif %}><a href="{{ url('administration_uniquekey') }}"><i class="icon-book"></i>Unique Key</a></li>  
+            <li{% if (page == 'indexer') %} class="active" {% endif %}><a href="{{ url('administration_indexer') }}"><i class="icon-book"></i>Indexer</a></li>  
+            <li class="divider"></li>
+            
+            <li class="nav-header">Solr Core Config</li> 
+       		<li><a href="{{ url('administration_coreadmin') }}"><i class="icon-book"></i> Core Admin</a></li>
+       		  
+            <li class="divider"></li>  
+            <li class="nav-header">Solr Performance Config</li> 
+           	<li{% if (page == 'performance') %} class="active" {% endif %}><a href="{{ url('administration_performance') }}"><i class="icon-book"></i> Performance Admin</a></li>   
+        </ul>  
+    </div> 
+</div>

@@ -6,7 +6,7 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta name="description" content="">
      <meta name="author" content="">
-{% stylesheets 'css/main.css' %}
+{% stylesheets '/css/main.css' %}
  <style type="text/css">
       body {
         padding-top: 80px;
@@ -101,13 +101,13 @@
              {% if path(app.request.attributes.get('_route')) == path('anph_home_homepage') %}
               <li class="active"><a href="{{ url('anph_home_homepage') }}">Home</a></li>
              {% else %}
-              <li><a href="{{ url('anph_home_homepage') }}">Home</a></li>
+              <li><a href="{{ path('anph_home_homepage') }}">Home</a></li>
              {% endif %}
              
              {% if path(app.request.attributes.get('_route')) == path('anph_indexation_homepage') %}
              <li class="active"><a href="{{ url('anph_indexation_homepage') }}">Indexation</a></li>    
              {% else %}          
-             <li><a href="{{ url('anph_indexation_homepage') }}">Indexation</a></li>
+             <li><a href="{{ path('anph_indexation_homepage') }}">Indexation</a></li>
              {% endif %}  
              
              {% if path(app.request.attributes.get('_route')) == path('administration_homepage') %}

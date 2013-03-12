@@ -83,4 +83,21 @@ class BachCoreAdminConfigReader
     {
         return $this->doc->getElementsByTagName('solrSchemaFileName')->item(0)->nodeValue;
     }
+    
+    public function getDataConfigFileName()
+    {
+        return $this->doc->getElementsByTagName('solrDataConfigFileName')->item(0)->nodeValue;
+    }
+    
+    public function getDatabaseParameters()
+    {
+        $data = array();
+        $elt = $this->doc->getElementsByTagName('databaseConfig');
+        $elt = $elt[0];
+        $eltChilds = $elt->childNodes;
+        foreach ($eltChilds as $e) {
+            $data[$e->nodeName] = $e->nodeValue;
+        }
+        return $data;
+    }
 }

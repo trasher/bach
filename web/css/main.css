@@ -833,7 +833,7 @@ input[type="color"],
 input,
 textarea,
 .uneditable-input {
-  width: 206px;
+  width: 125px;
 }
 textarea {
   height: auto;
@@ -921,7 +921,7 @@ input[type="file"] {
   line-height: 30px;
 }
 select {
-  width: 220px;
+  width: 140px;
   border: 1px solid #cccccc;
   background-color: #ffffff;
 }

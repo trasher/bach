@@ -1,5 +1,8 @@
 <?php
 
+# Add path prefix required for running behind the proxy
+$_SERVER['SCRIPT_NAME'] = '/bachdev' . $_SERVER['SCRIPT_NAME'];
+
 use Symfony\Component\HttpFoundation\Request;
 
 // If you don't want to setup permissions the proper way, just uncomment the following PHP line
@@ -13,6 +16,9 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     || !in_array(@$_SERVER['REMOTE_ADDR'], array(
         '127.0.0.1',
         '::1',
+        '172.16.26.43',
+	'88.190.33.157',
+        '86.69.165.216',  
     ))
 ) {
     header('HTTP/1.0 403 Forbidden');

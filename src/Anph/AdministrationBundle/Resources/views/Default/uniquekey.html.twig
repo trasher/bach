@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{% block container %}
+    <!-- MENU -->
+    {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'uniquekey'}%}
+    <!-- Our CSS stylesheet file -->
+    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
+    <!-- CSS adjustments for browsers with JavaScript disabled -->
+	<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
+    
+    <body>
+        <div class="well span9">
+            <form action="..." method="POST" {{ form_enctype(form) }}>
+                <h3>UniqueKey</h3>
+                <ul class="fields">
+                    {# iterate over each existing tag and render its only field: name #}
+                    <li>{{ form_row(form.uniqueKey) }}</li>
+                </ul>
+            </form>
+        </div>
+    </body>   
+{% endblock %}
