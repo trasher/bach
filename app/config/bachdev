@@ -1,0 +1,21 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost	
+	ServerName localhost
+	DocumentRoot /var/www/bachdev/web
+	<Directory /var/www/bachdev/web>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		allow from all
+		
+		<IfModule mod_rewrite.c>
+			RewriteEngine On
+			RewriteBase /
+			RewriteCond %{REQUEST_FILENAME} !-f
+			RewriteRule ^(.*)$ app_dev.php [QSA,L]
+			# Rewrite the front-end proxys paths for static files
+			RewriteRule ^/bachdev/(.*) /$1 [PT]
+		</IfModule>
+	</Directory>
+</VirtualHost>
+
