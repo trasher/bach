@@ -20,8 +20,8 @@ Editez ensuite parameters.yml pour définir vos paramètres de connexion à la b
 
 On installe ensuite les dépendances à l'aide de composer, si vous ne le possèdez pas visitez le site getcomposer.org pour obtenir les instructions relatives à son installation. On suppose ici qu'il est dans votre dossier personnel :
 
-    cd ~
-    composer udpate
+    cd ~/git/bachdev
+    ~/composer udpate
 
 Une fois que tout est terminé, exécutez la commande suivante pour supprimer le cache : 
 
