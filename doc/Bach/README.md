@@ -13,15 +13,15 @@ On se place dans notre dossier on et clone notre dépôt :
     cd ~/git
     git clone git@dev.anaphore.eu:bach.git bachdev
     sudo chmod -R 777 bachdev/
-    cd backdev/app/config
+    cd bachdev/app/config
     cp parameters.yml.dist parameters.yml
 
 Editez ensuite parameters.yml pour définir vos paramètres de connexion à la base de données.
 
 On installe ensuite les dépendances à l'aide de composer, si vous ne le possèdez pas visitez le site getcomposer.org pour obtenir les instructions relatives à son installation. On suppose ici qu'il est dans votre dossier personnel :
 
-    cd ~
-    composer udpate
+    cd ~/git/bachdev
+    ~/composer.phar udpate
 
 Une fois que tout est terminé, exécutez la commande suivante pour supprimer le cache : 
 
@@ -40,8 +40,9 @@ Passons ensuite à la configuration d'apache, on doit d'abord créer le lien sym
 
 Ensuite copiez la configuration de apache pour l'activer :
 
-    sudo cp ~/git/bachdev/app/config/bachdev /etc/apache2/site-available
+    sudo cp ~/git/bachdev/app/config/bachdev /etc/apache2/sites-available/
     sudo a2ensite bachdev
+    sudo service apache2 restart
 
 Actuellement il y a une erreur dans la version de twig installée pour y remédier éditez : ~/git/bachdev/vendor/symfony/symfony/src/Symfony/Bridge/Twig/NodeVisitor/Scope.php
 
