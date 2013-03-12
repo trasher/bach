@@ -1,6 +1,6 @@
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost	
-	ServerName localhost
+	ServerName bachdev.localhost
 	DocumentRoot /var/www/bachdev/web
 	<Directory /var/www/bachdev/web>
 		Options Indexes FollowSymLinks MultiViews
