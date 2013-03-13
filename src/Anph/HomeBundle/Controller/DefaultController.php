@@ -78,6 +78,8 @@ class DefaultController extends Controller
         	$searchResults = $this->get("anph.home.solarium_query_factory")->performQuery($container);
         	
         	$resultCount = $searchResults->getNumFound();
+        }else{
+        	$resultCount = 0;
         }        
         
         $builder = new OptionSidebarBuilder($sidebar);
