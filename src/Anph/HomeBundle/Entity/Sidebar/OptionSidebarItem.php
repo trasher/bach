@@ -29,7 +29,7 @@ class OptionSidebarItem
 	}
 	
 	public function appendChoice(OptionSidebarItemChoice $choice){
-		$this->choices[] = $choice;
+		$this->choices[$choice->getValue()] = $choice;
 		
 		return $this;
 	}
