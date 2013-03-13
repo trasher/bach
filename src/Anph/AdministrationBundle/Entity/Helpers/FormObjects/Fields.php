@@ -20,4 +20,14 @@ class Fields
             }
         }
     }
+    
+    public function save(XMLProcess $xmlP)
+    {
+        $fieldsArray = array();
+        foreach ($fields as $f) {
+            $fieldsArray[] = $this->fields->getSolrXMLElement();
+        }
+        $fieldsElt = $xmlP->getElementsByName('fields');
+        $fieldsElt->
+    }
 }

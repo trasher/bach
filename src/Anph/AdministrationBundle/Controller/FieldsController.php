@@ -18,7 +18,7 @@ class FieldsController extends Controller
         ));
     }
     
-    public function saveAction()
+    public function sumbitAction()
     {
         $fields = new Fields();
         $form = $this->createFormBuilder($fields)->getForm();

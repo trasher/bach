@@ -1,6 +1,10 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
 
+use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
+
+use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+
 use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 class Field
@@ -50,5 +54,24 @@ class Field
             $this->termPositions = $element->getAttribute('termPositions')->getValue();
             $this->termOffsets = $element->getAttribute('termOffsets')->getValue();*/
         }
+    }
+    
+    public function getSolrXMLElement()
+    {
+        $elt = new SolrXMLElement('field');
+        $attr = new SolrXMLAttribute('name', $this->name);
+        $elt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('type', $this->type);
+        $elt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('indexed', $this->indexed);
+        $elt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('stored', $this->stored);
+        $elt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('multiValued', $this->multiValued);
+        $elt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('default', $this->default);
+        $elt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('required', $this->required);
+        $elt->addAttribute($attr);
     }
 }

@@ -31,28 +31,23 @@ class FieldForm extends AbstractType
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'indexed');
         $builder->add('indexed', 'checkbox', array(
-                'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'label'    => $attr->getLabel()
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'stored');
         $builder->add('stored', 'checkbox', array(
-                'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'label'    => $attr->getLabel()
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
         $builder->add('multiValued', 'checkbox', array(
-                'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'label'    => $attr->getLabel()
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'default');
         $builder->add('default', 'text', array(
-                'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'label'    => $attr->getLabel()
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'required');
         $builder->add('required', 'checkbox', array(
-                'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'label'    => $attr->getLabel()
                 ));
         /*
          * Other Attributes that can be added to the application in the future

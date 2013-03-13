@@ -7,6 +7,9 @@ administration_dashboard:
 administration_fields:
     pattern: /fields
     defaults: { _controller: AdministrationBundle:Fields:refresh }
+administration_fields_submit:
+    pattern: /fields/submit
+    defaults: { _controller: AdministrationBundle:Fields:submit }
 administration_fieldstype:
     pattern:  /fieldstype
     defaults: { _controller: AdministrationBundle:Types:refresh }
