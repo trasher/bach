@@ -44,6 +44,19 @@ Ensuite copiez la configuration de apache pour l'activer :
     sudo a2ensite bachdev
     sudo service apache2 restart
 
+
+Modifions ensuite le fichier host : 
+
+    sudo nano /etc/hosts
+
+En haut du fichier après : 
+
+    127.0.0.1	localhost
+
+Rajoutez : 
+
+    127.0.0.1	bachdev.localhost
+
 Actuellement il y a une erreur dans la version de twig installée pour y remédier éditez : ~/git/bachdev/vendor/symfony/symfony/src/Symfony/Bridge/Twig/NodeVisitor/Scope.php
 
 A la ligne : 
@@ -54,7 +67,7 @@ Ajoutez :
 
     private $data = array();
 
-Vous pouvez maintenant vous rendre à l'adresse "http://localhost/bachdev".
+Vous pouvez maintenant vous rendre à l'adresse "http://bachdev.localhost".
 
 Si vous rencontrez des erreurs, cela peut provenir des droits ou du cache de symfony, exécutez dans ce cas : 
 

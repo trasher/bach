@@ -3,11 +3,9 @@
 namespace Anph\HomeBundle\Entity;
 
 abstract class SolariumQueryDecoratorAbstract
-{
-	protected $_targetField;
-	
+{	
 	public function getTargetField(){
-		return $this->targetField;
+		return $this->_targetField;
 	}
 	
 	abstract public function decorate(\Solarium_Query_Select $query, $data);
