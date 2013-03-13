@@ -1,3 +1,8 @@
 anph_home_homepage:
     pattern:  /
     defaults: { _controller: AnphHomeBundle:Default:index }
+    
+anph_home_homepage_search_process:
+    pattern:  /searchProcess
+    defaults: { _controller: AnphHomeBundle:Default:indexProcess }
+

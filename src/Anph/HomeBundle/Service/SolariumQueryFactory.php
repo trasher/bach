@@ -1,6 +1,8 @@
 <?php
 
-namespace Anph\IndexationBundle\Service;
+namespace Anph\HomeBundle\Service;
+
+use Symfony\Component\Finder\Finder;
 
 use Anph\HomeBundle\Entity\SolariumQueryContainer;
 
@@ -17,10 +19,15 @@ class SolariumQueryFactory
 	
 	public function __construct(\Solarium_Client $client)
 	{
-		$this->client;
+		$this->client = $client;
 		$this->searchQueryDecorators();
 	}
 	
+	/**
+	 * Perform a query into Solr
+	 * @param SolariumQueryContainer $container
+	 * @return \Solarium_Result_Select select
+	 */
 	public function performQuery(SolariumQueryContainer $container){
 		$query = $this->client->createSelect();
 		
