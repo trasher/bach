@@ -40,4 +40,4 @@ drivers:
                     - daogrp/daoloc
     unimarc:
         mapper: Anph\IndexationBundle\Entity\Mapper\UNIMARCDriverMapper
-        universalfileformat: Anph\IndexationBundle\Entity\UniversalFileFormat\UNIMARCFileFormat
+        #universalfileformat: Anph\IndexationBundle\Entity\UniversalFileFormat\UNIMARCFileFormat
