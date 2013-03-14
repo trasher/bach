@@ -43,17 +43,21 @@ class CopyFieldsController extends Controller
     
     }
     
-    public function saveAction()
+    public function submitAction(Request $request)
     {
-        $copyFields = new CopyFields();
-        $form = $this->createFormBuilder($copyFields)->getForm();
+        $cf = new CopyFields();
+        $form = $this->createForm(new CopyFieldsForm(), $cf);
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
-                 // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $xmlP->saveXML();
-                return $this->redirect($this->generateUrl('administration_copyfields'));
+                // If the data is valid, we save new field into the schema.xml file of corresponding core
+                $xmlP = new XMLProcess('core0');
+                $cf->save($xmlP);
             }
         }
+        $form = $this->createForm(new CopyFieldsForm(), $cf);
+        return $this->render('AdministrationBundle:Default:copyfields.html.twig', array(
+                'form' => $form->createView(),
+        ));
     }
 }

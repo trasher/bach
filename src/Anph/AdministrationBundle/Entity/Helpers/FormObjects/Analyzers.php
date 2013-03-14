@@ -23,4 +23,18 @@ class Analyzers
             }
         }
     }
+    
+    public function save(XMLProcess $xmlP)
+    {
+        $fieldsArray = array();
+        foreach ($this->analyzers as $f) {
+            $fieldTypes = $xmlP->getElementsByName('fieldType');
+            foreach ($fieldTypes as $t) {
+                if ($t->getAttribute('name')->getValue() == $f->name) {
+                    $t->setElements(array($f->getSolrXMLElement()));
+                }
+            }
+        }
+        $xmlP->saveXML();
+    }
 }

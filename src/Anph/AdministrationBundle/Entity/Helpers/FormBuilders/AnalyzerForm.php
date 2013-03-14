@@ -17,12 +17,13 @@ class AnalyzerForm extends AbstractType
         // Form attributes
         $builder->add('name', 'text', array(
                 'label'    => 'Field type name',
-                'disabled' => true
+                'read_only' => true
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'class');
         $builder->add('class', 'choice', array(
                 'label' => $attr->getLabel(),
-                'required' => $attr->isRequired(),
+                'empty_value' => '<-- Aucun -->',
+                'required' => false,
                 'choices' => $this->retreiveClassAttributeValues($reader)));
     }
     
@@ -35,7 +36,7 @@ class AnalyzerForm extends AbstractType
     
     public function getName()
     {
-        return 'analyzerType';
+        return 'analyzerTypeForm';
     }
     
     private function retreiveClassAttributeValues(BachSchemaConfigReader $reader)

@@ -1,6 +1,8 @@
 <?php
 namespace Anph\AdministrationBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\AnalyzersForm;
 use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Analyzers;
 use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
@@ -18,17 +20,21 @@ class AnalyzersController extends Controller
         ));
     }
     
-    public function saveAction()
+    public function submitAction(Request $request)
     {
-        $analyzers = new Analyzers();
-        $form = $this->createFormBuilder($analyzers)->getForm();
+        $a = new Analyzers();
+        $form = $this->createForm(new AnalyzersForm(), $a);
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $xmlP->saveXML();
-                return $this->redirect($this->generateUrl('administration_fieldstype'));
+                $xmlP = new XMLProcess('core0');
+                $a->save($xmlP);
             }
         }
+        $form = $this->createForm(new AnalyzersForm(), $a);
+        return $this->render('AdministrationBundle:Default:analyzers.html.twig', array(
+                'form' => $form->createView(),
+        ));
     }
 }

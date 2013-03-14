@@ -48,7 +48,7 @@
 											}}&nbsp;&nbsp;Multivalued</div>
 										<div class="span3">{{ form_widget(field.required)
 											}}&nbsp;&nbsp;Required</div>
-											{{ form_widget(form._token) }}
+											
 									</div>
 								</div>
 								<!--</div>-->
@@ -56,7 +56,7 @@
 
 						</div>
 						{% endfor %}
-
+                        {{ form_widget(form._token) }}
 					</ul>
 
 				</div>

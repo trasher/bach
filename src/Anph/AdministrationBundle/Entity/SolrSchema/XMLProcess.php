@@ -77,6 +77,11 @@ class XMLProcess
         return $this->rootElement->getElementsByName($name);
     }
     
+    public function getRootElement()
+    {
+        return $this->rootElement;
+    }
+    
     /**
      * Recursive algorithm of loading schema.xml file.
      * @param DOMNode $node 

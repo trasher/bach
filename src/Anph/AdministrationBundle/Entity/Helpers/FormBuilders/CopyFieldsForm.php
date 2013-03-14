@@ -9,7 +9,9 @@ class CopyFieldsForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('copyFields', 'collection', array('type' => new CopyFieldForm()));
+        $builder->add('copyFields', 'collection', array(
+                'type' => new CopyFieldForm(),
+                'allow_add' => true));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -21,6 +23,6 @@ class CopyFieldsForm extends AbstractType
 
     public function getName()
     {
-        return 'copyFields';
+        return 'copyFieldsForm';
     }
 }

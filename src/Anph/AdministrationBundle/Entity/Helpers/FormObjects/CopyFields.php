@@ -18,4 +18,21 @@ class CopyFields
             }
         }
     }
+    
+    public function save(XMLProcess $xmlP)
+    {
+        $fieldsArray = array();
+        $fieldsElt = $xmlP->getRootElement();
+        foreach ($fieldsElt->getElements() as $e) {
+            if ($e->getName() != 'copyField') {
+                $fieldsArray[] = $e;
+            }
+        }
+        foreach ($this->copyFields as $f) {
+            $fieldsArray[] = $f->getSolrXMLElement();
+        }
+        
+        $fieldsElt->setElements($fieldsArray);
+        $xmlP->saveXML();
+    }
 }
