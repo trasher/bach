@@ -7,9 +7,10 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row">
-						<form action="#">
+						<form action="{{ formAction }}" method="post" {{ form_enctype(form) }} name="search">
 						<div class="input-append">
-							<input class="span12 input-big" type="text" placeholder="Tapez votre recherche..."/>
+							{{ form_widget(form.query) }}
+							{{ form_widget(form._token) }}
 							<button type="submit" id="appendedInputButton" class="btn btn-primary"/><i class="icon-search icon-white"></i></button>
 						</div>
 						</form>
@@ -20,22 +21,28 @@
 	</div>
 </div>
 <div class="row-fluid">
+	{% if sidebar|length > 0 %}
 	<ul class="span2 nav nav-list well">
-		 <li class="nav-header">Langue des documents</li>
-		 <li class="active"><a href="#">Français</a></li>
-		 <li><a href="#">Anglais</a></li>
-		 <li class="nav-header">Nombre de résultats par page</li>
-		 <li><a href="#">10</a></li>
-		 <li class="active"><a href="#">50</a></li>
-		 <li><a href="#">100</a></li>
-		 <li class="nav-header">Affichage des facettes</li>
-		 <li class="active"><a href="#">Oui</a></li>
-		 <li><a href="#">Non</a></li>
+		{% for name,item in sidebar %}
+		<li class="nav-header">{{ name }}</li>
+			{% for choice in item %}
+				{% if choice.selected  %}
+			 	<li class="active"><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
+			 	{% else %}
+			 	<li><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
+			 	{% endif %}
+			{% endfor %}
+		{% endfor %}		
 	</ul>
-	
+	{% endif %}
 	<div class="offset0 span9">
 		<div class="container-fluid">
-			<div class="row">
+			<div class="row-fluid">
+				<div class="span12">
+					{{ resultCount }} résultat(s)
+				</div>
+			</div>
+			<div class="row-fluid">
 				<div class="span9">
 					<h4>Résultat 1</h4>
 					<p style="text-align:justify;">
@@ -47,7 +54,7 @@
 				</div>
 			</div>
 			<br/>
-			<div class="row">
+			<div class="row-fluid">
 				<div class="span9">
 					<h4>Résultat 2</h4>
 					<p style="text-align:justify;">

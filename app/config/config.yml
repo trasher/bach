@@ -69,7 +69,9 @@ swiftmailer:
 nelmio_solarium: 
     clients:
         default:
-            host: localhost
+            client_class: Solarium_Client
+            adapter_class: Solarium_Client_Adapter_Http
+            host: dev.anaphore.eu
             port: 8983
             path: /solr
             core: core0

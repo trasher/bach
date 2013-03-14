@@ -1,42 +1,7 @@
 {% extends '::base.html.twig' %} {% block container %}
 
-<div class="span3">
-	<div class="well sidebar-nav">
-		<ul class="nav nav-list">
-			<li class="nav-header">Solr Admin</li>
-			<li class="active"><a href="{{ url('administration_dashboard') }}"><i
-					class="icon-home"></i> Dashboard </a></li>
-			<li class="divider"></li>
-			<li class="nav-header">Solr Schema Config</li>
-			<li><a href="{{ url('administration_fields') }}"><i class="icon-book"></i>
-					Fields</a></li>
-			<li><a href="{{ url('administration_dynamicfields') }}"><i
-					class="icon-book"></i> Dynamic Fields</a></li>
-			<li><a href="{{ url('administration_fieldstype') }}"><i
-					class="icon-book"></i> Fields Type</a></li>
-			<li><a href="{{ url('administration_analyzers') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i
-					class="icon-book"></i> Analizers
-			</a></li>
-			<li><a href="{{ url('administration_tockenizers') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i
-					class="icon-book"></i> Tockenizers
-			</a></li>
-			<li><a href="{{ url('administration_filters') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i
-					class="icon-book"></i> Filters
-			</a></li>
-			<li class="divider"></li>
-			<li class="nav-header">Solr Core Config</li>
-			<li><a href="{{ url('administration_coreadmin') }}"><i
-					class="icon-remove-circle"></i> Core Admin</a></li>
-			<li class="divider"></li>
-			<li class="nav-header">Solr Performance Config</li>
-			<li><a href="{{ url('administration_performance') }}"><i
-					class="icon-tasks"></i> Performance Admin</a></li>
-		</ul>
-	</div>
-</div>
-<!--/span-->
-
-
+{% include 'AdministrationBundle:Default:adminmenu.html.twig' with
+{'page': 'dashboard'}%}
 <!-- Our CSS stylesheet file -->
 <link
 	rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
@@ -47,24 +12,18 @@
 <noscript>
 	<link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
 </noscript>
+
+
 <body>
-	<div class="span4">
+
+<div class="span9 span-fixed-sidebar">
+<div class="span12">
+	<div class="span6">
 		<ul class="breadcrumb">
 			<li><a href="#">Administration</a> <span class="divider">/</span> <a
 				class="active">Dashboard</a>
-			</li>
+			</li></ul>		
 	
-	</div>
-
-	<div class="span4">
-		<ul class="breadcrumb">
-			<li><a href="#">Administration</a> <span class="divider">/</span>
-			</li>
-	
-	</div>
-
-
-	<div class="span4">
 		<div class="accordion" id="accordion2">
 			<div class="accordion-group">
 				<div class="accordion-heading">
@@ -126,7 +85,22 @@
 						haven't heard of them accusamus labore sustainable VHS.</div>
 				</div>
 			</div>
+
 		</div>
+
+			
+	
+	</div>
+
+	<div class="span6">
+		<ul class="breadcrumb">
+			<li><a href="#">Administration</a> <span class="divider">/</span>
+			</li>
+	
+	</div>
+</div>
+    
+	
 	</div>
 
 </body>

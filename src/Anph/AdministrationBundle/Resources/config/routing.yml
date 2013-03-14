@@ -1,6 +1,6 @@
 administration_homepage:
     pattern: /administration
-    defaults: { _controller: AdministrationBundle:Default:index }
+    defaults: { _controller: AdministrationBundle:Default:dashboard }
 administration_dashboard:
     pattern: /dashboard
     defaults: { _controller: AdministrationBundle:Default:dashboard }
