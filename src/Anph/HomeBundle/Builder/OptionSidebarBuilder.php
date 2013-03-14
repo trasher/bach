@@ -19,44 +19,28 @@ class OptionSidebarBuilder
 		
 		$linkValues = array();
 		
+		$urlParams = $this->sidebar->getRequest()->query->all();
+		
 		foreach($items as $item){
 			$output[$item->getName()] = array();
+			$tempUrlParams = $urlParams;
 			
 			foreach($item->getChoices() as $choice){
 				
 				if($choice->isSelected()){
-					$linkValues[$item->getKey()] = $choice->getValue();
+					$tempUrlParams[$item->getKey()] = $choice->getValue();
+				}else{
+					$tempUrlParams[$item->getKey()] = $choice->getValue();
 				}
 				
 				$output[$item->getName()][] = array(	"alias"		=>	$choice->getAlias(),
 														"key"		=>	$item->getKey(),
 														"value"		=>	$choice->getValue(),
-														"selected"	=>	$choice->isSelected());
+														"selected"	=>	$choice->isSelected(),
+														"url"		=>	$this->sidebar->getRequest()->getBaseUrl()."?".http_build_query($tempUrlParams));
 			}
 		}
 		
-		
-		$urlParams = "";
-		
-		foreach($output as $itemName => $item){
-			foreach($item as $key=>$choice){				
-				$url = "";
-				foreach($linkValues as $linkKey=>$linkValue){
-					$url .= $linkKey."=";
-					
-					if($linkKey == $choice["key"]){
-						$url .= $choice["value"];
-					}else{
-						$url .= $linkValue;
-					}
-					
-					$url .= "&";
-				}
-				$url = substr($url,0,strlen($url)-1);
-				
-				$output[$itemName][$key]["url"] = $url;				
-			}
-		}
 		
 		return $output;
 	}

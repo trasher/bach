@@ -2,10 +2,10 @@
 
 namespace Anph\HomeBundle\Entity;
 
-class SearchForm
+class SearchQuery
 {
 	protected $query;
-		
+	
 	public function setQuery($query){
 		$this->query = $query;
 		

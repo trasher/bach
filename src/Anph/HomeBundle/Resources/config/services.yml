@@ -1,7 +1,7 @@
 parameters:
-#    anph_home.example.class: Anph\HomeBundle\Example
+   anph.home.solarium_query_factory.class: Anph\HomeBundle\Service\SolariumQueryFactory
 
 services:
-#    anph_home.example:
-#        class: %anph_home.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    anph.home.solarium_query_factory:
+        class: "%anph.home.solarium_query_factory.class%"
+        arguments: [ @solarium.client.default ]

@@ -12,7 +12,7 @@
             <li><a href="#" onClick="cachervisible()"><i class="icon-download-alt"></i> Indexer un nouveau fichier</a></li>
             {#<li><a href="{{ path('upload') }}"><i class="icon-download-alt"></i> Indexer des fichiers</a></li>#}
 			<li class="divider"></li>
-			<li><a href="javascript:openInfoFromHTMLFile('{{ asset('aide.html') }}');"><i class="icon-question-sign"></i> Aide</a></li>
+			<li><a href="#helpModal" role="button" data-toggle="modal"><i class="icon-question-sign"></i> Aide</a></li>
 		</ul>
 	</div><!--/.well -->
 </div><!--/span-->
@@ -48,7 +48,7 @@
 				</div>
 				<div class="span5">
 					<p>Selectionnez le fichier que vous souhaitez indexer. Il sera ajouté ensuite à la file d'attente du processus d'indexation.</p>
-					<p>La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation</p>
+					<p>La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation.</p>
 				</div>
 			</div>
 		</fieldset>
@@ -96,6 +96,20 @@
 			</div>
 		</fieldset>
 	</div>
+	
+<div class="modal hide" id="helpModal">
+    <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Aide de l'indexation</h3>
+    </div>
+    <div class="modal-body">
+   		<p>Le processus d'indexation consiste à extraire d'un fichier toutes les informations utiles.</p>
+   		<br/>
+   		<p>Pour l'indexation: selectionnez le fichier que vous souhaitez indexer et renseignez son format (EAD/UNIMARC,etc.)<br/>
+   		Une fois la validation effectuée, le fichier se placera dans la file d'attente du processus d'indexation.<br/>
+   		La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation. </p>
+    </div>
+</div>
 </div>
 {% block javascripts %}
 	{{ parent() }}
@@ -109,61 +123,6 @@
 	function cachervisible() {
 		$("#upload").toggle();
 	}
-
-	$( "#erreurPopup" ).dialog({
-		modal: true,
-		autoOpen: false,
-		height: 'auto',
-		width: 'auto',
-		buttons: {
-			Ok: function() {
-				$( this ).dialog( "close" );
-				//hideVoile();
-			}
-		}
-	});
-	
-	$( "#infopopup" ).dialog({
-		autoOpen: false,
-		resizable: true,
-		modal: true,
-		height: 'auto',
-		width: 'auto',
-		position: ['center','center'],
-		buttons: {
-			Ok: function() {
-				$( this ).dialog( "close" );
-				//hideVoile();
-			}
-		}
-	});
-
-	//ouvre une popup d'information avec le contenu du fichier passé en paramètre
-	function openInfoFromHTMLFile(url){
-		var message = '' ;
-		$.get(url, function(data) {
-			message = data;
-		})
-		.success(function() { 
-			
-		})
-		.error(function() { 
-			message = "Erreur d'affchage";
-		})
-		.complete(function() { 
-			$( "#infopopup" ).dialog( "option", "modal", false );
-			openInfo(message);
-		})
-	}
-
-	//ouvre une popup d'information avec le message passé en paramètre
-	function openInfo(message){
-		$( "#infopopup" ).dialog( "open" ) ;
-		document.getElementById('infopopup').innerHTML = message ;
-	}
-
-	
-	
 	</script>
 {% endblock %}
 {% endblock %}
