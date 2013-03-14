@@ -13,6 +13,7 @@ vendor/
 build/
 .settings
 composer.phar
+web/uploads/*
 
 # Eclipse generated files #
 ######################

@@ -14,23 +14,72 @@ class EADDriverMapper implements DriverMapperInterface
     	}
     	
     	$mappedData["headerSubtitle"] = null;
-    	$mappedData['headerAuthor'] = $data['header']['filedesc/titlestmt/author'][0]['value'];
-    	$mappedData['headerDate'] = $data['header']['filedesc/publicationstmt/date'][0]['value'];
-    	$mappedData['headerPublisher'] = $data['header']['filedesc/publicationstmt/publisher'][0]['value'];
-    	$mappedData['headerAddress'] = $data['header']['filedesc/publicationstmt/address/addressline'][0]['value'];    	
-    	$mappedData['headerLanguage'] = $data['header']['profiledesc/langusage/language'][0]['attributes']['langcode'];
-    	$mappedData["archDescUnitId"] = $data["archdesc"]["did/unitid"][0]["value"];
-    	$mappedData["archDescUnitTitle"] = $data["archdesc"]["did/unittitle"][0]["value"];
-    	$mappedData["archDescUnitDate"] = $data["archdesc"]["did/unitdate"][0]["value"];
-    	$mappedData["archDescDimension"] = null;
-    	$mappedData["archDescRepository"] = $data["archdesc"]["did/repository"][0]["value"];
-    	$mappedData["archDescLangMaterial"] = $data["archdesc"]["did/langmaterial"][0]["value"];
-    	$mappedData["archDescLangOrigination"] = $data["archdesc"]["did/origination"][0]["value"];
-    	$mappedData["archDescAcqInfo"] = $data["archdesc"]["acqinfo"][0]["value"];
-    	$mappedData["archDescScopeContent"] = $data["archdesc"]["scopecontent"][0]["value"];
-    	$mappedData["archDescAccruals"] = $data["archdesc"]["accruals"][0]["value"];
-    	$mappedData["archDescArrangement"] = $data["archdesc"]["arrangement"][0]["value"];
-    	$mappedData["archDescAccessRestrict"] = $data["archdesc"]["accessrestrict"][0]["value"];
+    	
+    	if(array_key_exists("filedesc/titlestmt/author", $data['header'])){
+    		$mappedData['headerAuthor'] = $data['header']['filedesc/titlestmt/author'][0]['value'];
+    	}
+    	
+    	if(array_key_exists("filedesc/publicationstmt/date", $data['header'])){
+    		$mappedData['headerDate'] = $data['header']['filedesc/publicationstmt/date'][0]['value'];
+    	}
+    	
+    	if(array_key_exists("filedesc/publicationstmt/publisher", $data['header'])){
+    		$mappedData['headerPublisher'] = $data['header']['filedesc/publicationstmt/publisher'][0]['value'];
+    	}
+    	
+    	if(array_key_exists("filedesc/publicationstmt/address/addressline", $data['header'])){
+    		$mappedData['headerAddress'] = $data['header']['filedesc/publicationstmt/address/addressline'][0]['value'];
+    		 
+    	}
+	
+    	if(array_key_exists("profiledesc/langusage/language", $data['header']) 
+    		&& array_key_exists('langcode', $data['header']['profiledesc/langusage/language'][0]['attributes'])){
+    		$mappedData['headerLanguage'] = $data['header']['profiledesc/langusage/language'][0]['attributes']['langcode'];
+    	}
+    	
+    	if(array_key_exists("did/unitid", $data["archdesc"])){
+    		$mappedData["archDescUnitId"] = $data["archdesc"]["did/unitid"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("did/unittitle", $data["archdesc"])){
+    		$mappedData["archDescUnitTitle"] = $data["archdesc"]["did/unittitle"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("did/unitdate", $data["archdesc"])){
+    		$mappedData["archDescUnitDate"] = $data["archdesc"]["did/unitdate"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("did/repository", $data["archdesc"])){
+       		$mappedData["archDescRepository"] = $data["archdesc"]["did/repository"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("did/langmaterial", $data["archdesc"])){
+    		$mappedData["archDescLangMaterial"] = $data["archdesc"]["did/langmaterial"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("did/origination", $data["archdesc"])){
+    		$mappedData["archDescLangOrigination"] = $data["archdesc"]["did/origination"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("acqinfo", $data["archdesc"])){
+    		$mappedData["archDescAcqInfo"] = $data["archdesc"]["acqinfo"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("scopecontent", $data["archdesc"])){
+    		$mappedData["archDescScopeContent"] = $data["archdesc"]["scopecontent"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("accruals", $data["archdesc"])){
+    		$mappedData["archDescAccruals"] = $data["archdesc"]["accruals"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("arrangement", $data["archdesc"])){
+    		$mappedData["archDescArrangement"] = $data["archdesc"]["arrangement"][0]["value"];
+    	}
+    	
+    	if(array_key_exists("accessrestric", $data["archdesc"])){
+    		$mappedData["archDescAccessRestrict"] = $data["archdesc"]["accessrestrict"][0]["value"];
+    	}
     	//$mappedData["archDescLegalStatus"] = $data["archdesc"]["accessrestrict/legalstatus"][0]["value"];
     	
     	// Partie spécifique à l'ead    	
