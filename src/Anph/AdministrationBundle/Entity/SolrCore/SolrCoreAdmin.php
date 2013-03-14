@@ -216,9 +216,7 @@ class SolrCoreAdmin
         $doc = new DOMDocument();
         $doc->load($schemaFilePath);
         // Creation of fields
-        $oldFields = $doc->getElementsByTagName('fields');
-        $doc->documentElement->removeChild($oldFields->item(0));
-        $elt = $doc->createElement('fields');
+        $elt = $doc->getElementsByTagName('fields')->item(0);
         foreach ($fields as $f) {
             $newFieldType = $doc->createElement('field');
             $newFieldType->setAttribute('name', $f);

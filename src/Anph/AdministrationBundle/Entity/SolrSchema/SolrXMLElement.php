@@ -129,16 +129,6 @@ class SolrXMLElement
     }
 
     /**
-     * Remove elements
-     *
-     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $elements
-     */
-    public function removeElement(SolrXMLElement $element)
-    {
-        $this->elements->removeElement($element);
-    }
-
-    /**
      * Get elements
      *
      * @return \Doctrine\Common\Collections\Collection 
@@ -146,6 +136,14 @@ class SolrXMLElement
     public function getElements()
     {
         return $this->elements;
+    }
+    
+    /**
+     * Set elements
+     */
+    public function setElements($elements)
+    {
+        $this->elements = $elements;
     }
     
     /**

@@ -37,7 +37,7 @@
 				<ul class="fields">
 
 
-					<form class="form-inline" action="..." method="POST"
+					<form class="form-inline" action="{{ path('administration_dynamicfields_submit') }}" method="POST"
 						
 						 {{ form_enctype(form) }}>
 
@@ -70,13 +70,13 @@
 										}}&nbsp;&nbsp;Multivalued</div>
 									<div class="span2">{{ form_widget(field.required)
 										}}&nbsp;&nbsp;Required</div>
-
 								</div>
 								<!--</div>-->
 							</div>
 
 						</div>
 						{% endfor %}
+						{{ form_widget(form._token) }}
 						<button type="submit" class="btn btn-fixed btn-success">Valider</button>
 					</form>
 				</ul>

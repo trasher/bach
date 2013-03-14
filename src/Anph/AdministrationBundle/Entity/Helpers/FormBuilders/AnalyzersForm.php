@@ -9,7 +9,9 @@ class AnalyzersForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('analyzers', 'collection', array('type' => new AnalyzerForm()));
+        $builder->add('analyzers', 'collection', array(
+                'type' => new AnalyzerForm(),
+                'allow_add' => true));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -21,6 +23,6 @@ class AnalyzersForm extends AbstractType
 
     public function getName()
     {
-        return 'analyzers';
+        return 'analyzersForm';
     }
 }

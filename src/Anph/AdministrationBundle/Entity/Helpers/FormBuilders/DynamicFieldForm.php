@@ -21,38 +21,38 @@ class DynamicFieldForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'name');
         $builder->add('name', 'text', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => true
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'type');
         $builder->add('type', 'choice', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired(),
+                'required' => true,
                 'choices'  => $this->retreiveTypeAttributeValues(),
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'indexed');
         $builder->add('indexed', 'checkbox', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'stored');
         $builder->add('stored', 'checkbox', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
         $builder->add('multiValued', 'checkbox', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'default');
         $builder->add('default', 'text', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'required');
         $builder->add('required', 'checkbox', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
         /*
          * Other Attributes that can be added to the application in the future
@@ -92,7 +92,7 @@ class DynamicFieldForm extends AbstractType
     
     public function getName()
     {
-        return 'dynamicField';
+        return 'dynamicFieldForm';
     }
     
     private function retreiveTypeAttributeValues()

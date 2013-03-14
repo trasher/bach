@@ -9,7 +9,9 @@ class DynamicFieldsForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('dynamicFields', 'collection', array('type' => new DynamicFieldForm()));
+        $builder->add('dynamicFields', 'collection', array(
+                'type' => new DynamicFieldForm(),
+                'allow_add' => true));
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -21,6 +23,6 @@ class DynamicFieldsForm extends AbstractType
     
     public function getName()
     {
-        return 'dynamicFields';
+        return 'dynamicFieldsForm';
     }
 }

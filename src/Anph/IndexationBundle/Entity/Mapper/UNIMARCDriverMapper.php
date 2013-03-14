@@ -80,10 +80,18 @@ class UNIMARCDriverMapper implements DriverMapperInterface
 				$mappedData["headerAuthor"] = $stick->getArea()->getContent();
 				foreach($subAreas as $subArea){
 					if($subArea->getRef() == "a"){
-						$mappedData['archDescRepository'] = $subArea->getContent();
+						if(!array_key_exists('archDescRepository', $mappedData)){
+							$mappedData['archDescRepository'] = $subArea->getContent();
+						}else{
+							$mappedData['archDescRepository'] = $mappedData['archDescRepository']."  ;  ".$subArea->getContent();
+						}
 					}
 					else if($subArea->getRef() == 'b') {
-						$mappedData['archDescRepository'] = $mappedData['archDescRepository']."  ;  ".$subArea->getContent();
+						if(!array_key_exists('archDescRepository', $mappedData)){
+							$mappedData['archDescRepository'] = $subArea->getContent();
+						}else{
+							$mappedData['archDescRepository'] = $mappedData['archDescRepository']."  ;  ".$subArea->getContent();
+						}
 					}
 					
 				}
@@ -100,7 +108,11 @@ class UNIMARCDriverMapper implements DriverMapperInterface
 				$subAreas = $stick->getArea()->getSubAreas();
 				foreach($subAreas as $subArea){
 					if($subArea->getRef() == "a"){
-						$mappedData['archDescAcqInfo'] = $mappedData['archDescAcqInfo']."     ;   ".$subArea->getContent();
+						if(!array_key_exists('archDescAcqInfo', $mappedData)){
+							$mappedData['archDescAcqInfo'] = $subArea->getContent();
+						}else{
+							$mappedData['archDescAcqInfo'] = $mappedData['archDescAcqInfo']."     ;   ".$subArea->getContent();
+						}
 					}
 				}
 			}

@@ -20,19 +20,19 @@ class CopyFieldForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'source');
         $builder->add('source', 'choice', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired(),
+                'required' => true,
                 'choices'  => $this->retreiveUniqueKeyValues()
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'dest');
         $builder->add('dest', 'choice', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired(),
+                'required' => true,
                 'choices'  => $this->retreiveUniqueKeyValues()
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'maxChars');
         $builder->add('maxChars', 'integer', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
     }
     
@@ -45,7 +45,7 @@ class CopyFieldForm extends AbstractType
     
     public function getName()
     {
-        return 'copyField';
+        return 'copyFieldForm';
     }
     
     /**

@@ -24,7 +24,7 @@ class DynamicFieldsController extends Controller
     public function addDynamicFieldAction(Request $request)
     {
         $dynamicField = new DynamicField();
-        $form = $this->createFormBuilder($dynamicField)->getForm();
+        $form = $this->createForm(new DynamicFieldsForm(), $dynamicField);
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
@@ -42,17 +42,22 @@ class DynamicFieldsController extends Controller
         
     }
     
-    public function saveAction()
+    public function submitAction(Request $request)
     {
-        $dynamicFields = new DynamicFields();
-        $form = $this->createFormBuilder($dynamicFields)->getForm();
+        $df = new DynamicFields();
+        $form = $this->createForm(new DynamicFieldsForm(), $df);
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 // If the data is valid, we save new field into the schema.xml file of corresponding core
+                $xmlP = new XMLProcess('core0');
+                $df->save($xmlP);
                 $xmlP->saveXML();
-                return $this->redirect($this->generateUrl('administration_dynamicfields'));
             }
         }
+        $form = $this->createForm(new DynamicFieldsForm(), $df);
+        return $this->render('AdministrationBundle:Default:dynamicfields.html.twig', array(
+                'form' => $form->createView(),
+        ));
     }
 }

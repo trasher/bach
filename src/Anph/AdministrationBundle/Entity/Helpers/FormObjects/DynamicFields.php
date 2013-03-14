@@ -20,4 +20,21 @@ class DynamicFields
             }
         }
     }
+    
+    public function save(XMLProcess $xmlP)
+    {
+        $fieldsArray = array();
+        $fieldsElt = $xmlP->getElementsByName('fields');
+        $fieldsElt = $fieldsElt[0];
+        foreach ($fieldsElt->getElements() as $e) {
+            if ($e->getName() == 'field') {
+                $fieldsArray[] = $e;
+            }
+        }
+        foreach ($this->dynamicFields as $f) {
+            $fieldsArray[] = $f->getSolrXMLElement();
+        }
+        $fieldsElt->setElements($fieldsArray);
+        $xmlP->saveXML();
+    }
 }
