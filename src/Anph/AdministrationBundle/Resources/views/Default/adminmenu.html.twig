@@ -15,7 +15,7 @@ body {
     padding: 9px 0;
     position:fixed;
     left:20px;
-    top:100px;
+    top:90px;
     width:250px;
 }
 
@@ -24,16 +24,16 @@ body {
 }
 
 .selectfixed{
-padding: 9px 0;
+padding: 0px 0;
     position:fixed;
-    left:50px;
-    top:560px;
+    z-index:10;
+    left:20px;
+    top:60px;
+    height:20px;
     width:250px;
 }
 
 </style>
-
-
 
 <div class="span3">
 	<div class="well sidebar-nav-fixed">
@@ -43,7 +43,17 @@ padding: 9px 0;
 				href="{{ url('administration_dashboard') }}"><i class="icon-book"></i>Dashboard</a>
 			</li>
 			<li class="divider"></li>
-
+              <SELECT name="fonction" class="span12" autocomplete="off" onchange="asfd(this.selectedIndex);">
+		<OPTION VALUE="core0">Sélectionnez un Core</OPTION>
+		<OPTION VALUE="core1">Core 0</OPTION>
+		<OPTION VALUE="core2">Core 1</OPTION>
+		</SELECT>
+		
+	
+		
+		
+		
+			<div id="renew" style="display: none ;">
 			<li class="nav-header">Solr Schema Config</li>
 			<li {% if (page == 'index' or page == 'fields') %} class="active"
 				 {% endif %}><a href="{{ url('administration_fields') }}"><i
@@ -70,9 +80,7 @@ padding: 9px 0;
 				href="{{ url('administration_uniquekey') }}"><i class="icon-book"></i>Unique
 					Key</a>
 			</li>
-			<li {% if (page == 'indexer') %} class="active"  {% endif %}><a
-				href="{{ url('administration_indexer') }}"><i class="icon-book"></i>Indexer</a>
-			</li>
+
 			
 			<li class="divider"></li>
 
@@ -87,6 +95,11 @@ padding: 9px 0;
 				href="{{ url('administration_performance') }}"><i class="icon-book"></i>
 					Performance Admin</a>
 			</li>
+			</div>
+			
+			
+			
 		</ul>
 	</div>
 </div>
+
