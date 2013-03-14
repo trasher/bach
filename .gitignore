@@ -31,3 +31,6 @@ Icon?
 ehthumbs.db
 Thumbs.db
 *~
+
+# Specific to me #
+/var/www/bachdev/src/Anph/AdministrationBundle/Resources/config/BachSolrCoreConfig.xml

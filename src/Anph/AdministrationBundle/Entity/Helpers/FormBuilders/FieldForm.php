@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+
 class FieldForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -21,33 +22,38 @@ class FieldForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'name');
         $builder->add('name', 'text', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => true
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'type');
         $builder->add('type', 'choice', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired(),
+                'required' => true,
                 'choices'  => $this->retreiveTypeAttributeValues(),
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'indexed');
         $builder->add('indexed', 'checkbox', array(
-                'label'    => $attr->getLabel()
+                'label'    => $attr->getLabel(),
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'stored');
         $builder->add('stored', 'checkbox', array(
-                'label'    => $attr->getLabel()
+                'label'    => $attr->getLabel(),
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
         $builder->add('multiValued', 'checkbox', array(
-                'label'    => $attr->getLabel()
+                'label'    => $attr->getLabel(),
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'default');
         $builder->add('default', 'text', array(
-                'label'    => $attr->getLabel()
+                'label'    => $attr->getLabel(),
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'required');
         $builder->add('required', 'checkbox', array(
-                'label'    => $attr->getLabel()
+                'label'    => $attr->getLabel(),
+                'required' => false
                 ));
         /*
          * Other Attributes that can be added to the application in the future
@@ -87,7 +93,7 @@ class FieldForm extends AbstractType
 
     public function getName()
     {
-        return 'field';
+        return 'fieldForm';
     }
     
     /**

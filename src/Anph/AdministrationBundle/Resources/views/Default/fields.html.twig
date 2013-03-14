@@ -15,7 +15,7 @@
 
 <body>
 	
-	<form class="form-inline" action="..." method="POST" {{ form_enctype(form) }}>
+	<form class="form-inline" action="{{ path('administration_fields_submit') }}" method="POST" {{ form_enctype(form) }}>
 
 		<div class="container-fluid">
 			<div class="row-fluid">
@@ -52,6 +52,7 @@
 											}}&nbsp;&nbsp;Multivalued</div>
 										<div class="span3">{{ form_widget(field.required)
 											}}&nbsp;&nbsp;Required</div>
+											{{ form_widget(form._token) }}
 									</div>
 								</div>
 								<!--</div>-->

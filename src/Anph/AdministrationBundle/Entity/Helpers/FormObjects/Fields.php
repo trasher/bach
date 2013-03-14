@@ -24,10 +24,17 @@ class Fields
     public function save(XMLProcess $xmlP)
     {
         $fieldsArray = array();
-        foreach ($fields as $f) {
-            $fieldsArray[] = $this->fields->getSolrXMLElement();
+        foreach ($this->fields as $f) {
+            $fieldsArray[] = $f->getSolrXMLElement();
         }
         $fieldsElt = $xmlP->getElementsByName('fields');
-        $fieldsElt->
+        $fieldsElt = $fieldsElt[0];
+        foreach ($fieldsElt->getElements() as $e) {
+            if ($e->getName() == 'dynamicField') {
+                $fieldsArray[] = $e;
+            }
+        }
+        $fieldsElt->setElements($fieldsArray);
+        $xmlP->saveXML();
     }
 }

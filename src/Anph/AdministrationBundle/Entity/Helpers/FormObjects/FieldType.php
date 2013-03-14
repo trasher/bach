@@ -35,13 +35,13 @@ class FieldType
             $attr = $fieldElt->getAttribute('class');
             $this->class = $attr !== null ? $attr->getValue() : null;
             $attr = $fieldElt->getAttribute('sortMissingLast');
-            $this->sortMissingLast = $attr !== null ? $attr->getValue() : null;
+            $this->sortMissingLast = $attr !== null ? $this->toBoolean($attr->getValue()) : null;
             $attr = $fieldElt->getAttribute('sortMissingFirst');
-            $this->sortMissingFirst = $attr !== null ? $attr->getValue() : null;
+            $this->sortMissingFirst = $attr !== null ? $this->toBoolean($attr->getValue()) : null;
             $attr = $fieldElt->getAttribute('positionIncrementGap');
             $this->positionIncrementGap = $attr !== null ? $attr->getValue() : null;
             $attr = $fieldElt->getAttribute('autoGeneratePhraseQueries');
-            $this->autoGeneratePhraseQueries = $attr !== null ? $attr->getValue() : null;
+            $this->autoGeneratePhraseQueries = $attr !== null ? $this->toBoolean($attr->getValue()) : null;
         }
     }
     
@@ -68,5 +68,10 @@ class FieldType
         $solrXMLElt->addAttribute($attr);
         $fields = $xmlP->getElementsByName('types');
         $fields->addElement($solrXMLElt);
+    }
+    
+    private function toBoolean($value)
+    {
+        return $value == 'true' ? true : false;
     }
 }

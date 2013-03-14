@@ -16,6 +16,9 @@ administration_fieldstype:
 administration_dynamicfields:
     pattern:  /dynamicfields
     defaults: { _controller: AdministrationBundle:DynamicFields:refresh }
+administration_dynamicfields_submit:
+    pattern:  /dynamicfields/submit
+    defaults: { _controller: AdministrationBundle:DynamicFields:submit }
 administration_copyfields:
     pattern: /copyfields
     defaults: { _controller: AdministrationBundle:CopyFields:refresh }

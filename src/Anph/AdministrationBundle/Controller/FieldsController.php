@@ -1,9 +1,10 @@
 <?php
 namespace Anph\AdministrationBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
 use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Fields;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class FieldsController extends Controller
@@ -11,24 +12,29 @@ class FieldsController extends Controller
     public function refreshAction()
     {
         $xmlP = new XMLProcess('core0');
-        $fields =  new Fields($xmlP);
-        $form = $this->createForm(new FieldsForm(), $fields);
+        $fd =  new Fields($xmlP);
+        $form = $this->createForm(new FieldsForm(), $fd);
         return $this->render('AdministrationBundle:Default:fields.html.twig', array(
                 'form' => $form->createView(),
         ));
     }
     
-    public function sumbitAction()
+    public function submitAction(Request $request)
     {
-        $fields = new Fields();
-        $form = $this->createFormBuilder($fields)->getForm();
+        $fd = new Fields();
+        $form = $this->createForm(new FieldsForm(), $fd);
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->bind($this->getRequest());
             if ($form->isValid()) {
                 // We save the modifications into the schema.xml file of corresponding core
-                $xmlP->saveXML();
-                return $this->redirect($this->generateUrl('administration_fields'));
+                $xmlP = new XMLProcess('core0');
+                $fd->save($xmlP);
             }
         }
+        //return $this->redirect($this->generateUrl('administration_fields'));
+        $form = $this->createForm(new FieldsForm(), $fd);
+        return $this->render('AdministrationBundle:Default:fields.html.twig', array(
+                'form' => $form->createView(),
+        ));
     }
 }
