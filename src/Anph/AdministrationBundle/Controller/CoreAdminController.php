@@ -56,6 +56,7 @@ class CoreAdminController extends Controller
         $sql = "SELECT table_name AS name FROM information_schema.tables WHERE table_schema LIKE 'bach'";
         $connection = $this->getDoctrine()->getConnection();
         $result = $connection->query($sql);
+        $res = array();
         while ($row = $result->fetch()){
             $res[]=$row['name'];
         }
