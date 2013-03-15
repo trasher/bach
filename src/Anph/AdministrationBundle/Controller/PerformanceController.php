@@ -10,12 +10,15 @@ class PerformanceController extends Controller
 {
     public function refreshAction(Request $request)
     {
+        $session = $this->getRequest()->getSession();
         if ($request->isMethod('POST')) {
             return $this->changeAction($request);
         } else {
             $form = $this->createForm(new PerformanceForm(), new Performance('core0'));
             return $this->render('AdministrationBundle:Default:performance.html.twig', array(
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'coreName' => $session->get('coreName'),
+                    'coreNames' => $session->get('coreNames')
             ));
         }
     }

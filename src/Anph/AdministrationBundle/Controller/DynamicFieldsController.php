@@ -26,20 +26,13 @@ class DynamicFieldsController extends Controller
     public function addDynamicFieldAction(Request $request)
     {
         $df = new DynamicField();
-        $df->name = 'testField';
-        $df->type = 'string';
-        $df->default = 'testValue';
-        $df->indexed = true;
-        $df->stored = true;
         $form = $this->createForm(new DynamicFieldsForm(), $df);
-        if ($request->isMethod('POST')) {
-            //$form->bind($request);
-            //if ($form->isValid()) {
-                // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $xmlP = $session->get('xmlP');
-                $df->addField($xmlP);
-                $xmlP->saveXML();
-            //}
+        //$form->bind($request);
+        if ($form->isValid()) {
+            // If the data is valid, we save new field into the schema.xml file of corresponding core
+            /*$xmlP = $session->get('xmlP');
+            $df->addField($xmlP);
+            $xmlP->saveXML();*/
         }
         return $this->render('AdministrationBundle:Default:dynamicfields.html.twig', array(
                 'form' => $form->createView(),

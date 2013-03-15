@@ -33,7 +33,10 @@ administration_analyzers_submit:
     defaults: { _controller: AdministrationBundle:Analyzers:submit }
 administration_performance:
     pattern:  /performance/index
-    defaults: { _controller: AdministrationBundle:Performance:refresh }  
+    defaults: { _controller: AdministrationBundle:Performance:refresh }
+administration_performance_submit:
+    pattern:  /performance/submit
+    defaults: { _controller: AdministrationBundle:Performance:submit }
 administration_coreadmin:
     pattern:  /coreadmin
     defaults: { _controller: AdministrationBundle:CoreAdmin:refresh }

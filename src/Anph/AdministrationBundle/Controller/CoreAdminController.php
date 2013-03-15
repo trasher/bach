@@ -14,30 +14,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CoreAdminController extends Controller
 {
-    public function refreshAction(Request $request)
+    public function refreshAction()
     {
-    	$xmlP = new XMLProcess("core0");
+        $session = $this->getRequest()->getSession();
     	$form = $this->createForm(new CoreCreationForm($this->getTableNamesFromDataBase()));
-    	
     	return $this->render('AdministrationBundle:Default:coreadmin.html.twig', array(
     			'form' => $form->createView(),
-    	        'coreName' => 'core0'
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
     	));
-    	
-    	
-    	
-        return $this->render('AdministrationBundle:Default:coreadmin.html.twig');
     }
     
-    public function createCoreAction($tableName)
+    public function createCoreAction()
     {
+        $session = $this->getRequest()->getSession();
         /*$cc = new CoreCreation();
         $tableNames = $this->getTableNamesFromDataBase();
         $form = $this->createFormBuilder($cc, $tableNames)->getForm();*/
         $sca = new SolrCoreAdmin();
-        $fields = $this->getFieldsFromDataBase($tableName);
+        $fields = $this->getFieldsFromDataBase('UniversalFileFormat');
         $sca->create('coreForTest', 'coreForTestDir', 'UniversalFileFormat', $fields);
-        return $this->render('AdministrationBundle:Default:coreadmin.html.twig');
+        return $this->refreshAction();
     }
     
     private function getFieldsFromDataBase($tableName)
