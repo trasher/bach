@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <conf>
     <solrCoresPath>/var/solr/</solrCoresPath>
-    <solrCoresURL>http://localhost:8983/solr/admin/cores</solrCoresURL>
+    <solrCoresURL>http://localhost:8080/solr/admin/cores</solrCoresURL>
     <solrCoreTemplatePath>/var/solr/coreTemplate</solrCoreTemplatePath>
     <solrCoreDataDirectoryName>data</solrCoreDataDirectoryName>
     <solrCoreConfigDirectoryName>conf</solrCoreConfigDirectoryName>
