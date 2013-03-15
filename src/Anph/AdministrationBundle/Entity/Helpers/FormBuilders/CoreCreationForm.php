@@ -1,6 +1,8 @@
 <?php
 namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
 
+use Symfony\Component\Form\AbstractType;
+
 class CoreCreationForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -10,11 +12,11 @@ class CoreCreationForm extends AbstractType
                 'label'    => 'Nom',
                 'required' => true
                 ));
-        $builder->add('name', 'text', array(
+        $builder->add('repository', 'text', array(
                 'label'    => 'Nom du répértoire',
                 'required' => true
         ));
-        $builder->add('type', 'choice', array(
+        $builder->add('table', 'choice', array(
                 'label'    => 'Type de données',
                 'required' => true,
                 'choices'  => $options,
