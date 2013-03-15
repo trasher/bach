@@ -2,6 +2,8 @@
 
 namespace Anph\AdministrationBundle\Controller;
 
+use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+
 use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
 use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Fields;
 use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
@@ -36,13 +38,19 @@ class DefaultController extends Controller
 	    if (!isset($coreName)) {
 	        $coreName = 'none';
 	    }
+	    $sca = new SolrCoreAdmin();
+	    $coreNames = $sca->getStatus()->getCoreNames();
         $session = $this->getRequest()->getSession();
+        $session->set('coreNames', $coreNames);
         $session->set('coreName', $coreName);
         if ($coreName == 'none') {
             $session->set('xmlP', null);
         } else {
             $session->set('xmlP', new XMLProcess($coreName));
         }
-        return $this->render('AdministrationBundle:Default:dashboard.html.twig', array('coreName' => $coreName));
+        return $this->render('AdministrationBundle:Default:dashboard.html.twig', array(
+                'coreName'  => $coreName,
+                'coreNames' => $coreNames
+                ));
 	}
 }

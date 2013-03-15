@@ -10,24 +10,31 @@ class UniqueKeyController extends Controller
 {
     public function refreshAction()
     {
-        $xmlP = new XMLProcess('core0');
-        $form = $this->createForm(new UniqueKeyForm(), new UniqueKey($xmlP));
+        $session = $this->getRequest()->getSession();
+        $form = $this->createForm(new UniqueKeyForm(), new UniqueKey($session->get('xmlP')));
         return $this->render('AdministrationBundle:Default:uniquekey.html.twig', array(
                 'form' => $form->createView(),
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
         ));
     }
     
     public function saveAction()
     {
-        $uniqueKey = new UniqueKey();
-        $form = $this->createFormBuilder($uniqueKey)->getForm();
+        $session = $this->getRequest()->getSession();
+        $uk = new UniqueKey();
+        $form = $this->createFormBuilder($uk)->getForm();
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $xmlP->saveXML();
-                return $this->redirect($this->generateUrl('administration_uniquekey'));
+                $session->get('xmlP')->saveXML();
             }
         }
+        return $this->render('AdministrationBundle:Default:uniquekey.html.twig', array(
+                'form' => $form->createView(),
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
+        ));
     }
 }

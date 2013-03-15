@@ -12,28 +12,31 @@ class AnalyzersController extends Controller
 {
     public function refreshAction()
     {
-        $xmlP = new XMLProcess('core0');
-        $fields =  new Analyzers($xmlP);
-        $form = $this->createForm(new AnalyzersForm(), $fields);
+        $session = $this->getRequest()->getSession();
+        $form = $this->createForm(new AnalyzersForm(), new Analyzers($session->get('xmlP')));
         return $this->render('AdministrationBundle:Default:analyzers.html.twig', array(
                 'form' => $form->createView(),
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
         ));
     }
     
     public function submitAction(Request $request)
     {
+        $session = $this->getRequest()->getSession();
         $a = new Analyzers();
         $form = $this->createForm(new AnalyzersForm(), $a);
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $xmlP = new XMLProcess('core0');
-                $a->save($xmlP);
+                $a->save($session->get('xmlP'));
             }
         }
         return $this->render('AdministrationBundle:Default:analyzers.html.twig', array(
                 'form' => $form->createView(),
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
         ));
     }
 }
