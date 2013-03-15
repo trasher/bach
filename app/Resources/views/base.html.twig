@@ -148,35 +148,22 @@ html,body {
 		src="http://static.scripting.com/github/bootstrap2/js/bootstrap-modal.js"></script>
 	<script>
 			$(document).ready(function() {
-				$('#coreTitleDialog').bind('show', function () {
-					//document.getElementById ("xlInput").value = document.title;
-					});
+				$('#coreTitleDialog').bind('show');
+				$('#renamdialog').bind('show');
 				});
 			function closeDialog () {
 				$('#coreTitleDialog').modal('hide'); 
+				$('#renamdialog').bind('hide');
 				};
 			function okClicked () {
 				//document.title = document.getElementById ("xlInput").value;
 				//closeDialog ();
 				};
 			</script>
-	<script>
+
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js" ></script>
-	<script>
-		function asfd(str)
-		{
-		if(str!=0)
-		{
-		jQuery('div#renew').show();
-		}
-		else
-		{
-		jQuery('div#renew').hide();
-		}
-		}
-	
-		</script>
-	</script>
+
+
 	 {% endblock %}
 </body>
 </html>
