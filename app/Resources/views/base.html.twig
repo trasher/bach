@@ -131,11 +131,7 @@ html,body {
 		<!--/.fluid-container-->
 		<div class="push"></div>
 	</div>
-	<div id="footer">
-		<div class="container">
-			<p class="muted credit">Anaphore Bach</p>
-		</div>
-	</div>
+
 
 	{% endblock %} {% block javascripts %}
 	<script src="http://code.jquery.com/jquery-latest.js"
@@ -153,21 +149,18 @@ html,body {
 	<script>
 			$(document).ready(function() {
 				$('#coreTitleDialog').bind('show', function () {
-					document.getElementById ("xlInput").value = document.title;
+					//document.getElementById ("xlInput").value = document.title;
 					});
 				});
 			function closeDialog () {
 				$('#coreTitleDialog').modal('hide'); 
 				};
 			function okClicked () {
-				document.title = document.getElementById ("xlInput").value;
-				closeDialog ();
+				//document.title = document.getElementById ("xlInput").value;
+				//closeDialog ();
 				};
 			</script>
-	<script>
-		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js" ></script>
-	
-	</script>
-	} {% endblock %}
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js" ></script>
+	 {% endblock %}
 </body>
 </html>

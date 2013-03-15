@@ -1,6 +1,10 @@
 <?php
 namespace Anph\AdministrationBundle\Controller;
 
+use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+
+use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\CoreCreationForm;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Anph\AdministrationBundle\Entity\Helpers\FormObjects\CoreCreation;
@@ -12,16 +16,26 @@ class CoreAdminController extends Controller
 {
     public function refreshAction(Request $request)
     {
+    	$xmlP = new XMLProcess("core0");
+    	$form = $this->createForm(new CoreCreationForm($this->getTableNamesFromDataBase()));
+    	
+    	return $this->render('AdministrationBundle:Default:coreadmin.html.twig', array(
+    			'form' => $form->createView(),
+    	        'coreName' => 'core0'
+    	));
+    	
+    	
+    	
         return $this->render('AdministrationBundle:Default:coreadmin.html.twig');
     }
     
-    public function createCoreAction()
+    public function createCoreAction($tableName)
     {
         /*$cc = new CoreCreation();
         $tableNames = $this->getTableNamesFromDataBase();
         $form = $this->createFormBuilder($cc, $tableNames)->getForm();*/
         $sca = new SolrCoreAdmin();
-        $fields = $this->getFieldsFromDataBase('UniversalFileFormat');
+        $fields = $this->getFieldsFromDataBase($tableName);
         $sca->create('coreForTest', 'coreForTestDir', 'UniversalFileFormat', $fields);
         return $this->render('AdministrationBundle:Default:coreadmin.html.twig');
     }
@@ -39,11 +53,11 @@ class CoreAdminController extends Controller
     
     private function getTableNamesFromDataBase()
     {
-        $sql = "SELECT table_name AS name FROM TABLES WHERE TABLE_SCHEMA LIKE 'SolrConfig_DB'";
+        $sql = "SELECT table_name AS name FROM information_schema.tables WHERE table_schema LIKE 'bach'";
         $connection = $this->getDoctrine()->getConnection();
         $result = $connection->query($sql);
         while ($row = $result->fetch()){
-            $res[]=$row;
+            $res[]=$row['name'];
         }
         return $res;
     }

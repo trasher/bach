@@ -1,6 +1,4 @@
 {% extends '::base.html.twig' %}
-
-
 {% block container %}
     <!-- MENU -->
     {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'cores'}%}
@@ -17,22 +15,8 @@
 	        <div class="span12 well" >
 		        <div class="span2"><h3 style="color:#0080FF">&nbsp;&nbsp;Core :</h3></div>
 		        <div class="span4">
-		            <div id="coreTitleDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none; ">
-				        <div class="modal-header">
-					        <a href="#" class="close" data-dismiss="modal">×</a>
-					        <h3>Please enter a new title for this window.</h3>
-					    </div>
-				        <div class="modal-body"><div class="divDialogElements"><input class="xlarge" id="xlInput" name="xlInput" type="text"></div></div>
-				        <div class="modal-footer">
-        					<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
-        					<a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
-					    </div>
-		            </div>
 		        </div>
 		        <div class="span6">
-    		        <form action="{{ path('administration_core_creation') }}" method="post">
-                        <input type="submit" value='Créer un noyau (test)' />
-                    </form>
             		<a href="#" class="btn btn-warning btn-small"><i class="icon-white icon-pencil"></i>Rename</a>
             		<a href="#" class="btn btn-danger btn-small"><i class="icon-white icon-repeat"></i>Restart</a>
             		<a href="#" class="btn btn-primary btn-small"><i class="icon-white icon-random"></i>Swap</a>
@@ -40,7 +24,7 @@
 		        </div>
 		        <div class="span12"></div>
 		        <div class="span3">Start time</div>
-		        <div class="span7">:<a data-toggle="modal" href="#coreTitleDialog" class="btn btn-primary btn-large">Set Window Title</a></div>
+		        <div class="span7">:<a data-toggle="modal" href="#coreTitleDialog" class="btn btn-success btn-fixed">Ajouter un noyau</a></div>
 		        <div class="span3">Start time</div>
 		        <div class="span7">:</div>
 		        <div class="span3">Directory</div>
@@ -55,6 +39,56 @@
         		<div class="span7">:</div>
 	        </div>
 	    </div>
+	    <form class="form-horizontal" action="{{ path('administration_core_creation') }}" method="post">
+	    <div id="coreTitleDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none; ">
+				        <div class="modal-header">
+					        <a href="#" class="close" data-dismiss="modal">×</a>
+					        <h3>Ajouter un nouveau noyau Solr</h3>
+					    </div>
+				        <div class="modal-body"><div class="divDialogElements">
+    <fieldset>
+
+                       
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">Nom </label>
+          <div class="controls">
+            {{form_widget(form.name)}}
+            <p class="help-block"></p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">Répertoire</label>
+          <div class="controls">
+          
+            <input placeholder="" class="input-xlarge" type="text">
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Select Basic -->
+          <label class="control-label">Table MySQL</label>
+          <div class="controls">
+           {{ form_widget(form.table) }}
+          </div>
+
+        </div>
+
+    </fieldset>	        
+				        </div></div>
+				        <div class="modal-footer">
+        					<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
+        					<button type="submit" class="btn btn-primary" >OK</a>
+					    </div>
+					    </form>
+		            </div>
+		            
     </body>
 {% endblock %}
 
