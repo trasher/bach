@@ -1,62 +1,8 @@
-{% extends '::base.html.twig' %}
-{% block container %}
-    <!-- MENU -->
-    {% include 'AdministrationBundle:Default:adminmenu.html.twig' with {'page': 'cores'}%}
-    
-    <!-- Our CSS stylesheet file -->
-    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
-    
-    <!-- CSS adjustments for browsers with JavaScript disabled -->
-	<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
-    <body>
-	    <div class="span9 span-fixed-sidebar">
-           
-	        <div class="span12 well" >
-		        <div class="span2"><h3 style="color:#0080FF">&nbsp;&nbsp;Core :</h3></div>
-		        <div class="span4">
-		        </div>
-		        <div class="span6">
-            		<a href="#" class="btn btn-warning btn-small"><i class="icon-white icon-pencil"></i>Rename</a>
-            		<a href="#" class="btn btn-danger btn-small"><i class="icon-white icon-repeat"></i>Restart</a>
-            		<a href="#" class="btn btn-primary btn-small"><i class="icon-white icon-random"></i>Swap</a>
-            		<a href="#" class="btn btn-inverse btn-small"><i class="icon-white icon-ban-circle"></i>Unload</a>
-		        </div>
-		        <div class="span12"></div>
-		        <div class="span3">Start time</div>
-		        <div class="span7">:<a data-toggle="modal" href="#coreTitleDialog" class="btn btn-success btn-fixed">Ajouter un noyau</a></div>
-		        <div class="span3">Start time</div>
-		        <div class="span7">:</div>
-		        <div class="span3">Directory</div>
-		        <div class="span7">:</div>
-		        <div class="span3">Data directory</div>
-		        <div class="span7">:</div>
-		        <div class="span3"><h3 style="color:#0080FF">Index :</h3></div>
-		        <div class="span12"></div>
-        		<div class="span3">Last edit</div>
-        		<div class="span7">:</div>
-        		<div class="span3">Directory</div>
-        		<div class="span7">:</div>
-	        </div>
-	    </div>
-	    <form class="form-horizontal" action="{{ path('administration_core_creation') }}" method="post">
-	    <div id="coreTitleDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none; ">
-				        <div class="modal-header">
-					        <a href="#" class="close" data-dismiss="modal">×</a>
-					        <h3>Ajouter un nouveau noyau Solr</h3>
-					    </div>
-				        <div class="modal-body"><div class="divDialogElements">
-    <fieldset>
-
-                       
-
-    <div class="control-group">
-=======
-{% extends '::base.html.twig' %} {% block container %}
+ {% extends '::base.html.twig' %} {% block container %}
 <!-- MENU -->
 {% include 'AdministrationBundle:Default:adminmenu.html.twig' with
 {'page': 'cores'}%}
->>>>>>> a035ae616621cf043e83f8ee6140b6190fc62010
+
 
 <!-- Our CSS stylesheet file -->
 <link
@@ -70,36 +16,29 @@
 	<link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
 </noscript>
 <body>
+
 	<div class="span9 span-fixed-sidebar">
 
 		<div class="span12 well">
 			<div class="span2">
 				<h3 style="color: #0080FF">&nbsp;&nbsp;Core :</h3>
 			</div>
-			<div class="span4">
-
-				<a data-toggle="modal" href="#coreTitleDialog"
+			<div class="span4"></div>
+			<div class="span6">
+				<a data-toggle="modal"  href="#renamdialog" class="btn btn-warning btn-small"><i
+					class="icon-white icon-pencil"></i>Rename</a> <a href="#"
+					class="btn btn-danger btn-small"><i class="icon-white icon-repeat"></i>Restart</a>
+				<a href="#" class="btn btn-primary btn-small"><i
+					class="icon-white icon-random"></i>Swap</a> <a href="#"
+					class="btn btn-inverse btn-small"><i
+					class="icon-white icon-ban-circle"></i>Unload</a>
+			</div>
+			<div class="span12"></div>
+			<div class="span3">Start time</div>
+			<div class="span7">
+				:<a data-toggle="modal" href="#coreTitleDialog"
 					class="btn btn-success btn-fixed">Ajouter un noyau</a>
 			</div>
-
-
-
-		</div>
-		<div class="span6">
-			<a data-toggle="modal" href="#renamdialog"
-				class="btn btn-warning btn-small"><i class="icon-white icon-pencil"></i>Rename</a>
-			<a href="#" class="btn btn-danger btn-small"><i
-				class="icon-white icon-repeat"></i>Restart</a> <a href="#"
-				class="btn btn-primary btn-small"><i class="icon-white icon-random"></i>Swap</a>
-			<a href="#" class="btn btn-inverse btn-small"><i
-				class="icon-white icon-ban-circle"></i>Unload</a>
-		</div>
-		<div class="span12"></div>
-		<div class="span3">Start time</div>
-		<div class="span7">
-			:
-
-
 			<div class="span3">Start time</div>
 			<div class="span7">:</div>
 			<div class="span3">Directory</div>
@@ -116,6 +55,8 @@
 			<div class="span7">:</div>
 		</div>
 	</div>
+
+
 	<div id="coreTitleDialog" class="modal hide fade" tabindex="-1"
 		role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
 		style="display: none;">
@@ -140,7 +81,7 @@
 							<!-- Text input-->
 							<label class="control-label" for="input01">Nom </label>
 							<div class="controls">
-								
+
 								<p class="help-block"></p>
 							</div>
 						</div>
@@ -159,14 +100,11 @@
 
 							<!-- Select Basic -->
 							<label class="control-label">Table MySQL</label>
-							<div class="controls">
-								<select class="input-xlarge">
-									<option>Table</option>
-									<option></option>
-								</select>
-							</div>
 
+							<div class="controls">{{ form_widget(form.table) }}</div>
 						</div>
+
+
 
 					</fieldset>
 
@@ -183,8 +121,8 @@
 			</div>
 		</form>
 	</div>
-	
-	
+
+
 	<div id="renamdialog" class="modal hide fade" tabindex="-1"
 		role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
 		style="display: none;">
@@ -201,39 +139,16 @@
 
 
 					<fieldset>
-   		<div class="control-group">
+						<div class="control-group">
 
-          <!-- Text input-->
-          <label class="control-label" for="input01">Nouveau nom</label>
-          <div class="controls">
-            <input placeholder="" class="input-xlarge" type="text">
-          </div>
-        </div>
+							<!-- Text input-->
+							<label class="control-label" for="input01">Nouveau nom</label>
+							<div class="controls">
+								<input placeholder="" class="input-xlarge" type="text">
+							</div>
+						</div>
 					</fieldset>
 
-
-<<<<<<< HEAD
-          <!-- Select Basic -->
-          <label class="control-label">Table MySQL</label>
-          <div class="controls">
-           {{ form_widget(form.table) }}
-          </div>
-=======
->>>>>>> a035ae616621cf043e83f8ee6140b6190fc62010
-
-
-<<<<<<< HEAD
-    </fieldset>	        
-				        </div></div>
-				        <div class="modal-footer">
-        					<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
-        					<button type="submit" class="btn btn-primary" >OK</a>
-					    </div>
-					    </form>
-		            </div>
-		            
-    </body>
-=======
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -244,48 +159,8 @@
 			</div>
 		</form>
 	</div>
-	
-	
-	
-	
 
 </body>
->>>>>>> a035ae616621cf043e83f8ee6140b6190fc62010
-{% endblock %}
 
-="modal-body">
-				<div class="divDialogElements">
-
-
-
-					<fieldset>
-   		<div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">Nouveau nom</label>
-          <div class="controls">
-            <input placeholder="" class="input-xlarge" type="text">
-          </div>
-        </div>
-					</fieldset>
-
-          <!-- Select Basic -->
-          <label class="control-label">Table MySQL</label>
-          <div class="controls">
-           {{ form_widget(form.table) }}
-          </div>
-
-
-			</div>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
-				<button type="submit" class="btn btn-primary">
-					OK</a>
-			
-			</div>
-		</form>
-	</div>
-</body>
 {% endblock %}
 
