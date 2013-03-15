@@ -51,11 +51,11 @@ class DynamicFieldsController extends Controller
     
     public function submitAction(Request $request)
     {
-        if (isset($request->request->get('add'))) {
+        /*if (isset($request->request->get('add'))) {
             echo 'EXIST';
         } else {
             echo 'NOT EXIST';
-        }
+        }*/
         /*$df = new DynamicFields();
         $form = $this->createForm(new DynamicFieldsForm(), $df);
         if ($request->isMethod('POST')) {

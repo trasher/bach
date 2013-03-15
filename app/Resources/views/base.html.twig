@@ -108,10 +108,10 @@ html,body {
 							<li><a href="{{ path('anph_indexation_homepage') }}">Indexation</a>
 							</li> {% endif %} {% if
 							path(app.request.attributes.get('_route')) ==
-							path('administration_homepage') %}
-							<li class="active"><a href="{{ url('administration_homepage') }}">Administration</a>
+							path('administration_dashboard') %}
+							<li class="active"><a href="{{ url('administration_dashboard') }}">Administration</a>
 							</li> {% else %}
-							<li><a href="{{ url('administration_homepage') }}">Administration</a>
+							<li><a href="{{ url('administration_dashboard') }}">Administration</a>
 							</li> {% endif %}
 							<li><a href="#">Aide</a></li>
 						</ul>
@@ -166,19 +166,7 @@ html,body {
 			</script>
 	<script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js" ></script>
-	<script>
-		function asfd(str)
-		{
-		if(str!=0)
-		{
-		jQuery('div#renew').show();
-		}
-		else
-		{
-		jQuery('div#renew').hide();
-		}
-		}
-		</script>
+	
 	</script>
 	} {% endblock %}
 </body>

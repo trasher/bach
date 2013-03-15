@@ -17,99 +17,11 @@ class DefaultController extends Controller
 {
 	public function indexAction()
 	{
-		//$process = new XMLProcess(__DIR__.'/../Resources/config/schema.xml');
-		
-		//$process->importXML();
-		//$this->get("anph.administration.xmlimport")->importXML(__DIR__.'/../Resources/config/schema.xml');
 		return $this->render('AdministrationBundle:Default:index.html.twig');
-	}
-	
-	public function analyzersAction(Request $request)
-	{
-		$defaultData = array('name' => 'bonjour');
-		$form = $this->createFormBuilder($defaultData)
-		->add('name', 'text')
-		->add('email', 'text')
-		->add('message', 'text')
-		->add('fieldsType', 'choice', array(
-				'choices'   => array('type 1' => 'Male', 'type 2' => 'Female'),
-				'required'  => false,
-		))
-		->add('indexed', 'checkbox', array(
-				'label'     => 'indexed',
-				'required'  => false,
-		))
-		->add('stored', 'checkbox', array(
-				'label'     => 'Stored',
-				'required'  => false,
-		))
-		->add('multivalued', 'checkbox', array(
-				'label'     => 'Multivalued',
-				'required'  => false,
-		))
-		->add('omnitnorm', 'checkbox', array(
-				'label'     => 'Omnit Norms',
-				'required'  => false,
-		))
-		->add('stored', 'checkbox', array(
-				'label'     => 'Stored',
-				'required'  => false,
-		))
-		->getForm();
-		
-		
-		$defaultData = array('name' => 'bonjour');
-		$addFieldForm = $this->createFormBuilder($defaultData)
-		->add('name', 'text')
-		->add('email', 'text')
-		->add('message', 'text')
-		->add('fieldsType', 'choice', array(
-				'choices'   => array('type 1' => 'Male', 'type 2' => 'Female'),
-				'required'  => false,
-		))
-		->add('indexed', 'checkbox', array(
-				'label'     => 'indexed',
-				'required'  => false,
-		))
-		->add('stored', 'checkbox', array(
-				'label'     => 'Stored',
-				'required'  => false,
-		))
-		->add('multivalued', 'checkbox', array(
-				'label'     => 'Multivalued',
-				'required'  => false,
-		))
-		->add('omnitnorm', 'checkbox', array(
-				'label'     => 'Omnit Norms',
-				'required'  => false,
-		))
-		->add('stored', 'checkbox', array(
-				'label'     => 'Stored',
-				'required'  => false,
-		))
-		->getForm();
-		
-		
-		
-		
-		
-		if ($request->isMethod('POST')) {
-			$form->bind($request);
-		
-			// data is an array with "name", "email", and "message" keys
-			$data = $form->getData();
-			return new Response($data['name']."  email  ");
-		}
-		
-		return $this->render('AdministrationBundle:Default:analyzers.html.twig', array(
-				'form' => $form->createView(),
-		));
 	}
 	
 	public function coreadminAction()
 	{
-	
-		
 		return $this->render('AdministrationBundle:Default:coreadmin.html.twig');
 	}
 	
@@ -120,61 +32,17 @@ class DefaultController extends Controller
 	
 	public function dashboardAction()
 	{
-		return $this->render('AdministrationBundle:Default:dashboard.html.twig');
+	    $coreName = $this->getRequest()->request->get('selectedCore');
+	    if (!isset($coreName)) {
+	        $coreName = 'none';
+	    }
+        $session = $this->getRequest()->getSession();
+        $session->set('coreName', $coreName);
+        if ($coreName == 'none') {
+            $session->set('xmlP', null);
+        } else {
+            $session->set('xmlP', new XMLProcess($coreName));
+        }
+        return $this->render('AdministrationBundle:Default:dashboard.html.twig', array('coreName' => $coreName));
 	}
-	
-	public function contactAction(Request $request)
-	{
-		$defaultData = array('name' => 'bonjour');
-		$form = $this->createFormBuilder($defaultData)
-		->add('name', 'text')
-		->add('email', 'text')
-		->add('message', 'text')
-		->add('fieldsType', 'choice', array(
-				'choices'   => array('type 1' => 'Male', 'type 2' => 'Female'),
-				'required'  => false,
-		))
-		->add('indexed', 'checkbox', array(
-				'label'     => 'indexed',
-				'required'  => false,
-		))
-		->add('stored', 'checkbox', array(
-				'label'     => 'Stored',
-				'required'  => false,
-		))
-		->add('multivalued', 'checkbox', array(
-				'label'     => 'Multivalued',
-				'required'  => false,
-		))
-		->add('omnitnorm', 'checkbox', array(
-				'label'     => 'Omnit Norms',
-				'required'  => false,
-		))
-		->add('stored', 'checkbox', array(
-				'label'     => 'Stored',
-				'required'  => false,
-		))
-		->getForm();
-		
-		
-		
-		
-		if ($request->isMethod('POST')) {
-			$form->bind($request);
-		
-			// data is an array with "name", "email", and "message" keys
-			$data = $form->getData();
-			return new Response($data['fieldsType']."  email  ".$data['stored']);
-		}
-		
-		return $this->render('AdministrationBundle:Default:new.html.twig', array(
-				'form' => $form->createView(),
-		));
-	
-		
-	}
-
-
-
-	
 }

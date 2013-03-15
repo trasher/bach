@@ -1,11 +1,8 @@
-administration_homepage:
-    pattern: /administration
-    defaults: { _controller: AdministrationBundle:Default:dashboard }
 administration_dashboard:
-    pattern: /dashboard
+    pattern: /administration/dashboard
     defaults: { _controller: AdministrationBundle:Default:dashboard }
 administration_fields:
-    pattern: /fields
+    pattern: /administration/fields
     defaults: { _controller: AdministrationBundle:Fields:refresh }
 administration_fields_submit:
     pattern: /fields/submit
