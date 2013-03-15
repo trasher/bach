@@ -45,9 +45,10 @@ padding: 0px 0;
 			<li class="divider"></li>
 			<form action="{{ path('administration_dashboard') }}" method="POST">
                 <select name="selectedCore" class="span12" autocomplete="off" onchange="this.form.submit();">
-            		<option value="none">Sélectionnez un Noyau</option>
-            		<option value="core0">Core 0</option>
-            		<option value="core1">Core 1</option>
+                    <option value="none">Sélectionnez un Noyau</option>
+                    {% for core in coreNames %}
+                		<option value="{{ core }}" {% if (coreName == core) %} selected="selected" {% endif %}>{{ core }}</option>
+                	{% endfor %}
 		        </select>
 		    </form>
 		    {% if (coreName != 'none' ) %}

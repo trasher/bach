@@ -14,23 +14,25 @@ class CopyFieldsController extends Controller
 {
     public function refreshAction()
     {
-        $xmlP = new XMLProcess('core0');
-        $fields =  new CopyFields($xmlP);
-        $form = $this->createForm(new CopyFieldsForm(), $fields);
+        $session = $this->getRequest()->getSession();
+        $form = $this->createForm(new CopyFieldsForm(), new CopyFields($session->get('xmlP')));
         return $this->render('AdministrationBundle:Default:copyfields.html.twig', array(
                 'form' => $form->createView(),
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
         ));
     }
     
     public function addCopyFieldAction(Request $request)
     {
+        $session = $this->getRequest()->getSession();
         $copyField = new CopyField();
         $form = $this->createFormBuilder($copyField)->getForm();
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 // If the data is valid, we save the new copy field into the schema.xml file of corresponding core
-                $xmlP = new XMLProcess('core0');
+                $xmlP = $this->session->get('xmlP');
                 $dynamicField->addField($xmlP);
                 $xmlP->saveXML();
                 return $this->redirect($this->generateUrl('administration_copyfields'));
@@ -45,18 +47,20 @@ class CopyFieldsController extends Controller
     
     public function submitAction(Request $request)
     {
+        $session = $this->getRequest()->getSession();
         $cf = new CopyFields();
         $form = $this->createForm(new CopyFieldsForm(), $cf);
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $xmlP = new XMLProcess('core0');
-                $cf->save($xmlP);
+                $cf->save($session->get('xmlP'));
             }
         }
         return $this->render('AdministrationBundle:Default:copyfields.html.twig', array(
                 'form' => $form->createView(),
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
         ));
     }
 }
