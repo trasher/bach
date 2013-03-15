@@ -5,43 +5,43 @@ administration_fields:
     pattern: /administration/fields
     defaults: { _controller: AdministrationBundle:Fields:refresh }
 administration_fields_submit:
-    pattern: /fields/submit
+    pattern: /administration/fields/submit
     defaults: { _controller: AdministrationBundle:Fields:submit }
 administration_fieldstype:
-    pattern:  /fieldstype
+    pattern:  /administration/fieldstype
     defaults: { _controller: AdministrationBundle:Types:refresh }
 administration_dynamicfields:
-    pattern:  /dynamicfields
+    pattern:  /administration/dynamicfields
     defaults: { _controller: AdministrationBundle:DynamicFields:refresh }
 administration_dynamicfields_submit:
-    pattern:  /dynamicfields/submit
+    pattern:  /administration/dynamicfields/submit
     defaults: { _controller: AdministrationBundle:DynamicFields:submit }
 administration_copyfields:
-    pattern: /copyfields
+    pattern: /administration/copyfields
     defaults: { _controller: AdministrationBundle:CopyFields:refresh }
 administration_copyfields_submit:
-    pattern: /copyfields/submit
+    pattern: /administration/copyfields/submit
     defaults: { _controller: AdministrationBundle:CopyFields:submit }
 administration_uniquekey:
-    pattern:  /uniquekey
+    pattern:  /administration/uniquekey
     defaults: { _controller: AdministrationBundle:UniqueKey:refresh }
 administration_analyzers:
-    pattern:  /analyzers
+    pattern:  /administration/analyzers
     defaults: { _controller: AdministrationBundle:Analyzers:refresh }
 administration_analyzers_submit:
-    pattern:  /analyzers/submit
+    pattern:  /administration/analyzers/submit
     defaults: { _controller: AdministrationBundle:Analyzers:submit }
 administration_performance:
-    pattern:  /performance/index
+    pattern:  /administration/performance/index
     defaults: { _controller: AdministrationBundle:Performance:refresh }
 administration_performance_submit:
-    pattern:  /performance/submit
+    pattern:  /administration/performance/submit
     defaults: { _controller: AdministrationBundle:Performance:submit }
 administration_coreadmin:
-    pattern:  /coreadmin
+    pattern:  /administration/coreadmin
     defaults: { _controller: AdministrationBundle:CoreAdmin:refresh }
 administration_core_creation:
-    pattern: /coreadmin/create
+    pattern: /administration/coreadmin/create
     defaults: { _controller: AdministrationBundle:CoreAdmin:createCore }
 administration_fiel:
     pattern:  /fiel

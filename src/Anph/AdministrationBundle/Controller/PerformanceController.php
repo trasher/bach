@@ -11,33 +11,28 @@ class PerformanceController extends Controller
     public function refreshAction(Request $request)
     {
         $session = $this->getRequest()->getSession();
-        if ($request->isMethod('POST')) {
-            return $this->changeAction($request);
-        } else {
-            $form = $this->createForm(new PerformanceForm(), new Performance('core0'));
-            return $this->render('AdministrationBundle:Default:performance.html.twig', array(
-                    'form' => $form->createView(),
-                    'coreName' => $session->get('coreName'),
-                    'coreNames' => $session->get('coreNames')
-            ));
-        }
+        $form = $this->createForm(new PerformanceForm(), new Performance($session->get('coreName')));
+        return $this->render('AdministrationBundle:Default:performance.html.twig', array(
+                'form' => $form->createView(),
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
+        ));
     }
     
-    private function changeAction(Request $request)
+    public function submitAction()
     {
-        // TODO voir la validation du formulaire, mettre le code au propre
+        $session = $this->getRequest()->getSession();
         $perf = new Performance();
-        $form = $this->createForm(new PerformanceForm(), $perf)->bind($request);
-        $perf->saveAll('core0');
+        $form = $this->createForm(new PerformanceForm(), $perf)->bind($this->getRequest());
+        $perf->saveAll($session->get('coreName'));
         
         if ($form->isValid()) {
-            $perf->saveAll('core0');
-            return $this->redirect($this->generateUrl('task_success'));
-        } else {
-            $form = $this->createForm(new PerformanceForm(), new Performance('core0'));
-            return $this->render('AdministrationBundle:Default:performance.html.twig', array(
-                    'form' => $form->createView()
-            ));
+            $perf->saveAll($session->get('coreName'));
         }
+        return $this->render('AdministrationBundle:Default:performance.html.twig', array(
+                'form' => $form->createView(),
+                'coreName' => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
+        ));
     }
 }
