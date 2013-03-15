@@ -31,8 +31,6 @@ class FieldsController extends Controller
                 $fd->save($xmlP);
             }
         }
-        //return $this->redirect($this->generateUrl('administration_fields'));
-        $form = $this->createForm(new FieldsForm(), $fd);
         return $this->render('AdministrationBundle:Default:fields.html.twig', array(
                 'form' => $form->createView(),
         ));

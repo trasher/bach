@@ -58,27 +58,28 @@ class DynamicField
     public function addField(XMLProcess $xmlP)
     {
         $solrXMLElt = new SolrXMLElement('dynamicField');
-        $attr = new SolrXMLAttribute('name');
-        $attr->setValue($this->name);
+        $attr = new SolrXMLAttribute('name', $this->name);
         $solrXMLElt->addAttribute($attr);
-        $attr = new SolrXMLAttribute('type');
-        $attr->setValue($this->type);
+        $attr = new SolrXMLAttribute('type', $this->type);
         $solrXMLElt->addAttribute($attr);
-        $attr = new SolrXMLAttribute('indexed');
-        $attr->setValue($this->indexed);
+        if ($this->indexed != null) {
+            $attr = new SolrXMLAttribute('indexed', $this->indexed ? 'true' : 'false');
+            $solrXMLElt->addAttribute($attr);
+        }
+        if ($this->stored != null) {
+            $attr = new SolrXMLAttribute('stored', $this->stored ? 'true' : 'false');
+            $solrXMLElt->addAttribute($attr);
+        }
+        if ($this->multiValued != null) {
+            $attr = new SolrXMLAttribute('multiValued', $this->multiValued ? 'true' : 'false');
+            $solrXMLElt->addAttribute($attr);
+        }
+        $attr = new SolrXMLAttribute('default', $this->default);
         $solrXMLElt->addAttribute($attr);
-        $attr = new SolrXMLAttribute('stored');
-        $attr->setValue($this->stored);
-        $solrXMLElt->addAttribute($attr);
-        $attr = new SolrXMLAttribute('multiValued');
-        $attr->setValue($this->multiValued);
-        $solrXMLElt->addAttribute($attr);
-        $attr = new SolrXMLAttribute('default');
-        $attr->setValue($this->default);
-        $solrXMLElt->addAttribute($attr);
-        $attr = new SolrXMLAttribute('required');
-        $attr->setValue($this->required);
-        $solrXMLElt->addAttribute($attr);
+        if ($this->required != null) {
+            $attr = new SolrXMLAttribute('required', $this->required ? 'true' : 'false');
+            $solrXMLElt->addAttribute($attr);
+        }
         $fields = $xmlP->getElementsByName('fields');
         $fields->addElement($solrXMLElt);
     }

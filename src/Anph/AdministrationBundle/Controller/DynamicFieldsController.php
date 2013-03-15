@@ -23,18 +23,25 @@ class DynamicFieldsController extends Controller
     
     public function addDynamicFieldAction(Request $request)
     {
-        $dynamicField = new DynamicField();
-        $form = $this->createForm(new DynamicFieldsForm(), $dynamicField);
+        $df = new DynamicField();
+        $df->name = 'testField';
+        $df->type = 'string';
+        $df->default = 'testValue';
+        $df->indexed = true;
+        $df->stored = true;
+        $form = $this->createForm(new DynamicFieldsForm(), $df);
         if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
+            //$form->bind($request);
+            //if ($form->isValid()) {
                 // If the data is valid, we save new field into the schema.xml file of corresponding core
                 $xmlP = new XMLProcess('core0');
-                $dynamicField->addField($xmlP);
+                $df->addField($xmlP);
                 $xmlP->saveXML();
-                return $this->redirect($this->generateUrl('administration_dynamicfields'));
-            }
+            //}
         }
+        return $this->render('AdministrationBundle:Default:dynamicfields.html.twig', array(
+                'form' => $form->createView(),
+        ));
     }
     
     public function removeDynamicFieldsAction(Request $request)
@@ -44,7 +51,12 @@ class DynamicFieldsController extends Controller
     
     public function submitAction(Request $request)
     {
-        $df = new DynamicFields();
+        if (isset($request->request->get('add'))) {
+            echo 'EXIST';
+        } else {
+            echo 'NOT EXIST';
+        }
+        /*$df = new DynamicFields();
         $form = $this->createForm(new DynamicFieldsForm(), $df);
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -54,8 +66,9 @@ class DynamicFieldsController extends Controller
                 $df->save($xmlP);
                 $xmlP->saveXML();
             }
-        }
-        $form = $this->createForm(new DynamicFieldsForm(), $df);
+        }*/
+        $xmlP = new XMLProcess('core0');
+        $form = $this->createForm(new DynamicFieldsForm(), new DynamicFields($xmlP));
         return $this->render('AdministrationBundle:Default:dynamicfields.html.twig', array(
                 'form' => $form->createView(),
         ));

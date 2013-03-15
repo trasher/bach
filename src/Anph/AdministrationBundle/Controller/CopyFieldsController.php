@@ -55,7 +55,6 @@ class CopyFieldsController extends Controller
                 $cf->save($xmlP);
             }
         }
-        $form = $this->createForm(new CopyFieldsForm(), $cf);
         return $this->render('AdministrationBundle:Default:copyfields.html.twig', array(
                 'form' => $form->createView(),
         ));

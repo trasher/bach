@@ -21,16 +21,18 @@
 			<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dynamic fields</h3>
 			<div align="right">
 					<div class="btn-toolbar">
-					<button type="submit" value="selectAll" class="btn btn-warning btn-small"><i
-							class="icon-white icon-pencil"></i> Tout séléctionner</a> 
-							<button type="submit" value="deselectAll"  class="btn btn-danger btn-small"><i
-							class="icon-white icon-repeat"></i> Ne rien séléctionner</a> 
-							<button type="submit" value="add" 
-							class="btn btn-primary btn-small"><i
-							class="icon-white icon-random"></i> ajouter</a> 
-							<button type="submit" value="remove" 
-							class="btn btn-inverse btn-small"><i
-							class="icon-white icon-ban-circle"></i> supprimer</a>
+					<form class="form-inline" action="{{ path('administration_dynamicfields_submit') }}" method="POST"
+    					<button type="submit" value="selectAll" class="btn btn-warning btn-small"><i
+    							class="icon-white icon-pencil"></i>Tout séléctionner</a> 
+    							<button type="submit" value="deselectAll"  class="btn btn-danger btn-small"><i
+    							class="icon-white icon-repeat"></i>Ne rien séléctionner</a> 
+    							<button type="submit" value="add" 
+    							class="btn btn-primary btn-small"><i
+    							class="icon-white icon-random"></i>ajouter</a> 
+    							<button type="submit" value="remove" 
+    							class="btn btn-inverse btn-small"><i
+    							class="icon-white icon-ban-circle"></i>supprimer</a>
+                    </form>
 					</div>
 				</div>
 				

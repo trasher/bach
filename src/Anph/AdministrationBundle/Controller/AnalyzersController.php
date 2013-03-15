@@ -32,7 +32,6 @@ class AnalyzersController extends Controller
                 $a->save($xmlP);
             }
         }
-        $form = $this->createForm(new AnalyzersForm(), $a);
         return $this->render('AdministrationBundle:Default:analyzers.html.twig', array(
                 'form' => $form->createView(),
         ));
