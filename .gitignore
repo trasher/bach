@@ -33,5 +33,7 @@ ehthumbs.db
 Thumbs.db
 *~
 
-# Specific to me #
-/var/www/bachdev/src/Anph/AdministrationBundle/Resources/config/BachSolrCoreConfig.xml
+# Vim project files
+.vimfiles*
+*.vimentry
+quick_gen_project_*.sh
