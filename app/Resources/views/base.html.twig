@@ -163,13 +163,21 @@ html,body {
 				//closeDialog ();
 				};
 			</script>
-	<script type="text/javascript">
-  $(document).ready(function () {
-    $("[rel=tooltip]").tooltip();
-  });
-</script>
+			
+			
+			 <script>
+              $(document).ready(function () {
+                $("a").tooltip({
+                  'selector': '',
+                  'placement': 'bottom'
+                });
+                console.log("jimmy");
+              });
+              </script>
+			
 	<script type="text/javascript"
 		src="http://code.jquery.com/jquery.min.js"></script>
+		
 	{% endblock %}
 </body>
 </html>
