@@ -91,6 +91,19 @@ class DefaultController extends Controller
     	return new RedirectResponse($this->get("router")->generate("anph_indexation_homepage"));
     }
     
+    public function purgeAction()
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$query = $em->createQuery('SELECT t FROM AnphIndexationBundle:ArchFileIntegrationTask t WHERE t.status > 0');
+    	$tasks = $query->getResult();
+
+    	foreach ($tasks as $task) {
+    		$em->remove($task);
+    	}
+    	$em->flush();
+    	return new RedirectResponse($this->get("router")->generate("anph_indexation_homepage"));
+    }
+    
     private function getDocumentForm($document)
     {
 		$form = $this	->createFormBuilder($document)
