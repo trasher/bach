@@ -94,6 +94,39 @@ class BachCoreAdminConfigReader
         return $this->doc->solrSchemaFileName;
     }
 
+    /**
+     * Get schema file path from Solr
+     *
+     * @return String
+     */
+    public function getSolrSchemaFileName($coreName)
+    {
+        //http://trojan:8080/solr/admin/cores?action=STATUS
+        $url = $this->getCoresURL() . '/admin/cores?action=STATUS';
+        $context  = stream_context_create(
+            array(
+                'http' => array(
+                    'header' => 'Accept: application/xml'
+                )
+            )
+        );
+        $xml = file_get_contents($url, false, $context);
+        $xml = simplexml_load_string($xml);
+
+        $path = null;
+
+        $xpath = "//lst[@name='" . $coreName . "']/str[@name='instanceDir']";
+        $result = $xml->xpath($xpath);
+
+        $path = $result[0] . 'conf/';
+
+        $xpath = "//lst[@name='" . $coreName . "']/str[@name='schema']";
+        $result = $xml->xpath($xpath);
+
+        $path .= $result[0];
+        return $path;
+    }
+
     public function getDataConfigFileName()
     {
         return $this->doc->solrDataConfigFileName;
