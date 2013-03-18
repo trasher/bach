@@ -15,6 +15,17 @@
 						</div>
 						</form>
 					</div>
+					{% if suggestions is defined %}
+					<div class="row-fluid">
+						<div class="offset2 span9">
+						{% for term,termResult in suggestions %}
+							{% for suggest in termResult %}
+								<a href="{{ urlQueryPrefix|replace({'$query': suggest}) }} ">{{ suggest }}</a>
+							{% endfor %}
+						{% endfor %}
+						</div>
+					{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>

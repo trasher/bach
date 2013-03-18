@@ -95,6 +95,16 @@ class DefaultController extends Controller
         	$searchResults = $this->get("anph.home.solarium_query_factory")->performQuery($container);
         	$time = number_format(microtime(true)-$time,4);
         	$resultCount = $searchResults->getNumFound();
+        	
+        	
+        	$query = $this->get("solarium.client")->createSuggester();
+        	$query->setQuery($this->getRequest()->query->get("q")); //multiple terms
+        	$query->setDictionary('suggest');
+        	$query->setOnlyMorePopular(true);
+        	$query->setCount(10);
+        	//$query->setCollate(true);
+        	$suggestions = $this->get("solarium.client")->suggester($query);
+        	
         }else{
         	$resultCount = 0;
         	$time = 0;
@@ -104,14 +114,31 @@ class DefaultController extends Controller
         
         $builder = new OptionSidebarBuilder($sidebar);
         
-        return $this->render('AnphHomeBundle:Default:index.html.twig', array(
-            'form' 		=> 	$form->createView(),
-        	'formAction'=>	$formAction,
-        	'sidebar' 	=>	$builder->compileToArray(),
-        	'resultCount'	=>	$resultCount,
-        	'searchResults'	=>	$searchResults,
-        	'time'			=>	$time
-        ));
+        $templateVars = array(
+        		'form' 			=> 	$form->createView(),
+        		'formAction'	=>	$formAction,
+        		'sidebar' 		=>	$builder->compileToArray(),
+        		'resultCount'	=>	$resultCount,
+        		'searchResults'	=>	$searchResults,
+        		'time'			=>	$time
+        );
+        
+        if(isset($suggestions)){
+        	$templateVars['suggestions'] =	$suggestions;
+        	
+        	$queryUrlParams = $this->getRequest()->query->all();
+        	if(array_key_exists("p",$queryUrlParams)){
+        		unset($queryUrlParams["q"]);
+        	}
+        	
+        	if(count($queryUrlParams) > 0){
+        		$templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage")."?".http_build_query($queryUrlParams).'&q=$query';
+        	}else{
+        		$templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage").'?q=$query';
+        	}
+        }
+        
+        return $this->render('AnphHomeBundle:Default:index.html.twig', $templateVars);
     }
     
     public function indexProcessAction(){
