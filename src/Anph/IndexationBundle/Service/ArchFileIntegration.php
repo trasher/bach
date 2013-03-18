@@ -2,6 +2,8 @@
 
 namespace Anph\IndexationBundle\Service;
 
+use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+
 use Anph\IndexationBundle\Exception\BadInputFileFormatException;
 use Anph\IndexationBundle\Exception\UnknownDriverParserException;
 use Doctrine\ORM\EntityManager;
@@ -42,6 +44,18 @@ class ArchFileIntegration
 				//$this->entityManager->remove($task);
 				$this->entityManager->persist($task);
 				$this->entityManager->flush();
+				
+				
+				$sca = new SolrCoreAdmin();
+				$coreNames = $sca->getStatus()->getCoreNames();
+				foreach ($core as $coreNames){
+					
+				}
+				
+				
+				
+				
+				
 				//return "DONE";
 			}catch(BadInputFileFormatException $e){
 				$task->setStatus(2);
