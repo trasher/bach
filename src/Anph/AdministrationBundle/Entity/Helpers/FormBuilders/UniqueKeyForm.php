@@ -46,7 +46,7 @@ class UniqueKeyForm extends AbstractType
         /*$session = new Session();
          if ($session->has('schema')) {
         $xmlProcess = $session->get('schema');*/
-        $xmlP = new XMLProcess('core0');
+        $xmlP = new XMLProcess($_SESSION['_sf2_attributes']['coreName']);
         $types = $xmlP->getElementsByName('fields');
         $types = $types[0];
         $types = $types->getElementsByName('field');

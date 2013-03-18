@@ -59,7 +59,7 @@ class CopyFieldForm extends AbstractType
         /*$session = new Session();
          if ($session->has('schema')) {
         $xmlProcess = $session->get('schema');*/
-        $xmlP = new XMLProcess('core0');
+        $xmlP = new XMLProcess($_SESSION['_sf2_attributes']['coreName']);
         $fieldsTag = $xmlP->getElementsByName('fields');
         $fieldsTag= $fieldsTag[0];
         $fields = $fieldsTag->getElementsByName('field');

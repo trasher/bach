@@ -101,7 +101,7 @@ class DynamicFieldForm extends AbstractType
         /*$session = new Session();
         if ($session->has('schema')) {
             $xmlProcess = $session->get('schema');*/
-            $xmlP = new XMLProcess('core0');
+            $xmlP = new XMLProcess($_SESSION['_sf2_attributes']['coreName']);
             $types = $xmlP->getElementsByName('types');
             $types = $types[0];
             $types = $types->getElementsByName('fieldType');
