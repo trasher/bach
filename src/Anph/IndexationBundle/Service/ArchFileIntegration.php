@@ -42,6 +42,8 @@ class ArchFileIntegration
 				//$this->entityManager->remove($task);
 				$this->entityManager->persist($task);
 				$this->entityManager->flush();
+				
+				
 				//return "DONE";
 			}catch(BadInputFileFormatException $e){
 				$task->setStatus(2);

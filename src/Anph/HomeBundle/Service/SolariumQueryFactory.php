@@ -6,7 +6,7 @@ use Symfony\Component\Finder\Finder;
 
 use Anph\HomeBundle\Entity\SolariumQueryContainer;
 
-use Anph\HomeBundle\Entity\SolariumQueryDecorator;
+use Anph\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 
 use Anph\IndexationBundle\Exception\BadInputFileFormatException;
 use Anph\IndexationBundle\Exception\UnknownDriverParserException;
@@ -47,10 +47,10 @@ class SolariumQueryFactory
 		 
 		foreach ($finder as $file) {
 			try {
-				$reflection = new \ReflectionClass('Anph\HomeBundle\Entity\Decorator\\'.
+				$reflection = new \ReflectionClass('Anph\HomeBundle\Entity\SolariumQueryDecorator\\'.
 						$file->getBasename(".php"));
 		
-				if ('Anph\HomeBundle\Entity\SolariumQueryDecorator' == $reflection->getParentClass()->getName()) {		
+				if ('Anph\HomeBundle\Entity\SolariumQueryDecoratorAbstract' == $reflection->getParentClass()->getName()) {		
 					$this->registerQueryDecorator($reflection->newInstance());
 				}
 			} catch(\RuntimeException $e) {
@@ -58,7 +58,7 @@ class SolariumQueryFactory
 		}
 	}
 	
-	private function registerQueryDecorator(SolariumQueryDecorator $decorator){
+	private function registerQueryDecorator(SolariumQueryDecoratorAbstract $decorator){
 		$this->decorators[$decorator->getTargetField()] = $decorator;
 	}
 }
