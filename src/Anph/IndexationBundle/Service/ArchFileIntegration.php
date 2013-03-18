@@ -46,6 +46,7 @@ class ArchFileIntegration
 				$this->entityManager->flush();
 				
 				
+
 				$sca = new SolrCoreAdmin();
 				$coreNames = $sca->getStatus()->getCoreNames();
 				foreach ($core as $coreNames){
@@ -53,10 +54,7 @@ class ArchFileIntegration
 				}
 				
 				
-				
-				
-				
-				//return "DONE";
+		
 			}catch(BadInputFileFormatException $e){
 				$task->setStatus(2);
 				$this->entityManager->persist($task);
