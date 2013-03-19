@@ -32,6 +32,16 @@ class SolrCoreAdmin
         }
         $this->http = include __DIR__ . '/../../../../../vendor/aura/http/scripts/instance.php';
     }
+    
+    public function fullImport($coreName)
+    {
+        return $this->send($this->reader->getCoresURL() . '?action=CREATE&' .
+                'name=' . $coreName . '&' .
+                'instanceDir=' . $coreInstanceDir . '&' .
+                'config=' . $this->reader->getConfigFileName() . '&' .
+                'schema=' . $this->reader->getSchemaFileName() . '&' .
+                'dataDir=' . $this->reader->getCoreDataDir());
+    }
 
     /**
      * Create core with specified name. If a core directory or core with such name
@@ -202,9 +212,7 @@ class SolrCoreAdmin
         if (!is_dir($coreInstanceDirPath)) {
             exec('cp -r -a "' . $this->reader->getCoreTemplatePath() . '" "' . $coreInstanceDirPath . '"', $output, $status);
             $this->addFieldsByDefault($coreInstanceDirPath, $fields);
-            echo "Champs ajoutés";
             $this->createDataConfigFile($coreInstanceDirPath, $tableName, $fields);
-            echo "DataConfig file crée";
             return $status == 0 ? true : false;
         }
         return false;

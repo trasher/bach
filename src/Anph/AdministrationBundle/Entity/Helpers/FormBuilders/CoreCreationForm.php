@@ -16,17 +16,7 @@ class CoreCreationForm extends AbstractType
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Form attributes
-        $builder->add('name', 'text', array(
-                'label'    => 'Nom',
-                'required' => true
-                ));
-        $builder->add('repository', 'text', array(
-                'label'    => 'Nom du répértoire',
-                'required' => true
-        ));
-        $builder->add('table', 'choice', array(
-                'label'    => 'Type de données',
+        $builder->add('core', 'choice', array(
                 'required' => true,
                 'choices'  => $this->tables
                 ));
@@ -41,6 +31,6 @@ class CoreCreationForm extends AbstractType
 
     public function getName()
     {
-        return 'coreCreation';
+        return 'coreCreationForm';
     }
 }

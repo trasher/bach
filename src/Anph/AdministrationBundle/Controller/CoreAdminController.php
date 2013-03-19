@@ -18,9 +18,9 @@ class CoreAdminController extends Controller
     {
         $session = $request->getSession();
         if ($request->isMethod('GET')) {
-    	    $form = $this->createForm(new CoreCreationForm($this->getTableNamesFromDataBase()));
+    	    $form = $this->createForm(new CoreCreationForm($this->getAvailableCoreNames()));
 	    } else {
-	        $btn = $request->request->get('createCore');
+	        $btn = $request->request->get('createCoreOk');
 	        if (isset($btn)) {
 	            $form = $this->createCoreAction($request, $session->get('xmlP'));
 	        } elseif (isset($btn)) {
@@ -37,16 +37,17 @@ class CoreAdminController extends Controller
     private function createCoreAction(Request $request, XMLProcess $xmlP)
     {
         $session = $request->getSession();
-        /*$cc = new CoreCreation();
-        $tableNames = $this->getTableNamesFromDataBase();
-        $form = $this->createFormBuilder($cc, $tableNames)->getForm();*/
-        $cc = new CoreCreation();
-        $form = $this->createForm(new CoreCreationForm($this->getTableNamesFromDataBase()), $cc);
-        $form->bind($request);
         $sca = new SolrCoreAdmin();
-        $fields = $this->getFieldsFromDataBase('UniversalFileFormat');
-        $sca->create('coreForTest', 'coreForTestDir', 'UniversalFileFormat', $fields);
-        return $this->refreshAction();
+        $cc = new CoreCreation();
+        $form = $this->createForm(new CoreCreationForm($this->getAvailableCoreNames()), $cc);
+        $form->bind($request);
+        $fields = $this->getFieldsFromDataBase($cc->core);
+        $result = $sca->create($cc->core, $cc->core, $cc->core, $fields);
+        if ($result != false && $result->isOk()) {
+            $coreNames = $sca->getStatus()->getCoreNames();
+            $session->set('coreNames', $coreNames);
+        }
+        return $form;
     }
     
     private function getFieldsFromDataBase($tableName)
@@ -54,6 +55,7 @@ class CoreAdminController extends Controller
         $sql = "SELECT COLUMN_NAME AS name FROM information_schema.COLUMNS WHERE TABLE_NAME ='" . $tableName . "'";
         $connection = $this->getDoctrine()->getConnection();
         $result = $connection->query($sql);
+        $res = array();
         while ($row = $result->fetch()){
             $res[]=$row['name'];
         }
@@ -67,8 +69,25 @@ class CoreAdminController extends Controller
         $result = $connection->query($sql);
         $res = array();
         while ($row = $result->fetch()){
-            $res[]=$row['name'];
+            $res[] = $row['name'];
         }
         return $res;
+    }
+    
+    private function getAvailableCoreNames(SolrCoreAdmin $sca = null)
+    {
+        if ($sca == null) {
+            $sca = new SolrCoreAdmin();
+        }
+        $runningCores = $sca->getStatus()->getCoreNames();
+        $tableNames = $this->getTableNamesFromDataBase();
+        $availableCores = array();
+        foreach ($tableNames as $t) {
+            $subStr = substr($t, strlen($t) - 6);
+            if (!in_array($t, $runningCores) && $subStr === 'Format') {
+                $availableCores[$t] = $t;
+            }
+        }
+        return $availableCores;
     }
 }

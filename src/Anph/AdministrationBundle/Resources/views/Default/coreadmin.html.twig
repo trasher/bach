@@ -58,7 +58,7 @@
 			
 			
 			
-				<h3 style="color: #0080FF">Index :</h3>
+				<div class="span12"><h3 style="color: #0080FF">Index :</h3></div>
 			<div class="span12 well">
 			       <div class="row-fluid show-grid">
 						<div class="span3">Last Edit</div>
@@ -81,7 +81,7 @@
 		role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
 		style="display: none;">
 		<form class="form-horizontal"
-			action="{{ path('administration_core_creation') }}" method="post">
+			action="{{ path('administration_coreadmin') }}" method="post">
 
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">×</a>
@@ -95,33 +95,14 @@
 					<fieldset>
 
 
-
-						<div class="control-group">
-							<!-- Text input-->
-							<label class="control-label" for="input01">Nom </label>
-							<div class="controls">
-
-								<p class="help-block"></p>
-							</div>
-						</div>
-
-						<div class="control-group">
-
-							<!-- Text input-->
-							<label class="control-label" for="input01">Répertoire</label>
-							<div class="controls">
-
-								<input placeholder="" class="input-xlarge" type="text">
-							</div>
-						</div>
-
 						<div class="control-group">
 
 							<!-- Select Basic -->
-							<label class="control-label">Table MySQL</label>
+							<label class="control-label">Nom</label>
 
-							<div class="controls">{{ form_widget(form.table) }}</div>
+							<div class="controls">{{ form_widget(form.core) }}</div>
 						</div>
+						{{ form_widget(form._token) }}
 
 
 
@@ -134,7 +115,7 @@
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
-				<button name="createCore" type="submit" class="btn btn-primary">
+				<button name="createCoreOk" type="submit" class="btn btn-primary">
 					OK</a>
 			
 			</div>
