@@ -27,8 +27,6 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-    	$form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
-		
     	$formActionUrlParams = $this->getRequest()->query->all();
     	
     	if(count($formActionUrlParams) > 0){
@@ -69,27 +67,78 @@ class DefaultController extends Controller
         
         if(!is_null($this->getRequest()->query->get("q"))){
         	// On effectue une recherche	
-        	
+        	$form = $this->createForm(new SearchQueryFormType($this->getRequest()->query->get("q")), new SearchQuery());        	
+        	 
         	$container = new SolariumQueryContainer();
         	$container->setField("language", $sidebar->getItemValue("qo_lg"));
-        	$container->setField("pageResults", $sidebar->getItemValue("qo_pr"));
-        	$container->setField("displayPicture", $sidebar->getItemValue("qo_dp"));       
+        	$container->setField("displayPicture", $sidebar->getItemValue("qo_dp"));
+			$container->setField("archDescUnitTitle", $this->getRequest()->query->get("q"));
+			
+        	if(!is_null($this->getRequest()->query->get("p"))){
+        		$page = intval($this->getRequest()->query->get("p"));
 
-        	$searchResults = $this->get("anph.home.solarium_query_factory")->performQuery($container);
+        		if($page < 1){
+        			$page = 1;
+        		}
+        	}else{
+        		$page = 1;
+        	}
         	
+        	$resultByPage = 20;
+        	
+        	//if($resultCount)
+        	
+			$container->setField("pager", array("start"	 =>	0, 
+												"offset" => intval($sidebar->getItemValue("qo_pr"))));
+			
+			$time = microtime(true);
+        	$searchResults = $this->get("anph.home.solarium_query_factory")->performQuery($container);
+        	$time = number_format(microtime(true)-$time,4);
         	$resultCount = $searchResults->getNumFound();
+        	
+        	
+        	$query = $this->get("solarium.client")->createSuggester();
+        	$query->setQuery($this->getRequest()->query->get("q")); //multiple terms
+        	$query->setDictionary('suggest');
+        	$query->setOnlyMorePopular(true);
+        	$query->setCount(10);
+        	//$query->setCollate(true);
+        	$suggestions = $this->get("solarium.client")->suggester($query);
+        	
         }else{
         	$resultCount = 0;
+        	$time = 0;
+        	$form = $this->createForm(new SearchQueryFormType(), new SearchQuery()); 
+        	$searchResults = array();
         }        
         
         $builder = new OptionSidebarBuilder($sidebar);
         
-        return $this->render('AnphHomeBundle:Default:index.html.twig', array(
-            'form' 		=> 	$form->createView(),
-        	'formAction'=>	$formAction,
-        	'sidebar' 	=>	$builder->compileToArray(),
-        	'resultCount'	=>	$resultCount
-        ));
+        $templateVars = array(
+        		'form' 			=> 	$form->createView(),
+        		'formAction'	=>	$formAction,
+        		'sidebar' 		=>	$builder->compileToArray(),
+        		'resultCount'	=>	$resultCount,
+        		'searchResults'	=>	$searchResults,
+        		'time'			=>	$time
+        );
+        
+        if(isset($suggestions)){
+        	$templateVars['suggestions'] =	$suggestions;
+        	
+        	$queryUrlParams = $this->getRequest()->query->all();
+        	if(array_key_exists("p",$queryUrlParams)){
+        		unset($queryUrlParams["q"]);
+        	}
+        	
+        	if(count($queryUrlParams) > 0){
+        		$templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage")."?".http_build_query($queryUrlParams).'&q=$query';
+        	}else{
+        		$templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage").'?q=$query';
+        	}
+        }
+        
+        return $this->render('AnphHomeBundle:Default:index.html.twig', $templateVars);
     }
     
     public function indexProcessAction(){

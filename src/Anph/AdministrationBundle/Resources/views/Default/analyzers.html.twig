@@ -16,25 +16,8 @@
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span9 span-fixed-sidebar">
-					<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analyzers</h3>
-					<div align="right">
-						<div class="btn-toolbar">
-							<button type="submit" value="selectAll"
-								class="btn btn-warning btn-small">
-								<i class="icon-white icon-pencil"></i> Tout séléctionner</a>
-								<button type="submit" value="deselectAll"
-									class="btn btn-danger btn-small">
-									<i class="icon-white icon-repeat"></i> Ne rien séléctionner</a>
-									<button type="submit" value="add"
-										class="btn btn-primary btn-small">
-										<i class="icon-white icon-random"></i> ajouter</a>
-										<button type="submit" value="remove"
-											class="btn btn-inverse btn-small">
-											<i class="icon-white icon-ban-circle"></i> supprimer</a>
-						
-						</div>
-					</div>
+			<div class="span8 span-fixed-sidebar">
+					<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analyzers</h3>		
 				<form class="form-inline" action="{{ path('administration_analyzers') }}" method="POST"
 					
 					 {{ form_enctype(form) }}>

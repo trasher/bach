@@ -2,6 +2,8 @@
 
 namespace Anph\AdministrationBundle\Controller;
 
+use Anph\AdministrationBundle\Entity\Dashboard\Dashboard;
+
 use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
@@ -48,9 +50,21 @@ class DefaultController extends Controller
         } else {
             $session->set('xmlP', new XMLProcess($coreName));
         }
+        
+        $db = new Dashboard();
+        
+        $SystemFreeVirtualMemory=$db->getSystemFreeVirtualMemory();
+        $SystemUsedVirtualMemory = $db->getSystemTotalVirtualMemory()-$SystemFreeVirtualMemory;
+        $SystemFreeSwapMemory=$db->getSystemFreeSwapMemory();
+        $SystemUsedSwapMemory=$db->getSystemTotalSwapMemory()-$SystemFreeSwapMemory;
+        
         return $this->render('AdministrationBundle:Default:dashboard.html.twig', array(
                 'coreName'  => $coreName,
-                'coreNames' => $coreNames
+                'coreNames' => $coreNames,
+        		'SystemUsedVirtualMemory' => $SystemUsedVirtualMemory,
+        		'SystemFreeVirtualMemory' => $SystemFreeVirtualMemory,
+        		'SystemUsedSwapMemory' => $SystemUsedSwapMemory,
+        		'SystemFreeSwapMemory' => $SystemFreeSwapMemory
                 ));
 	}
 }

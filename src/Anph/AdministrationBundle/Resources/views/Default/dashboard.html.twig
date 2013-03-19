@@ -13,7 +13,6 @@
 	<link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
 </noscript>
 
-
 <body>
 
 <div class="span9 span-fixed-sidebar">
@@ -25,66 +24,23 @@
 			</li></ul>		
 	
 		<div class="accordion" id="accordion2">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse"
-						data-parent="#accordion2" href="#collapseOne"> Collapsible Group
-						Item #1 </a>
-				</div>
-				<div id="collapseOne" class="accordion-body in collapse"
-					style="height: auto;">
-					<div class="accordion-inner">Anim pariatur cliche reprehenderit,
-						enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-						moon officia aute, non cupidatat skateboard dolor brunch. Food
-						truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-						sunt aliqua put a bird on it squid single-origin coffee nulla
-						assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer
-						labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-						excepteur butcher vice lomo. Leggings occaecat craft beer
-						farm-to-table, raw denim aesthetic synth nesciunt you probably
-						haven't heard of them accusamus labore sustainable VHS.</div>
-				</div>
-			</div>
+			
+		{% for core in coreNames %}
+     
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle collapsed" data-toggle="collapse"
-						data-parent="#accordion2" href="#collapseTwo"> Collapsible Group
-						Item #2 </a>
+						data-parent="#accordion1" href="#collapseOne"> Le noyau Solr : {{ core }} </a>
 				</div>
 				<div id="collapseTwo" class="accordion-body collapse"
 					style="height: 0px;">
-					<div class="accordion-inner">Anim pariatur cliche reprehenderit,
-						enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-						moon officia aute, non cupidatat skateboard dolor brunch. Food
-						truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-						sunt aliqua put a bird on it squid single-origin coffee nulla
-						assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer
-						labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-						excepteur butcher vice lomo. Leggings occaecat craft beer
-						farm-to-table, raw denim aesthetic synth nesciunt you probably
-						haven't heard of them accusamus labore sustainable VHS.</div>
+					<div class="accordion-inner">
+
+					</div>
 				</div>
 			</div>
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse"
-						data-parent="#accordion2" href="#collapseThree"> Collapsible Group
-						Item #3 </a>
-				</div>
-				<div id="collapseThree" class="accordion-body collapse"
-					style="height: 0px;">
-					<div class="accordion-inner">Anim pariatur cliche reprehenderit,
-						enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-						moon officia aute, non cupidatat skateboard dolor brunch. Food
-						truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-						sunt aliqua put a bird on it squid single-origin coffee nulla
-						assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer
-						labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
-						excepteur butcher vice lomo. Leggings occaecat craft beer
-						farm-to-table, raw denim aesthetic synth nesciunt you probably
-						haven't heard of them accusamus labore sustainable VHS.</div>
-				</div>
-			</div>
+
+			    {% endfor %}
 
 		</div>
 
@@ -94,15 +50,74 @@
 
 	<div class="span6">
 		<ul class="breadcrumb">
-			<li><a href="#">Administration</a> <span class="divider">/</span>
+			<li><a href="#">Utilisation de la mémoire volatile (MB)</a> <span class="divider"></span>
 			</li>
-	
+			</ul>
+			<div id="chart_div"></div>
+	       <ul class="breadcrumb">
+			<li><a href="#">Utilisation du swap (MB) </a> <span class="divider">/</span>
+			</li>
+			</ul>
+			<div id="chart_div2"></div>
 	</div>
 </div>
     
 	
 	</div>
+	
 
 </body>
+
+{% block javascripts %}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+		  ['Free', {{ SystemFreeVirtualMemory }}],
+          ['Used', {{ SystemUsedVirtualMemory }}]
+          
+         
+        ]);
+
+        var data2 = new google.visualization.DataTable();
+        data2.addColumn('string', 'Topping');
+        data2.addColumn('number', 'Slices');
+        data2.addRows([
+		  ['Free', {{ SystemFreeSwapMemory }}],
+          ['Used', {{ SystemUsedSwapMemory }}]
+          
+         
+        ]);
+
+        // Set chart options
+        var options = {'width':600,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+
+        var chart2 = new google.visualization.PieChart(document.getElementById('chart_div2'));
+        chart2.draw(data2, options);
+      }
+    </script>
+
+{% endblock %}
+
 {% endblock %}
 

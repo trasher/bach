@@ -7,4 +7,7 @@ anph_indexation_upload_process:
     defaults: { _controller: AnphIndexationBundle:Default:indexProcess }
     requirements:
         _method:  POST
-  
+ 
+anph_indexation_purge:
+    pattern:  /indexation/purge
+    defaults: { _controller: AnphIndexationBundle:Default:purge }

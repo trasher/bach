@@ -19,43 +19,63 @@
 
 	<div class="span9 span-fixed-sidebar">
 
-		<div class="span12 well">
+		
 			<div class="span2">
 				<h3 style="color: #0080FF">&nbsp;&nbsp;Core :</h3>
 			</div>
 			<div class="span4"></div>
-			<div class="span6">
+			<div class="span6" align="right">
 				<a data-toggle="modal"  href="#renamdialog" class="btn btn-warning btn-small"><i
-					class="icon-white icon-pencil"></i>Rename</a> <a href="#"
+					class="icon-white icon-pencil"></i>Restart</a> <a href="#"
 					class="btn btn-danger btn-small"><i class="icon-white icon-repeat"></i>Restart</a>
 				<a href="#" class="btn btn-primary btn-small"><i
 					class="icon-white icon-random"></i>Swap</a> <a href="#"
 					class="btn btn-inverse btn-small"><i
 					class="icon-white icon-ban-circle"></i>Unload</a>
 			</div>
-			<div class="span12"></div>
-			<div class="span3">Start time</div>
-			<div class="span7">
-				:<a data-toggle="modal" href="#coreTitleDialog"
-					class="btn btn-success btn-fixed">Ajouter un noyau</a>
+
+			
+ 			
+			<div class="span12 well">
+			
+					<div class="row-fluid show-grid">
+						<div class="span3">Start Time</div>
+						<div class="span1">:</div>
+						<div class="span4"></div>
+					</div>
+					<div class="row-fluid show-grid">
+						<div class="span3">Directory</div>
+						<div class="span1">:</div>
+						<div class="span4"></div>
+					</div>
+					<div class="row-fluid show-grid">
+						<div class="span3">Data directory</div>
+						<div class="span1">:</div>
+						<div class="span4"></div>
+					</div>
+					
 			</div>
-			<div class="span3">Start time</div>
-			<div class="span7">:</div>
-			<div class="span3">Directory</div>
-			<div class="span7">:</div>
-			<div class="span3">Data directory</div>
-			<div class="span7">:</div>
-			<div class="span3">
+			
+			
+			
 				<h3 style="color: #0080FF">Index :</h3>
-			</div>
-			<div class="span12"></div>
-			<div class="span3">Last edit</div>
-			<div class="span7">:</div>
-			<div class="span3">Directory</div>
-			<div class="span7">:</div>
+			<div class="span12 well">
+			       <div class="row-fluid show-grid">
+						<div class="span3">Last Edit</div>
+						<div class="span1">:</div>
+						<div class="span4"></div>
+					</div>
+					<div class="row-fluid show-grid">
+						<div class="span3">Directory</div>
+						<div class="span1">:</div>
+						<div class="span4"></div>
+			       </div>
+		</div>
 		</div>
 	</div>
-
+	
+	
+<a href="#" rel="tooltip" title="first tooltip">hover over me</a>
 
 	<div id="coreTitleDialog" class="modal hide fade" tabindex="-1"
 		role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
@@ -77,7 +97,6 @@
 
 
 						<div class="control-group">
-
 							<!-- Text input-->
 							<label class="control-label" for="input01">Nom </label>
 							<div class="controls">
@@ -122,43 +141,11 @@
 		</form>
 	</div>
 
-
-	<div id="renamdialog" class="modal hide fade" tabindex="-1"
-		role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
-		style="display: none;">
-		<form 
-			action="{{ path('administration_core_creation') }}" method="post">
-
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">×</a>
-				<h3>Renommer le noyau</h3>
+	
+	<div class="span7">
+				<a data-toggle="modal" href="#coreTitleDialog"
+					class="btn btn-success btn-fixed">Ajouter un noyau</a>
 			</div>
-			<div class="modal-body">
-				<div class="divDialogElements">
-
-
-
-					<fieldset>
-						<div class="control-group">
-
-							<!-- Text input-->
-							<label class="control-label" for="input01">Nouveau nom</label>
-							<div class="controls">
-								<input placeholder="" class="input-xlarge" type="text">
-							</div>
-						</div>
-					</fieldset>
-
-				</div>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
-				<button type="submit" class="btn btn-primary">
-					OK</a>
-			
-			</div>
-		</form>
-	</div>
 
 </body>
 
