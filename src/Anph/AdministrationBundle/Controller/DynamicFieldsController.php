@@ -12,10 +12,19 @@ use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class DynamicFieldsController extends Controller
 {
-    public function refreshAction()
+    public function refreshAction(Request $request)
     {
-        $session = $this->getRequest()->getSession();
-        $form = $this->createForm(new DynamicFieldsForm(), new DynamicFields($session->get('xmlP')));
+        $session = $request->getSession();
+        if ($request->isMethod('GET')) {
+            $form = $this->createForm(new DynamicFieldsForm(), new DynamicFields($session->get('xmlP')));
+        } else {
+            $btn = $request->request->get('submit');
+            if (isset($btn)) {
+                $form = $this->submitAction($request, $session->get('xmlP'));
+            } elseif (isset($btn)) {
+                echo 'ELSIF';
+            }
+        }
         return $this->render('AdministrationBundle:Default:dynamicfields.html.twig', array(
                 'form' => $form->createView(),
                 'coreName' => $session->get('coreName'),
@@ -23,7 +32,7 @@ class DynamicFieldsController extends Controller
         ));
     }
     
-    public function addDynamicFieldAction(Request $request)
+    private function addDynamicFieldAction(Request $request)
     {
         $df = new DynamicField();
         $form = $this->createForm(new DynamicFieldsForm(), $df);
@@ -46,30 +55,15 @@ class DynamicFieldsController extends Controller
         
     }
     
-    public function submitAction(Request $request)
+    private function submitAction(Request $request, XMLProcess $xmlP)
     {
-        $session = $this->getRequest()->getSession();
-        /*if (isset($request->request->get('add'))) {
-            echo 'EXIST';
-        } else {
-            echo 'NOT EXIST';
-        }*/
-        /*$df = new DynamicFields();
+        $df = new DynamicFields();
         $form = $this->createForm(new DynamicFieldsForm(), $df);
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $xmlP = new XMLProcess('core0');
-                $df->save($xmlP);
-                $xmlP->saveXML();
-            }
-        }*/
-        $form = $this->createForm(new DynamicFieldsForm(), new DynamicFields($session->get('xmlP')));
-        return $this->render('AdministrationBundle:Default:dynamicfields.html.twig', array(
-                'form' => $form->createView(),
-                'coreName' => $session->get('coreName'),
-                'coreNames' => $session->get('coreNames')
-        ));
+        $form->bind($request);
+        if ($form->isValid()) {
+            $df->save($xmlP);
+            $xmlP->saveXML();
+        }
+        return $form;
     }
 }

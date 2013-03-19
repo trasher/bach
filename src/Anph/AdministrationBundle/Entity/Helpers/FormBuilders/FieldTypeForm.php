@@ -18,32 +18,33 @@ class FieldTypeForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'name');
         $builder->add('name', 'text', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => true
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'class');
         $builder->add('class', 'choice', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired(),
+                'required' => true,
                 'choices'  => $this->retreiveClassAttributeValues($reader)
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'sortMissingLast');
         $builder->add('sortMissingLast', 'checkbox', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'sortMissingFirst');
         $builder->add('sortMissingFirst', 'checkbox', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
         $attr = $reader->getAttributeByTag($bachTagType, 'positionIncrementGap');
         $builder->add('positionIncrementGap', 'integer', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()));
+                'required' => false
+                ));
         $attr = $reader->getAttributeByTag($bachTagType, 'autoGeneratePhraseQueries');
         $builder->add('autoGeneratePhraseQueries', 'checkbox', array(
                 'label'    => $attr->getLabel(),
-                'required' => $attr->isRequired()
+                'required' => false
                 ));
         
         // Other Attributes that can be added to the application in the future
@@ -82,7 +83,7 @@ class FieldTypeForm extends AbstractType
     
     public function getName()
     {
-        return 'fieldType';
+        return 'fieldTypeForm';
     }
     
     private function retreiveClassAttributeValues(BachSchemaConfigReader $reader)

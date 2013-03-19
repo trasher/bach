@@ -70,6 +70,30 @@ class FieldType
         $fields->addElement($solrXMLElt);
     }
     
+    public function getSolrXMLElement()
+    {
+        $elt = new SolrXMLElement('fieldType');
+        $attr = new SolrXMLAttribute('name', $this->name);
+        $elt->addAttribute($attr);
+        $attr = new SolrXMLAttribute('class', $this->class);
+        $elt->addAttribute($attr);
+        if ($this->sortMissingLast != null) {
+            $attr = new SolrXMLAttribute('sortMissingLast', $this->sortMissingLast ? 'true' : 'false');
+            $elt->addAttribute($attr);
+        }
+        if ($this->sortMissingFirst != null) {
+            $attr = new SolrXMLAttribute('sortMissingFirst', $this->sortMissingFirst ? 'true' : 'false');
+            $elt->addAttribute($attr);
+        }
+        $attr = new SolrXMLAttribute('positionIncrementGap', $this->positionIncrementGap);
+        $elt->addAttribute($attr);
+        if ($this->autoGeneratePhraseQueries != null) {
+            $attr = new SolrXMLAttribute('autoGeneratePhraseQueries', $this->autoGeneratePhraseQueries ? 'true' : 'false');
+            $elt->addAttribute($attr);
+        }
+        return $elt;
+    }
+    
     private function toBoolean($value)
     {
         return $value == 'true' ? true : false;

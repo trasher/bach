@@ -14,10 +14,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CoreAdminController extends Controller
 {
-    public function refreshAction()
+    public function refreshAction(Request $request)
     {
-        $session = $this->getRequest()->getSession();
-    	$form = $this->createForm(new CoreCreationForm($this->getTableNamesFromDataBase()));
+        $session = $request->getSession();
+        if ($request->isMethod('GET')) {
+    	    $form = $this->createForm(new CoreCreationForm($this->getTableNamesFromDataBase()));
+	    } else {
+	        $btn = $request->request->get('createCore');
+	        if (isset($btn)) {
+	            $form = $this->createCoreAction($request, $session->get('xmlP'));
+	        } elseif (isset($btn)) {
+	            echo 'ELSIF';
+	        }
+	    }
     	return $this->render('AdministrationBundle:Default:coreadmin.html.twig', array(
     			'form' => $form->createView(),
                 'coreName' => $session->get('coreName'),
@@ -25,12 +34,15 @@ class CoreAdminController extends Controller
     	));
     }
     
-    public function createCoreAction()
+    private function createCoreAction(Request $request, XMLProcess $xmlP)
     {
-        $session = $this->getRequest()->getSession();
+        $session = $request->getSession();
         /*$cc = new CoreCreation();
         $tableNames = $this->getTableNamesFromDataBase();
         $form = $this->createFormBuilder($cc, $tableNames)->getForm();*/
+        $cc = new CoreCreation();
+        $form = $this->createForm(new CoreCreationForm($this->getTableNamesFromDataBase()), $cc);
+        $form->bind($request);
         $sca = new SolrCoreAdmin();
         $fields = $this->getFieldsFromDataBase('UniversalFileFormat');
         $sca->create('coreForTest', 'coreForTestDir', 'UniversalFileFormat', $fields);

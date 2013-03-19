@@ -1,34 +1,27 @@
 <?php
 namespace Anph\AdministrationBundle\Controller;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\UniqueKeyForm;
 use Anph\AdministrationBundle\Entity\Helpers\FormObjects\UniqueKey;
+
+use Symfony\Component\HttpFoundation\Request;
+
+use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\UniqueKeyForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class UniqueKeyController extends Controller
 {
-    public function refreshAction()
+    public function refreshAction(Request $request)
     {
-        $session = $this->getRequest()->getSession();
-        $form = $this->createForm(new UniqueKeyForm(), new UniqueKey($session->get('xmlP')));
-        return $this->render('AdministrationBundle:Default:uniquekey.html.twig', array(
-                'form' => $form->createView(),
-                'coreName' => $session->get('coreName'),
-                'coreNames' => $session->get('coreNames')
-        ));
-    }
-    
-    public function saveAction()
-    {
-        $session = $this->getRequest()->getSession();
-        $uk = new UniqueKey();
-        $form = $this->createFormBuilder($uk)->getForm();
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $session->get('xmlP')->saveXML();
+        $session = $request->getSession();
+        if ($request->isMethod('GET')) {
+            $form = $this->createForm(new UniqueKeyForm(), new UniqueKey($session->get('xmlP')));
+        } else {
+            $btn = $request->request->get('submit');
+            if (isset($btn)) {
+                $form = $this->submitAction($request, $session->get('xmlP'));
+            } elseif (isset($btn)) {
+                echo 'ELSIF';
             }
         }
         return $this->render('AdministrationBundle:Default:uniquekey.html.twig', array(
@@ -36,5 +29,17 @@ class UniqueKeyController extends Controller
                 'coreName' => $session->get('coreName'),
                 'coreNames' => $session->get('coreNames')
         ));
+    }
+    
+    public function submitAction(Request $request, XMLProcess $xmlP)
+    {
+        $session = $request->getSession();
+        $uk = new UniqueKey();
+        $form = $this->createForm(new UniqueKeyForm(), $uk);
+        $form->bind($request);
+        if ($form->isValid()) {
+            $uk->save($xmlP);
+        }
+        return $form;
     }
 }

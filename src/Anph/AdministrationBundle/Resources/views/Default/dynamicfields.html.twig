@@ -21,17 +21,11 @@
 			<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dynamic fields</h3>
 			<div align="right">
 					<div class="btn-toolbar">
-					<form class="form-inline" action="{{ path('administration_dynamicfields_submit') }}" method="POST"
-    					<button type="submit" value="selectAll" class="btn btn-warning btn-small"><i
-    							class="icon-white icon-pencil"></i>Tout séléctionner</a> 
-    							<button type="submit" value="deselectAll"  class="btn btn-danger btn-small"><i
-    							class="icon-white icon-repeat"></i>Ne rien séléctionner</a> 
-    							<button type="submit" value="add" 
-    							class="btn btn-primary btn-small"><i
-    							class="icon-white icon-random"></i>ajouter</a> 
-    							<button type="submit" value="remove" 
-    							class="btn btn-inverse btn-small"><i
-    							class="icon-white icon-ban-circle"></i>supprimer</a>
+					<form action="{{ path('administration_dynamicfields') }}" method="POST">
+    					<button name="selectAll" type="submit" class="btn btn-warning btn-small" ><i class="icon-white icon-pencil"></i>Tout séléctionner</button> 
+    					<button name="deselectAll" type="submit" class="btn btn-danger btn-small" ><iclass="icon-white icon-repeat"></i>Ne rien séléctionner</button> 
+    					<button name="add" type="submit" class="btn btn-primary btn-small" ><i class="icon-white icon-random"></i>ajouter</button> 
+    					<button name="remove" type="submit" class="btn btn-inverse btn-small" ><i class="icon-white icon-ban-circle"></i>supprimer</button>
                     </form>
 					</div>
 				</div>
@@ -39,7 +33,7 @@
 				<ul class="fields">
 
 
-					<form class="form-inline" action="{{ path('administration_dynamicfields_submit') }}" method="POST"
+					<form class="form-inline" action="{{ path('administration_dynamicfields') }}" method="POST"
 						
 						 {{ form_enctype(form) }}>
 
@@ -79,8 +73,8 @@
 						</div>
 						{% endfor %}
 						{{ form_widget(form._token) }}
-						<button type="submit" class="btn btn-fixed btn-success">Valider</button>
-					</form>
+						<button name='submit' type="submit" class="btn btn-fixed btn-success">Valider</button>
+					
 				</ul>
 
 			</div>

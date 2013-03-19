@@ -15,4 +15,12 @@ class UniqueKey
             $this->uniqueKey = $element->getValue();
         }
     }
+    
+    public function save(XMLProcess $xmlP)
+    {
+        $elt = $xmlP->getElementsByName('uniqueKey');
+        $elt = $elt[0];
+        $elt->setValue($this->uniqueKey);
+        $xmlP->saveXML();
+    }
 }

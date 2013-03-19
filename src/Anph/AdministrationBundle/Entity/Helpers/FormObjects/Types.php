@@ -20,4 +20,16 @@ class Types
             }
         }
     }
+    
+    public function save(XMLProcess $xmlP)
+    {
+        $fieldsArray = array();
+        foreach ($this->types as $t) {
+            $fieldsArray[] = $t->getSolrXMLElement();
+        }
+        $fieldsElt = $xmlP->getElementsByName('types');
+        $fieldsElt = $fieldsElt[0];
+        $fieldsElt->setElements($fieldsArray);
+        $xmlP->saveXML();
+    }
 }

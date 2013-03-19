@@ -12,10 +12,19 @@ use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class CopyFieldsController extends Controller
 {
-    public function refreshAction()
+    public function refreshAction(Request $request)
     {
-        $session = $this->getRequest()->getSession();
-        $form = $this->createForm(new CopyFieldsForm(), new CopyFields($session->get('xmlP')));
+        $session = $request->getSession();
+        if ($request->isMethod('GET')) {
+            $form = $this->createForm(new CopyFieldsForm(), new CopyFields($session->get('xmlP')));
+        } else {
+            $btn = $request->request->get('submit');
+            if (isset($btn)) {
+                $form = $this->submitAction($request, $session->get('xmlP'));
+            } elseif (isset($btn)) {
+                echo 'ELSIF';
+            }
+        }
         return $this->render('AdministrationBundle:Default:copyfields.html.twig', array(
                 'form' => $form->createView(),
                 'coreName' => $session->get('coreName'),
@@ -45,22 +54,15 @@ class CopyFieldsController extends Controller
     
     }
     
-    public function submitAction(Request $request)
+    public function submitAction(Request $request, XMLProcess $xmlP)
     {
-        $session = $this->getRequest()->getSession();
+        $session = $request->getSession();
         $cf = new CopyFields();
         $form = $this->createForm(new CopyFieldsForm(), $cf);
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                // If the data is valid, we save new field into the schema.xml file of corresponding core
-                $cf->save($session->get('xmlP'));
-            }
+        $form->bind($request);
+        if ($form->isValid()) {
+            $cf->save($session->get('xmlP'));
         }
-        return $this->render('AdministrationBundle:Default:copyfields.html.twig', array(
-                'form' => $form->createView(),
-                'coreName' => $session->get('coreName'),
-                'coreNames' => $session->get('coreNames')
-        ));
+        return $form;
     }
 }

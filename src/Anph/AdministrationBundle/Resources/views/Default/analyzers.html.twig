@@ -35,7 +35,7 @@
 						
 						</div>
 					</div>
-				<form class="form-inline" action="{{ path('administration_analyzers_submit') }}" method="POST"
+				<form class="form-inline" action="{{ path('administration_analyzers') }}" method="POST"
 					
 					 {{ form_enctype(form) }}>
 
@@ -53,7 +53,7 @@
 						{% endfor %}
 						{{ form_widget(form._token) }}
 					</ul>
-                     <button type="submit" class="btn btn-fixed btn-success">Valider</button>
+                     <button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
 					
 				</form>
 			</div>

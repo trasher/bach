@@ -9,7 +9,9 @@ class TypesForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('types', 'collection', array('type' => new FieldTypeForm()));
+        $builder->add('types', 'collection', array(
+                'type' => new FieldTypeForm(),
+                'allow_add' => true));
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -21,6 +23,6 @@ class TypesForm extends AbstractType
     
     public function getName()
     {
-        return 'types';
+        return 'typesForm';
     }
 }

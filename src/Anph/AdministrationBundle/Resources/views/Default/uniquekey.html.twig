@@ -17,14 +17,14 @@
 	<div class="span9 span-fixed-sidebar">
 	<h3>UniqueKey</h3>
 	<div class="well">
-		<form action="..." method="POST"   {{ form_enctype(form) }}>
+		<form action="{{ path('administration_uniquekey') }}" method="POST"   {{ form_enctype(form) }}>
 			
 			<ul class="fields">
 				{# iterate over each existing tag and render its only field: name #}
 				<li>{{ form_row(form.uniqueKey) }}</li>
 			</ul>
-						<button type="submit" class="btn btn-fixed btn-success">Valider</button>
-			
+						<button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
+			{{ form_widget(form._token) }}
 		</form>
 	</div>
 	</div>
