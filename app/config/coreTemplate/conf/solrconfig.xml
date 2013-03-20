@@ -21,7 +21,7 @@
  It is *not* a good example to work from. 
 -->
 <config>
-  <lib dir="/var/solr/lib" regex=".*\.jar" />
+  <lib dir="../lib/" regex="solr-dataimporthandler-\d.*\.jar" />
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
 	<str name="config">data-config.xml</str>
