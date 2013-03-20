@@ -35,12 +35,7 @@ class SolrCoreAdmin
     
     public function fullImport($coreName)
     {
-        return $this->send($this->reader->getCoresURL() . '?action=CREATE&' .
-                'name=' . $coreName . '&' .
-                'instanceDir=' . $coreInstanceDir . '&' .
-                'config=' . $this->reader->getConfigFileName() . '&' .
-                'schema=' . $this->reader->getSchemaFileName() . '&' .
-                'dataDir=' . $this->reader->getCoreDataDir());
+        return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport?command=full-import');
     }
 
     /**
@@ -72,7 +67,7 @@ class SolrCoreAdmin
                 }
             }
         }
-        return $this->send($this->reader->getCoresURL() . '?action=CREATE&' .
+        return $this->send($this->reader->getCoresURL() . '/admin/cores?action=CREATE&' .
                             'name=' . $coreName . '&' .
                             'instanceDir=' . $coreInstanceDir . '&' .
                             'config=' . $this->reader->getConfigFileName() . '&' .
@@ -89,10 +84,10 @@ class SolrCoreAdmin
     public function getStatus($coreName = null)
     {
         if ($coreName != null) {
-           return $this->send($this->reader->getCoresURL() . '?action=STATUS&' .
+           return $this->send($this->reader->getCoresURL() . '/admin/cores?action=STATUS&' .
                                 'core=' . $coreName);
         } else {
-           return $this->send($this->reader->getCoresURL() . '?action=STATUS');
+           return $this->send($this->reader->getCoresURL() . '/admin/cores?action=STATUS');
         }
     }
 
@@ -103,7 +98,7 @@ class SolrCoreAdmin
      */
     public function reload($coreName)
     {
-        return $this->send($this->reader->getCoresURL() . '?action=RELOAD&' .
+        return $this->send($this->reader->getCoresURL() . '/admin/cores?action=RELOAD&' .
                             'core=' . $coreName);
     }
 
@@ -117,7 +112,7 @@ class SolrCoreAdmin
     {
         if (!$this->isCoreExist($newCoreName)) {
             
-            return $this->send($this->reader->getCoresURL() . '?action=RENAME&' .
+            return $this->send($this->reader->getCoresURL() . '/admin/cores?action=RENAME&' .
                                 'core=' . $oldCoreName .'&' .
                                 'other=' . $newCoreName);
         }
@@ -133,7 +128,7 @@ class SolrCoreAdmin
      */
     public function swap($core1, $core2)
     {
-        return $this->send($this->reader->getCoresURL() . '?action=SWAP&' .
+        return $this->send($this->reader->getCoresURL() . '/admin/cores?action=SWAP&' .
                             'core=' . $core1 .'&' .
                             'other=' . $core2);
     }
@@ -145,7 +140,7 @@ class SolrCoreAdmin
      */
     public function unload($coreName)
     {
-        return $this->send($this->reader->getCoresURL() . '?action=UNLOAD&' .
+        return $this->send($this->reader->getCoresURL() . '/admin/cores?action=UNLOAD&' .
                             'core=' . $coreName);
     }
 
@@ -161,7 +156,7 @@ class SolrCoreAdmin
      */
     public function delete($coreName, $type = self::DELETE_CORE)
     {
-        $url = $this->reader->getCoresURL() . '?action=UNLOAD&' .
+        $url = $this->reader->getCoresURL() . '/admin/cores?action=UNLOAD&' .
                 'core=' . $coreName . '&';
         switch ($type) {
             case self::DELETE_INDEX:
