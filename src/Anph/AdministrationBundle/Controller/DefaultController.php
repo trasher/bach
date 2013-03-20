@@ -2,6 +2,8 @@
 
 namespace Anph\AdministrationBundle\Controller;
 
+use Anph\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
+
 use Anph\AdministrationBundle\Entity\Dashboard\Dashboard;
 
 use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
@@ -42,6 +44,10 @@ class DefaultController extends Controller
 	    }
 	    $sca = new SolrCoreAdmin();
 	    $coreNames = $sca->getStatus()->getCoreNames();
+	    $coresInfo = array();
+	    foreach ($coreNames as $cn) {
+	        $coresInfo[$cn] = new CoreStatus($cn);
+	    }
         $session = $this->getRequest()->getSession();
         $session->set('coreNames', $coreNames);
         $session->set('coreName', $coreName);
@@ -64,7 +70,8 @@ class DefaultController extends Controller
         		'SystemUsedVirtualMemory' => $SystemUsedVirtualMemory,
         		'SystemFreeVirtualMemory' => $SystemFreeVirtualMemory,
         		'SystemUsedSwapMemory' => $SystemUsedSwapMemory,
-        		'SystemFreeSwapMemory' => $SystemFreeSwapMemory
+        		'SystemFreeSwapMemory' => $SystemFreeSwapMemory,
+                'coresInfo' => $coresInfo
                 ));
 	}
 }

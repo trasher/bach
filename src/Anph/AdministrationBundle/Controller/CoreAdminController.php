@@ -1,6 +1,8 @@
 <?php
 namespace Anph\AdministrationBundle\Controller;
 
+use Anph\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
+
 use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\CoreCreationForm;
@@ -30,7 +32,8 @@ class CoreAdminController extends Controller
     	return $this->render('AdministrationBundle:Default:coreadmin.html.twig', array(
     			'form' => $form->createView(),
                 'coreName' => $session->get('coreName'),
-                'coreNames' => $session->get('coreNames')
+                'coreNames' => $session->get('coreNames'),
+    	        'coreStatus' => new CoreStatus($session->get('coreName'))
     	));
     }
     
