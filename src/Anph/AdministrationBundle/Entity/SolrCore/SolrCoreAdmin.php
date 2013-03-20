@@ -37,6 +37,16 @@ class SolrCoreAdmin
     {
         return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport?command=full-import');
     }
+    
+    public function deltaImport($coreName)
+    {
+        return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport?command=delta-import');
+    }
+    
+    public function getImportStatus()
+    {
+        return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport');
+    }
 
     /**
      * Create core with specified name. If a core directory or core with such name

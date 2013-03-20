@@ -192,10 +192,18 @@
 			</descr>
 			<value>solr.TextField</value>
 			<value>solr.StrField</value>
+			<value>solr.TrieIntField</value>
 			<value>solr.TrieLongField</value>
+			<value>solr.TrieFloatField</value>
+			<value>solr.TrieDoubleField</value>
+			<value>solr.TrieDateField</value>
 			<value>solr.CurrencyField</value>
 			<value>solr.SpatialRecursivePrefixTreeFieldType</value>
 			<value>solr.PointType</value>
+			<value>solr.BoolField</value>
+			<value>solr.BinaryField</value>
+			<value>solr.LatLonType</value>
+			<value>solr.SpatialRecursivePrefixTreeFieldType</value>
 		</attribute>
 		<attribute name="sortMissingLast" type="boolean" required="true" default="true">
 			<label lang="en">Sort missing last</label>
