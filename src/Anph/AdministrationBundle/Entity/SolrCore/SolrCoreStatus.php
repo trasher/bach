@@ -85,7 +85,7 @@ class SolrCoreStatus
     public function getUptime()
     {
         $nodeList = $this->xpath->query($this->coreXpath . '/long[@name="uptime"]');
-        return $nodeList->length == 0 ? null :  date_create_from_format('s', (string) $nodeList->item(0)->nodeValue);
+        return $nodeList->length == 0 ? null :  $nodeList->item(0)->nodeValue;
     }
 
     /**
