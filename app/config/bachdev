@@ -1,21 +1,31 @@
+#Apache VirtualHost for bach
+#assuming you've cloned/installed into /var/www/bach/
 <VirtualHost *:80>
-	ServerAdmin webmaster@localhost	
-	ServerName bachdev.localhost
-	DocumentRoot /var/www/bachdev/web
-	<Directory /var/www/bachdev/web>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride All
-		Order allow,deny
-		allow from all
-		
-		<IfModule mod_rewrite.c>
-			RewriteEngine On
-			RewriteBase /
-			RewriteCond %{REQUEST_FILENAME} !-f
-			RewriteRule ^(.*)$ app_dev.php [QSA,L]
-			# Rewrite the front-end proxys paths for static files
-			RewriteRule ^/bachdev/(.*) /$1 [PT]
-		</IfModule>
-	</Directory>
+    ServerName bach.localhost
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/bach/web
+
+    #Logs
+    ErrorLog /var/log/httpd/bach_error_log
+    CustomLog /var/log/httpd/bach_access_log combined
+
+    #required since PHP 5.3
+    php_value date.timezone Europe/Paris
+
+    <Directory /var/www/bach/web>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+
+        #mod_rewrite is mandatory
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        #(un)comment the following rules according to your environment
+        #On production environments
+        RewriteRule ^(.*)$ app.php [QSA,L]
+        #On development environments
+        #RewriteRule ^(.*)$ app_dev.php [QSA,L]
+    </Directory>
 </VirtualHost>
 
