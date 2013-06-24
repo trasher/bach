@@ -87,7 +87,10 @@ class BachCoreAdminConfigReader
 
     /**
      * Get name of schema file (usually schema.xml)
+     *
      * @return string
+     *
+     * @deprecated See getSolrSchemaFileName
      */
     public function getSchemaFileName()
     {
@@ -96,6 +99,8 @@ class BachCoreAdminConfigReader
 
     /**
      * Get schema file path from Solr
+     *
+     * @param String $coreName Core name
      *
      * @return String
      */

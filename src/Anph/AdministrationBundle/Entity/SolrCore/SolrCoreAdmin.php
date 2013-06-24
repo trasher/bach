@@ -198,7 +198,7 @@ class SolrCoreAdmin
     public function getSchemaPath($coreName)
     {
         $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
-        return $coreInstanceDir . $this->reader->getCoreConfigDir() . '/' . $this->reader->getSchemaFileName();
+        return $this->reader->getSolrSchemaFileName($coreName);
     }
     
     public function getConfigPath($coreName)
