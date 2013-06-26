@@ -1,28 +1,41 @@
 <?php
-
-# Add path prefix required for running behind the proxy
-$_SERVER['SCRIPT_NAME'] = '/bachdev' . $_SERVER['SCRIPT_NAME'];
+/**
+ * Application debug entry point
+ *
+ * PHP version 5
+ *
+ * @category Public
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 use Symfony\Component\HttpFoundation\Request;
 
-// If you don't want to setup permissions the proper way, just uncomment the following PHP line
-// read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
-//umask(0000);
+/*
+ * This check prevents access to debug front controllers that are deployed
+ * by accident to production servers.
+ * Feel free to remove this, extend it, or make something more sophisticated.
+ */
 
-// This check prevents access to debug front controllers that are deployed by accident to production servers.
-// Feel free to remove this, extend it, or make something more sophisticated.
+$authorized = array(
+    '127.0.0.1',
+    '::1'
+);
+
 if (isset($_SERVER['HTTP_CLIENT_IP'])
     || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
-    || !in_array(@$_SERVER['REMOTE_ADDR'], array(
-        '127.0.0.1',
-        '::1',
-    ))
+    || !in_array(@$_SERVER['REMOTE_ADDR'], $authorized)
 ) {
     header('HTTP/1.0 403 Forbidden');
-    exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
+    exit(
+        'You are not allowed to access this file. Check ' .
+        basename(__FILE__) . ' for more information.'
+    );
 }
 
-$loader = require_once __DIR__.'/../app/bootstrap.php.cache';
+$loader = include_once __DIR__.'/../app/bootstrap.php.cache';
 require_once __DIR__.'/../app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);

@@ -1,13 +1,26 @@
 <?php
+/**
+ * Application configuration check
+ *
+ * PHP version 5
+ *
+ * @category Public
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 if (!isset($_SERVER['HTTP_HOST'])) {
     exit('This script cannot be run from the CLI. Run it from a browser.');
 }
 
-if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
+$authorized = array(
     '127.0.0.1',
-    '::1',
-))) {
+    '::1'
+);
+
+if (!in_array(@$_SERVER['REMOTE_ADDR'], $authorized)) {
     header('HTTP/1.0 403 Forbidden');
     exit('This script is only accessible from localhost.');
 }
