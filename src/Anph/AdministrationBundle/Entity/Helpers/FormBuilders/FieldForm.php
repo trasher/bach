@@ -24,7 +24,7 @@ class FieldForm extends AbstractType
                 'label'    => $attr->getLabel(),
                 'required' => true,
                 'read_only' => true
-                ));
+            ));
         $attr = $reader->getAttributeByTag($bachTagType, 'type');
         $builder->add('type', 'choice', array(
                 'label'    => $attr->getLabel(),

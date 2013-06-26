@@ -34,19 +34,17 @@ class DefaultController extends Controller
     	}else{
     		$formAction = $this->get("router")->generate("anph_home_homepage_search_process");
     	}
-    	
-    
-    	
+
         // Construction de la barre de gauche comprenant les options de recherche
         $sidebar = new OptionSidebar();
-        
+
         $languageItem = new OptionSidebarItem("Langue des documents","qo_lg","fr");
         $languageItem
         	->appendChoice(new OptionSidebarItemChoice("Français", "fr"))
         	->appendChoice(new OptionSidebarItemChoice("Anglais", "en"))
         ;
         $sidebar->append($languageItem);
-        
+
         $resultsItem = new OptionSidebarItem("Nombre de résultats par page","qo_pr",10);
         $resultsItem
         	->appendChoice(new OptionSidebarItemChoice("10", 10))
@@ -54,7 +52,7 @@ class DefaultController extends Controller
         	->appendChoice(new OptionSidebarItemChoice("50", 50))
         ;
         $sidebar->append($resultsItem);
-        
+
         $picturesItem = new OptionSidebarItem("Afficher les images","qo_dp",1);
         $picturesItem
         	->appendChoice(new OptionSidebarItemChoice("Oui", 1))
@@ -63,12 +61,11 @@ class DefaultController extends Controller
         $sidebar->append($picturesItem);
 
         $sidebar->bind($this->getRequest());
-        
-        
+
         if(!is_null($this->getRequest()->query->get("q"))){
         	// On effectue une recherche	
         	$form = $this->createForm(new SearchQueryFormType($this->getRequest()->query->get("q")), new SearchQuery());        	
-        	 
+
         	$container = new SolariumQueryContainer();
         	$container->setField("language", $sidebar->getItemValue("qo_lg"));
         	$container->setField("displayPicture", $sidebar->getItemValue("qo_dp"));
@@ -83,20 +80,19 @@ class DefaultController extends Controller
         	}else{
         		$page = 1;
         	}
-        	
+
         	$resultByPage = 20;
-        	
+
         	//if($resultCount)
-        	
+
 			$container->setField("pager", array("start"	 =>	0, 
 												"offset" => intval($sidebar->getItemValue("qo_pr"))));
-			
+
 			$time = microtime(true);
         	$searchResults = $this->get("anph.home.solarium_query_factory")->performQuery($container);
         	$time = number_format(microtime(true)-$time,4);
         	$resultCount = $searchResults->getNumFound();
-        	
-        	
+
         	$query = $this->get("solarium.client")->createSuggester();
         	$query->setQuery($this->getRequest()->query->get("q")); //multiple terms
         	$query->setDictionary('suggest');
@@ -104,16 +100,15 @@ class DefaultController extends Controller
         	$query->setCount(10);
         	//$query->setCollate(true);
         	$suggestions = $this->get("solarium.client")->suggester($query);
-        	
-        }else{
+        } else {
         	$resultCount = 0;
         	$time = 0;
         	$form = $this->createForm(new SearchQueryFormType(), new SearchQuery()); 
         	$searchResults = array();
         }        
-        
+
         $builder = new OptionSidebarBuilder($sidebar);
-        
+
         $templateVars = array(
         		'form' 			=> 	$form->createView(),
         		'formAction'	=>	$formAction,
@@ -122,22 +117,22 @@ class DefaultController extends Controller
         		'searchResults'	=>	$searchResults,
         		'time'			=>	$time
         );
-        
-        if(isset($suggestions)){
+
+        if ( isset($suggestions) ) {
         	$templateVars['suggestions'] =	$suggestions;
-        	
+
         	$queryUrlParams = $this->getRequest()->query->all();
         	if(array_key_exists("p",$queryUrlParams)){
         		unset($queryUrlParams["q"]);
         	}
-        	
+
         	if(count($queryUrlParams) > 0){
         		$templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage")."?".http_build_query($queryUrlParams).'&q=$query';
         	}else{
         		$templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage").'?q=$query';
         	}
         }
-        
+
         return $this->render('AnphHomeBundle:Default:index.html.twig', $templateVars);
     }
     
