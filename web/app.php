@@ -1,7 +1,7 @@
 <?php
 # Add path prefix required for running behind the proxy
-$_SERVER['SCRIPT_NAME'] = '/bachdev' . $_SERVER['SCRIPT_NAME'];
-$_SERVER['REQUEST_URI'] = '/bachdev' . $_SERVER['REQUEST_URI'];
+#$_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'];
+#$_SERVER['REQUEST_URI'] =  $_SERVER['REQUEST_URI'];
 
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;

@@ -20,4 +20,4 @@ monolog:
 
 framework:
     templating:
-        assets_base_urls: /bachdev
+        assets_base_urls: /
