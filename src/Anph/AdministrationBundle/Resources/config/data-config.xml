@@ -1,0 +1,31 @@
+<dataConfig>
+ <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
+                     url="jdbc:mysql://127.0.0.1/bach" 
+                        user="root" password="$esi@l"/>
+ <document>
+     <entity name="SolrXMLFile" 
+    query="select uniqid, headerId, headerSubtitle, headerAuthor, headerDate, headerPublisher, headerAddress, headerLanguage,      archDescUnitId, archDescUnitTitle, archDescUnitDate, archDescDimension, archDescRepository, archDescLangMaterial, archDescLangOrigination, archDescAcqInfo, archDescScopeContent, archDescAccruals, archDescArrangement, archDescAccessRestrict, archDescLegalStatus from UniversalFileFormat">
+   <field column="uniqid" name="uniqid"/>
+<field column="headerId" name="headerId"/>
+<field column="headerSubtitle" name="headerSubtitle"/>
+<field column="headerAuthor" name="headerAuthor"/>
+<field column="headerDate" name="headerDate"/>
+<field column="headerPublisher" name="headerPublisher"/>
+<field column="headerAddress" name="headerAddress"/>
+<field column="headerLanguage" name="headerLanguage"/>
+<field column="archDescUnitId" name="archDescUnitId"/>
+<field column="archDescUnitTitle" name="archDescUnitTitle"/>
+<field column="archDescUnitDate" name="archDescUnitDate"/>
+<field column="archDescDimension" name="archDescDimension"/>
+<field column="archDescRepository" name="archDescRepository"/>
+<field column="archDescLangMaterial" name="archDescLangMaterial"/>
+<field column="archDescLangOrigination" name="archDescLangOrigination"/>
+<field column="archDescAcqInfo" name="archDescAcqInfo"/>
+<field column="archDescScopeContent" name="archDescScopeContent"/>
+<field column="archDescAccruals" name="archDescAccruals"/>
+<field column="archDescArrangement" name="archDescArrangement"/>
+<field column="archDescAccessRestrict" name="archDescAccessRestrict"/>
+<field column="archDescLegalStatus" name="archDescLegalStatus"/>
+     </entity>
+ </document>
+</dataConfig>
