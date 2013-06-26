@@ -20,6 +20,7 @@ class XSLTPreProcessor extends PreProcessor
 				
 				$fileBag->setData($xsl->transformToDoc($fileBag->getData()));
 			} catch (\Exception $e) {
+                //FIXME: at least, log something!
 				return $fileBag;
 			}
 		}

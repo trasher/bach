@@ -27,12 +27,11 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+    	$formAction = $this->get("router")->generate("anph_home_homepage_search_process");
+
     	$formActionUrlParams = $this->getRequest()->query->all();
-    	
     	if(count($formActionUrlParams) > 0){
-    		$formAction = $this->get("router")->generate("anph_home_homepage_search_process")."?".http_build_query($formActionUrlParams);
-    	}else{
-    		$formAction = $this->get("router")->generate("anph_home_homepage_search_process");
+    		$formAction .= '?' . http_build_query($formActionUrlParams);
     	}
 
         // Construction de la barre de gauche comprenant les options de recherche
@@ -126,11 +125,11 @@ class DefaultController extends Controller
         		unset($queryUrlParams["q"]);
         	}
 
+            $templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage");
         	if(count($queryUrlParams) > 0){
-        		$templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage")."?".http_build_query($queryUrlParams).'&q=$query';
-        	}else{
-        		$templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage").'?q=$query';
+        		$templateVars['urlQueryPrefix'] .= '?' . http_build_query($queryUrlParams);
         	}
+        	$templateVars['urlQueryPrefix'] .= '?q=$query';
         }
 
         return $this->render('AnphHomeBundle:Default:index.html.twig', $templateVars);
