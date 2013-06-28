@@ -24,7 +24,7 @@ class UniversalFileFormat
 	protected $headerId;
 	
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $headerSubtitle;
 	
@@ -61,7 +61,7 @@ class UniversalFileFormat
 	
 	/**
 	 * 
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="string", nullable=true, length=250)
 	 */
 	protected $archDescUnitTitle;
 	
@@ -105,7 +105,7 @@ class UniversalFileFormat
 
 	/**
 	 *
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $archDescScopeContent;
 
@@ -132,7 +132,7 @@ class UniversalFileFormat
 	
 	/**
 	 *
-	 * @ORM\Column(type="string", nullable=true, length=1000)
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $archDescLegalStatus;  
 	
@@ -275,13 +275,15 @@ class UniversalFileFormat
      *
      * @return string
      */
-    public function getHeaderSubtitle() {
+    public function getHeaderSubtitle()
+    {
     	
     	return $this->headerSubtitle;
     	
     }
     
-    public function setHeaderSubtitle($headerSubtitle) {
+    public function setHeaderSubtitle($headerSubtitle)
+    {
     	$this->headerSubtitle = $headerSubtitle;
     	return $this;
     }

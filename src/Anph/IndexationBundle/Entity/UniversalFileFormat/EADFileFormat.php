@@ -22,12 +22,12 @@ class EADFileFormat extends UniversalFileFormat {
 	protected $cUnitid;
 	
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="string", nullable=true, length=250)
 	 */
 	protected $cUnittitle;
 	
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $cScopcontent; 
 	
@@ -37,7 +37,7 @@ class EADFileFormat extends UniversalFileFormat {
 	protected $cControlacces;
 	
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="string", nullable=true, length=250)
 	 */
 	protected $cDaoloc;
    
