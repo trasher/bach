@@ -37,9 +37,8 @@ class SolrCoreAdmin
     const DELETE_DATA = 1;
     const DELETE_CORE = 2;
 
-    private $http;
-    private $reader;
-    
+    private $_reader;
+
     /**
      * Constructor. Creates a necessary object to send queries.
      *
@@ -48,11 +47,10 @@ class SolrCoreAdmin
     public function __construct(BachCoreAdminConfigReader $reader = null)
     {
         if ($reader == null) {
-            $this->reader = new BachCoreAdminConfigReader();
+            $this->_reader = new BachCoreAdminConfigReader();
         } else {
-            $this->reader = $reader;
+            $this->_reader = $reader;
         }
-        $this->http = include __DIR__ . '/../../../../../vendor/aura/http/scripts/instance.php';
     }
 
     /**
@@ -64,7 +62,10 @@ class SolrCoreAdmin
      */
     public function fullImport($coreName)
     {
-        return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport?command=full-import');
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/' . $coreName . '/dataimport',
+            array('command' => 'full--import')
+        );
     }
 
     /**
@@ -76,7 +77,10 @@ class SolrCoreAdmin
      */
     public function deltaImport($coreName)
     {
-        return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport?command=delta-import');
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/' . $coreName . '/dataimport',
+            array('command' => 'delta-import')
+        );
     }
 
     /**
@@ -86,7 +90,9 @@ class SolrCoreAdmin
      */
     public function getImportStatus()
     {
-        return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport');
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/' . $coreName . '/dataimport'
+        );
     }
 
     /**
@@ -102,33 +108,59 @@ class SolrCoreAdmin
      *
      * @return boolean|SolrCoreResponse
      */
-    public function create($coreName, $coreInstanceDir, $tableName, $fields, $evenIfInstanceDirAlreadyExist = false)
-    {
-        $coreInstanceDirPath = $this->reader->getCoresPath() . $coreInstanceDir;
+    public function create($coreName, $coreInstanceDir,
+        $tableName, $fields, $evenIfDirExist = false
+    ) {
+        $coreInstanceDirPath = null;
+
+        //check if cores dir is writeable
+        if ( is_writeable($this->_reader->getCoresPath()) ) {
+            //it is, we can directly create new core
+            $coreInstanceDirPath = $this->_reader->getCoresPath() . $coreInstanceDir;
+        } else {
+            //cores dir is read only or does not exists locally,
+            //let's use a temporary dir for new core creation
+            $coreInstanceDirPath = $this->_reader->getTempCorePath() .
+                $coreInstanceDir;
+        }
+
         // Test if the core does not already exist.
-        if ($this->isCoreExist($coreName)) {
+        if ($this->_coreExist($coreName)) {
             return false;
         }
-        // Test if we want create core even if the directory $coreInstanceDir already exist.
-        if ($evenIfInstanceDirAlreadyExist) {
-            if (!is_dir($coreInstanceDirPath) && !$this->createCoreDir($coreInstanceDirPath, $tableName, $fields)) {
+        //Test if we want create core even if the directory $coreInstanceDir
+        //already exist.
+        if ($evenIfDirExist) {
+            if (!is_dir($coreInstanceDirPath)
+                && !$this->_createCoreDir($coreInstanceDirPath, $tableName, $fields)
+            ) {
                 return false;
             }
         } else {
             if (is_dir($coreInstanceDirPath)) {
                 return false;
             } else {
-                if (!$this->createCoreDir($coreInstanceDirPath, $tableName, $fields)) {
+                $created = $this->_createCoreDir(
+                    $coreInstanceDirPath,
+                    $tableName,
+                    $fields
+                );
+                if ( !$created ) {
                     return false;
                 }
             }
         }
-        return $this->send($this->reader->getCoresURL() . '/admin/cores?action=CREATE&' .
-                            'name=' . $coreName . '&' .
-                            'instanceDir=' . $coreInstanceDir . '&' .
-                            'config=' . $this->reader->getConfigFileName() . '&' .
-                            'schema=' . $this->reader->getSchemaFileName() . '&' .
-                            'dataDir=' . $this->reader->getCoreDataDir());
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/admin/cores',
+            array(
+                'action'        => 'CREATE',
+                'name'          => $coreName,
+                'instanceDir'   => $coreInstanceDir,
+                'config'        => $this->_reader->getConfigFileName(),
+                'schema'        => $this->_reader->getSchemaFileName(),
+                'dataDir'       => $this->_reader->getCoreDataDir()
+            )
+        );
     }
 
     /**
@@ -141,12 +173,16 @@ class SolrCoreAdmin
      */
     public function getStatus($coreName = null)
     {
+        $options = array(
+            'action' => 'STATUS'
+        );
         if ($coreName != null) {
-           return $this->send($this->reader->getCoresURL() . '/admin/cores?action=STATUS&' .
-                                'core=' . $coreName);
-        } else {
-           return $this->send($this->reader->getCoresURL() . '/admin/cores?action=STATUS');
+            $options['core'] = $coreName;
         }
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/admin/cores',
+            $options
+        );
     }
 
     /**
@@ -158,8 +194,13 @@ class SolrCoreAdmin
      */
     public function reload($coreName)
     {
-        return $this->send($this->reader->getCoresURL() . '/admin/cores?action=RELOAD&' .
-                            'core=' . $coreName);
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/admin/cores',
+            array(
+                'action'    => 'RELOAD',
+                'core'      => $coreName
+            )
+        );
     }
 
     /**
@@ -172,11 +213,15 @@ class SolrCoreAdmin
      */
     public function rename($oldCoreName, $newCoreName)
     {
-        if (!$this->isCoreExist($newCoreName)) {
-            
-            return $this->send($this->reader->getCoresURL() . '/admin/cores?action=RENAME&' .
-                                'core=' . $oldCoreName .'&' .
-                                'other=' . $newCoreName);
+        if (!$this->_coreExist($newCoreName)) {
+            return $this->_send(
+                $this->_reader->getCoresURL() . '/admin/cores',
+                array(
+                    'action'    => 'RENAME',
+                    'core='     => $oldCoreName,
+                    'other'     => $newCoreName
+                )
+            );
         }
         
         return false;
@@ -192,9 +237,14 @@ class SolrCoreAdmin
      */
     public function swap($core1, $core2)
     {
-        return $this->send($this->reader->getCoresURL() . '/admin/cores?action=SWAP&' .
-                            'core=' . $core1 .'&' .
-                            'other=' . $core2);
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/admin/cores',
+            array(
+                'action'    => 'SWAP',
+                'core'      => $core1,
+                'other'     => $core2
+            )
+        );
     }
 
     /**
@@ -206,8 +256,13 @@ class SolrCoreAdmin
      */
     public function unload($coreName)
     {
-        return $this->send($this->reader->getCoresURL() . '/admin/cores?action=UNLOAD&' .
-                            'core=' . $coreName);
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/admin/cores',
+            array(
+                'action'    => 'UNLOAD',
+                'core'      => $coreName
+            )
+        );
     }
 
     /**
@@ -226,33 +281,43 @@ class SolrCoreAdmin
      */
     public function delete($coreName, $type = self::DELETE_CORE)
     {
-        $url = $this->reader->getCoresURL() . '/admin/cores?action=UNLOAD&' .
-                'core=' . $coreName . '&';
+        $options = array(
+            'action'    => 'UNLOAD',
+            'core'      => $coreName
+        );
+
         switch ($type) {
-            case self::DELETE_INDEX:
-                $url .= 'deleteIndex=true';
-                return $this->send($url);
-            case self::DELETE_DATA:
-                $url .= 'deleteDataDir=true';
-                return $this->send($url);
-            case self::DELETE_CORE:
-                // Get core status for retreive core instance directory.
-                $responseStatus = $this->getStatus($coreName);
-                $coreInstanceDir = $responseStatus->getCoreStatus($coreName)->getInstanceDir();
-                // Unload core
-                $response = $this->unload($coreName);
-                if (!$response->isOk()) {
-                    return false;
-                }
-                // Delete core instance directory. If we do not succeed, we recreate the core we have just unloaded
-                $result = $this->deleteCoreDir($coreInstanceDir);
-                if (!$result) {
-                    $this->create($coreName, $coreInstanceDir);
-                }
-                return $result;
-            default :
+        case self::DELETE_INDEX:
+            $options['deleteIndex'] = 'true';
+            break;
+        case self::DELETE_DATA:
+            $options['deleteDataDir'] = 'true';
+            break;
+        case self::DELETE_CORE:
+            // Get core status for retreive core instance directory.
+            $responseStatus = $this->getStatus($coreName);
+            $coreInstanceDir = $responseStatus->getCoreStatus($coreName)->getInstanceDir();
+            // Unload core
+            $response = $this->unload($coreName);
+            if (!$response->isOk()) {
                 return false;
+            }
+            // Delete core instance directory. If we do not succeed,
+            //we recreate the core we have just unloaded
+            $result = $this->_deleteCoreDir($coreInstanceDir);
+            if (!$result) {
+                $this->create($coreName, $coreInstanceDir);
+            }
+            return $result;
+            break;
+        default :
+            return false;
         }
+
+        return $this->_send(
+            $this->_reader->getCoresURL() . '/admin/cores',
+            $options
+        );
     }
 
     /**
@@ -265,7 +330,7 @@ class SolrCoreAdmin
     public function getSchemaPath($coreName)
     {
         $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
-        return $this->reader->getSolrSchemaFileName($coreName);
+        return $this->_reader->getSolrSchemaFileName($coreName);
     }
 
     /**
@@ -292,20 +357,45 @@ class SolrCoreAdmin
      *
      * @return boolean
      */
-    private function createCoreDir($coreInstanceDirPath, $tableName, $fields)
+    private function _createCoreDir($coreInstanceDirPath, $tableName, $fields)
     {
         if (!is_dir($coreInstanceDirPath)) {
-            exec('cp -r -a "' . $this->reader->getCoreTemplatePath() . '" "' . $coreInstanceDirPath . '"', $output, $status);
-            $this->addFieldsByDefault($coreInstanceDirPath, $fields);
-            $this->createDataConfigFile($coreInstanceDirPath, $tableName, $fields);
+            $template  = $this->_reader->getCoreTemplatePath();
+            $cmd = 'cp -r "' . $template . '" "' . $coreInstanceDirPath .
+                '" 2>&1';
+            exec(
+                $cmd,
+                $output,
+                $status
+            );
+
+            if ( $status !== 0 ) {
+                throw new \RuntimeException(
+                    implode("\n", $output) .
+                    "\nrunning: " . $cmd
+                );
+            }
+
+            $this->_addFieldsByDefault($coreInstanceDirPath, $fields);
+            $this->_createDataConfigFile($coreInstanceDirPath, $tableName, $fields);
             return $status == 0 ? true : false;
         }
         return false;
     }
-    
-    private function addFieldsByDefault($coreInstanceDirPath, $fields)
+
+    /**
+     * Add fields by default?
+     *
+     * @param string $coreInstanceDirPath Core instance dir
+     * @param array  $fields              Fields?
+     *
+     * @return void
+     */
+    private function _addFieldsByDefault($coreInstanceDirPath, $fields)
     {
-        $schemaFilePath = $coreInstanceDirPath . '/' . $this->reader->getCoreConfigDir() . '/' . $this->reader->getSchemaFileName();
+        $schemaFilePath = $coreInstanceDirPath . '/' .
+            $this->_reader->getCoreConfigDir() . '/' .
+            $this->_reader->getSchemaFileName();
         $doc = new DOMDocument();
         $doc->load($schemaFilePath);
         // Creation of fields
@@ -327,7 +417,7 @@ class SolrCoreAdmin
      *
      * @return boolean
      */
-    private function deleteCoreDir($coreInstanceDirPath)
+    private function _deleteCoreDir($coreInstanceDirPath)
     {
         if (is_dir($coreInstanceDirPath)) {
             exec('rm -r "' . $coreInstanceDirPath . '"', $output, $status);
@@ -346,7 +436,7 @@ class SolrCoreAdmin
      *
      * @return boolean
      */
-    private function isCoreExist($coreName)
+    private function _coreExist($coreName)
     {
         try {
             $status = $this->getStatus();
@@ -368,25 +458,70 @@ class SolrCoreAdmin
     }
 
     /**
-     * Sends an HTTP query (GET method) to Solr and returns result (SolrCoreResponse object).
-     * @param string $url
-     * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
+     * Sends an HTTP query (POST method) to Solr and returns
+     * result as a SolrCoreResponse object.
+     *
+     * @param string $url     HTTP URL
+     * @param array  $options Request options
+     *
+     * @return SolrCoreResponse
      */
-    private function send($url)
+    private function _send($url, $options = null)
     {
-        $request = $this->http->newRequest();
-        $request->setMethod(Request::METHOD_GET);
-        $request->setUrl($url);
-        $stack = $this->http->send($request);
-        return new SolrCoreResponse($stack[0]->content);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        if ( $options !== null && is_array($options) ) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $options);
+        }
+
+        $response = curl_exec($ch);
+        if ( $response === false ) {
+            throw new \RuntimeException(
+                "Error on request:\n\tURI:" . $url . "\n\toptions:\n" .
+                print_r($options, true)
+            );
+        }
+
+        //get request infos
+        $infos = curl_getinfo($ch);
+        if ( $infos['http_code'] !== 200 ) {
+            $trace = debug_backtrace();
+            $caller = $trace[1];
+
+            //FIXME: at this point, core has been created in temporary space,
+            //but is failing to load in solr. User will have to copy the new
+            //core at the right place, and then rerun core creation.
+
+            throw new \RuntimeException(
+                'Something went wrong in function ' . __CLASS__ . '::' .
+                $caller['function'] . "\nHTTP Request URI: " . $url .
+                "\nSent options: " . print_r($options, true) .
+                "\nCheck cores status for more informations."
+            );
+        }
+
+        return new SolrCoreResponse($response);
     }
-    
-    private function createDataConfigFile($coreInstanceDirPath, $tableName, $fields)
+
+    /**
+     * Create data config file
+     *
+     * @param string $coreInstanceDirPath Core instance path
+     * @param string $tableName           Database table name
+     * @param array  $fields              Database fields
+     *
+     * @return void
+     */
+    private function _createDataConfigFile($coreInstanceDirPath, $tableName, $fields)
     {
-        $dataConfigFilePath = $coreInstanceDirPath . '/' . $this->reader->getCoreConfigDir() . '/' . $this->reader->getDataConfigFileName();
+        $dataConfigFilePath = $coreInstanceDirPath . '/' .
+            $this->_reader->getCoreConfigDir() . '/' .
+            $this->_reader->getDataConfigFileName();
         $doc = new DOMDocument();
         $doc->load($dataConfigFilePath);
-        $databaseParameters = $this->reader->getDatabaseParameters();
+        $databaseParameters = $this->_reader->getDatabaseParameters();
         $elt = $doc->getElementsByTagName('dataSource')->item(0);
         $elt->setAttribute('type', $databaseParameters['type']);
         $elt->setAttribute('driver', $databaseParameters['driver']);
