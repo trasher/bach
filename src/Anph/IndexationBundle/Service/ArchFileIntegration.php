@@ -49,7 +49,7 @@ class ArchFileIntegration
 
 				$sca = new SolrCoreAdmin();
 				$coreNames = $sca->getStatus()->getCoreNames();
-				foreach ($core as $coreNames){
+				foreach ($coreNames as $core){
 					$sca->fullImport($core);
 				}
 				
