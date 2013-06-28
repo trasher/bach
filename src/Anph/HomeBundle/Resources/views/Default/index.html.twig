@@ -56,9 +56,9 @@
 			{% if searchResults|length > 0 %}
 				{% for document in searchResults %}
 					<div class="row-fluid">
-						<div class="span9">										
-							<h4>{{ document.archDescUnitTitle }}</h4>
-							<h5>{{ document.headerDate }}</h5>
+						<div class="span9">
+							<h4>{{ document.cUnittitle }}</h4>
+							{#<h5>{{ document.headerDate }}</h5>
 							{% if document.headerAuthor is defined %}
 							<h6>{{ document.headerAuthor }}</h6>
 							{% endif %}
@@ -67,20 +67,17 @@
 							{% endif %}
 							
 							<p style="text-align:justify;">
-					
-							</p>	
+							</p>#}
 						</div>
+                        {% if display_pics %}
 						<div class="offset1 span2">
 							<img src="http://placehold.it/140x140" class="img-polaroid">
 						</div>
+                        {% endif %}
 					</div>
-					<br/>
 				{% endfor %}
 			{% endif %}
-		</div>	
-	</div>
-	<div class="span2">
-	
+		</div>
 	</div>
 </div>
 {% endblock %}

@@ -129,12 +129,13 @@ class DefaultController extends Controller
         $builder = new OptionSidebarBuilder($sidebar);
 
         $templateVars = array(
-                'form'             =>     $form->createView(),
-                'formAction'    =>    $formAction,
-                'sidebar'         =>    $builder->compileToArray(),
-                'resultCount'    =>    $resultCount,
-                'searchResults'    =>    $searchResults,
-                'time'            =>    $time
+            'form'          => $form->createView(),
+            'formAction'    => $formAction,
+            'sidebar'       => $builder->compileToArray(),
+            'resultCount'   => $resultCount,
+            'searchResults' => $searchResults,
+            'time'          => $time,
+            'display_pics'  => $sidebar->getItemValue("qo_dp")
         );
 
         if ( isset($suggestions) ) {
@@ -152,7 +153,10 @@ class DefaultController extends Controller
             $templateVars['urlQueryPrefix'] .= '?q=$query';
         }
 
-        return $this->render('AnphHomeBundle:Default:index.html.twig', $templateVars);
+        return $this->render(
+            'AnphHomeBundle:Default:index.html.twig',
+            $templateVars
+        );
     }
 
     /**
