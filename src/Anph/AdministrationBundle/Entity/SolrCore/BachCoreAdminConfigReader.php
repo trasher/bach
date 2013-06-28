@@ -65,6 +65,17 @@ class BachCoreAdminConfigReader
     }
 
     /**
+     * Get core temporary path
+     *
+     * @return string
+     */
+    public function getTempCorePath()
+    {
+        //FIXME: parametize
+        return '/var/www/bach/app/cache/tmpCores/';
+    }
+
+    /**
      * Get Solr URL for sending core administration queries.
      *
      * @return string
