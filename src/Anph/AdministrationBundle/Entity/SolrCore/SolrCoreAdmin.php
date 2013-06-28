@@ -401,11 +401,17 @@ class SolrCoreAdmin
         // Creation of fields
         $elt = $doc->getElementsByTagName('fields')->item(0);
         foreach ($fields as $f) {
+            /**
+             * FIXME: all fields should probably not be string,
+             * also, some should be stored, mutlivalued, ...
+             */
             $newFieldType = $doc->createElement('field');
             $newFieldType->setAttribute('name', $f);
             $newFieldType->setAttribute('type', 'string');
             $elt->appendChild($newFieldType);
         }
+        //TODO: add fulltext field
+        //TODO: add relevant copyField
         $doc->documentElement->appendChild($elt);
         $doc->save($schemaFilePath);
     }
