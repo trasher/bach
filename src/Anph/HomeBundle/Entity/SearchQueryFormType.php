@@ -41,7 +41,7 @@ class SearchQueryFormType extends AbstractType
      */
     public function __construct($value = '')
     {
-        $this->value = $value;
+        $this->_value = $value;
     }
 
     /**
