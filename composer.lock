@@ -1,90 +1,10 @@
 {
-    "hash": "49e492c5240df573f36b2857ee2faa92",
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "8e774928452c2489736b6ebba17e61fd",
     "packages": [
-        {
-            "name": "aura/http",
-            "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/auraphp/Aura.Http.git",
-                "reference": "8956a1d0a178c3c104d8510c41a6c4011d178ea0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Http/zipball/8956a1d0a178c3c104d8510c41a6c4011d178ea0",
-                "reference": "8956a1d0a178c3c104d8510c41a6c4011d178ea0",
-                "shasum": ""
-            },
-            "require": {
-                "aura/installer-default": "1.0.0",
-                "php": ">=5.4.0"
-            },
-            "type": "aura-package",
-            "autoload": {
-                "psr-0": {
-                    "Aura\\Http": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Aura Contributors",
-                    "homepage": "https://github.com/auraphp/Aura.Http/contributors"
-                }
-            ],
-            "description": "The Aura HTTP package provides objects to build and send HTTP responses from the server to the client.",
-            "homepage": "http://auraphp.github.com/Aura.Http",
-            "keywords": [
-                "http",
-                "http response",
-                "response"
-            ],
-            "time": "2013-02-11 18:33:52"
-        },
-        {
-            "name": "aura/installer-default",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/auraphp/installer-default",
-                "reference": "1.0.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/auraphp/installer-default/archive/1.0.0.zip",
-                "reference": "1.0.0",
-                "shasum": ""
-            },
-            "type": "composer-installer",
-            "extra": {
-                "class": "Aura\\Composer\\DefaultInstaller"
-            },
-            "autoload": {
-                "psr-0": {
-                    "Aura\\Composer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Paul M. Jones",
-                    "email": "pmjones88@gmail.com",
-                    "homepage": "http://paul-m-jones.com"
-                }
-            ],
-            "description": "Installs Aura packages using the Composer defaults.",
-            "keywords": [
-                "aura",
-                "installer"
-            ],
-            "time": "2012-11-26 21:35:57"
-        },
         {
             "name": "doctrine/common",
             "version": "2.3.x-dev",
@@ -1400,15 +1320,23 @@
                 "shasum": null
             },
             "type": "library",
-            "time": "2012-12-22 02:54:36"
+            "time": "2013-03-01 05:24:27"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "aura/http": 20
-    }
+    "stability-flags": [
+
+    ],
+    "platform": {
+        "php": ">=5.3.3"
+    },
+    "platform-dev": [
+
+    ]
 }
