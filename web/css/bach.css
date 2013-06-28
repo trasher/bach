@@ -1,3 +1,81 @@
-.input-append > input.input-big{
-	font-size:18px;
+.sidebar-nav {
+    padding: 2px 0;
 }
+
+/* Sticky footer styles
+      -------------------------------------------------- */
+
+/* Wrapper for page content to push down footer */
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -60px;
+}
+
+/* Set the fixed height of the footer here */
+#push,#footer {
+    height: 60px;
+}
+
+#footer {
+    background-color: #f5f5f5;
+    border-top: 1px solid #ccc;
+}
+
+/* Custom page CSS
+      -------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+.container {
+    width: auto;
+}
+
+.container .credit {
+    margin: 20px 0;
+}
+
+.input-append > input.input-big{
+    font-size:18px;
+}
+
+.btn-fixed{
+    padding: 9px 0;
+    position:fixed;
+    left:20px;
+    top:530px;
+    width:250px;
+}
+
+.sidebar-nav-fixed{
+    padding: 9px 0;
+    position:fixed;
+    left:20px;
+    top:90px;
+    width:250px;
+}
+
+.row-fluid > .span-fixed-sidebar {
+    margin-left: 290px;
+}
+
+.selectfixed{
+    padding: 0px 0;
+    position:fixed;
+    z-index:10;
+    left:20px;
+    top:60px;
+    height:20px;
+    width:250px;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media ( max-width : 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
