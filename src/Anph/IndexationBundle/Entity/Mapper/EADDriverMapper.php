@@ -94,9 +94,9 @@ class EADDriverMapper implements DriverMapperInterface
     	if(array_key_exists("did/unittitle", $data["c"]) && count($data["c"]["did/unittitle"]) > 0){
     		$mappedData["cUnittitle"] = $data["c"]["did/unittitle"][0]["value"];
     	}
-    	
-    	if(array_key_exists("scopcontent", $data["c"]) && count($data["c"]["scopcontent"]) > 0){
-    		$mappedData["cScopcontent"] = $data["c"]["scopcontent"][0]["value"];
+
+    	if(array_key_exists("scopecontent", $data["c"]) && count($data["c"]["scopecontent"]) > 0){
+    		$mappedData["cScopcontent"] = $data["c"]["scopecontent"][0]["value"];
     	}
     	
     	if(array_key_exists("controlacces", $data["c"]) && count($data["c"]["controlacces"]) > 0){

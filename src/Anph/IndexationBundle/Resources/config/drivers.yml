@@ -35,7 +35,7 @@ drivers:
                 c:
                     - did/unitid
                     - did/unittitle
-                    - scopcontent
+                    - scopecontent
                     - controlacces
                     - daogrp/daoloc
     unimarc:
