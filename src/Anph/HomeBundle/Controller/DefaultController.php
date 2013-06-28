@@ -77,7 +77,10 @@ class DefaultController extends Controller
 
         if ( !is_null($this->getRequest()->query->get("q")) ) {
             // On effectue une recherche
-            $form = $this->createForm(new SearchQueryFormType($this->getRequest()->query->get("q")), new SearchQuery());
+            $form = $this->createForm(
+                new SearchQueryFormType($this->getRequest()->query->get("q")),
+                new SearchQuery()
+            );
 
             $container = new SolariumQueryContainer();
             $container->setField("language", $sidebar->getItemValue("qo_lg"));
