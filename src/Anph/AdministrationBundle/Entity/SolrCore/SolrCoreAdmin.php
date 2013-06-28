@@ -1,4 +1,16 @@
 <?php
+/**
+ * Bach solr core administration
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Anph\AdministrationBundle\Entity\SolrCore;
 
 use Anph\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
@@ -9,7 +21,15 @@ use DOMDocument;
 use DOMElement;
 
 /**
- * This class allows to manage Solr cores
+ * Bach solr core administration
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  */
 class SolrCoreAdmin
 {
@@ -22,6 +42,8 @@ class SolrCoreAdmin
     
     /**
      * Constructor. Creates a necessary object to send queries.
+     *
+     * @param BachCoreAdminConfigReader $reader Config reader.
      */
     public function __construct(BachCoreAdminConfigReader $reader = null)
     {
@@ -32,29 +54,53 @@ class SolrCoreAdmin
         }
         $this->http = include __DIR__ . '/../../../../../vendor/aura/http/scripts/instance.php';
     }
-    
+
+    /**
+     * Proceeed full import
+     *
+     * @param string $coreName Solr core name
+     *
+     * @return SolrCoreResponse
+     */
     public function fullImport($coreName)
     {
         return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport?command=full-import');
     }
-    
+
+    /**
+     * Proceed delta import
+     *
+     * @param string $coreName Solr core name
+     *
+     * @return SolrCoreResponse
+     */
     public function deltaImport($coreName)
     {
         return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport?command=delta-import');
     }
-    
+
+    /**
+     * Retrieve import status
+     *
+     * @return SolrCoreResponse
+     */
     public function getImportStatus()
     {
         return $this->send($this->reader->getCoresURL() . '/' . $coreName . 'dataimport');
     }
 
     /**
-     * Create core with specified name. If a core directory or core with such name
-     * already exists this function returns false otherwise it returns SolrCoreResponse object.
-     * @param string $coreName
-     * @param string $coreInstanceDir directory of core instance
-     * @param boolean $evenIfInstanceDirAlreadyExist 
-     * @return boolean|\Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
+     * Create core with specified name. If a core directory or core of that name
+     * already exists this function returns false otherwise it returns
+     * SolrCoreResponse object.
+     *
+     * @param stirng  $coreName        Solr core name
+     * @param string  $coreInstanceDir Directory of core instance
+     * @param string  $tableName       Database table name
+     * @param array   $fields          Database fields
+     * @param boolean $evenIfDirExist  Create even if dir already exists
+     *
+     * @return boolean|SolrCoreResponse
      */
     public function create($coreName, $coreInstanceDir, $tableName, $fields, $evenIfInstanceDirAlreadyExist = false)
     {
@@ -88,8 +134,10 @@ class SolrCoreAdmin
     /**
      * Get status of one or all cores. If $coreName parameter does not specified,
      * the status of all cores will be return.
-     * @param string $coreName
-     * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
+     *
+     * @param string $coreName Solr core name
+     *
+     * @return SolrCoreResponse
      */
     public function getStatus($coreName = null)
     {
@@ -103,8 +151,10 @@ class SolrCoreAdmin
 
     /**
      * Reload core.
-     * @param string $coreName
-     * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
+     *
+     * @param string $coreName Solr core name
+     *
+     * @return SolrCoreResponse
      */
     public function reload($coreName)
     {
@@ -114,9 +164,11 @@ class SolrCoreAdmin
 
     /**
      * Renames a core. If core does not exist, returns false.
-     * @param string $oldCoreName
-     * @param string $newCoreName
-     * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse|boolean
+     *
+     * @param string $oldCoreName Existing core name
+     * @param string $newCoreName New core name
+     *
+     * @return SolrCoreResponse|boolean
      */
     public function rename($oldCoreName, $newCoreName)
     {
@@ -132,9 +184,11 @@ class SolrCoreAdmin
 
     /**
      * Swaps two cores.
-     * @param string $core1
-     * @param string $core2
-     * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
+     *
+     * @param string $core1 First core name
+     * @param string $core2 Second core name
+     *
+     * @return SolrCoreResponse
      */
     public function swap($core1, $core2)
     {
@@ -145,8 +199,10 @@ class SolrCoreAdmin
 
     /**
      * Removes a core from Solr.
-     * @param string $coreName
-     * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
+     *
+     * @param string $coreName Solr core name
+     *
+     * @return SolrCoreResponse
      */
     public function unload($coreName)
     {
@@ -155,14 +211,18 @@ class SolrCoreAdmin
     }
 
     /**
-     * Removes a core from Solr and deletes related files. If $type parameter equals to
+     * Removes a core from Solr and deletes related files.
+     * If $type parameter equals to:
      * DELETE_INDEX : deletes the index
      * DELETE_DATA : removes "data" and all sub-directories
-     * DELETE_CORE : removes core directory and all sub-directories. NOTE: it does not work if you had changed
-     * core's name before (because core's directory does not equal to its name)
-     * @param string $coreName
-     * @param int $type
-     * @return \Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse
+     * DELETE_CORE : removes core directory and all sub-directories.
+     *     NOTE: it does not work if you had changed core's name before
+     *     (because core's directory does not equal to its name)
+     *
+     * @param string $coreName Solr core name
+     * @param int    $type     Delete type
+     *
+     * @return SolrCoreResponse
      */
     public function delete($coreName, $type = self::DELETE_CORE)
     {
@@ -194,22 +254,42 @@ class SolrCoreAdmin
                 return false;
         }
     }
-    
+
+    /**
+     * Get core schema file path
+     *
+     * @param string $coreName Solr core name
+     *
+     * @return string
+     */
     public function getSchemaPath($coreName)
     {
         $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
         return $this->reader->getSolrSchemaFileName($coreName);
     }
-    
+
+    /**
+     * Get core config file path
+     *
+     * @param string $coreName Solr core name
+     *
+     * @return string
+     */
     public function getConfigPath($coreName)
     {
         $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
-        return $coreInstanceDir . $this->reader->getCoreConfigDir() . '/' . $this->reader->getConfigFileName();
+        return $coreInstanceDir . $this->_reader->getCoreConfigDir() . '/' .
+           $this->_reader->getConfigFileName();
     }
 
     /**
-     * Create core directory with the same name as core name. If a such directory already exist, returns false.
-     * @param string $coreName
+     * Create core directory with the same name as core name.
+     * If directory already exist, returns false.
+     *
+     * @param string $coreInstanceDirPath Core instance path
+     * @param string $tableName           Database table name
+     * @param array  $fields              Database fields
+     *
      * @return boolean
      */
     private function createCoreDir($coreInstanceDirPath, $tableName, $fields)
@@ -241,25 +321,29 @@ class SolrCoreAdmin
     }
 
     /**
-     * Deletes core directory and all sub-directories. Returns true in successe or false in case of failure
-     * @param string $dirName
+     * Deletes core directory and all sub-directories.
+     *
+     * @param string $coreInstanceDirPath Directory name
+     *
      * @return boolean
      */
     private function deleteCoreDir($coreInstanceDirPath)
     {
         if (is_dir($coreInstanceDirPath)) {
             exec('rm -r "' . $coreInstanceDirPath . '"', $output, $status);
-            
             return $status == 0 ? true : false;
         }
-        
         return true;
-    } 
-    
+    }
+
     /**
-     * Verify whether a core exist. Throw an exception if can not obtain Solr cores status.
-     * @param string $coreName
+     * Verify whether a core exist. Throw an exception if can not
+     * obtain Solr cores status.
+     *
+     * @param string $coreName Solr core name
+     *
      * @throws Exception
+     *
      * @return boolean
      */
     private function isCoreExist($coreName)
@@ -271,11 +355,9 @@ class SolrCoreAdmin
                 $isExist = false;
                 foreach ($cores as $c) {
                     if ($c == $coreName) {
-                        
                         return true;
                     }
                 }
-                
                 return false;
             } else {
                 throw new Exception('Can not obtain Solr cores status');
@@ -284,7 +366,7 @@ class SolrCoreAdmin
             echo 'Caught exception : ' .  $e->getMessage();
         }
     }
-    
+
     /**
      * Sends an HTTP query (GET method) to Solr and returns result (SolrCoreResponse object).
      * @param string $url
