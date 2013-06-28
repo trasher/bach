@@ -66,13 +66,15 @@ swiftmailer:
 
 # Solarium Configuration
 
-nelmio_solarium: 
+nelmio_solarium:
     clients:
         default:
-            client_class: Solarium_Client
-            adapter_class: Solarium_Client_Adapter_Http
-            host: dev.anaphore.eu
-            port: 8983
+            client_class: Solarium\Client
+            adapter_class: Solarium\Core\Client\Adapter\Http
+    endpoints:
+        default:
+            host: localhost
+            port: 8080
             path: /solr
-            core: core0
+            core: EADUniversalFileFormat
             timeout: 5

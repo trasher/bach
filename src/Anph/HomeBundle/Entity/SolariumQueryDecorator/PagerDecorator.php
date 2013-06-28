@@ -6,9 +6,9 @@ use Anph\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 
 class PagerDecorator extends SolariumQueryDecoratorAbstract
 {
-	protected $_targetField = "pager";
-	
-	public function decorate(\Solarium_Query_Select $query, $data){
-		$query->setStart($data["start"])->setRows($data["offset"]);
-	}
+    protected $targetField = "pager";
+
+    public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data){
+        $query->setStart($data["start"])->setRows($data["offset"]);
+    }
 }

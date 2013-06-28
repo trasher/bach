@@ -6,10 +6,11 @@ use Anph\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 
 class ArchDescUnitTitleDecorator extends SolariumQueryDecoratorAbstract
 {
-	protected $_targetField = "archDescUnitTitle";
+    protected $targetField = "archDescUnitTitle";
 
-	public function decorate(\Solarium_Query_Select $query, $data){
-		$data = strip_tags(str_replace("*", "", $data));
-		$query->createFilterQuery('archDescUnitTitle')->setQuery('archDescUnitTitle:*'.$data.'*');
-	}
+    public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data)
+    {
+        $data = strip_tags(str_replace("*", "", $data));
+        $query->createFilterQuery('archDescUnitTitle')->setQuery('archDescUnitTitle:*'.$data.'*');
+    }
 }
