@@ -1,4 +1,15 @@
 <?php
+/**
+ * Bach Solarium query factory
+ *
+ * PHP version 5
+ *
+ * @category Search
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Anph\HomeBundle\Service;
 
@@ -9,11 +20,27 @@ use Anph\IndexationBundle\Exception\BadInputFileFormatException;
 use Anph\IndexationBundle\Exception\UnknownDriverParserException;
 use Doctrine\ORM\EntityManager;
 
+/**
+ * Bach Solarium query factory
+ *
+ * PHP version 5
+ *
+ * @category Search
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class SolariumQueryFactory
 {
     private $_client;
     private $_decorators = array();
 
+    /**
+     * Factory constructor
+     *
+     * @param \Solarium\Client $client Solarium client
+     */
     public function __construct(\Solarium\Client $client)
     {
         $this->_client = $client;
@@ -49,7 +76,10 @@ class SolariumQueryFactory
     private function _searchQueryDecorators()
     {
         $finder = new Finder();
-        $finder->files()->in(__DIR__.'/../Entity/SolariumQueryDecorator')->depth('== 0')->name('*.php');
+        $finder->files()
+            ->in(__DIR__.'/../Entity/SolariumQueryDecorator')
+            ->depth('== 0')
+            ->name('*.php');
 
         foreach ($finder as $file) {
             try {
@@ -58,7 +88,10 @@ class SolariumQueryFactory
                     $file->getBasename(".php")
                 );
 
-                if ('Anph\HomeBundle\Entity\SolariumQueryDecoratorAbstract' == $reflection->getParentClass()->getName()) {
+                $expectedClass = 'Anph\HomeBundle\Entity' .
+                    '\SolariumQueryDecoratorAbstract';
+                $class = $reflection->getParentClass()->getName();
+                if ( $expectedClass == $class ) {
                     $this->_registerQueryDecorator($reflection->newInstance());
                 }
             } catch(\RuntimeException $e) {
