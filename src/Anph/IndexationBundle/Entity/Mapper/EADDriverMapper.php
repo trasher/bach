@@ -1,9 +1,31 @@
 <?php
+/**
+ * Mapper for EAD data
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Anph\IndexationBundle\Entity\Mapper;
 
 use Anph\IndexationBundle\DriverMapperInterface;
 
+/**
+ * Mapper for EAD data
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class EADDriverMapper implements DriverMapperInterface
 {
     public function translate($data){

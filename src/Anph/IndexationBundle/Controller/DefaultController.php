@@ -1,118 +1,182 @@
 <?php
+/**
+ * Default indexation controller
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Anph\IndexationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
 use Anph\IndexationBundle\Entity\Document;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 use Anph\IndexationBundle\Entity\ArchFileIntegrationTask;
 
+/**
+ * Default indexation controller
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class DefaultController extends Controller
 {
+
+    /**
+     * Index controller
+     *
+     * @return void
+     */
     public function indexAction()
     {
-    	$document = new Document();
-	    $form = $this->getDocumentForm($document);
-	        $em2 = $this->getDoctrine()->getManager();
-	    	
-	    	$repository = $em2
-	    	->getRepository('AnphIndexationBundle:ArchFileIntegrationTask');
-	    	 
-	    	$entities = $repository
-	    	->createQueryBuilder('t')
-	    	->orderBy('t.taskId', 'DESC')
-	    	->getQuery()
-	    	->getResult();
-	    	$tasks = array();
-	    	 
-	    	foreach ($entities as $entity) {
-	    		$spl = new \SplFileInfo($entity->getPath());
-	    		$tasks[] = array(	'filename'	=>	$entity->getFilename(),
-				    				'format'	=>	$entity->getFormat(),
-				    				'size'		=>	$spl->getSize());
-	    	
-	    		switch ((int)$entity->getStatus()) {
-	    			default:
-	    			case 0:
-	    				$status = "";
-	    				break;
-	    				 
-	    			case 1:
-	    				$status = "success";
-	    				break;
-	    				 
-	    			case 2:
-	    			case 3:
-	    				$status = "error";
-	    				break;
-	    			
-	    			case 4:
-	    				$status = "warning";
-	    				break;
-	    		}
-	    		 
-	    		$tasks[count($tasks)-1]['status'] = $status;
-	    	}
-	
-		return $this->render('AnphIndexationBundle:Indexation:index.html.twig',array('tasks'=>$tasks,'form' => $form->createView()));
-    }
-    
+        $document = new Document();
+        $form = $this->_getDocumentForm($document);
+        $em2 = $this->getDoctrine()->getManager();
 
+        $repository = $em2
+            ->getRepository('AnphIndexationBundle:ArchFileIntegrationTask');
+
+        $entities = $repository
+            ->createQueryBuilder('t')
+            ->orderBy('t.taskId', 'DESC')
+            ->getQuery()
+            ->getResult();
+        $tasks = array();
+
+        foreach ($entities as $entity) {
+            $spl = new \SplFileInfo($entity->getPath());
+            $tasks[] = array(
+                'filename'  => $entity->getFilename(),
+                'format'    => $entity->getFormat(),
+                'size'      => $spl->getSize()
+            );
+
+            switch ( (int)$entity->getStatus() ) {
+            default:
+            case 0:
+                $status = "";
+                break;
+            case 1:
+                $status = "success";
+                break;
+            case 2:
+            case 3:
+                $status = "error";
+                break;
+            case 4:
+                $status = "warning";
+                break;
+            }
+            $tasks[count($tasks)-1]['status'] = $status;
+        }
+
+        return $this->render(
+            'AnphIndexationBundle:Indexation:index.html.twig',
+            array(
+                'tasks' =>$tasks,
+                'form'  => $form->createView()
+            )
+        );
+    }
+
+    /**
+     * Index process
+     *
+     * @return void
+     */
     public function indexProcessAction()
-    {  	
-    	$document = new Document();
-  		$form = $this->getDocumentForm($document);
+    {
+        $document = new Document();
+        $form = $this->_getDocumentForm($document);
 
-    	if ($this->getRequest()->isMethod('POST')) {
-    		$form->bind($this->getRequest());
-    		if ($form->isValid()) {
+        if ($this->getRequest()->isMethod('POST')) {
+            $form->bind($this->getRequest());
+            if ($form->isValid()) {
 
-    			$em = $this->getDoctrine()->getManager();
-    	
-    	
-    			$em->persist($document);
-    			$em->flush();
-    			$task = new ArchFileIntegrationTask($document->getName(), realpath($document->getAbsolutePath()), $document->getExtension());
-    			$em->persist($task);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($document);
+                $em->flush();
+                $task = new ArchFileIntegrationTask(
+                    $document->getName(),
+                    realpath($document->getAbsolutePath()),
+                    $document->getExtension()
+                );
+                $em->persist($task);
 
-    			$em->flush();
-    		}else{
-    			
-    		}		
-    	}
-    	
-    	return new RedirectResponse($this->get("router")->generate("anph_indexation_homepage"));
+                $em->flush();
+            }
+        }
+
+        return new RedirectResponse($this->get("router")->generate("anph_indexation_homepage"));
     }
-    
+
+    /**
+     * Purge controller
+     *
+     * @return void
+     */
     public function purgeAction()
     {
-    	$em = $this->getDoctrine()->getEntityManager();
-    	$query = $em->createQuery('SELECT t FROM AnphIndexationBundle:ArchFileIntegrationTask t WHERE t.status > 0');
-    	$tasks = $query->getResult();
+        $em = $this->getDoctrine()->getEntityManager();
+        $query = $em->createQuery(
+            'SELECT t FROM AnphIndexationBundle:ArchFileIntegrationTask t WHERE t.status > 0'
+        );
+        $tasks = $query->getResult();
 
-    	foreach ($tasks as $task) {
-    		$em->remove($task);
-    	}
-    	$em->flush();
-    	return new RedirectResponse($this->get("router")->generate("anph_indexation_homepage"));
+        foreach ($tasks as $task) {
+            $em->remove($task);
+        }
+        $em->flush();
+        return new RedirectResponse(
+            $this->get("router")->generate("anph_indexation_homepage")
+        );
     }
-    
-    private function getDocumentForm($document)
-    {
-		$form = $this	->createFormBuilder($document)
-    					->add('file','file',array("label" => "Fichier à indexer"))
-    					->add('extension','choice',array(	"choices"	=>	array(	"ead"	=>	"EAD",
-    																				"unimarc"	=>	"UNIMARC"),
-    														"label"	=>	"Format du fichier"))
-    					->getForm();    	
 
-    	return $form;
+    /**
+     * Get document form controller
+     *
+     * @param mixed $document Document
+     *
+     * @return void
+     */
+    private function _getDocumentForm($document)
+    {
+        $form = $this
+            ->createFormBuilder($document)
+            ->add(
+                'file',
+                'file',
+                array(
+                    "label" => "Fichier à indexer"
+                )
+            )
+            ->add(
+                'extension',
+                'choice',
+                array(
+                    "choices" => array(
+                        "ead"       => "EAD",
+                        "unimarc"   => "UNIMARC"
+                    ),
+                    "label"    =>    "Format du fichier"
+                )
+            )
+            ->getForm();
+
+        return $form;
     }
 }

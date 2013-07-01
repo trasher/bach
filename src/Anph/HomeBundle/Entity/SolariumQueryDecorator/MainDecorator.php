@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Bach Solarium main decorator
  *
