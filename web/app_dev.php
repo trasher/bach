@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
  * by accident to production servers.
  * Feel free to remove this, extend it, or make something more sophisticated.
  */
-
 $authorized = array(
     '127.0.0.1',
     '::1'
@@ -35,11 +34,10 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     );
 }
 
-$loader = include_once __DIR__.'/../app/bootstrap.php.cache';
+require_once __DIR__.'/../app/autoload.php';
 require_once __DIR__.'/../app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);
-$kernel->loadClassCache();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
