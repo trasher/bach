@@ -62,7 +62,13 @@
 				{% for document in searchResults %}
 					<div class="row-fluid">
 						<div class="span9">
-							<h4>{{ document.cUnittitle }}</h4>
+                            <h4>
+                                {% if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 %}
+                                    {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
+                                {% else %}
+                                    {{ document.cUnittitle }}
+                                {% endif %}
+                            </h4>
 							{#<h5>{{ document.headerDate }}</h5>
 							{% if document.headerAuthor is defined %}
 							<h6>{{ document.headerAuthor }}</h6>

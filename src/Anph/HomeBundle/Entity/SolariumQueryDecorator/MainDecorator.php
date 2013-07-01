@@ -41,10 +41,17 @@ class MainDecorator extends SolariumQueryDecoratorAbstract
     public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data)
     {
         $dismax = $query->getDisMax();
-        /*$dismax->setBoostQuery(
-            'cUnittitle:"' . $data . '"^100 fulltext:"' . $data . '"^0.2'
-        );*/
         $dismax->setQueryFields('cUnittitle^2 fulltext^0.2');
         $query->setQuery($data);
+    }
+
+    /**
+     * Highlithed fields
+     *
+     * @return string
+     */
+    public function getHlFields()
+    {
+        return 'cUnittitle';
     }
 }

@@ -80,6 +80,12 @@
     margin-bottom: .5em;
     border-radius: 6px;
 }
+
+em.hl {
+    background-color: yellow;
+    background-color: rgba(255, 255, 0, 0.4);
+}
+
 /* Lastly, apply responsive CSS fixes as necessary */
 @media ( max-width : 767px) {
     #footer {

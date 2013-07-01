@@ -110,6 +110,7 @@ class DefaultController extends Controller
             $time = microtime(true);
             $factory = $this->get("anph.home.solarium_query_factory");
             $searchResults = $factory->performQuery($container);
+            $hlSearchResults = $factory->getHighlighting();
             $time = number_format(microtime(true)-$time, 4);
             $resultCount = $searchResults->getNumFound();
 
@@ -125,18 +126,20 @@ class DefaultController extends Controller
             $time = 0;
             $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
             $searchResults = array();
+            $hlSearchResults = null;
         }
 
         $builder = new OptionSidebarBuilder($sidebar);
 
         $templateVars = array(
-            'form'          => $form->createView(),
-            'formAction'    => $formAction,
-            'sidebar'       => $builder->compileToArray(),
-            'resultCount'   => $resultCount,
-            'searchResults' => $searchResults,
-            'time'          => $time,
-            'display_pics'  => $sidebar->getItemValue("qo_dp")
+            'form'              => $form->createView(),
+            'formAction'        => $formAction,
+            'sidebar'           => $builder->compileToArray(),
+            'resultCount'       => $resultCount,
+            'searchResults'     => $searchResults,
+            'hlSearchResults'   => $hlSearchResults,
+            'time'              => $time,
+            'display_pics'      => $sidebar->getItemValue("qo_dp")
         );
 
         if ( $this->container->get('kernel')->getEnvironment() == 'dev'

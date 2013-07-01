@@ -35,6 +35,8 @@ class SolariumQueryFactory
 {
     private $_client;
     private $_decorators = array();
+    private $_request;
+    private $_highlitght;
 
     /**
      * Factory constructor
@@ -58,15 +60,29 @@ class SolariumQueryFactory
     {
         $query = $this->_client->createSelect();
 
+        $hl = $query->getHighlighting();
+        $hl_fields = '';
+
         foreach ( $container->getFields() as $name=>$value ) {
             if ( array_key_exists($name, $this->_decorators) ) {
                 //Decorate the query
                 $this->_decorators[$name]->decorate($query, $value);
+                if ( method_exists($this->_decorators[$name], 'getHlFields') ) {
+                    if ( trim($hl_fields) !== '' ) {
+                        $hl_fields .=',';
+                    }
+                    $hl_fields .= $this->_decorators[$name]->getHlFields();
+                }
             }
         }
 
+        $hl->setFields($hl_fields);
+        //on highlithed unititles, we always want the full string
+        $hl->getField('cUnittitle')->setFragSize(0);
+
         $this->_request = $this->_client->createRequest($query);
         $rs = $this->_client->select($query);
+        $this->_highlitght = $rs->getHighlighting();
         return $rs;
     }
 
@@ -122,5 +138,15 @@ class SolariumQueryFactory
     public function getRequest()
     {
         return $this->_request;
+    }
+
+    /**
+     * Get highlighted results
+     *
+     * @return Solarium\QueryType\Select\Result\Highlighting\Highlighting
+     */
+    public function getHighlighting()
+    {
+        return $this->_highlitght;
     }
 }
