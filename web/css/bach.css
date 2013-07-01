@@ -69,6 +69,17 @@
     width:250px;
 }
 
+.debug:before {
+    content:"DEBUG:";
+    font-weight:bold;
+}
+
+.debug {
+    padding: .5em;
+    background-color:rgba(255,0,0,.2);
+    margin-bottom: .5em;
+    border-radius: 6px;
+}
 /* Lastly, apply responsive CSS fixes as necessary */
 @media ( max-width : 767px) {
     #footer {

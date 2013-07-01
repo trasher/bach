@@ -85,7 +85,7 @@ class DefaultController extends Controller
             $container = new SolariumQueryContainer();
             $container->setField("language", $sidebar->getItemValue("qo_lg"));
             $container->setField("displayPicture", $sidebar->getItemValue("qo_dp"));
-            $container->setField("fulltext", $this->getRequest()->query->get("q"));
+            $container->setField("main", $this->getRequest()->query->get("q"));
 
             if ( !is_null($this->getRequest()->query->get("p")) ) {
                 $page = intval($this->getRequest()->query->get("p"));
@@ -108,7 +108,8 @@ class DefaultController extends Controller
             );
 
             $time = microtime(true);
-            $searchResults = $this->get("anph.home.solarium_query_factory")->performQuery($container);
+            $factory = $this->get("anph.home.solarium_query_factory");
+            $searchResults = $factory->performQuery($container);
             $time = number_format(microtime(true)-$time, 4);
             $resultCount = $searchResults->getNumFound();
 
@@ -122,7 +123,7 @@ class DefaultController extends Controller
         } else {
             $resultCount = 0;
             $time = 0;
-            $form = $this->createForm(new SearchQueryFormType(), new SearchQuery()); 
+            $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
             $searchResults = array();
         }
 
@@ -138,7 +139,14 @@ class DefaultController extends Controller
             'display_pics'  => $sidebar->getItemValue("qo_dp")
         );
 
-        if ( isset($suggestions) ) {
+        if ( $this->container->get('kernel')->getEnvironment() == 'dev'
+            && isset($factory)
+        ) {
+            //let's pass Solr raw query to template
+            $templateVars['solr_qry'] = $factory->getRequest()->getUri();
+        }
+
+        if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $templateVars['suggestions'] =    $suggestions;
 
             $queryUrlParams = $this->getRequest()->query->all();

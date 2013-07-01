@@ -31,6 +31,11 @@
 		</div>
 	</div>
 </div>
+{% if solr_qry is defined %}
+<div class="debug">
+    Raw query: <pre>{{ solr_qry }}</pre>
+</div>
+{% endif %}
 <div class="row-fluid">
 	{% if sidebar|length > 0 %}
 	<ul class="span2 nav nav-list well">
@@ -43,7 +48,7 @@
 			 	<li><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
 			 	{% endif %}
 			{% endfor %}
-		{% endfor %}		
+		{% endfor %}
 	</ul>
 	{% endif %}
 	<div class="offset0 span9">

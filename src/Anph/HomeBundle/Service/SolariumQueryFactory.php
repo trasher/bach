@@ -65,7 +65,9 @@ class SolariumQueryFactory
             }
         }
 
-        return $this->_client->select($query);
+        $this->_request = $this->_client->createRequest($query);
+        $rs = $this->_client->select($query);
+        return $rs;
     }
 
     /**
@@ -110,5 +112,15 @@ class SolariumQueryFactory
         SolariumQueryDecoratorAbstract $decorator
     ) {
         $this->_decorators[$decorator->getTargetField()] = $decorator;
+    }
+
+    /**
+     * Get executed solr query
+     *
+     * @return mixed
+     */
+    public function getRequest()
+    {
+        return $this->_request;
     }
 }
