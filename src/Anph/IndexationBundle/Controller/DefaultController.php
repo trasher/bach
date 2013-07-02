@@ -106,17 +106,29 @@ class DefaultController extends Controller
         if ($this->getRequest()->isMethod('POST')) {
             $form->bind($this->getRequest());
             if ($form->isValid()) {
-                //first, store file task in the database
+                //store document reference
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($document);
                 $em->flush();
+
+                //create a new task
                 $task = new ArchFileIntegrationTask(
                     $document->getName(),
                     realpath($document->getAbsolutePath()),
                     $document->getExtension()
                 );
-                $em->persist($task);
-                $em->flush();
+
+                if ( $form->get('perform')->isClicked() ) {
+                    //store file task in the database if perform action was requested
+                    $em->persist($task);
+                    $em->flush();
+                } else {
+                    //if performall action was requested, do not store in db
+                    //and launch indexation process
+                    $integrationService = $this->container
+                        ->get('anph.indexation.process.arch_file_integration');
+                    $res = $integrationService->integrate($task);
+                }
             }
         }
 
@@ -174,6 +186,26 @@ class DefaultController extends Controller
                         "unimarc"   => "UNIMARC"
                     ),
                     "label"    =>    "Format du fichier"
+                )
+            )
+            ->add(
+                'perform',
+                'submit',
+                array(
+                    'label' => "Ajouter le fichier à la file d'attente",
+                    'attr'  => array(
+                        'class' => 'btn btn-primary'
+                    )
+                )
+            )
+            ->add(
+                'performall',
+                'submit',
+                array(
+                    'label' => "Lancer l'indexation",
+                    'attr'  => array(
+                        'class' => 'btn btn-primary'
+                    )
                 )
             )
             ->getForm();

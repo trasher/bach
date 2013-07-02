@@ -64,7 +64,7 @@ EOF
     {
         $integrationService = $this->getContainer()
             ->get('anph.indexation.process.arch_file_integration');
-        $return = $integrationService->integrate();
+        $return = $integrationService->proceedQueue();
         $output->writeln($return);
     }
 }

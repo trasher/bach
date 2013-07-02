@@ -37,7 +37,6 @@ class EADDriverMapper implements DriverMapperInterface
      */
     public function translate($data)
     {
-        var_dump($data);
         $mappedData = array();
 
         $header_elements = array(

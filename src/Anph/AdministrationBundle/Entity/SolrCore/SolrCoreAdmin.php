@@ -64,7 +64,12 @@ class SolrCoreAdmin
     {
         return $this->_send(
             $this->_reader->getCoresURL() . '/' . $coreName . '/dataimport',
-            array('command' => 'full--import')
+            array(
+                'command'   => 'full-import',
+                'clean'     => 'false',
+                'commit'    => 'true',
+                'optimize'  => 'true'
+            )
         );
     }
 

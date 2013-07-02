@@ -51,11 +51,11 @@ class ArchFileIntegration
     }
 
     /**
-     * Intagrate files in queue into the database
+     * Integrate files in queue into the database
      *
      * @return void
      */
-    public function integrate()
+    public function proceedQueue()
     {
         $repository = $this->_entityManager
             ->getRepository('AnphIndexationBundle:ArchFileIntegrationTask');
@@ -63,44 +63,53 @@ class ArchFileIntegration
         $tasks = $repository->findByStatus(0);
 
         foreach ($tasks as $task) {
-            $spl = new \SplFileInfo($task->getPath());
-            $format = $task->getFormat();
-            $preprocessor = $task->getPreprocessor();
-
             try{
-                $universalFileFormats = $this->_manager->convert(
-                    $this->_factory->encapsulate($spl),
-                    $format,
-                    $preprocessor
-                );
-
-                foreach ($universalFileFormats as $universalFileFormat) {
-                    $this->_entityManager->persist($universalFileFormat);
-                }
-
+                $this->integrate($task);
                 $task->setStatus(1);
-                //$this->_entityManager->remove($task);
-                $this->_entityManager->persist($task);
-                $this->_entityManager->flush();
-
-                $sca = new SolrCoreAdmin();
-                $coreNames = $sca->getStatus()->getCoreNames();
-                foreach ( $coreNames as $core ) {
-                    $sca->fullImport($core);
-                }
             }catch(BadInputFileFormatException $e){
                 $task->setStatus(2);
-                $this->_entityManager->persist($task);
-                $this->_entityManager->flush();
             }catch(UnknownDriverParserException $e){
                 $task->setStatus(3);
-                $this->_entityManager->persist($task);
-                $this->_entityManager->flush();
             }catch(\DomainException $e){
                 $task->setStatus(4);
-                $this->_entityManager->persist($task);
-                $this->_entityManager->flush();
             }
+
+            //anyways, presist task
+            $this->_entityManager->persist($task);
+            $this->_entityManager->flush();
+        }
+
+    }
+
+    /**
+     * Proceed task database integration
+     *
+     * @param Entity $task Task to proceed
+     *
+     * @return void
+     */
+    public function integrate($task)
+    {
+        $spl = new \SplFileInfo($task->getPath());
+        $format = $task->getFormat();
+        $preprocessor = $task->getPreprocessor();
+
+        $universalFileFormats = $this->_manager->convert(
+            $this->_factory->encapsulate($spl),
+            $format,
+            $preprocessor
+        );
+
+        foreach ($universalFileFormats as $universalFileFormat) {
+            $this->_entityManager->persist($universalFileFormat);
+        }
+
+        $this->_entityManager->flush();
+
+        $sca = new SolrCoreAdmin();
+        $coreNames = $sca->getStatus()->getCoreNames();
+        foreach ( $coreNames as $core ) {
+            $sca->fullImport($core);
         }
     }
 }

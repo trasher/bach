@@ -41,7 +41,8 @@
 
 					<div class="control-group">
 						<div class="controls">
-							<input type="submit"  class="btn btn-primary" value="Ajouter le fichier à la file d'attente" />
+                            {{ form_widget(form.perform) }}
+                            {{ form_widget(form.performall) }}
 						</div>
 					</div>
 					</form>
@@ -49,6 +50,7 @@
 				<div class="span5">
 					<p>Selectionnez le fichier que vous souhaitez indexer. Il sera ajouté ensuite à la file d'attente du processus d'indexation.</p>
 					<p>La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation.</p>
+                    <p>Vous pouvez choisir de lancer l'indexation directement pour que le fichier ne soit pas ajouté à la file d'attente, et soit traité directement.</p>
 				</div>
 			</div>
 		</fieldset>
