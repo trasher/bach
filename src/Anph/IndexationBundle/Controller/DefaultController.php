@@ -37,7 +37,7 @@ class DefaultController extends Controller
 {
 
     /**
-     * Index controller
+     * Displays indexation queue and form
      *
      * @return void
      */
@@ -94,7 +94,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Index process
+     * Proceed indexation
      *
      * @return void
      */
@@ -106,7 +106,7 @@ class DefaultController extends Controller
         if ($this->getRequest()->isMethod('POST')) {
             $form->bind($this->getRequest());
             if ($form->isValid()) {
-
+                //first, store file task in the database
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($document);
                 $em->flush();
@@ -116,12 +116,13 @@ class DefaultController extends Controller
                     $document->getExtension()
                 );
                 $em->persist($task);
-
                 $em->flush();
             }
         }
 
-        return new RedirectResponse($this->get("router")->generate("anph_indexation_homepage"));
+        return new RedirectResponse(
+            $this->get("router")->generate("anph_indexation_homepage")
+        );
     }
 
     /**
