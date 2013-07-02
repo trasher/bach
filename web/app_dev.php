@@ -12,6 +12,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Debug\Debug;
 
 /*
  * This check prevents access to debug front controllers that are deployed
@@ -36,6 +37,8 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 
 require_once __DIR__.'/../app/autoload.php';
 require_once __DIR__.'/../app/AppKernel.php';
+
+Debug::enable();
 
 $kernel = new AppKernel('dev', true);
 $request = Request::createFromGlobals();
