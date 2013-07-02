@@ -21,7 +21,7 @@
         "jms/security-extra-bundle": "1.2.*",
         "jms/di-extra-bundle": "1.1.*",
         "nelmio/solarium-bundle": "2.0.*",
-        "twitter/bootstrap": "master"
+        "twitter/bootstrap": "2.3.*"
   },
     "scripts": {
         "post-install-cmd": [
@@ -41,23 +41,5 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web"
-    },
-    "repositories": [
-           {
-               "type": "package",
-               "package": {
-                   "version": "master",
-                   "name": "twitter/bootstrap",
-                   "source": {
-                       "url": "https://github.com/twitter/bootstrap.git",
-                       "type": "git",
-                       "reference": "master"
-                   },
-                   "dist": {
-                       "url": "https://github.com/twitter/bootstrap/zipball/master",
-                       "type": "zip"
-                   }
-               }
-           }
-       ]
+    }
 }
