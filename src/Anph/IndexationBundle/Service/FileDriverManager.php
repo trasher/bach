@@ -1,8 +1,16 @@
 <?php
-
-/*
-* This file is part of the Bach project.
-*/
+/**
+ * Convert an input file into a UniversalFileFormat object
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Anph\IndexationBundle\Service;
 
@@ -14,138 +22,177 @@ use Anph\IndexationBundle\Entity\UniversalFileFormat;
 use Anph\IndexationBundle\Entity\DataBag;
 
 /**
-* FileDriverManager convert an input file into a UniversalFileFormat object
-*
-* @author Anaphore PI Team
-*/
+ * Convert an input file into a UniversalFileFormat object
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class FileDriverManager
 {
-    private $drivers = array();
-    private $configuration = array();
-    private $fileFormatFactory;
-    private $preProcessorFactory;
+    private $_drivers = array();
+    private $_conf = array();
+    private $_fileFormatFactory;
+    private $_preProcessorFactory;
 
     /**
-    * Constructor
-    */
-    public function __construct(UniversalFileFormatFactory $fileFormatFactory, PreProcessorFactory $preProcessorFactory)
-    {
-		$this->importConfiguration();
-		$this->searchDrivers();
-		$this->fileFormatFactory = $fileFormatFactory;
-		$this->preProcessorFactory = $preProcessorFactory;
+     * Constructor
+     *
+     * @param UniversalFileFormatFactory $fileFormatFactory   Universal file
+     *                                                          format Factory
+     * @param PreProcessorFactory        $preProcessorFactory Pre processor factory
+     */
+    public function __construct(UniversalFileFormatFactory $fileFormatFactory,
+        PreProcessorFactory $preProcessorFactory
+    ) {
+        $this->_importConfiguration();
+        $this->_searchDrivers();
+        $this->_fileFormatFactory = $fileFormatFactory;
+        $this->_preProcessorFactory = $preProcessorFactory;
     }
-    
+
     /**
-    * Convert an input file into UniversalFileFormat object
-    * @return UniversalFileFormat the normalized file object
-    */
+     * Convert an input file into UniversalFileFormat object
+     *
+     * @param DataBag $bag          Data bag
+     * @param string  $format       File format
+     * @param string  $preprocessor Preprocessor, if any (defaults to null)
+     *
+     * @return UniversalFileFormat the normalized file object
+     */
     public function convert(DataBag $bag, $format, $preprocessor = null)
     {
-    	if (!array_key_exists($format,$this->drivers)) {
-			throw new \DomainException('Unsupported file format: ' . $format);
-    	} else {
-    		$mapper = null;
-    		$universalFileFormatClass = null;
-    		//Importation configuration du driver
-    		if (array_key_exists('drivers',$this->configuration)) {
-    			if (array_key_exists($format,$this->configuration['drivers'])) {
-    				if (array_key_exists('mapper',$this->configuration['drivers'][$format])) {    					
-    					try {
-	    					$reflection = new \ReflectionClass($this->configuration['drivers'][$format]['mapper']);
-	    					if (in_array('Anph\IndexationBundle\DriverMapperInterface',
-	    								$reflection->getInterfaceNames())) {
-	    						$mapper = $reflection->newInstance();
-	    					}
-    					} catch (\RuntimeException $e) {}
-    				}
-    				
-    				if (array_key_exists('universalfileformat',$this->configuration['drivers'][$format])) {
-    					try {
-	    					$reflection = new \ReflectionClass($this->configuration['drivers'][$format]['universalfileformat']);
-	    					if ($reflection->getParentClass()->getName() == 'Anph\IndexationBundle\Entity\UniversalFileFormat') {
-	    						$universalFileFormatClass = $this->configuration['drivers'][$format]['universalfileformat'];
-	    					}
-	    				}
-	    				catch (\RuntimeException $e) {}
-    				}
-    				
-    				if (array_key_exists('preprocessor',$this->configuration['drivers'][$format])
-    					&& is_null($preprocessor)) {
-    					$preprocessor = $this->configuration['drivers'][$format]['preprocessor'];
-    				}
-    			}
-    		}
-    		
-    		$driver = $this->drivers[$format];
-    		
-    		if(!is_null($preprocessor))
-    		{
-    			$bag = $this->preProcessorFactory->preProcess($bag, $preprocessor);
-    		}
-    		
-    		$results = $driver->process($bag);
-    		if (!is_null($mapper)) {
-    			foreach ($results as $key=>$result) {
-    				$results[$key] = $mapper->translate($result);
-    			}
-    		}
-    	}
-    	
-    	$output = array();
-    	
-    	foreach ($results as $result) {
-    		$output[] = $this->fileFormatFactory->build($result, $universalFileFormatClass);
-    	}
-    	
-    	return $output;
+        if ( !array_key_exists($format, $this->_drivers) ) {
+            throw new \DomainException('Unsupported file format: ' . $format);
+        } else {
+            $mapper = null;
+            $universalFileFormatClass = null;
+            //Importation configuration du driver
+            if (array_key_exists('drivers', $this->_conf)) {
+                if (array_key_exists($format, $this->_conf['drivers'])) {
+                    if (array_key_exists('mapper', $this->_conf['drivers'][$format])) {
+                        try {
+                            $reflection = new \ReflectionClass($this->_conf['drivers'][$format]['mapper']);
+                            if ( in_array('Anph\IndexationBundle\DriverMapperInterface', $reflection->getInterfaceNames())) {
+                                $mapper = $reflection->newInstance();
+                            }
+                        } catch (\RuntimeException $e) {
+                            //FIXME
+                        }
+                    }
+
+                    if ( array_key_exists('universalfileformat', $this->_conf['drivers'][$format]) ) {
+                        try {
+                            $reflection = new \ReflectionClass($this->_conf['drivers'][$format]['universalfileformat']);
+                            if ($reflection->getParentClass()->getName() == 'Anph\IndexationBundle\Entity\UniversalFileFormat') {
+                                $universalFileFormatClass = $this->_conf['drivers'][$format]['universalfileformat'];
+                            }
+                        }
+                        catch (\RuntimeException $e) {
+                            //FIXME
+                        }
+                    }
+
+                    if ( array_key_exists('preprocessor', $this->_conf['drivers'][$format])
+                        && is_null($preprocessor)
+                    ) {
+                        $preprocessor = $this->_conf['drivers'][$format]['preprocessor'];
+                    }
+                }
+            }
+
+            $driver = $this->_drivers[$format];
+
+            if ( !is_null($preprocessor) ) {
+                $bag = $this->_preProcessorFactory->preProcess(
+                    $bag,
+                    $preprocessor
+                );
+            }
+
+            $results = $driver->process($bag);
+            if (!is_null($mapper)) {
+                foreach ($results as $key=>$result) {
+                    $results[$key] = $mapper->translate($result);
+                }
+            }
+        }
+
+        $output = array();
+        foreach ($results as $result) {
+            $output[] = $this->_fileFormatFactory->build(
+                $result,
+                $universalFileFormatClass
+            );
+        }
+        return $output;
     }
-    
+
     /**
-    * Register a FileDriver into the manager
-    */
-    private function registerDriver(FileDriver $driver)
+     * Register a FileDriver into the manager
+     *
+     * @param FileDriver $driver Driver to register
+     *
+     * @return void
+     */
+    private function _registerDriver(FileDriver $driver)
     {
-    	if (!array_key_exists($driver->getFileFormatName(),$this->drivers)) {
-    		$this->drivers[$driver->getFileFormatName()] = $driver;
-    	} else {
-    		throw new \RuntimeException("A driver for this file format is already loaded");
-    	}
+        if ( !array_key_exists($driver->getFileFormatName(), $this->_drivers) ) {
+            $this->_drivers[$driver->getFileFormatName()] = $driver;
+        } else {
+            throw new \RuntimeException(
+                "A driver for this file format is already loaded"
+            );
+        }
     }
-    
+
     /**
-    * Perform a research of available drivers
-    */
-    private function searchDrivers()
+     * Perform a research of available drivers
+     *
+     * @return void
+     */
+    private function _searchDrivers()
     {
-    	$finder = new Finder();
-    	$finder->directories()->in(__DIR__.'/../Entity/Driver')->depth('== 0');
-    	
-    	foreach ($finder as $file) { 
-    		try {
-	    		$reflection = new \ReflectionClass('Anph\IndexationBundle\Entity\Driver\\'.
-	    											$file->getBasename().'\\Driver');
-	    	
-	    		if ('Anph\IndexationBundle\Entity\FileDriver' == $reflection->getParentClass()->getName()) {
-	    			
-	    			$configuration = array();
-	    			if (array_key_exists('drivers',$this->configuration)) {
-	    				if (array_key_exists(strtolower($file->getBasename()),$this->configuration['drivers'])) {
-	    					$configuration = $this->configuration['drivers'][strtolower($file->getBasename())];
-	    				}
-	    			}
-	    			
-	    			$this->registerDriver($reflection->newInstanceArgs(array($configuration)));
-	    		}
-    		} catch(\RuntimeException $e) {}
-    	}
+        $finder = new Finder();
+        $finder->directories()->in(__DIR__.'/../Entity/Driver')->depth('== 0');
+
+        foreach ($finder as $file) {
+            try {
+                $reflection = new \ReflectionClass(
+                    'Anph\IndexationBundle\Entity\Driver\\'.
+                    $file->getBasename().'\\Driver'
+                );
+                if ('Anph\IndexationBundle\Entity\FileDriver' == $reflection->getParentClass()->getName()) {
+                    $configuration = array();
+                    if ( array_key_exists('drivers', $this->_conf) ) {
+                        if ( array_key_exists(strtolower($file->getBasename()), $this->_conf['drivers'])) {
+                            $configuration = $this->_conf['drivers'][strtolower($file->getBasename())];
+                        }
+                    }
+                    $this->_registerDriver(
+                        $reflection->newInstanceArgs(array($configuration))
+                    );
+                }
+            } catch(\RuntimeException $e) {
+                //FIXME
+            }
+        }
     }
-    
+
     /**
-    * Import drivers configuration file
-    */
-    private function importConfiguration()
+     * Import drivers configuration file
+     *
+     * @return void
+     */
+    private function _importConfiguration()
     {
-    	$this->configuration = Yaml::parse(__DIR__.'/../Resources/config/drivers.yml');   	
+        $this->_conf = Yaml::parse(
+            __DIR__.'/../Resources/config/drivers.yml'
+        );
     }
 }

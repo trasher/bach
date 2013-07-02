@@ -1,97 +1,180 @@
 <?php
+/**
+ * EAD archdesc processing
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Anph\IndexationBundle\Entity\Driver\EAD\Parser\XML;
 
+/**
+ * EAD archdesc processing
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class EADArchDesc
 {
-	private $xpath;
-	private $values = array();
-	
-	public function __construct(\DOMXPath $xpath, \DOMNode $archDescNode, $fields){
-		$this->xpath = $xpath;
-		$this->parse($archDescNode,$fields);
-	}
-	
-	public function __get($name){
-		if(array_key_exists(strtolower($name),$this->values)){
-			return $this->values[strtolower($name)];
-		}else{
-			return null;
-		}
-	}
-	
-	public function getValues(){
-		return $this->values;
-	}
-	
-	private function parse(\DOMNode $archDescNode,$fields){
-		$results = array();
-		$results['root'] = array();
-		
-		$rootFields = $fields['root'];
-		
-		foreach($rootFields as $field){
-			$nodes = $this->xpath->query($field,$archDescNode);
-		
-			if($nodes->length > 0){
-				$results['root'][$field] = array();
-				foreach($nodes as $key=>$node){
-					$results['root'][$field][] = array("value"			=>	$node->nodeValue,
-														"attributes"	=>	$this->parseAttributes($node->attributes));
-				}
-			}
-		}
-		
-		// Let's go parsing C node recursively
-		
-		$results['c'] = $this->recursiveCNodeSearch($archDescNode->getElementsByTagName('dsc')->item(0),
-											$fields['c']);
-		
-		$this->values = $results;
-	}
-	
-	private function recursiveCNodeSearch(\DOMNode $rootNode, $fields, $parents = array()){
-		$results = array();
-	
-		$cNodes = $this->xpath->query('c',$rootNode);
-	
-		foreach($cNodes as $cNode){
-			$results[$cNode->getAttribute('id')] = array(	"parents"	=>	$parents);
-			
-			foreach($fields as $field){
-				$nodes = $this->xpath->query($field,$cNode);
-				$results[$cNode->getAttribute('id')][$field] = array();
-				
-				if($nodes->length > 0){					
-					foreach($nodes as $key=>$node){
-						$results[$cNode->getAttribute('id')][$field][] = array("value"			=>	$node->nodeValue,
-																				"attributes"	=>	$this->parseAttributes($node->attributes));
-					}
-				}
-			}
-				
-			if($this->xpath->query('c',$cNode)->length > 0){
-				$results = array_merge(	$results,
-										$this->recursiveCNodeSearch($cNode, 
-																	$fields, 
-																	array_merge($parents,
-																				array($cNode->getAttribute('id'))
-																				)
-																	)
-									);
-				//$results['c'] = $this->recursiveCNodeSearch($cNode, $fields);
-			}
-		}
-		return $results;
-	}
-	
-	private function parseAttributes(\DOMNamedNodeMap $attributes){
-		$return = array();
-		
-		foreach ($attributes as $key=>$attribute) {
-			$return[$key] = $attribute->value;
-		}
-		
-		return $return;
-	}
+    private $_xpath;
+    private $_values = array();
+
+    /**
+     * Constructor
+     *
+     * @param DOMXPath $xpath        XPath
+     * @param DOMNode  $archDescNode XML archdesc node
+     * @param array    $fields       Known fields
+     */
+    public function __construct(\DOMXPath $xpath, \DOMNode $archDescNode, $fields)
+    {
+        $this->_xpath = $xpath;
+        $this->_parse($archDescNode, $fields);
+    }
+
+    /**
+     * Getter
+     *
+     * @param string $name Property name to retrieve
+     *
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if ( array_key_exists(strtolower($name), $this->_values) ) {
+            return $this->_values[strtolower($name)];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get values
+     *
+     * @return array
+     */
+    public function getValues()
+    {
+        return $this->_values;
+    }
+
+    /**
+     * Parse XML
+     *
+     * @param DOMNode $archDescNode XML archdesc node
+     * @param array   $fields       Known fields
+     *
+     * @return void
+     */
+    private function _parse(\DOMNode $archDescNode, $fields)
+    {
+        $results = array();
+        $results['root'] = array();
+
+        $rootFields = $fields['root'];
+
+        foreach ( $rootFields as $field ) {
+            $nodes = $this->_xpath->query($field, $archDescNode);
+
+            if ( $nodes->length > 0 ) {
+                $results['root'][$field] = array();
+                foreach ( $nodes as $key=>$node ) {
+                    $results['root'][$field][] = array(
+                        'value'         => $node->nodeValue,
+                        'attributes'    => $this->_parseAttributes($node->attributes)
+                    );
+                }
+            }
+        }
+
+        // Let's go parsing C node recursively
+        $results['c'] = $this->_recursiveCNodeSearch(
+            $archDescNode->getElementsByTagName('dsc')->item(0),
+            $fields['c']
+        );
+
+        $this->_values = $results;
+    }
+
+    /**
+     * Search c nodes recursively
+     *
+     * @param DOMNode $rootNode XML root node
+     * @param array   $fields   Known fields
+     * @param array   $parents  Node parents
+     *
+     * @return array
+     */
+    private function _recursiveCNodeSearch(\DOMNode $rootNode,
+        $fields, $parents = array()
+    ) {
+        $results = array();
+
+        $cNodes = $this->_xpath->query('c', $rootNode);
+
+        foreach ( $cNodes as $cNode ) {
+            $results[$cNode->getAttribute('id')] = array('parents' => $parents);
+
+            foreach ( $fields as $field ) {
+                $nodes = $this->_xpath->query($field, $cNode);
+                $results[$cNode->getAttribute('id')][$field] = array();
+
+                if ( $nodes->length > 0 ) {
+                    foreach ( $nodes as $key=>$node ) {
+                        $results[$cNode->getAttribute('id')][$field][] = array(
+                            'value'         => $node->nodeValue,
+                            'attributes'    => $this->_parseAttributes(
+                                $node->attributes
+                            )
+                        );
+                    }
+                }
+            }
+
+            if ( $this->_xpath->query('c', $cNode)->length > 0 ) {
+                $results = array_merge(
+                    $results,
+                    $this->_recursiveCNodeSearch(
+                        $cNode,
+                        $fields,
+                        array_merge(
+                            $parents,
+                            array(
+                                $cNode->getAttribute('id')
+                            )
+                        )
+                    )
+                );
+            }
+        }
+        return $results;
+    }
+
+    /**
+     * Parse attributes
+     *
+     * @param DOMNamedNodeMap $attributes DOM node attributes
+     *
+     * @return array
+     */
+    private function _parseAttributes(\DOMNamedNodeMap $attributes)
+    {
+        $return = array();
+        foreach ( $attributes as $key=>$attribute ) {
+            $return[$key] = $attribute->value;
+        }
+        return $return;
+    }
 }

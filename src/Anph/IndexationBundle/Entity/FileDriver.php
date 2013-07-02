@@ -1,37 +1,60 @@
 <?php
-
-/*
-* This file is part of the bach project.
-*/
+/**
+ * File driver abstract class
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Anph\IndexationBundle\Entity;
 
 /**
-* FileDriver class
-*
-* @author Anaphore PI Team
-*/
+ * File driver abstract class
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 abstract class FileDriver
 {
-	protected $configuration = array();
-	
-	/**
-	* The constructor
-	* @param array $configuration The driver's configuration
-	*/
-    public function __construct($configuration = array()){
-    	$this->configuration = $configuration;
-    }
-	
+    protected $configuration = array();
+
     /**
-    * Perform the parsing of the DataBag
-    * @param DataBag $bag The data
-    */
-	abstract public function process(DataBag $bag);
-    
-	/**
-	* Return driver format
-	* @return string $format The format of the driver
-	*/
+     * The constructor
+     *
+     * @param array $configuration The driver's configuration
+     */
+    public function __construct($configuration = array())
+    {
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * Perform the parsing of the DataBag
+     *
+     * @param DataBag $bag The data
+     *
+     * @return array
+     */
+    abstract public function process(DataBag $bag);
+
+    /**
+     * Get driver format name
+     *
+     * @return string $format The format of the driver
+     *
+     * @return stirng
+     */
     abstract public function getFileFormatName();
 }
