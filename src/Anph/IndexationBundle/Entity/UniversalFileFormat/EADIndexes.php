@@ -24,7 +24,43 @@ class EADIndexes
     /**
      * @var string
      *
-     * @ORM\COlumn(name="type", type="string", length=20)
+     * @ORM\Column(name="altrender", type="string", length=255, nullable=true)
+     */
+    protected $altrender;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="audience", type="string", length=50, nullable=true)
+     */
+    protected $audience;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="authfilenumber", type="string", length=255, nullable=true)
+     */
+    protected $authfilenumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="encodinganalog", type="string", length=255, nullable=true)
+     */
+    protected $encodinganalog;
+
+    /**
+     * @var string
+     * Maps id attribute, since id is here the default auto increment field
+     *
+     * @ORM\Column(name="eadid", type="string", length=100, nullable=true)
+     */
+    protected $eadid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=20, nullable=true)
      */
     protected $type;
 
@@ -48,6 +84,13 @@ class EADIndexes
      * @ORM\Column(name="role", type="string", length=100, nullable=true)
      */
     protected $role;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rules", type="string", length=100, nullable=true)
+     */
+    protected $rules;
 
     /**
      * @var string
@@ -233,5 +276,143 @@ class EADIndexes
     public function getEadfile()
     {
         return $this->eadfile;
+    }
+
+    /**
+     * Set altrender
+     *
+     * @param string $altrender
+     * @return EADIndexes
+     */
+    public function setAltrender($altrender)
+    {
+        $this->altrender = $altrender;
+    
+        return $this;
+    }
+
+    /**
+     * Get altrender
+     *
+     * @return string 
+     */
+    public function getAltrender()
+    {
+        return $this->altrender;
+    }
+
+    /**
+     * Set audience
+     *
+     * @param string $audience
+     * @return EADIndexes
+     */
+    public function setAudience($audience)
+    {
+        $this->audience = $audience;
+    
+        return $this;
+    }
+
+    /**
+     * Get audience
+     *
+     * @return string 
+     */
+    public function getAudience()
+    {
+        return $this->audience;
+    }
+
+    /**
+     * Set authfilenumber
+     *
+     * @param string $authfilenumber
+     * @return EADIndexes
+     */
+    public function setAuthfilenumber($authfilenumber)
+    {
+        $this->authfilenumber = $authfilenumber;
+    
+        return $this;
+    }
+
+    /**
+     * Get authfilenumber
+     *
+     * @return string 
+     */
+    public function getAuthfilenumber()
+    {
+        return $this->authfilenumber;
+    }
+
+    /**
+     * Set encodinganalog
+     *
+     * @param string $encodinganalog
+     * @return EADIndexes
+     */
+    public function setEncodinganalog($encodinganalog)
+    {
+        $this->encodinganalog = $encodinganalog;
+    
+        return $this;
+    }
+
+    /**
+     * Get encodinganalog
+     *
+     * @return string 
+     */
+    public function getEncodinganalog()
+    {
+        return $this->encodinganalog;
+    }
+
+    /**
+     * Set eadid
+     *
+     * @param string $eadid
+     * @return EADIndexes
+     */
+    public function setEadid($eadid)
+    {
+        $this->eadid = $eadid;
+    
+        return $this;
+    }
+
+    /**
+     * Get eadid
+     *
+     * @return string 
+     */
+    public function getEadid()
+    {
+        return $this->eadid;
+    }
+
+    /**
+     * Set rules
+     *
+     * @param string $rules
+     * @return EADIndexes
+     */
+    public function setRules($rules)
+    {
+        $this->rules = $rules;
+    
+        return $this;
+    }
+
+    /**
+     * Get rules
+     *
+     * @return string 
+     */
+    public function getRules()
+    {
+        return $this->rules;
     }
 }
