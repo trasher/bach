@@ -4,12 +4,16 @@ drivers:
         universalfileformat: Anph\IndexationBundle\Entity\UniversalFileFormat\EADFileFormat
         preprocessor:   
         fields:
-            header:  
+            eadheader:
                 - eadid
                 - filedesc/titlestmt/author
+                - filedesc/titlestmt/titleproper
                 - filedesc/publicationstmt/publisher
                 - filedesc/publicationstmt/address/addressline
-                - filedesc/publicationstmt/date                
+                - filedesc/publicationstmt/date
+                - profiledesc/creation
+                - profiledesc/creation/date
+                - profiledesc/langusage
                 - profiledesc/langusage/language
             archdesc:
                 root:
@@ -35,9 +39,21 @@ drivers:
                 c:
                     - did/unitid
                     - did/unittitle
+                    - did/unitdate
+                    - did/physdesc
+                    - did/repository
+                    - did/langmaterial
+                    - did/origination
                     - scopecontent
                     - controlacces
                     - daogrp/daoloc
+                    - .//corpname
+                    - .//famname
+                    - .//genreform
+                    - .//geogname
+                    - .//name
+                    - .//persname
+                    - .//subject
     unimarc:
         mapper: Anph\IndexationBundle\Entity\Mapper\UNIMARCDriverMapper
         #universalfileformat: Anph\IndexationBundle\Entity\UniversalFileFormat\UNIMARCFileFormat

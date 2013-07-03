@@ -185,6 +185,24 @@ class EADDriverMapper implements DriverMapperInterface
             }
         }
 
+        $ead_mulitple_elements = array(
+            'cCorpnames'    => './/corpname',
+            'cFamnames'     => './/famname',
+            'cGenreforms'   => './/genreform',
+            'cGeognames'    => './/geogname',
+            'cNames'        => './/name',
+            'cPersnames'    => './/persname',
+            'cSubjects'     => './/subject'
+        );
+        
+        foreach ( $ead_mulitple_elements as $map=>$element ) {
+            if ( array_key_exists($element, $data['c'])
+                && count($data['c'][$element])
+            ) {
+                $mappedData[$map] = $data['c'][$element];
+            }
+        }
+        
         /*if ( array_key_exists("parents", $data["c"]) ) {
             $mappedData["parents"] = implode("/", $data["c"]["parents"]);
         }

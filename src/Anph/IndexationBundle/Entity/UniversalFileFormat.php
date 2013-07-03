@@ -136,24 +136,32 @@ class UniversalFileFormat
 	 */
 	protected $archDescLegalStatus;  
 	
-	/**
-	* The constructor
-	* @param array $data The input data
-	*/
+    /**
+      * The constructor
+      * 
+      * @param array $data The input data
+      */
     public function __construct($data)
     {
-    	$this->parseData($data);
+        $this->parseData($data);
     }
-        
+
+    /**
+     * Proceed data parsing
+     *
+     * @param array $data
+     * 
+     * @return void
+     */
     protected function parseData($data)
     {
-    	foreach ($data as $key=>$datum) {
-    		if (property_exists($this, $key)) {
-    			$this->$key = $datum;
-    		}    		
-    	}
+        foreach ($data as $key=>$datum) {
+            if (property_exists($this, $key)) {
+                $this->$key = $datum;
+            }
+        }
     }
-   
+
     /**
      * Set headerId
      *

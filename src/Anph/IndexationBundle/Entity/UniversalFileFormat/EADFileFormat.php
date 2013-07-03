@@ -1,9 +1,10 @@
 <?php
 
 namespace Anph\IndexationBundle\Entity\UniversalFileFormat;
-use Anph\IndexationBundle\Entity\UniversalFileFormat;
 
+use Anph\IndexationBundle\Entity\UniversalFileFormat;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -40,11 +41,63 @@ class EADFileFormat extends UniversalFileFormat {
 	 * @ORM\Column(type="string", nullable=true, length=250)
 	 */
 	protected $cDaoloc;
-   
+
+    /**
+     * @ORM\OneToMany(targetEntity="EADIndexes", mappedBy="EADFileFormat", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $indexes;
+    
+
+    /**
+     * The constructor
+     * @param array $data The input data
+     */
+    public function __construct($data)
+    {
+        $this->cPersnames = new ArrayCollection();
+        parent::__construct($data);
+    }
+
+    private $_known_indexes = array(
+        'cCorpnames',
+        'cFamnames',
+        'cGenreforms',
+        'cGeognames',
+        'cNames',
+        'cPersnames',
+        'cSubjects'
+    );
+
+    /**
+     * Proceed data parsing
+     *
+     * @param array $data Data
+     *
+     * @return void
+     */
+    protected function parseData($data)
+    {
+        foreach ($data as $key=>$datum) {
+            if ( in_array($key, $this->_known_indexes) ) {
+                foreach ( $datum as $index ) {
+                    $this->addIndex($key, $index);
+                }
+                /*foreach ( $datum as $persname ) {
+                    $this->addCPersname(new EADPersnames($this, $persname));
+                }*/
+            } elseif (property_exists($this, $key)) {
+                $this->$key = $datum;
+            } else {
+                //FIXME: throw a warning
+            }
+        }
+    }
+
     /**
      * Set parents
      *
      * @param string $parents
+     *
      * @return EADFileFormat
      */
     public function setParents($parents)
@@ -177,5 +230,52 @@ class EADFileFormat extends UniversalFileFormat {
     public function getCDaoloc()
     {
         return $this->cDaoloc;
+    }
+
+    /**
+     * Add index
+     *
+     * @param string $type  Index type
+     * @param string $index Index data
+     *
+     * @return EADFileFormat
+     */
+    public function addIndex($type, $index)
+    {
+        $idx = new EADIndexes($this, $type, $index);
+        //dedupe
+        $unique = true;
+        foreach ( $this->indexes as $i ) {
+            if ( $i->getType() == $type and $i->getName() == $index['value'] ) {
+                $unique = false;
+                break;
+            }
+        }
+        if ( $unique === true ) {
+            $this->indexes[] = $idx;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove index
+     *
+     * @param \Anph\IndexationBundle\Entity\UniversalFileFormat\EADIndexes $index
+     * 
+     * @return void
+     */
+    public function removeIndex(\Anph\IndexationBundle\Entity\UniversalFileFormat\EADIndexes $index)
+    {
+        $this->indexes->removeElement($index);
+    }
+
+    /**
+     * Get indexes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIndexes()
+    {
+        return $this->indexes;
     }
 }

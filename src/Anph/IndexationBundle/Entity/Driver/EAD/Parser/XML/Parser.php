@@ -65,7 +65,7 @@ class Parser implements ParserInterface
         $headerNode = new EADHeader(
             $xpath,
             $xpath->query('/ead/eadheader')->item(0),
-            $this->_configuration['fields']['header']
+            $this->_configuration['fields']['eadheader']
         );
         $this->_tree->append(
             new ObjectSheet('header', $headerNode)
@@ -91,4 +91,3 @@ class Parser implements ParserInterface
         return $this->_tree;
     }
 }
-?>
