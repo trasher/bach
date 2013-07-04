@@ -228,7 +228,6 @@ class SolrCoreAdmin
                 )
             );
         }
-        
         return false;
     }
 
@@ -301,7 +300,8 @@ class SolrCoreAdmin
         case self::DELETE_CORE:
             // Get core status for retreive core instance directory.
             $responseStatus = $this->getStatus($coreName);
-            $coreInstanceDir = $responseStatus->getCoreStatus($coreName)->getInstanceDir();
+            $coreInstanceDir = $responseStatus->getCoreStatus($coreName)
+                ->getInstanceDir();
             // Unload core
             $response = $this->unload($coreName);
             if (!$response->isOk()) {
@@ -334,7 +334,8 @@ class SolrCoreAdmin
      */
     public function getSchemaPath($coreName)
     {
-        $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
+        $coreInstanceDir = $this->getStatus($coreName)
+            ->getCoreStatus($coreName)->getInstanceDir();
         return $this->_reader->getSolrSchemaFileName($coreName);
     }
 
@@ -347,7 +348,8 @@ class SolrCoreAdmin
      */
     public function getConfigPath($coreName)
     {
-        $coreInstanceDir = $this->getStatus($coreName)->getCoreStatus($coreName)->getInstanceDir();
+        $coreInstanceDir = $this->getStatus($coreName)
+            ->getCoreStatus($coreName)->getInstanceDir();
         return $coreInstanceDir . $this->_reader->getCoreConfigDir() . '/' .
            $this->_reader->getConfigFileName();
     }
@@ -392,7 +394,7 @@ class SolrCoreAdmin
      * Add fields by default?
      *
      * @param string $coreInstanceDirPath Core instance dir
-     * @param array  $fields              Fields?
+     * @param array  $fields              Fields existing in database
      *
      * @return void
      */
@@ -403,6 +405,8 @@ class SolrCoreAdmin
             $this->_reader->getSchemaFileName();
         $doc = new DOMDocument();
         $doc->load($schemaFilePath);
+        $doc->formatOutput = true;
+        $doc->preserveWhiteSpace = false;
         // Creation of fields
         $elt = $doc->getElementsByTagName('fields')->item(0);
         foreach ($fields as $f) {
@@ -415,9 +419,53 @@ class SolrCoreAdmin
             $newFieldType->setAttribute('type', 'string');
             $elt->appendChild($newFieldType);
         }
-        //TODO: add fulltext field
-        //TODO: add relevant copyField
+
+        //add fulltext field
+        $fulltext = $doc->createElement('field');
+        $fulltext->setAttribute('name', 'fulltext');
+        $fulltext->setAttribute('multiValued', 'true');
+        $fulltext->setAttribute('indexed', 'true');
+        $fulltext->setAttribute('stored', 'false');
+        $elt->appendChild($fulltext);
+
+        //add suggestions field
+        $suggestions = $doc->createElement('field');
+        $suggestions->setAttribute('name', 'suggestions');
+        $suggestions->setAttribute('multiValued', 'true');
+        $suggestions->setAttribute('indexed', 'true');
+        $suggestions->setAttribute('stored', 'false');
+        $elt->appendChild($suggestions);
+
         $doc->documentElement->appendChild($elt);
+
+        //add copyField for fulltext (all fields)
+        foreach ( $fields as $f ) {
+            $cf = $doc->createElement('copyField');
+            $cf->setAttribute('source', $f);
+            $cf->setAttribute('dest', 'fulltext');
+            $doc->documentElement->appendChild($cf);
+        }
+
+        //add copyField for suggestions (specific fields)
+        //fields used in suggestions
+        $suggestions_fields = array(
+            'cUnittitle',
+            'cCorpname',
+            'cFamname',
+            'cGenreform',
+            'cName',
+            'cPersname',
+            'cSubject'
+        );
+        foreach ( $suggestions_fields as $f ) {
+            if ( isset($fields[$f]) ) {
+                $cf = $doc->createElement('copyField');
+                $cf->setAttribute('source', $f);
+                $cf->setAttribute('dest', 'fulltext');
+                $doc->documentElement->appendChild($cf);
+            }
+        }
+
         $doc->save($schemaFilePath);
     }
 
