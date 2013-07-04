@@ -55,7 +55,7 @@ class DefaultController extends Controller
         // Construction de la barre de gauche comprenant les options de recherche
         $sidebar = new OptionSidebar();
 
-        $languageItem = new OptionSidebarItem(
+        /*$languageItem = new OptionSidebarItem(
             "Langue des documents",
             "qo_lg",
             "fr"
@@ -63,7 +63,7 @@ class DefaultController extends Controller
         $languageItem
             ->appendChoice(new OptionSidebarItemChoice("Français", "fr"))
             ->appendChoice(new OptionSidebarItemChoice("Anglais", "en"));
-        $sidebar->append($languageItem);
+        $sidebar->append($languageItem);*/
 
         $resultsItem = new OptionSidebarItem(
             "Nombre de résultats par page",
