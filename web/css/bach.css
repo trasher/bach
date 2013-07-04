@@ -1,5 +1,19 @@
+#options_sidebar {
+    margin-right: 1.6em;
+    min-width: 17em;
+}
+
+.result_pic {
+    float: right;
+    margin: 0 0 0 1em;
+}
+
 .sidebar-nav {
     padding: 2px 0;
+}
+
+#search_results article figure {
+    margin-bottom: .5em;
 }
 
 /* Sticky footer styles

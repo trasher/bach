@@ -59,7 +59,7 @@ class SearchQueryFormType extends AbstractType
             'text',
             array(
                 'attr'  => array(
-                    'placeholder'   => 'Tapez votre recherche',
+                    'placeholder'   => 'Entrez votre recherche',
                      'class'        => 'input-big span12',
                      'value'        => $this->_value
                 )

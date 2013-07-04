@@ -195,7 +195,7 @@ a:hover {
 [class*="span"] {
   float: left;
   min-height: 1px;
-  margin-left: 20px;
+  /*margin-left: 20px;*/
 }
 .container,
 .navbar-static-top .container,
@@ -295,9 +295,9 @@ a:hover {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  float: left;
-  margin-left: 2.127659574468085%;
-  *margin-left: 2.074468085106383%;
+  /float: left;*/
+  /*margin-left: 2.127659574468085%;
+  *margin-left: 2.074468085106383%;*/
 }
 .row-fluid [class*="span"]:first-child {
   margin-left: 0;

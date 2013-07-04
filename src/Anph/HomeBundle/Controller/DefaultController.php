@@ -88,6 +88,13 @@ class DefaultController extends Controller
 
         $sidebar->bind($this->getRequest());
 
+        $builder = new OptionSidebarBuilder($sidebar);
+        $templateVars = array(
+            'formAction'        => $formAction,
+            'sidebar'           => $builder->compileToArray(),
+            'display_pics'      => $sidebar->getItemValue("qo_dp")
+        );
+
         if ( !is_null($this->getRequest()->query->get("q")) ) {
             // On effectue une recherche
             $form = $this->createForm(
@@ -120,11 +127,9 @@ class DefaultController extends Controller
                 )
             );
 
-            $time = microtime(true);
             $factory = $this->get("anph.home.solarium_query_factory");
             $searchResults = $factory->performQuery($container);
             $hlSearchResults = $factory->getHighlighting();
-            $time = number_format(microtime(true)-$time, 4);
             $resultCount = $searchResults->getNumFound();
 
             $query = $this->get("solarium.client")->createSuggester();
@@ -134,27 +139,16 @@ class DefaultController extends Controller
             $query->setCount(10);
             //$query->setCollate(true);
             $suggestions = $this->get("solarium.client")->suggester($query);
+
+            $templateVars['resultCount'] = $resultCount;
+            $templateVars['searchResults'] = $searchResults;
+            $templateVars['hlSearchResults'] = $hlSearchResults;
+
         } else {
-            $resultCount = 0;
-            $time = 0;
             $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
-            $searchResults = array();
-            $hlSearchResults = null;
         }
 
-        $builder = new OptionSidebarBuilder($sidebar);
-
-        $templateVars = array(
-            'form'              => $form->createView(),
-            'formAction'        => $formAction,
-            'sidebar'           => $builder->compileToArray(),
-            'resultCount'       => $resultCount,
-            'searchResults'     => $searchResults,
-            'hlSearchResults'   => $hlSearchResults,
-            'time'              => $time,
-            'display_pics'      => $sidebar->getItemValue("qo_dp")
-        );
-
+        $templateVars['form'] = $form->createView();
         if ( $this->container->get('kernel')->getEnvironment() == 'dev'
             && isset($factory)
         ) {

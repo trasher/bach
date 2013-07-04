@@ -1,44 +1,9 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
-<div class="row">
-    <div class="offset2 span9">
-        <div class="container">
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="row">
-                        <form action="{{ formAction }}" method="post" {{ form_enctype(form) }} name="search">
-                        <div class="input-append">
-                            {{ form_widget(form.query) }}
-                            {{ form_widget(form._token) }}
-                            <button type="submit" id="appendedInputButton" class="btn btn-primary"><span class="icon-search icon-white"></span></button>
-                        </div>
-                        </form>
-                    </div>
-                    {% if suggestions is defined %}
-                    <div class="row-fluid">
-                        <div class="offset2 span9">
-                        {% for term,termResult in suggestions %}
-                            {% for suggest in termResult %}
-                                <a href="{{ urlQueryPrefix|replace({'$query': suggest}) }} ">{{ suggest }}</a>
-                            {% endfor %}
-                        {% endfor %}
-                        </div>
-                    {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% if solr_qry is defined %}
-<div class="debug">
-    Raw query: <pre>{{ solr_qry }}</pre>
-</div>
-{% endif %}
 <div class="row-fluid">
     {% if sidebar|length > 0 %}
-    <ul class="span2 nav nav-list well">
+    <ul class="span2 nav nav-list well" id="options_sidebar">
         {% for name,item in sidebar %}
         <li class="nav-header">{{ name }}</li>
             {% for choice in item %}
@@ -51,44 +16,84 @@
         {% endfor %}
     </ul>
     {% endif %}
-    <div class="offset0 span9">
-        <div class="container-fluid">
+    <div class="span9">
+
+        <div class="row-fluid">
+            <div class="span9">
+                <div class="container">
+                    <div class="row-fluid">
+                        <div>
+                            <form action="{{ formAction }}" method="post" {{ form_enctype(form) }} name="search">
+                                <div class="input-append">
+                                    {{ form_widget(form.query) }}
+                                    {{ form_widget(form._token) }}
+                                    <button type="submit" id="appendedInputButton" class="btn btn-primary"><span class="icon-search icon-white"></span></button>
+                                </div>
+                            </form>
+                            {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
+                            <aside id="suggestions">
+                                Suggestions de recherche&nbsp;:
+                                {% for term,termResult in suggestions %}
+                                    {% for suggest in termResult %}
+                                        <a href="{{ urlQueryPrefix|replace({'$query': suggest}) }} ">{{ suggest }}</a>
+                                    {% endfor %}
+                                {% endfor %}
+                            </aside>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if solr_qry is defined %}
+        <div class="debug">
+            Raw query: <pre>{{ solr_qry }}</pre>
+        </div>
+        {% endif %}
+
+
+        {% if searchResults is defined %}
+        <section id="search_results">
+            {% if searchResults|length > 0 %}
             <div class="row-fluid">
                 <div class="span12">
                     {{ resultCount }} résultat(s)
                 </div>
             </div>
-            {% if searchResults|length > 0 %}
                 {% for document in searchResults %}
-                    <div class="row-fluid">
-                        <div class="span9">
-                            <h4>
-                                {% if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 %}
-                                    {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
-                                {% else %}
-                                    {{ document.cUnittitle }}
-                                {% endif %}
-                            </h4>
-                            {#<h5>{{ document.headerDate }}</h5>
-                            {% if document.headerAuthor is defined %}
-                            <h6>{{ document.headerAuthor }}</h6>
-                            {% endif %}
-                            {% if document.archDescRepository is defined %}
-                            <h6>{{ document.archDescRepository }}</h6>
-                            {% endif %}
-
-                            <p style="text-align:justify;">
-                            </p>#}
-                        </div>
+                    <article class="row-fluid" id="result_{{ document.uniqid }}">
                         {% if display_pics %}
-                        <div class="offset1 span2">
+                        <figure class="result_pic">
                             <img src="http://placehold.it/140x140" class="img-polaroid">
-                        </div>
+                        </figure>
                         {% endif %}
-                    </div>
+
+                        <h4>
+                            {% if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 %}
+                                {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
+                            {% else %}
+                                {{ document.cUnittitle }}
+                            {% endif %}
+                        </h4>
+                        {#<h5>{{ document.headerDate }}</h5>
+                        {% if document.headerAuthor is defined %}
+                        <h6>{{ document.headerAuthor }}</h6>
+                        {% endif %}
+                        {% if document.archDescRepository is defined %}
+                        <h6>{{ document.archDescRepository }}</h6>
+                        {% endif %}
+
+                        <p style="text-align:justify;">
+                        </p>#}
+                    </article>
                 {% endfor %}
+            {% else %}
+                Aucun résultat n'a été trouvé.
             {% endif %}
-        </div>
+        </section>
+        {% else %}
+            Welcome to Bach's!
+        {% endif %}
     </div>
 </div>
 {% endblock %}
