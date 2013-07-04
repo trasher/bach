@@ -1,67 +1,124 @@
-<?php 
+<?php
+/**
+ * Bach sidebar option
+ *
+ * PHP version 5
+ *
+ * @category Search
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Anph\HomeBundle\Entity\Sidebar;
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Bach sidebar option
+ *
+ * PHP version 5
+ *
+ * @category Search
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class OptionSidebar
 {
-	private $items = array();
-	
-	private $request = null;
-	
-	public function append(OptionSidebarItem $item){
-		$this->items[] = $item;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return \Symfony\Component\HttpFoundation\Request request
-	 */
-	public function getRequest(){
-		return $this->request;
-	}
-	
-	public function getItems(){
-		return $this->items;
-	}
-	
-	public function getItemValue($key){
-		foreach($this->items as $item){
-			if($item->getKey() == $key){
-				foreach($item->getChoices() as $choice){
-					if($choice->isSelected()){
-						return $choice->getValue();
-					}
-				}
-				return null;
-			}
-		}
-		
-		return null;
-	}
-	
-	public function bind(Request $request){
-		$this->request = $request;
-		
-		foreach($this->items as $item){
-			$found = false;
-			foreach($item->getChoices() as $choice){
-				$get = $request->query->get($item->getKey(),$item->getDefault(),false);
-					
-				if($get == $choice->getValue()){
-					$found = true;
-					$choice->setSelected(true);
-				}
-			}
-			
-			if(!$found){
-				$choices = $item->getChoices();
-				$choices[$item->getDefault()]->setSelected(true);
-			}
-		}
-	}
-}
+    private $_items = array();
+    private $_request = null;
 
-?>
+    /**
+     * Append new option
+     *
+     * @param OptionSidebarItem $item Item to append
+     *
+     * @return OptionsSidebar
+     */
+    public function append(OptionSidebarItem $item)
+    {
+        $this->_items[] = $item;
+        return $this;
+    }
+
+    /**
+     * Get binded request
+     *
+     * @return \Symfony\Component\HttpFoundation\Request
+     */
+    public function getRequest()
+    {
+        return $this->_request;
+    }
+
+    /**
+     * Get items
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->_items;
+    }
+
+    /**
+     * Get item value
+     *
+     * @param string $key Item key
+     *
+     * @return mixed
+     */
+    public function getItemValue($key)
+    {
+        foreach ( $this->_items as $item ) {
+            if ( $item->getKey() == $key ) {
+                $choices = $item->getChoices();
+                foreach ( $choices as $choice ) {
+                    if ( $choice->isSelected() ) {
+                        return $choice->getValue();
+                    }
+                }
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Bind request
+     *
+     * @param Request $request Request to bind to
+     *
+     * @return void
+     */
+    public function bind(Request $request)
+    {
+        $this->_request = $request;
+
+        foreach ( $this->_items as $item ) {
+            $found = false;
+            $choices = $item->getChoices();
+            foreach ( $choices as $choice ) {
+                $get = $this->_request->query->get(
+                    $item->getKey(),
+                    $item->getDefault(),
+                    false
+                );
+
+                if ( $get == $choice->getValue() ) {
+                    $found = true;
+                    $choice->setSelected(true);
+                }
+            }
+
+            if ( !$found ) {
+                $choices = $item->getChoices();
+                $choices[$item->getDefault()]->setSelected(true);
+            }
+        }
+    }
+}
