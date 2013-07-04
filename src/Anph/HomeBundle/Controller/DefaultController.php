@@ -44,7 +44,8 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $formAction = $this->get("router")->generate("anph_home_homepage_search_process");
+        $formAction = $this->get("router")
+            ->generate("anph_home_homepage_search_process");
 
         $formActionUrlParams = $this->getRequest()->query->all();
         if ( count($formActionUrlParams) > 0 ) {
@@ -54,20 +55,32 @@ class DefaultController extends Controller
         // Construction de la barre de gauche comprenant les options de recherche
         $sidebar = new OptionSidebar();
 
-        $languageItem = new OptionSidebarItem("Langue des documents", "qo_lg", "fr");
+        $languageItem = new OptionSidebarItem(
+            "Langue des documents",
+            "qo_lg",
+            "fr"
+        );
         $languageItem
             ->appendChoice(new OptionSidebarItemChoice("Français", "fr"))
             ->appendChoice(new OptionSidebarItemChoice("Anglais", "en"));
         $sidebar->append($languageItem);
 
-        $resultsItem = new OptionSidebarItem("Nombre de résultats par page", "qo_pr", 10);
+        $resultsItem = new OptionSidebarItem(
+            "Nombre de résultats par page",
+            "qo_pr",
+            10
+        );
         $resultsItem
             ->appendChoice(new OptionSidebarItemChoice("10", 10))
             ->appendChoice(new OptionSidebarItemChoice("20", 20))
             ->appendChoice(new OptionSidebarItemChoice("50", 50));
         $sidebar->append($resultsItem);
 
-        $picturesItem = new OptionSidebarItem("Afficher les images", "qo_dp", 1);
+        $picturesItem = new OptionSidebarItem(
+            "Afficher les images",
+            "qo_dp",
+            1
+        );
         $picturesItem
             ->appendChoice(new OptionSidebarItemChoice("Oui", 1))
             ->appendChoice(new OptionSidebarItemChoice("Non", 0));
@@ -157,9 +170,11 @@ class DefaultController extends Controller
                 unset($queryUrlParams["q"]);
             }
 
-            $templateVars['urlQueryPrefix'] = $this->get("router")->generate("anph_home_homepage");
+            $templateVars['urlQueryPrefix'] = $this->get("router")
+                ->generate("anph_home_homepage");
             if ( count($queryUrlParams) > 0 ) {
-                $templateVars['urlQueryPrefix'] .= '?' . http_build_query($queryUrlParams);
+                $templateVars['urlQueryPrefix'] .= '?' .
+                    http_build_query($queryUrlParams);
             }
             $templateVars['urlQueryPrefix'] .= '?q=$query';
         }
@@ -194,7 +209,8 @@ class DefaultController extends Controller
 
                 $formActionUrlParams["q"] = $q;
 
-                $redirectUrl = $this->get("router")->generate("anph_home_homepage")."?".http_build_query($formActionUrlParams);
+                $redirectUrl = $this->get("router")->generate("anph_home_homepage") .
+                    '?' . http_build_query($formActionUrlParams);
 
             }
         }

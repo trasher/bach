@@ -31,7 +31,7 @@ class FulltextDecorator extends SolariumQueryDecoratorAbstract
     protected $targetField = "fulltext";
 
     /**
-     * Decorat Query
+     * Decorate Query
      *
      * @param Query  $query Solarium query object to decorate
      * @param string $data  Query data

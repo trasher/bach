@@ -146,7 +146,8 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
         $query = $em->createQuery(
-            'SELECT t FROM AnphIndexationBundle:ArchFileIntegrationTask t WHERE t.status > 0'
+            'SELECT t FROM AnphIndexationBundle:ArchFileIntegrationTask t ' .
+            'WHERE t.status > 0'
         );
         $tasks = $query->getResult();
 
