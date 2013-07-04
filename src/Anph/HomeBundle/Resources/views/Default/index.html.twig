@@ -2,6 +2,12 @@
 
 {% block container %}
 <div class="row-fluid">
+    {% if solr_qry is defined %}
+    <div class="debug">
+        Raw query: <pre>{{ solr_qry }}</pre>
+    </div>
+    {% endif %}
+
     {% if sidebar|length > 0 %}
     <ul class="span2 nav nav-list well" id="options_sidebar">
         {% for name,item in sidebar %}
@@ -32,7 +38,7 @@
                             </form>
                             {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
                             <aside id="suggestions">
-                                Suggestions de recherche&nbsp;:
+                                Suggestions de recherche complémentaire&nbsp;:
                                 {% for term,termResult in suggestions %}
                                     {% for suggest in termResult %}
                                         <a href="{{ urlQueryPrefix|replace({'$query': suggest}) }} ">{{ suggest }}</a>
@@ -45,20 +51,16 @@
                 </div>
             </div>
         </div>
-        {% if solr_qry is defined %}
-        <div class="debug">
-            Raw query: <pre>{{ solr_qry }}</pre>
-        </div>
-        {% endif %}
-
 
         {% if searchResults is defined %}
         <section id="search_results">
             {% if searchResults|length > 0 %}
             <div class="row-fluid">
-                <div class="span12">
-                    {{ resultCount }} résultat(s)
-                </div>
+                {% if resultCount == 1 %}
+                    1 résultat
+                {% else %}
+                    Résultats {{ resultStart }} à {{ resultEnd }} sur {{ resultCount }}
+                {% endif %}
             </div>
                 {% for document in searchResults %}
                     <article class="row-fluid" id="result_{{ document.uniqid }}">
@@ -68,13 +70,13 @@
                         </figure>
                         {% endif %}
 
-                        <h4>
+                        <h3>
                             {% if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 %}
                                 {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
                             {% else %}
                                 {{ document.cUnittitle }}
                             {% endif %}
-                        </h4>
+                        </h3>
                         {#<h5>{{ document.headerDate }}</h5>
                         {% if document.headerAuthor is defined %}
                         <h6>{{ document.headerAuthor }}</h6>
@@ -87,6 +89,11 @@
                         </p>#}
                     </article>
                 {% endfor %}
+                {% include 'pagination.html.twig' with {
+                    currentPage: page,
+                    paginationPath: paginationPath,
+                    lastPage: totalPages
+                } only %}
             {% else %}
                 <p>Aucun résultat n'a été trouvé.</p>
                 {% if suggestions is defined %}

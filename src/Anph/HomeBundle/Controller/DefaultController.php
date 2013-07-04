@@ -107,23 +107,22 @@ class DefaultController extends Controller
             $container->setField("displayPicture", $sidebar->getItemValue("qo_dp"));
             $container->setField("main", $this->getRequest()->query->get("q"));
 
+            $page = 1;
             if ( !is_null($this->getRequest()->query->get("p")) ) {
                 $page = intval($this->getRequest()->query->get("p"));
 
                 if ( $page < 1 ) {
                     $page = 1;
                 }
-            } else {
-                $page = 1;
             }
 
-            $resultByPage = 20;
+            $resultByPage = intval($sidebar->getItemValue("qo_pr"));
 
             $container->setField(
                 "pager",
                 array(
-                    "start"     => 0,
-                    "offset"    => intval($sidebar->getItemValue("qo_pr"))
+                    "start"     => ($page - 1) * $resultByPage,
+                    "offset"    => $resultByPage
                 )
             );
 
@@ -141,8 +140,19 @@ class DefaultController extends Controller
             $suggestions = $this->get("solarium.client")->suggester($query);
 
             $templateVars['resultCount'] = $resultCount;
+            $templateVars['q'] = $this->getRequest()->query->get("q");
+            $templateVars['page'] = $page;
+            $templateVars['resultByPage'] = $resultByPage;
+            $templateVars['totalPages'] = ceil($resultCount/$resultByPage);
             $templateVars['searchResults'] = $searchResults;
             $templateVars['hlSearchResults'] = $hlSearchResults;
+
+            $templateVars['resultStart'] = ($page - 1) * $resultByPage + 1;
+            $resultEnd = ($page - 1) * $resultByPage + $resultByPage;
+            if ( $resultEnd > $resultCount ) {
+                $resultEnd = $resultCount;
+            }
+            $templateVars['resultEnd'] = $resultEnd;
 
         } else {
             $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
@@ -160,8 +170,8 @@ class DefaultController extends Controller
             $templateVars['suggestions'] = $suggestions;
 
             $queryUrlParams = $this->getRequest()->query->all();
-            if ( array_key_exists("q", $queryUrlParams) ) {
-                unset($queryUrlParams["q"]);
+            if ( array_key_exists('q', $queryUrlParams) ) {
+                unset($queryUrlParams['q']);
             }
 
             $templateVars['urlQueryPrefix'] = $this->get("router")
@@ -174,6 +184,22 @@ class DefaultController extends Controller
             }
             $templateVars['urlQueryPrefix'] .= 'q=$query';
         }
+
+        //pagination prefix... not really cool, but that works for now.
+        $queryUrlParams = $this->getRequest()->query->all();
+        if ( array_key_exists('p', $queryUrlParams) ) {
+            //remove p, if existing
+            unset($queryUrlParams['p']);
+        }
+        $templateVars['paginationPath'] = $this->get("router")
+            ->generate("anph_home_homepage");
+        if ( count($queryUrlParams) > 0 ) {
+            $templateVars['paginationPath'] .= '?' .
+                http_build_query($queryUrlParams) . '&';
+        } else {
+            $templateVars['paginationPath'] .= '?';
+        }
+        $templateVars['paginationPath'] .= 'p=';
 
         return $this->render(
             'AnphHomeBundle:Default:index.html.twig',

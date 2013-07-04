@@ -12,8 +12,18 @@
     padding: 2px 0;
 }
 
+#search_results {
+    margin-top: .5em;
+}
+
 #search_results article figure {
     margin-bottom: .5em;
+}
+
+#search_results article h3 {
+    font-size: 1.2em;
+    line-height: 1.8em;
+    margin: 0;
 }
 
 /* Sticky footer styles
