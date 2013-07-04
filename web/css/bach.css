@@ -3,9 +3,17 @@
     min-width: 17em;
 }
 
+#options_sidebar select {
+    margin: 0;
+}
+
 .result_pic {
     float: right;
     margin: 0 0 0 1em;
+}
+
+.clear {
+    clear: both;
 }
 
 .sidebar-nav {
@@ -24,6 +32,19 @@
     font-size: 1.2em;
     line-height: 1.8em;
     margin: 0;
+}
+
+/* ADMIN Interface related
+      -------------------------------------------------- */
+#ram_usage, #swap_usage {
+    width: 49%;
+    float: left;
+    margin-right: 0.5%;
+}
+
+#swap_usage {
+    float:right;
+    margin-right: 0;
 }
 
 /* Sticky footer styles

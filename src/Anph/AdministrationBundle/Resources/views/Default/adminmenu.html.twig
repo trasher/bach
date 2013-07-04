@@ -4,6 +4,7 @@
                 href="{{ url('administration_dashboard') }}"><i class="icon-book"></i>Dashboard</a>
             </li>
             <li class="divider"></li>
+            <li>
             <form action="{{ path('administration_dashboard') }}" method="POST">
                 <select name="selectedCore" class="span12" autocomplete="off" onchange="this.form.submit();">
                     <option value="none">Sélectionnez un Noyau</option>
@@ -12,8 +13,8 @@
                     {% endfor %}
                 </select>
             </form>
+            </li>
             {% if (coreName != 'none' ) %}
-                <div>
                 <li class="nav-header">Solr Schema Config</li>
                 <li {% if (page == 'index' or page == 'fields') %} class="active"
                      {% endif %}><a href="{{ url('administration_fields') }}"><i
@@ -54,6 +55,5 @@
                     href="{{ url('administration_performance') }}"><i class="icon-book"></i>
                         Performance Admin</a>
                 </li>
-                </div>
             {% endif %}
         </ul>
