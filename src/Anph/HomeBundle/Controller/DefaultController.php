@@ -128,7 +128,7 @@ class DefaultController extends Controller
             $resultCount = $searchResults->getNumFound();
 
             $query = $this->get("solarium.client")->createSuggester();
-            $query->setQuery($this->getRequest()->query->get("q")); //multiple terms
+            $query->setQuery(strtolower($this->getRequest()->query->get("q")));
             $query->setDictionary('suggest');
             $query->setOnlyMorePopular(true);
             $query->setCount(10);
