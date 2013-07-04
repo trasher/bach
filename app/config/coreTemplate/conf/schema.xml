@@ -285,6 +285,14 @@
       </analyzer>
     </fieldType>
 
+    <fieldtype name="phrase_suggest" class="solr.TextField">
+      <analyzer>
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.TrimFilterFactory"/>
+      </analyzer>
+    </fieldtype>
+
   </types>
   <!-- field to use to determine and enforce document uniqueness. -->
   <uniqueKey>uniqid</uniqueKey>
