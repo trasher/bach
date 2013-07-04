@@ -88,7 +88,17 @@
                     </article>
                 {% endfor %}
             {% else %}
-                Aucun résultat n'a été trouvé.
+                <p>Aucun résultat n'a été trouvé.</p>
+                {% if suggestions is defined %}
+                <aside id="suggestions">
+                    Des termes approchants existent cependant&nbsp;:
+                    {% for term,termResult in suggestions %}
+                        {% for suggest in termResult %}
+                            <a href="{{ urlQueryPrefix|replace({'$query': suggest}) }} ">{{ suggest }}</a>
+                        {% endfor %}
+                    {% endfor %}
+                </aside>
+                {% endif %}
             {% endif %}
         </section>
         {% else %}
