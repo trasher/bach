@@ -157,10 +157,10 @@ class DefaultController extends Controller
         }
 
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
-            $templateVars['suggestions'] =    $suggestions;
+            $templateVars['suggestions'] = $suggestions;
 
             $queryUrlParams = $this->getRequest()->query->all();
-            if ( array_key_exists("p", $queryUrlParams) ) {
+            if ( array_key_exists("q", $queryUrlParams) ) {
                 unset($queryUrlParams["q"]);
             }
 
@@ -168,9 +168,11 @@ class DefaultController extends Controller
                 ->generate("anph_home_homepage");
             if ( count($queryUrlParams) > 0 ) {
                 $templateVars['urlQueryPrefix'] .= '?' .
-                    http_build_query($queryUrlParams);
+                    http_build_query($queryUrlParams) . '&';
+            } else {
+                $templateVars['urlQueryPrefix'] .= '?';
             }
-            $templateVars['urlQueryPrefix'] .= '?q=$query';
+            $templateVars['urlQueryPrefix'] .= 'q=$query';
         }
 
         return $this->render(
