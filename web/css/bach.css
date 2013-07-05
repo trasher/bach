@@ -20,6 +20,11 @@
     padding: 2px 0;
 }
 
+#searchQuery_perform_search span {
+    text-indent: 50px;
+    overflow: hidden;
+}
+
 #search_results {
     margin-top: .5em;
 }

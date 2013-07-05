@@ -2,7 +2,7 @@ administration:
     resource: "@AdministrationBundle/Resources/config/routing.yml"
     prefix:   /
 
-anph_home:
+bach_home:
     resource: "@AnphHomeBundle/Resources/config/routing.yml"
     prefix:   /
 

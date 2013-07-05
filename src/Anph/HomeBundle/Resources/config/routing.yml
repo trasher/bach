@@ -1,8 +1,13 @@
-anph_home_homepage:
+bach_homepage:
     pattern:  /
     defaults: { _controller: AnphHomeBundle:Default:index }
-    
-anph_home_homepage_search_process:
-    pattern:  /searchProcess
-    defaults: { _controller: AnphHomeBundle:Default:indexProcess }
 
+bach_search:
+    pattern: /search/{query_terms}/{page}
+    defaults: { _controller: AnphHomeBundle:Default:index, 'query_terms': null, 'page': 1 }
+    requirements:
+        page: \d+
+
+bach_do_search:
+    pattern:  /do-search
+    defaults: { _controller: AnphHomeBundle:Default:doSearch }

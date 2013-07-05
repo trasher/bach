@@ -1,5 +1,16 @@
 {% extends '::base.html.twig' %}
 
+{% form_theme form _self %}
+
+{% block _searchQuery_perform_search_widget %}
+{% spaceless %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+    <button type="{{ type|default('submit') }}" {{ block('button_attributes') }}><span class="icon-search icon-white">{{ label|trans({}, translation_domain) }}</span></button>
+{% endspaceless %}
+{% endblock _searchQuery_perform_search_widget %}
+
 {% block container %}
 <div class="row-fluid">
     {% if solr_qry is defined %}
@@ -29,11 +40,11 @@
                 <div class="container">
                     <div class="row-fluid">
                         <div>
-                            <form action="{{ formAction }}" method="post" {{ form_enctype(form) }} name="search">
+                            <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search">
                                 <div class="input-append">
                                     {{ form_widget(form.query) }}
                                     {{ form_widget(form._token) }}
-                                    <button type="submit" id="appendedInputButton" class="btn btn-primary"><span class="icon-search icon-white"></span></button>
+                                    {{ form_widget(form.perform_search) }}
                                 </div>
                             </form>
                             {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
@@ -41,7 +52,7 @@
                                 Suggestions de recherche complémentaire&nbsp;:
                                 {% for term,termResult in suggestions %}
                                     {% for suggest in termResult %}
-                                        <a href="{{ urlQueryPrefix|replace({'$query': suggest}) }} ">{{ suggest }}</a>
+                                        <a href="{{ path('bach_search', {query_terms: suggest}) }} ">{{ suggest }}</a>
                                     {% endfor %}
                                 {% endfor %}
                             </aside>
@@ -66,7 +77,7 @@
                     <article class="row-fluid" id="result_{{ document.uniqid }}">
                         {% if display_pics %}
                         <figure class="result_pic">
-                            <img src="http://placehold.it/140x140" class="img-polaroid">
+                            <img src="http://placehold.it/140x140" class="img-polaroid" alt="">
                         </figure>
                         {% endif %}
 
@@ -90,8 +101,9 @@
                     </article>
                 {% endfor %}
                 {% include 'pagination.html.twig' with {
+                    currentFilters: { query_terms: q },
                     currentPage: page,
-                    paginationPath: paginationPath,
+                    paginationPath: 'bach_search',
                     lastPage: totalPages
                 } only %}
             {% else %}
@@ -101,7 +113,7 @@
                     Des termes approchants existent cependant&nbsp;:
                     {% for term,termResult in suggestions %}
                         {% for suggest in termResult %}
-                            <a href="{{ urlQueryPrefix|replace({'$query': suggest}) }} ">{{ suggest }}</a>
+                            <a href="{{ path('bach_search', {query_terms: suggest}) }} ">{{ suggest }}</a>
                         {% endfor %}
                     {% endfor %}
                 </aside>

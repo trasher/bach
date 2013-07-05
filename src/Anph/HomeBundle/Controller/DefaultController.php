@@ -40,18 +40,13 @@ class DefaultController extends Controller
     /**
      * Serve default page
      *
+     * @param string $query_terms Term(s) we search for
+     * @param int    $page        Page
+     *
      * @return void
      */
-    public function indexAction()
+    public function indexAction($query_terms = null, $page = 1)
     {
-        $formAction = $this->get("router")
-            ->generate("anph_home_homepage_search_process");
-
-        $formActionUrlParams = $this->getRequest()->query->all();
-        if ( count($formActionUrlParams) > 0 ) {
-            $formAction .= '?' . http_build_query($formActionUrlParams);
-        }
-
         // Construction de la barre de gauche comprenant les options de recherche
         $sidebar = new OptionSidebar();
 
@@ -68,7 +63,7 @@ class DefaultController extends Controller
         $resultsItem = new OptionSidebarItem(
             "Nombre de résultats par page",
             "qo_pr",
-            10
+            10 //TODO: store and get value from session
         );
         $resultsItem
             ->appendChoice(new OptionSidebarItemChoice("10", 10))
@@ -79,42 +74,41 @@ class DefaultController extends Controller
         $picturesItem = new OptionSidebarItem(
             "Afficher les images",
             "qo_dp",
-            1
+            1 //TODO: store and get value from session
         );
         $picturesItem
             ->appendChoice(new OptionSidebarItemChoice("Oui", 1))
             ->appendChoice(new OptionSidebarItemChoice("Non", 0));
         $sidebar->append($picturesItem);
 
-        $sidebar->bind($this->getRequest());
+        $sidebar->bind(
+            $this->getRequest(),
+            $this->get('router')->generate(
+                'bach_search',
+                array(
+                    'query_terms'   => $this->getRequest()->get('query_terms'),
+                    'page'          => $this->getRequest()->get('page')
+                )
+            )
+        );
 
         $builder = new OptionSidebarBuilder($sidebar);
         $templateVars = array(
-            'formAction'        => $formAction,
             'sidebar'           => $builder->compileToArray(),
             'display_pics'      => $sidebar->getItemValue("qo_dp")
         );
 
-        if ( !is_null($this->getRequest()->query->get("q")) ) {
+        if ( !is_null($query_terms) ) {
             // On effectue une recherche
             $form = $this->createForm(
-                new SearchQueryFormType($this->getRequest()->query->get("q")),
+                new SearchQueryFormType($query_terms),
                 new SearchQuery()
             );
 
             $container = new SolariumQueryContainer();
             $container->setField("language", $sidebar->getItemValue("qo_lg"));
             $container->setField("displayPicture", $sidebar->getItemValue("qo_dp"));
-            $container->setField("main", $this->getRequest()->query->get("q"));
-
-            $page = 1;
-            if ( !is_null($this->getRequest()->query->get("p")) ) {
-                $page = intval($this->getRequest()->query->get("p"));
-
-                if ( $page < 1 ) {
-                    $page = 1;
-                }
-            }
+            $container->setField("main", $query_terms);
 
             $resultByPage = intval($sidebar->getItemValue("qo_pr"));
 
@@ -132,7 +126,7 @@ class DefaultController extends Controller
             $resultCount = $searchResults->getNumFound();
 
             $query = $this->get("solarium.client")->createSuggester();
-            $query->setQuery(strtolower($this->getRequest()->query->get("q")));
+            $query->setQuery(strtolower($query_terms));
             $query->setDictionary('suggest');
             $query->setOnlyMorePopular(true);
             $query->setCount(10);
@@ -140,7 +134,7 @@ class DefaultController extends Controller
             $suggestions = $this->get("solarium.client")->suggester($query);
 
             $templateVars['resultCount'] = $resultCount;
-            $templateVars['q'] = $this->getRequest()->query->get("q");
+            $templateVars['q'] = $query_terms;
             $templateVars['page'] = $page;
             $templateVars['resultByPage'] = $resultByPage;
             $templateVars['totalPages'] = ceil($resultCount/$resultByPage);
@@ -168,38 +162,7 @@ class DefaultController extends Controller
 
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $templateVars['suggestions'] = $suggestions;
-
-            $queryUrlParams = $this->getRequest()->query->all();
-            if ( array_key_exists('q', $queryUrlParams) ) {
-                unset($queryUrlParams['q']);
-            }
-
-            $templateVars['urlQueryPrefix'] = $this->get("router")
-                ->generate("anph_home_homepage");
-            if ( count($queryUrlParams) > 0 ) {
-                $templateVars['urlQueryPrefix'] .= '?' .
-                    http_build_query($queryUrlParams) . '&';
-            } else {
-                $templateVars['urlQueryPrefix'] .= '?';
-            }
-            $templateVars['urlQueryPrefix'] .= 'q=$query';
         }
-
-        //pagination prefix... not really cool, but that works for now.
-        $queryUrlParams = $this->getRequest()->query->all();
-        if ( array_key_exists('p', $queryUrlParams) ) {
-            //remove p, if existing
-            unset($queryUrlParams['p']);
-        }
-        $templateVars['paginationPath'] = $this->get("router")
-            ->generate("anph_home_homepage");
-        if ( count($queryUrlParams) > 0 ) {
-            $templateVars['paginationPath'] .= '?' .
-                http_build_query($queryUrlParams) . '&';
-        } else {
-            $templateVars['paginationPath'] .= '?';
-        }
-        $templateVars['paginationPath'] .= 'p=';
 
         return $this->render(
             'AnphHomeBundle:Default:index.html.twig',
@@ -208,32 +171,26 @@ class DefaultController extends Controller
     }
 
     /**
-     * Main results page (unsure)?
+     * POST search destination for main form.
+     *
+     * Will take care of search terms, and reroute with proper URI
      *
      * @return void
      */
-    public function indexProcessAction()
+    public function doSearchAction()
     {
         $query = new SearchQuery();
         $form = $this->createForm(new SearchQueryFormType(), $query);
-        $redirectUrl = $this->get("router")->generate("anph_home_homepage");
+        $redirectUrl = $this->get('router')->generate('bach_homepage');
 
         if ($this->getRequest()->isMethod('POST')) {
             $form->bind($this->getRequest());
             if ($form->isValid()) {
                 $q = $query->getQuery();
-
-                $formActionUrlParams = $this->getRequest()->query->all();
-
-                if ( !array_key_exists("q", $formActionUrlParams) ) {
-                    $formActionUrlParams["q"] = "";
-                }
-
-                $formActionUrlParams["q"] = $q;
-
-                $redirectUrl = $this->get("router")->generate("anph_home_homepage") .
-                    '?' . http_build_query($formActionUrlParams);
-
+                $redirectUrl = $this->get('router')->generate(
+                    'bach_search',
+                    array('query_terms' => $q)
+                );
             }
         }
         return new RedirectResponse($redirectUrl);

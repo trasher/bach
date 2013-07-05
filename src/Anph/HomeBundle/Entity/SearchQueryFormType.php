@@ -64,6 +64,15 @@ class SearchQueryFormType extends AbstractType
                      'value'        => $this->_value
                 )
             )
+        )->add(
+            'perform_search',
+            'submit',
+            array(
+                'label' => 'Search',
+                'attr'  => array(
+                    'class' => 'btn btn-primary'
+                )
+            )
         );
     }
 

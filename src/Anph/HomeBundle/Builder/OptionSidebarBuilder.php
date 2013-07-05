@@ -50,22 +50,19 @@ class OptionSidebarBuilder
         $output = array();
         $items = $this->_sidebar->getItems();
         $linkValues = array();
-        $urlParams = $this->_sidebar->getRequest()->query->all();
 
         foreach ( $items as $item ) {
             $output[$item->getName()] = array();
-            $tempUrlParams = $urlParams;
 
             $choices = $item->getChoices();
             foreach ( $choices as $choice ) {
-                $tempUrlParams[$item->getKey()] = $choice->getValue();
                 $output[$item->getName()][] = array(
                     'alias'     => $choice->getAlias(),
                     'key'       => $item->getKey(),
                     'value'     => $choice->getValue(),
                     'selected'  => $choice->isSelected(),
-                    'url'       => $this->_sidebar->getRequest()->getBaseUrl() .
-                        '?' . http_build_query($tempUrlParams)
+                    'url'       => $this->_sidebar->getPath() . '?' . 
+                        $item->getKey() . '=' . $choice->getValue()
                 );
             }
         }

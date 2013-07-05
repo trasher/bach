@@ -30,6 +30,7 @@ class OptionSidebar
 {
     private $_items = array();
     private $_request = null;
+    private $_path = null;
 
     /**
      * Append new option
@@ -92,12 +93,14 @@ class OptionSidebar
      * Bind request
      *
      * @param Request $request Request to bind to
+     * @param string  $path    Path
      *
      * @return void
      */
-    public function bind(Request $request)
+    public function bind(Request $request, $path)
     {
         $this->_request = $request;
+        $this->_path = $path;
 
         foreach ( $this->_items as $item ) {
             $found = false;
@@ -120,5 +123,15 @@ class OptionSidebar
                 $choices[$item->getDefault()]->setSelected(true);
             }
         }
+    }
+
+    /**
+     * Get path
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->_path;
     }
 }
