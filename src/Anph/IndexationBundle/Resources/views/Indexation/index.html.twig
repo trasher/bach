@@ -20,13 +20,13 @@
                 <div class="span7 well">
                     <form action="{{ path("anph_indexation_upload_process") }}" class="form-horizontal" method="post" {{ form_enctype(form) }} >
                       <div class="control-group">
-                          <label class="control-label" for="file">{{ form_label(form.file) }}</label>
+                          {{ form_label(form.file) }}
                           <div class="controls">
                                {{ form_widget(form.file) }}
                            </div>
                       </div>
                       <div class="control-group">
-                          <label class="control-label" for="extension">{{ form_label(form.extension) }}</label>
+                        {{ form_label(form.extension) }}
                         <div class="controls">
                             {{ form_widget(form.extension) }}
                         </div>
@@ -51,15 +51,11 @@
     </div>
     <fieldset>
         <legend>
-            <div class="row-fluid">
-                <div class="span8">File d'attente des tâches d'indexation</div>
-                <div class="span4">
-                    <div class="btn-groups pull-right">
-                        <a href="{{ path("anph_indexation_purge") }}" class="btn btn-danger " title="Supprimer les tâches traitées"><i class="icon-trash icon-white"></i></a>
-                        <button id="refresh" class="btn"><i class="icon-refresh"></i></button>
-                    </div>
-                </div>
-            </div>
+            File d'attente des tâches d'indexation
+            <span class="btn-groups pull-right">
+                <a href="{{ path("anph_indexation_purge") }}" class="btn btn-danger " title="Supprimer les tâches traitées"><span class="icon-trash icon-white"></span></a>
+                <button id="refresh" class="btn"><span class="icon-refresh"></span></button>
+            </span>
         </legend>
 
         <div class="row-fluid">

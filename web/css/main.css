@@ -1549,7 +1549,8 @@ legend + .control-group {
 .form-horizontal .control-group:after {
   clear: both;
 }
-.form-horizontal .control-label {
+.form-horizontal .control-label,
+.form-horizontal label {
   float: left;
   width: 160px;
   padding-top: 5px;
