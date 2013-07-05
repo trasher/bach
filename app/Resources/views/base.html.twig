@@ -26,13 +26,13 @@
                     {% block navbar %}
                     <ul class="nav">
                         <li{% if path(app.request.attributes.get('_route')) == path('bach_homepage') %} class="active"{% endif %}>
-                            <a href="{{ path('bach_homepage') }}">Home</a>
+                            <a href="{{ path('bach_homepage') }}" data-toggle="tooltip" title="Page d'accueil de Bach">Home</a>
                         </li>
                         <li{% if path(app.request.attributes.get('_route')) == path('anph_indexation_homepage') %} class="active"{% endif %}>
-                            <a href="{{ path('anph_indexation_homepage') }}">Indexation</a>
+                            <a href="{{ path('anph_indexation_homepage') }}" data-toggle="tooltip" title="Gestion de l'indexation">Indexation</a>
                         </li>
                         <li{% if path(app.request.attributes.get('_route')) == path('administration_dashboard') %} class="active"{% endif %}>
-                            <a href="{{ url('administration_dashboard') }}">Administration</a>
+                            <a href="{{ url('administration_dashboard') }}" data-toggle="tooltip" title="Administration de l'application">Administration</a>
                         </li>
                         {#<li><a href="#">Aide</a></li>#}
                     </ul>
