@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+
+{% block container %}
+
+<ul class="nav nav-tabs">
+    <li><a{% if part == 'cSubject' %} class="active"{% endif %} href="#cSubject" data-toggle="tab">Sujets</a></li>
+    <li><a{% if part == 'cPersname' %} class="active"{% endif %} href="#cPersname" data-toggle="tab">Personnes</a></li>
+    <li><a{% if part == 'cGeogname' %} class="active"{% endif %} href="#cGeogname" data-toggle="tab">Lieux</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane{% if part == 'cSubject' %} active{% endif %}" id="cSubject">
+        <h4>Sujets</h4>
+    </div>
+    <div class="tab-pane{% if part == 'cPersname' %} active{% endif %}" id="cPersname">
+        <h4>Personnes</h4>
+    </div>
+    <div class="tab-pane{% if part == 'cGeogname' %} active{% endif %}" id="cGeogname">
+        <h4>Lieux</h4>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-tab.js') }}" type="text/javascript"></script>
+{% endblock %}

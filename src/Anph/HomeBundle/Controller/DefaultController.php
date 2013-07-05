@@ -195,4 +195,23 @@ class DefaultController extends Controller
         }
         return new RedirectResponse($redirectUrl);
     }
+
+    /**
+     * Browse contents
+     *
+     * @param string $part Part to browse
+     *
+     * @return void
+     */
+    public function browseAction($part = null)
+    {
+        $templateVars = array(
+            'part'  => $part
+        );
+
+        return $this->render(
+            'AnphHomeBundle:Default:browse.html.twig',
+            $templateVars
+        );
+    }
 }

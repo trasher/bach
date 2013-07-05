@@ -11,3 +11,7 @@ bach_search:
 bach_do_search:
     pattern:  /do-search
     defaults: { _controller: AnphHomeBundle:Default:doSearch }
+
+bach_browse:
+    pattern: /browse/{part}
+    defaults: { _controller: AnphHomeBundle:Default:browse, part: 'cSubject' }
