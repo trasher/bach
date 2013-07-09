@@ -37,6 +37,7 @@ class SolariumQueryFactory
     private $_decorators = array();
     private $_request;
     private $_highlitght;
+    private $_spellcheck;
 
     /**
      * Factory constructor
@@ -62,6 +63,7 @@ class SolariumQueryFactory
 
         $hl = $query->getHighlighting();
         $hl_fields = '';
+        $spellcheck = $query->getSpellcheck();
 
         foreach ( $container->getFilters() as $name=>$value ) {
             $i = 0;
@@ -99,6 +101,7 @@ class SolariumQueryFactory
         $this->_request = $this->_client->createRequest($query);
         $rs = $this->_client->select($query);
         $this->_highlitght = $rs->getHighlighting();
+        $this->_spellcheck = $rs->getSpellcheck();
         return $rs;
     }
 
@@ -164,5 +167,15 @@ class SolariumQueryFactory
     public function getHighlighting()
     {
         return $this->_highlitght;
+    }
+
+    /**
+     * Get spellcheck results
+     *
+     * @return Solarium\QueryType\Select\Result\Highlighting\Highlighting
+     */
+    public function getSpellcheck()
+    {
+        return $this->_spellcheck;
     }
 }

@@ -147,14 +147,20 @@
                 } only %}
             {% else %}
                 <p>Aucun résultat n'a été trouvé.</p>
-                {% if suggestions is defined %}
+                {% if scSearchResults is not null %}
                 <aside id="suggestions">
-                    Des termes approchants existent cependant&nbsp;:
+                    Orthographe approchante :
+                    {% for suggestion in scSearchResults %}
+                        {% for word in suggestion.getWords() %}
+                            <a href="{{ path('bach_search', {query_terms: word.word}) }} ">{{ word.word }}</a>
+                        {% endfor %}
+                    {% endfor %}
+                    {#Des termes approchants existent cependant&nbsp;:
                     {% for term,termResult in suggestions %}
                         {% for suggest in termResult %}
                             <a href="{{ path('bach_search', {query_terms: suggest}) }} ">{{ suggest }}</a>
                         {% endfor %}
-                    {% endfor %}
+                    {% endfor %}#}
                 </aside>
                 {% endif %}
             {% endif %}
@@ -168,4 +174,16 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/bootstrap-tab.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/bootstrap-typeahead.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#searchQuery_query').typeahead({
+                source: function(query, process) {
+                    return $.get('{{ path('bach_suggest') }}', {q: query}, function(data){
+                        return process(data)
+                    });
+                }
+            });
+        });
+    </script>
 {% endblock %}

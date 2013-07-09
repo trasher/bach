@@ -23,6 +23,7 @@ use Anph\HomeBundle\Entity\Sidebar\OptionSidebarItem;
 use Anph\HomeBundle\Entity\Sidebar\OptionSidebar;
 use Anph\HomeBundle\Entity\SearchForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Bach home controller
@@ -170,6 +171,7 @@ class DefaultController extends Controller
             $factory = $this->get("anph.home.solarium_query_factory");
             $searchResults = $factory->performQuery($container);
             $hlSearchResults = $factory->getHighlighting();
+            $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
 
             $facets = array();
@@ -191,6 +193,7 @@ class DefaultController extends Controller
             $templateVars['totalPages'] = ceil($resultCount/$resultByPage);
             $templateVars['searchResults'] = $searchResults;
             $templateVars['hlSearchResults'] = $hlSearchResults;
+            $templateVars['scSearchResults'] = $scSearchResults;
             $templateVars['facets'] = $facets;
 
             $templateVars['resultStart'] = ($page - 1) * $resultByPage + 1;
@@ -297,5 +300,33 @@ class DefaultController extends Controller
             'AnphHomeBundle:Default:browse.html.twig',
             $templateVars
         );
+    }
+
+    /**
+     * Suggests
+     *
+     * @param string $_route Matched route name
+     *
+     * @return void
+     */
+    public function doSuggestAction($_route)
+    {
+        $query = $this->get("solarium.client")->createSuggester();
+        $query->setQuery(strtolower($this->getRequest()->get('q')));
+        $query->setDictionary('suggest');
+        $query->setOnlyMorePopular(true);
+        $query->setCount(10);
+        //$query->setCollate(true);
+        $terms = $this->get("solarium.client")->suggester($query)->getResults();
+
+        $suggestions = array();
+        foreach ( $terms as $term ) {
+            $suggestions = array_merge(
+                $suggestions,
+                $term->getSuggestions()
+            );
+        }
+
+        return new JsonResponse($suggestions);
     }
 }
