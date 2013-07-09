@@ -436,6 +436,14 @@ class SolrCoreAdmin
         $suggestions->setAttribute('stored', 'false');
         $elt->appendChild($suggestions);
 
+        //add spell field
+        $spell = $doc->createElement('field');
+        $spell->setAttribute('name', 'spell');
+        $spell->setAttribute('multiValued', 'true');
+        $spell->setAttribute('indexed', 'true');
+        $spell->setAttribute('stored', 'false');
+        $elt->appendChild($spell);
+
         $doc->documentElement->appendChild($elt);
 
         //add copyField for fulltext (all fields)
@@ -465,6 +473,10 @@ class SolrCoreAdmin
                 $doc->documentElement->appendChild($cf);
             }
         }
+        $cf = $doc->createElement('copyField');
+        $cf->setAttribute('source', 'c*');
+        $cf->setAttribute('dest', 'spell');
+        $doc->documentElement->appendChild($cf);
 
         $doc->save($schemaFilePath);
     }
