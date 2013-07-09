@@ -63,6 +63,18 @@ class SolariumQueryFactory
         $hl = $query->getHighlighting();
         $hl_fields = '';
 
+        foreach ( $container->getFilters() as $name=>$value ) {
+            foreach ( $value as $v ) {
+                $query->createFilterQuery($name)->setQuery($name . ':"' . $v . '"');
+            }
+        }
+
+        $facetSet = $query->getFacetSet();
+        $facetSet->setLimit(10);
+        $facetSet->createFacetField('subject')->setField('cSubject');
+        $facetSet->createFacetField('persname')->setField('cPersname');
+        $facetSet->createFacetField('geogname')->setField('cGeogname');
+
         foreach ( $container->getFields() as $name=>$value ) {
             if ( array_key_exists($name, $this->_decorators) ) {
                 //Decorate the query

@@ -27,6 +27,7 @@ namespace Anph\HomeBundle\Entity;
 class SolariumQueryContainer
 {
     private $_fields = array();
+    private $_filters = array();
 
     /**
      * Set field
@@ -42,6 +43,31 @@ class SolariumQueryContainer
     }
 
     /**
+     * Set filter
+     *
+     * @param string $name  Field name
+     * @param string $value Field value
+     *
+     * @return void
+     */
+    public function setFilter($name, $value)
+    {
+        $this->_filters[$name] = $value;
+    }
+
+    /**
+     * Set filters
+     *
+     * @param array $filters Filters
+     *
+     * @return void
+     */
+    public function setFilters($filters)
+    {
+        $this->_filters = $filters;
+    }
+
+    /**
      * Get field
      *
      * @param string $name Field name
@@ -51,6 +77,18 @@ class SolariumQueryContainer
     public function getField($name)
     {
         return $this->_fields[$name];
+    }
+
+    /**
+     * Get filter
+     *
+     * @param string $name Field name
+     *
+     * @return string
+     */
+    public function getFilter($name)
+    {
+        return $this->_filters[$name];
     }
 
     /**
@@ -74,4 +112,15 @@ class SolariumQueryContainer
     {
         return $this->_fields;
     }
+
+    /**
+     * Get filters
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        return $this->_filters;
+    }
+
 }

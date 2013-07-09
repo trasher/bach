@@ -19,22 +19,51 @@
     </div>
     {% endif %}
 
-    {% if sidebar|length > 0 %}
-    <ul class="span2 nav nav-list well" id="options_sidebar">
-        {% for name,item in sidebar %}
-        <li class="nav-header">{{ name }}</li>
-            {% for choice in item %}
-                {% if choice.selected  %}
-                 <li class="active"><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
-                 {% else %}
-                 <li><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
-                 {% endif %}
-            {% endfor %}
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <div class="span9">
+    <aside class="span2">
 
+        {% if sidebar|length > 0 %}
+        <ul class="nav nav-list well" id="options_sidebar">
+            {% for name,item in sidebar %}
+            <li class="nav-header">{{ name }}</li>
+                {% for choice in item %}
+                    {% if choice.selected  %}
+                    <li class="active"><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
+                    {% else %}
+                    <li><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if facets is defined %}
+        <div class="well-free" id="refine_query">
+            <h3 class="nav-header">Refine Query</h3>
+
+            <ul class="nav nav-tabs">
+                {% for facet_field in facets|keys %}
+                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ facet_field }}" data-toggle="tab">{{ facet_field }}</a></li>
+                {% endfor %}
+            </ul>
+
+            <div class="tab-content">
+                {% for facet_field,facet_res in facets %}
+                <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ facet_field }}">
+                    <section id="list_{{ facet_field }}">
+                        <ul class="nav nav-list">
+                        {% for facet,count in facet_res %}
+                            <li><a href="{{ path('bach_search', {query_terms: q, filter_field: 'c' ~ facet_field|capitalize, filter_value: facet}) }}">{{ facet }} ({{ count }})</a></li>
+                        {% endfor %}
+                        </ul>
+                    </section>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </aside>
+
+    <div class="span9">
         <div class="row-fluid">
             <div class="span9">
                 <div class="container">
@@ -125,4 +154,9 @@
         {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-tab.js') }}" type="text/javascript"></script>
 {% endblock %}

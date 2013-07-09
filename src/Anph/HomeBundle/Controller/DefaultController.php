@@ -122,10 +122,40 @@ class DefaultController extends Controller
                 )
             );
 
+            $session = $this->getRequest()->getSession();
+            if ( $this->getRequest()->get('filter_field') ) {
+                $filters = $session->get('filters');
+                if ( !is_array($filters) ) {
+                    $filters = array();
+                }
+
+                $filter_field = $this->getRequest()->get('filter_field');
+                $filter_value = array($this->getRequest()->get('filter_value'));
+
+                if ( isset($filters[$filter_field]) && is_array($filters[$filter_field])
+                    && !in_array($filter_value[0], $filters[$filter_field])
+                ) {
+                    $filter_value = array_push(
+                        $filters[$filter_field],
+                        $filter_value[0]
+                    );
+                }
+                $filters[$filter_field] = $filter_value;
+                $session->set('filters', $filters);
+                $container->setFilters($filters);
+
+            }
+
             $factory = $this->get("anph.home.solarium_query_factory");
             $searchResults = $factory->performQuery($container);
             $hlSearchResults = $factory->getHighlighting();
             $resultCount = $searchResults->getNumFound();
+
+            $facets = array();
+            $faceset = $searchResults->getFacetSet();
+            $facets['subject'] = $faceset->getFacet('subject');
+            $facets['persname'] = $faceset->getFacet('persname');
+            $facets['geogname'] = $faceset->getFacet('geogname');
 
             $query = $this->get("solarium.client")->createSuggester();
             $query->setQuery(strtolower($query_terms));
@@ -142,6 +172,7 @@ class DefaultController extends Controller
             $templateVars['totalPages'] = ceil($resultCount/$resultByPage);
             $templateVars['searchResults'] = $searchResults;
             $templateVars['hlSearchResults'] = $hlSearchResults;
+            $templateVars['facets'] = $facets;
 
             $templateVars['resultStart'] = ($page - 1) * $resultByPage + 1;
             $resultEnd = ($page - 1) * $resultByPage + $resultByPage;
