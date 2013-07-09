@@ -64,13 +64,17 @@ class SolariumQueryFactory
         $hl_fields = '';
 
         foreach ( $container->getFilters() as $name=>$value ) {
+            $i = 0;
             foreach ( $value as $v ) {
-                $query->createFilterQuery($name)->setQuery($name . ':"' . $v . '"');
+                $query->createFilterQuery($name . $i)
+                    ->setQuery('+' . $name . ':"' . $v . '"');
+                $i++;
             }
         }
 
         $facetSet = $query->getFacetSet();
         $facetSet->setLimit(10);
+        $facetSet->setMinCount(1);
         $facetSet->createFacetField('subject')->setField('cSubject');
         $facetSet->createFacetField('persname')->setField('cPersname');
         $facetSet->createFacetField('geogname')->setField('cGeogname');

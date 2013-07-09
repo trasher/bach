@@ -12,7 +12,6 @@
 {% endblock _searchQuery_perform_search_widget %}
 
 {% block container %}
-<div class="row-fluid">
     {% if solr_qry is defined %}
     <div class="debug">
         Raw query: <pre>{{ solr_qry }}</pre>
@@ -36,9 +35,14 @@
         </ul>
         {% endif %}
 
-        {% if facets is defined %}
+        {% if facets is defined and searchResults|length > 0 %}
         <div class="well-free" id="refine_query">
-            <h3 class="nav-header">Refine Query</h3>
+            <h3 class="nav-header">
+                Refine Query
+                {% if filters is defined %}
+                <a href="{{ path('bach_search', {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="Clear refined query">Clear</a>
+                {% endif %}
+            </h3>
 
             <ul class="nav nav-tabs">
                 {% for facet_field in facets|keys %}
@@ -51,6 +55,12 @@
                 <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ facet_field }}">
                     <section id="list_{{ facet_field }}">
                         <ul class="nav nav-list">
+                        {% set index_name = 'c' ~ facet_field|capitalize %}
+                        {% if attribute(filters, index_name) is defined %}
+                            {% for value in attribute(filters, index_name) %}
+                            <li class="selected">{{ value }}</li>
+                            {% endfor %}
+                        {% endif %}
                         {% for facet,count in facet_res %}
                             <li><a href="{{ path('bach_search', {query_terms: q, filter_field: 'c' ~ facet_field|capitalize, filter_value: facet}) }}">{{ facet }} ({{ count }})</a></li>
                         {% endfor %}
@@ -104,7 +114,7 @@
             </div>
                 {% for document in searchResults %}
                     <article class="row-fluid" id="result_{{ document.uniqid }}">
-                        {% if display_pics %}
+                        {% if show_pics %}
                         <figure class="result_pic">
                             <img src="http://placehold.it/140x140" class="img-polaroid" alt="">
                         </figure>
@@ -153,7 +163,6 @@
             Welcome to Bach's!
         {% endif %}
     </div>
-</div>
 {% endblock %}
 
 {% block javascripts %}

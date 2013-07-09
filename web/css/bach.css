@@ -140,6 +140,20 @@ em.hl {
     background-color: rgba(255, 255, 0, 0.4);
 }
 
+.clear-btn {
+    float: right;
+    font-weight: normal;
+    font-size: .85em;
+    text-transform: none;
+    text-shadow: none;
+}
+.clear-btn + .tooltip {
+    font-weight: normal;
+    font-size: 1em;
+    text-transform: none;
+    text-shadow: none;
+}
+
 /* Lastly, apply responsive CSS fixes as necessary */
 @media ( max-width : 767px) {
     #footer {

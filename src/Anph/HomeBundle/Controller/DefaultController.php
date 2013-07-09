@@ -48,23 +48,27 @@ class DefaultController extends Controller
      */
     public function indexAction($_route, $query_terms = null, $page = 1)
     {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        //instanciate - if needed - sidebar values
+        $resultByPage = $session->get('results_by_page');
+        if ( !$resultByPage ) {
+            $resultByPage = 10;
+        }
+
+        $showPics = $session->get('show_pics');
+        if ( !isset($showPics) ) {
+            $showPics = 1;
+        }
+
         // Construction de la barre de gauche comprenant les options de recherche
         $sidebar = new OptionSidebar();
-
-        /*$languageItem = new OptionSidebarItem(
-            "Langue des documents",
-            "qo_lg",
-            "fr"
-        );
-        $languageItem
-            ->appendChoice(new OptionSidebarItemChoice("Français", "fr"))
-            ->appendChoice(new OptionSidebarItemChoice("Anglais", "en"));
-        $sidebar->append($languageItem);*/
 
         $resultsItem = new OptionSidebarItem(
             "Nombre de résultats par page",
             "qo_pr",
-            10 //TODO: store and get value from session
+            $resultByPage
         );
         $resultsItem
             ->appendChoice(new OptionSidebarItemChoice("10", 10))
@@ -74,8 +78,8 @@ class DefaultController extends Controller
 
         $picturesItem = new OptionSidebarItem(
             "Afficher les images",
-            "qo_dp",
-            1 //TODO: store and get value from session
+            'show_pics',
+            $showPics
         );
         $picturesItem
             ->appendChoice(new OptionSidebarItemChoice("Oui", 1))
@@ -83,21 +87,23 @@ class DefaultController extends Controller
         $sidebar->append($picturesItem);
 
         $sidebar->bind(
-            $this->getRequest(),
+            $request,
             $this->get('router')->generate(
                 'bach_search',
                 array(
-                    'query_terms'   => $this->getRequest()->get('query_terms'),
-                    'page'          => $this->getRequest()->get('page')
+                    'query_terms'   => $query_terms,
+                    'page'          => $page
                 )
             )
         );
 
         $builder = new OptionSidebarBuilder($sidebar);
         $templateVars = array(
-            'current_route'     => $_route,
-            'sidebar'           => $builder->compileToArray(),
-            'display_pics'      => $sidebar->getItemValue("qo_dp")
+            'current_route' => $_route,
+            'q'             => $query_terms,
+            'page'          => $page,
+            'sidebar'       => $builder->compileToArray(),
+            'show_pics'     => $sidebar->getItemValue('show_pics')
         );
 
         if ( !is_null($query_terms) ) {
@@ -108,11 +114,16 @@ class DefaultController extends Controller
             );
 
             $container = new SolariumQueryContainer();
-            $container->setField("language", $sidebar->getItemValue("qo_lg"));
-            $container->setField("displayPicture", $sidebar->getItemValue("qo_dp"));
+            $container->setField(
+                'show_pics',
+                $sidebar->getItemValue('show_pics')
+            );
             $container->setField("main", $query_terms);
 
             $resultByPage = intval($sidebar->getItemValue("qo_pr"));
+
+            $session->set('results_by_page', $resultByPage);
+            $session->set('show_pics', $sidebar->getItemValue('show_pics'));
 
             $container->setField(
                 "pager",
@@ -122,17 +133,23 @@ class DefaultController extends Controller
                 )
             );
 
-            $session = $this->getRequest()->getSession();
-            if ( $this->getRequest()->get('filter_field') ) {
-                $filters = $session->get('filters');
-                if ( !is_array($filters) ) {
-                    $filters = array();
-                }
+            $filters = $session->get('filters');
+            if ( !is_array($filters) ) {
+                $filters = array();
+            }
 
-                $filter_field = $this->getRequest()->get('filter_field');
-                $filter_value = array($this->getRequest()->get('filter_value'));
+            if ( $request->get('clear_filters') ) {
+                $filters = array();
+                $session->set('filters', null);
+            }
 
-                if ( isset($filters[$filter_field]) && is_array($filters[$filter_field])
+            if ( $request->get('filter_field') ) {
+
+                $filter_field = $request->get('filter_field');
+                $filter_value = array($request->get('filter_value'));
+
+                if ( isset($filters[$filter_field])
+                    && is_array($filters[$filter_field])
                     && !in_array($filter_value[0], $filters[$filter_field])
                 ) {
                     $filter_value = array_push(
@@ -142,8 +159,12 @@ class DefaultController extends Controller
                 }
                 $filters[$filter_field] = $filter_value;
                 $session->set('filters', $filters);
-                $container->setFilters($filters);
+            }
 
+            //Add filters to container
+            $container->setFilters($filters);
+            if ( count($filters) > 0 ) {
+                $templateVars['filters'] = $filters;
             }
 
             $factory = $this->get("anph.home.solarium_query_factory");
@@ -166,8 +187,6 @@ class DefaultController extends Controller
             $suggestions = $this->get("solarium.client")->suggester($query);
 
             $templateVars['resultCount'] = $resultCount;
-            $templateVars['q'] = $query_terms;
-            $templateVars['page'] = $page;
             $templateVars['resultByPage'] = $resultByPage;
             $templateVars['totalPages'] = ceil($resultCount/$resultByPage);
             $templateVars['searchResults'] = $searchResults;
@@ -224,6 +243,9 @@ class DefaultController extends Controller
                     'bach_search',
                     array('query_terms' => $q)
                 );
+
+                $session = $this->getRequest()->getSession();
+                $session->set('filters', null);
             }
         }
         return new RedirectResponse($redirectUrl);
