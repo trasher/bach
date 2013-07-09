@@ -40,12 +40,13 @@ class DefaultController extends Controller
     /**
      * Serve default page
      *
+     * @param string $_route      Matched route name
      * @param string $query_terms Term(s) we search for
      * @param int    $page        Page
      *
      * @return void
      */
-    public function indexAction($query_terms = null, $page = 1)
+    public function indexAction($_route, $query_terms = null, $page = 1)
     {
         // Construction de la barre de gauche comprenant les options de recherche
         $sidebar = new OptionSidebar();
@@ -94,6 +95,7 @@ class DefaultController extends Controller
 
         $builder = new OptionSidebarBuilder($sidebar);
         $templateVars = array(
+            'current_route'     => $_route,
             'sidebar'           => $builder->compileToArray(),
             'display_pics'      => $sidebar->getItemValue("qo_dp")
         );
@@ -199,15 +201,44 @@ class DefaultController extends Controller
     /**
      * Browse contents
      *
-     * @param string $part Part to browse
+     * @param string  $_route   Matched route name
+     * @param string  $part     Part to browse
+     * @param boolean $show_all Show all results
      *
      * @return void
      */
-    public function browseAction($part = null)
+    public function browseAction($_route, $part = null, $show_all = false)
     {
         $templateVars = array(
-            'part'  => $part
+            'current_route' => $_route,
+            'part'          => $part
         );
+
+        $lists = array();
+
+        $client = $this->get("solarium.client");
+        // get a terms query instance
+        $query = $client->createTerms();
+
+        $limit = 20;
+        if ( $show_all === 'show_all' ) {
+            $limit = -1;
+            $templateVars['show_all'] = true;
+        }
+        $query->setLimit($limit);
+        //$query->setLowerbound('i');
+
+        $query->setFields('cSubject,cPersname,cGeogname');
+
+        $found_terms = $client->terms($query);
+        foreach ( $found_terms as $field=>$terms ) {
+            $lists[$field] = array();
+            foreach ( $terms as $term=>$count ) {
+                $lists[$field][] = $term . ' (' . $count . ')';
+            }
+        }
+
+        $templateVars['lists'] = $lists;
 
         return $this->render(
             'AnphHomeBundle:Default:browse.html.twig',

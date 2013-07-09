@@ -1,26 +1,54 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
-
 <ul class="nav nav-tabs">
-    <li><a{% if part == 'cSubject' %} class="active"{% endif %} href="#cSubject" data-toggle="tab">Sujets</a></li>
-    <li><a{% if part == 'cPersname' %} class="active"{% endif %} href="#cPersname" data-toggle="tab">Personnes</a></li>
-    <li><a{% if part == 'cGeogname' %} class="active"{% endif %} href="#cGeogname" data-toggle="tab">Lieux</a></li>
+    <li{% if part == 'cSubject' %} class="active"{% endif %}><a href="#cSubject" data-toggle="tab">Sujets</a></li>
+    <li{% if part == 'cPersname' %} class="active"{% endif %}><a href="#cPersname" data-toggle="tab">Personnes</a></li>
+    <li{% if part == 'cGeogname' %} class="active"{% endif %}><a href="#cGeogname" data-toggle="tab">Lieux</a></li>
 </ul>
 
 <div class="tab-content">
     <div class="tab-pane{% if part == 'cSubject' %} active{% endif %}" id="cSubject">
-        <h4>Sujets</h4>
+        <h4>Sujets{% if show_all is defined and lists.cSubject is defined %} ({{ lists.cSubject | length }}){% endif %}</h4>
+        <section id="list_cSubjects">
+        {% if lists.cSubject is defined %}
+            <ul>
+            {% for cSubject in lists.cSubject %}
+                <li><a href="#">{{ cSubject }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </section>
     </div>
     <div class="tab-pane{% if part == 'cPersname' %} active{% endif %}" id="cPersname">
-        <h4>Personnes</h4>
+        <h4>Personnes{% if show_all is defined and lists.cPersname is defined %} ({{ lists.cPersname | length }}){% endif %}</h4>
+        <section id="list_cPersnames">
+        {% if lists.cPersname is defined %}
+            <ul>
+            {% for cPersname in lists.cPersname %}
+                <li><a href="#">{{ cPersname }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </section>
     </div>
     <div class="tab-pane{% if part == 'cGeogname' %} active{% endif %}" id="cGeogname">
-        <h4>Lieux</h4>
+        <h4>Lieux{% if show_all is defined and lists.cGeogname is defined %} ({{ lists.cGeogname | length }}){% endif %}</h4>
+        <section id="list_cGeognames">
+        {% if lists.cGeogname is defined %}
+            <ul>
+            {% for cGeogname in lists.cGeogname %}
+                <li><a href="#">{{ cGeogname }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </section>
     </div>
 </div>
+{% if show_all is not defined %}
+<p>This page displays only the 20 more relevant terms found. You may whish <a href="{{ path('bach_browse', {show_all: 'show_all'}) }}">to display all terms</a>, but note that it should take a long time to load in your browser.</p>
+{% endif %}
 {% endblock %}
-
 
 {% block javascripts %}
     {{ parent() }}
