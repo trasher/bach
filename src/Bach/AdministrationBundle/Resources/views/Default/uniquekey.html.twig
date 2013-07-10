@@ -4,29 +4,27 @@
 {'page': 'uniquekey'}%}
 <!-- Our CSS stylesheet file -->
 <link
-	rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+    rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
 <link
-	rel="stylesheet"
-	href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
+    rel="stylesheet"
+    href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
 <!-- CSS adjustments for browsers with JavaScript disabled -->
 <noscript>
-	<link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
+    <link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
 </noscript>
 
-<body>
-	<div class="span9">
-	<h3>UniqueKey</h3>
-	<div class="well">
-		<form action="{{ path('administration_uniquekey') }}" method="POST"   {{ form_enctype(form) }}>
-			
-			<ul class="fields">
-				{# iterate over each existing tag and render its only field: name #}
-				<li>{{ form_row(form.uniqueKey) }}</li>
-			</ul>
-						<button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
-			{{ form_widget(form._token) }}
-		</form>
-	</div>
-	</div>
-</body>
+    <div class="span9">
+    <h3>UniqueKey</h3>
+    <div class="well">
+        <form action="{{ path('administration_uniquekey') }}" method="POST"   {{ form_enctype(form) }}>
+
+            <ul class="fields">
+                {# iterate over each existing tag and render its only field: name #}
+                <li>{{ form_row(form.uniqueKey) }}</li>
+            </ul>
+                        <button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
+            {{ form_widget(form._token) }}
+        </form>
+    </div>
+    </div>
 {% endblock %}

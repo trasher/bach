@@ -4,98 +4,95 @@
 {'page': 'copyfields'}%}
 <!-- Our CSS stylesheet file -->
 <link
-	rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
+    rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
 <link
-	rel="stylesheet"
-	href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
+    rel="stylesheet"
+    href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
 <!-- CSS adjustments for browsers with JavaScript disabled -->
 <noscript>
-	<link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
+    <link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
 </noscript>
 
-<body>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="row-fluid">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="row-fluid">
 
-				<div class="span9">
-					<h3>Copy fields</h3>
-					<div align="right">
-						<div class="btn-toolbar">
-							<button type="submit" value="selectAll"
-								class="btn btn-warning btn-small">
-								<i class="icon-white icon-pencil"></i> Tout séléctionner</a>
-								<button type="submit" value="deselectAll"
-									class="btn btn-danger btn-small">
-									<i class="icon-white icon-repeat"></i> Ne rien séléctionner</a>
-									<button type="submit" value="add"
-										class="btn btn-primary btn-small">
-										<i class="icon-white icon-random"></i> ajouter</a>
-										<button type="submit" value="remove"
-											class="btn btn-inverse btn-small">
-											<i class="icon-white icon-ban-circle"></i> supprimer</a>
-						
-						</div>
-					</div>
+                <div class="span9">
+                    <h3>Copy fields</h3>
+                    <div align="right">
+                        <div class="btn-toolbar">
+                            <button type="submit" value="selectAll"
+                                class="btn btn-warning btn-small">
+                                <i class="icon-white icon-pencil"></i> Tout séléctionner</a>
+                                <button type="submit" value="deselectAll"
+                                    class="btn btn-danger btn-small">
+                                    <i class="icon-white icon-repeat"></i> Ne rien séléctionner</a>
+                                    <button type="submit" value="add"
+                                        class="btn btn-primary btn-small">
+                                        <i class="icon-white icon-random"></i> ajouter</a>
+                                        <button type="submit" value="remove"
+                                            class="btn btn-inverse btn-small">
+                                            <i class="icon-white icon-ban-circle"></i> supprimer</a>
+
+                        </div>
+                    </div>
 
 
-					<form class="form-inline" action="{{ path('administration_copyfields') }}" method="POST"
-			
-						 {{ form_enctype(form) }}>
+                    <form class="form-inline" action="{{ path('administration_copyfields') }}" method="POST"
 
-						<ul class="fields">
-							{# iterate over each existing tag and render its only field: name
-							#} {% for field in form.copyFields %}
-							<div class="well row-fluid show-grid">
-								<div class="span4">source&nbsp;&nbsp;&nbsp; :
-									&nbsp;&nbsp;&nbsp;{{ form_widget(field.source) }}</div>
-								<div class="span4">destination&nbsp;&nbsp;&nbsp;
-									:&nbsp;&nbsp;&nbsp;{{ form_widget(field.dest) }}</div>
-								<div class="span4">Max Chars&nbsp;&nbsp;&nbsp;
-									:&nbsp;&nbsp;&nbsp;{{ form_widget(field.maxChars) }}</div>
-							</div>
-							{% endfor %}
-							{{ form_widget(form._token) }}
-						</ul>
-						<button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
+                         {{ form_enctype(form) }}>
 
-					</form>
-					
-				</div>
-			</div>
-		</div>
-		<div id="addFieldDialog" class="modal hide fade" tabindex="-1"
-			role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
-			style="display: none;">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">×</a>
-				<h3>Please enter a new title for this window.</h3>
-			</div>
-			<div class="modal-body">
-				<div class="divDialogElements">
-					<input class="xlarge" id="xlInput" name="xlInput" type="text">
-				</div>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn" onclick="closeDialog ();">Cancel</a> <a
-					href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
-			</div>
-		</div>
+                        <ul class="fields">
+                            {# iterate over each existing tag and render its only field: name
+                            #} {% for field in form.copyFields %}
+                            <div class="well row-fluid show-grid">
+                                <div class="span4">source&nbsp;&nbsp;&nbsp; :
+                                    &nbsp;&nbsp;&nbsp;{{ form_widget(field.source) }}</div>
+                                <div class="span4">destination&nbsp;&nbsp;&nbsp;
+                                    :&nbsp;&nbsp;&nbsp;{{ form_widget(field.dest) }}</div>
+                                <div class="span4">Max Chars&nbsp;&nbsp;&nbsp;
+                                    :&nbsp;&nbsp;&nbsp;{{ form_widget(field.maxChars) }}</div>
+                            </div>
+                            {% endfor %}
+                            {{ form_widget(form._token) }}
+                        </ul>
+                        <button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
 
-		<script>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div id="addFieldDialog" class="modal hide fade" tabindex="-1"
+            role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
+            style="display: none;">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">×</a>
+                <h3>Please enter a new title for this window.</h3>
+            </div>
+            <div class="modal-body">
+                <div class="divDialogElements">
+                    <input class="xlarge" id="xlInput" name="xlInput" type="text">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" onclick="closeDialog ();">Cancel</a> <a
+                    href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
+            </div>
+        </div>
+
+        <script>
             $(document).ready(function() {
-            	$('#addFieldDialog').bind('show', function () {
-            		document.getElementById ("xlInput").value = document.title;
-            		});
-            	});
+                $('#addFieldDialog').bind('show', function () {
+                    document.getElementById ("xlInput").value = document.title;
+                    });
+                });
             function closeDialog () {
-            	$('#addFieldDialog').modal('hide'); 
-            	};
+                $('#addFieldDialog').modal('hide'); 
+                };
             function okClicked () {
-            	document.title = document.getElementById ("xlInput").value;
-            	closeDialog ();
-            	};
+                document.title = document.getElementById ("xlInput").value;
+                closeDialog ();
+                };
         </script>
-
-</body>
 {% endblock %}
