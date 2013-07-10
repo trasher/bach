@@ -41,13 +41,12 @@ class DefaultController extends Controller
     /**
      * Serve default page
      *
-     * @param string $_route      Matched route name
      * @param string $query_terms Term(s) we search for
      * @param int    $page        Page
      *
      * @return void
      */
-    public function indexAction($_route, $query_terms = null, $page = 1)
+    public function indexAction($query_terms = null, $page = 1)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -100,7 +99,6 @@ class DefaultController extends Controller
 
         $builder = new OptionSidebarBuilder($sidebar);
         $templateVars = array(
-            'current_route' => $_route,
             'q'             => $query_terms,
             'page'          => $page,
             'sidebar'       => $builder->compileToArray(),
@@ -257,16 +255,14 @@ class DefaultController extends Controller
     /**
      * Browse contents
      *
-     * @param string  $_route   Matched route name
      * @param string  $part     Part to browse
      * @param boolean $show_all Show all results
      *
      * @return void
      */
-    public function browseAction($_route, $part = null, $show_all = false)
+    public function browseAction($part = null, $show_all = false)
     {
         $templateVars = array(
-            'current_route' => $_route,
             'part'          => $part
         );
 
@@ -305,11 +301,9 @@ class DefaultController extends Controller
     /**
      * Suggests
      *
-     * @param string $_route Matched route name
-     *
      * @return void
      */
-    public function doSuggestAction($_route)
+    public function doSuggestAction()
     {
         $query = $this->get("solarium.client")->createSuggester();
         $query->setQuery(strtolower($this->getRequest()->get('q')));
