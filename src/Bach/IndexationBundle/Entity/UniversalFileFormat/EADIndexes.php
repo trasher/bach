@@ -1,6 +1,6 @@
 <?php
 
-namespace Anph\IndexationBundle\Entity\UniversalFileFormat;
+namespace Bach\IndexationBundle\Entity\UniversalFileFormat;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -258,10 +258,10 @@ class EADIndexes
     /**
      * Set eadfile
      *
-     * @param \Anph\IndexationBundle\Entity\EADFileFormat $eadfile
+     * @param EADFileFormat $eadfile
      * @return EADIndexes
      */
-    public function setEadfile(\Anph\IndexationBundle\Entity\EADFileFormat $eadfile = null)
+    public function setEadfile(EADFileFormat $eadfile = null)
     {
         $this->eadfile = $eadfile;
     
@@ -271,7 +271,7 @@ class EADIndexes
     /**
      * Get eadfile
      *
-     * @return \Anph\IndexationBundle\Entity\EADFileFormat 
+     * @return EADFileFormat
      */
     public function getEadfile()
     {

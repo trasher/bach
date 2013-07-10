@@ -1,14 +1,14 @@
 <?php
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\CopyField;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\CopyField;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\CopyFields;
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\CopyFieldsForm;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\CopyFields;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\CopyFieldsForm;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class CopyFieldsController extends Controller
 {

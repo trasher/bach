@@ -1,13 +1,13 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
+namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute;
-use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
+use Bach\AdministrationBundle\Entity\SolrSchema\BachAttribute;
+use Bach\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class DynamicFieldForm extends AbstractType
@@ -86,7 +86,7 @@ class DynamicFieldForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Anph\AdministrationBundle\Entity\Helpers\FormObjects\DynamicField',
+                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\DynamicField',
         ));
     }
     

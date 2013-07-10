@@ -4,10 +4,10 @@
  * This file is part of the bach project.
 */
 
-namespace Anph\IndexationBundle\Entity;
+namespace Bach\IndexationBundle\Entity;
 
-use Anph\IndexationBundle\Entity\DataBag;
-use Anph\IndexationBundle\Service\DataBagFactory;
+use Bach\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\Service\DataBagFactory;
 
 /**
 * PreProcessor interface

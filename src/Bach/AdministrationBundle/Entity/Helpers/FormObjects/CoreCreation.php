@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
+namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 
 class CoreCreation
 {

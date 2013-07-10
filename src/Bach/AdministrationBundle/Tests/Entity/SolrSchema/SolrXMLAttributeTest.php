@@ -1,8 +1,8 @@
 <?php
-namespace Anph\AdministrationBundle\Tests\Entity\SolrSchema;
+namespace Bach\AdministrationBundle\Tests\Entity\SolrSchema;
 
-use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
-use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
+use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
+use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 class SolrXMLAttributeTest extends \PHPUnit_Framework_TestCase
 {

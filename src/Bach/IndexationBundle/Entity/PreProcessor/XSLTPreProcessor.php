@@ -1,9 +1,9 @@
 <?php 
 
-namespace Anph\IndexationBundle\Entity\PreProcessor;
+namespace Bach\IndexationBundle\Entity\PreProcessor;
 
-use Anph\IndexationBundle\Entity\PreProcessor;
-use Anph\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\Entity\PreProcessor;
+use Bach\IndexationBundle\Entity\DataBag;
 
 class XSLTPreProcessor extends PreProcessor
 {

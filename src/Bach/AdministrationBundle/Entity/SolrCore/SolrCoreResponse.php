@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\SolrCore;
+namespace Bach\AdministrationBundle\Entity\SolrCore;
 
 use DOMDocument;
 use DOMXPath;

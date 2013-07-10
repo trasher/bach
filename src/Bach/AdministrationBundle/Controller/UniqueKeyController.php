@@ -1,13 +1,13 @@
 <?php
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\UniqueKey;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\UniqueKey;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\UniqueKeyForm;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\UniqueKeyForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class UniqueKeyController extends Controller
 {

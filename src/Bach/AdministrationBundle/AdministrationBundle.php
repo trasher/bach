@@ -1,6 +1,6 @@
 <?php
 
-namespace Anph\AdministrationBundle;
+namespace Bach\AdministrationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

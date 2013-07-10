@@ -1,7 +1,7 @@
 <?php
-namespace Anph\IndexationBundle\Tests\Utility;
+namespace Bach\IndexationBundle\Tests\Utility;
 
-use Anph\IndexationBundle\Entity\KeyTranslator;
+use Bach\IndexationBundle\Entity\KeyTranslator;
 
 class KeyTranslatorTest extends \PHPUnit_Framework_TestCase
 {

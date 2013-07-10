@@ -12,7 +12,7 @@ framework:
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
-    templating:      
+    templating:
         engines: ['twig']
     default_locale:  "%locale%"
     session:         ~
@@ -27,7 +27,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [AnphIndexationBundle]
+    bundles:        [BachIndexationBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

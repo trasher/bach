@@ -1,8 +1,8 @@
 <?php
 
-namespace Anph\IndexationBundle\Entity\UniversalFileFormat;
+namespace Bach\IndexationBundle\Entity\UniversalFileFormat;
 
-use Anph\IndexationBundle\Entity\UniversalFileFormat;
+use Bach\IndexationBundle\Entity\UniversalFileFormat;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -260,11 +260,11 @@ class EADFileFormat extends UniversalFileFormat {
     /**
      * Remove index
      *
-     * @param \Anph\IndexationBundle\Entity\UniversalFileFormat\EADIndexes $index
+     * @param \Bach\IndexationBundle\Entity\UniversalFileFormat\EADIndexes $index
      * 
      * @return void
      */
-    public function removeIndex(\Anph\IndexationBundle\Entity\UniversalFileFormat\EADIndexes $index)
+    public function removeIndex(\Bach\IndexationBundle\Entity\UniversalFileFormat\EADIndexes $index)
     {
         $this->indexes->removeElement($index);
     }

@@ -1,9 +1,9 @@
 <?php
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\PerformanceForm;
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Performance;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\PerformanceForm;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Performance;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class PerformanceController extends Controller

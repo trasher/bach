@@ -1,6 +1,6 @@
 <?php 
 
-namespace Anph\IndexationBundle\Entity\Driver\UNIMARC\Parser\TXT;
+namespace Bach\IndexationBundle\Entity\Driver\UNIMARC\Parser\TXT;
 
 class Label
 {

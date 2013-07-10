@@ -11,13 +11,13 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\HomeBundle\Service;
+namespace Bach\HomeBundle\Service;
 
 use Symfony\Component\Finder\Finder;
-use Anph\HomeBundle\Entity\SolariumQueryContainer;
-use Anph\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
-use Anph\IndexationBundle\Exception\BadInputFileFormatException;
-use Anph\IndexationBundle\Exception\UnknownDriverParserException;
+use Bach\HomeBundle\Entity\SolariumQueryContainer;
+use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
+use Bach\IndexationBundle\Exception\BadInputFileFormatException;
+use Bach\IndexationBundle\Exception\UnknownDriverParserException;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -121,11 +121,11 @@ class SolariumQueryFactory
         foreach ($finder as $file) {
             try {
                 $reflection = new \ReflectionClass(
-                    'Anph\HomeBundle\Entity\SolariumQueryDecorator\\'.
+                    'Bach\HomeBundle\Entity\SolariumQueryDecorator\\'.
                     $file->getBasename(".php")
                 );
 
-                $expectedClass = 'Anph\HomeBundle\Entity' .
+                $expectedClass = 'Bach\HomeBundle\Entity' .
                     '\SolariumQueryDecoratorAbstract';
                 $class = $reflection->getParentClass()->getName();
                 if ( $expectedClass == $class ) {

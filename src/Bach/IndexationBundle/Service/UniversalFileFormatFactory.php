@@ -1,8 +1,8 @@
 <?php 
 
-namespace Anph\IndexationBundle\Service;
+namespace Bach\IndexationBundle\Service;
 
-use Anph\IndexationBundle\Entity\UniversalFileFormat;
+use Bach\IndexationBundle\Entity\UniversalFileFormat;
 
 class UniversalFileFormatFactory
 {

@@ -12,9 +12,9 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle;
+namespace Bach\IndexationBundle;
 
-use Anph\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\Entity\DataBag;
 
 /**
  * Parser Interface

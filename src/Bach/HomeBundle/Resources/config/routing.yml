@@ -1,22 +1,22 @@
 bach_homepage:
     pattern:  /
-    defaults: { _controller: AnphHomeBundle:Default:index }
+    defaults: { _controller: BachHomeBundle:Default:index }
 
 bach_search:
     pattern: /search/{query_terms}/{page}
-    defaults: { _controller: AnphHomeBundle:Default:index, 'query_terms': null, 'page': 1 }
+    defaults: { _controller: BachHomeBundle:Default:index, 'query_terms': null, 'page': 1 }
     requirements:
         page: \d+
 
 bach_do_search:
     pattern:  /do-search
-    defaults: { _controller: AnphHomeBundle:Default:doSearch }
+    defaults: { _controller: BachHomeBundle:Default:doSearch }
 
 bach_browse:
     pattern: /browse/{part}/{show_all}
-    defaults: { _controller: AnphHomeBundle:Default:browse, part: 'cSubject', 'show_all': false }
+    defaults: { _controller: BachHomeBundle:Default:browse, part: 'cSubject', 'show_all': false }
 
 bach_suggest:
     pattern: /suggest
-    defaults: { _controller: AnphHomeBundle:Default:doSuggest }
+    defaults: { _controller: BachHomeBundle:Default:doSuggest }
 

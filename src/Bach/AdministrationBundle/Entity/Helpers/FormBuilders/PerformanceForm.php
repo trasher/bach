@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
+namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -43,7 +43,7 @@ class PerformanceForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Anph\AdministrationBundle\Entity\Helpers\FormObjects\Performance',
+                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\Performance',
         ));
     }
     

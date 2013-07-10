@@ -11,9 +11,9 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle\Entity\Mapper;
+namespace Bach\IndexationBundle\Entity\Mapper;
 
-use Anph\IndexationBundle\DriverMapperInterface;
+use Bach\IndexationBundle\DriverMapperInterface;
 
 /**
  * Mapper for EAD data

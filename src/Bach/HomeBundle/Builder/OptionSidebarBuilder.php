@@ -11,9 +11,9 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\HomeBundle\Builder;
+namespace Bach\HomeBundle\Builder;
 
-use Anph\HomeBundle\Entity\Sidebar\OptionSidebar;
+use Bach\HomeBundle\Entity\Sidebar\OptionSidebar;
 
 /**
  * Bach sidebar builder

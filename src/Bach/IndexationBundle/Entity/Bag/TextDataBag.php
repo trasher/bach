@@ -1,8 +1,8 @@
 <?php
 
-namespace Anph\IndexationBundle\Entity\Bag;
+namespace Bach\IndexationBundle\Entity\Bag;
 
-use Anph\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\Entity\DataBag;
 
 class TextDataBag extends DataBag
 {

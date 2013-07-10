@@ -1,7 +1,7 @@
 <?php
-namespace Anph\AdministrationBundle\Tests\Entity\SolrCore;
+namespace Bach\AdministrationBundle\Tests\Entity\SolrCore;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreResponse;
 
 class SolrCoreResponseTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Anph\IndexationBundle\Tests\Service;
+namespace Bach\IndexationBundle\Tests\Service;
 
 use Symfony\Component\Finder\SplFileInfo;
-use Anph\IndexationBundle\Service\DataBagFactory;
-use Anph\IndexationBundle\Entity\Bag\XMLDataBag;
+use Bach\IndexationBundle\Service\DataBagFactory;
+use Bach\IndexationBundle\Entity\Bag\XMLDataBag;
 
 class DataBagFactoryTest extends \PHPUnit_Framework_TestCase
 {

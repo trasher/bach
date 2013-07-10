@@ -1,7 +1,7 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\ViewObjects;
+namespace Bach\AdministrationBundle\Entity\Helpers\ViewObjects;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 class CoreStatus
 {

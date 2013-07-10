@@ -1,9 +1,9 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
+namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
-use Anph\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
+use Bach\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
@@ -26,7 +26,7 @@ class UniqueKeyForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Anph\AdministrationBundle\Entity\Helpers\FormObjects\UniqueKey',
+                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\UniqueKey',
         ));
     }
     

@@ -1,7 +1,7 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\SolrPerformance;
+namespace Bach\AdministrationBundle\Entity\SolrPerformance;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 use JMS\DiExtraBundle\Annotation\AfterSetup;
 use DOMDocument;
@@ -61,7 +61,7 @@ class SolrPerformance
      * requests in that range can be satisfied via the cache. Returns NULL if
      * can not find the appropriate tag.
      * @param int $number
-     * @return NULL|\Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
+     * @return NULL|\Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
      */
     public function setQueryResultWindowsSize($number)
     {
@@ -85,7 +85,7 @@ class SolrPerformance
      * Maximum number of documents to cache for any entry in the queryResultCache.
      * Returns NULL if can not find the appropriate tag;.
      * @param int $number
-     * @return NULL|\Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
+     * @return NULL|\Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
      */
     public function setQueryResultMaxDocsCached($number)
     {
@@ -114,7 +114,7 @@ class SolrPerformance
      * @param string $class the SolrCache implementation LRUCache or (LRUCache or FastLRUCache)
      * @param int | string $size the maximum number of entries in the cache
      * @param int | string $initialSize the initial capacity (number of entries) of the cache
-     * @return NULL|\Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
+     * @return NULL|\Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
      */
     public function setDocumentCacheParameters($class, $size, $initialSize)
     {
@@ -144,7 +144,7 @@ class SolrPerformance
      * @param int | string $size the maximum number of entries in the cache
      * @param int | string $initialSize the initial capacity (number of entries) of the cache
      * @param int | string $autowarmCount the number of entries to prepopulate from and old cache.
-     * @return NULL|\Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
+     * @return NULL|\Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
      */
     public function setQueryResultCacheParameters($class, $size, $initialSize, $autowarmCount)
     {
@@ -178,7 +178,7 @@ class SolrPerformance
      * @param int | string $size the maximum number of entries in the cache
      * @param int | string $initialSize the initial capacity (number of entries) of the cache
      * @param int | string $autowarmCount the number of entries to prepopulate from and old cache.
-     * @return NULL|\Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
+     * @return NULL|\Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
      */
     public function setFilterCacheParameters($class, $size, $initialSize, $autowarmCount)
     {
@@ -248,7 +248,7 @@ class SolrPerformance
      * Returns NULL if $nodeList does not contain any node.
      * @param DOMNodeList $nodeList
      * @param int | string $value
-     * @return NULL|\Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
+     * @return NULL|\Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance
      */
     private function setNodeValue(DOMNodeList $nodeList, $value)
     {

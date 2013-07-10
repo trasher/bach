@@ -1,6 +1,6 @@
 <?php
 
-namespace Anph\IndexationBundle\Tests\Controller;
+namespace Bach\IndexationBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Finder\SplFileInfo;

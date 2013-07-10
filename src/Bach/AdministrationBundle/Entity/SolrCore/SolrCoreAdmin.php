@@ -11,9 +11,9 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\AdministrationBundle\Entity\SolrCore;
+namespace Bach\AdministrationBundle\Entity\SolrCore;
 
-use Anph\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
+use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
 use Aura\Http\Message\Response\Stack;
 use Aura\Http\Message\Request;
 use Exception;

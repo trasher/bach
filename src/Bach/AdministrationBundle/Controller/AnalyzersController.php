@@ -1,11 +1,11 @@
 <?php
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\AnalyzersForm;
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Analyzers;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\AnalyzersForm;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Analyzers;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class AnalyzersController extends Controller

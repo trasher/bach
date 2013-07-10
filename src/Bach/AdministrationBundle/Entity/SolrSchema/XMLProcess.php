@@ -1,7 +1,7 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\SolrSchema;
+namespace Bach\AdministrationBundle\Entity\SolrSchema;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use DOMDocument;
 use DOMNode;
 use DOMElement;
@@ -34,7 +34,7 @@ class XMLProcess
     
     /**
      * Load schema.xml file.
-     * @return \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement
+     * @return \Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement
      */
     public function loadXML()
     {
@@ -88,7 +88,7 @@ class XMLProcess
      * Recursive algorithm of loading schema.xml file.
      * @param DOMNode $node 
      * @param SolrXMLElement $parent
-     * @return \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement
+     * @return \Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement
      */
     private function loadXMLHelper(DOMNode $node, SolrXMLElement $parent = null)
     {

@@ -1,13 +1,13 @@
 <?php
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Fields;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Fields;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class FieldsController extends Controller
 {

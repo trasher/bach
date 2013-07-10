@@ -1,12 +1,12 @@
 <?php
-namespace Anph\IndexationBundle\Command;
+namespace Bach\IndexationBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Anph\IndexationBundle\Generator\FileDriverGenerator;
+use Bach\IndexationBundle\Generator\FileDriverGenerator;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
@@ -15,7 +15,7 @@ class BenchmarkCommand extends ContainerAwareCommand
 	 protected function configure()
     {
         $this
-            ->setName('anph:benchmark')
+            ->setName('bach:benchmark')
             ->setDescription('Produce benchmarks')
         	->setHelp(<<<EOF
 The <info>%command.name%</info> command produce benchmark of bach project
@@ -25,8 +25,8 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-    	$manager = $this->getContainer()->get('anph_indexation.file_driver_manager');
-    	$factory = $this->getContainer()->get('anph_indexation.data_bag_factory'); // Fourni le bon DataBag pour le fichier à indexer
+    	$manager = $this->getContainer()->get('bach_indexation.file_driver_manager');
+    	$factory = $this->getContainer()->get('bach_indexation.data_bag_factory'); // Fourni le bon DataBag pour le fichier à indexer
     	$bCount = 1;
     	$type = 'ead';
     	$files = $this->generateSPLs($type);

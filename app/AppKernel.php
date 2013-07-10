@@ -20,9 +20,9 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Nelmio\SolariumBundle\NelmioSolariumBundle(),
-            new Anph\IndexationBundle\AnphIndexationBundle(),
-            new Anph\HomeBundle\AnphHomeBundle(),
-            new Anph\AdministrationBundle\AdministrationBundle(),
+            new Bach\IndexationBundle\BachIndexationBundle(),
+            new Bach\HomeBundle\BachHomeBundle(),
+            new Bach\AdministrationBundle\AdministrationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

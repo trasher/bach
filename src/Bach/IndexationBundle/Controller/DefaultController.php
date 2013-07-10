@@ -11,16 +11,16 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle\Controller;
+namespace Bach\IndexationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Anph\IndexationBundle\Entity\Document;
+use Bach\IndexationBundle\Entity\Document;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
-use Anph\IndexationBundle\Entity\ArchFileIntegrationTask;
+use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
 
 /**
  * Default indexation controller
@@ -48,7 +48,7 @@ class DefaultController extends Controller
         $em2 = $this->getDoctrine()->getManager();
 
         $repository = $em2
-            ->getRepository('AnphIndexationBundle:ArchFileIntegrationTask');
+            ->getRepository('BachIndexationBundle:ArchFileIntegrationTask');
 
         $entities = $repository
             ->createQueryBuilder('t')
@@ -85,7 +85,7 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'AnphIndexationBundle:Indexation:index.html.twig',
+            'BachIndexationBundle:Indexation:index.html.twig',
             array(
                 'tasks' =>$tasks,
                 'form'  => $form->createView()
@@ -126,14 +126,14 @@ class DefaultController extends Controller
                     //if performall action was requested, do not store in db
                     //and launch indexation process
                     $integrationService = $this->container
-                        ->get('anph.indexation.process.arch_file_integration');
+                        ->get('bach.indexation.process.arch_file_integration');
                     $res = $integrationService->integrate($task);
                 }
             }
         }
 
         return new RedirectResponse(
-            $this->get("router")->generate("anph_indexation_homepage")
+            $this->get("router")->generate("bach_indexation_homepage")
         );
     }
 
@@ -146,7 +146,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
         $query = $em->createQuery(
-            'SELECT t FROM AnphIndexationBundle:ArchFileIntegrationTask t ' .
+            'SELECT t FROM BachIndexationBundle:ArchFileIntegrationTask t ' .
             'WHERE t.status > 0'
         );
         $tasks = $query->getResult();
@@ -156,7 +156,7 @@ class DefaultController extends Controller
         }
         $em->flush();
         return new RedirectResponse(
-            $this->get("router")->generate("anph_indexation_homepage")
+            $this->get("router")->generate("bach_indexation_homepage")
         );
     }
 

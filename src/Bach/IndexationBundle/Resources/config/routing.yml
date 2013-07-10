@@ -1,13 +1,13 @@
-anph_indexation_homepage:
+bach_indexation_homepage:
     pattern:  /indexation
-    defaults: { _controller: AnphIndexationBundle:Default:index }
+    defaults: { _controller: BachIndexationBundle:Default:index }
 
-anph_indexation_upload_process:
+bach_indexation_upload_process:
     pattern:  /indexation/uploadProcess
-    defaults: { _controller: AnphIndexationBundle:Default:indexProcess }
+    defaults: { _controller: BachIndexationBundle:Default:indexProcess }
     requirements:
         _method:  POST
  
-anph_indexation_purge:
+bach_indexation_purge:
     pattern:  /indexation/purge
-    defaults: { _controller: AnphIndexationBundle:Default:purge }
+    defaults: { _controller: BachIndexationBundle:Default:purge }

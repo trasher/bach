@@ -1,12 +1,12 @@
 <?php
-namespace Anph\IndexationBundle\Command;
+namespace Bach\IndexationBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Anph\IndexationBundle\Generator\DriverMapperGenerator;
+use Bach\IndexationBundle\Generator\DriverMapperGenerator;
 
 class DriverMapperCommand extends ContainerAwareCommand
 {
@@ -15,7 +15,7 @@ class DriverMapperCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('anph:generate:drivermapper')
+            ->setName('bach:generate:drivermapper')
             ->setDescription('Create a new driver mapper for indexation')
             ->addArgument('name', InputArgument::REQUIRED, 'What is the name of the mapper?')
         	->setHelp(<<<EOF
@@ -29,7 +29,7 @@ EOF
         $name = $input->getArgument('name');
         
         $generator = $this->getGenerator();
-        $namespace = 'Anph\IndexationBundle\Entity\Mapper';
+        $namespace = 'Bach\IndexationBundle\Entity\Mapper';
         $mapper = strtoupper($name).'DriverMapper';
         $generator->generate($namespace, $mapper);
         

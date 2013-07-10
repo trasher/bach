@@ -1,8 +1,8 @@
 <?php
-namespace Anph\AdministrationBundle\Tests\Entity\SolrPerformance;
+namespace Bach\AdministrationBundle\Tests\Entity\SolrPerformance;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-use Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance;
 use DOMDocument;
 
 class SolrPerformanceTest extends \PHPUnit_Framework_TestCase

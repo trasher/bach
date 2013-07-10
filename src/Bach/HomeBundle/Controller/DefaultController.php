@@ -11,17 +11,17 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\HomeBundle\Controller;
+namespace Bach\HomeBundle\Controller;
 
-use Anph\HomeBundle\Entity\SolariumQueryContainer;
+use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Anph\HomeBundle\Entity\SearchQueryFormType;
-use Anph\HomeBundle\Entity\SearchQuery;
-use Anph\HomeBundle\Entity\Sidebar\OptionSidebarItemChoice;
-use Anph\HomeBundle\Builder\OptionSidebarBuilder;
-use Anph\HomeBundle\Entity\Sidebar\OptionSidebarItem;
-use Anph\HomeBundle\Entity\Sidebar\OptionSidebar;
-use Anph\HomeBundle\Entity\SearchForm;
+use Bach\HomeBundle\Entity\SearchQueryFormType;
+use Bach\HomeBundle\Entity\SearchQuery;
+use Bach\HomeBundle\Entity\Sidebar\OptionSidebarItemChoice;
+use Bach\HomeBundle\Builder\OptionSidebarBuilder;
+use Bach\HomeBundle\Entity\Sidebar\OptionSidebarItem;
+use Bach\HomeBundle\Entity\Sidebar\OptionSidebar;
+use Bach\HomeBundle\Entity\SearchForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -166,7 +166,7 @@ class DefaultController extends Controller
                 $templateVars['filters'] = $filters;
             }
 
-            $factory = $this->get("anph.home.solarium_query_factory");
+            $factory = $this->get("bach.home.solarium_query_factory");
             $searchResults = $factory->performQuery($container);
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
@@ -218,7 +218,7 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'AnphHomeBundle:Default:index.html.twig',
+            'BachHomeBundle:Default:index.html.twig',
             $templateVars
         );
     }
@@ -293,7 +293,7 @@ class DefaultController extends Controller
         $templateVars['lists'] = $lists;
 
         return $this->render(
-            'AnphHomeBundle:Default:browse.html.twig',
+            'BachHomeBundle:Default:browse.html.twig',
             $templateVars
         );
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Anph\HomeBundle\Entity\SolariumQueryDecorator;
+namespace Bach\HomeBundle\Entity\SolariumQueryDecorator;
 
-use Anph\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
+use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 
 class PagerDecorator extends SolariumQueryDecoratorAbstract
 {

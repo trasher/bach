@@ -1,9 +1,9 @@
 <?php
-namespace Anph\AdministrationBundle\Tests\Entity\SolrCore;
+namespace Bach\AdministrationBundle\Tests\Entity\SolrCore;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreResponse;
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreStatus;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreResponse;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreStatus;
 
 class SolrCoreStatusTest extends \PHPUnit_Framework_TestCase
 {

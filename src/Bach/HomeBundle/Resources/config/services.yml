@@ -1,7 +1,7 @@
 parameters:
-   anph.home.solarium_query_factory.class: Anph\HomeBundle\Service\SolariumQueryFactory
+   bach.home.solarium_query_factory.class: Bach\HomeBundle\Service\SolariumQueryFactory
 
 services:
-    anph.home.solarium_query_factory:
-        class: "%anph.home.solarium_query_factory.class%"
+    bach.home.solarium_query_factory:
+        class: "%bach.home.solarium_query_factory.class%"
         arguments: [ @solarium.client.default ]

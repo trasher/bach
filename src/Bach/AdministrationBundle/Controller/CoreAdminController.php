@@ -1,17 +1,17 @@
 <?php
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
-use Anph\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
+use Bach\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
 
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\CoreCreationForm;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\CoreCreationForm;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\CoreCreation;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\CoreCreation;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CoreAdminController extends Controller

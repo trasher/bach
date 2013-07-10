@@ -1,7 +1,7 @@
 <?php
-namespace Anph\AdministrationBundle\Tests\Entity;
+namespace Bach\AdministrationBundle\Tests\Entity;
 
-use Anph\AdministrationBundle\Entity\BachCoreAdminConfigReader;
+use Bach\AdministrationBundle\Entity\BachCoreAdminConfigReader;
 
 class BachCoreAdminConfigReaderTest extends \PHPUnit_Framework_TestCase
 {

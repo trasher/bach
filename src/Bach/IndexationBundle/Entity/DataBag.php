@@ -1,6 +1,6 @@
 <?php
 
-namespace Anph\IndexationBundle\Entity;
+namespace Bach\IndexationBundle\Entity;
 
 abstract class DataBag
 {

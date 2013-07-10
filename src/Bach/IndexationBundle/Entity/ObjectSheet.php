@@ -1,7 +1,7 @@
 <?php
-namespace Anph\IndexationBundle\Entity;
+namespace Bach\IndexationBundle\Entity;
 
-use Anph\IndexationBundle\ObjectTreeComponentInterface;
+use Bach\IndexationBundle\ObjectTreeComponentInterface;
 
 class ObjectSheet implements ObjectTreeComponentInterface
 {

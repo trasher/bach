@@ -11,7 +11,7 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\AdministrationBundle\Entity\SolrCore;
+namespace Bach\AdministrationBundle\Entity\SolrCore;
 
 use DOMDocument;
 

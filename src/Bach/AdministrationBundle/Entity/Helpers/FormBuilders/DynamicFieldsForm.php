@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
+namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +17,7 @@ class DynamicFieldsForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Anph\AdministrationBundle\Entity\Helpers\FormObjects\DynamicFields',
+                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\DynamicFields',
         ));
     }
     

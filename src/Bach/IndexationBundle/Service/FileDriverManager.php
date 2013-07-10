@@ -12,14 +12,14 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle\Service;
+namespace Bach\IndexationBundle\Service;
 
-use Anph\IndexationBundle\Entity\FileDriver;
+use Bach\IndexationBundle\Entity\FileDriver;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Finder\SplFileInfo;
-use Anph\IndexationBundle\Entity\UniversalFileFormat;
-use Anph\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\Entity\UniversalFileFormat;
+use Bach\IndexationBundle\Entity\DataBag;
 
 /**
  * Convert an input file into a UniversalFileFormat object
@@ -78,7 +78,7 @@ class FileDriverManager
                     if (array_key_exists('mapper', $this->_conf['drivers'][$format])) {
                         try {
                             $reflection = new \ReflectionClass($this->_conf['drivers'][$format]['mapper']);
-                            if ( in_array('Anph\IndexationBundle\DriverMapperInterface', $reflection->getInterfaceNames())) {
+                            if ( in_array('Bach\IndexationBundle\DriverMapperInterface', $reflection->getInterfaceNames())) {
                                 $mapper = $reflection->newInstance();
                             }
                         } catch (\RuntimeException $e) {
@@ -89,7 +89,7 @@ class FileDriverManager
                     if ( array_key_exists('universalfileformat', $this->_conf['drivers'][$format]) ) {
                         try {
                             $reflection = new \ReflectionClass($this->_conf['drivers'][$format]['universalfileformat']);
-                            if ($reflection->getParentClass()->getName() == 'Anph\IndexationBundle\Entity\UniversalFileFormat') {
+                            if ($reflection->getParentClass()->getName() == 'Bach\IndexationBundle\Entity\UniversalFileFormat') {
                                 $universalFileFormatClass = $this->_conf['drivers'][$format]['universalfileformat'];
                             }
                         }
@@ -164,10 +164,10 @@ class FileDriverManager
         foreach ($finder as $file) {
             try {
                 $reflection = new \ReflectionClass(
-                    'Anph\IndexationBundle\Entity\Driver\\'.
+                    'Bach\IndexationBundle\Entity\Driver\\'.
                     $file->getBasename().'\\Driver'
                 );
-                if ('Anph\IndexationBundle\Entity\FileDriver' == $reflection->getParentClass()->getName()) {
+                if ('Bach\IndexationBundle\Entity\FileDriver' == $reflection->getParentClass()->getName()) {
                     $configuration = array();
                     if ( array_key_exists('drivers', $this->_conf) ) {
                         if ( array_key_exists(strtolower($file->getBasename()), $this->_conf['drivers'])) {

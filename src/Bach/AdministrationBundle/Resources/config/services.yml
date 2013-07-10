@@ -1,7 +1,7 @@
 parameters:
-    administration.xmlimport.class: Anph\AdministrationBundle\Service\XMLImport
+    administration.xmlimport.class: Bach\AdministrationBundle\Service\XMLImport
 
 services:
-    anph.administration.xmlimport:
+    bach.administration.xmlimport:
          class: %administration.xmlimport.class%
          arguments: [ @doctrine.orm.entity_manager ]

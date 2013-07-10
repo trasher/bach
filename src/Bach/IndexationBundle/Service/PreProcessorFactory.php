@@ -4,13 +4,13 @@
 * This file is part of the Bach project.
 */
 
-namespace Anph\IndexationBundle\Service;
+namespace Bach\IndexationBundle\Service;
 
-use Anph\IndexationBundle\PreProcessorInterface;
-use Anph\IndexationBundle\Entity\PreProcessor\XSLTPreProcessor;
-use Anph\IndexationBundle\Entity\PreProcessor\JavaPreProcessor;
-use Anph\IndexationBundle\Entity\PreProcessor\PHPPreProcessor;
-use Anph\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\PreProcessorInterface;
+use Bach\IndexationBundle\Entity\PreProcessor\XSLTPreProcessor;
+use Bach\IndexationBundle\Entity\PreProcessor\JavaPreProcessor;
+use Bach\IndexationBundle\Entity\PreProcessor\PHPPreProcessor;
+use Bach\IndexationBundle\Entity\DataBag;
 
 /**
 * PreProcessorFactory provides PreProcessor

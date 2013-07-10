@@ -1,6 +1,6 @@
 <?php
 
-namespace Anph\IndexationBundle\DependencyInjection;
+namespace Bach\IndexationBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('anph_indexation');
+        $rootNode = $treeBuilder->root('bach_indexation');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

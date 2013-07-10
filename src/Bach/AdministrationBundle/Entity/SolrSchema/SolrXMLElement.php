@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\SolrSchema;
+namespace Bach\AdministrationBundle\Entity\SolrSchema;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -70,7 +70,7 @@ class SolrXMLElement
     /**
      * Add attributes
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes
+     * @param \Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes
      * @return SolrXMLElement
      */
     public function addAttribute(SolrXMLAttribute $attribute)
@@ -83,7 +83,7 @@ class SolrXMLElement
     /**
      * Remove attributes
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes
+     * @param \Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes
      */
     public function removeAttribute(SolrXMLAttribute $attribute)
     {
@@ -118,7 +118,7 @@ class SolrXMLElement
     /**
      * Add elements
      *
-     * @param \Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $elements
+     * @param \Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement $elements
      * @return SolrXMLElement
      */
     public function addElement(SolrXMLElement $element)

@@ -1,8 +1,8 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
+namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
-use Anph\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 class CopyFields
 {

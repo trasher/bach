@@ -4,7 +4,7 @@
 * This file is part of the bach project.
 */
 
-namespace Anph\IndexationBundle;
+namespace Bach\IndexationBundle;
 
 /**
 * ObjectTree interface

@@ -1,14 +1,14 @@
 <?php
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\DynamicField;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\DynamicField;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\DynamicFieldsForm;
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\DynamicFields;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\DynamicFieldsForm;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\DynamicFields;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class DynamicFieldsController extends Controller
 {

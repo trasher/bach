@@ -12,7 +12,7 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle\Entity;
+namespace Bach\IndexationBundle\Entity;
 
 /**
  * File driver abstract class

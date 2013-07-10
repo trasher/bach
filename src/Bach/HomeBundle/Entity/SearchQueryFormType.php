@@ -11,7 +11,7 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\HomeBundle\Entity;
+namespace Bach\HomeBundle\Entity;
 
 use Symfony\Component\Form\AbstractType;
 

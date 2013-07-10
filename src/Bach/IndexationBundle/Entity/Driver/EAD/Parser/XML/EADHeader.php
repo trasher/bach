@@ -12,7 +12,7 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle\Entity\Driver\EAD\Parser\XML;
+namespace Bach\IndexationBundle\Entity\Driver\EAD\Parser\XML;
 
 /**
  * EAD header processing

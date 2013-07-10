@@ -18,7 +18,7 @@
             <legend>Indexer un nouveau fichier</legend>
             <div class="row-fluid">
                 <div class="span7 well">
-                    <form action="{{ path("anph_indexation_upload_process") }}" class="form-horizontal" method="post" {{ form_enctype(form) }} >
+                    <form action="{{ path("bach_indexation_upload_process") }}" class="form-horizontal" method="post" {{ form_enctype(form) }} >
                       <div class="control-group">
                           {{ form_label(form.file) }}
                           <div class="controls">
@@ -53,7 +53,7 @@
         <legend>
             File d'attente des tâches d'indexation
             <span class="btn-groups pull-right">
-                <a href="{{ path("anph_indexation_purge") }}" class="btn btn-danger " title="Supprimer les tâches traitées"><span class="icon-trash icon-white"></span></a>
+                <a href="{{ path("bach_indexation_purge") }}" class="btn btn-danger " title="Supprimer les tâches traitées"><span class="icon-trash icon-white"></span></a>
                 <button id="refresh" class="btn"><span class="icon-refresh"></span></button>
             </span>
         </legend>

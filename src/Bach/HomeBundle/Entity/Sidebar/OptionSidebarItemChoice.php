@@ -11,7 +11,7 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\HomeBundle\Entity\Sidebar;
+namespace Bach\HomeBundle\Entity\Sidebar;
 
 /**
  * Bach sidebar choice item

@@ -4,11 +4,11 @@
 * This file is part of the Bach project.
 */
 
-namespace Anph\IndexationBundle\Service;
+namespace Bach\IndexationBundle\Service;
 
-use Anph\IndexationBundle\Entity\DataBag;
-use Anph\IndexationBundle\Entity\Bag\TextDataBag;
-use Anph\IndexationBundle\Entity\Bag\XMLDataBag;
+use Bach\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\Entity\Bag\TextDataBag;
+use Bach\IndexationBundle\Entity\Bag\XMLDataBag;
 
 /**
 * DataBagFactory put an input file in an appropriate DataBag

@@ -1,6 +1,6 @@
 <?php
 
-namespace Anph\HomeBundle\Entity;
+namespace Bach\HomeBundle\Entity;
 
 abstract class SolariumQueryDecoratorAbstract
 {

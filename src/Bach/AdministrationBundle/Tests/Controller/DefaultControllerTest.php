@@ -1,6 +1,6 @@
 <?php
 
-namespace Anph\AdministrationBundle\Tests\Controller;
+namespace Bach\AdministrationBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

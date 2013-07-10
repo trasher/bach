@@ -1,23 +1,23 @@
 <?php
 
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
-use Anph\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
+use Bach\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
 
-use Anph\AdministrationBundle\Entity\Dashboard\Dashboard;
+use Bach\AdministrationBundle\Entity\Dashboard\Dashboard;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Fields;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Fields;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-//use Anph\AdministrationBundle\Controller\XMLProcess;
+//use Bach\AdministrationBundle\Controller\XMLProcess;
 
 class DefaultController extends Controller
 {

@@ -1,7 +1,7 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\FormObjects;
+namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 
-use Anph\AdministrationBundle\Entity\SolrPerformance\SolrPerformance;
+use Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance;
 
 class Performance
 {

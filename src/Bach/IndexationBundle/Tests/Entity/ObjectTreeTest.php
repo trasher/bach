@@ -1,8 +1,8 @@
 <?php
-namespace Anph\IndexationBundle\Tests\Utility;
+namespace Bach\IndexationBundle\Tests\Utility;
 
-use Anph\IndexationBundle\Entity\ObjectTree;
-use Anph\IndexationBundle\Entity\ObjectSheet;
+use Bach\IndexationBundle\Entity\ObjectTree;
+use Bach\IndexationBundle\Entity\ObjectSheet;
 
 class ObjectTreeTest extends \PHPUnit_Framework_TestCase
 {

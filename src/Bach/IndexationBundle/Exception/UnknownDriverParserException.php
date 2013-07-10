@@ -4,7 +4,7 @@
  * This file is part of the bach project.
  */
 
-namespace Anph\IndexationBundle\Exception;
+namespace Bach\IndexationBundle\Exception;
 
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 

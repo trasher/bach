@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Helpers\FormBuilders;
+namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -25,7 +25,7 @@ class CoreCreationForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Anph\AdministrationBundle\Entity\Helpers\FormObjects\CoreCreation',
+                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\CoreCreation',
         ));
     }
 

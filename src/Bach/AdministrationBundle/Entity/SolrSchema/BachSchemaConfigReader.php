@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\SolrSchema;
+namespace Bach\AdministrationBundle\Entity\SolrSchema;
 
 use DOMDocument;
 use DOMNodeList;
@@ -37,7 +37,7 @@ class BachSchemaConfigReader
     /**
      * Get a tag by its name.
      * @param string $name must be one of the class's constants.
-     * @return NULL|\Anph\AdministrationBundle\Entity\SolrSchema\BachTag
+     * @return NULL|\Bach\AdministrationBundle\Entity\SolrSchema\BachTag
      */
     public function getTagByName($name)
     {
@@ -52,7 +52,7 @@ class BachSchemaConfigReader
     /**
      * Get all attributes of the specified tag.
      * @param string $tag must be one of the class's constants.
-     * @return multitype:\Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute
+     * @return multitype:\Bach\AdministrationBundle\Entity\SolrSchema\BachAttribute
      */
     public function getAttributesByTag($tag)
     {
@@ -64,7 +64,7 @@ class BachSchemaConfigReader
      * Get attribute of the specified tag.
      * @param string $tag must be one of the class's constants.
      * @param string $name attribute's name.
-     * @return Ambigous <NULL, \Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute>
+     * @return Ambigous <NULL, \Bach\AdministrationBundle\Entity\SolrSchema\BachAttribute>
      */
     public function getAttributeByTag($tag, $name)
     {
@@ -75,7 +75,7 @@ class BachSchemaConfigReader
     /**
      * Get some extra attributes of the specific class.
      * @param string $className class name
-     * @return multitype:\Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute |NULL
+     * @return multitype:\Bach\AdministrationBundle\Entity\SolrSchema\BachAttribute |NULL
      */
     public function getFieldTypeExtraAttributes($className)
     {
@@ -106,7 +106,7 @@ class BachSchemaConfigReader
     /**
      * Retreives all attributes from node list;
      * @param DOMNodeList $nodeList
-     * @return multitype:\Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute
+     * @return multitype:\Bach\AdministrationBundle\Entity\SolrSchema\BachAttribute
      */
     private function retreiveAttributes(DOMNodeList $nodeList)
     {
@@ -121,7 +121,7 @@ class BachSchemaConfigReader
      * Retrieves an attribute from $nodeList by its name.
      * @param DOMNodeList $nodeList
      * @param string $name
-     * @return \Anph\AdministrationBundle\Entity\SolrSchema\BachAttribute|NULL
+     * @return \Bach\AdministrationBundle\Entity\SolrSchema\BachAttribute|NULL
      */
     private function retreiveAttribute(DOMNodeList $nodeList, $name)
     {

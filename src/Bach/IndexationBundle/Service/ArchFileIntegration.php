@@ -11,11 +11,11 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle\Service;
+namespace Bach\IndexationBundle\Service;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-use Anph\IndexationBundle\Exception\BadInputFileFormatException;
-use Anph\IndexationBundle\Exception\UnknownDriverParserException;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\IndexationBundle\Exception\BadInputFileFormatException;
+use Bach\IndexationBundle\Exception\UnknownDriverParserException;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -58,7 +58,7 @@ class ArchFileIntegration
     public function proceedQueue()
     {
         $repository = $this->_entityManager
-            ->getRepository('AnphIndexationBundle:ArchFileIntegrationTask');
+            ->getRepository('BachIndexationBundle:ArchFileIntegrationTask');
 
         $tasks = $repository->findByStatus(0);
 

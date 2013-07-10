@@ -1,12 +1,12 @@
 <?php
-namespace Anph\IndexationBundle\Command;
+namespace Bach\IndexationBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Anph\IndexationBundle\Generator\FileDriverGenerator;
+use Bach\IndexationBundle\Generator\FileDriverGenerator;
 
 class FileDriverCommand extends ContainerAwareCommand
 {
@@ -15,7 +15,7 @@ class FileDriverCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('anph:generate:filedriver')
+            ->setName('bach:generate:filedriver')
             ->setDescription('Create a new file driver for indexation')
             ->addArgument('format', InputArgument::REQUIRED, 'What is the file format process by the driver?')
         	->addArgument('datatype', InputArgument::REQUIRED, 'What is the input data type?')
@@ -31,7 +31,7 @@ EOF
         $datatype = $input->getArgument('datatype');
         
         $generator = $this->getGenerator('parser');
-        $namespace = 'Anph\IndexationBundle\Entity\Driver\\'.strtoupper($format);
+        $namespace = 'Bach\IndexationBundle\Entity\Driver\\'.strtoupper($format);
         $generator->generate($namespace, $format, $datatype);
         
         $output->writeln('Generating the file driver code: <info>OK</info>');

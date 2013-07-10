@@ -12,12 +12,12 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle\Entity\Driver\EAD\Parser\XML;
+namespace Bach\IndexationBundle\Entity\Driver\EAD\Parser\XML;
 
-use Anph\IndexationBundle\Entity\ObjectTree;
-use Anph\IndexationBundle\Entity\ObjectSheet;
-use Anph\IndexationBundle\Entity\DataBag;
-use Anph\IndexationBundle\ParserInterface;
+use Bach\IndexationBundle\Entity\ObjectTree;
+use Bach\IndexationBundle\Entity\ObjectSheet;
+use Bach\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\ParserInterface;
 
 /**
  * EAD Parser

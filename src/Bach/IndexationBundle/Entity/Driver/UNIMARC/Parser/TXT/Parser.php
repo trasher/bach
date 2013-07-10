@@ -1,11 +1,11 @@
 <?php 
 
-namespace Anph\IndexationBundle\Entity\Driver\UNIMARC\Parser\TXT;
+namespace Bach\IndexationBundle\Entity\Driver\UNIMARC\Parser\TXT;
 
-use Anph\IndexationBundle\Entity\ObjectTree;
-use Anph\IndexationBundle\Entity\ObjectSheet;
-use Anph\IndexationBundle\Entity\DataBag;
-use Anph\IndexationBundle\ParserInterface;
+use Bach\IndexationBundle\Entity\ObjectTree;
+use Bach\IndexationBundle\Entity\ObjectSheet;
+use Bach\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\ParserInterface;
 
 class Parser implements ParserInterface{
 	

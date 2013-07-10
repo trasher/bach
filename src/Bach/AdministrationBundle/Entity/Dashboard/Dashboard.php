@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\Dashboard;
+namespace Bach\AdministrationBundle\Entity\Dashboard;
 
 use DOMDocument;
 

@@ -12,12 +12,12 @@
  * @link     http://anaphore.eu
  */
 
-namespace Anph\IndexationBundle\Entity\Driver\EAD;
+namespace Bach\IndexationBundle\Entity\Driver\EAD;
 
-use Anph\IndexationBundle\Entity\FileDriver;
-use Anph\IndexationBundle\Entity\DataBag;
-use Anph\IndexationBundle\Entity\ObjectTree;
-use Anph\IndexationBundle\Exception\UnknownDriverParserException;
+use Bach\IndexationBundle\Entity\FileDriver;
+use Bach\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\Entity\ObjectTree;
+use Bach\IndexationBundle\Exception\UnknownDriverParserException;
 
 /**
  * EAD file format driver
@@ -43,7 +43,7 @@ class Driver extends FileDriver
      */
     public function process(DataBag $bag)
     {
-        $parserClass = 'Anph\IndexationBundle\Entity\Driver\EAD\Parser\\'.
+        $parserClass = 'Bach\IndexationBundle\Entity\Driver\EAD\Parser\\'.
             strtoupper($bag->getType()) . '\Parser';
 
         if (!class_exists($parserClass)) {

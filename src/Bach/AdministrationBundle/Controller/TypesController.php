@@ -1,14 +1,14 @@
 <?php
-namespace Anph\AdministrationBundle\Controller;
+namespace Bach\AdministrationBundle\Controller;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\FieldType;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\FieldType;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Anph\AdministrationBundle\Entity\Helpers\FormObjects\Types;
-use Anph\AdministrationBundle\Entity\Helpers\FormBuilders\TypesForm;
+use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Types;
+use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\TypesForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class TypesController extends Controller
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Anph\AdministrationBundle\Entity\SolrSchema;
+namespace Bach\AdministrationBundle\Entity\SolrSchema;
 
 class SolrXMLAttribute
 {

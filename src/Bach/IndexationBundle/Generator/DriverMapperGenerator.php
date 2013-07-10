@@ -4,7 +4,7 @@
  * This file is part of the bach project.
  */
 
-namespace Anph\IndexationBundle\Generator;
+namespace Bach\IndexationBundle\Generator;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;

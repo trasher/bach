@@ -1,8 +1,8 @@
 <?php
-namespace Anph\AdministrationBundle\Tests\Entity\SolrSchema;
+namespace Bach\AdministrationBundle\Tests\Entity\SolrSchema;
 
-use Anph\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-use Anph\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use DOMDocument;
 
 class XMLProcessTest extends \PHPUnit_Framework_TestCase
