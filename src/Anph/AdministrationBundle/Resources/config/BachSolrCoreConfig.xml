@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <conf>
-    <solrCoresPath>/home/Solr/solr-4.1.0/example/solr/</solrCoresPath>
-    <solrCoresURL>http://localhost:8983/solr</solrCoresURL>
-    <solrCoreTemplatePath>/var/www/bachdev/app/config/coreTemplate/</solrCoreTemplatePath>
+    <solrCoresPath>/opt/solr_home/</solrCoresPath>
+    <solrCoresURL>http://localhost:8080/solr</solrCoresURL>
+    <solrCoreTemplatePath>/var/www/bach/app/config/coreTemplate/</solrCoreTemplatePath>
     <solrCoreDataDirectoryName>data</solrCoreDataDirectoryName>
     <solrCoreConfigDirectoryName>conf</solrCoreConfigDirectoryName>
     <solrConfigFileName>solrconfig.xml</solrConfigFileName>
