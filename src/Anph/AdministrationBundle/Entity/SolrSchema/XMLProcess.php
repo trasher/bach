@@ -52,6 +52,8 @@ class XMLProcess
     public function saveXML()
     {
         $this->doc = new DOMDocument($this->xmlVersion, $this->xmlEncoding);
+        $this->doc->formatOutput = true;
+        $this->doc->preserveWhiteSpace = false;
         $rootNode = $this->saveXMLHelper($this->rootElement);
         $this->doc->appendChild($rootNode);
         $this->doc->save($this->filePath);

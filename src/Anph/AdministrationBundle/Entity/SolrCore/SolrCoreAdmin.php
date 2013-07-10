@@ -404,9 +404,9 @@ class SolrCoreAdmin
             $this->_reader->getCoreConfigDir() . '/' .
             $this->_reader->getSchemaFileName();
         $doc = new DOMDocument();
-        $doc->load($schemaFilePath);
         $doc->formatOutput = true;
         $doc->preserveWhiteSpace = false;
+        $doc->load($schemaFilePath);
         // Creation of fields
         $elt = $doc->getElementsByTagName('fields')->item(0);
         foreach ($fields as $f) {

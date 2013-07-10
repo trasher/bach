@@ -31,6 +31,8 @@ class SolrPerformance
         $solrCore = new SolrCoreAdmin();
         $this->path = $solrCore->getConfigPath($coreName);
         $this->doc = new DOMDocument();
+        $this->doc->formatOutput = true;
+        $this->doc->preserveWhiteSpace = false;
         $this->doc->load($this->path);
     }
     
