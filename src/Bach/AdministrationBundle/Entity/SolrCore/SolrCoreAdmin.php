@@ -384,7 +384,7 @@ class SolrCoreAdmin
     }
 
     /**
-     * Create core directory with the same name as core name.
+     * Create core directory with the same name as core name (sanitize).
      * If directory already exist, returns false.
      *
      * @param string $coreInstanceDirPath Core instance path
@@ -450,22 +450,38 @@ class SolrCoreAdmin
         $fields = $this->_em->getClassMetadata($orm_name)->getFieldNames();
 
         if ( property_exists($orm_name, 'known_indexes') ) {
+            //retrieve and add additional fields from entity
             $ad_fields = $orm_name::$known_indexes;
             $fields = array_merge($fields, $ad_fields);
         }
 
+        //retrieve multivalued fields
+        $multivalued_fields = array();
+        if ( property_exists($orm_name, 'multivalued') ) {
+            //retrieve multi valued fields from entity
+            $multivalued_fields = $orm_name::$multivalued;
+        }
+
+        $fields_types = array();
+        if ( property_exists($orm_name, 'types') ) {
+            //retrieve fields types from entity
+            $fields_types = $orm_name::$types;
+        }
+
         foreach ($fields as $f) {
-            /**
-             * FIXME: all fields should probably not be string,
-             * also, some should be stored, mutlivalued, ...
-             */
             $newFieldType = $doc->createElement('field');
             $newFieldType->setAttribute('name', $f);
+
+            //set default type to string
             $type = 'string';
-            if ( $f === 'cUnittitle') {
-                $type = 'text';
+            if ( isset($fields_types[$f]) ) {
+                $type = $fields_types[$f];
             }
             $newFieldType->setAttribute('type', $type);
+
+            if ( in_array($multivalued_fields, $f) ) {
+                $newFieldType->setAttribute('multiValued', 'true');
+            }
             $elt->appendChild($newFieldType);
         }
 
@@ -478,58 +494,67 @@ class SolrCoreAdmin
         $fulltext->setAttribute('stored', 'false');
         $elt->appendChild($fulltext);
 
-        //add suggestions field
-        $suggestions = $doc->createElement('field');
-        $suggestions->setAttribute('name', 'suggestions');
-        $suggestions->setAttribute('type', 'phrase_suggest');
-        $suggestions->setAttribute('multiValued', 'true');
-        $suggestions->setAttribute('indexed', 'true');
-        $suggestions->setAttribute('stored', 'false');
-        $elt->appendChild($suggestions);
-
-        //add spell field
-        $spell = $doc->createElement('field');
-        $spell->setAttribute('name', 'spell');
-        $spell->setAttribute('type', 'phrase_suggest');
-        $spell->setAttribute('multiValued', 'true');
-        $spell->setAttribute('indexed', 'true');
-        $spell->setAttribute('stored', 'false');
-        $elt->appendChild($spell);
-
-        $doc->documentElement->appendChild($elt);
-
-        //add copyField for fulltext (all fields)
-        foreach ( $fields as $f ) {
-            $cf = $doc->createElement('copyField');
-            $cf->setAttribute('source', $f);
-            $cf->setAttribute('dest', 'fulltext');
-            $doc->documentElement->appendChild($cf);
+        //add copyField for fulltext (all fields, minus nonfulltext
+        //specified in entity)
+        $nonfulltext = array();
+        if ( property_exists($orm_name, 'known_indexes') ) {
+            $nonfulltext = $orm_name::$nonfulltext;
         }
 
-        //add copyField for suggestions (specific fields)
-        //fields used in suggestions
-        $suggestions_fields = array(
-            'cUnittitle',
-            'cCorpname',
-            'cFamname',
-            'cGenreform',
-            'cName',
-            'cPersname',
-            'cSubject'
-        );
-        foreach ( $suggestions_fields as $f ) {
-            if ( isset($fields[$f]) ) {
+        foreach ( $fields as $f ) {
+            if ( !in_array($nonfulltext, $f) ) {
                 $cf = $doc->createElement('copyField');
                 $cf->setAttribute('source', $f);
                 $cf->setAttribute('dest', 'fulltext');
                 $doc->documentElement->appendChild($cf);
             }
         }
-        $cf = $doc->createElement('copyField');
-        $cf->setAttribute('source', 'c*');
-        $cf->setAttribute('dest', 'spell');
-        $doc->documentElement->appendChild($cf);
 
+        //add copyField for suggestions (specific fields)
+        if ( property_exists($orm_name, 'suggesters') ) {
+            $suggestions_fields = $orm_name::$suggesters;
+
+            //add suggestions field
+            $suggestions = $doc->createElement('field');
+            $suggestions->setAttribute('name', 'suggestions');
+            $suggestions->setAttribute('type', 'phrase_suggest');
+            $suggestions->setAttribute('multiValued', 'true');
+            $suggestions->setAttribute('indexed', 'true');
+            $suggestions->setAttribute('stored', 'false');
+            $elt->appendChild($suggestions);
+
+            foreach ( $suggestions_fields as $f ) {
+                if ( isset($fields[$f]) ) {
+                    $cf = $doc->createElement('copyField');
+                    $cf->setAttribute('source', $f);
+                    $cf->setAttribute('dest', 'fulltext');
+                    $doc->documentElement->appendChild($cf);
+                }
+            }
+        }
+
+        //add spell field
+        if ( property_exists($orm_name, 'spellers') ) {
+            $spell_fields = $orm_name::$spellers;
+
+            $spell = $doc->createElement('field');
+            $spell->setAttribute('name', 'spell');
+            $spell->setAttribute('type', 'phrase_suggest');
+            $spell->setAttribute('multiValued', 'true');
+            $spell->setAttribute('indexed', 'true');
+            $spell->setAttribute('stored', 'false');
+            $elt->appendChild($spell);
+
+            foreach ( $spell_fields as $f ) {
+                $cf = $doc->createElement('copyField');
+                $cf->setAttribute('source', $f);
+                $cf->setAttribute('dest', 'spell');
+                $doc->documentElement->appendChild($cf);
+            }
+        }
+
+        //add new created elements and save XML document
+        $doc->documentElement->appendChild($elt);
         $doc->save($schemaFilePath);
     }
 

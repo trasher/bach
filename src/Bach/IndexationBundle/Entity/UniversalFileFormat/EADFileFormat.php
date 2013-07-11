@@ -57,6 +57,9 @@ class EADFileFormat extends UniversalFileFormat {
         parent::__construct($data);
     }
 
+    /**
+     * Additional fields not directly managed byt the entity
+     */
     public static $known_indexes = array(
         'cCorpname',
         'cFamname',
@@ -67,6 +70,9 @@ class EADFileFormat extends UniversalFileFormat {
         'cSubject'
     );
 
+    /**
+     * Fields that are mutlivalued
+     */
     public static $multivalued = array(
         'cDaoloc',
         'cCorpname',
@@ -78,16 +84,25 @@ class EADFileFormat extends UniversalFileFormat {
         'cSubject'
     );
 
+    /**
+     * Fields that will be excluded from fulltext field
+     */
     public static $nonfulltext = array(
         'uniqid',
         'headerId',
         'parents'
     );
 
+    /**
+     * Fields included in spell field
+     */
     public static $spellers = array(
         'c*'
     );
 
+    /**
+     * Fields included in suggestions field
+     */
     public static $suggesters = array(
         'cUnittitle',
         'cCorpname',
@@ -96,6 +111,13 @@ class EADFileFormat extends UniversalFileFormat {
         'cName',
         'cPersname',
         'cSubject'
+    );
+
+    /**
+     * Fields types, if not string
+     */
+    public static $types = array(
+        'cUnittitle' => 'text'
     );
 
     /**
