@@ -203,6 +203,52 @@ class DefaultController extends Controller
 
         } else {
             $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
+
+            $query = $this->get("solarium.client")->createSelect();
+            $query->setQuery('*:*');
+            $query->setStart(0)->setRows(0);
+
+            $facetSet = $query->getFacetSet();
+            $facetSet->setLimit(100);
+            $facetSet->setMinCount(1);
+            $facetSet->createFacetField('subject')->setField('cSubject');
+            $facetSet->createFacetField('persname')->setField('cPersname');
+            $facetSet->createFacetField('geogname')->setField('cGeogname');
+
+            $rs = $this->get('solarium.client')->select($query);
+
+            $tags = array();
+            $facet = $rs->getFacetSet()->getFacet('subject');
+            $tags = $facet->getValues();
+
+            $facet = $rs->getFacetSet()->getFacet('persname');
+            $tags = array_merge($tags, $facet->getValues());
+
+            $facet = $rs->getFacetSet()->getFacet('geogname');
+            $tags = array_merge($tags, $facet->getValues());
+
+            arsort($tags, SORT_NUMERIC);
+
+            $values = array_values($tags);
+            $max = $values[0];
+            $min = $values[100];
+            //10 levels
+            $range = ($max - $min) / 9;
+
+            $tagcloud = array();
+            $i = 0;
+            //loop through returned result and normalize keyword hit counts
+            foreach ( $tags as $keyword=>$weight ) {
+                if ( $i === 100 ) {
+                    break;
+                }
+
+                $tagcloud[$keyword] = floor($weight/$range);
+                $i++;
+            }
+
+            ksort($tagcloud, SORT_LOCALE_STRING);
+            $templateVars['tagcloud'] = $tagcloud;
         }
 
         $templateVars['form'] = $form->createView();

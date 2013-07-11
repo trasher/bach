@@ -167,6 +167,15 @@
         </section>
         {% else %}
             Welcome to Bach's!
+            {% if tagcloud is defined %}
+                <ul id="tagcloud">
+                {% for tag,weight in tagcloud %}
+                    <li>
+                        <a href="{{ path('bach_search', {query_terms: tag}) }}" class="tag{{ weight }}">{{ tag }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}
