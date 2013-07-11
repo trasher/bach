@@ -394,8 +394,9 @@ class SolrCoreAdmin
      *
      * @return boolean
      */
-    private function _createCoreDir($coreInstanceDirPath, $coreName, $tableName, $orm_name)
-    {
+    private function _createCoreDir($coreInstanceDirPath, $coreName,
+        $tableName, $orm_name
+    ) {
         if (!is_dir($coreInstanceDirPath)) {
             $template  = $this->_reader->getCoreTemplatePath();
             $cmd = 'cp -r "' . $template . '" "' . $coreInstanceDirPath .
@@ -414,7 +415,11 @@ class SolrCoreAdmin
             }
 
             $this->_createSchema($coreInstanceDirPath, $coreName, $orm_name);
-            $this->_createDataConfigFile($coreInstanceDirPath, $coreName, $tableName, $orm_name);
+            $this->_createDataConfigFile(
+                $coreInstanceDirPath,
+                $tableName,
+                $orm_name
+            );
             return $status == 0 ? true : false;
         }
         return false;
@@ -640,10 +645,8 @@ class SolrCoreAdmin
             $trace = debug_backtrace();
             $caller = $trace[1];
 
-            //FIXME: at this point, core has been created in temporary space,
-            //but is failing to load in solr. User will have to copy the new
-            //core at the right place, and then rerun core creation.
-
+            //At this point, core has been created, but is failing 
+            //to load in solr.
             throw new \RuntimeException(
                 'Something went wrong in function ' . __CLASS__ . '::' .
                 $caller['function'] . "\nHTTP Request URI: " . $url .
@@ -664,13 +667,18 @@ class SolrCoreAdmin
      *
      * @return void
      */
-    private function _createDataConfigFile($coreInstanceDirPath, $tableName, $orm_name)
-    {
+    private function _createDataConfigFile($coreInstanceDirPath,
+        $tableName, $orm_name
+    ) {
         $dataConfigFilePath = $coreInstanceDirPath . '/' .
             $this->_reader->getCoreConfigDir() . '/' .
             $this->_reader->getDataConfigFileName();
+
         $doc = new DOMDocument();
+        $doc->formatOutput = true;
+        $doc->preserveWhiteSpace = false;
         $doc->load($dataConfigFilePath);
+
         $databaseParameters = $this->_reader->getDatabaseParameters();
         $elt = $doc->getElementsByTagName('dataSource')->item(0);
         $elt->setAttribute('type', $databaseParameters['type']);
@@ -678,22 +686,51 @@ class SolrCoreAdmin
         $elt->setAttribute('url', $databaseParameters['url']);
         $elt->setAttribute('user', $databaseParameters['user']);
         $elt->setAttribute('password', $databaseParameters['password']);
-        /*$newField = $doc->createElement('field');
-        $newField->setAttribute('column', $fields[0]);
-        $newField->setAttribute('name', $fields[0]);*/
+
         $elt = $doc->getElementsByTagName('entity')->item(0);
-        /*$elt->appendChild($newField);*/
         $query = 'SELECT * FROM ' . $tableName;
-        /*$query = 'SELECT ' . $fields[0];
-        for ($i = 1; $i < count($fields); $i++) {
-            $query .= ',' . $fields[$i];
+        $elt->setAttribute('query', $query);
+
+        //main fields from entity
+        $fields = $this->_em->getClassMetadata($orm_name)->getFieldNames();
+
+        foreach ($fields as $f ) {
             $newField = $doc->createElement('field');
-            $newField->setAttribute('column', $fields[$i]);
-            $newField->setAttribute('name', $fields[$i]);
+            $newField->setAttribute('column', $f);
+            $newField->setAttribute('name', $f);
             $elt->appendChild($newField);
         }
-        $query .= ' FROM ' . $tableName;*/ 
-        $elt->setAttribute('query', $query);
+
+        if ( property_exists($orm_name, 'known_indexes')
+            && $this->_em->getClassMetadata($orm_name)->hasAssociation('indexes')
+        ) {
+            //retrieve and add additional fields from entity
+            $ad_fields = $orm_name::$known_indexes;
+        
+            $mapping = $this->_em->getClassMetadata($orm_name)
+                ->getAssociationMapping('indexes');
+            $mapping_entity = $this->_em->getClassMetadata(
+                $mapping['targetEntity']
+            );
+            $mapping_table = $mapping_entity->getTablename();
+
+            foreach ( $ad_fields as $f ) {
+                $newEntity = $doc->createElement('entity');
+                $newEntity->setAttribute('name', $f);
+                $newEntity->setAttribute(
+                    'query',
+                    'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
+                    '\'${SolrXMLFile.uniqid}\' AND type=\'' . $f . '\''
+                );
+                $newField = $doc->createElement('field');
+                $newField->setAttribute('column', 'name');
+                $newField->setAttribute('name', $f);
+
+                $newEntity->appendChild($newField);
+                $elt->appendChild($newEntity);
+            }
+        }
+
         $doc->save($dataConfigFilePath);
     }
 
