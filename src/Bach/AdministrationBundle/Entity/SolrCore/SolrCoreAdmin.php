@@ -479,7 +479,7 @@ class SolrCoreAdmin
             }
             $newFieldType->setAttribute('type', $type);
 
-            if ( in_array($multivalued_fields, $f) ) {
+            if ( in_array($f, $multivalued_fields) ) {
                 $newFieldType->setAttribute('multiValued', 'true');
             }
             $elt->appendChild($newFieldType);
@@ -511,6 +511,9 @@ class SolrCoreAdmin
         $spell->setAttribute('stored', 'false');
         $elt->appendChild($spell);
 
+        //add new created elements
+        $doc->documentElement->appendChild($elt);
+
         //add copyField for fulltext (all fields, minus nonfulltext
         //specified in entity)
         $nonfulltext = array();
@@ -519,10 +522,22 @@ class SolrCoreAdmin
         }
 
         foreach ( $fields as $f ) {
-            if ( !in_array($nonfulltext, $f) ) {
+            if ( !in_array($f, $nonfulltext) ) {
                 $cf = $doc->createElement('copyField');
                 $cf->setAttribute('source', $f);
                 $cf->setAttribute('dest', 'fulltext');
+                $doc->documentElement->appendChild($cf);
+            }
+        }
+
+        //add spell field
+        if ( property_exists($orm_name, 'spellers') ) {
+            $spell_fields = $orm_name::$spellers;
+        
+            foreach ( $spell_fields as $f ) {
+                $cf = $doc->createElement('copyField');
+                $cf->setAttribute('source', $f);
+                $cf->setAttribute('dest', 'spell');
                 $doc->documentElement->appendChild($cf);
             }
         }
@@ -532,29 +547,16 @@ class SolrCoreAdmin
             $suggestions_fields = $orm_name::$suggesters;
 
             foreach ( $suggestions_fields as $f ) {
-                if ( isset($fields[$f]) ) {
+                if ( in_array($f, $fields) ) {
                     $cf = $doc->createElement('copyField');
                     $cf->setAttribute('source', $f);
-                    $cf->setAttribute('dest', 'fulltext');
+                    $cf->setAttribute('dest', 'suggestions');
                     $doc->documentElement->appendChild($cf);
                 }
             }
         }
 
-        //add spell field
-        if ( property_exists($orm_name, 'spellers') ) {
-            $spell_fields = $orm_name::$spellers;
-
-            foreach ( $spell_fields as $f ) {
-                $cf = $doc->createElement('copyField');
-                $cf->setAttribute('source', $f);
-                $cf->setAttribute('dest', 'spell');
-                $doc->documentElement->appendChild($cf);
-            }
-        }
-
-        //add new created elements and save XML document
-        $doc->documentElement->appendChild($elt);
+        //save XML document
         $doc->save($schemaFilePath);
     }
 
