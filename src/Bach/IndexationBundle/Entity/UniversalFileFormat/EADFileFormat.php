@@ -11,45 +11,44 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="EADUniversalFileFormat")
  */
 class EADFileFormat extends UniversalFileFormat {
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	protected $parents;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	protected $cUnitid;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=250)
-	 */
-	protected $cUnittitle;
-	
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	protected $cScopcontent; 
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	protected $cControlacces;
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=250)
-	 */
-	protected $cDaoloc;
+    /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $parents;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $cUnitid;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=250)
+     */
+    protected $cUnittitle;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $cScopcontent;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $cControlacces;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=250)
+     */
+    protected $cDaoloc;
 
     /**
      * @ORM\OneToMany(targetEntity="EADIndexes", mappedBy="EADFileFormat", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $indexes;
-    
 
     /**
      * The constructor
+     *
      * @param array $data The input data
      */
     public function __construct($data)
@@ -96,21 +95,20 @@ class EADFileFormat extends UniversalFileFormat {
     /**
      * Set parents
      *
-     * @param string $parents
+     * @param string $parents Parents
      *
      * @return EADFileFormat
      */
     public function setParents($parents)
     {
         $this->parents = $parents;
-    
         return $this;
     }
 
     /**
      * Get parents
      *
-     * @return string 
+     * @return string
      */
     public function getParents()
     {
@@ -120,20 +118,20 @@ class EADFileFormat extends UniversalFileFormat {
     /**
      * Set cUnitid
      *
-     * @param string $cUnitid
+     * @param string $cUnitid unitid
+     *
      * @return EADFileFormat
      */
     public function setCUnitid($cUnitid)
     {
         $this->cUnitid = $cUnitid;
-    
         return $this;
     }
 
     /**
      * Get cUnitid
      *
-     * @return string 
+     * @return string
      */
     public function getCUnitid()
     {
@@ -143,20 +141,20 @@ class EADFileFormat extends UniversalFileFormat {
     /**
      * Set cUnittitle
      *
-     * @param string $cUnittitle
+     * @param string $cUnittitle unittitle
+     *
      * @return EADFileFormat
      */
     public function setCUnittitle($cUnittitle)
     {
         $this->cUnittitle = $cUnittitle;
-    
         return $this;
     }
 
     /**
      * Get cUnittitle
      *
-     * @return string 
+     * @return string
      */
     public function getCUnittitle()
     {
@@ -166,20 +164,20 @@ class EADFileFormat extends UniversalFileFormat {
     /**
      * Set cScopcontent
      *
-     * @param string $cScopcontent
+     * @param string $cScopcontent scopecontent
+     *
      * @return EADFileFormat
      */
     public function setCScopcontent($cScopcontent)
     {
         $this->cScopcontent = $cScopcontent;
-    
         return $this;
     }
 
     /**
      * Get cScopcontent
      *
-     * @return string 
+     * @return string
      */
     public function getCScopcontent()
     {
@@ -189,20 +187,20 @@ class EADFileFormat extends UniversalFileFormat {
     /**
      * Set cControlacces
      *
-     * @param string $cControlacces
+     * @param string $cControlacces controlaccess
+     *
      * @return EADFileFormat
      */
     public function setCControlacces($cControlacces)
     {
         $this->cControlacces = $cControlacces;
-    
         return $this;
     }
 
     /**
      * Get cControlacces
      *
-     * @return string 
+     * @return string
      */
     public function getCControlacces()
     {
@@ -212,20 +210,20 @@ class EADFileFormat extends UniversalFileFormat {
     /**
      * Set cDaoloc
      *
-     * @param string $cDaoloc
+     * @param string $cDaoloc Daoloc
+     *
      * @return EADFileFormat
      */
     public function setCDaoloc($cDaoloc)
     {
         $this->cDaoloc = $cDaoloc;
-    
         return $this;
     }
 
     /**
      * Get cDaoloc
      *
-     * @return string 
+     * @return string
      */
     public function getCDaoloc()
     {
@@ -260,11 +258,11 @@ class EADFileFormat extends UniversalFileFormat {
     /**
      * Remove index
      *
-     * @param \Bach\IndexationBundle\Entity\UniversalFileFormat\EADIndexes $index
-     * 
+     * @param EADIndexes $index Index
+     *
      * @return void
      */
-    public function removeIndex(\Bach\IndexationBundle\Entity\UniversalFileFormat\EADIndexes $index)
+    public function removeIndex(EADIndexes $index)
     {
         $this->indexes->removeElement($index);
     }

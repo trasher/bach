@@ -59,9 +59,7 @@
     </div>
 
 
-    <div id="coreTitleDialog" class="modal hide fade" tabindex="-1"
-        role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
-        style="display: none;">
+    <div id="coreTitleDialog" class="modal hide fade" tabindex="-1">
         <form class="form-horizontal"
             action="{{ path('administration_coreadmin') }}" method="post">
 
@@ -71,35 +69,20 @@
             </div>
             <div class="modal-body">
                 <div class="divDialogElements">
-
-
-
                     <fieldset>
-
-
                         <div class="control-group">
-
                             <!-- Select Basic -->
                             <label class="control-label">Nom</label>
 
                             <div class="controls">{{ form_widget(form.core) }}</div>
                         </div>
                         {{ form_widget(form._token) }}
-
-
-
                     </fieldset>
-
-
-
-
                 </div>
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
-                <button name="createCoreOk" type="submit" class="btn btn-primary">
-                    OK</a>
-
+                <button name="createCoreOk" type="submit" class="btn btn-primary">OK</a>
             </div>
         </form>
     </div>
