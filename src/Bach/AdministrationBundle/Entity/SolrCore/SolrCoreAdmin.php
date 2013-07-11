@@ -38,6 +38,9 @@ class SolrCoreAdmin
     const DELETE_CORE = 2;
 
     private $_reader;
+    private $_em;
+    private $_errors = array();
+    private $_warnings = array();
 
     /**
      * Constructor. Creates a necessary object to send queries.
@@ -105,23 +108,25 @@ class SolrCoreAdmin
      * already exists this function returns false otherwise it returns
      * SolrCoreResponse object.
      *
-     * @param stirng  $coreName        Solr core name
-     * @param string  $coreInstanceDir Directory of core instance
-     * @param string  $tableName       Database table name
-     * @param array   $fields          Database fields
-     * @param boolean $evenIfDirExist  Create even if dir already exists
+     * @param string $coreType  Solr core type
+     * @param string $coreName  Solr core name
+     * @param string $tableName Database table name
+     * @param string $orm_name  ORM class name
+     * @param mixed  $em        Entity manager
      *
      * @return boolean|SolrCoreResponse
      */
-    public function create($coreName, $coreInstanceDir,
-        $tableName, $fields, $evenIfDirExist = false
-    ) {
+    public function create($coreType, $coreName, $tableName, $orm_name, $em)
+    {
+        $coreInstanceDir =  preg_replace('/[^a-zA-Z0-9-_]/', '', $coreName); 
         $coreInstanceDirPath = null;
+        $this->_em = $em;
 
         //check if cores dir is writeable
         if ( is_writeable($this->_reader->getCoresPath()) ) {
             //it is, we can directly create new core
-            $coreInstanceDirPath = $this->_reader->getCoresPath() . $coreInstanceDir;
+            $coreInstanceDirPath = $this->_reader->getCoresPath() .
+                $coreInstanceDir;
         } else {
             //cores dir is read only or does not exists locally,
             //let's use a temporary dir for new core creation
@@ -133,39 +138,56 @@ class SolrCoreAdmin
         if ($this->_coreExist($coreName)) {
             return false;
         }
-        //Test if we want create core even if the directory $coreInstanceDir
-        //already exist.
-        if ($evenIfDirExist) {
-            if (!is_dir($coreInstanceDirPath)
-                && !$this->_createCoreDir($coreInstanceDirPath, $tableName, $fields)
-            ) {
-                return false;
-            }
+
+
+        if (is_dir($coreInstanceDirPath)) {
+            return false;
         } else {
-            if (is_dir($coreInstanceDirPath)) {
+            $created = $this->_createCoreDir(
+                $coreInstanceDirPath,
+                $coreName,
+                $tableName,
+                $orm_name
+            );
+            if ( !$created ) {
                 return false;
-            } else {
-                $created = $this->_createCoreDir(
-                    $coreInstanceDirPath,
-                    $tableName,
-                    $fields
-                );
-                if ( !$created ) {
-                    return false;
-                }
             }
         }
-        return $this->_send(
-            $this->_reader->getCoresURL() . '/admin/cores',
-            array(
-                'action'        => 'CREATE',
-                'name'          => $coreName,
-                'instanceDir'   => $coreInstanceDir,
-                'config'        => $this->_reader->getConfigFileName(),
-                'schema'        => $this->_reader->getSchemaFileName(),
-                'dataDir'       => $this->_reader->getCoreDataDir()
-            )
+
+        $create_params = array(
+            'action'        => 'CREATE',
+            'name'          => $coreName,
+            'instanceDir'   => $coreInstanceDir,
+            'config'        => $this->_reader->getConfigFileName(),
+            'schema'        => $this->_reader->getSchemaFileName(),
+            'dataDir'       => $this->_reader->getCoreDataDir()
         );
+
+        if ( is_writeable($this->_reader->getCoresPath()) ) {
+            return $this->_send(
+                $this->_reader->getCoresURL() . '/admin/cores',
+                $create_params
+            );
+        } else {
+            //a temporary core has been created. User has to copy it the right
+            //place, and only then tell Bach/Solr to register it
+            //FIXME: find a way to inform user!
+            $solr_url = $this->_reader->getCoresURL() . '/admin/cores?';
+            foreach ( $create_params as $key=>$param ) {
+                $solr_url .=  $key . '=' . $param . '&';
+            }
+            $this->_warnings[] = nl2br(
+                str_replace(
+                    array('%tempdir', '%solr_url'),
+                    array(
+                        $coreInstanceDirPath,
+                        '<a href="' . $solr_url . '">' . $solr_url . '</a>'
+                    ),
+                    _("A temporary core has been created in %tempdir. You have to put it the right place.\n\nOnce done, run the following URL in your Solr instance:\n%solr_url")
+                )
+            );
+            return false;
+        }
     }
 
     /**
@@ -305,10 +327,17 @@ class SolrCoreAdmin
             // Unload core
             $response = $this->unload($coreName);
             if (!$response->isOk()) {
+                $this->_errors[] = str_replace(
+                    '%corename',
+                    $coreName,
+                    _("Unable to unload %corename, therefore it should not be removed.")
+                );
                 return false;
             }
             // Delete core instance directory. If we do not succeed,
             //we recreate the core we have just unloaded
+            //FIXME: WTF? $this->create is not just about loading core
+            //into solr, but also create directory.
             $result = $this->_deleteCoreDir($coreInstanceDir);
             if (!$result) {
                 $this->create($coreName, $coreInstanceDir);
@@ -359,12 +388,13 @@ class SolrCoreAdmin
      * If directory already exist, returns false.
      *
      * @param string $coreInstanceDirPath Core instance path
+     * @param string $coreName            Core anme
      * @param string $tableName           Database table name
-     * @param array  $fields              Database fields
+     * @param array  $orm_name            ORM class name
      *
      * @return boolean
      */
-    private function _createCoreDir($coreInstanceDirPath, $tableName, $fields)
+    private function _createCoreDir($coreInstanceDirPath, $coreName, $tableName, $orm_name)
     {
         if (!is_dir($coreInstanceDirPath)) {
             $template  = $this->_reader->getCoreTemplatePath();
@@ -383,22 +413,23 @@ class SolrCoreAdmin
                 );
             }
 
-            $this->_addFieldsByDefault($coreInstanceDirPath, $fields);
-            $this->_createDataConfigFile($coreInstanceDirPath, $tableName, $fields);
+            $this->_createSchema($coreInstanceDirPath, $coreName, $orm_name);
+            $this->_createDataConfigFile($coreInstanceDirPath, $coreName, $tableName, $orm_name);
             return $status == 0 ? true : false;
         }
         return false;
     }
 
     /**
-     * Add fields by default?
+     * Create schema file
      *
      * @param string $coreInstanceDirPath Core instance dir
-     * @param array  $fields              Fields existing in database
+     * @param string $coreName            Core name
+     * @param string $orm_name            ORM class name
      *
      * @return void
      */
-    private function _addFieldsByDefault($coreInstanceDirPath, $fields)
+    private function _createSchema($coreInstanceDirPath, $coreName, $orm_name)
     {
         $schemaFilePath = $coreInstanceDirPath . '/' .
             $this->_reader->getCoreConfigDir() . '/' .
@@ -407,8 +438,22 @@ class SolrCoreAdmin
         $doc->formatOutput = true;
         $doc->preserveWhiteSpace = false;
         $doc->load($schemaFilePath);
+
+        //set schema name
+        $schema = $doc->getElementsByTagName('schema')->item(0);
+        $schema->setAttribute('name', $coreName);
+
         // Creation of fields
         $elt = $doc->getElementsByTagName('fields')->item(0);
+
+        //main fields from entity
+        $fields = $this->_em->getClassMetadata($orm_name)->getFieldNames();
+
+        if ( property_exists($orm_name, 'known_indexes') ) {
+            $ad_fields = $orm_name::$known_indexes;
+            $fields = array_merge($fields, $ad_fields);
+        }
+
         foreach ($fields as $f) {
             /**
              * FIXME: all fields should probably not be string,
@@ -416,13 +461,18 @@ class SolrCoreAdmin
              */
             $newFieldType = $doc->createElement('field');
             $newFieldType->setAttribute('name', $f);
-            $newFieldType->setAttribute('type', 'string');
+            $type = 'string';
+            if ( $f === 'cUnittitle') {
+                $type = 'text';
+            }
+            $newFieldType->setAttribute('type', $type);
             $elt->appendChild($newFieldType);
         }
 
         //add fulltext field
         $fulltext = $doc->createElement('field');
         $fulltext->setAttribute('name', 'fulltext');
+        $fulltext->setAttribute('type', 'text');
         $fulltext->setAttribute('multiValued', 'true');
         $fulltext->setAttribute('indexed', 'true');
         $fulltext->setAttribute('stored', 'false');
@@ -431,6 +481,7 @@ class SolrCoreAdmin
         //add suggestions field
         $suggestions = $doc->createElement('field');
         $suggestions->setAttribute('name', 'suggestions');
+        $suggestions->setAttribute('type', 'phrase_suggest');
         $suggestions->setAttribute('multiValued', 'true');
         $suggestions->setAttribute('indexed', 'true');
         $suggestions->setAttribute('stored', 'false');
@@ -439,6 +490,7 @@ class SolrCoreAdmin
         //add spell field
         $spell = $doc->createElement('field');
         $spell->setAttribute('name', 'spell');
+        $spell->setAttribute('type', 'phrase_suggest');
         $spell->setAttribute('multiValued', 'true');
         $spell->setAttribute('indexed', 'true');
         $spell->setAttribute('stored', 'false');
@@ -581,11 +633,11 @@ class SolrCoreAdmin
      *
      * @param string $coreInstanceDirPath Core instance path
      * @param string $tableName           Database table name
-     * @param array  $fields              Database fields
+     * @param string $orm_name            ORM class name 
      *
      * @return void
      */
-    private function _createDataConfigFile($coreInstanceDirPath, $tableName, $fields)
+    private function _createDataConfigFile($coreInstanceDirPath, $tableName, $orm_name)
     {
         $dataConfigFilePath = $coreInstanceDirPath . '/' .
             $this->_reader->getCoreConfigDir() . '/' .
@@ -599,12 +651,13 @@ class SolrCoreAdmin
         $elt->setAttribute('url', $databaseParameters['url']);
         $elt->setAttribute('user', $databaseParameters['user']);
         $elt->setAttribute('password', $databaseParameters['password']);
-        $newField = $doc->createElement('field');
+        /*$newField = $doc->createElement('field');
         $newField->setAttribute('column', $fields[0]);
-        $newField->setAttribute('name', $fields[0]);
+        $newField->setAttribute('name', $fields[0]);*/
         $elt = $doc->getElementsByTagName('entity')->item(0);
-        $elt->appendChild($newField);
-        $query = 'SELECT ' . $fields[0];
+        /*$elt->appendChild($newField);*/
+        $query = 'SELECT * FROM ' . $tableName;
+        /*$query = 'SELECT ' . $fields[0];
         for ($i = 1; $i < count($fields); $i++) {
             $query .= ',' . $fields[$i];
             $newField = $doc->createElement('field');
@@ -612,8 +665,28 @@ class SolrCoreAdmin
             $newField->setAttribute('name', $fields[$i]);
             $elt->appendChild($newField);
         }
-        $query .= ' FROM ' . $tableName; 
+        $query .= ' FROM ' . $tableName;*/ 
         $elt->setAttribute('query', $query);
         $doc->save($dataConfigFilePath);
+    }
+
+    /**
+     * Retrieve warnings
+     * 
+     * @return array
+     */
+    public function getWarnings()
+    {
+        return $this->_warnings;
+    }
+    
+    /**
+     * Retrieve errors
+     * 
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->_errors;
     }
 }

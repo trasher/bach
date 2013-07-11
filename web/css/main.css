@@ -829,11 +829,11 @@ input[type="color"],
   border-radius: 4px;
   vertical-align: middle;
 }
-input,
+/*input,
 textarea,
 .uneditable-input {
   width: 125px;
-}
+}*/
 textarea {
   height: auto;
 }
@@ -920,7 +920,7 @@ input[type="file"] {
   line-height: 30px;
 }
 select {
-  width: 140px;
+  /*width: 140px;*/
   border: 1px solid #cccccc;
   background-color: #ffffff;
 }
@@ -2799,7 +2799,7 @@ input[type="button"].btn-block {
 .btn-success.disabled,
 .btn-success[disabled] {
   color: #ffffff;
-  background-color: #51a351;
+  background-color: #51a351!important;
   *background-color: #499249;
 }
 .btn-success:active,

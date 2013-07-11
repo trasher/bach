@@ -46,21 +46,26 @@ class CoreAdminController extends Controller
     {
         $session = $request->getSession();
         if ($request->isMethod('GET')) {
-            $form = $this->createForm(new CoreCreationForm($this->getAvailableCoreNames()));
+            $form = $this->createForm(
+                new CoreCreationForm($this->_getAvailableCores())
+            );
         } else {
             $btn = $request->request->get('createCoreOk');
             if (isset($btn)) {
-                $form = $this->createCoreAction($request, $session->get('xmlP'));
+                $form = $this->_createCore($request, $session->get('xmlP'));
             } elseif (isset($btn)) {
                 echo 'ELSIF';
             }
         }
-        return $this->render('AdministrationBundle:Default:coreadmin.html.twig', array(
+        return $this->render(
+            'AdministrationBundle:Default:coreadmin.html.twig',
+            array(
                 'form' => $form->createView(),
                 'coreName' => $session->get('coreName'),
                 'coreNames' => $session->get('coreNames'),
                 'coreStatus' => new CoreStatus($session->get('coreName'))
-        ));
+            )
+        );
     }
 
     /**
@@ -71,15 +76,38 @@ class CoreAdminController extends Controller
      *
      * @return Form
      */
-    private function createCoreAction(Request $request, XMLProcess $xmlP)
+    private function _createCore(Request $request, XMLProcess $xmlP)
     {
         $session = $request->getSession();
         $sca = new SolrCoreAdmin();
         $cc = new CoreCreation();
-        $form = $this->createForm(new CoreCreationForm($this->getAvailableCoreNames()), $cc);
+        $form = $this->createForm(
+            new CoreCreationForm($this->_getAvailableCores()),
+            $cc
+        );
         $form->bind($request);
-        $fields = $this->_getFieldsFromDataBase($cc->core);
-        $result = $sca->create($cc->core, $cc->core, $cc->core, $fields);
+        //$fields = $this->_getFieldsFromDataBase($cc->core);
+
+        $em = $this->getDoctrine()->getManager();
+        $orm_name = 'Bach\IndexationBundle\Entity\UniversalFileFormat';
+        if ( $cc->core === 'EADUniversalFileFormat' ) {
+            $orm_name .= '\EADFileFormat';
+        }
+
+        $result = $sca->create(
+            $cc->core,
+            $cc->name,
+            $cc->core,
+            $orm_name,
+            $em
+        );
+
+        if ( count($sca->getWarnings()) > 0) {
+            foreach ( $sca->getWarnings() as $w ) {
+                $this->get('session')->getFlashBag()->add('warnings', $w);
+            }
+        }
+
         if ($result != false && $result->isOk()) {
             $coreNames = $sca->getStatus()->getCoreNames();
             $session->set('coreNames', $coreNames);
@@ -124,9 +152,34 @@ class CoreAdminController extends Controller
     }
 
     /**
+     * Retrieve existing core types
+     *
+     * @param SolrCoreAdmin $sca Core admin instance
+     *
+     * @return array
+     */
+    private function _getAvailableCores(SolrCoreAdmin $sca = null)
+    {
+        if ($sca == null) {
+            $sca = new SolrCoreAdmin();
+        }
+        $tableNames = $this->_getTableNamesFromDataBase();
+        $availableCores = array();
+        foreach ($tableNames as $t) {
+            $subStr = substr($t, strlen($t) - 6);
+            if ( $subStr === 'Format' ) {
+                $availableCores[$t] = $t;
+            }
+        }
+        return $availableCores;
+    }
+
+    /**
      * Get available cores
      *
      * @param SolrCoreAdmin $sca
+     *
+     * @deprecated
      * 
      * @return array
      */

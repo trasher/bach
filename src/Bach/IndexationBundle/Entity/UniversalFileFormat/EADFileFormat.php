@@ -57,14 +57,45 @@ class EADFileFormat extends UniversalFileFormat {
         parent::__construct($data);
     }
 
-    private $_known_indexes = array(
-        'cCorpnames',
-        'cFamnames',
-        'cGenreforms',
-        'cGeognames',
-        'cNames',
-        'cPersnames',
-        'cSubjects'
+    public static $known_indexes = array(
+        'cCorpname',
+        'cFamname',
+        'cGenreform',
+        'cGeogname',
+        'cName',
+        'cPersname',
+        'cSubject'
+    );
+
+    public static $multivalued = array(
+        'cDaoloc',
+        'cCorpname',
+        'cFamname',
+        'cGenreform',
+        'cGeogname',
+        'cName',
+        'cPersname',
+        'cSubject'
+    );
+
+    public static $nonfulltext = array(
+        'uniqid',
+        'headerId',
+        'parents'
+    );
+
+    public static $spellers = array(
+        'c*'
+    );
+
+    public static $suggesters = array(
+        'cUnittitle',
+        'cCorpname',
+        'cFamname',
+        'cGenreform',
+        'cName',
+        'cPersname',
+        'cSubject'
     );
 
     /**
@@ -77,7 +108,7 @@ class EADFileFormat extends UniversalFileFormat {
     protected function parseData($data)
     {
         foreach ($data as $key=>$datum) {
-            if ( in_array($key, $this->_known_indexes) ) {
+            if ( in_array($key, $self::$known_indexes) ) {
                 foreach ( $datum as $index ) {
                     $this->addIndex($key, $index);
                 }

@@ -186,15 +186,15 @@ class EADDriverMapper implements DriverMapperInterface
         }
 
         $ead_mulitple_elements = array(
-            'cCorpnames'    => './/corpname',
-            'cFamnames'     => './/famname',
-            'cGenreforms'   => './/genreform',
-            'cGeognames'    => './/geogname',
-            'cNames'        => './/name',
-            'cPersnames'    => './/persname',
-            'cSubjects'     => './/subject'
+            'cCorpname'    => './/corpname',
+            'cFamname'     => './/famname',
+            'cGenreform'   => './/genreform',
+            'cGeogname'    => './/geogname',
+            'cName'        => './/name',
+            'cPersname'    => './/persname',
+            'cSubject'     => './/subject'
         );
-        
+
         foreach ( $ead_mulitple_elements as $map=>$element ) {
             if ( array_key_exists($element, $data['c'])
                 && count($data['c'][$element])
