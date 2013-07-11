@@ -494,6 +494,23 @@ class SolrCoreAdmin
         $fulltext->setAttribute('stored', 'false');
         $elt->appendChild($fulltext);
 
+        //add suggestions field
+        $suggestions = $doc->createElement('field');
+        $suggestions->setAttribute('name', 'suggestions');
+        $suggestions->setAttribute('type', 'phrase_suggest');
+        $suggestions->setAttribute('multiValued', 'true');
+        $suggestions->setAttribute('indexed', 'true');
+        $suggestions->setAttribute('stored', 'false');
+        $elt->appendChild($suggestions);
+
+        $spell = $doc->createElement('field');
+        $spell->setAttribute('name', 'spell');
+        $spell->setAttribute('type', 'phrase_suggest');
+        $spell->setAttribute('multiValued', 'true');
+        $spell->setAttribute('indexed', 'true');
+        $spell->setAttribute('stored', 'false');
+        $elt->appendChild($spell);
+
         //add copyField for fulltext (all fields, minus nonfulltext
         //specified in entity)
         $nonfulltext = array();
@@ -514,15 +531,6 @@ class SolrCoreAdmin
         if ( property_exists($orm_name, 'suggesters') ) {
             $suggestions_fields = $orm_name::$suggesters;
 
-            //add suggestions field
-            $suggestions = $doc->createElement('field');
-            $suggestions->setAttribute('name', 'suggestions');
-            $suggestions->setAttribute('type', 'phrase_suggest');
-            $suggestions->setAttribute('multiValued', 'true');
-            $suggestions->setAttribute('indexed', 'true');
-            $suggestions->setAttribute('stored', 'false');
-            $elt->appendChild($suggestions);
-
             foreach ( $suggestions_fields as $f ) {
                 if ( isset($fields[$f]) ) {
                     $cf = $doc->createElement('copyField');
@@ -536,14 +544,6 @@ class SolrCoreAdmin
         //add spell field
         if ( property_exists($orm_name, 'spellers') ) {
             $spell_fields = $orm_name::$spellers;
-
-            $spell = $doc->createElement('field');
-            $spell->setAttribute('name', 'spell');
-            $spell->setAttribute('type', 'phrase_suggest');
-            $spell->setAttribute('multiValued', 'true');
-            $spell->setAttribute('indexed', 'true');
-            $spell->setAttribute('stored', 'false');
-            $elt->appendChild($spell);
 
             foreach ( $spell_fields as $f ) {
                 $cf = $doc->createElement('copyField');
