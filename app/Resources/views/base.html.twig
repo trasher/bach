@@ -15,6 +15,24 @@
     <![endif]-->
 </head>
 <body>
+    {% if app.session.flashbag.has('warnings') %}
+    <div id="flash-warnings" class="modal in fade">
+            <div class="modal-header">
+                <h3>Warning</h3>
+            </div>
+            <div class="modal-body">
+            {% for flashMessage in app.session.flashbag.get('warnings') %}
+                <div class="flash-message">
+                    {{ flashMessage | raw }}
+                </div>
+            {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button onclick="$('#flash-warnings').remove()" type="button" class="btn btn-primary">OK</a>
+            </div>
+        </form>
+    </div>
+    {% endif %}
     {% block body %}
     <div class="wrap">
         <div class="navbar navbar-fixed-top">
