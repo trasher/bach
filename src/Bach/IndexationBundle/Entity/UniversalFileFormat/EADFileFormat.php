@@ -10,7 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="EADUniversalFileFormat")
  */
-class EADFileFormat extends UniversalFileFormat {
+class EADFileFormat extends UniversalFileFormat
+{
     /**
      * @ORM\Column(type="string", nullable=true, length=100)
      */
@@ -53,12 +54,12 @@ class EADFileFormat extends UniversalFileFormat {
      */
     public function __construct($data)
     {
-        $this->cPersnames = new ArrayCollection();
+        $this->indexes = new ArrayCollection();
         parent::__construct($data);
     }
 
     /**
-     * Additional fields not directly managed byt the entity
+     * Additional fields not directly managed by the entity
      */
     public static $known_indexes = array(
         'cCorpname',
