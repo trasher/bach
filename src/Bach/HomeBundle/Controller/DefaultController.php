@@ -51,6 +51,10 @@ class DefaultController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
+        if ( $query_terms !== null ) {
+            $query_terms = urldecode($query_terms);
+        }
+
         //instanciate - if needed - sidebar values
         $resultByPage = $session->get('results_by_page');
         if ( !$resultByPage ) {
@@ -91,7 +95,7 @@ class DefaultController extends Controller
             $this->get('router')->generate(
                 'bach_search',
                 array(
-                    'query_terms'   => $query_terms,
+                    'query_terms'   => urlencode($query_terms),
                     'page'          => $page
                 )
             )
@@ -99,7 +103,7 @@ class DefaultController extends Controller
 
         $builder = new OptionSidebarBuilder($sidebar);
         $templateVars = array(
-            'q'             => $query_terms,
+            'q'             => urlencode($query_terms),
             'page'          => $page,
             'sidebar'       => $builder->compileToArray(),
             'show_pics'     => $sidebar->getItemValue('show_pics')

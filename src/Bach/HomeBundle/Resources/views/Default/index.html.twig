@@ -171,7 +171,7 @@
                 <ul id="tagcloud">
                 {% for tag,weight in tagcloud %}
                     <li>
-                        <a href="{{ path('bach_search', {query_terms: tag}) }}" class="tag{{ weight }}">{{ tag }}</a>
+                        <a href="{{ path('bach_search', {query_terms: tag|url_encode}) }}" class="tag{{ weight }}">{{ tag }}</a>
                     </li>
                 {% endfor %}
                 </ul>
