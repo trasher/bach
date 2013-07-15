@@ -43,6 +43,11 @@ class EADFileFormat extends UniversalFileFormat
     protected $cDaoloc;
 
     /**
+     * @ORM\COlumn(type="text", nullable=true)
+     */
+    protected $fragment;
+
+    /**
      * @ORM\OneToMany(targetEntity="EADIndexes", mappedBy="EADFileFormat", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $indexes;

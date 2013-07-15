@@ -125,15 +125,26 @@ class EADArchDesc
         $cNodes = $this->_xpath->query('c', $rootNode);
 
         foreach ( $cNodes as $cNode ) {
-            $results[$cNode->getAttribute('id')] = array('parents' => $parents);
+            $nodeid = $cNode->getAttribute('id');
+            $results[$nodeid] = array('parents' => $parents);
+
+            //keep original fragment, without children
+            $frag = clone $cNode;
+            $child = $this->_xpath->query('c', $frag);
+            if ( count($child) > 0 ) {
+                foreach ( $child as $oldc ) {
+                    $frag->removeChild($oldc);
+                }
+            }
+            $results[$nodeid]['fragment'] = $frag->ownerDocument->saveXML($frag);
 
             foreach ( $fields as $field ) {
                 $nodes = $this->_xpath->query($field, $cNode);
-                $results[$cNode->getAttribute('id')][$field] = array();
+                $results[$nodeid][$field] = array();
 
                 if ( $nodes->length > 0 ) {
                     foreach ( $nodes as $key=>$node ) {
-                        $results[$cNode->getAttribute('id')][$field][] = array(
+                        $results[$nodeid][$field][] = array(
                             'value'         => $node->nodeValue,
                             'attributes'    => $this->_parseAttributes(
                                 $node->attributes
@@ -152,7 +163,7 @@ class EADArchDesc
                         array_merge(
                             $parents,
                             array(
-                                $cNode->getAttribute('id')
+                                $nodeid
                             )
                         )
                     )

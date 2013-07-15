@@ -195,6 +195,7 @@ class EADDriverMapper implements DriverMapperInterface
             'cSubject'     => './/subject',
             'cUnitDate'    => './/unitdate',
             'cDate'        => './/date',
+            'fragment'     => 'fragment'
         );
 
         foreach ( $ead_mulitple_elements as $map=>$element ) {

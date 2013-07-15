@@ -5,3 +5,7 @@ services:
     bach.home.solarium_query_factory:
         class: "%bach.home.solarium_query_factory.class%"
         arguments: [ @solarium.client.default ]
+    bach.home.display_ead_fragment:
+        class: Bach\HomeBundle\Twig\DisplayEADFragment
+        tags:
+            - { name: twig.extension }

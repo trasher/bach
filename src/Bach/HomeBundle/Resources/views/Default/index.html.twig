@@ -127,6 +127,7 @@
                                 {{ document.cUnittitle }}
                             {% endif %}
                         </h3>
+                        {{ displayFragment(document.fragment)|raw }}
                         {#<h5>{{ document.headerDate }}</h5>
                         {% if document.headerAuthor is defined %}
                         <h6>{{ document.headerAuthor }}</h6>
