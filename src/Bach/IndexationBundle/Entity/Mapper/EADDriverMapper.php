@@ -192,7 +192,9 @@ class EADDriverMapper implements DriverMapperInterface
             'cGeogname'    => './/geogname',
             'cName'        => './/name',
             'cPersname'    => './/persname',
-            'cSubject'     => './/subject'
+            'cSubject'     => './/subject',
+            'cUnitDate'    => './/unitdate',
+            'cDate'        => './/date',
         );
 
         foreach ( $ead_mulitple_elements as $map=>$element ) {

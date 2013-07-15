@@ -48,6 +48,11 @@ class EADFileFormat extends UniversalFileFormat
     protected $indexes;
 
     /**
+     * @ORM\OneToMany(targetEntity="EADDates", mappedBy="EADFileFormat", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $dates;
+
+    /**
      * The constructor
      *
      * @param array $data The input data
@@ -55,6 +60,7 @@ class EADFileFormat extends UniversalFileFormat
     public function __construct($data)
     {
         $this->indexes = new ArrayCollection();
+        $this->dates = new ArrayCollection();
         parent::__construct($data);
     }
 
@@ -82,7 +88,8 @@ class EADFileFormat extends UniversalFileFormat
         'cGeogname',
         'cName',
         'cPersname',
-        'cSubject'
+        'cSubject',
+        'cDate'
     );
 
     /**
@@ -131,7 +138,7 @@ class EADFileFormat extends UniversalFileFormat
     protected function parseData($data)
     {
         foreach ($data as $key=>$datum) {
-            if ( in_array($key, $self::$known_indexes) ) {
+            if ( in_array($key, self::$known_indexes) ) {
                 foreach ( $datum as $index ) {
                     $this->addIndex($key, $index);
                 }
@@ -140,6 +147,10 @@ class EADFileFormat extends UniversalFileFormat
                 }*/
             } elseif (property_exists($this, $key)) {
                 $this->$key = $datum;
+            } elseif ($key === 'cUnitDate' || $key === 'cDate') {
+                foreach ( $datum as $date ) {
+                    $this->addDate($date);
+                }
             } else {
                 //FIXME: throw a warning
             }
@@ -330,4 +341,41 @@ class EADFileFormat extends UniversalFileFormat
     {
         return $this->indexes;
     }
+
+    /**
+     * Add date
+     *
+     * @param string $date Date
+     *
+     * @return EADFileFormat
+     */
+    public function addDate($date)
+    {
+        $this->dates[] = new EADDates($this, $date);
+        return $this;
+    }
+
+    /**
+     * Remove date
+     *
+     * @param EADDates $date Date
+     *
+     * @return void
+     */
+    public function removeDate(EADDates $date)
+    {
+        $this->dates->removeElement($date);
+    }
+
+    /**
+     * Get dates
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDates()
+    {
+        return $this->dates;
+    }
+
+
 }

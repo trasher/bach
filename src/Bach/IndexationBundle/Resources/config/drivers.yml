@@ -54,6 +54,8 @@ drivers:
                     - .//name
                     - .//persname
                     - .//subject
+                    - .//unitdate
+                    - .//date
     unimarc:
         mapper: Bach\IndexationBundle\Entity\Mapper\UNIMARCDriverMapper
         #universalfileformat: Bach\IndexationBundle\Entity\UniversalFileFormat\UNIMARCFileFormat
