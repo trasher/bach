@@ -13,6 +13,9 @@
 
 namespace Bach\HomeBundle\Twig;
 
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Twig extension to display an EAD fragment
  *
@@ -26,6 +29,31 @@ namespace Bach\HomeBundle\Twig;
  */
 class DisplayEADFragment extends \Twig_Extension
 {
+    private $_router;
+    private $_request;
+
+    /**
+     * Main constructor
+     *
+     * @param UrlGeneratorInterface $router Router
+     */
+    public function __construct(Router $router)
+    {
+        $this->_router = $router;
+    }
+
+    /**
+     * Set Request
+     *
+     * @param Request $request The Request
+     *
+     * @return void
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->_request = $request;
+    }
+
     /**
      * Get provided functions
      *
@@ -53,8 +81,29 @@ class DisplayEADFragment extends \Twig_Extension
             simplexml_load_file(__DIR__ . '/display_fragment.xsl')
         );
 
+        $router = $this->_router;
+        $request = $this->_request;
+        $callback = function ($matches) use ($router, $request) {
+            $href = $router->generate(
+                'bach_search',
+                array(
+                    'query_terms'   => $request->get('query_terms'),
+                    'filter_field'  => 'c' . ucwords($matches[1]),
+                    'filter_value'  => $matches[2]
+                )
+            );
+            return 'href="' . $href . '"';
+        };
+
         $xml = simplexml_load_string($fragment);
-        return $proc->transformToXml($xml);
+        $text = $proc->transformToXml($xml);
+        //it is not possible to build routes from the XSL, so we'll build them here
+        $text = preg_replace_callback(
+            '/link="%%%(.[^:]+)::(.[^%]+)%%%"/',
+            $callback,
+            $text
+        );
+        return $text;
     }
 
     /**

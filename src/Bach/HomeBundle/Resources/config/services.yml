@@ -7,5 +7,8 @@ services:
         arguments: [ @solarium.client.default ]
     bach.home.display_ead_fragment:
         class: Bach\HomeBundle\Twig\DisplayEADFragment
+        arguments: [ @router ]
+        calls:
+            - [setRequest, ['@?request=']]
         tags:
             - { name: twig.extension }

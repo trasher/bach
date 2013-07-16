@@ -7,9 +7,11 @@ Displays an EAD fragment as HTML
 @license  Unknown http://unknown.com
 @link     http://anaphore.eu
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet
+    version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:output method="html" omit-xml-declaration="no"/>
+    <xsl:output method="html" omit-xml-declaration="yes"/>
 
     <xsl:param name="full" select="'false'"/>
 
@@ -76,7 +78,13 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="subject|geogname|persname|corpname|name" mode="resume">
-        <a href="#"><xsl:value-of select="."/></a>
+        <a>
+            <xsl:attribute name="link">
+                <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
+                <xsl:value-of select="concat('%%%', local-name(), '::', string(.), '%%%')"/>
+            </xsl:attribute>
+            <xsl:value-of select="."/>
+        </a>
         <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name">
             <xsl:text>, </xsl:text>
         </xsl:if>
