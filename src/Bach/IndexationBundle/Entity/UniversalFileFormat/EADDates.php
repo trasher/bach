@@ -140,6 +140,10 @@ class EADDates
         try  {
             $this->begin = new \DateTime($bdate);
             if ( preg_match($reg, $bdate, $matches) ) {
+                //DateTime initialized with year only will give current year...
+                if ( count($matches) == 2 ) {
+                    $this->begin = \DateTime::createFromFormat('Y', $bdate);
+                }
                 if ( count($matches) <= 3 ) {
                     //day is not provided. set to 1st.
                     $this->begin->modify('first day of this month');
@@ -157,6 +161,9 @@ class EADDates
         try {
             $this->end = new \DateTime($edate);
             if ( preg_match($reg, $edate, $matches) ) {
+                if ( count($matches) == 2 ) {
+                    $this->end = \DateTime::createFromFormat('Y', $edate);
+                }
                 if ( count($matches) <= 3 ) {
                     //day is not provided. set to last.
                     $this->end->modify('last day of this month');
