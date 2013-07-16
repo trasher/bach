@@ -191,6 +191,10 @@
     <script src="{{ asset('js/bootstrap-tab.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-typeahead.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+        function getDateString(d) {
+            function pad(n){return n<10 ? '0'+n : n}
+            return d.getFullYear()+ '-' + pad(d.getMonth()+1)+ '-' + pad(d.getDate());
+        }
         $(function(){
             {% if min_date is defined and max_date is defined %}
             var _is_first_load = true;
@@ -218,10 +222,10 @@
                     var _new_loc = _loc.substring(0, n != -1 ? n : _loc.lenght);
 
                     var _min = data.values.min;
-                    var _min_date = _min.getFullYear() + '-' + (_min.getMonth() + 1) + '-' + _min.getDate();
+                    var _min_date = getDateString(_min);
 
                     var _max = data.values.max;
-                    var _max_date = _max.getFullYear() + '-' + (_max.getMonth() + 1) + '-' + _max.getDate();
+                    var _max_date = getDateString(_max);
 
                     var _field = '';
                     var _value = '';
