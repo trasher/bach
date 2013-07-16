@@ -81,7 +81,7 @@
                 <em>{{ filter_name }}:</em>
                 <ul>
                     {% for value in values %}
-                    <li><a href="#" class="remove_filter" title="Remove filter on '{{value}}'">{{ value }}</a></li>
+                    <li><a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="Remove filter on '{{value}}'">{{ value }}</a></li>
                     {% endfor %}
                 </ul>
                 {% endfor %}

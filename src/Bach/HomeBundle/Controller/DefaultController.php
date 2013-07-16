@@ -146,6 +146,32 @@ class DefaultController extends Controller
                 $session->set('filters', null);
             }
 
+            if ( $request->get('rm_filter_field') ) {
+                $rm_filter_field = $request->get('rm_filter_field');
+                $rm_filter_value = $request->get('rm_filter_value');
+
+                switch ( $rm_filter_field ) {
+                case 'cDateBegin':
+                case 'cDateEnd':
+                    unset($filters[$rm_filter_field]);
+                    break;
+                default:
+                    if ( isset($filters[$rm_filter_field]) ) {
+                        $values = &$filters[$rm_filter_field];
+                        foreach ( $values as $k=>$v ) {
+                            if ( $v == $rm_filter_value ) {
+                                unset ($values[$k]);
+                            }
+                        }
+                        if ( count($values) == 0 ) {
+                            unset($filters[$rm_filter_field]);
+                        }
+                    }
+                }
+
+                $session->set('filters', $filters);
+            }
+
             if ( $request->get('filter_field') ) {
 
                 $filter_field = $request->get('filter_field');
