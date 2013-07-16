@@ -38,6 +38,7 @@ class SolariumQueryFactory
     private $_request;
     private $_highlitght;
     private $_spellcheck;
+    private $_query;
 
     /**
      * Factory constructor
@@ -59,22 +60,34 @@ class SolariumQueryFactory
      */
     public function performQuery(SolariumQueryContainer $container)
     {
-        $query = $this->_client->createSelect();
+        $this->_query = $this->_client->createSelect();
 
-        $hl = $query->getHighlighting();
+        $hl = $this->_query->getHighlighting();
         $hl_fields = '';
-        $spellcheck = $query->getSpellcheck();
+        $spellcheck = $this->_query->getSpellcheck();
 
         foreach ( $container->getFilters() as $name=>$value ) {
             $i = 0;
             foreach ( $value as $v ) {
-                $query->createFilterQuery($name . $i)
-                    ->setQuery('+' . $name . ':"' . $v . '"');
+                if ( $name === 'cDateBegin' ) {
+                    //no $i in name here since we only want ONE begin 
+                    //and end date filter
+                    $this->_query->createFilterQuery($name)
+                        ->setQuery('+' . $name . ':[' . $v . ' TO *]');
+                } else if ( $name === 'cDateEnd' ) {
+                    //no $i in name here since we only want ONE begin 
+                    //and end date filter
+                    $this->_query->createFilterQuery($name)
+                        ->setQuery('+' . $name . ':[* TO ' . $v . ']');
+                } else {
+                    $this->_query->createFilterQuery($name . $i)
+                        ->setQuery('+' . $name . ':"' . $v . '"');
+                }
                 $i++;
             }
         }
 
-        $facetSet = $query->getFacetSet();
+        $facetSet = $this->_query->getFacetSet();
         $facetSet->setLimit(10);
         $facetSet->setMinCount(1);
         $facetSet->createFacetField('subject')->setField('cSubject');
@@ -84,7 +97,7 @@ class SolariumQueryFactory
         foreach ( $container->getFields() as $name=>$value ) {
             if ( array_key_exists($name, $this->_decorators) ) {
                 //Decorate the query
-                $this->_decorators[$name]->decorate($query, $value);
+                $this->_decorators[$name]->decorate($this->_query, $value);
                 if ( method_exists($this->_decorators[$name], 'getHlFields') ) {
                     if ( trim($hl_fields) !== '' ) {
                         $hl_fields .=',';
@@ -98,8 +111,8 @@ class SolariumQueryFactory
         //on highlithed unititles, we always want the full string
         $hl->getField('cUnittitle')->setFragSize(0);
 
-        $this->_request = $this->_client->createRequest($query);
-        $rs = $this->_client->select($query);
+        $this->_request = $this->_client->createRequest($this->_query);
+        $rs = $this->_client->select($this->_query);
         $this->_highlitght = $rs->getHighlighting();
         $this->_spellcheck = $rs->getSpellcheck();
         return $rs;
@@ -177,5 +190,15 @@ class SolariumQueryFactory
     public function getSpellcheck()
     {
         return $this->_spellcheck;
+    }
+
+    /**
+     * Get query
+     *
+     * @return Solarium\Query\Select
+     */
+    public function getQuery()
+    {
+        return $this->_query;
     }
 }

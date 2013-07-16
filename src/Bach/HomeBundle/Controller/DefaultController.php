@@ -151,14 +151,20 @@ class DefaultController extends Controller
                 $filter_field = $request->get('filter_field');
                 $filter_value = array($request->get('filter_value'));
 
-                if ( isset($filters[$filter_field])
-                    && is_array($filters[$filter_field])
-                    && !in_array($filter_value[0], $filters[$filter_field])
-                ) {
-                    $filter_value = array_push(
-                        $filters[$filter_field],
-                        $filter_value[0]
-                    );
+                switch ( $filter_field ) {
+                case 'cDateBegin':
+                case 'cDateEnd':
+                    break;
+                default:
+                    if ( isset($filters[$filter_field])
+                        && is_array($filters[$filter_field])
+                        && !in_array($filter_value[0], $filters[$filter_field])
+                    ) {
+                        $filter_value = array_push(
+                            $filters[$filter_field],
+                            $filter_value[0]
+                        );
+                    }
                 }
                 $filters[$filter_field] = $filter_value;
                 $session->set('filters', $filters);
@@ -231,28 +237,75 @@ class DefaultController extends Controller
             $facet = $rs->getFacetSet()->getFacet('geogname');
             $tags = array_merge($tags, $facet->getValues());
 
-            arsort($tags, SORT_NUMERIC);
+            if ( count($tags) > 0 ) {
+                arsort($tags, SORT_NUMERIC);
 
-            $values = array_values($tags);
-            $max = $values[0];
-            $min = $values[100];
-            //10 levels
-            $range = ($max - $min) / 9;
+                $values = array_values($tags);
+                $max = $values[0];
+                $min = $values[100];
+                //10 levels
+                $range = ($max - $min) / 9;
 
-            $tagcloud = array();
-            $i = 0;
-            //loop through returned result and normalize keyword hit counts
-            foreach ( $tags as $keyword=>$weight ) {
-                if ( $i === 100 ) {
-                    break;
+                $tagcloud = array();
+                $i = 0;
+                //loop through returned result and normalize keyword hit counts
+                foreach ( $tags as $keyword=>$weight ) {
+                    if ( $i === 100 ) {
+                        break;
+                    }
+
+                    $tagcloud[$keyword] = floor($weight/$range);
+                    $i++;
                 }
 
-                $tagcloud[$keyword] = floor($weight/$range);
-                $i++;
+                ksort($tagcloud, SORT_LOCALE_STRING);
+                $templateVars['tagcloud'] = $tagcloud;
             }
+        }
 
-            ksort($tagcloud, SORT_LOCALE_STRING);
-            $templateVars['tagcloud'] = $tagcloud;
+        //get min and max dates
+        /*if ( $current_query === null ) {
+            $current_query = $this->get('solarium.client')->createSelect();
+            $current_query->setQuery('*:*');
+        }
+        $current_query->setRows(0);
+        $stats = $current_query->getStats();*/
+
+        $query = $this->get('solarium.client')->createSelect();
+        $query->setQuery('*:*');
+        $query->setRows(0);
+        $stats = $query->getStats();
+
+        $stats->createField('cDateBegin');
+        $stats->createField('cDateEnd');
+        $rs = $this->get('solarium.client')->select($query);
+        /*$rs = $this->get('solarium.client')->select($current_query);*/
+        $rsStats = $rs->getStats();
+        $statsResults = $rsStats->getResults();
+
+        $min_date = $statsResults['cDateBegin']->getMin();
+        $dates_count = $statsResults['cDateBegin']->getCount();
+        $max_date = $statsResults['cDateEnd']->getMax();
+
+        if ( $min_date && $max_date ) {
+            $templateVars['min_date'] = explode('-', $min_date);
+            if ( isset($filters['cDateBegin']) ) {
+                $templateVars['selected_min_date'] = explode(
+                    '-',
+                    $filters['cDateBegin'][0]
+                );
+            } else {
+                $templateVars['selected_min_date'] = $templateVars['min_date'];
+            }
+            $templateVars['max_date'] = explode('-', $max_date);
+            if ( isset($filters['cDateEnd']) ) {
+                $templateVars['selected_max_date'] = explode(
+                    '-',
+                    $filters['cDateEnd'][0]
+                );
+            } else {
+                $templateVars['selected_max_date'] = $templateVars['max_date'];
+            }
         }
 
         $templateVars['form'] = $form->createView();

@@ -169,6 +169,10 @@ em.hl {
 #tagcloud a.tag8 { font-size: 2.3em; font-weight: 900; }
 #tagcloud a.tag9 { font-size: 2.5em; font-weight: 900; }
 
+#dates_range {
+    margin:0 1em 1em;
+}
+
 /* Lastly, apply responsive CSS fixes as necessary */
 @media ( max-width : 767px) {
     #footer {
