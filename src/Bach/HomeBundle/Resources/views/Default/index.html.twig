@@ -19,22 +19,6 @@
     {% endif %}
 
     <aside class="span2">
-
-        {% if sidebar|length > 0 %}
-        <ul class="nav nav-list well" id="options_sidebar">
-            {% for name,item in sidebar %}
-            <li class="nav-header">{{ name }}</li>
-                {% for choice in item %}
-                    {% if choice.selected  %}
-                    <li class="active"><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
-                    {% else %}
-                    <li><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </ul>
-        {% endif %}
-
         {% if facets is defined and searchResults|length > 0 %}
         <div class="well-free" id="refine_query">
             <h3 class="nav-header">
@@ -56,13 +40,12 @@
                     <section id="list_{{ facet_field }}">
                         <ul class="nav nav-list">
                         {% set index_name = 'c' ~ facet_field|capitalize %}
-                        {% if attribute(filters, index_name) is defined %}
-                            {% for value in attribute(filters, index_name) %}
-                            <li class="selected">{{ value }}</li>
-                            {% endfor %}
-                        {% endif %}
                         {% for facet,count in facet_res %}
-                            <li><a href="{{ path('bach_search', {query_terms: q, filter_field: 'c' ~ facet_field|capitalize, filter_value: facet}) }}">{{ facet }} ({{ count }})</a></li>
+                            <li>
+                            {% if attribute(filters, index_name) is not defined or attribute(filters, index_name) is defined and facet not in attribute(filters, index_name) %}
+                                <a href="{{ path('bach_search', {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
+                            {% endif %}
+                            </li>
                         {% endfor %}
                         </ul>
                     </section>
@@ -71,10 +54,41 @@
             </div>
         </div>
         {% endif %}
+
+        {% if sidebar|length > 0 %}
+        <ul class="nav nav-list well" id="options_sidebar">
+            {% for name,item in sidebar %}
+            <li class="nav-header">{{ name }}</li>
+                {% for choice in item %}
+                    {% if choice.selected  %}
+                    <li class="active"><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
+                    {% else %}
+                    <li><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+
     </aside>
 
     <div class="span9">
         <div id="dates_range"></div>
+        {% if filters is defined %}
+            <nav id="active_filters">
+                <strong>Active filters:</strong>
+                {% for filter_name,values in filters %}
+                <em>{{ filter_name }}:</em>
+                <ul>
+                    {% for value in values %}
+                    <li><a href="#" class="remove_filter" title="Remove filter on '{{value}}'">{{ value }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </nav>
+        {% endif %}
+
+
         <div class="row-fluid">
             <div class="span9">
                 <div class="container">

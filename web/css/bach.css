@@ -154,6 +154,13 @@ em.hl {
     text-shadow: none;
 }
 
+
+#active_filters ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0 .3em 0 0;
+}
+
 #tagcloud li {
     display: inline-block;
 }
