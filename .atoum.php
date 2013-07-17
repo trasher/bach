@@ -11,7 +11,6 @@ $coverageField->addSrcDirectory(
     function ($file, $key, $iterator) {
         // Pour continuer à descendre dans l'arborescence
         if ($file->isDir()) {
-            echo $file->getFilename();
             return true;
         }
 

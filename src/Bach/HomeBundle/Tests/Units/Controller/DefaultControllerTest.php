@@ -37,13 +37,36 @@ class DefaultController extends WebTestCase
      */
     public function testIndex()
     {
-        $this->request(
-            array('debug' => true)
-        )
-            ->GET('/search/')
-            ->hasStatus(404)
-            ->GET('/search')
-            ->hasStatus(200);
+        $this->request()->GET('/search/')
+            ->hasStatus(404);
+
+        $this->request()->GET('/search')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8')
+            ->crawler
+            ->hasElement('#tagCloud');
+
+        //those ones will work with FRANCT_0001 EAD document indexed...
+        //a successfull request
+        $this->request->GET('/search/Cayenne')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8')
+            ->crawler
+            ->hasElement('#search_results')
+            ->hasChild('article');
+
+        //a not successfull request, with one spelling suggestion
+        $this->request->GET('/search/cyenne')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8')
+            ->crawler
+            ->hasElement('#search_results')
+            ->hasChild('p')
+            ->withContent('Aucun résultat n\'a été trouvé.')
+            ->end()
+            ->hasChild('#suggestions')
+            ->hasChild('a')
+            ->withContent('cayenne');
 
     }
 }
