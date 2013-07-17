@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Bach\IndexationBundle\BachIndexationBundle(),
             new Bach\HomeBundle\BachHomeBundle(),
             new Bach\AdministrationBundle\AdministrationBundle(),
+            new atoum\AtoumBundle\AtoumAtoumBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

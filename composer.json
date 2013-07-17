@@ -22,7 +22,11 @@
         "jms/di-extra-bundle": "1.4.*",
         "nelmio/solarium-bundle": "2.0.*",
         "twitter/bootstrap": "2.3.*"
-  },
+    },
+    "require-dev": {
+        "atoum/atoum": "dev-master",
+        "atoum/atoum-bundle": "dev-master"
+    },
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
