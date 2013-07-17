@@ -27,8 +27,8 @@ class DriverMapperGenerator extends Generator
 
     public function generate($namespace, $mapper)
     {
-    	$dir = __DIR__.'/../Entity/Mapper';
-        
+        $dir = __DIR__.'/../Entity/Mapper';
+
         $parameters = array(
             'namespace' => $namespace,
             'mapper'    => $mapper

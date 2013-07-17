@@ -10,16 +10,16 @@ use Bach\IndexationBundle\Generator\FileDriverGenerator;
 
 class FileDriverCommand extends ContainerAwareCommand
 {
-	protected $generator = null;
-	
+    protected $generator = null;
+
     protected function configure()
     {
         $this
             ->setName('bach:generate:filedriver')
             ->setDescription('Create a new file driver for indexation')
             ->addArgument('format', InputArgument::REQUIRED, 'What is the file format process by the driver?')
-        	->addArgument('datatype', InputArgument::REQUIRED, 'What is the input data type?')
-        	->setHelp(<<<EOF
+            ->addArgument('datatype', InputArgument::REQUIRED, 'What is the input data type?')
+            ->setHelp(<<<EOF
 The <info>%command.name%</info> command create a new file driver in order to extend the indexation process
 EOF
         );
@@ -29,20 +29,20 @@ EOF
     {
         $format = $input->getArgument('format');
         $datatype = $input->getArgument('datatype');
-        
+
         $generator = $this->getGenerator('parser');
         $namespace = 'Bach\IndexationBundle\Entity\Driver\\'.strtoupper($format);
         $generator->generate($namespace, $format, $datatype);
-        
+
         $output->writeln('Generating the file driver code: <info>OK</info>');
     }
-    
+
     protected function getGenerator($name)
     {
-    	if (null == $this->generator) {
-    		$this->generator = new FileDriverGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/driver');
-    	}
-    
-    	return $this->generator;
+        if (null == $this->generator) {
+            $this->generator = new FileDriverGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/driver');
+        }
+
+        return $this->generator;
     }
 }
