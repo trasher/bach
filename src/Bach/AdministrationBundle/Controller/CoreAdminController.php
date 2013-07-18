@@ -89,7 +89,7 @@ class CoreAdminController extends Controller
         //$fields = $this->_getFieldsFromDataBase($cc->core);
 
         $em = $this->getDoctrine()->getManager();
-        $orm_name = 'Bach\IndexationBundle\Entity\UniversalFileFormat';
+        $orm_name = 'Bach\IndexationBundle\Entity';
         if ( $cc->core === 'EADUniversalFileFormat' ) {
             $orm_name .= '\EADFileFormat';
         }

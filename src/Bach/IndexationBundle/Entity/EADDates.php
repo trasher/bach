@@ -1,6 +1,6 @@
 <?php
 
-namespace Bach\IndexationBundle\Entity\UniversalFileFormat;
+namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -71,7 +71,7 @@ class EADDates
     protected $end;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EADFileFormat", inversedBy="EADDates")
+     * @ORM\ManyToOne(targetEntity="EADFileFormat", inversedBy="dates")
      * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid")
      */
     protected $eadfile;
@@ -348,5 +348,28 @@ class EADDates
     public function getEnd()
     {
         return $this->end;
+    }
+
+    /**
+     * Set eadfile
+     *
+     * @param \Bach\IndexationBundle\Entity\UniversalFileFormat\EADFileFormat $eadfile
+     * @return EADDates
+     */
+    public function setEadfile(\Bach\IndexationBundle\Entity\UniversalFileFormat\EADFileFormat $eadfile = null)
+    {
+        $this->eadfile = $eadfile;
+    
+        return $this;
+    }
+
+    /**
+     * Get eadfile
+     *
+     * @return \Bach\IndexationBundle\Entity\UniversalFileFormat\EADFileFormat 
+     */
+    public function getEadfile()
+    {
+        return $this->eadfile;
     }
 }

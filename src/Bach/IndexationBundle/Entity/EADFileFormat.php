@@ -1,8 +1,7 @@
 <?php
 
-namespace Bach\IndexationBundle\Entity\UniversalFileFormat;
+namespace Bach\IndexationBundle\Entity;
 
-use Bach\IndexationBundle\Entity\UniversalFileFormat;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -10,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="EADUniversalFileFormat")
  */
-class EADFileFormat extends UniversalFileFormat
+class EADFileFormat extends MappedFileFormat
 {
     /**
      * @ORM\Column(type="string", nullable=true, length=100)
@@ -43,17 +42,17 @@ class EADFileFormat extends UniversalFileFormat
     protected $cDaoloc;
 
     /**
-     * @ORM\COlumn(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $fragment;
 
     /**
-     * @ORM\OneToMany(targetEntity="EADIndexes", mappedBy="EADFileFormat", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="EADIndexes", mappedBy="eadfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $indexes;
 
     /**
-     * @ORM\OneToMany(targetEntity="EADDates", mappedBy="EADFileFormat", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="EADDates", mappedBy="eadfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $dates;
 

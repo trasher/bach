@@ -1,6 +1,6 @@
 <?php
 
-namespace Bach\IndexationBundle\Entity\UniversalFileFormat;
+namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -100,7 +100,7 @@ class EADIndexes
     protected $source;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EADFileFormat", inversedBy="EADIndexes")
+     * @ORM\ManyToOne(targetEntity="EADFileFormat", inversedBy="indexes")
      * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid")
      */
     protected $eadfile;
