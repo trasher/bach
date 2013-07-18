@@ -10,5 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 */
 class UniversalFileFormat extends MappedFileFormat
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer", length=10)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $uniqid;
 
 }

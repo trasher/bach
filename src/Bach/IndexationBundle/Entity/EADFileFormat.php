@@ -12,6 +12,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 class EADFileFormat extends MappedFileFormat
 {
     /**
+     * @ORM\Id
+     * @ORM\Column(type="integer", length=10)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $uniqid;
+
+    /**
      * @ORM\Column(type="string", nullable=true, length=100)
      */
     protected $parents;
