@@ -162,7 +162,7 @@ class DefaultController extends Controller
      */
     public function purgeAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
             'SELECT t FROM BachIndexationBundle:ArchFileIntegrationTask t ' .
             'WHERE t.status > 0'
@@ -193,7 +193,7 @@ class DefaultController extends Controller
         $result = $client->update($update);
 
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
         $platform   = $connection->getDatabasePlatform();
 
