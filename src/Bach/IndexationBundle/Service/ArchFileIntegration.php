@@ -84,11 +84,12 @@ class ArchFileIntegration
     /**
      * Proceed task database integration
      *
-     * @param Entity $task Task to proceed
+     * @param Entity   $task Task to proceed
+     * @param Document $doc  Document
      *
      * @return void
      */
-    public function integrate($task)
+    public function integrate($task, $doc)
     {
         $spl = new \SplFileInfo($task->getPath());
         $format = $task->getFormat();
@@ -101,6 +102,7 @@ class ArchFileIntegration
         );
 
         foreach ($universalFileFormats as $universalFileFormat) {
+            $universalFileFormat->setDocId($doc);
             $this->_entityManager->persist($universalFileFormat);
         }
 

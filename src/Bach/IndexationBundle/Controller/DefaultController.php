@@ -145,7 +145,7 @@ class DefaultController extends Controller
                     //and launch indexation process
                     $integrationService = $this->container
                         ->get('bach.indexation.process.arch_file_integration');
-                    $res = $integrationService->integrate($task);
+                    $res = $integrationService->integrate($task, $document);
                 }
             }
         }
