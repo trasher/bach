@@ -5,6 +5,7 @@
 
 namespace Bach\IndexationBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -39,6 +40,19 @@ class Document
      * @ORM\Column(type="string", length=255)
      */
     protected $extension;
+
+    /**
+     * @ORM\OneToMany(targetEntity="MappedFileFormat", mappedBy="doc_id", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $uff;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->uff = new ArrayCollection();
+    }
 
     public function getAbsolutePath()
     {
@@ -189,5 +203,38 @@ class Document
         $this->extension = $extension;
 
         return $this;
+    }
+
+    /**
+     * Add uff
+     *
+     * @param \Bach\IndexationBundle\Entity\MappedFileFormat $uff
+     * @return Document
+     */
+    public function addUff(\Bach\IndexationBundle\Entity\MappedFileFormat $uff)
+    {
+        $this->uff[] = $uff;
+    
+        return $this;
+    }
+
+    /**
+     * Remove uff
+     *
+     * @param \Bach\IndexationBundle\Entity\MappedFileFormat $uff
+     */
+    public function removeUff(\Bach\IndexationBundle\Entity\MappedFileFormat $uff)
+    {
+        $this->uff->removeElement($uff);
+    }
+
+    /**
+     * Get uff
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUff()
+    {
+        return $this->uff;
     }
 }
