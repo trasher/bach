@@ -119,7 +119,7 @@ class MappedFileFormat
     protected $archDescLegalStatus;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Document", inversedBy="uff")
+     * @ORM\ManyToOne(targetEntity="Document")
      * @ORM\JoinColumn(name="doc_id", referencedColumnName="id")
      */
     protected $doc_id;

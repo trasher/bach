@@ -8,12 +8,13 @@
 <div class="span9">
     {% include 'BachIndexationBundle:Indexation:upload.html.twig' %}
 
+    <form id="documents" action="{{ path("bach_indexation_deletedocuments") }}" method="POST">
     <fieldset>
         <legend>
             Documents indexés
             <span class="btn-groups pull-right">
-                <a href="{{ path("bach_indexation_empty") }}" class="btn btn-danger " title="Supprimer tous les documents indexés" onClick="javascript:return confirm('Souahitez-vous réllement supprimer tous les documents indexés ?\n\nCette action n\'est pas réversible.')"><span class="icon-trash icon-white"></span></a>
-                <button id="refresh" class="btn"><span class="icon-refresh"></span></button>
+                <a id="empty" href="{{ path("bach_indexation_empty") }}" class="btn btn-danger " title="Supprimer tous les documents indexés"><span class="icon-trash icon-white"></span></a>
+                <a href="{{ path('bach_indexation_homepage') }}" id="refresh" class="btn" title="Rafraîchir la liste"><span class="icon-refresh"></span></a>
             </span>
         </legend>
 
@@ -22,18 +23,27 @@
             <thead>
                 <th>Id</th>
                 <th>Type</th>
+                <th>Fichier</th>
                 <th>Titre</th>
                 <th></th>
             </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <button type="submit" id="delete_documents" class="btn btn-danger " title="Supprimer les documents sélectionnés"><span class="icon-trash icon-white"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
             <tbody>
                 {% for document in documents %}
                 <tr>
                     <td>
-                        <input type="checkbox" name="documents[]" id="document_{{ document.getId }}"/>
+                        <input type="checkbox" name="documents[]" id="document_{{ document.getId }}" value="{{ document.getExtension }}::{{ document.getId }}"/>
                         <label for="document_{{ document.getId }}">{{ document.getId }}</label>
                     </td>
                     <td>{{ document.getExtension }}</td>
                     <td>{{ document.getName }}</td>
+                    <td></td>
                     <td></td>
                 </tr>
                 {% endfor %}
@@ -43,4 +53,30 @@
             <p>Aucun document n'est actuellement indexé.</p>
         {% endif %}
     </fieldset>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(document).ready(function(){
+        $('#empty').click(function(){
+            return confirm('Souhaitez-vous réllement supprimer tous les documents indexés ?\n\nCette action n\'est pas réversible !');
+        });
+
+        $('#delete_documents').click(function(){
+            var _count = $('#documents :checked').length;
+            if ( _count == 0 ) {
+                alert('Veuillez sélectionner au moins un document.');
+                return false;
+            } else {
+                if ( _count == 1 ) {
+                    return confirm('Souhaitez-vous supprimer le document sélectionné ?');
+                } else {
+                    return confirm('Souhaitez-vous supprimer les ' + _count + ' documents sélectionnés ?');
+                }
+            }
+        });
+    });
+    </script>
 {% endblock %}

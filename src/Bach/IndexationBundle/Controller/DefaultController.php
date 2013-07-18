@@ -179,6 +179,81 @@ class DefaultController extends Controller
     }
 
     /**
+     * Remove selected indexed documents, in both database and Solr
+     *
+     * @return void
+     */
+    public function removeDocumentsAction()
+    {
+        $documents = $this->get('request')->request->get('documents');
+
+        $extensions = array();
+        $ids = array();
+        foreach ( $documents as $document) {
+            list($extension, $id) = explode('::', $document);
+            if ( !isset($extensions[$extension]) ) {
+                $extensions[$extension] = array();
+            }
+            $extensions[$extension][] = $id;
+            $ids[] = $id;
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $qb = $em->createQueryBuilder();
+        $qb->add('select', 'd')
+            ->add('from', 'BachIndexationBundle:Document d')
+            ->add('where', 'd.id IN (:ids)')
+            ->setParameter('ids', $ids);
+
+        $query = $qb->getQuery();
+        $docs = $query->getResult();
+        foreach ($docs as $doc) {
+            $em->remove($doc);
+        }
+
+        //remove solr indexed documents
+        $client = $this->get("solarium.client");
+        $update = $client->createUpdate();
+
+
+        //remove documents contents
+        foreach ( $extensions as $extension=>$ids ) {
+            $ent = '';
+            switch ( $extension ) {
+            case 'ead':
+                $ent = 'BachIndexationBundle:EADFileFormat';
+                break;
+            default:
+                throw new \RuntimeException('Unknown extension ' . $extension);
+                break;
+            }
+
+            $qb = $em->createQueryBuilder();
+            $qb->add('select', 'e')
+                ->add('from', $ent . ' e')
+                ->add('where', 'e.doc_id IN (:ids)')
+                ->setParameter('ids', $ids);
+
+            $query = $qb->getQuery();
+            $contents = $query->getResult();
+            foreach ($contents as $content) {
+                $em->remove($content);
+                $update->addDeleteQuery('uniqid:' . $content->getUniqid());
+            }
+        }
+
+        $em->flush();
+
+        $update->addCommit();
+        $result = $client->update($update);
+
+        return new RedirectResponse(
+            $this->get("router")->generate("bach_indexation_homepage")
+        );
+    }
+
+    /**
      * Remove all indexed documents, in both database and Solr
      *
      * @return void
@@ -191,7 +266,6 @@ class DefaultController extends Controller
         $update->addDeleteQuery('*:*');
         $update->addCommit();
         $result = $client->update($update);
-
 
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
