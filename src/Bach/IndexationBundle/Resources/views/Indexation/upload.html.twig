@@ -1,0 +1,41 @@
+    <div id="upload" style="display: none">
+        <fieldset>
+            <legend>Indexer un nouveau fichier</legend>
+            <div class="row-fluid">
+                <div class="span7 well">
+                    <form action="{{ path("bach_indexation_upload_process") }}" class="form-horizontal" method="post" {{ form_enctype(upload_form) }} >
+                      <div class="control-group">
+                          {{ form_label(upload_form.file) }}
+                          <div class="controls">
+                               {{ form_widget(upload_form.file) }}
+                           </div>
+                      </div>
+                      <div class="control-group">
+                        {{ form_label(upload_form.extension) }}
+                        <div class="controls">
+                            {{ form_widget(upload_form.extension) }}
+                        </div>
+                      </div>
+                        {{ form_widget(upload_form._token) }}
+
+                    <div class="control-group">
+                        <div class="controls">
+                            {{ form_widget(upload_form.perform) }}
+                            {{ form_widget(upload_form.performall) }}
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="span5">
+                    <p>Selectionnez le fichier que vous souhaitez indexer. Il sera ajouté ensuite à la file d'attente du processus d'indexation.</p>
+                    <p>La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation.</p>
+                    <p>Vous pouvez choisir de lancer l'indexation directement pour que le fichier ne soit pas ajouté à la file d'attente, et soit traité directement.</p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <script type="text/javascript">
+        function toggleUploadForm() {
+            $("#upload").toggle();
+        }
+    </script>

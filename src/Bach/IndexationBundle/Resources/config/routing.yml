@@ -2,12 +2,20 @@ bach_indexation_homepage:
     pattern:  /indexation
     defaults: { _controller: BachIndexationBundle:Default:index }
 
+bach_indexation_queue:
+    pattern:  /indexation/queue
+    defaults: { _controller: BachIndexationBundle:Default:queue }
+
 bach_indexation_upload_process:
     pattern:  /indexation/uploadProcess
     defaults: { _controller: BachIndexationBundle:Default:indexProcess }
     requirements:
         _method:  POST
- 
+
 bach_indexation_purge:
     pattern:  /indexation/purge
     defaults: { _controller: BachIndexationBundle:Default:purge }
+
+bach_indexation_empty:
+    pattern:  /indexation/empty
+    defaults: { _controller: BachIndexationBundle:Default:empty }

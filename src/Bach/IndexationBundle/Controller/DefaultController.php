@@ -35,16 +35,34 @@ use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
  */
 class DefaultController extends Controller
 {
+    private $_upload_form = null;
+
+    /**
+     * Displays current indexed documents
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+        $repo = $this->getDoctrine()->getRepository('BachIndexationBundle:Document');
+        $documents = $repo->findAll();
+
+        return $this->render(
+            'BachIndexationBundle:Indexation:index.html.twig',
+            array(
+                'documents'     => $documents,
+                'upload_form'   => $this->_getUploadForm()->createView()
+            )
+        );
+    }
 
     /**
      * Displays indexation queue and form
      *
      * @return void
      */
-    public function indexAction()
+    public function queueAction()
     {
-        $document = new Document();
-        $form = $this->_getDocumentForm($document);
         $em2 = $this->getDoctrine()->getManager();
 
         $repository = $em2
@@ -85,10 +103,10 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'BachIndexationBundle:Indexation:index.html.twig',
+            'BachIndexationBundle:Indexation:queue.html.twig',
             array(
-                'tasks' =>$tasks,
-                'form'  => $form->createView()
+                'tasks'         => $tasks,
+                'upload_form'   => $this->_getUploadForm()->createView()
             )
         );
     }
@@ -100,12 +118,12 @@ class DefaultController extends Controller
      */
     public function indexProcessAction()
     {
-        $document = new Document();
-        $form = $this->_getDocumentForm($document);
+        $form = $this->_getUploadForm();
 
         if ($this->getRequest()->isMethod('POST')) {
             $form->bind($this->getRequest());
             if ($form->isValid()) {
+                $document = $form->getData();
                 //store document reference
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($document);
@@ -161,56 +179,105 @@ class DefaultController extends Controller
     }
 
     /**
-     * Get document form controller
-     *
-     * @param mixed $document Document
+     * Remove all indexed documents, in both database and Solr
      *
      * @return void
      */
-    private function _getDocumentForm($document)
+    public function emptyAction()
     {
-        $form = $this
-            ->createFormBuilder($document)
-            ->add(
-                'file',
-                'file',
-                array(
-                    "label" => "Fichier à indexer"
-                )
-            )
-            ->add(
-                'extension',
-                'choice',
-                array(
-                    "choices" => array(
-                        "ead"       => "EAD",
-                        "unimarc"   => "UNIMARC"
-                    ),
-                    "label"    =>    "Format du fichier"
-                )
-            )
-            ->add(
-                'perform',
-                'submit',
-                array(
-                    'label' => "Ajouter le fichier à la file d'attente",
-                    'attr'  => array(
-                        'class' => 'btn btn-primary'
-                    )
-                )
-            )
-            ->add(
-                'performall',
-                'submit',
-                array(
-                    'label' => "Lancer l'indexation",
-                    'attr'  => array(
-                        'class' => 'btn btn-primary'
-                    )
-                )
-            )
-            ->getForm();
+        //remove solr indexed documents
+        $client = $this->get("solarium.client");
+        $update = $client->createUpdate();
+        $update->addDeleteQuery('*:*');
+        $update->addCommit();
+        $result = $client->update($update);
 
-        return $form;
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $connection = $em->getConnection();
+        $platform   = $connection->getDatabasePlatform();
+
+        $connection->query('SET FOREIGN_KEY_CHECKS=0');
+
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('UniversalFileFormat', true)
+        );
+
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('EADDates', true)
+        );
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('EADIndexes', true)
+        );
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('EADUniversalFileFormat', true)
+        );
+
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('Document', true)
+        );
+
+        $connection->query('SET FOREIGN_KEY_CHECKS=1');
+
+        return new RedirectResponse(
+            $this->get("router")->generate("bach_indexation_homepage")
+        );
+    }
+
+
+    /**
+     * Get document form controller
+     *
+     * @return void
+     */
+    private function _getUploadForm()
+    {
+        if ( $this->_upload_form === null ) {
+            $document = new Document();
+
+            $this->_upload_form = $this
+                ->createFormBuilder($document)
+                ->add(
+                    'file',
+                    'file',
+                    array(
+                        "label" => "Fichier à indexer"
+                    )
+                )
+                ->add(
+                    'extension',
+                    'choice',
+                    array(
+                        "choices" => array(
+                            "ead"       => "EAD",
+                            "unimarc"   => "UNIMARC"
+                        ),
+                        "label"    =>    "Format du fichier"
+                    )
+                )
+                ->add(
+                    'perform',
+                    'submit',
+                    array(
+                        'label' => "Ajouter le fichier à la file d'attente",
+                        'attr'  => array(
+                            'class' => 'btn btn-primary'
+                        )
+                    )
+                )
+                ->add(
+                    'performall',
+                    'submit',
+                    array(
+                        'label' => "Lancer l'indexation",
+                        'attr'  => array(
+                            'class' => 'btn btn-primary'
+                        )
+                    )
+                )
+                ->getForm();
+        }
+
+        return $this->_upload_form;
     }
 }

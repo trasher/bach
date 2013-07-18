@@ -49,7 +49,7 @@
                             <a href="{{ path('bach_browse') }}" data-toggle="tooltip" title="Navigation...">Browse</a>
                         </li>
 
-                        <li{% if current_route == 'bach_indexation_homepage' %} class="active"{% endif %}>
+                        <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
                             <a href="{{ path('bach_indexation_homepage') }}" data-toggle="tooltip" title="Gestion de l'indexation">Indexation</a>
                         </li>
                         <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>

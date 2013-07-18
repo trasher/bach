@@ -1,120 +1,46 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
-    <ul class="span2 nav nav-list well" id="options_sidebar">
-        <li class="nav-header">Gestion de l'indexation</li>
-        <li class="divider"></li>
-        <li class="active"><a href="#"><i class="icon-tasks"></i> File d'attente des tâches d'indexation</a></li>
-        <li><a href="#" onClick="cachervisible()"><i class="icon-download-alt"></i> Indexer un nouveau fichier</a></li>
-        {#<li><a href="{{ path('upload') }}"><i class="icon-download-alt"></i> Indexer des fichiers</a></li>#}
-        <li class="divider"></li>
-        <li><a href="#helpModal" role="button" data-toggle="modal"><i class="icon-question-sign"></i> Aide</a></li>
-    </ul>
+    {% include 'BachIndexationBundle:Indexation:menu.html.twig' %}
+    {% include 'BachIndexationBundle:Indexation:upload.html.twig' %}
 
 
 <div class="span9">
-    <div id="upload" style="display: none">
-        <fieldset>
-            <legend>Indexer un nouveau fichier</legend>
-            <div class="row-fluid">
-                <div class="span7 well">
-                    <form action="{{ path("bach_indexation_upload_process") }}" class="form-horizontal" method="post" {{ form_enctype(form) }} >
-                      <div class="control-group">
-                          {{ form_label(form.file) }}
-                          <div class="controls">
-                               {{ form_widget(form.file) }}
-                           </div>
-                      </div>
-                      <div class="control-group">
-                        {{ form_label(form.extension) }}
-                        <div class="controls">
-                            {{ form_widget(form.extension) }}
-                        </div>
-                      </div>
-                        {{ form_widget(form._token) }}
+    {% include 'BachIndexationBundle:Indexation:upload.html.twig' %}
 
-                    <div class="control-group">
-                        <div class="controls">
-                            {{ form_widget(form.perform) }}
-                            {{ form_widget(form.performall) }}
-                        </div>
-                    </div>
-                    </form>
-                </div>
-                <div class="span5">
-                    <p>Selectionnez le fichier que vous souhaitez indexer. Il sera ajouté ensuite à la file d'attente du processus d'indexation.</p>
-                    <p>La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation.</p>
-                    <p>Vous pouvez choisir de lancer l'indexation directement pour que le fichier ne soit pas ajouté à la file d'attente, et soit traité directement.</p>
-                </div>
-            </div>
-        </fieldset>
-    </div>
     <fieldset>
         <legend>
-            File d'attente des tâches d'indexation
+            Documents indexés
             <span class="btn-groups pull-right">
-                <a href="{{ path("bach_indexation_purge") }}" class="btn btn-danger " title="Supprimer les tâches traitées"><span class="icon-trash icon-white"></span></a>
+                <a href="{{ path("bach_indexation_empty") }}" class="btn btn-danger " title="Supprimer tous les documents indexés" onClick="javascript:return confirm('Souahitez-vous réllement supprimer tous les documents indexés ?\n\nCette action n\'est pas réversible.')"><span class="icon-trash icon-white"></span></a>
                 <button id="refresh" class="btn"><span class="icon-refresh"></span></button>
             </span>
         </legend>
 
-        <div class="row-fluid">
-            <div class="span12">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nom du fichier</th>
-                            <th>Format</th>
-                            <th>Taille</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if tasks|length > 0 %}
-                        {% for task in tasks %}
-                        <tr class="{{ task.status }}">
-                            <td>{{ task.filename }}</td>
-                            <td>{{ task.format }}</td>
-                            <td>{{ task.size }}</td>
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td colspan="3">Aucune tache d'indexation en cours</td>
-                        </tr>
-                        {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-
-<div class="modal hide" id="helpModal">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Aide de l'indexation</h3>
-    </div>
-    <div class="modal-body">
-           <p>Le processus d'indexation consiste à extraire d'un fichier toutes les informations utiles.</p>
-           <br/>
-           <p>Pour l'indexation: selectionnez le fichier que vous souhaitez indexer et renseignez son format (EAD/UNIMARC,etc.)<br/>
-           Une fois la validation effectuée, le fichier se placera dans la file d'attente du processus d'indexation.<br/>
-           La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation. </p>
-    </div>
-</div>
-</div>
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-    $(document).ready(function(){
-        $("#refresh").click(function(){
-            location.reload();
-        });
-    });
-
-    function cachervisible() {
-        $("#upload").toggle();
-    }
-    </script>
-{% endblock %}
+        {% if documents is defined and documents|length > 0 %}
+        <table>
+            <thead>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Titre</th>
+                <th></th>
+            </thead>
+            <tbody>
+                {% for document in documents %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="documents[]" id="document_{{ document.getId }}"/>
+                        <label for="document_{{ document.getId }}">{{ document.getId }}</label>
+                    </td>
+                    <td>{{ document.getExtension }}</td>
+                    <td>{{ document.getName }}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>Aucun document n'est actuellement indexé.</p>
+        {% endif %}
+    </fieldset>
 {% endblock %}
