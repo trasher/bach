@@ -18,27 +18,27 @@ class Document
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    public $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    public $path;
+    protected $path;
 
     /**
      * @Assert\File
      */
-    public $file;
+    protected $file;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    public $extension;
+    protected $extension;
 
     public function getAbsolutePath()
     {
