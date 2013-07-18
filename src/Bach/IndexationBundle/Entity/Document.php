@@ -11,86 +11,92 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="DocumentRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Document {
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	public $id;
-	
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	public $name;
+class Document
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    public $id;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	public $path;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    public $name;
 
-	/**
-	 * @Assert\File
-	 */
-	public $file;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    public $path;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	public $extension;
+    /**
+     * @Assert\File
+     */
+    public $file;
 
-	public function getAbsolutePath() {
-		return null === $this->path ? null
-				: $this->getUploadRootDir() . '/' . $this->path;
-	}
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    public $extension;
 
-	public function getWebPath() {
-		return null === $this->path ? null
-				: $this->getUploadDir() . '/' . $this->path;
-	}
+    public function getAbsolutePath()
+    {
+        return null === $this->path ? null
+                : $this->getUploadRootDir() . '/' . $this->path;
+    }
 
-	protected function getUploadRootDir() {
-		// le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-		return __DIR__ . '/../../../../web/' . $this->getUploadDir();
-	}
+    public function getWebPath()
+    {
+        return null === $this->path ? null
+                : $this->getUploadDir() . '/' . $this->path;
+    }
 
-	protected function getUploadDir() {
-		// on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
-		// le document/image dans la vue.
-		return 'uploads/documents';
-	}
+    protected function getUploadRootDir()
+    {
+        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
 
-	/**
-	 * @ORM\PrePersist()
-	 * @ORM\PreUpdate()
-	 */
-	public function preUpload() {
-		if (null !== $this->file) {
-			 $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
-			 $this->name = $this->file->getClientOriginalName();
-			// $this->extension = $this->file->guessExtension();
-		}
-	}
+    protected function getUploadDir()
+    {
+        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
+        // le document/image dans la vue.
+        return 'uploads/documents';
+    }
 
-	/**
-	 * @ORM\PostPersist()
-	 * @ORM\PostUpdate()
-	 */
-	public function upload() {
-		if (null === $this->file) {
-			return;
-		}
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+             $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+             $this->name = $this->file->getClientOriginalName();
+            // $this->extension = $this->file->guessExtension();
+        }
+    }
 
-		// s'il y a une erreur lors du déplacement du fichier, une exception
-		// va automatiquement être lancée par la méthode move(). Cela va empêcher
-		// proprement l'entité d'être persistée dans la base de données si
-		// erreur il y a
-		$this->file->move($this->getUploadRootDir(), $this->path);
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
 
-		unset($this->file);
-	}
+        // s'il y a une erreur lors du déplacement du fichier, une exception
+        // va automatiquement être lancée par la méthode move(). Cela va empêcher
+        // proprement l'entité d'être persistée dans la base de données si
+        // erreur il y a
+        $this->file->move($this->getUploadRootDir(), $this->path);
 
-   
+        unset($this->file);
+    }
+
     /**
      * @ORM\PostRemove()
      */
@@ -120,7 +126,7 @@ class Document {
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -143,7 +149,7 @@ class Document {
     public function setPath($path)
     {
         $this->path = $path;
-    
+
         return $this;
     }
 
@@ -157,25 +163,20 @@ class Document {
         return $this->path;
     }
 
-    /*
-	public function getName() {
-		return $this->file->getClientOriginalName();
-	}
-	*/
-    
-	public function getFile() {
-		return $this->file;
-	}
+    public function getFile()
+    {
+        return $this->file;
+    }
 
-	public function setFile($file) {
-		$this->file = $file;
-	}
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
 
-	public function getExtension() {
-		return $this->extension;
-	}
-
-
+    public function getExtension()
+    {
+        return $this->extension;
+    }
 
     /**
      * Set extension
@@ -186,7 +187,7 @@ class Document {
     public function setExtension($extension)
     {
         $this->extension = $extension;
-    
+
         return $this;
     }
 }

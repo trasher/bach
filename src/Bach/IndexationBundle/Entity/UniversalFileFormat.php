@@ -10,135 +10,126 @@ use Doctrine\ORM\Mapping as ORM;
 */
 class UniversalFileFormat
 {
-	
-	/**
-	* @ORM\Id
-	* @ORM\Column(type="integer", length=10)
-	* @ORM\GeneratedValue(strategy="AUTO")
-	*/
-	protected $uniqid;
-	
-	/**
-	* @ORM\Column(type="string", nullable=true, length=100)
-	*/
-	protected $headerId;
-	
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	protected $headerSubtitle;
-	
-	/**
-	* @ORM\Column(type="string", nullable=true, length=100)
-	*/
-	protected $headerAuthor;
-	
-	/**
-	* @ORM\Column(type="string", nullable=true, length=100)
-	*/
-	protected $headerDate;
-	
-	/**
-	* @ORM\Column(type="string", nullable=true, length=100)
-	*/
-	protected $headerPublisher;
-	
-	/**
-	* @ORM\Column(type="text", nullable=true)
-	*/
-	protected $headerAddress;
-	
-	/**
-	* @ORM\Column(type="string", nullable=true, length=3)
-	*/
-	protected $headerLanguage;
-	
-	/**
-	 * 
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	protected $archDescUnitId;
-	
-	/**
-	 * 
-	 * @ORM\Column(type="string", nullable=true, length=250)
-	 */
-	protected $archDescUnitTitle;
-	
-	
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	protected $archDescUnitDate;
-	
-	/**
-	 *
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	protected $archDescDimension;
 
-	
-	/**
-	 *
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	protected $archDescRepository;
-	
-	
-	/**
-	 *
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	protected $archDescLangMaterial; 
-	
-	/**
-	 *
-	 * @ORM\Column(type="string", nullable=true, length=15)
-	 */
-	protected $archDescLangOrigination;
-	 
-	/**
-	 *
-	 * @ORM\Column(type="string", nullable=true, length=1000)
-	 */
-	protected $archDescAcqInfo;
+    /**
+    * @ORM\Id
+    * @ORM\Column(type="integer", length=10)
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
+    protected $uniqid;
 
-	/**
-	 *
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	protected $archDescScopeContent;
+    /**
+    * @ORM\Column(type="string", nullable=true, length=100)
+    */
+    protected $headerId;
 
-	
-	/**
-	 *
-	 * @ORM\Column(type="string", nullable=true, length=1000)
-	 */
-	protected $archDescAccruals; 
-	
-	
-	/**
-	 *
-	 * @ORM\Column(type="string", nullable=true, length=1000)
-	 */
-	protected $archDescArrangement;
-	
-	/**
-	 *
-	 * @ORM\Column(type="string", nullable=true, length=1000)
-	 */
-	protected $archDescAccessRestrict; 
-	
-	
-	/**
-	 *
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	protected $archDescLegalStatus;  
-	
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $headerSubtitle;
+
+    /**
+    * @ORM\Column(type="string", nullable=true, length=100)
+    */
+    protected $headerAuthor;
+
+    /**
+    * @ORM\Column(type="string", nullable=true, length=100)
+    */
+    protected $headerDate;
+
+    /**
+    * @ORM\Column(type="string", nullable=true, length=100)
+    */
+    protected $headerPublisher;
+
+    /**
+    * @ORM\Column(type="text", nullable=true)
+    */
+    protected $headerAddress;
+
+    /**
+    * @ORM\Column(type="string", nullable=true, length=3)
+    */
+    protected $headerLanguage;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $archDescUnitId;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=250)
+     */
+    protected $archDescUnitTitle;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $archDescUnitDate;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $archDescDimension;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $archDescRepository;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $archDescLangMaterial;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true, length=15)
+     */
+    protected $archDescLangOrigination;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true, length=1000)
+     */
+    protected $archDescAcqInfo;
+
+    /**
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $archDescScopeContent;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true, length=1000)
+     */
+    protected $archDescAccruals;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true, length=1000)
+     */
+    protected $archDescArrangement;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true, length=1000)
+     */
+    protected $archDescAccessRestrict;
+
+    /**
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $archDescLegalStatus;
+
     /**
       * The constructor
-      * 
+      *
       * @param array $data The input data
       */
     public function __construct($data)
@@ -149,8 +140,8 @@ class UniversalFileFormat
     /**
      * Proceed data parsing
      *
-     * @param array $data
-     * 
+     * @param array $data Data to parse
+     *
      * @return void
      */
     protected function parseData($data)
@@ -171,7 +162,7 @@ class UniversalFileFormat
     public function setHeaderId($headerId)
     {
         $this->headerId = $headerId;
-    
+
         return $this;
     }
 
@@ -194,7 +185,7 @@ class UniversalFileFormat
     public function setHeaderAuthor($headerAuthor)
     {
         $this->headerAuthor = $headerAuthor;
-    
+
         return $this;
     }
 
@@ -217,7 +208,7 @@ class UniversalFileFormat
     public function setHeaderDate($headerDate)
     {
         $this->headerDate = $headerDate;
-    
+
         return $this;
     }
 
@@ -240,7 +231,7 @@ class UniversalFileFormat
     public function setHeaderPublisher($headerPublisher)
     {
         $this->headerPublisher = $headerPublisher;
-    
+
         return $this;
     }
 
@@ -263,7 +254,7 @@ class UniversalFileFormat
     public function setHeaderAddress($headerAddress)
     {
         $this->headerAddress = $headerAddress;
-    
+
         return $this;
     }
 
@@ -276,8 +267,7 @@ class UniversalFileFormat
     {
         return $this->headerAddress;
     }
-    
-    
+
     /**
      * Get headerSubtitle
      *
@@ -285,15 +275,20 @@ class UniversalFileFormat
      */
     public function getHeaderSubtitle()
     {
-    	
-    	return $this->headerSubtitle;
-    	
+        return $this->headerSubtitle;
     }
-    
+
+    /**
+     * Set headerSubtitle
+     *
+     * @param string $headerSubtitle
+     *
+     * @return UniversalFileFormat
+     */
     public function setHeaderSubtitle($headerSubtitle)
     {
-    	$this->headerSubtitle = $headerSubtitle;
-    	return $this;
+        $this->headerSubtitle = $headerSubtitle;
+        return $this;
     }
 
     /**
@@ -305,14 +300,14 @@ class UniversalFileFormat
     public function setHeaderLanguage($headerLanguage)
     {
         $this->headerLanguage = $headerLanguage;
-    
+
         return $this;
     }
 
     /**
      * Get headerLanguage
      *
-     * @return string 
+     * @return string
      */
     public function getHeaderLanguage()
     {
