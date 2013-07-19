@@ -105,9 +105,11 @@
                             <aside id="suggestions">
                                 Suggestions de recherche complémentaire&nbsp;:
                                 {% for term,termResult in suggestions %}
-                                    {% for suggest in termResult %}
-                                        <a href="{{ path('bach_search', {query_terms: suggest}) }} ">{{ suggest }}</a>
-                                    {% endfor %}
+                                    {% if termResult|length > 0 %}
+                                        {% for suggest in termResult %}
+                                            <a href="{{ path('bach_search', {query_terms: suggest}) }} ">{{ suggest }}</a>
+                                        {% endfor %}
+                                    {% endif %}
                                 {% endfor %}
                             </aside>
                             {% endif %}
