@@ -1,0 +1,7 @@
+{% extends '::base.html.twig' %}
+
+{% block container %}
+    <article class="row-fluid" id="result_{{ docid }}">
+        {{ displayFragment(document.fragment, true)|raw }}
+    </article>
+{% endblock %}

@@ -452,4 +452,43 @@ class DefaultController extends Controller
 
         return new JsonResponse($suggestions);
     }
+
+    /**
+     * Document display
+     *
+     * @param int $docid Document unique identifier
+     *
+     * @return void
+     */
+    public function displayDocumentAction($docid)
+    {
+        $client = $this->get("solarium.client");
+        $query = $client->createSelect();
+        $query->setQuery('uniqid:' . $docid);
+        $query->setFields('fragment');
+        $query->setStart(0)->setRows(1);
+
+        $rs = $client->select($query);
+
+        if ( $rs->getNumFound() !== 1 ) {
+            throw new \RuntimeException(
+                $rs->getNumFound() . ' results found, 1 excpected.'
+            );
+        }
+
+        $request = $client->createRequest($query);
+        $uri = $request->getUri();
+        
+        $docs  = $rs->getDocuments();
+        $doc = $docs[0];
+        return $this->render(
+            'BachHomeBundle:Default:display.html.twig',
+            array(
+                'docid'     => $docid,
+                'document'  => $doc
+            )
+        );
+
+        echo $docid;
+    }
 }

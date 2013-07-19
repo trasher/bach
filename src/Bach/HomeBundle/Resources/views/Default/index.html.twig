@@ -136,11 +136,13 @@
                         {% endif %}
 
                         <h3>
+                            <a href="{{ path('bach_display_document', {docid: document.uniqid}) }}" class="display_doc">
                             {% if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 %}
                                 {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
                             {% else %}
                                 {{ document.cUnittitle }}
                             {% endif %}
+                            </a>
                         </h3>
                         {{ displayFragment(document.fragment)|raw }}
                         {#<h5>{{ document.headerDate }}</h5>

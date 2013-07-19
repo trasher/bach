@@ -96,6 +96,7 @@ class DisplayEADFragment extends \Twig_Extension
         };
 
         $xml = simplexml_load_string($fragment);
+        $proc->setParameter('', 'full', $full);
         $text = $proc->transformToXml($xml);
         //it is not possible to build routes from the XSL, so we'll build them here
         $text = preg_replace_callback(
