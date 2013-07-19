@@ -21,8 +21,8 @@ bach_suggest:
     defaults: { _controller: BachHomeBundle:Default:doSuggest }
 
 bach_display_document:
-    pattern: /show/{docid}
-    defaults: { _controller BachHomeBundle:Default:displayDocument }
+    pattern: /show/{docid}/{ajax}
+    defaults: { _controller BachHomeBundle:Default:displayDocument, ajax: false }
     requirements:
         docid: \d+
         _method: GET

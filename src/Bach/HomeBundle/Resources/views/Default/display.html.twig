@@ -1,7 +1,5 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
-    <article class="row-fluid" id="result_{{ docid }}">
-        {{ displayFragment(document.fragment, true)|raw }}
-    </article>
+    {% include 'BachHomeBundle:Default:content_display.html.twig' with {'docid': docid, 'document': document} %}
 {% endblock %}
