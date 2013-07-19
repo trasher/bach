@@ -32,7 +32,9 @@ class Document
     protected $path;
 
     /**
-     * @Assert\File
+     * @Assert\File(
+     *    maxSize = "10M"
+     * )
      */
     protected $file;
 
