@@ -541,6 +541,15 @@ class SolrCoreAdmin
         $spell->setAttribute('stored', 'false');
         $elt->appendChild($spell);
 
+        //add descriptors field
+        $descriptors = $doc->createElement('field');
+        $descriptors->setAttribute('name', 'descriptors');
+        $descriptors->setAttribute('type', 'text');
+        $descriptors->setAttribute('multiValued', 'true');
+        $descriptors->setAttribute('indexed', 'true');
+        $descriptors->setAttribute('stored', 'false');
+        $elt->appendChild($descriptors);
+
         //add new created elements
         $doc->documentElement->appendChild($elt);
 
@@ -581,6 +590,20 @@ class SolrCoreAdmin
                     $cf = $doc->createElement('copyField');
                     $cf->setAttribute('source', $f);
                     $cf->setAttribute('dest', 'suggestions');
+                    $doc->documentElement->appendChild($cf);
+                }
+            }
+        }
+
+        //add copyFields for descriptors
+        if ( property_exists($orm_name, 'descriptors') ) {
+            $descriptors_fields = $orm_name::$descriptors;
+
+            foreach ( $descriptors_fields as $f ) {
+                if ( in_array($f, $fields) ) {
+                    $cf = $doc->createElement('copyField');
+                    $cf->setAttribute('source', $f);
+                    $cf->setAttribute('dest', 'descriptors');
                     $doc->documentElement->appendChild($cf);
                 }
             }

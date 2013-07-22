@@ -138,6 +138,20 @@ class EADFileFormat extends MappedFileFormat
         'cCorpname',
         'cFamname',
         'cGenreform',
+        'cGeogname',
+        'cName',
+        'cPersname',
+        'cSubject'
+    );
+
+    /**
+     * Descriptors fields
+     */
+    public static $descriptors = array(
+        'cCorpname',
+        'cFamname',
+        'cGenreform',
+        'cGeogname',
         'cName',
         'cPersname',
         'cSubject'
