@@ -85,7 +85,11 @@ class EADFileFormat extends MappedFileFormat
         'cGeogname',
         'cName',
         'cPersname',
-        'cSubject'
+        'cSubject',
+        'cDate',
+        'cDateNormal',
+        'cDateBegin',
+        'cDateEnd'
     );
 
     /**
@@ -100,7 +104,10 @@ class EADFileFormat extends MappedFileFormat
         'cName',
         'cPersname',
         'cSubject',
-        'cDate'
+        'cDate',
+        'cDateNormal',
+        'cDateBegin',
+        'cDateEnd'
     );
 
     /**
@@ -110,7 +117,10 @@ class EADFileFormat extends MappedFileFormat
         'uniqid',
         'headerId',
         'parents',
-        'archDescScopeContent'
+        'archDescScopeContent',
+        'fragment',
+        'cDateBegin',
+        'cDateEnd'
     );
 
     /**
@@ -141,6 +151,13 @@ class EADFileFormat extends MappedFileFormat
     );
 
     /**
+     * Fields that are not indexed
+     */
+    public static $nonindexed = array(
+        'fragment'
+    );
+
+    /**
      * Proceed data parsing
      *
      * @param array $data Data
@@ -154,9 +171,6 @@ class EADFileFormat extends MappedFileFormat
                 foreach ( $datum as $index ) {
                     $this->addIndex($key, $index);
                 }
-                /*foreach ( $datum as $persname ) {
-                    $this->addCPersname(new EADPersnames($this, $persname));
-                }*/
             } elseif (property_exists($this, $key)) {
                 $this->$key = $datum;
             } elseif ($key === 'cUnitDate' || $key === 'cDate') {

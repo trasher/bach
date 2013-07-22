@@ -467,6 +467,18 @@ class SolrCoreAdmin
             $multivalued_fields = $orm_name::$multivalued;
         }
 
+        $nonstored_fields = array();
+        if ( property_exists($orm_name, 'nonstored') ) {
+            //retrieve fields that are not stored from entity
+            $nonstored_fields = $orm_name::$nonstored;
+        }
+
+        $nonindexed_fields = array();
+        if ( property_exists($orm_name, 'nonindexed') ) {
+            //retrieve fields that are not indexed from entity
+            $nonindexed_fields = $orm_name::$nonindexed;
+        }
+
         $fields_types = array();
         if ( property_exists($orm_name, 'types') ) {
             //retrieve fields types from entity
@@ -487,6 +499,19 @@ class SolrCoreAdmin
             if ( in_array($f, $multivalued_fields) ) {
                 $newFieldType->setAttribute('multiValued', 'true');
             }
+
+            if ( in_array($f, $nonindexed_fields) ) {
+                $newFieldType->setAttribute('indexed', 'false');
+            } else {
+                $newFieldType->setAttribute('indexed', 'true');
+            }
+
+            if ( in_array($f, $nonstored_fields) ) {
+                $newFieldType->setAttribute('stored', 'false');
+            } else {
+                $newFieldType->setAttribute('stored', 'true');
+            }
+
             $elt->appendChild($newFieldType);
         }
 
