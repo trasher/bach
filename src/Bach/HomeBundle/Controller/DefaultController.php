@@ -456,11 +456,12 @@ class DefaultController extends Controller
     /**
      * Document display
      *
-     * @param int $docid Document unique identifier
+     * @param int     $docid Document unique identifier
+     * @param boolean $ajax  Called from ajax
      *
      * @return void
      */
-    public function displayDocumentAction($docid)
+    public function displayDocumentAction($docid, $ajax = false)
     {
         $client = $this->get("solarium.client");
         $query = $client->createSelect();
@@ -476,13 +477,19 @@ class DefaultController extends Controller
             );
         }
 
-        $request = $client->createRequest($query);
-        $uri = $request->getUri();
-        
         $docs  = $rs->getDocuments();
         $doc = $docs[0];
+
+        $tpl = '';
+
+        if ( $ajax === 'ajax' ) {
+            $tpl = 'BachHomeBundle:Default:content_display.html.twig';
+        } else {
+            $tpl = 'BachHomeBundle:Default:display.html.twig';
+        }
+
         return $this->render(
-            'BachHomeBundle:Default:display.html.twig',
+            $tpl,
             array(
                 'docid'     => $docid,
                 'document'  => $doc
