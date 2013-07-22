@@ -77,7 +77,3 @@ nelmio_solarium:
             path: /solr
             core: EADUniversalFileFormat
             timeout: 5
-
-atoum:
-    bundles:
-        BachHomeBundle: ~

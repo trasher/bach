@@ -22,14 +22,15 @@ class AppKernel extends Kernel
             new Nelmio\SolariumBundle\NelmioSolariumBundle(),
             new Bach\IndexationBundle\BachIndexationBundle(),
             new Bach\HomeBundle\BachHomeBundle(),
-            new Bach\AdministrationBundle\AdministrationBundle(),
-            new atoum\AtoumBundle\AtoumAtoumBundle()
+            new Bach\AdministrationBundle\AdministrationBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new atoum\AtoumBundle\AtoumAtoumBundle();
+            $bundles[] = new Jns\Bundle\XhprofBundle\JnsXhprofBundle();
         }
 
         return $bundles;

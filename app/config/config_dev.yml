@@ -26,3 +26,14 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+atoum:
+    bundles:
+        BachHomeBundle: ~
+
+jns_xhprof:
+    location_lib:    /usr/share/xhprof/xhprof_lib/utils/xhprof_lib.php
+    location_runs:   /usr/share/xhprof/xhprof_lib/utils/xhprof_runs.php
+    location_config: /usr/shar/xhprof/xhprof_lib/config.php
+    location_web:    http://localhost/xhprof
+    enabled:         true
