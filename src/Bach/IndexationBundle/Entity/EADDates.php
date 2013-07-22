@@ -133,6 +133,8 @@ class EADDates
             $edate = $date;
         }
 
+        $now = new \DateTime();
+
         //regexp to check if date is Y-M-D, Y-M, Y (or the same without dashes)
         $reg = '/^(\d{4})-?(\d{2})?-?(\d{2})?$/';
 
@@ -153,8 +155,13 @@ class EADDates
                     $this->begin->modify('january');
                 }
             }
+            //if date is in the future, we remove it
+            if ( $this->begin > $now ) {
+                $this->begin = null;
+            }
         } catch ( \Exception $e ) {
-            throw $e;
+            //TODO: add a parameter somewhere to decide if we throw or not
+            //throw $e;
         }
 
         //try to set end date
@@ -173,8 +180,13 @@ class EADDates
                     $this->end->modify('december');
                 }
             }
+            //if date is in the future, we remove it
+            if ( $this->end > $now ) {
+                $this->end = null;
+            }
         } catch ( \Exception $e ) {
-            throw $e;
+            //TODO: add a parameter somewhere to decide if we throw or not
+            //throw $e;
         }
         
     }
