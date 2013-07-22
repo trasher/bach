@@ -109,7 +109,8 @@ class EADFileFormat extends MappedFileFormat
     public static $nonfulltext = array(
         'uniqid',
         'headerId',
-        'parents'
+        'parents',
+        'archDescScopeContent'
     );
 
     /**
