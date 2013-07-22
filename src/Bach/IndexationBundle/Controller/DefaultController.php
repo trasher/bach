@@ -239,6 +239,8 @@ class DefaultController extends Controller
             $contents = $query->getResult();
             foreach ($contents as $content) {
                 $em->remove($content);
+                //FIXME: it would be more efficient to remove all indexes based
+                //on document unique identifier
                 $update->addDeleteQuery('uniqid:' . $content->getUniqid());
             }
         }

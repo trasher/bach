@@ -108,6 +108,7 @@ class ArchFileIntegration
 
         $this->_entityManager->flush();
 
+        //FIXME: we probably do not want to call full import on *each* core!
         $sca = new SolrCoreAdmin();
         $coreNames = $sca->getStatus()->getCoreNames();
         foreach ( $coreNames as $core ) {
