@@ -64,7 +64,7 @@ class ArchFileIntegration
 
         foreach ($tasks as $task) {
             try{
-                $this->integrate($task);
+                $this->integrate($task, null);
                 $task->setStatus(1);
             }catch(BadInputFileFormatException $e){
                 $task->setStatus(2);

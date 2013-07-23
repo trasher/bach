@@ -25,3 +25,7 @@ bach_indexation_deletedocuments:
 bach_indexation_empty:
     pattern:  /indexation/empty
     defaults: { _controller: BachIndexationBundle:Default:empty }
+
+bach_indexation_add:
+    pattern: /indexation/add
+    defaults: { _controller: BachIndexationBundle:Default:add }

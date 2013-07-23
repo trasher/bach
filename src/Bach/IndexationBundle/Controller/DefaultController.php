@@ -18,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Bach\IndexationBundle\Entity\Document;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
@@ -35,7 +36,6 @@ use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
  */
 class DefaultController extends Controller
 {
-    private $_upload_form = null;
 
     /**
      * Displays current indexed documents
@@ -50,8 +50,104 @@ class DefaultController extends Controller
         return $this->render(
             'BachIndexationBundle:Indexation:index.html.twig',
             array(
-                'documents'     => $documents,
-                'upload_form'   => $this->_getUploadForm()->createView()
+                'documents'     => $documents
+            )
+        );
+    }
+
+    /**
+     * Add new documents to queue or index
+     *
+     * @return void
+     */
+    public function addAction()
+    {
+        $document = new Document();
+        $builder = $this->createFormBuilder($document);
+
+        $builder
+            ->add(
+                'file',
+                'file',
+                array(
+                    "label" => _("Fichier à indexer")
+                )
+            )
+            ->add(
+                'extension',
+                'choice',
+                array(
+                    "choices" => array(
+                        "ead"       => "EAD",
+                        "unimarc"   => "UNIMARC"
+                    ),
+                    "label"    =>    _("Format du fichier")
+                )
+            )
+            ->add(
+                'perform',
+                'submit',
+                array(
+                    'label' => _("Ajouter à la file d'attente"),
+                    'attr'  => array(
+                        'class' => 'btn btn-primary'
+                    )
+                )
+            )
+            ->add(
+                'performall',
+                'submit',
+                array(
+                    'label' => _("Lancer l'indexation"),
+                    'attr'  => array(
+                        'class' => 'btn btn-primary'
+                    )
+                )
+            );
+
+        $form = $builder->getForm();
+        $form->handleRequest($this->getRequest());
+
+        if ($form->isValid()) {
+            $document = $form->getData();
+            //store document reference
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($document);
+            $em->flush();
+
+            //create a new task
+            $task = new ArchFileIntegrationTask(
+                $document->getName(),
+                realpath($document->getAbsolutePath()),
+                $document->getExtension()
+            );
+
+            if ( $form->get('perform')->isClicked() ) {
+                //store file task in the database if perform action was requested
+                $em->persist($task);
+                $em->flush();
+                return new RedirectResponse(
+                    $this->get("router")->generate("bach_indexation_queue")
+                );
+            } else {
+                //if performall action was requested, do not store in db
+                //and launch indexation process
+                $integrationService = $this->container
+                    ->get('bach.indexation.process.arch_file_integration');
+                $res = $integrationService->integrate($task, $document);
+
+                return new RedirectResponse(
+                    $this->get("router")->generate("bach_indexation_homepage")
+                );
+            }
+        }
+
+        return $this->render(
+            'BachIndexationBundle:Indexation:add.html.twig',
+            array(
+                'directory_contents'    => null,
+                'upload_form'           => $form->createView(),
+                'existing_files'        => $this->_getExistingFiles()
             )
         );
     }
@@ -105,53 +201,8 @@ class DefaultController extends Controller
         return $this->render(
             'BachIndexationBundle:Indexation:queue.html.twig',
             array(
-                'tasks'         => $tasks,
-                'upload_form'   => $this->_getUploadForm()->createView()
+                'tasks'         => $tasks
             )
-        );
-    }
-
-    /**
-     * Proceed indexation
-     *
-     * @return void
-     */
-    public function indexProcessAction()
-    {
-        $form = $this->_getUploadForm();
-
-        if ($this->getRequest()->isMethod('POST')) {
-            $form->bind($this->getRequest());
-            if ($form->isValid()) {
-                $document = $form->getData();
-                //store document reference
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($document);
-                $em->flush();
-
-                //create a new task
-                $task = new ArchFileIntegrationTask(
-                    $document->getName(),
-                    realpath($document->getAbsolutePath()),
-                    $document->getExtension()
-                );
-
-                if ( $form->get('perform')->isClicked() ) {
-                    //store file task in the database if perform action was requested
-                    $em->persist($task);
-                    $em->flush();
-                } else {
-                    //if performall action was requested, do not store in db
-                    //and launch indexation process
-                    $integrationService = $this->container
-                        ->get('bach.indexation.process.arch_file_integration');
-                    $res = $integrationService->integrate($task, $document);
-                }
-            }
-        }
-
-        return new RedirectResponse(
-            $this->get("router")->generate("bach_indexation_homepage")
         );
     }
 
@@ -300,60 +351,61 @@ class DefaultController extends Controller
         );
     }
 
-
     /**
-     * Get document form controller
+     * Retrieve existing files list
      *
-     * @return void
+     * @todo: this should be in its own entity
+     *
+     * @return Iterator
      */
-    private function _getUploadForm()
+    private function _getExistingFiles()
     {
-        if ( $this->_upload_form === null ) {
-            $document = new Document();
+        $existing_files = array();
+        $formats = array(
+            'ead',
+            'unimarc'
+        );
 
-            $this->_upload_form = $this
-                ->createFormBuilder($document)
-                ->add(
-                    'file',
-                    'file',
-                    array(
-                        "label" => "Fichier à indexer"
-                    )
-                )
-                ->add(
-                    'extension',
-                    'choice',
-                    array(
-                        "choices" => array(
-                            "ead"       => "EAD",
-                            "unimarc"   => "UNIMARC"
-                        ),
-                        "label"    =>    "Format du fichier"
-                    )
-                )
-                ->add(
-                    'perform',
-                    'submit',
-                    array(
-                        'label' => "Ajouter le fichier à la file d'attente",
-                        'attr'  => array(
-                            'class' => 'btn btn-primary'
-                        )
-                    )
-                )
-                ->add(
-                    'performall',
-                    'submit',
-                    array(
-                        'label' => "Lancer l'indexation",
-                        'attr'  => array(
-                            'class' => 'btn btn-primary'
-                        )
-                    )
-                )
-                ->getForm();
+        foreach ( $formats as $format ) {
+            $finder = new Finder();
+            $finder->followLinks()
+                ->ignoreDotFiles(true)
+                ->ignoreVCS(true)
+                -> ignoreUnreadableDirs(true)
+                ->sortByType();
+
+            $path = $this->container->getParameter($format . '_files_path');
+            $existing_files[$format] = $this->_parseExistingFiles(
+                $finder->files()->in($path)
+            );
         }
 
-        return $this->_upload_form;
+        return $existing_files;
     }
+
+    /**
+     * Parse existing files into an array for display
+     *
+     * @param Iterator $finder Finder results iterator
+     *
+     * @todo: this should be in its own entity
+     *
+     * @return array
+     */
+    private function _parseExistingFiles($finder)
+    {
+        $existing_files = array();
+        foreach ( $finder as $found ) {
+            if ( !$found->isDir() ) {
+                $parent = $found->getRelativePath();
+                if ( $parent !== '' ) {
+                    $existing_files[$parent][] = $found->getFileName();
+                } else if ( $found->getRealPath() !== false ) {
+                    $existing_files[] = $found->getFileName();
+                }
+            }
+        }
+        return $existing_files;
+    }
+
 }

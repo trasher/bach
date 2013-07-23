@@ -2,11 +2,8 @@
 
 {% block container %}
     {% include 'BachIndexationBundle:Indexation:menu.html.twig' %}
-    {% include 'BachIndexationBundle:Indexation:upload.html.twig' %}
-
 
 <div class="span9">
-    {% include 'BachIndexationBundle:Indexation:upload.html.twig' %}
 
     <form id="documents" action="{{ path("bach_indexation_deletedocuments") }}" method="POST">
     <fieldset>

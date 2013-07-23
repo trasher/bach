@@ -4,8 +4,6 @@
     {% include 'BachIndexationBundle:Indexation:menu.html.twig' %}
 
 <div class="span9">
-    {% include 'BachIndexationBundle:Indexation:upload.html.twig' %}
-
     <fieldset>
         <legend>
             File d'attente des tâches d'indexation
@@ -15,51 +13,43 @@
             </span>
         </legend>
 
-        <div class="row-fluid">
-            <div class="span12">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nom du fichier</th>
-                            <th>Format</th>
-                            <th>Taille</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if tasks|length > 0 %}
-                        {% for task in tasks %}
-                        <tr class="{{ task.status }}">
-                            <td>{{ task.filename }}</td>
-                            <td>{{ task.format }}</td>
-                            <td>{{ task.size }}</td>
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td colspan="3">Aucune tache d'indexation en cours</td>
-                        </tr>
-                        {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </fieldset>
-    </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nom du fichier</th>
+                    <th>Format</th>
+                    <th>Taille</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if tasks|length > 0 %}
+                {% for task in tasks %}
+                <tr class="{{ task.status }}">
+                    <td>{{ task.filename }}</td>
+                    <td>{{ task.format }}</td>
+                    <td>{{ task.size }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="3">Aucune tache d'indexation en cours</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </fieldset>
 
-<div class="modal hide" id="helpModal">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Aide de l'indexation</h3>
-    </div>
-    <div class="modal-body">
-           <p>Le processus d'indexation consiste à extraire d'un fichier toutes les informations utiles.</p>
-           <br/>
-           <p>Pour l'indexation: selectionnez le fichier que vous souhaitez indexer et renseignez son format (EAD/UNIMARC,etc.)<br/>
-           Une fois la validation effectuée, le fichier se placera dans la file d'attente du processus d'indexation.<br/>
-           La file d'attente est traitée toutes les minutes. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation. </p>
+    <div id="help_window">
+        <h3>File d'attente d'indexation</h3>
+        <div>
+            <p>Le processus d'indexation consiste à extraire d'un fichier toutes les informations utiles.</p>
+            <p>Lors du lancement d'une indexation, vous avez la possibilité d'ajouter les éléments à al file d'attente, ou des les indexer directement. La seconde solution n'est pas parfois pas possible, notamment avec des documents volumineux.</p>
+            <p>La présente page liste les documents acutellement dans la file d'attente, qui est traitée régulièrement, en fonction du paramétrage établi sur le serveur. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation.</p>
+        </div>
     </div>
 </div>
-</div>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script>
@@ -68,10 +58,5 @@
             location.reload();
         });
     });
-
-    function cachervisible() {
-        $("#upload").toggle();
-    }
     </script>
-{% endblock %}
 {% endblock %}

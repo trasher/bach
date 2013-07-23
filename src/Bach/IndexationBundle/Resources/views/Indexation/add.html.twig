@@ -1,0 +1,95 @@
+{% extends '::base.html.twig' %}
+
+{% block css %}
+    <link href="{{ asset('css/jquery.treeview.css') }}" type="text/css" rel="stylesheet" media="screen" />
+{% endblock %}
+
+{% block container %}
+    {% include 'BachIndexationBundle:Indexation:menu.html.twig' %}
+
+<div class="span9">
+    {% form_theme upload_form 'BachIndexationBundle:Indexation:form_errors.html.twig' %}
+
+    {{ form_start(upload_form) }}
+            {{ form_errors(upload_form) }}
+            {{ form_errors(upload_form.file) }}
+            {{ form_errors(upload_form.extension) }}
+        <fieldset>
+            <legend>Fichiers existants</legend>
+            <p>Sélectionnez un ou plusieurs fichiers que vous souhaitez indexer.</p>
+            <div class="well">
+            {% if existing_files is defined %}
+                {% for format,files in existing_files %}
+                <h3>{{ format }}</h3>
+                <ul class="filetree">
+                    {% for dir,file in files %}
+                    <li>
+                        <input type="checkbox" name="existing[]" id="existing_{{ loop.index }}" value="{% if file is iterable %}{{ dir ~ '/' }}{% else %}{{ file }}{% endif %}"/>
+                        {% if file is iterable %}
+                        <label for="existing_{{ loop.index }}" class="folder">{{ dir }}</label>
+                        <ul>
+                            {% for subfile in file %}
+                            <li>
+                                <input type="checkbox" name="existing[]" id="existing_{{ loop.parent.loop.index  }}{{ loop.index }}" value="{{ dir ~ '/' ~ subfile }}"/>
+                                <label for="existing_{{ loop.parent.loop.index  }}{{ loop.index }}">{{ subfile }}</label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <label for="existing_{{ loop.index }}">{{ file }}</label>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            {% else %}
+                <p>Aucun fichier n'existe actuellement sur le serveur.</p>
+            {% endif %}
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Envoi d'un nouveau fichier</legend>
+            <div class="well form-horizontal">
+                    <div class="control-group">
+                        {{ form_label(upload_form.file) }}
+                        <div class="controls">
+                            {{ form_widget(upload_form.file) }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        {{ form_label(upload_form.extension) }}
+                        <div class="controls">
+                            {{ form_widget(upload_form.extension) }}
+                        </div>
+                    </div>
+            </div>
+        </fieldset>
+
+        <footer>
+            {{ form_widget(upload_form._token) }}
+            {{ form_widget(upload_form.perform) }}
+            {{ form_widget(upload_form.performall) }}
+        </footer>
+    {{ form_end(upload_form) }}
+
+    <div id="help_window">
+        <h3>Aide de l'indexation</h3>
+        <div>
+            <p>Le processus d'indexation consiste à extraire d'un fichier toutes les informations utiles. Sélectionnez le fichier que vous souhaitez indexer et renseignez son format (EAD/UNIMARC,etc.).<br/>Vous pourrez ensuite choisir de lancer l'indexation, ou d'ajouter le document à la file d'attente pour un traitement ultérieur (utile notamment pour les fichiers volumineux).</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery.treeview.js')  }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('.filetree').treeview({
+                collapsed: true
+            });
+        });
+    </script>
+{% endblock %}
