@@ -1680,12 +1680,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/AtoumBundle.git",
-                "reference": "7a1a1c210d40e7c55901d8b99640dfa47842c724"
+                "reference": "ef6ebc0dce55dc847a0a28457b35f0558cbf37d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/AtoumBundle/zipball/7a1a1c210d40e7c55901d8b99640dfa47842c724",
-                "reference": "7a1a1c210d40e7c55901d8b99640dfa47842c724",
+                "url": "https://api.github.com/repos/atoum/AtoumBundle/zipball/ef6ebc0dce55dc847a0a28457b35f0558cbf37d2",
+                "reference": "ef6ebc0dce55dc847a0a28457b35f0558cbf37d2",
                 "shasum": ""
             },
             "require": {
@@ -1728,7 +1728,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2013-06-13 14:24:34"
+            "time": "2013-07-23 11:15:13"
         },
         {
             "name": "fzaninotto/faker",
