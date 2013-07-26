@@ -30,6 +30,7 @@ assetic:
 atoum:
     bundles:
         BachHomeBundle: ~
+        BachIndexationBundle: ~
 
 jns_xhprof:
     location_lib:    /usr/share/xhprof/xhprof_lib/utils/xhprof_lib.php

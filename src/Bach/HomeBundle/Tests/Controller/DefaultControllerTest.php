@@ -11,7 +11,6 @@
  * @link     http://anaphore.eu
  */
 
-
 namespace Bach\HomeBundle\Tests\Units\Controller;
 
 use atoum\AtoumBundle\Test\Units\WebTestCase;
@@ -67,6 +66,5 @@ class DefaultController extends WebTestCase
             ->hasChild('#suggestions')
             ->hasChild('a')
             ->withContent('cayenne');
-
     }
 }
