@@ -113,10 +113,11 @@ class SolrCoreAdmin
      * @param string $tableName Database table name
      * @param string $orm_name  ORM class name
      * @param mixed  $em        Entity manager
+     * @param array  $db_params Database parameters for newly created core
      *
      * @return boolean|SolrCoreResponse
      */
-    public function create($coreType, $coreName, $tableName, $orm_name, $em)
+    public function create($coreType, $coreName, $tableName, $orm_name, $em, $db_params)
     {
         $coreInstanceDir =  preg_replace('/[^a-zA-Z0-9-_]/', '', $coreName); 
         $coreInstanceDirPath = null;
@@ -147,7 +148,8 @@ class SolrCoreAdmin
                 $coreInstanceDirPath,
                 $coreName,
                 $tableName,
-                $orm_name
+                $orm_name,
+                $db_params
             );
             if ( !$created ) {
                 return false;
@@ -391,11 +393,12 @@ class SolrCoreAdmin
      * @param string $coreName            Core anme
      * @param string $tableName           Database table name
      * @param array  $orm_name            ORM class name
+     * @param array  $db_params           Database parameters for newly created core
      *
      * @return boolean
      */
     private function _createCoreDir($coreInstanceDirPath, $coreName,
-        $tableName, $orm_name
+        $tableName, $orm_name, $db_params
     ) {
         if (!is_dir($coreInstanceDirPath)) {
             $template  = $this->_reader->getCoreTemplatePath();
@@ -418,7 +421,8 @@ class SolrCoreAdmin
             $this->_createDataConfigFile(
                 $coreInstanceDirPath,
                 $tableName,
-                $orm_name
+                $orm_name,
+                $db_params
             );
             return $status == 0 ? true : false;
         }
@@ -572,7 +576,7 @@ class SolrCoreAdmin
         //add spell field
         if ( property_exists($orm_name, 'spellers') ) {
             $spell_fields = $orm_name::$spellers;
-        
+
             foreach ( $spell_fields as $f ) {
                 $cf = $doc->createElement('copyField');
                 $cf->setAttribute('source', $f);
@@ -711,12 +715,13 @@ class SolrCoreAdmin
      *
      * @param string $coreInstanceDirPath Core instance path
      * @param string $tableName           Database table name
-     * @param string $orm_name            ORM class name 
+     * @param string $orm_name            ORM class name
+     * @param array  $db_params           Database parameters for newly created core
      *
      * @return void
      */
     private function _createDataConfigFile($coreInstanceDirPath,
-        $tableName, $orm_name
+        $tableName, $orm_name, $db_params
     ) {
         $dataConfigFilePath = $coreInstanceDirPath . '/' .
             $this->_reader->getCoreConfigDir() . '/' .
@@ -727,13 +732,12 @@ class SolrCoreAdmin
         $doc->preserveWhiteSpace = false;
         $doc->load($dataConfigFilePath);
 
-        $databaseParameters = $this->_reader->getDatabaseParameters();
         $elt = $doc->getElementsByTagName('dataSource')->item(0);
-        $elt->setAttribute('type', $databaseParameters['type']);
-        $elt->setAttribute('driver', $databaseParameters['driver']);
-        $elt->setAttribute('url', $databaseParameters['url']);
-        $elt->setAttribute('user', $databaseParameters['user']);
-        $elt->setAttribute('password', $databaseParameters['password']);
+        $elt->setAttribute('type', 'JdbcDataSource');
+        $elt->setAttribute('driver', $db_params['driver']);
+        $elt->setAttribute('url', $db_params['url']);
+        $elt->setAttribute('user', $db_params['user']);
+        $elt->setAttribute('password', $db_params['password']);
 
         $elt = $doc->getElementsByTagName('entity')->item(0);
         $query = 'SELECT * FROM ' . $tableName;
@@ -754,7 +758,7 @@ class SolrCoreAdmin
         ) {
             //retrieve and add additional fields from entity
             $ad_fields = $orm_name::$known_indexes;
-        
+
             $mapping = $this->_em->getClassMetadata($orm_name)
                 ->getAssociationMapping('indexes');
             $mapping_entity = $this->_em->getClassMetadata(
@@ -784,14 +788,14 @@ class SolrCoreAdmin
 
     /**
      * Retrieve warnings
-     * 
+     *
      * @return array
      */
     public function getWarnings()
     {
         return $this->_warnings;
     }
-    
+
     /**
      * Retrieve errors
      * 

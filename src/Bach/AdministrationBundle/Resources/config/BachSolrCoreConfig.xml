@@ -8,11 +8,4 @@
     <solrConfigFileName>solrconfig.xml</solrConfigFileName>
     <solrSchemaFileName>schema.xml</solrSchemaFileName>
     <solrDataConfigFileName>data-config.xml</solrDataConfigFileName>
-    <databaseConfig>
-        <type>JdbcDataSource</type>
-        <driver>com.mysql.jdbc.Driver</driver>
-        <url>jdbc:mysql://127.0.0.1/bach</url>
-        <user>root</user>
-        <password>Filipok89</password>
-    </databaseConfig>
 </conf>

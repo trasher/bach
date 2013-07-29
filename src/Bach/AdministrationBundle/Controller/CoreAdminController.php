@@ -94,12 +94,14 @@ class CoreAdminController extends Controller
             $orm_name .= '\EADFileFormat';
         }
 
+        $db_params = $this->_getJDBCDatabaseParameters();
         $result = $sca->create(
             $cc->core,
             $cc->name,
             $cc->core,
             $orm_name,
-            $em
+            $em,
+            $db_params
         );
 
         if ( count($sca->getWarnings()) > 0) {
@@ -113,6 +115,53 @@ class CoreAdminController extends Controller
             $session->set('coreNames', $coreNames);
         }
         return $form;
+    }
+
+    /**
+     * Get database parameters from current config,
+     * to use values in newly created core
+     *
+     * @return array
+     */
+    private function _getJDBCDatabaseParameters()
+    {
+        $params = array();
+
+        $driver = str_replace(
+            'pdo_',
+            '',
+            $this->container->getParameter('database_driver')
+        );
+        if ( $driver == 'pgsql' ) {
+            $driver = 'postgresql';
+        }
+        $host = $this->container->getParameter('database_host');
+        $port = '';
+        if ( $this->container->getParameter('database_port') !== null ) {
+            $port = ':' . $this->container->getParameter('database_port');
+        }
+        $dbname = $this->container->getParameter('database_name');
+
+        $dsn = 'jdbc:' . $driver . '://' . $host . $port . '/' . $dbname;
+
+        $jdbc_driver = null;
+        switch ( $driver ) {
+        case 'mysql':
+            $jdbc_driver = 'com.mysql.jdbc.Driver';
+            break;
+        case 'postgresql':
+            $jdbc_driver = 'org.postgresql.Driver';
+            break;
+        default:
+            throw new \RuntimeException('Unknown database driver ' . $driver);
+        }
+
+        $params['driver'] = $jdbc_driver;
+        $params['url'] = $dsn;
+        $params['user'] = $this->container->getParameter('database_user');
+        $params['password'] = $this->container->getParameter('database_password');
+
+        return $params;
     }
 
     /**
