@@ -18,55 +18,59 @@
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 </head>
 <body>
+    <nav id="main_nav" class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="brand" href="#">Bach</a>
+                {#<p class="navbar-text pull-right">
+                    Logged in as <a href="#" class="navbar-link">Username</a>
+                </p>#}
+                {% block navbar %}
+                <ul class="nav">
+                    <li{% if current_route == 'bach_homepage' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_homepage') }}" data-toggle="tooltip" title="Page d'accueil de Bach">Home</a>
+                    </li>
+                    <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_browse') }}" data-toggle="tooltip" title="Navigation...">Browse</a>
+                    </li>
+
+                    <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_indexation_homepage') }}" data-toggle="tooltip" title="Gestion de l'indexation">Indexation</a>
+                    </li>
+                    <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
+                        <a href="{{ url('administration_dashboard') }}" data-toggle="tooltip" title="Administration de l'application">Administration</a>
+                    </li>
+                    {#<li><a href="#">Aide</a></li>#}
+                </ul>
+                {% endblock %}
+            </div><!-- /.container-fluid -->
+        </div><!-- /.navbar-inner  -->
+    </nav>
+
+    {# Globally display errors #}
+    {% if app.session.flashbag.has('errors') %}
+    <div id="flash-errors" class="noscript">
+        <h3>Error</h3>
+        {% for flashMessage in app.session.flashbag.get('errors') %}
+        <div class="flash-message">
+            {{ flashMessage | raw }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {# Globally display warnings #}
     {% if app.session.flashbag.has('warnings') %}
-    <div id="flash-warnings" class="modal in fade">
-            <div class="modal-header">
-                <h3>Warning</h3>
-            </div>
-            <div class="modal-body">
-            {% for flashMessage in app.session.flashbag.get('warnings') %}
-                <div class="flash-message">
-                    {{ flashMessage | raw }}
-                </div>
-            {% endfor %}
-            </div>
-            <div class="modal-footer">
-                <button onclick="$('#flash-warnings').remove()" type="button" class="btn btn-primary">OK</a>
-            </div>
-        </form>
+    <div id="flash-warnings" class="noscript">
+        <h3>Warning</h3>
+        {% for flashMessage in app.session.flashbag.get('warnings') %}
+        <div class="flash-message">
+            {{ flashMessage | raw }}
+        </div>
+        {% endfor %}
     </div>
     {% endif %}
     {% block body %}
     <div class="wrap">
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a class="brand" href="#">Bach</a>
-                    {#<p class="navbar-text pull-right">
-                        Logged in as <a href="#" class="navbar-link">Username</a>
-                    </p>#}
-                    {% block navbar %}
-                    <ul class="nav">
-                        <li{% if current_route == 'bach_homepage' %} class="active"{% endif %}>
-                            <a href="{{ path('bach_homepage') }}" data-toggle="tooltip" title="Page d'accueil de Bach">Home</a>
-                        </li>
-                        <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
-                            <a href="{{ path('bach_browse') }}" data-toggle="tooltip" title="Navigation...">Browse</a>
-                        </li>
-
-                        <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
-                            <a href="{{ path('bach_indexation_homepage') }}" data-toggle="tooltip" title="Gestion de l'indexation">Indexation</a>
-                        </li>
-                        <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
-                            <a href="{{ url('administration_dashboard') }}" data-toggle="tooltip" title="Administration de l'application">Administration</a>
-                        </li>
-                        {#<li><a href="#">Aide</a></li>#}
-                    </ul>
-                    {% endblock %}
-                </div><!-- /.container-fluid -->
-            </div><!-- /.navbar-inner  -->
-        </div><!-- /.navbar-fixed-top -->
-
         <div class="container-fluid">
             <div class="row-fluid">{% block container %} {% endblock %}</div>
         </div><!-- /.containe-fluid -->
@@ -102,8 +106,6 @@
         };
 
         $(document).ready(function () {
-            //$('#help_window').hide();
-
             //TODO: remove or set in admin
             $('#coreTitleDialog').bind('show');
             $('#renamdialog').bind('show');

@@ -1,3 +1,26 @@
+#flash-warnings, #flash-errors {
+    padding: .2em 1em .2em 80px;
+    border-radius: 6px;
+    margin: 0 1em .5em;
+    text-align: center;
+}
+
+#flash-warnings h3, #flash-errors h3 {
+    margin: 0 0 .5em;
+}
+
+#flash-warnings {
+    background: #e8af00 url(../img/warning.png) 10px 50% no-repeat;
+    background: rgba(232, 175, 0, 0.4) url(../img/warning.png) 10px 50% no-repeat;
+    border: 1px solid #e8af00;
+}
+
+#flash-errors {
+    background: #dc0000 url(../img/error.png) 10px 50% no-repeat;
+    background: rgba(220, 0, 0, 0.4) url(../img/error.png) 10px 50% no-repeat;
+    border: 1px solid #dc0000;
+}
+
 #options_sidebar, #refine_query {
     margin-right: .5em;
 }

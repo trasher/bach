@@ -104,6 +104,12 @@ class CoreAdminController extends Controller
             $db_params
         );
 
+        if ( count($sca->getErrors()) > 0) {
+            foreach ( $sca->getErrors() as $w ) {
+                $this->get('session')->getFlashBag()->add('errors', $w);
+            }
+        }
+
         if ( count($sca->getWarnings()) > 0) {
             foreach ( $sca->getWarnings() as $w ) {
                 $this->get('session')->getFlashBag()->add('warnings', $w);

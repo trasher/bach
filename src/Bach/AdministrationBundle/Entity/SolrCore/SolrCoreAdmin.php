@@ -137,11 +137,21 @@ class SolrCoreAdmin
 
         // Test if the core does not already exist.
         if ($this->_coreExist($coreName)) {
+            $this->_errors[] = str_replace(
+                '%corename',
+                $corename,
+                _('A core named %corename already exists!')
+            ) . '<br/>' . _('Core has not been created.');
             return false;
         }
 
 
         if (is_dir($coreInstanceDirPath)) {
+            $this->_errors[] = str_replace(
+                '%dir',
+                $coreInstanceDirPath,
+                _('A directory %dir already exists!')
+            ) . '<br/>' . _('Core has not been created.');
             return false;
         } else {
             $created = $this->_createCoreDir(

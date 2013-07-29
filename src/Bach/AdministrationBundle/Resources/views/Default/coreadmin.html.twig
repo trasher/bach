@@ -94,3 +94,7 @@
             </div>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}" type="text/javascript"></script>
+{% endblock %}
