@@ -224,30 +224,4 @@ class CoreAdminController extends Controller
         }
         return $availableCores;
     }
-
-    /**
-     * Get available cores
-     *
-     * @param SolrCoreAdmin $sca
-     *
-     * @deprecated
-     * 
-     * @return array
-     */
-    private function getAvailableCoreNames(SolrCoreAdmin $sca = null)
-    {
-        if ($sca == null) {
-            $sca = new SolrCoreAdmin();
-        }
-        $runningCores = $sca->getStatus()->getCoreNames();
-        $tableNames = $this->_getTableNamesFromDataBase();
-        $availableCores = array();
-        foreach ($tableNames as $t) {
-            $subStr = substr($t, strlen($t) - 6);
-            if (!in_array($t, $runningCores) && $subStr === 'Format') {
-                $availableCores[$t] = $t;
-            }
-        }
-        return $availableCores;
-    }
 }
