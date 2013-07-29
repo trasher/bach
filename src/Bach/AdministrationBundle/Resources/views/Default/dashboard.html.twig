@@ -14,7 +14,7 @@
     </section>
 
     <section id="cores">
-        <h4 class="breadcrumb clear">Les noyaux Solr</h4>
+        <h4 class="breadcrumb clear">Les noyaux Solr actifs</h4>
         <div class="accordion" id="cores_accordion">
         {% for core in coreNames %}
             <div class="accordion-group">
@@ -39,6 +39,18 @@
             </div>
         {% endfor %}
     </section>
+
+    {% if tmpCoresNames|length > 0 %}
+    <section id="cores">
+        <h4 class="breadcrumb clear">Les noyaux Solr temporaires</h4>
+        <p>Above list should be a list of temporary created Solr cores, that has not been copied because of a lack of permissions. A warning message should have been displayed at core creation about this issue.</p>
+        <ul>
+        {% for core in tmpCoresNames %}
+            <li>{{ core.getFileName() }}</li>
+        {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
 </div>
     </div>
 

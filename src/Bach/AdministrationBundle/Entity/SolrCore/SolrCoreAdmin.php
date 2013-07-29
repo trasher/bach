@@ -14,8 +14,7 @@
 namespace Bach\AdministrationBundle\Entity\SolrCore;
 
 use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
-use Aura\Http\Message\Response\Stack;
-use Aura\Http\Message\Request;
+use Symfony\Component\Finder\Finder;
 use Exception;
 use DOMDocument;
 use DOMElement;
@@ -222,6 +221,25 @@ class SolrCoreAdmin
             $this->_reader->getCoresURL() . '/admin/cores',
             $options
         );
+    }
+
+    /**
+     * Retrieve temporary created cores names, if any
+     *
+     * @return array
+     */
+    public function getTempCoresNames()
+    {
+        $path = $this->_reader->getTempCorePath();
+
+        $finder = new Finder();
+        $finder
+            ->ignoreDotFiles(true)
+            ->ignoreVCS(true)
+            -> ignoreUnreadableDirs(true)
+            ->depth(0);
+
+        return $finder->directories()->in($path);
     }
 
     /**
