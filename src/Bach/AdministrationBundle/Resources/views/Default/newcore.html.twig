@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+
+{% block container %}
+    {# MENU #}
+    {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
+
+    {% include 'AdministrationBundle:Default:newcore-content.html.twig' with {form: form} %}
+
+{% endblock %}

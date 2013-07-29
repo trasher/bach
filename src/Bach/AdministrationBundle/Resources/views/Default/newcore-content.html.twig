@@ -1,0 +1,15 @@
+    <form class="form-horizontal" action="{{ path('administration_coreadmin') }}" method="post">
+        <h3>Ajouter un nouveau noyau Solr</h3>
+        <fieldset>
+            <div class="control-group">
+                <label for="coreCreationForm_core" class="control-label">Type</label>
+                <div class="controls">{{ form_widget(form.core) }}</div>
+                <label for="coreCreationForm_name" class="control-label">Nom</label>
+                <div class="controls">{{ form_widget(form.name) }}</div>
+            </div>
+            {{ form_widget(form._token) }}
+        </fieldset>
+        {% if ajax is not defined %}
+        <button name="createCoreOk" type="submit" class="btn btn-primary">OK</a>
+        {% endif %}
+    </form>

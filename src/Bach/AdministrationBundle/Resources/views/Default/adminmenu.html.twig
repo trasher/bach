@@ -14,6 +14,9 @@
                 </select>
             </form>
             </li>
+            <li class="menu-button">
+                <a href="{{ path('administration_newcore') }}" class="btn btn-success">Ajouter un noyau</a>
+            </li>
             {% if (coreName != 'none' ) %}
                 <li class="nav-header">Solr Schema Config</li>
                 <li{% if current_route == 'administration_fields' %} class="active"{% endif %}>

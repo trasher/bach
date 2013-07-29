@@ -177,6 +177,13 @@ em.hl {
     text-shadow: none;
 }
 
+.menu-button {
+    text-align: center;
+}
+
+.menu-button a {
+    margin: .2em 1em 0!important;
+}
 
 #active_filters ul {
     display: inline-block;

@@ -34,3 +34,7 @@ administration_fiel:
 administration_indexer:
     pattern:  /indexer
     defaults: { _controller: AdministrationBundle:Indexer:indexer }
+
+administration_newcore:
+    pattern: /newcore
+    defaults: { _controller: AdministrationBundle:CoreAdmin:newcore }

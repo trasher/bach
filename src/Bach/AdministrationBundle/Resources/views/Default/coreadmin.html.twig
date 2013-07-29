@@ -44,41 +44,6 @@
         </div>
         </div>
     </div>
-
-
-    <div id="coreTitleDialog" class="modal hide fade" tabindex="-1">
-        <form class="form-horizontal"
-            action="{{ path('administration_coreadmin') }}" method="post">
-
-            <div class="modal-header">
-                <a href="#" class="close" data-dismiss="modal">×</a>
-                <h3>Ajouter un nouveau noyau Solr</h3>
-            </div>
-            <div class="modal-body">
-                <div class="divDialogElements">
-                    <fieldset>
-                        <div class="control-group">
-                            <label for="coreCreationForm_core" class="control-label">Type</label>
-                            <div class="controls">{{ form_widget(form.core) }}</div>
-                            <label for="coreCreationForm_name" class="control-label">Nom</label>
-                            <div class="controls">{{ form_widget(form.name) }}</div>
-                        </div>
-                        {{ form_widget(form._token) }}
-                    </fieldset>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
-                <button name="createCoreOk" type="submit" class="btn btn-primary">OK</a>
-            </div>
-        </form>
-    </div>
-
-
-    <div class="span7">
-                <a data-toggle="modal" href="#coreTitleDialog"
-                    class="btn btn-success btn-fixed">Ajouter un noyau</a>
-            </div>
 {% endblock %}
 
 {% block javascripts %}

@@ -36,6 +36,30 @@ class CoreAdminController extends Controller
 {
 
     /**
+     * New Solr core creation page
+     *
+     * @return void
+     */
+    public function newCoreAction()
+    {
+        $session = $this->getRequest()->getSession();
+        $form = $this->createForm(
+            new CoreCreationForm(
+                $this->getDoctrine(),
+                $this->container->getParameter('database_name')
+            )
+        );
+        return $this->render(
+            'AdministrationBundle:Default:newcore.html.twig',
+            array(
+                'form'      => $form->createView(),
+                'coreName'  => $session->get('coreName'),
+                'coreNames' => $session->get('coreNames')
+            )
+        );
+    }
+
+    /**
      * Refresh core informations
      *
      * @param Request $request Request
@@ -46,9 +70,9 @@ class CoreAdminController extends Controller
     {
         $session = $request->getSession();
         if ($request->isMethod('GET')) {
-            $form = $this->createForm(
-                new CoreCreationForm($this->_getAvailableCores())
-            );
+            /*$form = $this->createForm(
+                new CoreCreationForm()
+            );*/
         } else {
             $btn = $request->request->get('createCoreOk');
             if (isset($btn)) {
@@ -58,7 +82,7 @@ class CoreAdminController extends Controller
         return $this->render(
             'AdministrationBundle:Default:coreadmin.html.twig',
             array(
-                'form' => $form->createView(),
+                /*'form' => $form->createView(),*/
                 'coreName' => $session->get('coreName'),
                 'coreNames' => $session->get('coreNames'),
                 'coreStatus' => new CoreStatus($session->get('coreName'))
@@ -79,7 +103,10 @@ class CoreAdminController extends Controller
         $sca = new SolrCoreAdmin();
         $cc = new CoreCreation();
         $form = $this->createForm(
-            new CoreCreationForm($this->_getAvailableCores()),
+            new CoreCreationForm(
+                $this->getDoctrine(),
+                $this->container->getParameter('database_name')
+            ),
             $cc
         );
         $form->bind($request);
@@ -183,41 +210,5 @@ class CoreAdminController extends Controller
             $res[]=$row['name'];
         }
         return $res;
-    }
-
-    /**
-     * Retrieve tables names form database
-     *
-     * @return array
-     */
-    private function _getTableNamesFromDataBase()
-    {
-        $sql = "SELECT table_name AS name FROM information_schema.tables WHERE table_schema LIKE 'bach'";
-        $connection = $this->getDoctrine()->getConnection();
-        $result = $connection->query($sql);
-        $res = array();
-        while ( $row = $result->fetch() ) {
-            $res[] = $row['name'];
-        }
-        return $res;
-    }
-
-    /**
-     * Retrieve existing core types
-     *
-     * @return array
-     */
-    private function _getAvailableCores()
-    {
-        $sca = new SolrCoreAdmin();
-        $tableNames = $this->_getTableNamesFromDataBase();
-        $availableCores = array();
-        foreach ($tableNames as $t) {
-            $subStr = substr($t, strlen($t) - 6);
-            if ( $subStr === 'Format' ) {
-                $availableCores[$t] = $t;
-            }
-        }
-        return $availableCores;
     }
 }

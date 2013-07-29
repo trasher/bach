@@ -31,15 +31,19 @@ use Symfony\Component\Form\AbstractType;
 class CoreCreationForm extends AbstractType
 {
     private $_tables;
+    private $_doctrine;
+    private $_dbname;
 
     /**
      * Main Constructor
      *
-     * @param array $tables Existing tables
+     * @param Doctrine $doctrine Doctrine instance
+     * @param string   $dbname   Database name
      */
-    public function __construct($tables)
+    public function __construct($doctrine, $dbname)
     {
-        $this->_tables = $tables;
+        $this->_doctrine = $doctrine;
+        $this->_dbname = $dbname;
     }
 
     /**
@@ -52,6 +56,7 @@ class CoreCreationForm extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->_getTableNamesFromDataBase();
         $builder->add(
             'core',
             'choice',
@@ -82,6 +87,28 @@ class CoreCreationForm extends AbstractType
                 'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\CoreCreation',
             )
         );
+    }
+
+    /**
+     * Retrieve *Format tables names form database
+     *
+     * @return void
+     */
+    private function _getTableNamesFromDataBase()
+    {
+        $sql = "SELECT table_name AS name FROM information_schema.tables " .
+            "WHERE table_schema LIKE '" . $this->_dbname . "'";
+        $connection = $this->_doctrine->getConnection();
+        $result = $connection->query($sql);
+        $res = array();
+        while ( $row = $result->fetch() ) {
+            $t = $row['name'];
+            $subStr = substr($t, strlen($t) - 6);
+            if ( $subStr === 'Format' ) {
+                $res[$t] = $t;
+            }
+        }
+        $this->_tables = $res;
     }
 
     /**
