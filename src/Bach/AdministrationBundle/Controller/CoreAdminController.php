@@ -209,15 +209,11 @@ class CoreAdminController extends Controller
     /**
      * Retrieve existing core types
      *
-     * @param SolrCoreAdmin $sca Core admin instance
-     *
      * @return array
      */
-    private function _getAvailableCores(SolrCoreAdmin $sca = null)
+    private function _getAvailableCores()
     {
-        if ($sca == null) {
-            $sca = new SolrCoreAdmin();
-        }
+        $sca = new SolrCoreAdmin();
         $tableNames = $this->_getTableNamesFromDataBase();
         $availableCores = array();
         foreach ($tableNames as $t) {
