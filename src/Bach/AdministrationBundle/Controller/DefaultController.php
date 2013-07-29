@@ -64,14 +64,17 @@ class DefaultController extends Controller
         $SystemFreeSwapMemory=$db->getSystemFreeSwapMemory();
         $SystemUsedSwapMemory=$db->getSystemTotalSwapMemory()-$SystemFreeSwapMemory;
 
-        return $this->render('AdministrationBundle:Default:dashboard.html.twig', array(
-                'coreName'  => $coreName,
-                'coreNames' => $coreNames,
-                'SystemUsedVirtualMemory' => $SystemUsedVirtualMemory,
-                'SystemFreeVirtualMemory' => $SystemFreeVirtualMemory,
-                'SystemUsedSwapMemory' => $SystemUsedSwapMemory,
-                'SystemFreeSwapMemory' => $SystemFreeSwapMemory,
-                'coresInfo' => $coresInfo
-                ));
+        return $this->render(
+            'AdministrationBundle:Default:dashboard.html.twig',
+            array(
+                'coreName'                  => $coreName,
+                'coreNames'                 => $coreNames,
+                'SystemUsedVirtualMemory'   => $SystemUsedVirtualMemory,
+                'SystemFreeVirtualMemory'   => $SystemFreeVirtualMemory,
+                'SystemUsedSwapMemory'      => $SystemUsedSwapMemory,
+                'SystemFreeSwapMemory'      => $SystemFreeSwapMemory,
+                'coresInfo'                 => $coresInfo
+            )
+        );
     }
 }
