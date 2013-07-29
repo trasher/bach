@@ -3,9 +3,7 @@
 namespace Bach\AdministrationBundle\Controller;
 
 use Bach\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
-
 use Bach\AdministrationBundle\Entity\Dashboard\Dashboard;
-
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;

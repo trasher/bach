@@ -1,7 +1,7 @@
     <ul class="span2 nav nav-list well" id="options_sidebar">
             <li class="nav-header">Solr Admin</li>
-            <li {% if (page == 'dashboard') %} class="active"  {% endif %}><a
-                href="{{ url('administration_dashboard') }}"><i class="icon-book"></i>Dashboard</a>
+            <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
+                <a href="{{ url('administration_dashboard') }}"><i class="icon-book"></i>Dashboard</a>
             </li>
             <li class="divider"></li>
             <li>
@@ -16,44 +16,42 @@
             </li>
             {% if (coreName != 'none' ) %}
                 <li class="nav-header">Solr Schema Config</li>
-                <li {% if (page == 'index' or page == 'fields') %} class="active"
-                     {% endif %}><a href="{{ url('administration_fields') }}"><i
-                        class="icon-book"></i>Fields</a>
+                <li{% if current_route == 'administration_fields' %} class="active"{% endif %}>
+                    <a href="{{ url('administration_fields') }}"><span class="icon-book"></span>Fields</a>
                 </li>
-                <li {% if (page == 'dynamicfields') %} class="active"  {% endif %}><a
-                    href="{{ url('administration_dynamicfields') }}"><i
-                        class="icon-book"></i>Dynamic Fields</a>
+                <li{% if current_route == 'administration_dynamicfields' %} class="active"{% endif %}>
+                    <a href="{{ url('administration_dynamicfields') }}"><span class="icon-book"></span>Dynamic Fields</a>
                 </li>
-                <li {% if (page == 'copyfields') %} class="active"  {% endif %}><a
-                    href="{{ url('administration_copyfields') }}"><i class="icon-book"></i>Copy
-                        fields</a>
+                <li{% if current_route == 'administration_copyfields' %} class="active"{% endif %}>
+                    <a href="{{ url('administration_copyfields') }}"><span class="icon-book"></span>Copy fields</a>
                 </li>
-                <li {% if (page == 'fieldstype') %} class="active"  {% endif %}><a
-                    href="{{ url('administration_fieldstype') }}"><i class="icon-book"></i>Fields
-                        Type</a>
+                <li{% if current_route == 'administration_fieldstype' %} class="active"{% endif %}>
+                    <a href="{{ url('administration_fieldstype') }}"><span class="icon-book"></span>Fields Type</a>
+                    <ul>
+                        <li{% if current_route == 'administration_analyzers' %} class="active"{% endif %}>
+                            <a href="{{ url('administration_analyzers') }}"><span class="icon-book"></span> Analizers</a>
+                        </li>
+                    </ul>
                 </li>
-                <li {% if (page == 'analyzers') %} class="active"  {% endif %}><a
-                    href="{{ url('administration_analyzers') }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i
-                        class="icon-book"></i> Analizers
-                </a>
-                </li>
-                <li {% if (page == 'uniquekey') %} class="active"  {% endif %}><a
-                    href="{{ url('administration_uniquekey') }}"><i class="icon-book"></i>Unique
-                        Key</a>
+                <l{% if current_route == 'administration_uniquekey' %} class="active"{% endif %}>
+                    <a href="{{ url('administration_uniquekey') }}"><span class="icon-book"></span>Unique Key</a>
                 </li>
 
                 <li class="divider"></li>
 
                 <li class="nav-header">Solr Core Config</li>
-                <li><a href="{{ url('administration_coreadmin') }}"><i
-                        class="icon-book"></i> Core Admin</a>
+                <li>
+                    <a href="{{ url('administration_coreadmin') }}"><span class="icon-book"></span> Core Admin</a>
                 </li>
 
                 <li class="divider"></li>
+
                 <li class="nav-header">Solr Performance Config</li>
-                <li {% if (page == 'performance') %} class="active"  {% endif %}><a
-                    href="{{ url('administration_performance') }}"><i class="icon-book"></i>
-                        Performance Admin</a>
+
+                <li{% if current_route == 'administration_performance' %} class="active"{% endif %}>
+                    <a href="{{ url('administration_performance') }}"><span class="icon-book"></span> Performance Admin</a>
                 </li>
             {% endif %}
         </ul>
+
+

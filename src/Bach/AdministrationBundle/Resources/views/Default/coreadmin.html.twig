@@ -1,21 +1,8 @@
- {% extends '::base.html.twig' %} {% block container %}
-<!-- MENU -->
-{% include 'AdministrationBundle:Default:adminmenu.html.twig' with
-{'page': 'cores'}%}
+{% extends '::base.html.twig' %}
 
-
-<!-- Our CSS stylesheet file -->
-<link
-    rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
-<link
-    rel="stylesheet"
-    href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
-
-<!-- CSS adjustments for browsers with JavaScript disabled -->
-<noscript>
-    <link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
-</noscript>
-
+{% block container %}
+    {# MENU #}
+    {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
     <div class="span9">
 
             <div class="span2">

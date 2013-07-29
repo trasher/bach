@@ -12,7 +12,7 @@ class CoreStatus
     public $numDocs;
     public $maxDoc;
     public $size;
-    
+
     public function __construct($coreName)
     {
         $sca = new SolrCoreAdmin();

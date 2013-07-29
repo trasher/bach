@@ -52,9 +52,7 @@ class CoreAdminController extends Controller
         } else {
             $btn = $request->request->get('createCoreOk');
             if (isset($btn)) {
-                $form = $this->_createCore($request, $session->get('xmlP'));
-            } elseif (isset($btn)) {
-                echo 'ELSIF';
+                $this->_createCore($request);
             }
         }
         return $this->render(
@@ -71,12 +69,11 @@ class CoreAdminController extends Controller
     /**
      * Create a new core
      *
-     * @param Request    $request Request
-     * @param XMLProcess $xmlP    XML process
+     * @param Request $request Request
      *
      * @return Form
      */
-    private function _createCore(Request $request, XMLProcess $xmlP)
+    private function _createCore(Request $request)
     {
         $session = $request->getSession();
         $sca = new SolrCoreAdmin();
@@ -86,7 +83,6 @@ class CoreAdminController extends Controller
             $cc
         );
         $form->bind($request);
-        //$fields = $this->_getFieldsFromDataBase($cc->core);
 
         $em = $this->getDoctrine()->getManager();
         $orm_name = 'Bach\IndexationBundle\Entity';

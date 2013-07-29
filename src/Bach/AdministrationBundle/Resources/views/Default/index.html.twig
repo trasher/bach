@@ -1,19 +1,8 @@
-{% extends '::base.html.twig' %} {% block container %}
-<!-- MENU -->
-{% include 'AdministrationBundle:Default:adminmenu.html.twig' with
-{'page': 'index'}%}
-<!-- Our CSS stylesheet file -->
-<link
-    rel="stylesheet" href="{{ asset('bundles/Uploader/css/styles.css') }}" />
-<link
-    rel="stylesheet"
-    href="{{ asset('bundles/Uploader/css/jquery.fileupload-ui.css') }}" />
-<!-- CSS adjustments for browsers with JavaScript disabled -->
-<noscript>
-    <link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css">
-</noscript>
+{% extends '::base.html.twig' %}
 
-    <!--for ($i = 1; $i <= 3; $i++) {-->
+{% block container %}
+    {# MENU #}
+    {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
     <div class='well span9'>
         <form>
             <div class='control-group'>
