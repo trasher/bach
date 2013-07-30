@@ -55,6 +55,7 @@ class EADDriverMapper implements DriverMapperInterface
             ) {
                 $mappedData[$map] = $data['header'][$element][0]['value'];
             } else if ( array_key_exists($element, $data['header'])
+                && isset($data['header'][$element][0])
                 && $map === 'headerLanguage'
                 && array_key_exists(
                     'langcode',
