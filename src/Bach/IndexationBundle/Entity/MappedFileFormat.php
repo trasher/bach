@@ -80,7 +80,7 @@ class MappedFileFormat
      *
      * @ORM\Column(type="string", nullable=true, length=15)
      */
-    protected $archDescLangOrigination;
+    protected $archDescOrigination;
 
     /**
      *
@@ -460,26 +460,26 @@ class MappedFileFormat
     }
 
     /**
-     * Set archDescLangOrigination
+     * Set archDescOrigination
      *
-     * @param string $archDescLangOrigination
+     * @param string $archDescOrigination
      * @return UniversalFileFormat
      */
-    public function setArchDescLangOrigination($archDescLangOrigination)
+    public function setArchDescOrigination($archDescOrigination)
     {
-        $this->archDescLangOrigination = $archDescLangOrigination;
+        $this->archDescOrigination = $archDescOrigination;
     
         return $this;
     }
 
     /**
-     * Get archDescLangOrigination
+     * Get archDescOrigination
      *
      * @return string 
      */
-    public function getArchDescLangOrigination()
+    public function getArchDescOrigination()
     {
-        return $this->archDescLangOrigination;
+        return $this->archDescOrigination;
     }
 
     /**

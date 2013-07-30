@@ -73,7 +73,7 @@ class EADDriverMapper implements DriverMapperInterface
             'archDescUnitDate'          => 'did/unitdate',
             'archDescRepository'        => 'did/repository',
             'archDescLangMaterial'      => 'did/langmaterial',
-            'archDescLangOrigination'   => 'did/origination',//should be archDescOrigination
+            'archDescOrigination'       => 'did/origination',
             'archDescAcqInfo'           => 'acqinfo',
             'archDescScopeContent'      => 'scopecontent',
             'archDescArrangement'       => 'arrangement',
