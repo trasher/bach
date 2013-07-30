@@ -324,7 +324,11 @@ class DefaultController extends Controller
         $connection = $em->getConnection();
         $platform   = $connection->getDatabasePlatform();
 
-        $connection->query('SET FOREIGN_KEY_CHECKS=0');
+        try {
+            $connection->query('SET FOREIGN_KEY_CHECKS=0');
+        } catch (\Exception $e) {
+            //database does not support that. it is ok.
+        }
 
         $connection->executeUpdate(
             $platform->getTruncateTableSQL('UniversalFileFormat', true)
@@ -344,7 +348,11 @@ class DefaultController extends Controller
             $platform->getTruncateTableSQL('Document', true)
         );
 
-        $connection->query('SET FOREIGN_KEY_CHECKS=1');
+        try {
+            $connection->query('SET FOREIGN_KEY_CHECKS=1');
+        } catch (\Exception $e) {
+            //database does not support that. it is ok.
+        }
 
         return new RedirectResponse(
             $this->get("router")->generate("bach_indexation_homepage")

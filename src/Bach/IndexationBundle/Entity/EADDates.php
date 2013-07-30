@@ -66,7 +66,7 @@ class EADDates
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end", type="date", nullable=true)
+     * @ORM\Column(name="dend", type="date", nullable=true)
      */
     protected $end;
 
