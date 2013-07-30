@@ -22,6 +22,11 @@ class Document
     protected $id;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     */
+    protected $docid;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
@@ -77,7 +82,6 @@ class Document
         if (null !== $this->file) {
              $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
              $this->name = $this->file->getClientOriginalName();
-            // $this->extension = $this->file->guessExtension();
         }
     }
 
@@ -191,6 +195,45 @@ class Document
     {
         $this->extension = $extension;
 
+        return $this;
+    }
+
+    /**
+     * Get docid
+     *
+     * @return string
+     */
+    public function getDocId()
+    {
+        return $this->docid;
+    }
+
+    /**
+     * Set docid
+     *
+     * @param string $docid document id
+     *
+     * @return Document
+     */
+    public function setDocId($docid)
+    {
+        $this->docid = $docid;
+        return $this;
+    }
+
+    /**
+     * Try to generate unique document id
+     *
+     * @ORM\PrePersist
+     *
+     * @return Document
+     */
+    public function generateDocId()
+    {
+        if ( $this->extension === 'ead' ) {
+            $xml = simplexml_load_file($this->file->getPathName());
+            $this->docid = $xml->eadheader->eadid;
+        }
         return $this;
     }
 }

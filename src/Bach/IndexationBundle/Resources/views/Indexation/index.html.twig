@@ -19,6 +19,7 @@
         <table>
             <thead>
                 <th>Id</th>
+                <th>Identifiant</th>
                 <th>Type</th>
                 <th>Fichier</th>
                 <th>Titre</th>
@@ -26,7 +27,7 @@
             </thead>
             <tfoot>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         <button type="submit" id="delete_documents" class="btn btn-danger " title="Supprimer les documents sélectionnés"><span class="icon-trash icon-white"></span></button>
                     </td>
                 </tr>
@@ -38,6 +39,7 @@
                         <input type="checkbox" name="documents[]" id="document_{{ document.getId }}" value="{{ document.getExtension }}::{{ document.getId }}"/>
                         <label for="document_{{ document.getId }}">{{ document.getId }}</label>
                     </td>
+                    <td>{{ document.getDocId }}</td>
                     <td>{{ document.getExtension }}</td>
                     <td>{{ document.getName }}</td>
                     <td></td>
