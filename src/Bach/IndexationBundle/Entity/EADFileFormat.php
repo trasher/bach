@@ -29,7 +29,7 @@ class EADFileFormat extends MappedFileFormat
     protected $cUnitid;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=250)
+     * @ORM\Column(type="string", nullable=true, length=1000)
      */
     protected $cUnittitle;
 

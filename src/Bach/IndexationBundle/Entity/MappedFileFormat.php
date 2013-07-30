@@ -50,7 +50,7 @@ class MappedFileFormat
     protected $archDescUnitId;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=250)
+     * @ORM\Column(type="string", nullable=true, length=1000)
      */
     protected $archDescUnitTitle;
 
@@ -78,7 +78,7 @@ class MappedFileFormat
 
     /**
      *
-     * @ORM\Column(type="string", nullable=true, length=15)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $archDescOrigination;
 
