@@ -15,7 +15,7 @@ Displays an EAD fragment as HTML
 
     <xsl:param name="full"/>
 
-    <xsl:template match="c">
+    <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
         <div class="content">
             <xsl:if test="@id">
                 <xsl:attribute name="id">

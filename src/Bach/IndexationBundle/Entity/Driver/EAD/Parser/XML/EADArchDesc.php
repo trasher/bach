@@ -30,6 +30,7 @@ class EADArchDesc
 {
     private $_xpath;
     private $_values = array();
+    private $_cnodes = 'c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12';
 
     /**
      * Constructor
@@ -122,7 +123,10 @@ class EADArchDesc
     ) {
         $results = array();
 
-        $cNodes = $this->_xpath->query('c', $rootNode);
+        $cNodes = $this->_xpath->query(
+            $this->_cnodes,
+            $rootNode
+        );
 
         foreach ( $cNodes as $cNode ) {
             $nodeid = $cNode->getAttribute('id');
@@ -130,7 +134,7 @@ class EADArchDesc
 
             //keep original fragment, without children
             $frag = clone $cNode;
-            $child = $this->_xpath->query('c', $frag);
+            $child = $this->_xpath->query($this->_cnodes, $frag);
             if ( count($child) > 0 ) {
                 foreach ( $child as $oldc ) {
                     $frag->removeChild($oldc);
@@ -157,7 +161,7 @@ class EADArchDesc
                 }
             }
 
-            if ( $this->_xpath->query('c', $cNode)->length > 0 ) {
+            if ( $this->_xpath->query($this->_cnodes, $cNode)->length > 0 ) {
                 $results = array_merge(
                     $results,
                     $this->_recursiveCNodeSearch(
