@@ -64,6 +64,11 @@ class EADFileFormat extends MappedFileFormat
     protected $dates;
 
     /**
+     * @ORM\Column(type="text", length=100)
+     */
+    protected $fragmentid;
+
+    /**
      * The constructor
      *
      * @param array $data The input data
@@ -119,6 +124,7 @@ class EADFileFormat extends MappedFileFormat
         'parents',
         'archDescScopeContent',
         'fragment',
+        'fragmentid',
         'cDateBegin',
         'cDateEnd'
     );

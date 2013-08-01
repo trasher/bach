@@ -465,8 +465,8 @@ class DefaultController extends Controller
     {
         $client = $this->get("solarium.client");
         $query = $client->createSelect();
-        $query->setQuery('uniqid:' . $docid);
-        $query->setFields('fragment');
+        $query->setQuery('fragmentid:' . $docid);
+        $query->setFields('headerId, fragment, parents');
         $query->setStart(0)->setRows(1);
 
         $rs = $client->select($query);
@@ -482,6 +482,28 @@ class DefaultController extends Controller
 
         $tpl = '';
 
+        $tplParams = array(
+            'docid'     => $docid,
+            'document'  => $doc
+        );
+
+        $parents = explode('/', $doc['parents']);
+        if ( count($parents) > 0 ) {
+            $pquery = $client->createSelect();
+            $query = null;
+            foreach ( $parents as $p ) {
+                if ( $query !== null ) {
+                    $query .= ' | ';
+                }
+                $query .= 'fragmentid:' . $doc['headerId'] . '_' . $p;
+            }
+            $pquery->setQuery($query);
+            $pquery->setFields('fragmentid, cUnittitle');
+            $rs = $client->select($pquery);
+            $ariane  = $rs->getDocuments();
+            $tplParams['ariane'] = $ariane;
+        }
+
         if ( $ajax === 'ajax' ) {
             $tpl = 'BachHomeBundle:Default:content_display.html.twig';
         } else {
@@ -490,12 +512,7 @@ class DefaultController extends Controller
 
         return $this->render(
             $tpl,
-            array(
-                'docid'     => $docid,
-                'document'  => $doc
-            )
+            $tplParams
         );
-
-        echo $docid;
     }
 }

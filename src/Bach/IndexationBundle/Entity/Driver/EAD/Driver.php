@@ -84,10 +84,11 @@ class Driver extends FileDriver
 
         // On veut créer un fileformat pour chaque noeud C,
         // donc on reconstitue des documents pour chaque noeud C
-        foreach ( $result['archdesc']['c'] as $CNode) {
+        foreach ( $result['archdesc']['c'] as $id=>$CNode) {
             $results[] = array(
                 "header"    => $result['header'],
                 "archdesc"  => $result['archdesc']["root"],
+                "id"        => $id,
                 "c"         => $CNode);
         }
 

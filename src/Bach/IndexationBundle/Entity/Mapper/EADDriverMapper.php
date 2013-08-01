@@ -101,6 +101,8 @@ class EADDriverMapper implements DriverMapperInterface
             $mappedData["parents"] = implode("/", $data["c"]["parents"]);
         }
 
+        $mappedData['fragmentid'] = $mappedData['headerId'] . '_' . $data['id'];
+
         foreach ( $ead_elements as $map=>$element ) {
             if ( array_key_exists($element, $data['c'])
                 && count($data['c'][$element])

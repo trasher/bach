@@ -210,6 +210,29 @@ em.hl {
     margin:0 1em 1em;
 }
 
+.breadcrumb {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.breadcrumb li {
+    display: inline-block;
+}
+
+.breadcrumb li a {
+    display: inline-block;
+    padding: .1em .3em .1em 0;
+}
+
+.breadcrumb li a:before {
+    content: "» ";
+}
+
+.breadcrumb li:first-child a:before {
+    content: "";
+}
+
 /* Lastly, apply responsive CSS fixes as necessary */
 @media ( max-width : 767px) {
     #footer {

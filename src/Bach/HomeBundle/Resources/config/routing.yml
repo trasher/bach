@@ -24,6 +24,5 @@ bach_display_document:
     pattern: /show/{docid}/{ajax}
     defaults: { _controller BachHomeBundle:Default:displayDocument, ajax: false }
     requirements:
-        docid: \d+
         _method: GET
 
