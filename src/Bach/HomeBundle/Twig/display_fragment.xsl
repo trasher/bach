@@ -171,6 +171,25 @@ Displays an EAD fragment as HTML
         </div>
     </xsl:template>
 
+    <xsl:template match="scopecontent" mode="full">
+        <xsl:apply-templates mode="full"/>
+    </xsl:template>
+
+    <xsl:template match="head" mode="full">
+        <!-- Count direct parent that have a head child. That will include current node -->
+        <xsl:variable name="count" select="count(ancestor::*/head)"/>
+        <header>
+            <xsl:element name="h{$count + 2}">
+                <xsl:value-of select="."/>
+            </xsl:element>
+        </header>
+    </xsl:template>
+
+    <xsl:template match="p" mode="full">
+        <xsl:copy-of select="."/>
+    </xsl:template>
+
+
     <xsl:template match="did" mode="resume">
         <!-- Title is already displayed, show other items -->
         <header class="did">
@@ -198,6 +217,10 @@ Displays an EAD fragment as HTML
             <strong><xsl:value-of select="@label"/></strong>
         </xsl:if>
         <xsl:value-of select="."/>
+    </xsl:template>
+
+    <xsl:template match="lb" mode="full">
+        <br/>
     </xsl:template>
 
     <xsl:template match="lb" mode="resume">
