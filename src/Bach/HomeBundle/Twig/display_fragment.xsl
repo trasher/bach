@@ -9,11 +9,12 @@ Displays an EAD fragment as HTML
 -->
 <xsl:stylesheet
     version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:php="http://php.net/xsl">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
 
-    <xsl:param name="full"/>
+    <xsl:param name="full" select="1"/>
 
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
         <div class="content">
@@ -40,7 +41,6 @@ Displays an EAD fragment as HTML
             <span class="date">
                 <xsl:if test="unitdate/@label">
                     <xsl:value-of select="unitdate/@label"/>
-                    <xsl:text> : </xsl:text>
                 </xsl:if>
                 <xsl:value-of select="unitdate"/>
             </span>-->
@@ -56,8 +56,7 @@ Displays an EAD fragment as HTML
         <xsl:if test="not(parent::unittitle)">
             <span class="date">
                 <xsl:if test="@label">
-                    <xsl:value-of select="@label"/>
-                    <xsl:text> : </xsl:text>
+                    <xsl:value-of select="concat(@label, ' ')"/>
                 </xsl:if>
                 <xsl:value-of select="."/>
             </span>
@@ -67,25 +66,25 @@ Displays an EAD fragment as HTML
     <xsl:template match="imprint" mode="full">
         <div class="imprint">
             <header>
-                <h3>Informations de publication</h3>
+                <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Publication informations')"/></h3>
                 <xsl:apply-templates mode="full"/>
             </header>
         </div>
     </xsl:template>
 
-    <xsl:template match="geogname" mode="full">
-        <span class="geogname">
-            <xsl:choose>
-                <xsl:when test="@label">
-                    <xsl:value-of select="@label"/>
-                    <xsl:text> : </xsl:text>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:text>Lieu géographique : </xsl:text>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:value-of select="."/>
-        </span>
+    <xsl:template match="subject|geogname|persname|corpname|name" mode="full">
+        <xsl:if test="not(parent::controlaccess)">
+            <a>
+                <xsl:attribute name="link">
+                    <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
+                    <xsl:value-of select="concat('%%%', local-name(), '::', string(.), '%%%')"/>
+                </xsl:attribute>
+                <xsl:value-of select="."/>
+            </a>
+            <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name">
+                <xsl:text>, </xsl:text>
+            </xsl:if>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="physdesc" mode="full">
@@ -96,7 +95,7 @@ Displays an EAD fragment as HTML
                         <xsl:value-of select="@label"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:text>Description physique</xsl:text>
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </h3>
@@ -111,9 +110,10 @@ Displays an EAD fragment as HTML
                     <xsl:value-of select="@label"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:text>Genre : </xsl:text>
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Gender:')"/>
                 </xsl:otherwise>
             </xsl:choose>
+            <xsl:text> </xsl:text>
             <xsl:value-of select="."/>
         </div>
     </xsl:template>
@@ -123,50 +123,49 @@ Displays an EAD fragment as HTML
             <xsl:choose>
                 <xsl:when test="@label">
                     <xsl:value-of select="@label"/>
-                    <xsl:text> : </xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:text>Extent : </xsl:text>
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Extent:')"/>
                 </xsl:otherwise>
             </xsl:choose>
+            <xsl:text> </xsl:text>
             <xsl:value-of select="."/>
         </div>
     </xsl:template>
 
+    <xsl:key name="indexing" match="subject|geogname|persname|corpname|name" use="concat(generate-id(..), '_', local-name())"/>
     <xsl:template match="controlaccess" mode="full">
         <div class="contents">
-            <xsl:if test="head">
-                <header>
-                    <h3><xsl:value-of select="head"/></h3>
-                </header>
-            </xsl:if>
             <xsl:apply-templates mode="full"/>
-        </div>
-    </xsl:template>
+            <xsl:for-each select="*[generate-id() = generate-id(key('indexing', concat(generate-id(..), '_', local-name()))[1])]">
+                <xsl:sort select="local-name()" data-type="text"/>
+                <xsl:variable name="elt" select="local-name()"/>
+                <div>
+                    <strong>
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', concat($elt, ':'))"/>
+                        <xsl:text> </xsl:text>
+                    </strong>
+                    <xsl:for-each select="../*[local-name() = $elt]">
+                        <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
+                        <a href="concat('%%%', $elt, '::', string(.), '%%%')">
+                            <xsl:value-of select="."/>
+                        </a>
+                        <xsl:if test="following-sibling::*[local-name() = $elt]">
+                            <xsl:text>, </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
+                </div>
+            </xsl:for-each>
 
-    <xsl:template match="corpname" mode="full">
-        <div>
-            <strong>
-                <xsl:choose>
-                    <xsl:when test="@label">
-                        <xsl:value-of select="@label"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>Organisme</xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:if test="@role">
-                    <xsl:value-of select="concat(' ', @role)"/>
-                </xsl:if>
-                <xsl:text> : </xsl:text>
-            </strong>
-            <xsl:value-of select="."/>
         </div>
     </xsl:template>
 
     <xsl:template match="title" mode="full">
         <div>
-            <strong>Titre : </strong>
+            <strong>
+                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Title:')"/>
+                <xsl:text> </xsl:text>
+            </strong>
             <xsl:value-of select="."/>
         </div>
     </xsl:template>
@@ -196,7 +195,6 @@ Displays an EAD fragment as HTML
             <span class="date">
                 <xsl:if test="unitdate/@label">
                     <xsl:value-of select="unitdate/@label"/>
-                    <xsl:text> : </xsl:text>
                 </xsl:if>
                 <xsl:value-of select="unitdate"/>
             </span>
@@ -214,7 +212,7 @@ Displays an EAD fragment as HTML
 
     <xsl:template match="genreform|extent" mode="resume">
         <xsl:if test="@label">
-            <strong><xsl:value-of select="@label"/></strong>
+            <strong><xsl:value-of select="concat(@label, ' ')"/></strong>
         </xsl:if>
         <xsl:value-of select="."/>
     </xsl:template>

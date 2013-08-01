@@ -97,6 +97,7 @@ class DisplayEADFragment extends \Twig_Extension
 
         $xml = simplexml_load_string($fragment);
         $proc->setParameter('', 'full', $full);
+        $proc->registerPHPFunctions();
         $text = $proc->transformToXml($xml);
         //it is not possible to build routes from the XSL, so we'll build them here
         $text = preg_replace_callback(
@@ -105,6 +106,55 @@ class DisplayEADFragment extends \Twig_Extension
             $text
         );
         return $text;
+    }
+
+    /**
+     * Get translations from XSL stylesheet.
+     * It would be possible to directly call _(),
+     * but those strings would not be found with
+     * standard gettext capabilities.
+     *
+     * @param string $ref String reference
+     *
+     * @return string
+     */
+    public static function i18nFromXsl($ref)
+    {
+        switch ( $ref ) {
+        case 'Publication informations':
+            return _('Publication informations');
+            break;
+        case 'Physical description':
+            return _('Physical description');
+            break;
+        case 'Gender:':
+            return ('Gender:');
+            break;
+        case 'Extent:':
+            return _('Extent:');
+            break;
+        case 'Title:':
+            return _('Title:');
+            break;
+        case 'corpname:':
+            return _('Corporate name:');
+            break;
+        case 'geogname:':
+            return _('Geographical name:');
+            break;
+        case 'subject:':
+            return ('Subject:');
+            break;
+        case 'persname:':
+            return _('Personal name:');
+            break;
+        default:
+            //FIXME: add an alert in logs, a translation may be missing!
+            //return _($ref);
+            throw new \RuntimeException(
+                'Translation from XSL reference "' . $ref . '" is not known!'
+            );
+        }
     }
 
     /**
