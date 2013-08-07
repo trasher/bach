@@ -851,6 +851,30 @@ class SolrCoreAdmin
             $elt->appendChild($newEntity);
         }
 
+        //take care of daos
+        if ( $this->_em->getClassMetadata($orm_name)->hasAssociation('daos') ) {
+            $mapping = $this->_em->getClassMetadata($orm_name)
+                ->getAssociationMapping('daos');
+            $mapping_entity = $this->_em->getClassMetadata(
+                $mapping['targetEntity']
+            );
+            $mapping_table = $mapping_entity->getTablename();
+
+            $newEntity = $doc->createElement('entity');
+            $newEntity->setAttribute('name', 'daos');
+            $newEntity->setAttribute(
+                'query',
+                'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
+                '\'${SolrXMLFile.uniqid}\''
+            );
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'href');
+            $newField->setAttribute('name', 'dao');
+
+            $newEntity->appendChild($newField);
+            $elt->appendChild($newEntity);
+        }
+
         $doc->save($dataConfigFilePath);
     }
 

@@ -353,6 +353,9 @@ class DefaultController extends Controller
             $platform->getTruncateTableSQL('EADIndexes', true)
         );
         $connection->executeUpdate(
+            $platform->getTruncateTableSQL('EADDaos', true)
+        );
+        $connection->executeUpdate(
             $platform->getTruncateTableSQL('EADUniversalFileFormat', true)
         );
 

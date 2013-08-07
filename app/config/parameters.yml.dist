@@ -20,3 +20,4 @@ parameters:
     solr_path: /solr
     ead_corename: EADUniversalFileFormat
     unimarc_corename: Unimarc
+    viewer_uri: http://viewer.localhost/

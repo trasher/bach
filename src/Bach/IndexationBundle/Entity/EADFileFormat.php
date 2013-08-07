@@ -95,14 +95,15 @@ class EADFileFormat extends MappedFileFormat
         'cDate',
         'cDateNormal',
         'cDateBegin',
-        'cDateEnd'
+        'cDateEnd',
+        'dao'
     );
 
     /**
      * Fields that are mutlivalued
      */
     public static $multivalued = array(
-        'daos',
+        'dao',
         'cCorpname',
         'cFamname',
         'cGenreform',
@@ -127,7 +128,8 @@ class EADFileFormat extends MappedFileFormat
         'fragment',
         'fragmentid',
         'cDateBegin',
-        'cDateEnd'
+        'cDateEnd',
+        'dao'
     );
 
     /**

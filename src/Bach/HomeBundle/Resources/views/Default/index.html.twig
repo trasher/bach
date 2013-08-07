@@ -137,7 +137,13 @@
                     <article class="row-fluid" id="result_{{ document.uniqid }}">
                         {% if show_pics %}
                         <figure class="result_pic">
-                            <img src="{{ asset('img/noimage.png') }}" class="img-polaroid" alt="">
+                            {% if document.dao is defined %}
+                            <a href="{{ viewer_uri }}/viewer/{{ document.dao[0] }}">
+                                <img src="{{ viewer_uri }}/ajax/img/{{ document.dao[0] }}/format/thumb" class="img-polaroid" alt="{{ document.dao[0] }}"/>
+                            </a>
+                            {% else %}
+                            <img src="{{ asset('img/noimage.png') }}" class="img-polaroid" alt=""/>
+                            {% endif %}
                         </figure>
                         {% endif %}
 

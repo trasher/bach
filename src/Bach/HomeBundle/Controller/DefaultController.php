@@ -101,12 +101,15 @@ class DefaultController extends Controller
             )
         );
 
+        $viewer_uri = $this->container->getParameter('viewer_uri');
+
         $builder = new OptionSidebarBuilder($sidebar);
         $templateVars = array(
             'q'             => urlencode($query_terms),
             'page'          => $page,
             'sidebar'       => $builder->compileToArray(),
-            'show_pics'     => $sidebar->getItemValue('show_pics')
+            'show_pics'     => $sidebar->getItemValue('show_pics'),
+            'viewer_uri'    => $viewer_uri
         );
 
         if ( !is_null($query_terms) ) {
@@ -477,14 +480,17 @@ class DefaultController extends Controller
             );
         }
 
+        $viewer_uri = $this->container->getParameter('viewer_uri');
+
         $docs  = $rs->getDocuments();
         $doc = $docs[0];
 
         $tpl = '';
 
         $tplParams = array(
-            'docid'     => $docid,
-            'document'  => $doc
+            'docid'         => $docid,
+            'document'      => $doc,
+            'viewer_uri'    => $viewer_uri
         );
 
         $parents = explode('/', $doc['parents']);
