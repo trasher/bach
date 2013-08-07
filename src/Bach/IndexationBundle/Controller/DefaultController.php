@@ -110,6 +110,13 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             $document = $form->getData();
+            //set core name
+            $document->setCorename(
+                $this->container->getParameter(
+                    $document->getExtension() . '_corename'
+                )
+            );
+
             //store document reference
             $em = $this->getDoctrine()->getManager();
             $em->persist($document);
@@ -267,7 +274,6 @@ class DefaultController extends Controller
         $client = $this->get("solarium.client");
         $update = $client->createUpdate();
 
-
         //remove documents contents
         foreach ( $extensions as $extension=>$ids ) {
             $ent = '';
@@ -314,7 +320,13 @@ class DefaultController extends Controller
     public function emptyAction()
     {
         //remove solr indexed documents
-        $client = $this->get("solarium.client");
+        $client = $this->get("solarium.client.ead");
+        $update = $client->createUpdate();
+        $update->addDeleteQuery('*:*');
+        $update->addCommit();
+        $result = $client->update($update);
+
+        $client = $this->get("solarium.client.unimarc");
         $update = $client->createUpdate();
         $update->addDeleteQuery('*:*');
         $update->addCommit();

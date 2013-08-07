@@ -18,3 +18,5 @@ parameters:
     solr_host: localhost
     solr_port: 8080
     solr_path: /solr
+    ead_corename: EADUniversalFileFormat
+    unimarc_corename: Unimarc

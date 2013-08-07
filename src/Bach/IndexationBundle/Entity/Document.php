@@ -48,6 +48,11 @@ class Document
      */
     protected $extension;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $corename;
+
     public function getAbsolutePath()
     {
         return null === $this->path ? null
@@ -189,6 +194,7 @@ class Document
      * Set extension
      *
      * @param string $extension
+     *
      * @return Document
      */
     public function setExtension($extension)
@@ -234,6 +240,29 @@ class Document
             $xml = simplexml_load_file($this->file->getPathName());
             $this->docid = $xml->eadheader->eadid;
         }
+        return $this;
+    }
+
+    /**
+     * Get core name
+     *
+     * @return string
+     */
+    public function getCorename()
+    {
+        return $this->corename;
+    }
+
+    /**
+     * Set core name
+     *
+     * @param string $corename Core name
+     *
+     * @return Document
+     */
+    public function setCorename($corename)
+    {
+        $this->corename = $corename;
         return $this;
     }
 }
