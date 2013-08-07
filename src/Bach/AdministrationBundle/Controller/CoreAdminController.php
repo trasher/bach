@@ -115,8 +115,13 @@ class CoreAdminController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $orm_name = 'Bach\IndexationBundle\Entity';
-        if ( $cc->core === 'EADUniversalFileFormat' ) {
+        switch ( $cc->core ) {
+        case 'EADUniversalFileFormat':
             $orm_name .= '\EADFileFormat';
+            break;
+        default:
+            $orm_name .= '\UniversalFileFormat';
+            break;
         }
 
         $db_params = $this->_getJDBCDatabaseParameters();
