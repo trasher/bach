@@ -588,7 +588,7 @@ class SolrCoreAdmin
         //add copyField for fulltext (all fields, minus nonfulltext
         //specified in entity)
         $nonfulltext = array();
-        if ( property_exists($orm_name, 'known_indexes') ) {
+        if ( property_exists($orm_name, 'nonfulltext') ) {
             $nonfulltext = $orm_name::$nonfulltext;
         }
 

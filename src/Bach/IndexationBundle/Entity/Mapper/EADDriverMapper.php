@@ -92,8 +92,7 @@ class EADDriverMapper implements DriverMapperInterface
             'cUnitid'       => 'did/unitid',
             'cUnittitle'    => 'did/unittitle',
             'cScopcontent'  => 'scopecontent',
-            'cControlacces' => 'controlacces',
-            'cDaoloc'       => 'daogrp/daoloc'
+            'cControlacces' => 'controlacces'
         );
 
         // Partie spécifique à l'ead
@@ -124,7 +123,8 @@ class EADDriverMapper implements DriverMapperInterface
             'cSubject'     => './/subject',
             'cUnitDate'    => './/unitdate',
             'cDate'        => './/date',
-            'fragment'     => 'fragment'
+            'fragment'     => 'fragment',
+            'daolist'      => './/daoloc|.//dao'
         );
 
         foreach ( $ead_mulitple_elements as $map=>$element ) {

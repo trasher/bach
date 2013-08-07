@@ -44,11 +44,6 @@ class EADFileFormat extends MappedFileFormat
     protected $cControlacces;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=250)
-     */
-    protected $cDaoloc;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $fragment;
@@ -64,6 +59,11 @@ class EADFileFormat extends MappedFileFormat
     protected $dates;
 
     /**
+     * @ORM\OneToMany(targetEntity="EADDaos", mappedBy="eadfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $daos;
+
+    /**
      * @ORM\Column(type="text", length=100)
      */
     protected $fragmentid;
@@ -77,6 +77,7 @@ class EADFileFormat extends MappedFileFormat
     {
         $this->indexes = new ArrayCollection();
         $this->dates = new ArrayCollection();
+        $this->daos = new ArrayCollection();
         parent::__construct($data);
     }
 
@@ -101,7 +102,7 @@ class EADFileFormat extends MappedFileFormat
      * Fields that are mutlivalued
      */
     public static $multivalued = array(
-        'cDaoloc',
+        'daos',
         'cCorpname',
         'cFamname',
         'cGenreform',
@@ -196,6 +197,10 @@ class EADFileFormat extends MappedFileFormat
             } elseif ($key === 'cUnitDate' || $key === 'cDate') {
                 foreach ( $datum as $date ) {
                     $this->addDate($date);
+                }
+            } elseif ( $key == 'daolist' ) {
+                foreach ( $datum as $dao ) {
+                    $this->addDao($dao);
                 }
             } else {
                 //FIXME: throw a warning
@@ -319,29 +324,6 @@ class EADFileFormat extends MappedFileFormat
     }
 
     /**
-     * Set cDaoloc
-     *
-     * @param string $cDaoloc Daoloc
-     *
-     * @return EADFileFormat
-     */
-    public function setCDaoloc($cDaoloc)
-    {
-        $this->cDaoloc = $cDaoloc;
-        return $this;
-    }
-
-    /**
-     * Get cDaoloc
-     *
-     * @return string
-     */
-    public function getCDaoloc()
-    {
-        return $this->cDaoloc;
-    }
-
-    /**
      * Add index
      *
      * @param string $type  Index type
@@ -423,5 +405,39 @@ class EADFileFormat extends MappedFileFormat
         return $this->dates;
     }
 
+    /**
+     * Add dao
+     *
+     * @param array $dao dao
+     *
+     * @return EADFileFormat
+     */
+    public function addDao($dao)
+    {
+        $this->daos[] = new EADDaos($this, $dao);
+        return $this;
+    }
+
+    /**
+     * Remove dao
+     *
+     * @param EADDaos $dao Dao
+     *
+     * @return void
+     */
+    public function removeDao(EADDaos $dao)
+    {
+        $this->daos->removeElement($dao);
+    }
+
+    /**
+     * Get daos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDaos()
+    {
+        return $this->daos;
+    }
 
 }

@@ -46,7 +46,7 @@ drivers:
                     - did/origination
                     - scopecontent
                     - controlacces
-                    - daogrp/daoloc
+                    - .//daoloc|.//dao
                     - .//corpname
                     - .//famname
                     - .//genreform
