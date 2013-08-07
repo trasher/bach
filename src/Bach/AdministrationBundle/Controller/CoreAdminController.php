@@ -78,11 +78,13 @@ class CoreAdminController extends Controller
             if (isset($btn)) {
                 $this->_createCore($request);
             }
+            return $this->redirect(
+                $this->generateUrl('administration_dashboard')
+            );
         }
         return $this->render(
             'AdministrationBundle:Default:coreadmin.html.twig',
             array(
-                /*'form' => $form->createView(),*/
                 'coreName' => $session->get('coreName'),
                 'coreNames' => $session->get('coreNames'),
                 'coreStatus' => new CoreStatus($session->get('coreName'))
