@@ -195,6 +195,7 @@ Displays an EAD fragment as HTML
             <span class="date">
                 <xsl:if test="unitdate/@label">
                     <xsl:value-of select="unitdate/@label"/>
+                    <xsl:text> </xsl:text>
                 </xsl:if>
                 <xsl:value-of select="unitdate"/>
             </span>
@@ -205,6 +206,7 @@ Displays an EAD fragment as HTML
         <section class="physdesc">
             <xsl:if test="@label">
                 <header><xsl:value-of select="@label"/></header>
+                <xsl:text> </xsl:text>
             </xsl:if>
             <xsl:apply-templates mode="resume"/>
         </section>
