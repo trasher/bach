@@ -14,3 +14,7 @@ parameters:
     database_path: null
     ead_files_path: null
     unimarc_files_path: null
+    solr_search_core: EADUniversalFileFormat
+    solr_host: localhost
+    solr_port: 8080
+    solr_path: /solr

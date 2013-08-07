@@ -72,8 +72,8 @@ nelmio_solarium:
             adapter_class: Solarium\Core\Client\Adapter\Http
     endpoints:
         default:
-            host: localhost
-            port: 8080
-            path: /solr
-            core: EADUniversalFileFormat
+            host: '%solr_host%'
+            port: '%solr_port%'
+            path: '%solr_path%'
+            core: '%solr_search_core%'
             timeout: 5
