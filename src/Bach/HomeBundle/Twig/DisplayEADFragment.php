@@ -95,8 +95,12 @@ class DisplayEADFragment extends \Twig_Extension
             return 'href="' . $href . '"';
         };
 
+        //FIXME: get that one from parameters :'(
+        $viewer_uri = 'http://viewer.localhost';
+
         $xml = simplexml_load_string($fragment);
         $proc->setParameter('', 'full', $full);
+        $proc->setParameter('', 'viewer_uri', $viewer_uri);
         $proc->registerPHPFunctions();
         $text = $proc->transformToXml($xml);
         //it is not possible to build routes from the XSL, so we'll build them here
@@ -147,6 +151,9 @@ class DisplayEADFragment extends \Twig_Extension
             break;
         case 'persname:':
             return _('Personal name:');
+            break;
+        case 'Relative documents':
+            return _('Relative documents');
             break;
         default:
             //FIXME: add an alert in logs, a translation may be missing!

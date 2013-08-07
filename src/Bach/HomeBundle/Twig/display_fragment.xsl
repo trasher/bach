@@ -15,6 +15,7 @@ Displays an EAD fragment as HTML
     <xsl:output method="html" omit-xml-declaration="yes"/>
 
     <xsl:param name="full" select="1"/>
+    <xsl:param name="viewer_uri" select="''"/>
 
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
         <div class="content">
@@ -26,6 +27,14 @@ Displays an EAD fragment as HTML
             <xsl:choose>
                 <xsl:when test="$full = 1">
                     <xsl:apply-templates mode="full"/>
+                    <xsl:if test="//dao|//daoloc">
+                        <figure>
+                            <header>
+                                <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>
+                            </header>
+                            <xsl:apply-templates select="dao|daoloc" mode="daos"/>
+                        </figure>
+                    </xsl:if>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates mode="resume"/>
@@ -186,6 +195,26 @@ Displays an EAD fragment as HTML
 
     <xsl:template match="p" mode="full">
         <xsl:copy-of select="."/>
+    </xsl:template>
+
+    <xsl:template match="dao|daoloc" mode="daos">
+        <a href="{concat($viewer_uri, '/viewer/', @href)}">
+            <img>
+                <xsl:attribute name="src">
+                    <xsl:value-of select="concat($viewer_uri, '/ajax/img/', @href, '/format/medium')"/>
+                </xsl:attribute>
+                <xsl:attribute name="alt">
+                    <xsl:choose>
+                        <xsl:when test="@title">
+                            <xsl:value-of select="@title"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="@href"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:attribute>
+            </img>
+        </a>
     </xsl:template>
 
 
