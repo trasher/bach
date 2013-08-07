@@ -781,11 +781,11 @@ class SolrCoreAdmin
             $elt->appendChild($newField);
         }
 
-        if ( property_exists($orm_name, 'known_indexes')
+        if ( property_exists($orm_name, 'descriptors')
             && $this->_em->getClassMetadata($orm_name)->hasAssociation('indexes')
         ) {
             //retrieve and add additional fields from entity
-            $ad_fields = $orm_name::$known_indexes;
+            $ad_fields = $orm_name::$descriptors;
 
             $mapping = $this->_em->getClassMetadata($orm_name)
                 ->getAssociationMapping('indexes');
@@ -809,6 +809,46 @@ class SolrCoreAdmin
                 $newEntity->appendChild($newField);
                 $elt->appendChild($newEntity);
             }
+        }
+
+        //take care fo dates
+        if ( property_exists($orm_name, 'dates') ) {
+            $mapping = $this->_em->getClassMetadata($orm_name)
+                ->getAssociationMapping('dates');
+            $mapping_entity = $this->_em->getClassMetadata(
+                $mapping['targetEntity']
+            );
+            $mapping_table = $mapping_entity->getTablename();
+
+            $newEntity = $doc->createElement('entity');
+            $newEntity->setAttribute('name', 'dates');
+            $newEntity->setAttribute(
+                'query',
+                'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
+                '\'${SolrXMLFile.uniqid}\''
+            );
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'date');
+            $newField->setAttribute('name', 'cDate');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'normal');
+            $newField->setAttribute('name', 'cDateNormal');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'begin');
+            $newField->setAttribute('name', 'cDateBegin');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'end');
+            $newField->setAttribute('name', 'cDateEnd');
+            $newEntity->appendChild($newField);
+
+            $elt->appendChild($newEntity);
         }
 
         $doc->save($dataConfigFilePath);
