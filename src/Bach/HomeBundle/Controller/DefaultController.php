@@ -189,9 +189,11 @@ class DefaultController extends Controller
                         && is_array($filters[$filter_field])
                         && !in_array($filter_value[0], $filters[$filter_field])
                     ) {
-                        $filter_value = array_push(
-                            $filters[$filter_field],
-                            $filter_value[0]
+                        $new_value = $filter_value[0];
+                        $filter_value = $filters[$filter_field];
+                        array_push(
+                            $filter_value,
+                            $new_value
                         );
                     }
                 }

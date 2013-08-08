@@ -191,6 +191,10 @@ em.hl {
     margin: 0 .3em 0 0;
 }
 
+#active_filters li {
+    display: inline-block;
+}
+
 #tagcloud li {
     display: inline-block;
 }

@@ -79,19 +79,23 @@
     <div class="span9">
         <div id="dates_range"></div>
         {% if filters is defined %}
+            {% set coma = ', ' %}
             <nav id="active_filters">
                 <strong>Active filters:</strong>
                 {% for filter_name,values in filters %}
                 <em>{{ filter_name }}:</em>
                 <ul>
                     {% for value in values %}
-                    <li><a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="Remove filter on '{{value}}'">{{ value }}</a></li>
+                    <li>
+                        <a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="Remove filter on '{{value}}'">
+                            {{- value -}}
+                        </a>{% if loop.revindex > 1  %}{{- coma }}{% endif %}
+                    </li>
                     {% endfor %}
                 </ul>
                 {% endfor %}
             </nav>
         {% endif %}
-
 
         <div class="row-fluid">
             <div class="span9">
