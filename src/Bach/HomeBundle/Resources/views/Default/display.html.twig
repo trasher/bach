@@ -3,3 +3,11 @@
 {% block container %}
     {% include 'BachHomeBundle:Default:content_display.html.twig' with {'docid': docid, 'document': document} %}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        flowplayer("a.flashplayer", "{{ asset('/img/flowplayer-3.2.16.swf') }}");
+    </script>
+{% endblock %}

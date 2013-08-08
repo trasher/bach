@@ -34,13 +34,15 @@ class DisplayDao extends \Twig_Extension
 
     private static $_images_extensions = array('jpeg', 'jpg', 'png', 'gif');
     private static $_sounds_extensions = array('mp3', 'ogg');
-    private static $_videos_extensions = array('flv', 'ogv', 'mp4', 'webm');
+    private static $_flash_extensions = array('flv');
+    private static $_videos_extensions = array('ogv', 'mp4', 'webm');
 
     const IMAGE = 0;
     const SERIES = 1;
     const SOUND = 2;
     const VIDEO = 3;
-    const OTHER = 4;
+    const FLASH = 4;
+    const OTHER = 5;
 
     /**
      * Main constructor
@@ -118,6 +120,7 @@ class DisplayDao extends \Twig_Extension
             self::IMAGE     => array(),
             self::SERIES    => array(),
             self::VIDEO     => array(),
+            self::FLASH     => array(),
             self::SOUND     => array(),
             self::OTHER     => array()
         );
@@ -164,6 +167,15 @@ class DisplayDao extends \Twig_Extension
             $res .= '<section id="videos">';
             foreach ( $results[self::VIDEO] as $video ) {
                 $res .= $video;
+            }
+            $res .= '</section>';
+        }
+
+        if ( count($results[self::FLASH]) > 0 ) {
+            $res .= '<h4>' . _('Flash videos') . '</h4>';
+            $res .= '<section id="flashvideos">';
+            foreach ( $results[self::FLASH] as $flash ) {
+                $res .= $flash;
             }
             $res .= '</section>';
         }
@@ -233,6 +245,9 @@ class DisplayDao extends \Twig_Extension
         case self::VIDEO:
             $ret = _('Videos are not supported (yet).');
             break;
+        case self::FLASH:
+            $ret = '<a class="flashplayer" href="/videos/' . $dao . '">' . $dao . '</a>';
+            break;
         case self::SOUND;
             $ret = _('Sounds are not supported (yet).');
             break;
@@ -256,10 +271,14 @@ class DisplayDao extends \Twig_Extension
         $all_reg = "/^(.+)\.(.+)$/i";
         $img_reg = "/^(.+)\.(" . implode('|', self::$_images_extensions) . ")$/i";
         $vid_reg = "/^(.+)\.(" . implode('|', self::$_videos_extensions) . ")$/i";
+        $fla_reg = "/^(.+)\.(" . implode('|', self::$_flash_extensions) . ")$/i";
         $snd_reg = "/^(.+)\.(" . implode('|', self::$_sounds_extensions) . ")$/i";
 
         $type = null;
-        if ( preg_match($vid_reg, $dao, $matches) ) {
+        if ( preg_match($fla_reg, $dao, $matches) ) {
+            //document is a flahs video
+            $type = self::FLASH;
+        } else if ( preg_match($vid_reg, $dao, $matches) ) {
             //document is a video
             $type = self::VIDEO;
         } else if ( preg_match($snd_reg, $dao, $matches) ) {
