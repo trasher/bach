@@ -142,11 +142,9 @@
                         {% if show_pics %}
                         <figure class="result_pic">
                             {% if document.dao is defined %}
-                            <a href="{{ viewer_uri }}/viewer/{{ document.dao[0] }}">
-                                <img src="{{ viewer_uri }}/ajax/img/{{ document.dao[0] }}/format/thumb" class="img-polaroid" alt="{{ document.dao[0] }}"/>
-                            </a>
+                                {{ displayDao(document.dao)|raw }}
                             {% else %}
-                            <img src="{{ asset('img/noimage.png') }}" class="img-polaroid" alt=""/>
+                                <img src="{{ asset('img/noimage.png') }}" class="img-polaroid" alt=""/>
                             {% endif %}
                         </figure>
                         {% endif %}

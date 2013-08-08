@@ -27,12 +27,14 @@ Displays an EAD fragment as HTML
             <xsl:choose>
                 <xsl:when test="$full = 1">
                     <xsl:apply-templates mode="full"/>
-                    <xsl:if test="//dao|//daoloc">
+                    <xsl:if test=".//dao|.//daoloc">
                         <figure>
                             <header>
                                 <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>
                             </header>
-                            <xsl:apply-templates select="dao|daoloc" mode="daos"/>
+                            <!--<xsl:apply-templates select=".//dao|.//daoloc" mode="daos"/>-->
+                            <xsl:variable name="daos" select=".//dao|.//daoloc"/>
+                            <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daos, $viewer_uri, 'medium')"/>
                         </figure>
                     </xsl:if>
                 </xsl:when>
@@ -198,7 +200,8 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="dao|daoloc" mode="daos">
-        <a href="{concat($viewer_uri, '/viewer/', @href)}">
+        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), $viewer_uri, 'medium')"/>
+        <!--<a href="{concat($viewer_uri, '/viewer/', @href)}">
             <img>
                 <xsl:attribute name="src">
                     <xsl:value-of select="concat($viewer_uri, '/ajax/img/', @href, '/format/medium')"/>
@@ -214,7 +217,7 @@ Displays an EAD fragment as HTML
                     </xsl:choose>
                 </xsl:attribute>
             </img>
-        </a>
+        </a>-->
     </xsl:template>
 
 

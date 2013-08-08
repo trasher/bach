@@ -12,3 +12,10 @@ services:
             - [setRequest, ['@?request=']]
         tags:
             - { name: twig.extension }
+    bach.home.display_dao:
+        class: Bach\HomeBundle\Twig\DisplayDao
+        arguments: [ @router, '%viewer_uri%' ]
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: twig.extension }

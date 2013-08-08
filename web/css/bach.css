@@ -237,6 +237,18 @@ em.hl {
     content: "";
 }
 
+figure section {
+    text-align: center;
+}
+
+figure section a {
+    display: inline-block;
+    width: 300px;
+    text-align: center;
+    vertical-align: middle;
+    margin: .2em;
+}
+
 /* Lastly, apply responsive CSS fixes as necessary */
 @media ( max-width : 767px) {
     #footer {
