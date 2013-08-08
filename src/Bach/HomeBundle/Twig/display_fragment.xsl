@@ -158,7 +158,7 @@ Displays an EAD fragment as HTML
                     </strong>
                     <xsl:for-each select="../*[local-name() = $elt]">
                         <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
-                        <a href="concat('%%%', $elt, '::', string(.), '%%%')">
+                        <a link="{concat('%%%', $elt, '::', string(.), '%%%')}">
                             <xsl:value-of select="."/>
                         </a>
                         <xsl:if test="following-sibling::*[local-name() = $elt]">
