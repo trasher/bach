@@ -246,7 +246,16 @@ class DisplayDao extends \Twig_Extension
             $ret = _('Videos are not supported (yet).');
             break;
         case self::FLASH:
-            $ret = '<a class="flashplayer" href="/videos/' . $dao . '">' . $dao . '</a>';
+            $href = '/videos/' . $dao;
+            $title = str_replace(
+                '%name%',
+                $dao,
+                _("Play '%name%'")
+            );
+            $ret = '<a class="flashplayer" href="' . $href . '" title="' .
+                $title  . '">';
+            $ret .= '<img src="/img/play_large.png" alt="' . $dao . '"/>';
+            $ret .= '</a>';
             break;
         case self::SOUND;
             $ret = _('Sounds are not supported (yet).');
