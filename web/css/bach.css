@@ -256,6 +256,11 @@ figure section a.flashplayer {
     border-radius: 6px;
 }
 
+figure section a.flashmusicplayer {
+    height: 30px;
+    line-height: 30px;
+}
+
 a.flashplayer img {
     margin-top: 108px;
 }
@@ -276,6 +281,16 @@ a.flashplayer h3 {
 
 a.flashplayer p {
     font-size: 0.85em;
+}
+
+a.flashmusicplayer h3 {
+    font-size: 1em;
+    margin: 0;
+    line-height: 30px;
+}
+
+a.flashmusicplayer p, a.flashmusicplayer h2 {
+    display: none;
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */

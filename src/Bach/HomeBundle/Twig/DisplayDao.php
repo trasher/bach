@@ -258,7 +258,15 @@ class DisplayDao extends \Twig_Extension
             $ret .= '</a>';
             break;
         case self::SOUND;
-            $ret = _('Sounds are not supported (yet).');
+            $title = str_replace(
+                '%name%',
+                $dao,
+                _("Play '%name%'")
+            );
+            $href = '/music/' . $dao;
+            $ret = '<a class="flashmusicplayer" href="' . $href . '" title="' .
+                $title  . '">';
+            $ret .= $dao . '</a>';
             break;
         case self::OTHER:
             $ret = _('Documents are not supported (yet).');
