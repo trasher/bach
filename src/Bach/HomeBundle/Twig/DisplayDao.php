@@ -95,11 +95,11 @@ class DisplayDao extends \Twig_Extension
     public function display($daos, $all = false, $format = 'thumb')
     {
         if ( $all === false ) {
-            return self::proceedDao($daos[0], $this->_viewer, $format);
+            return self::proceedDao($daos[0], null, $this->_viewer, $format);
         } else {
             $res = '';
             foreach ( $daos as $dao ) {
-                $res .= self::proceedDao($dao, $this->_viewer, $format);
+                $res .= self::proceedDao($dao, null, $this->_viewer, $format);
             }
             return $res;
         }
@@ -108,86 +108,146 @@ class DisplayDao extends \Twig_Extension
     /**
      * Get DAOs as XML nodes (XSLT will display them as string otherwise)
      *
-     * @param NodeSet $daos   Documents list
-     * @param string  $viewer Viewer URL
-     * @param string  $format Format to display, defaults to thumb
+     * @param NodeSet $daogrps    Groups list
+     * @param NodeSet $daos       Documents list
+     * @param string  $viewer     Viewer URL
+     * @param string  $format     Format to display, defaults to thumb
+     * @param boolean $standalone Is document standalone? Defaults to true.
      *
      * @return DOMElement
      */
-    public static function displayDaos($daos, $viewer, $format = 'thumb')
-    {
-        $results = array(
-            self::IMAGE     => array(),
-            self::SERIES    => array(),
-            self::VIDEO     => array(),
-            self::FLASH     => array(),
-            self::SOUND     => array(),
-            self::OTHER     => array()
-        );
-
-        foreach ( $daos as $d ) {
-            $dao = (string)simplexml_import_dom($d)['href'];
-            $results[self::_getType($dao)][] = self::proceedDao(
-                $dao,
-                $viewer,
-                $format
-            );
-        }
-
+    public static function displayDaos($daogrps, $daos, $viewer, $format = 'thumb',
+        $standalone = true
+    ) {
+        //start root element
         $res = '<div>';
-        if ( count($results[self::IMAGE]) > 0 ) {
-            $res .= '<h4>' . _('Images') . '</h4>';
-            $res .= '<section id="images">';
-            foreach ( $results[self::IMAGE] as $image ) {
-                $res .= $image;
+
+        if ( count($daogrps) > 0 ) {
+            $groups_results = array();
+            foreach ( $daogrps as $dg ) {
+                $xml_dg = simplexml_import_dom($dg);
+
+                $gres = array(
+                    'title'     => null,
+                    'content'   => array()
+                );
+
+                if ( $xml_dg['title'] ) {
+                    $gres['title'] = (string)$xml_dg['title'];
+                }
+
+                foreach ( $xml_dg->children() as $node_name => $xml_dao ) {
+                    if ( $node_name === 'dao' || $node_name === 'daoloc' ) {
+                        $dao = (string)$xml_dao['href'];
+                        $daotitle = null;
+                        if ( $xml_dao['title'] ) {
+                            $daotitle = $xml_dao['title'];
+                        }
+                        $gres['content'][] = self::proceedDao(
+                            $dao,
+                            $daotitle,
+                            $viewer,
+                            $format,
+                            false
+                        );
+                    }
+                }
+                $groups_results[] = $gres;
             }
-            $res .= '</section>';
+
+            foreach ( $groups_results as $group ) {
+                $res .= '<section>';
+                if ( $group['title'] !== null ) {
+                    $res .= '<header><h4>' . $group['title'] . '</h4></header>';
+                }
+                foreach ( $group['content'] as $document ) {
+                    $res .= $document;
+                }
+                $res .= '</section>';
+            }
         }
 
-        if ( count($results[self::SERIES]) > 0 ) {
-            $res .= '<h4>' . _('Series') . '</h4>';
-            $res .= '<section id="series">';
-            foreach ( $results[self::SERIES] as $series ) {
-                $res .= $series;
+        if ( count($daos) > 0 ) {
+            $results = array(
+                self::IMAGE     => array(),
+                self::SERIES    => array(),
+                self::VIDEO     => array(),
+                self::FLASH     => array(),
+                self::SOUND     => array(),
+                self::OTHER     => array()
+            );
+
+            foreach ( $daos as $d ) {
+                $xml_dao = simplexml_import_dom($d);
+                $dao = (string)$xml_dao['href'];
+                $daotitle = null;
+                if ( $xml_dao['title'] ) {
+                    $daotitle = $xml_dao['title'];
+                }
+                $results[self::_getType($dao)][] = self::proceedDao(
+                    $dao,
+                    $daotitle,
+                    $viewer,
+                    $format
+                );
             }
-            $res .= '</section>';
+
+            if ( count($results[self::IMAGE]) > 0 ) {
+                $res .= '<section id="images">';
+                $res .= '<header><h4>' . _('Images') . '</h4></header>';
+                foreach ( $results[self::IMAGE] as $image ) {
+                    $res .= $image;
+                }
+                $res .= '</section>';
+            }
+
+            if ( count($results[self::SERIES]) > 0 ) {
+                $res .= '<section id="series">';
+                $res .= '<header><h4>' . _('Series') . '</h4></header>';
+                foreach ( $results[self::SERIES] as $series ) {
+                    $res .= $series;
+                }
+                $res .= '</section>';
+            }
+
+            if ( count($results[self::SOUND]) > 0 ) {
+                $res .= '<section id="sounds">';
+                $res .= '<header><h4>' . _('Sounds') . '</h4></header>';
+                foreach ( $results[self::SOUND] as $sound ) {
+                    $res .= $sound;
+                }
+                $res .= '</section>';
+            }
+
+            if ( count($results[self::VIDEO]) > 0 ) {
+                $res .= '<section id="videos">';
+                $res .= '<header><h4>' . _('Videos') . '</h4></header>';
+                foreach ( $results[self::VIDEO] as $video ) {
+                    $res .= $video;
+                }
+                $res .= '</section>';
+            }
+
+            if ( count($results[self::FLASH]) > 0 ) {
+                $res .= '<section id="flashvideos">';
+                $res .= '<header><h4>' . _('Flash videos') . '</h4></header>';
+                foreach ( $results[self::FLASH] as $flash ) {
+                    $res .= $flash;
+                }
+                $res .= '</section>';
+            }
+
+            if ( count($results[self::OTHER]) > 0 ) {
+                $res .= '<section id="other">';
+                $res .= '<header><h4>' . _('Other documents') . '</h4></header>';
+                foreach ( $results[self::OTHER] as $other ) {
+                    $res .= $other;
+                }
+                $res .= '</section>';
+            }
         }
 
-        if ( count($results[self::SOUND]) > 0 ) {
-            $res .= '<h4>' . _('Sounds') . '</h4>';
-            $res .= '<section id="sounds">';
-            foreach ( $results[self::SOUND] as $sound ) {
-                $res .= $sound;
-            }
-            $res .= '</section>';
-        }
-
-        if ( count($results[self::VIDEO]) > 0 ) {
-            $res .= '<h4>' . _('Videos') . '</h4>';
-            $res .= '<section id="videos">';
-            foreach ( $results[self::VIDEO] as $video ) {
-                $res .= $video;
-            }
-            $res .= '</section>';
-        }
-
-        if ( count($results[self::FLASH]) > 0 ) {
-            $res .= '<h4>' . _('Flash videos') . '</h4>';
-            $res .= '<section id="flashvideos">';
-            foreach ( $results[self::FLASH] as $flash ) {
-                $res .= $flash;
-            }
-            $res .= '</section>';
-        }
-
-        if ( count($results[self::OTHER]) > 0 ) {
-            $res .= '<h4>' . _('Other documents') . '</h4>';
-            $res .= '<section id="other">';
-            foreach ( $results[self::OTHER] as $other ) {
-                $res .= $other;
-            }
-            $res .= '</section>';
-        }
+        //end root element
         $res .= '</div>';
 
         $sxml = simplexml_load_string($res);
@@ -206,7 +266,7 @@ class DisplayDao extends \Twig_Extension
      */
     public static function getDao($dao, $viewer, $format = 'thumb')
     {
-        $str = self::proceedDao($dao, $viewer, $format);
+        $str = self::proceedDao($dao, null, $viewer, $format);
         $sxml = simplexml_load_string($str);
         $doc = dom_import_simplexml($sxml);
         return $doc;
@@ -215,14 +275,17 @@ class DisplayDao extends \Twig_Extension
     /**
      * Proceed daos
      *
-     * @param string $dao    Document name
-     * @param string $viewer Viewer URL
-     * @param string $format Format to display
+     * @param string  $dao        Document name
+     * @param string  $daotitle   Document title, if any
+     * @param string  $viewer     Viewer URL
+     * @param string  $format     Format to display
+     * @param boolean $standalone Is a standalone document, defaults to true
      *
      * @return string
      */
-    public static function proceedDao($dao, $viewer, $format)
-    {
+    public static function proceedDao($dao, $daotitle, $viewer, $format,
+        $standalone = true
+    ) {
         $ret = null;
 
         if ( !(substr($viewer, -1) === '/') ) {
@@ -234,12 +297,18 @@ class DisplayDao extends \Twig_Extension
             $ret = '<a href="' . $viewer . 'series/' . $dao . '">';
             $ret .= '<img src="' . $viewer . 'ajax/representative/' .
                 rtrim($dao, '/') .  '/format/' . $format  . '" alt="' . $dao . '"/>';
+            if ( $daotitle !== null ) {
+                $ret .= '<span class="title">' . $daotitle . '</span>';
+            }
             $ret .= '</a>';
             break;
         case self::IMAGE:
             $ret = '<a href="' . $viewer . 'viewer/' . $dao . '">';
-            $ret .= '<img src="' . $viewer . 'ajax/img/' . $dao . 
-                '/format/' . $format . '" alt="' . $dao .'"/>'; 
+            $ret .= '<img src="' . $viewer . 'ajax/img/' . $dao .
+                '/format/' . $format . '" alt="' . $dao .'"/>';
+            if ( $daotitle !== null ) {
+                $ret .= '<span class="title">' . $daotitle . '</span>';
+            }
             $ret .= '</a>';
             break;
         case self::VIDEO:
@@ -252,9 +321,18 @@ class DisplayDao extends \Twig_Extension
                 $dao,
                 _("Play '%name%'")
             );
-            $ret = '<a class="flashplayer" href="' . $href . '" title="' .
+            $class = '';
+            if ( $standalone === true ) {
+                $class = ' class="flashplayer"';
+            }
+            $ret = '<a' . $class . ' href="' . $href . '" title="' .
                 $title  . '">';
-            $ret .= '<img src="/img/play_large.png" alt="' . $dao . '"/>';
+            if ( $standalone === true ) {
+                $ret .= '<img src="/img/play_large.png" alt="' . $dao . '"/>';
+            }
+            if ( $daotitle !== null ) {
+                $ret .= '<span class="title">' . $daotitle . '</span>';
+            }
             $ret .= '</a>';
             break;
         case self::SOUND;
@@ -263,9 +341,16 @@ class DisplayDao extends \Twig_Extension
                 $dao,
                 _("Play '%name%'")
             );
+            $class = '';
+            if ( $standalone === true ) {
+                $class = ' class="flashmusicplayer"';
+            }
             $href = '/music/' . $dao;
-            $ret = '<a class="flashmusicplayer" href="' . $href . '" title="' .
+            $ret = '<a' . $class . ' href="' . $href . '" title="' .
                 $title  . '">';
+            if ( $daotitle !== null ) {
+                $ret .= '<span class="title">' . $daotitle . '</span>';
+            }
             $ret .= $dao . '</a>';
             break;
         case self::OTHER:

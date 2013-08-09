@@ -33,8 +33,11 @@ Displays an EAD fragment as HTML
                                 <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>
                             </header>
                             <!--<xsl:apply-templates select=".//dao|.//daoloc" mode="daos"/>-->
+                            <xsl:variable name="daogrps" select="//toto"/>
                             <xsl:variable name="daos" select=".//dao|.//daoloc"/>
-                            <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daos, $viewer_uri, 'medium')"/>
+                            <!--<xsl:variable name="daogrps" select=".//daogrp"/>
+                            <xsl:variable name="daos" select=".//dao[not(parent::daogrp)]|.//daoloc[not(parent::daogrp)]"/>-->
+                            <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daogrps, $daos, $viewer_uri, 'medium')"/>
                         </figure>
                     </xsl:if>
                 </xsl:when>

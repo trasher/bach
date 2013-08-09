@@ -247,6 +247,13 @@ figure section a {
     text-align: center;
     vertical-align: middle;
     margin: .2em;
+    position: relative;
+}
+
+figure section a.flashplayer span.title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
 figure section a.flashplayer {
