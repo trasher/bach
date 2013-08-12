@@ -241,7 +241,7 @@ figure section {
     text-align: center;
 }
 
-figure section a {
+figure section a, figure section video {
     display: inline-block;
     width: 300px;
     text-align: center;
@@ -256,11 +256,14 @@ figure section a.flashplayer span.title {
     left: 0;
 }
 
-figure section a.flashplayer {
-    height: 300px;
+figure section a.flashplayer, figure section video {
     color: black;
     border:1px black solid;
     border-radius: 6px;
+}
+
+figure section a.flashplayer {
+    height: 300px;
 }
 
 figure section a.flashmusicplayer {

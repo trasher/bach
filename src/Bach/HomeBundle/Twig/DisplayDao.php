@@ -312,7 +312,10 @@ class DisplayDao extends \Twig_Extension
             $ret .= '</a>';
             break;
         case self::VIDEO:
-            $ret = _('Videos are not supported (yet).');
+            $href = '/file/video/' . $dao;
+            $ret .= '<video controls="controls" width="300" height="300">';
+            $ret .= '<source src="' . $href  . '"/>';
+            $ret .= '</video>';
             break;
         case self::FLASH:
             $href = '/file/video/' . $dao;
