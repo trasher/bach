@@ -21,3 +21,9 @@ parameters:
     ead_corename: EADUniversalFileFormat
     unimarc_corename: Unimarc
     viewer_uri: http://viewer.localhost/
+
+bach_home:
+    files:
+        videos: '%kernel.root_dir%/../web/videos/'
+        musics: '%kernel.root_dir%/../web/musics/'
+        misc: '%kernel.root_dir%/../web/files/'

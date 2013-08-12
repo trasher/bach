@@ -42,7 +42,7 @@ class DisplayDao extends \Twig_Extension
     const SOUND = 2;
     const VIDEO = 3;
     const FLASH = 4;
-    const OTHER = 5;
+    const MISC = 5;
 
     /**
      * Main constructor
@@ -174,7 +174,7 @@ class DisplayDao extends \Twig_Extension
                 self::VIDEO     => array(),
                 self::FLASH     => array(),
                 self::SOUND     => array(),
-                self::OTHER     => array()
+                self::MISC     => array()
             );
 
             foreach ( $daos as $d ) {
@@ -237,10 +237,10 @@ class DisplayDao extends \Twig_Extension
                 $res .= '</section>';
             }
 
-            if ( count($results[self::OTHER]) > 0 ) {
+            if ( count($results[self::MISC]) > 0 ) {
                 $res .= '<section id="other">';
-                $res .= '<header><h4>' . _('Other documents') . '</h4></header>';
-                foreach ( $results[self::OTHER] as $other ) {
+                $res .= '<header><h4>' . _('Miscellaneous documents') . '</h4></header>';
+                foreach ( $results[self::MISC] as $other ) {
                     $res .= $other;
                 }
                 $res .= '</section>';
@@ -315,7 +315,7 @@ class DisplayDao extends \Twig_Extension
             $ret = _('Videos are not supported (yet).');
             break;
         case self::FLASH:
-            $href = '/videos/' . $dao;
+            $href = '/file/video/' . $dao;
             $title = str_replace(
                 '%name%',
                 $dao,
@@ -345,7 +345,7 @@ class DisplayDao extends \Twig_Extension
             if ( $standalone === true ) {
                 $class = ' class="flashmusicplayer"';
             }
-            $href = '/music/' . $dao;
+            $href = '/file/music/' . $dao;
             $ret = '<a' . $class . ' href="' . $href . '" title="' .
                 $title  . '">';
             if ( $daotitle !== null ) {
@@ -353,7 +353,8 @@ class DisplayDao extends \Twig_Extension
             }
             $ret .= $dao . '</a>';
             break;
-        case self::OTHER:
+        case self::MISC:
+            $href = '/file/misc/' . $dao;
             $ret = _('Documents are not supported (yet).');
             break;
         }
@@ -390,8 +391,8 @@ class DisplayDao extends \Twig_Extension
             //document is an image
             $type = self::IMAGE;
         } else if ( preg_match($all_reg, $dao, $matches) ) {
-            //document is a file
-            $type = self::OTHER;
+            //document is a unkonwn file
+            $type = self::MISC;
         } else {
             //document should be a series
             $type = self::SERIES;

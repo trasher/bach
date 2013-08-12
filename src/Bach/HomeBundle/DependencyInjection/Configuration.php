@@ -20,9 +20,21 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('bach_home');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $default_base_path = realpath(__DIR__ . '/../../../../web/');
+
+        //TODO: validate paths are ending with a '/' to normalize values
+        $rootNode->children()
+            ->arrayNode('files')
+            ->children()
+            ->scalarNode('videos')
+            ->defaultValue($default_base_path . 'videos/')
+            ->end()
+            ->scalarNode('musics')
+            ->defaultValue($default_base_path . 'musics/')
+            ->end()
+            ->scalarNode('misc')
+            ->defaultValue($default_base_path . 'misc/')
+            ->end();
 
         return $treeBuilder;
     }

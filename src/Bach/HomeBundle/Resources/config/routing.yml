@@ -26,3 +26,9 @@ bach_display_document:
     requirements:
         _method: GET
 
+bach_get_file:
+    pattern: /file/{type}/{name}
+    defaults: { _controller BachHomeBundle:Files:getFile }
+    requirements:
+        type: video|music|image
+        name: '.+'

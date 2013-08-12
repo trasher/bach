@@ -24,5 +24,9 @@ class BachHomeExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        foreach ( $configs[0]['files'] as $name=>$path ) {
+            define('BACH_FILES_' . strtoupper($name), realpath($path));
+        }
     }
 }
