@@ -152,6 +152,9 @@ class DisplayEADFragment extends \Twig_Extension
         case 'persname:':
             return _('Personal name:');
             break;
+        case 'function:':
+            return _('Function:');
+            break;
         case 'Relative documents':
             return _('Relative documents');
             break;

@@ -84,7 +84,7 @@ Displays an EAD fragment as HTML
         </div>
     </xsl:template>
 
-    <xsl:template match="subject|geogname|persname|corpname|name" mode="full">
+    <xsl:template match="subject|geogname|persname|corpname|name|function" mode="full">
         <xsl:if test="not(parent::controlaccess)">
             <a>
                 <xsl:attribute name="link">
@@ -93,7 +93,7 @@ Displays an EAD fragment as HTML
                 </xsl:attribute>
                 <xsl:value-of select="."/>
             </a>
-            <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name">
+            <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name or following-sibling::function">
                 <xsl:text>, </xsl:text>
             </xsl:if>
         </xsl:if>
@@ -145,7 +145,7 @@ Displays an EAD fragment as HTML
         </div>
     </xsl:template>
 
-    <xsl:key name="indexing" match="subject|geogname|persname|corpname|name" use="concat(generate-id(..), '_', local-name())"/>
+    <xsl:key name="indexing" match="subject|geogname|persname|corpname|name|function" use="concat(generate-id(..), '_', local-name())"/>
     <xsl:template match="controlaccess" mode="full">
         <div class="contents">
             <xsl:apply-templates mode="full"/>
@@ -295,7 +295,7 @@ Displays an EAD fragment as HTML
         </aside>
     </xsl:template>
 
-    <xsl:template match="subject|geogname|persname|corpname|name" mode="resume">
+    <xsl:template match="subject|geogname|persname|corpname|name|function" mode="resume">
         <a>
             <xsl:attribute name="link">
                 <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
@@ -303,7 +303,7 @@ Displays an EAD fragment as HTML
             </xsl:attribute>
             <xsl:value-of select="."/>
         </a>
-        <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name">
+        <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name or following-sibling::function">
             <xsl:text>, </xsl:text>
         </xsl:if>
     </xsl:template>
