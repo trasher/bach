@@ -33,16 +33,18 @@ class DisplayDao extends \Twig_Extension
     private $_viewer;
 
     private static $_images_extensions = array('jpeg', 'jpg', 'png', 'gif');
-    private static $_sounds_extensions = array('mp3', 'ogg');
+    private static $_sounds_extensions = array('ogg', 'wav');
+    private static $_videos_extensions = array('ogv', 'mp4', 'webm', 'mov');
+    private static $_flash_sounds_extensions = array('mp3');
     private static $_flash_extensions = array('flv');
-    private static $_videos_extensions = array('ogv', 'mp4', 'webm');
 
     const IMAGE = 0;
     const SERIES = 1;
     const SOUND = 2;
     const VIDEO = 3;
-    const FLASH = 4;
-    const MISC = 5;
+    const FLA_SOUND = 4;
+    const FLASH = 5;
+    const MISC = 6;
 
     /**
      * Main constructor
@@ -174,6 +176,7 @@ class DisplayDao extends \Twig_Extension
                 self::VIDEO     => array(),
                 self::FLASH     => array(),
                 self::SOUND     => array(),
+                self::FLA_SOUND => array(),
                 self::MISC     => array()
             );
 
@@ -214,6 +217,15 @@ class DisplayDao extends \Twig_Extension
                 $res .= '<section id="sounds">';
                 $res .= '<header><h4>' . _('Sounds') . '</h4></header>';
                 foreach ( $results[self::SOUND] as $sound ) {
+                    $res .= $sound;
+                }
+                $res .= '</section>';
+            }
+
+            if ( count($results[self::FLA_SOUND]) > 0 ) {
+                $res .= '<section id="sounds">';
+                $res .= '<header><h4>' . _('Flash sounds') . '</h4></header>';
+                foreach ( $results[self::FLA_SOUND] as $sound ) {
                     $res .= $sound;
                 }
                 $res .= '</section>';
@@ -292,6 +304,12 @@ class DisplayDao extends \Twig_Extension
             $viewer .= '/';
         }
 
+        $title = str_replace(
+            '%name%',
+            ($daotitle) ? $daotitle : $dao,
+            _("Play '%name%'")
+        );
+
         switch ( self::_getType($dao) ) {
         case self::SERIES:
             $ret = '<a href="' . $viewer . 'series/' . $dao . '">';
@@ -311,19 +329,26 @@ class DisplayDao extends \Twig_Extension
             }
             $ret .= '</a>';
             break;
+        case self::SOUND:
+            $href = '/file/music/' . $dao;
+            $ret .= '<audio controls="controls" width="300" height="30">';
+            $ret .= '<source src="' . $href  . '"/>';
+            $ret .= '</audio>';
+            break;
         case self::VIDEO:
             $href = '/file/video/' . $dao;
+            $ret = '<div class="htmlplayer standalone">';
             $ret .= '<video controls="controls" width="300" height="300">';
             $ret .= '<source src="' . $href  . '"/>';
+            $ret .= '<a href="' . $href . '">' . _('Your browser does not support this video format, you may want to download file and watch it offline') . '</a>';
             $ret .= '</video>';
+            if ( $daotitle !== null ) {
+                $ret .= '<span class="title">' . $daotitle . '</span>';
+            }
+            $ret .= '</div>';
             break;
         case self::FLASH:
             $href = '/file/video/' . $dao;
-            $title = str_replace(
-                '%name%',
-                $dao,
-                _("Play '%name%'")
-            );
             $class = '';
             if ( $standalone === true ) {
                 $class = ' class="flashplayer"';
@@ -338,12 +363,7 @@ class DisplayDao extends \Twig_Extension
             }
             $ret .= '</a>';
             break;
-        case self::SOUND;
-            $title = str_replace(
-                '%name%',
-                $dao,
-                _("Play '%name%'")
-            );
+        case self::FLA_SOUND;
             $class = '';
             if ( $standalone === true ) {
                 $class = ' class="flashmusicplayer"';
@@ -379,6 +399,7 @@ class DisplayDao extends \Twig_Extension
         $vid_reg = "/^(.+)\.(" . implode('|', self::$_videos_extensions) . ")$/i";
         $fla_reg = "/^(.+)\.(" . implode('|', self::$_flash_extensions) . ")$/i";
         $snd_reg = "/^(.+)\.(" . implode('|', self::$_sounds_extensions) . ")$/i";
+        $fla_snd_reg = "/^(.+)\.(" . implode('|', self::$_flash_sounds_extensions) . ")$/i";
 
         $type = null;
         if ( preg_match($fla_reg, $dao, $matches) ) {
@@ -388,8 +409,11 @@ class DisplayDao extends \Twig_Extension
             //document is a video
             $type = self::VIDEO;
         } else if ( preg_match($snd_reg, $dao, $matches) ) {
-            //document is a sound
+            //document is a HTML5 sound
             $type = self::SOUND;
+        } else if ( preg_match($fla_snd_reg, $dao, $matches) ) {
+            //document is a flash sound
+            $type = self::FLA_SOUND;
         } else if ( preg_match($img_reg, $dao, $matches) ) {
             //document is an image
             $type = self::IMAGE;
