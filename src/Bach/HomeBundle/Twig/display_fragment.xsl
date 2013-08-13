@@ -188,6 +188,24 @@ Displays an EAD fragment as HTML
         <xsl:apply-templates mode="full"/>
     </xsl:template>
 
+    <xsl:template match="emph" mode="full">
+        <xsl:choose>
+            <xsl:when test="@render='bold'">
+                <strong>
+                    <xsl:apply-templates mode="full"/>
+                </strong>
+            </xsl:when>
+            <xsl:when test="@render='italic'">
+                <em>
+                    <xsl:apply-templates mode="full"/>
+                </em>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="full"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xsl:template match="head" mode="full">
         <!-- Count direct parent that have a head child. That will include current node -->
         <xsl:variable name="count" select="count(ancestor::*/head)"/>
@@ -199,6 +217,12 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="p" mode="full">
+        <p>
+            <xsl:apply-templates mode="full"/>
+        </p>
+    </xsl:template>
+
+    <xsl:template match="text()" mode="full">
         <xsl:copy-of select="."/>
     </xsl:template>
 
