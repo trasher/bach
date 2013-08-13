@@ -149,8 +149,8 @@ class DisplayDao extends \Twig_Extension
                             $dao,
                             $daotitle,
                             $viewer,
-                            $format,
-                            false
+                            $format/*,
+                            false*/
                         );
                     }
                 }
