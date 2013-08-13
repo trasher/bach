@@ -512,6 +512,23 @@ class DefaultController extends Controller
             $tplParams['ariane'] = $ariane;
         }
 
+        $cquery = $client->createSelect();
+        $pid = substr($docid, strlen($doc['headerId']) + 1);
+        if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
+            $pid = $doc['parents'] . '/' . $pid;
+        }
+        $query = 'parents: ' . $pid;
+        $cquery->setQuery($query);
+        $cquery->setFields('fragmentid, cUnittitle');
+        $rs = $client->select($cquery);
+        $children  = $rs->getDocuments();
+
+        if ( count($children) > 0 ) {
+            $tplParams['children'] = $children;
+        } else {
+            $tplParams['children'] = false;
+        }
+
         if ( $ajax === 'ajax' ) {
             $tpl = 'BachHomeBundle:Default:content_display.html.twig';
         } else {

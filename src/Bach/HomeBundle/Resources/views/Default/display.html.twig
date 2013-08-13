@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
-    {% include 'BachHomeBundle:Default:content_display.html.twig' with {'docid': docid, 'document': document} %}
+    {% include 'BachHomeBundle:Default:content_display.html.twig' with {'docid': docid, 'document': document, 'children': children} %}
 {% endblock %}
 
 {% block javascripts %}

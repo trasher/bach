@@ -15,20 +15,39 @@ Displays an EAD fragment as HTML
     <xsl:output method="html" omit-xml-declaration="yes"/>
 
     <xsl:param name="full" select="1"/>
+    <xsl:param name="children" select="''"/>
     <xsl:param name="viewer_uri" select="''"/>
 
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
-        <div class="content">
-            <xsl:if test="@id">
-                <xsl:attribute name="id">
+        <xsl:variable name="id">
+            <xsl:choose>
+                <xsl:when test="@id">
                     <xsl:value-of select="@id"/>
-                </xsl:attribute>
-            </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="generate-id(.)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <div class="content" id="{$id}">
             <xsl:choose>
                 <xsl:when test="$full = 1">
+                    <xsl:if test="not($children = '') or .//dao|.//daoloc">
+                        <ul class="access">
+                            <li><a href="#{$id}">Content</a></li>
+                            <xsl:if test=".//dao|.//daoloc">
+                                <li><a href="#relative_documents">Documents</a></li>
+                            </xsl:if>
+                            <xsl:if test="not($children = '')">
+                                <li><a href="#children_documents">Sub-units</a></li>
+                            </xsl:if>
+                        </ul>
+                    </xsl:if>
+
                     <xsl:apply-templates mode="full"/>
+
                     <xsl:if test=".//dao|.//daoloc">
-                        <figure>
+                        <figure id="relative_documents">
                             <header>
                                 <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>
                             </header>
@@ -244,7 +263,6 @@ Displays an EAD fragment as HTML
             </img>
         </a>-->
     </xsl:template>
-
 
     <xsl:template match="did" mode="resume">
         <!-- Title is already displayed, show other items -->

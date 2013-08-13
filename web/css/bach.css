@@ -256,7 +256,7 @@ figure section a.flashplayer span.title {
     left: 0;
 }
 
-figure section div.htmlplayer span.title {
+figure  span.title {
     display: block;
 }
 
@@ -310,6 +310,32 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
 
 .htmlplayer.standalone {
     display: inline-block;
+}
+
+.access {
+    background: white;
+    position: fixed;
+    right: .5em;
+    top: 4em;
+    list-style-type: none;
+    text-align: right;
+    border-radius: 6px;
+    padding: .2em;
+    z-index: 1040;
+}
+
+.access li {
+    display: inline-block;
+}
+
+
+.access a {
+    display: inline-block;
+    padding: .1em .3em;
+}
+
+.access li:last-child a {
+    border: none;
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */

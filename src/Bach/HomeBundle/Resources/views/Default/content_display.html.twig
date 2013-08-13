@@ -8,5 +8,24 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {{ displayFragment(document.fragment, true)|raw }}
+        {% if children == false %}
+            {% set hasChildren = false %}
+        {% else %}
+            {% set hasChildren = true %}
+        {% endif %}
+        {{ displayFragment(document.fragment, true, hasChildren)|raw }}
+        {% if not children == false %}
+            <section id="children_documents">
+                <header>
+                    <h3>Sous unités</h3>
+                </header>
+                <ul>
+                {% for child in children %}
+                    <li>
+                        <a href="{{ path('bach_display_document', {docid: child.fragmentid}) }}">{{ child.cUnittitle }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
     </article>
