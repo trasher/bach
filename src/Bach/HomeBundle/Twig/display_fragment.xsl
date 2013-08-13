@@ -184,7 +184,7 @@ Displays an EAD fragment as HTML
         </div>
     </xsl:template>
 
-    <xsl:template match="scopecontent" mode="full">
+    <xsl:template match="scopecontent|odd" mode="full">
         <xsl:apply-templates mode="full"/>
     </xsl:template>
 
