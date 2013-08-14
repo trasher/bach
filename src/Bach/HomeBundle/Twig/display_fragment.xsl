@@ -66,7 +66,7 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="did" mode="full">
-        <header class="did">
+        <section class="did">
             <xsl:apply-templates mode="full"/>
             <!--<h2><xsl:value-of select="unittitle"/></h2>
             <span class="date">
@@ -75,16 +75,34 @@ Displays an EAD fragment as HTML
                 </xsl:if>
                 <xsl:value-of select="unitdate"/>
             </span>-->
-        </header>
+        </section>
     </xsl:template>
 
     <xsl:template match="unittitle" mode="full">
-        <h2><xsl:value-of select="."/></h2>
-        <xsl:apply-templates mode="full"/>
+        <header>
+            <h2><xsl:apply-templates mode="full"/></h2>
+            <xsl:if test="../unitid">
+                <span class="unitid">
+                    <xsl:if test="../unitid/@label">
+                        <xsl:value-of select="concat(../unitid/@label, ' ')"/>
+                    </xsl:if>
+                    <xsl:value-of select="../unitid"/>
+                </span>
+            </xsl:if>
+            <xsl:if test="../unitdate">
+                <xsl:if test="../unitid"> - </xsl:if>
+                <span class="date">
+                    <xsl:if test="../unitdate/@label">
+                        <xsl:value-of select="concat(../uinitdate/@label, ' ')"/>
+                    </xsl:if>
+                    <xsl:value-of select="../unitdate"/>
+                </span>
+            </xsl:if>
+        </header>
     </xsl:template>
 
     <xsl:template match="unitdate" mode="full">
-        <xsl:if test="not(parent::unittitle)">
+        <xsl:if test="not(parent::unittitle) and not(parent::did)">
             <span class="date">
                 <xsl:if test="@label">
                     <xsl:value-of select="concat(@label, ' ')"/>
@@ -119,46 +137,51 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="physdesc" mode="full">
-        <header class="physdesc">
-            <h3>
+        <section class="physdesc">
+            <header>
+                <h3>
+                    <xsl:choose>
+                        <xsl:when test="@label">
+                            <xsl:value-of select="@label"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </h3>
+            </header>
+            <xsl:apply-templates mode="full"/>
+        </section>
+    </xsl:template>
+
+    <xsl:template match="genreform|extent|physfacet|dimensions" mode="full">
+        <div>
+            <strong>
                 <xsl:choose>
                     <xsl:when test="@label">
                         <xsl:value-of select="@label"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
+                        <xsl:choose>
+                            <xsl:when test="local-name() = 'genreform'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Gender:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'extent'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Extent:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'physfacet'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Appearance:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'dimensions'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Dimensions:')"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                UNKNONWN ELEMENT
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
-            </h3>
-            <xsl:apply-templates mode="full"/>
-        </header>
-    </xsl:template>
-
-    <xsl:template match="genreform" mode="full">
-        <div>
-            <xsl:choose>
-                <xsl:when test="@label">
-                    <xsl:value-of select="@label"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Gender:')"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="."/>
-        </div>
-    </xsl:template>
-
-    <xsl:template match="extent" mode="full">
-        <div>
-            <xsl:choose>
-                <xsl:when test="@label">
-                    <xsl:value-of select="@label"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Extent:')"/>
-                </xsl:otherwise>
-            </xsl:choose>
+            </strong>
             <xsl:text> </xsl:text>
             <xsl:value-of select="."/>
         </div>
@@ -167,6 +190,12 @@ Displays an EAD fragment as HTML
     <xsl:key name="indexing" match="subject|geogname|persname|corpname|name|function" use="concat(generate-id(..), '_', local-name())"/>
     <xsl:template match="controlaccess" mode="full">
         <div class="contents">
+            <xsl:if test="not(head)">
+                <header>
+                    <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Descriptors')"/></h3>
+                </header>
+            </xsl:if>
+
             <xsl:apply-templates mode="full"/>
             <xsl:for-each select="*[generate-id() = generate-id(key('indexing', concat(generate-id(..), '_', local-name()))[1])]">
                 <xsl:sort select="local-name()" data-type="text"/>
@@ -201,7 +230,18 @@ Displays an EAD fragment as HTML
         </div>
     </xsl:template>
 
-    <xsl:template match="scopecontent|odd" mode="full">
+    <xsl:template match="scopecontent|odd|custodhist" mode="full">
+        <strong>
+            <xsl:choose>
+                <xsl:when test="local-name() = 'scopecontent'">
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Description:')"/>
+                </xsl:when>
+                <xsl:when test="local-name() = 'custodhist'">
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Conservation history:')"/>
+                </xsl:when>
+            </xsl:choose>
+        </strong>
+        <xsl:text> </xsl:text>
         <xsl:apply-templates mode="full"/>
     </xsl:template>
 

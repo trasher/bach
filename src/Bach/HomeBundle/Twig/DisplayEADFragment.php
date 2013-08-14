@@ -136,11 +136,20 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Physical description':
             return _('Physical description');
             break;
+        case 'Descriptors':
+            return _('Descriptors');
+            break;
         case 'Gender:':
             return ('Gender:');
             break;
         case 'Extent:':
             return _('Extent:');
+            break;
+        case 'Dimensions:':
+            return _('Dimensions:');
+            break;
+        case 'Appearance:':
+            return _('Appearance:');
             break;
         case 'Title:':
             return _('Title:');
@@ -160,8 +169,17 @@ class DisplayEADFragment extends \Twig_Extension
         case 'function:':
             return _('Function:');
             break;
+        case 'name:':
+            return _('Name:');
+            break;
         case 'Relative documents':
             return _('Relative documents');
+            break;
+        case 'Description:':
+            return _('Description:');
+            break;
+        case 'Conservation history:':
+            return _('Conservation history:');
             break;
         default:
             //FIXME: add an alert in logs, a translation may be missing!

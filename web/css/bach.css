@@ -338,6 +338,13 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
     border: none;
 }
 
+.physdesc {
+    background-color: #e5e5e5;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0 .2em .2em;
+    border-radius: 6px;
+}
+
 /* Lastly, apply responsive CSS fixes as necessary */
 @media ( max-width : 767px) {
     #footer {
