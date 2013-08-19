@@ -305,16 +305,31 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="did" mode="resume">
-        <!-- Title is already displayed, show other items -->
-        <header class="did">
-            <span class="date">
-                <xsl:if test="unitdate/@label">
-                    <xsl:value-of select="unitdate/@label"/>
-                    <xsl:text> </xsl:text>
+        <xsl:if test="unitid or unitdate">
+            <!-- Title is already displayed, show other items -->
+            <header class="did">
+                <xsl:if test="unitid">
+                    <span class="unitid">
+                        <xsl:if test="unitid/@label">
+                            <xsl:value-of select="concat(unitid/@label, ' ')"/>
+                        </xsl:if>
+                        <xsl:value-of select="unitid"/>
+                    </span>
+                    <xsl:if test="unitdate">
+                        <xsl:text> - </xsl:text>
+                    </xsl:if>
                 </xsl:if>
-                <xsl:value-of select="unitdate"/>
-            </span>
-        </header>
+                <xsl:if test="unitdate">
+                    <span class="date">
+                        <xsl:if test="unitdate/@label">
+                            <xsl:value-of select="unitdate/@label"/>
+                            <xsl:text> </xsl:text>
+                        </xsl:if>
+                        <xsl:value-of select="unitdate"/>
+                    </span>
+                </xsl:if>
+            </header>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="physdesc" mode="resume">
