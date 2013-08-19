@@ -22,7 +22,7 @@
     </div>
     {% endif %}
 
-    <aside class="span2">
+    <aside class="span2" role="search">
         {% if facets is defined and searchResults|length > 0 %}
         <div class="well-free" id="refine_query">
             <h3 class="nav-header">
@@ -128,7 +128,7 @@
         </div>
 
         {% if searchResults is defined %}
-        <section id="search_results">
+        <section id="search_results" role="main">
             {% if searchResults|length > 0 %}
             <div class="row-fluid">
                 {% if resultCount == 1 %}
@@ -159,16 +159,6 @@
                             </a>
                         </h3>
                         {{ displayFragment(document.fragment)|raw }}
-                        {#<h5>{{ document.headerDate }}</h5>
-                        {% if document.headerAuthor is defined %}
-                        <h6>{{ document.headerAuthor }}</h6>
-                        {% endif %}
-                        {% if document.archDescRepository is defined %}
-                        <h6>{{ document.archDescRepository }}</h6>
-                        {% endif %}
-
-                        <p style="text-align:justify;">
-                        </p>#}
                     </article>
                 {% endfor %}
                 {% include 'pagination.html.twig' with {
@@ -187,12 +177,6 @@
                             <a href="{{ path('bach_search', {query_terms: word.word}) }} ">{{ word.word }}</a>
                         {% endfor %}
                     {% endfor %}
-                    {#Des termes approchants existent cependant&nbsp;:
-                    {% for term,termResult in suggestions %}
-                        {% for suggest in termResult %}
-                            <a href="{{ path('bach_search', {query_terms: suggest}) }} ">{{ suggest }}</a>
-                        {% endfor %}
-                    {% endfor %}#}
                 </aside>
                 {% endif %}
             {% endif %}

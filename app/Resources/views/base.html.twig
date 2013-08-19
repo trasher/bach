@@ -29,7 +29,7 @@
                     Logged in as <a href="#" class="navbar-link">Username</a>
                 </p>#}
                 {% block navbar %}
-                <ul class="nav" role="navigation">
+                <ul class="nav" role="menu">
                     <li{% if current_route == 'bach_homepage' %} class="active"{% endif %}>
                         <a href="{{ path('bach_homepage') }}" data-toggle="tooltip" title="Page d'accueil de Bach">Home</a>
                     </li>

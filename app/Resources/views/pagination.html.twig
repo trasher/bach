@@ -6,7 +6,7 @@
     {# the number of pages that are displayed around the active page #}
     {% set nearbyPagesLimit = 2 %}
 
-    <div class="pagination pagination-centered">
+    <div class="pagination pagination-centered" role="navigation">
         <ul>
         {% if currentPage > 1 %}
             <li><a href="{{ path(paginationPath, currentFilters|merge({page: currentPage-1})) }}">&larr;</a></li>

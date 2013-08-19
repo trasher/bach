@@ -93,7 +93,7 @@ class DisplayEADFragment extends \Twig_Extension
                     'filter_value'  => $matches[2]
                 )
             );
-            return 'href="' . $href . '"';
+            return 'href="' . str_replace('&', '&amp;', $href) . '"';
         };
 
         //FIXME: get that one from parameters :'(
