@@ -517,7 +517,7 @@ class DefaultController extends Controller
         if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
             $pid = $doc['parents'] . '/' . $pid;
         }
-        $query = 'parents: ' . $pid;
+        $query = '+headerId:' . $doc['headerId'] . ' +parents: ' . $pid;
         $cquery->setQuery($query);
         $cquery->setFields('fragmentid, cUnittitle');
         $rs = $client->select($cquery);
