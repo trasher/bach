@@ -221,28 +221,85 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="title" mode="full">
-        <div>
-            <strong>
-                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Title:')"/>
-                <xsl:text> </xsl:text>
-            </strong>
-            <xsl:value-of select="."/>
-        </div>
+        <xsl:choose>
+            <xsl:when test="not(parent::bibref)">
+                <div>
+                    <strong>
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Title:')"/>
+                        <xsl:text> </xsl:text>
+                    </strong>
+                    <xsl:value-of select="."/>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <strong>
+                    <xsl:choose>
+                        <xsl:when test="parent::bibref/@href">
+                            <xsl:variable name="href">
+                                <xsl:choose>
+                                    <xsl:when test="starts-with(../@href, 'http://')">
+                                        <xsl:value-of select="../@href"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="concat('http://', ../@href)"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <a href="{$href}">
+                                <xsl:if test="../@title">
+                                    <xsl:attribute name="title">
+                                        <xsl:value-of select="../@title"/>
+                                    </xsl:attribute>
+                                </xsl:if>
+                                <xsl:value-of select="."/>
+                            </a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="."/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </strong>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="scopecontent|odd|custodhist" mode="full">
-        <strong>
-            <xsl:choose>
-                <xsl:when test="local-name() = 'scopecontent'">
-                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Description:')"/>
-                </xsl:when>
-                <xsl:when test="local-name() = 'custodhist'">
-                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Conservation history:')"/>
-                </xsl:when>
-            </xsl:choose>
-        </strong>
-        <xsl:text> </xsl:text>
-        <xsl:apply-templates mode="full"/>
+    <xsl:template match="scopecontent|odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial" mode="full">
+        <section class="{local-name()}">
+            <xsl:if test="not(head)">
+                <xsl:variable name="count" select="count(ancestor::*/head)"/>
+                <header>
+                    <xsl:element name="h{$count + 3}">
+                        <xsl:choose>
+                            <xsl:when test="local-name() = 'scopecontent'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Description:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'custodhist'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Conservation history:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'arrangement'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Arrangement:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'relatedmaterial'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Related material:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'bibliography'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliography:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'bioghist'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Biography or history:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'acqinfo'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Acquisition information:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'separatedmaterial'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Separated material:')"/>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:element>
+                </header>
+            </xsl:if>
+            <xsl:apply-templates mode="full"/>
+        </section>
     </xsl:template>
 
     <xsl:template match="emph" mode="full">
@@ -273,8 +330,50 @@ Displays an EAD fragment as HTML
         </header>
     </xsl:template>
 
+    <xsl:template match="bibref" mode="full">
+        <xsl:choose>
+            <xsl:when test="not(parent::p)">
+                <div class="bibref">
+                    <xsl:apply-templates mode="full"/>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="full"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="extref" mode="full">
+        <xsl:choose>
+            <xsl:when test="@href">
+                <a href="{@href}">
+                    <xsl:if test="@title">
+                        <xsl:attribute name="title">
+                            <xsl:value-of select="@title"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:apply-templates mode="full"/>
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="full"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="blockquote" mode="full">
+        <blockquote>
+            <xsl:apply-templates mode="full"/>
+        </blockquote>
+    </xsl:template>
+
     <xsl:template match="p" mode="full">
         <p>
+            <xsl:if test="@altrender">
+                <xsl:attribute name="class">
+                    <xsl:value-of select="@altrender"/>
+                </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates mode="full"/>
         </p>
     </xsl:template>

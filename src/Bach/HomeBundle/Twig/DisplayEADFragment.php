@@ -181,6 +181,24 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Conservation history:':
             return _('Conservation history:');
             break;
+        case 'Arrangement:':
+            return _('Arrangement:');
+            break;
+        case 'Related material:':
+            return _('Related material:');
+            break;
+        case 'Bibliography:':
+            return _('Bibliography:');
+            break;
+        case 'Biography or history:':
+            return _('Biography or history:');
+            break;
+        case 'Acquisition information:':
+            return _('Acquisition information:');
+            break;
+        case 'Separated material:':
+            return _('Separated material:');
+            break;
         default:
             //FIXME: add an alert in logs, a translation may be missing!
             //return _($ref);
