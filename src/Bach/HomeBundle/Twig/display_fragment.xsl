@@ -327,12 +327,12 @@ Displays an EAD fragment as HTML
         </section>
     </xsl:template>
 
-    <xsl:template match="genreform|extent" mode="resume">
+    <!--<xsl:template match="genreform|extent" mode="resume">
         <xsl:if test="@label">
             <strong><xsl:value-of select="concat(@label, ' ')"/></strong>
         </xsl:if>
         <xsl:value-of select="."/>
-    </xsl:template>
+    </xsl:template>-->
 
     <xsl:template match="lb" mode="full">
         <br/>
@@ -353,7 +353,7 @@ Displays an EAD fragment as HTML
         </aside>
     </xsl:template>
 
-    <xsl:template match="subject|geogname|persname|corpname|name|function" mode="resume">
+    <xsl:template match="subject|geogname|persname|corpname|name|function|genreform" mode="resume">
         <a>
             <xsl:attribute name="link">
                 <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
@@ -361,7 +361,7 @@ Displays an EAD fragment as HTML
             </xsl:attribute>
             <xsl:value-of select="."/>
         </a>
-        <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name or following-sibling::function">
+        <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name or following-sibling::function or following-sibling::genreform">
             <xsl:text>, </xsl:text>
         </xsl:if>
     </xsl:template>
