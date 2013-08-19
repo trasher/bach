@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <title>Bach</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Bach archival search tool">
+    <meta name="author" content="Anaphore">
     <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/jquery-ui/jquery.ui.core.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
@@ -29,7 +29,7 @@
                     Logged in as <a href="#" class="navbar-link">Username</a>
                 </p>#}
                 {% block navbar %}
-                <ul class="nav">
+                <ul class="nav" role="navigation">
                     <li{% if current_route == 'bach_homepage' %} class="active"{% endif %}>
                         <a href="{{ path('bach_homepage') }}" data-toggle="tooltip" title="Page d'accueil de Bach">Home</a>
                     </li>
