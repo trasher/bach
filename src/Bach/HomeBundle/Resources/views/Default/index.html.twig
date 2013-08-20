@@ -149,7 +149,7 @@
                         </figure>
                         {% endif %}
 
-                        <h3>
+                        <h3 property="dc:title">
                             <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
                             {% if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 %}
                                 {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}

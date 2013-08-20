@@ -5,8 +5,11 @@
     <meta charset="utf-8">
     <title>Bach</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Bach archival search tool">
+    {% block page_metadata %}
     <meta name="description" content="Bach archival search tool">
     <meta name="author" content="Anaphore">
+    {% endblock %}
     <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/jquery-ui/jquery.ui.core.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
@@ -20,7 +23,7 @@
     <script src="{{ asset ('js//html5-ie.js') }}"></script>
     <![endif]-->
 </head>
-<body>
+<body prefix="dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ gn: http://www.geonames.org/ontology#">
     <nav id="main_nav" class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container-fluid">

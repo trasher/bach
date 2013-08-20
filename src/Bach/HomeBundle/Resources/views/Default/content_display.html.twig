@@ -3,7 +3,7 @@
             <ul class="breadcrumb">
                 {% for fil in ariane %}
                     <li>
-                        <a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}">{{ fil.cUnittitle }}</a>
+                        <a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">{{ fil.cUnittitle }}</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -22,7 +22,7 @@
                 <ul>
                 {% for child in children %}
                     <li>
-                        <a href="{{ path('bach_display_document', {docid: child.fragmentid}) }}">{{ child.cUnittitle }}</a>
+                        <a href="{{ path('bach_display_document', {docid: child.fragmentid}) }}" property="dc:hasPart">{{ child.cUnittitle }}</a>
                     </li>
                 {% endfor %}
                 </ul>

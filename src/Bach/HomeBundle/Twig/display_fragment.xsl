@@ -81,9 +81,9 @@ Displays an EAD fragment as HTML
 
     <xsl:template match="unittitle" mode="full">
         <header>
-            <h2><xsl:apply-templates mode="full"/></h2>
+            <h2 property="dc:title"><xsl:apply-templates mode="full"/></h2>
             <xsl:if test="../unitid">
-                <span class="unitid">
+                <span class="unitid" property="dc:identifier">
                     <xsl:if test="../unitid/@label">
                         <xsl:value-of select="concat(../unitid/@label, ' ')"/>
                     </xsl:if>
@@ -92,7 +92,12 @@ Displays an EAD fragment as HTML
             </xsl:if>
             <xsl:if test="../unitdate">
                 <xsl:if test="../unitid"> - </xsl:if>
-                <span class="date">
+                <span class="date" property="dc:date">
+                    <xsl:if test="../unitdate/@normal">
+                        <xsl:attribute name="content">
+                            <xsl:value-of select="../unitdate/@normal"/>
+                        </xsl:attribute>
+                    </xsl:if>
                     <xsl:if test="../unitdate/@label">
                         <xsl:value-of select="concat(../uinitdate/@label, ' ')"/>
                     </xsl:if>
@@ -104,7 +109,12 @@ Displays an EAD fragment as HTML
 
     <xsl:template match="unitdate" mode="full">
         <xsl:if test="not(parent::unittitle) and not(parent::did)">
-            <span class="date">
+            <span class="date" property="dc:date">
+                <xsl:if test="@normal">
+                    <xsl:attribute name="content">
+                        <xsl:value-of select="@normal"/>
+                    </xsl:attribute>
+                </xsl:if>
                 <xsl:if test="@label">
                     <xsl:value-of select="concat(@label, ' ')"/>
                 </xsl:if>
@@ -209,6 +219,18 @@ Displays an EAD fragment as HTML
                     <xsl:for-each select="../*[local-name() = $elt]">
                         <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
                         <a link="{concat('%%%', $elt, '::', string(.), '%%%')}">
+                            <xsl:if test="not(local-name() = 'function')">
+                                <xsl:attribute name="property">
+                                    <xsl:choose>
+                                        <xsl:when test="local-name() = 'subject'">dc:subject</xsl:when>
+                                        <xsl:when test="local-name() = 'geogname'">gn:name</xsl:when>
+                                        <xsl:otherwise>foaf:name</xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:attribute>
+                                <xsl:attribute name="content">
+                                    <xsl:value-of select="."/>
+                                </xsl:attribute>
+                            </xsl:if>
                             <xsl:value-of select="."/>
                         </a>
                         <xsl:if test="following-sibling::*[local-name() = $elt]">
@@ -332,16 +354,21 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="bibref" mode="full">
-        <xsl:choose>
-            <xsl:when test="not(parent::p)">
-                <div class="bibref">
-                    <xsl:apply-templates mode="full"/>
-                </div>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:apply-templates mode="full"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="elt">
+            <xsl:choose>
+                <xsl:when test="not(parent::p)">
+                    <xsl:text>div</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>span</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:element name="{$elt}">
+            <xsl:attribute name="property">dc:bibliographicCitation</xsl:attribute>
+            <xsl:apply-templates mode="full"/>
+        </xsl:element>
     </xsl:template>
 
     <xsl:template match="extref" mode="full">
@@ -409,7 +436,7 @@ Displays an EAD fragment as HTML
             <!-- Title is already displayed, show other items -->
             <header class="did">
                 <xsl:if test="unitid">
-                    <span class="unitid">
+                    <span class="unitid" property="dc:identifier">
                         <xsl:if test="unitid/@label">
                             <xsl:value-of select="concat(unitid/@label, ' ')"/>
                         </xsl:if>
@@ -420,7 +447,12 @@ Displays an EAD fragment as HTML
                     </xsl:if>
                 </xsl:if>
                 <xsl:if test="unitdate">
-                    <span class="date">
+                    <span class="date" property="dc:date">
+                        <xsl:if test="unitdate/@normal">
+                            <xsl:attribute name="content">
+                                <xsl:value-of select="unitdate/@normal"/>
+                            </xsl:attribute>
+                        </xsl:if>
                         <xsl:if test="unitdate/@label">
                             <xsl:value-of select="unitdate/@label"/>
                             <xsl:text> </xsl:text>
