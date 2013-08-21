@@ -112,6 +112,17 @@ class DefaultController extends Controller
             'viewer_uri'    => $viewer_uri
         );
 
+        $filters = $session->get('filters');
+        if ( !is_array($filters) ) {
+            $filters = array();
+        }
+
+        if ( ($request->get('filter_field') || count($filters) == 0)
+            && is_null($query_terms)
+        ) {
+            $query_terms = '*:*';
+        }
+
         if ( !is_null($query_terms) ) {
             // On effectue une recherche
             $form = $this->createForm(
@@ -138,11 +149,6 @@ class DefaultController extends Controller
                     "offset"    => $resultByPage
                 )
             );
-
-            $filters = $session->get('filters');
-            if ( !is_array($filters) ) {
-                $filters = array();
-            }
 
             if ( $request->get('clear_filters') ) {
                 $filters = array();

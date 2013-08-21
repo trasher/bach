@@ -40,8 +40,10 @@ class MainDecorator extends SolariumQueryDecoratorAbstract
      */
     public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data)
     {
-        $dismax = $query->getDisMax();
-        $dismax->setQueryFields('descriptors^2 cUnittitle^1 fulltext^0.1');
+        if ( $data !== '*:*' ) {
+            $dismax = $query->getDisMax();
+            $dismax->setQueryFields('descriptors^2 cUnittitle^1 fulltext^0.1');
+        }
         $query->setQuery($data);
     }
 
