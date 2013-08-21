@@ -55,6 +55,17 @@ class DefaultController extends Controller
             $query_terms = urldecode($query_terms);
         }
 
+        $filters = $session->get('filters');
+        if ( !is_array($filters) ) {
+            $filters = array();
+        }
+
+        if ( ($request->get('filter_field') || count($filters) == 0)
+            && is_null($query_terms)
+        ) {
+            $query_terms = '*:*';
+        }
+
         //instanciate - if needed - sidebar values
         $resultByPage = $session->get('results_by_page');
         if ( !$resultByPage ) {
@@ -111,17 +122,6 @@ class DefaultController extends Controller
             'show_pics'     => $sidebar->getItemValue('show_pics'),
             'viewer_uri'    => $viewer_uri
         );
-
-        $filters = $session->get('filters');
-        if ( !is_array($filters) ) {
-            $filters = array();
-        }
-
-        if ( ($request->get('filter_field') || count($filters) == 0)
-            && is_null($query_terms)
-        ) {
-            $query_terms = '*:*';
-        }
 
         if ( !is_null($query_terms) ) {
             // On effectue une recherche
