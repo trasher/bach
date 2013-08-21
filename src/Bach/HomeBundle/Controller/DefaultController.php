@@ -221,9 +221,9 @@ class DefaultController extends Controller
 
             $facets = array();
             $faceset = $searchResults->getFacetSet();
-            $facets['subject'] = $faceset->getFacet('subject');
-            $facets['persname'] = $faceset->getFacet('persname');
-            $facets['geogname'] = $faceset->getFacet('geogname');
+            $facets[_('subject')] = $faceset->getFacet('subject');
+            $facets[_('persname')] = $faceset->getFacet('persname');
+            $facets[_('geogname')] = $faceset->getFacet('geogname');
 
             $query = $this->get("solarium.client")->createSuggester();
             $query->setQuery(strtolower($query_terms));
@@ -484,7 +484,11 @@ class DefaultController extends Controller
 
         if ( $rs->getNumFound() !== 1 ) {
             throw new \RuntimeException(
-                $rs->getNumFound() . ' results found, 1 excpected.'
+                str_replace(
+                    '%count%',
+                    $rs->getNumFound(),
+                    _('%count% results found, 1 expected.')
+                )
             );
         }
 
