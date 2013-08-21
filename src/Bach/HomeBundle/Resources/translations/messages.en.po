@@ -1,0 +1,68 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "Sub units"
+msgstr "Sub units"
+
+msgid "Subjects"
+msgstr "Subjects"
+
+msgid "Persons"
+msgstr "Persons"
+
+msgid "Places"
+msgstr "Places"
+
+msgid ""
+"This page displays only the 20 more relevant terms found. You may whish <a "
+"href=\"%href%\">to display all terms</a>, but note that it should take a "
+"long time to load in your browser."
+msgstr ""
+"This page displays only the 20 more relevant terms found. You may whish <a "
+"href=\"%href%\">to display all terms</a>, but note that it should take a "
+"long time to load in your browser."
+
+msgid "Refine Query"
+msgstr "Refine Query"
+
+msgid "Clear refined query"
+msgstr "Clear refined query"
+
+msgid "Clear"
+msgstr "Clear"
+
+msgid "Active filters:"
+msgstr "Active filters:"
+
+msgid "Remove filter on '%value%'"
+msgstr "Remove filter on '%value%'"
+
+msgid "Additionnal serch suggestions:"
+msgstr "Additionnal serch suggestions:"
+
+msgid "1 result"
+msgstr "1 result"
+
+msgid "Results %resultStart% to %resultEnd% on %resultCount%"
+msgstr "Results %resultStart% to %resultEnd% on %resultCount%"
+
+msgid "No result found."
+msgstr "No result found."
+
+msgid "Spelling suggestions:"
+msgstr "Spelling suggestions:"
+
+msgid "Welcome to Bach's!"
+msgstr "Welcome to Bach's!"
+
+msgid "Consult document"
+msgstr "Consult document"

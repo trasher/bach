@@ -46,6 +46,7 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Nelmio\SolariumBundle\NelmioSolariumBundle(),
+            new Lsw\GettextTranslationBundle\LswGettextTranslationBundle(),
             new Bach\IndexationBundle\BachIndexationBundle(),
             new Bach\HomeBundle\BachHomeBundle(),
             new Bach\AdministrationBundle\AdministrationBundle()

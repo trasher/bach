@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "6252a814f373ee732a608fbf097ded54",
+    "hash": "9bda2a094d8b11570e4d32867b0372ba",
     "packages": [
         {
             "name": "doctrine/common",
@@ -707,6 +707,64 @@
                 "minification"
             ],
             "time": "2013-07-19 00:03:27"
+        },
+        {
+            "name": "leaseweb/gettext-translation-bundle",
+            "version": "v1.0.1",
+            "target-dir": "Lsw/GettextTranslationBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LeaseWeb/LswGettextTranslationBundle.git",
+                "reference": "v1.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LeaseWeb/LswGettextTranslationBundle/zipball/v1.0.1",
+                "reference": "v1.0.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": ">=2.1",
+                "symfony/security-bundle": ">=2.1"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "*",
+                "swiftmailer/swiftmailer": "*",
+                "symfony/validator": "2.1.*",
+                "symfony/yaml": "2.1.*",
+                "twig/twig": "*",
+                "willdurand/propel-typehintable-behavior": "dev-master"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Lsw\\GettextTranslationBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurits van der Schee",
+                    "email": "m.vanderschee@leaseweb.com"
+                }
+            ],
+            "description": "Easy to use and native (faster) gettext translation support",
+            "homepage": "http://www.leaseweblabs.com",
+            "keywords": [
+                "gettext",
+                "i18n",
+                "translation"
+            ],
+            "time": "2013-05-10 07:52:51"
         },
         {
             "name": "monolog/monolog",
@@ -1605,12 +1663,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "c6ec75d4cf132728e80ec8ed1470b83cb53fc1c9"
+                "reference": "89ff5d4d62cc51520247749cf4b3a9d82e07ec77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/c6ec75d4cf132728e80ec8ed1470b83cb53fc1c9",
-                "reference": "c6ec75d4cf132728e80ec8ed1470b83cb53fc1c9",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/89ff5d4d62cc51520247749cf4b3a9d82e07ec77",
+                "reference": "89ff5d4d62cc51520247749cf4b3a9d82e07ec77",
                 "shasum": ""
             },
             "require": {
@@ -1671,7 +1729,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2013-08-13 13:30:57"
+            "time": "2013-08-16 11:37:39"
         },
         {
             "name": "atoum/atoum-bundle",

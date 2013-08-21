@@ -1,0 +1,190 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# , 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: Bach\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-21 11:50+0200\n"
+"PO-Revision-Date: 2013-08-21 11:52+0100\n"
+"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
+"Language-Team: French\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: src/Bach/HomeBundle/Controller/FilesController.php:46
+msgid "Videos path is not defined!"
+msgstr "Videos path is not defined!"
+
+#: src/Bach/HomeBundle/Controller/FilesController.php:55
+msgid "Musics path is not defined!"
+msgstr "Musics path is not defined!"
+
+#: src/Bach/HomeBundle/Controller/FilesController.php:64
+msgid "Misc files path is not defined!"
+msgstr "Misc files path is not defined!"
+
+#: src/Bach/HomeBundle/Controller/FilesController.php:75
+msgid "File does not exists."
+msgstr "File does not exists."
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:84
+msgid "Results per page"
+msgstr "Results per page"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:100
+msgid "Yes"
+msgstr "Yes"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:101
+msgid "No"
+msgstr "No"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:224
+msgid "subject"
+msgstr "Subjects"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:225
+msgid "persname"
+msgstr "Persons"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:226
+msgid "geogname"
+msgstr "Places"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:490
+msgid "%count% results found, 1 expected."
+msgstr "%count% results found, 1 expected."
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:200
+msgid "Images"
+msgstr "Images"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:209
+msgid "Series"
+msgstr "Series"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:218
+msgid "Sounds"
+msgstr "Sounds"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:227
+msgid "Flash sounds"
+msgstr "Flash sounds"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:236
+msgid "Videos"
+msgstr "Videos"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:245
+msgid "Flash videos"
+msgstr "Flash videos"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:254
+msgid "Miscellaneous documents"
+msgstr "Miscellaneous documents"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:310
+msgid "Play '%name%'"
+msgstr "Play '%name%'"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:343
+msgid ""
+"Your browser does not support this video format, you may want to download "
+"file and watch it offline"
+msgstr ""
+"Your browser does not support this video format, you may want to download "
+"file and watch it offline"
+
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:381
+msgid "Documents are not supported (yet)."
+msgstr "Documents are not supported (yet)."
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:134
+msgid "Publication informations"
+msgstr "Publication informations"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:137
+msgid "Physical description"
+msgstr "Physical description"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:140
+msgid "Descriptors"
+msgstr "Descriptors"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:146
+msgid "Extent:"
+msgstr "Extent:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:149
+msgid "Dimensions:"
+msgstr "Dimensions:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:152
+msgid "Appearance:"
+msgstr "Appearance:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:155
+msgid "Title:"
+msgstr "Title:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:158
+msgid "Corporate name:"
+msgstr "Corporate name:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:161
+msgid "Geographical name:"
+msgstr "Geographical name:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:167
+msgid "Personal name:"
+msgstr "Personal name:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:170
+msgid "Function:"
+msgstr "Function:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:173
+msgid "Name:"
+msgstr "Name:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:176
+msgid "Relative documents"
+msgstr "Relative documents"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:179
+msgid "Description:"
+msgstr "Description:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:182
+msgid "Conservation history:"
+msgstr "Conservation history:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:185
+msgid "Arrangement:"
+msgstr "Arrangement:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:188
+msgid "Related material:"
+msgstr "Related material:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:191
+msgid "Bibliography:"
+msgstr "Bibliography:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:194
+msgid "Biography or history:"
+msgstr "Biography or history:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:197
+msgid "Acquisition information:"
+msgstr "Acquisition information:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:200
+msgid "Separated material:"
+msgstr "Separated material:"

@@ -21,7 +21,8 @@
         "jms/security-extra-bundle": "1.5.*",
         "jms/di-extra-bundle": "1.4.*",
         "nelmio/solarium-bundle": "2.0.*",
-        "twitter/bootstrap": "2.3.*"
+        "twitter/bootstrap": "2.3.*",
+        "leaseweb/gettext-translation-bundle": "1.*"
     },
     "require-dev": {
         "atoum/atoum": "dev-master",

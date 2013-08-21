@@ -3,8 +3,7 @@ imports:
     - { resource: security.yml }
 
 framework:
-    #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "en" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -21,7 +20,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    cache: false
+    #cache: false
+    globals:
+        lang: '%locale%'
 
 # Assetic Configuration
 assetic:

@@ -81,7 +81,7 @@ class DefaultController extends Controller
         $sidebar = new OptionSidebar();
 
         $resultsItem = new OptionSidebarItem(
-            "Nombre de résultats par page",
+            _('Results per page'),
             "qo_pr",
             $resultByPage
         );
@@ -92,13 +92,13 @@ class DefaultController extends Controller
         $sidebar->append($resultsItem);
 
         $picturesItem = new OptionSidebarItem(
-            "Afficher les images",
+            ('Show pictures'),
             'show_pics',
             $showPics
         );
         $picturesItem
-            ->appendChoice(new OptionSidebarItemChoice("Oui", 1))
-            ->appendChoice(new OptionSidebarItemChoice("Non", 0));
+            ->appendChoice(new OptionSidebarItemChoice(_('Yes'), 1))
+            ->appendChoice(new OptionSidebarItemChoice(_('No'), 0));
         $sidebar->append($picturesItem);
 
         $sidebar->bind(
