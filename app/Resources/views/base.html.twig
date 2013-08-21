@@ -1,13 +1,13 @@
 {% set current_route = app.request.attributes.get('_route') %}
 <!DOCTYPE html>
-<html>
+<html lang="{{ lang }}">
 <head>
     <meta charset="utf-8">
     <title>Bach</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Bach archival search tool">
+    <meta name="generator" content="{% trans %}Bach archival search tool{% endtrans %}">
     {% block page_metadata %}
-    <meta name="description" content="Bach archival search tool">
+    <meta name="description" content="{% trans %}Bach archival search tool{% endtrans %}">
     <meta name="author" content="Anaphore">
     {% endblock %}
     <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet" media="screen" />
@@ -29,24 +29,24 @@
             <div class="container-fluid">
                 <a class="brand" href="#">Bach</a>
                 {#<p class="navbar-text pull-right">
-                    Logged in as <a href="#" class="navbar-link">Username</a>
+                    {% trans %}Logged in as{% endtrans %} <a href="#" class="navbar-link">{% trans %}Username{% endtrans %}</a>
                 </p>#}
                 {% block navbar %}
                 <ul class="nav" role="menu">
                     <li{% if current_route == 'bach_homepage' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_homepage') }}" data-toggle="tooltip" title="Page d'accueil de Bach">Home</a>
+                        <a href="{{ path('bach_homepage') }}" data-toggle="tooltip" title="{% trans %}Bach's homepage{% endtrans %}">{% trans %}Home{% endtrans %}</a>
                     </li>
                     <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_browse') }}" data-toggle="tooltip" title="Navigation...">Browse</a>
+                        <a href="{{ path('bach_browse') }}" data-toggle="tooltip" title="{% trans %}Browse known terms...{% endtrans %}">{% trans %}Browse{% endtrans %}</a>
                     </li>
 
                     <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_indexation_homepage') }}" data-toggle="tooltip" title="Gestion de l'indexation">Indexation</a>
+                        <a href="{{ path('bach_indexation_homepage') }}" data-toggle="tooltip" title="{% trans %}Indexation management{% endtrans %}">{% trans %}Indexation{% endtrans %}</a>
                     </li>
                     <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
-                        <a href="{{ url('administration_dashboard') }}" data-toggle="tooltip" title="Administration de l'application">Administration</a>
+                        <a href="{{ url('administration_dashboard') }}" data-toggle="tooltip" title="{% trans %}Application administration{% endtrans %}">{% trans %}Administration{% endtrans %}</a>
                     </li>
-                    {#<li><a href="#">Aide</a></li>#}
+                    {#<li><a href="#">{% trans %}Help{% endtrans %}</a></li>#}
                 </ul>
                 {% endblock %}
             </div><!-- /.container-fluid -->
@@ -56,7 +56,7 @@
     {# Globally display errors #}
     {% if app.session.flashbag.has('errors') %}
     <div id="flash-errors" class="noscript">
-        <h3>Error</h3>
+        <h3>{% trans %}Error{% endtrans %}</h3>
         {% for flashMessage in app.session.flashbag.get('errors') %}
         <div class="flash-message">
             {{ flashMessage | raw }}
@@ -67,7 +67,7 @@
     {# Globally display warnings #}
     {% if app.session.flashbag.has('warnings') %}
     <div id="flash-warnings" class="noscript">
-        <h3>Warning</h3>
+        <h3>{% trans %}Warning{% endtrans %}</h3>
         {% for flashMessage in app.session.flashbag.get('warnings') %}
         <div class="flash-message">
             {{ flashMessage | raw }}
@@ -126,7 +126,7 @@
             var _help = $('#help_window');
 
             if ( _help.length == 0 ) {
-                var _help = $('<div id="help_window"><h3>Aide non disponible</h3>Aucune aide disponible pour cette partie.</div>');
+                var _help = $('<div id="help_window"><h3>{% trans %}Help not available{% endtrans %}</h3>{% trans %}No help is available for this section.{% endtrans %}</div>');
                 _help.appendTo('body');
             }
 

@@ -26,9 +26,9 @@
         {% if facets is defined and searchResults|length > 0 %}
         <div class="well-free" id="refine_query">
             <h3 class="nav-header">
-                Refine Query
+                {% trans %}Refine Query{% endtrans %}
                 {% if filters is defined %}
-                <a href="{{ path('bach_search', {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="Clear refined query">Clear</a>
+                <a href="{{ path('bach_search', {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{% trans %}Clear refined query{% endtrans %}">{% trans %}Clear{% endtrans %}</a>
                 {% endif %}
             </h3>
 
@@ -81,13 +81,13 @@
         {% if filters is defined %}
             {% set coma = ', ' %}
             <nav id="active_filters">
-                <strong>Active filters:</strong>
+                <strong>{% trans %}Active filters:{% endtrans %}</strong>
                 {% for filter_name,values in filters %}
                 <em>{{ filter_name }}:</em>
                 <ul>
                     {% for value in values %}
                     <li>
-                        <a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="Remove filter on '{{value}}'">
+                        <a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
                             {{- value -}}
                         </a>{% if loop.revindex > 1  %}{{- coma }}{% endif %}
                     </li>
@@ -111,7 +111,7 @@
                             </form>
                             {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
                             <aside id="suggestions">
-                                Suggestions de recherche complémentaire&nbsp;:
+                                {% trans %}Additionnal serch suggestions:{% endtrans %}
                                 {% for term,termResult in suggestions %}
                                     {% if termResult|length > 0 %}
                                         {% for suggest in termResult %}
@@ -132,9 +132,9 @@
             {% if searchResults|length > 0 %}
             <div class="row-fluid">
                 {% if resultCount == 1 %}
-                    1 résultat
+                    {% trans %}1 result{% endtrans %}
                 {% else %}
-                    Résultats {{ resultStart }} à {{ resultEnd }} sur {{ resultCount }}
+                    {% trans %}Results %resultStart% to %resultEnd% on %resultCount%{% endtrans %}
                 {% endif %}
             </div>
                 {% for document in searchResults %}
@@ -168,13 +168,13 @@
                     lastPage: totalPages
                 } only %}
             {% else %}
-                <p>Aucun résultat n'a été trouvé.</p>
+                <p>{% trans %}No result found.{% endtrans %}</p>
                 {% if scSearchResults is not null %}
                 <aside id="suggestions">
-                    Orthographe approchante :
+                    {% trans %}Spelling suggestions:{% endtrans %}
                     {% for suggestion in scSearchResults %}
                         {% for word in suggestion.getWords() %}
-                            <a href="{{ path('bach_search', {query_terms: word.word}) }} ">{{ word.word }}</a>
+                            <a href="{{ path('bach_search', {query_terms: word.word}) }}">{{ word.word }}</a>
                         {% endfor %}
                     {% endfor %}
                 </aside>
@@ -182,7 +182,7 @@
             {% endif %}
         </section>
         {% else %}
-            Welcome to Bach's!
+            {% trans %}Welcome to Bach's!{% endtrans %}
             {% if tagcloud is defined %}
                 <ul id="tagcloud">
                 {% for tag,weight in tagcloud %}
@@ -274,7 +274,7 @@
             });
 
             $('.display_doc').click(function(){
-                var _elt = $('<div id="display_doc" title="Consultation du document"></div>');
+                var _elt = $('<div id="display_doc" title="{% trans %}Consult document{% endtrans %}"></div>');
                 _elt.appendTo('body');
 
                 var _width = $(window).width() * 0.8;
