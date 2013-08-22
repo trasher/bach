@@ -426,7 +426,10 @@ class DefaultController extends Controller
         foreach ( $found_terms as $field=>$terms ) {
             $lists[$field] = array();
             foreach ( $terms as $term=>$count ) {
-                $lists[$field][] = $term . ' (' . $count . ')';
+                $lists[$field][] = array(
+                    'term'  => $term,
+                    'count' => $count
+                );
             }
         }
 

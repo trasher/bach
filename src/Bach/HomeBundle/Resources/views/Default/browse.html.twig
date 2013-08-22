@@ -14,7 +14,7 @@
         {% if lists.cSubject is defined %}
             <ul>
             {% for cSubject in lists.cSubject %}
-                <li><a href="#">{{ cSubject }}</a></li>
+                <li><a href="{{ path('bach_search', {filter_field: 'cSubject', filter_value: cSubject.term}) }}">{{ cSubject.term }} ({{ cSubject.count }})</a></li>
             {% endfor %}
             </ul>
         {% endif %}
@@ -26,7 +26,7 @@
         {% if lists.cPersname is defined %}
             <ul>
             {% for cPersname in lists.cPersname %}
-                <li><a href="#">{{ cPersname }}</a></li>
+                <li><a href="{{ path('bach_search', {filter_field: 'cPersname', filter_value: cPersname.term}) }}">{{ cPersname.term }} ({{ cPersname.count }})</a></li>
             {% endfor %}
             </ul>
         {% endif %}
@@ -38,7 +38,7 @@
         {% if lists.cGeogname is defined %}
             <ul>
             {% for cGeogname in lists.cGeogname %}
-                <li><a href="#">{{ cGeogname }}</a></li>
+                <li><a href="{{ path('bach_search', {filter_field: 'cGeogname', filter_value: cGeogname.term}) }}">{{ cGeogname.term }} ({{ cGeogname.count }})</a></li>
             {% endfor %}
             </ul>
         {% endif %}
