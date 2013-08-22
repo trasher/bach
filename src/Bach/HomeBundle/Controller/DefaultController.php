@@ -60,7 +60,7 @@ class DefaultController extends Controller
             $filters = array();
         }
 
-        if ( ($request->get('filter_field') || count($filters) == 0)
+        if ( ($request->get('filter_field') || count($filters) > 0)
             && is_null($query_terms)
         ) {
             $query_terms = '*:*';
