@@ -92,7 +92,7 @@ class DefaultController extends Controller
         $sidebar->append($resultsItem);
 
         $picturesItem = new OptionSidebarItem(
-            ('Show pictures'),
+            _('Show pictures'),
             'show_pics',
             $showPics
         );

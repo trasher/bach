@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-21 11:50+0200\n"
+"POT-Creation-Date: 2013-08-22 12:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,30 +34,35 @@ msgid "File does not exists."
 msgstr ""
 
 #: src/Bach/HomeBundle/Controller/DefaultController.php:84
+#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:79
 msgid "Results per page"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:100
-msgid "Yes"
+#: src/Bach/HomeBundle/Controller/DefaultController.php:95
+msgid "Show pictures"
 msgstr ""
 
 #: src/Bach/HomeBundle/Controller/DefaultController.php:101
+msgid "Yes"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:106
 msgid "No"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:224
+#: src/Bach/HomeBundle/Controller/DefaultController.php:232
 msgid "subject"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:225
+#: src/Bach/HomeBundle/Controller/DefaultController.php:233
 msgid "persname"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:226
+#: src/Bach/HomeBundle/Controller/DefaultController.php:234
 msgid "geogname"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:490
+#: src/Bach/HomeBundle/Controller/DefaultController.php:501
 msgid "%count% results found, 1 expected."
 msgstr ""
 
@@ -185,4 +190,12 @@ msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:200
 msgid "Separated material:"
+msgstr ""
+
+#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:60
+msgid "Enter your search"
+msgstr ""
+
+#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:70
+msgid "Search"
 msgstr ""

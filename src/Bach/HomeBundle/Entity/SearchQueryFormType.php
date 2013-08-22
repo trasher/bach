@@ -30,8 +30,6 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class SearchQueryFormType extends AbstractType
 {
-    protected $query;
-
     private $_value = "";
 
     /**
@@ -59,7 +57,7 @@ class SearchQueryFormType extends AbstractType
             'text',
             array(
                 'attr'  => array(
-                    'placeholder'   => 'Entrez votre recherche',
+                    'placeholder'   => _('Enter your search'),
                      'class'        => 'input-big span12',
                      'value'        => $this->_value,
                      'autocomplete' => 'off'
@@ -69,7 +67,7 @@ class SearchQueryFormType extends AbstractType
             'perform_search',
             'submit',
             array(
-                'label' => 'Search',
+                'label' => _('Search'),
                 'attr'  => array(
                     'class' => 'btn btn-primary'
                 )

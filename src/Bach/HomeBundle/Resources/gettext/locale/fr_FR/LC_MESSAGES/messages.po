@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-21 11:50+0200\n"
-"PO-Revision-Date: 2013-08-21 11:51+0100\n"
+"POT-Creation-Date: 2013-08-22 12:42+0200\n"
+"PO-Revision-Date: 2013-08-22 12:42+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: fr_FR.utf8\n"
@@ -34,30 +34,35 @@ msgid "File does not exists."
 msgstr "Le fichier n'existe pas."
 
 #: src/Bach/HomeBundle/Controller/DefaultController.php:84
+#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:79
 msgid "Results per page"
 msgstr "Résultats par page"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:100
+#: src/Bach/HomeBundle/Controller/DefaultController.php:95
+msgid "Show pictures"
+msgstr "Afficher les images"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:101
 msgid "Yes"
 msgstr "Oui"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:101
+#: src/Bach/HomeBundle/Controller/DefaultController.php:106
 msgid "No"
 msgstr "Non"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:224
+#: src/Bach/HomeBundle/Controller/DefaultController.php:232
 msgid "subject"
 msgstr "Sujets"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:225
+#: src/Bach/HomeBundle/Controller/DefaultController.php:233
 msgid "persname"
 msgstr "Personnes"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:226
+#: src/Bach/HomeBundle/Controller/DefaultController.php:234
 msgid "geogname"
 msgstr "Lieux"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:490
+#: src/Bach/HomeBundle/Controller/DefaultController.php:501
 msgid "%count% results found, 1 expected."
 msgstr "%count% résultats trouvés, 1 attendu."
 
@@ -188,3 +193,11 @@ msgstr "Informations d'acquisition :"
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:200
 msgid "Separated material:"
 msgstr "Documents externes :"
+
+#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:60
+msgid "Enter your search"
+msgstr "Entrez votre recherche"
+
+#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:70
+msgid "Search"
+msgstr "Chercher"

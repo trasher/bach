@@ -22,13 +22,13 @@ php app/console gettext:bundle:extract BachHomeBundle
 
 Files are stored in 
 src/Bach/HomeBundle/Resources/gettext/locale/en_US/LC_MESSAGES/messages.po and
-src/Bach/HomeBundle/Resources/gettext/locale/fr_FR.utf8/LC_MESSAGES/messages.po.
+src/Bach/HomeBundle/Resources/gettext/locale/fr_FR/LC_MESSAGES/messages.po.
 
 You have to open those files (with poedit for example), and to update from pot file
 src/Bach/HomeBundle/Resources/gettext/messages.pot; then translate it.
 
 Once translations are done, run the following:
-php app/console gettext:combine en_US,fr_FR.utf8
+php app/console gettext:combine en_US,fr_FR
 
 Note that Git sources does not provide compiled gettext files, so you'll
  have to run the last command yourself.
