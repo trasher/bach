@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Bach\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "Bach archival search tool"
+msgstr "Outil de recherche archivistique Bach"
+
+msgid "Bach's homepage"
+msgstr "Page d'accueil de Bach"
+
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Browse known terms..."
+msgstr "Naviguer dans les termes connus"
+
+msgid "Browse"
+msgstr "Naviguer"
+
+msgid "Indexation management"
+msgstr "Gestion de l'indexation"
+
+msgid "Indexation"
+msgstr "Indexation"
+
+msgid "Application administration"
+msgstr "Administration de l'application"
+
+msgid "Administration"
+msgstr "Adminsitration"
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "Warning"
+msgstr "Attention"
+
+msgid "Help not available"
+msgstr "Aide non disponible"
+
+msgid "No help is available for this section."
+msgstr "Aucune aide disponible pour cette section."
