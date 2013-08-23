@@ -26,7 +26,9 @@ class BachHomeExtension extends Extension
         $loader->load('services.yml');
 
         foreach ( $configs[0]['files'] as $name=>$path ) {
-            define('BACH_FILES_' . strtoupper($name), realpath($path));
+            if ( !defined('BACH_FILES_' . strtoupper($name)) ) {
+                define('BACH_FILES_' . strtoupper($name), realpath($path));
+            }
         }
     }
 }
