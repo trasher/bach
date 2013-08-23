@@ -13,26 +13,17 @@ msgstr ""
 msgid "Bach archival search tool"
 msgstr "Outil de recherche archivistique Bach"
 
-msgid "Bach's homepage"
-msgstr "Page d'accueil de Bach"
-
-msgid "Home"
-msgstr "Accueil"
-
-msgid "Browse known terms..."
-msgstr "Naviguer dans les termes connus"
+msgid "Search"
+msgstr "Chercher"
 
 msgid "Browse"
 msgstr "Naviguer"
 
-msgid "Indexation management"
-msgstr "Gestion de l'indexation"
+msgid "Index"
+msgstr "Indexer"
 
-msgid "Indexation"
-msgstr "Indexation"
-
-msgid "Administration"
-msgstr "Administration"
+msgid "Manage"
+msgstr "Administrer"
 
 msgid "Error"
 msgstr "Erreur"

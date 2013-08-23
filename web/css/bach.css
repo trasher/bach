@@ -10,12 +10,11 @@
 }
 
 .header, .header h1 {
-    margin: 0 .2em;
+    margin: 0 .5em;
     padding: 0;
     display: inline-block;
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: normal;
-    text-shadow: 0 1px 0 #fff;
 }
 
 .header h1, .header a, [id=navigation], [id=navigation] a {

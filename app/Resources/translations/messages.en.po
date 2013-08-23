@@ -13,29 +13,17 @@ msgstr ""
 msgid "Bach archival search tool"
 msgstr "Bach archival search tool"
 
-msgid "Bach's homepage"
-msgstr "Bach's homepage"
-
-msgid "Home"
-msgstr "Home"
-
-msgid "Browse known terms..."
-msgstr "Browse known terms..."
+msgid "Search"
+msgstr "Search"
 
 msgid "Browse"
 msgstr "Browse"
 
-msgid "Indexation management"
-msgstr "Indexation management"
+msgid "Index"
+msgstr "Index"
 
-msgid "Indexation"
-msgstr "Indexation"
-
-msgid "Application administration"
-msgstr "Application administration"
-
-msgid "Administration"
-msgstr "Administration"
+msgid "Manage"
+msgstr "Manage"
 
 msgid "Error"
 msgstr "Error"

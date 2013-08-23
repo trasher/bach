@@ -32,15 +32,18 @@
     <nav role="navigation" id="navigation" class="nav-opened">
     {% spaceless %}
         <ul>
+            <li{% if current_route == 'bach_homepage' %} class="active"{% endif %}>
+                <a href="{{ path('bach_homepage') }}">{% trans %}Search{% endtrans %}</a>
+            </li>
             <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
-                <a href="{{ path('bach_browse') }}" data-toggle="tooltip" title="{% trans %}Browse known terms...{% endtrans %}">{% trans %}Browse{% endtrans %}</a>
+                <a href="{{ path('bach_browse') }}">{% trans %}Browse{% endtrans %}</a>
             </li>
 
             <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
-                <a href="{{ path('bach_indexation_homepage') }}" data-toggle="tooltip" title="{% trans %}Indexation management{% endtrans %}">{% trans %}Indexation{% endtrans %}</a>
+                <a href="{{ path('bach_indexation_homepage') }}">{% trans %}Index{% endtrans %}</a>
             </li>
             <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
-                <a href="{{ url('administration_dashboard') }}" data-toggle="tooltip">{% trans %}Administration{% endtrans %}</a>
+                <a href="{{ url('administration_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
             </li>
             {% block navbar %}{# It is possible to add entries in main menu #}{% endblock %}
         </ul>
