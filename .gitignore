@@ -40,3 +40,5 @@ quick_gen_project_*.sh
 
 #test generatedrated files
 code-coverage/
+
+files/
