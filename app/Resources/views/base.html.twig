@@ -12,6 +12,7 @@
     {% endblock %}
     <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('css/bach_print.css') }}" type="tex/css" rel="stylesheet" media="print"/>
     <link href="{{ asset('css/jquery-ui/jquery.ui.core.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/jquery-ui/jquery.ui.theme.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/jquery-ui/jquery.ui.button.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
@@ -20,37 +21,30 @@
     {% block css %}{% endblock %}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if IE]>
+    {#<link rel="stylesheet" href="css/styles-ie.css" />#}
     <script src="{{ asset ('js//html5-ie.js') }}"></script>
     <![endif]-->
 </head>
 <body prefix="dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ gn: http://www.geonames.org/ontology#">
-    <nav id="main_nav" class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="brand" href="#">Bach</a>
-                {#<p class="navbar-text pull-right">
-                    {% trans %}Logged in as{% endtrans %} <a href="#" class="navbar-link">{% trans %}Username{% endtrans %}</a>
-                </p>#}
-                {% block navbar %}
-                <ul class="nav" role="menu">
-                    <li{% if current_route == 'bach_homepage' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_homepage') }}" data-toggle="tooltip" title="{% trans %}Bach's homepage{% endtrans %}">{% trans %}Home{% endtrans %}</a>
-                    </li>
-                    <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_browse') }}" data-toggle="tooltip" title="{% trans %}Browse known terms...{% endtrans %}">{% trans %}Browse{% endtrans %}</a>
-                    </li>
+    <header class="header">
+        <h1><a href="{{ path('bach_homepage') }}">Bach</a></h1>
+    </header>
+    <nav role="navigation" id="navigation" class="nav-opened">
+    {% spaceless %}
+        <ul>
+            <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
+                <a href="{{ path('bach_browse') }}" data-toggle="tooltip" title="{% trans %}Browse known terms...{% endtrans %}">{% trans %}Browse{% endtrans %}</a>
+            </li>
 
-                    <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_indexation_homepage') }}" data-toggle="tooltip" title="{% trans %}Indexation management{% endtrans %}">{% trans %}Indexation{% endtrans %}</a>
-                    </li>
-                    <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
-                        <a href="{{ url('administration_dashboard') }}" data-toggle="tooltip" title="{% trans %}Application administration{% endtrans %}">{% trans %}Administration{% endtrans %}</a>
-                    </li>
-                    {#<li><a href="#">{% trans %}Help{% endtrans %}</a></li>#}
-                </ul>
-                {% endblock %}
-            </div><!-- /.container-fluid -->
-        </div><!-- /.navbar-inner  -->
+            <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
+                <a href="{{ path('bach_indexation_homepage') }}" data-toggle="tooltip" title="{% trans %}Indexation management{% endtrans %}">{% trans %}Indexation{% endtrans %}</a>
+            </li>
+            <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
+                <a href="{{ url('administration_dashboard') }}" data-toggle="tooltip">{% trans %}Administration{% endtrans %}</a>
+            </li>
+            {% block navbar %}{# It is possible to add entries in main menu #}{% endblock %}
+        </ul>
+    {% endspaceless %}
     </nav>
 
     {# Globally display errors #}
@@ -76,10 +70,8 @@
     </div>
     {% endif %}
     {% block body %}
-    <div class="wrap">
-        <div class="container-fluid">
-            <div class="row-fluid">{% block container %} {% endblock %}</div>
-        </div><!-- /.containe-fluid -->
+    <div class="container">
+        <div class="row-fluid">{% block container %} {% endblock %}</div>
         <!--/.fluid-container-->
         <div class="push"></div>
     </div><!-- /.wrap -->
@@ -111,7 +103,29 @@
             $('#renamdialog').bind('hide');
         };
 
+        _mobile = function(){
+            if ( window.innerWidth < 768 ) {
+                //hide per default on mobile
+                $('#navigation > ul').toggleClass('hidden')
+                $('#navigation').on('click', function(){
+                    $(this).find('ul').toggleClass('hidden');
+                });
+                {% block mobile_js_on %}{% endblock %}
+            } else {
+                //unbind elements and remove class when resizing
+                $('#navigation > ul').removeClass('hidden');
+                $('#navigation').unbind('click');
+                {% block mobile_js_off %}{% endblock %}
+            }
+        };
+        _mobile();
+
         $(document).ready(function () {
+
+            $(window).resize(function() {
+                _mobile();
+            });
+
             //TODO: remove or set in admin
             $('#coreTitleDialog').bind('show');
             $('#renamdialog').bind('show');

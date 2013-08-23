@@ -77,7 +77,7 @@
     </aside>
 
     <div class="span9">
-        <div id="dates_range"></div>
+        <div id="dates_range" class="hidden"></div>
         {% if filters is defined %}
             {% set coma = ', ' %}
             <nav id="active_filters">
@@ -196,6 +196,39 @@
     </div>
 {% endblock %}
 
+{# Binded when not in mobile mode #}
+{% block mobile_js_off %}
+    $('.display_doc').click(function(){
+        var _elt = $('<div id="display_doc" title="{% trans %}Consult document{% endtrans %}"></div>');
+        _elt.appendTo('body');
+
+        var _width = $(window).width() * 0.8;
+        var _height = $(window).height() * 0.8;
+
+        $.get(
+            $(this).attr('href') + '/ajax',
+            function(data) {
+                _elt.append(data);
+                _elt.dialog({
+                    height: _height,
+                    width: _width,
+                    modal: true,
+                    close: function(event, ui){
+                        _elt.remove();
+                    }
+                });
+            }
+        );
+
+        return false;
+    });
+{% endblock %}
+
+{# Binded when in mobile mode #}
+{% block mobile_js_on %}
+    $('.display_doc').unbind('click');
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/jquery-ui/jquery.ui.core.min.js')  }}" type="text/javascript"></script>
@@ -217,7 +250,7 @@
         $(function(){
             {% if min_date is defined and max_date is defined %}
             var _is_first_load = true;
-            $('#dates_range').dateRangeSlider({
+            $('#dates_range').removeClass('hidden').dateRangeSlider({
                 step: {
                     months: 1
                 },
@@ -271,31 +304,6 @@
                         return process(data)
                     });
                 }
-            });
-
-            $('.display_doc').click(function(){
-                var _elt = $('<div id="display_doc" title="{% trans %}Consult document{% endtrans %}"></div>');
-                _elt.appendTo('body');
-
-                var _width = $(window).width() * 0.8;
-                var _height = $(window).height() * 0.8;
-
-                $.get(
-                    $(this).attr('href') + '/ajax',
-                    function(data) {
-                        _elt.append(data);
-                        _elt.dialog({
-                            height: _height,
-                            width: _width,
-                            modal: true,
-                            close: function(event, ui){
-                                _elt.remove();
-                            }
-                        });
-                    }
-                );
-
-                return false;
             });
         });
     </script>

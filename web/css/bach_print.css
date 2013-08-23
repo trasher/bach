@@ -1,0 +1,4 @@
+/** Hide elements we do not want to print */
+.header, [id=navigation] {
+    display: none;
+}

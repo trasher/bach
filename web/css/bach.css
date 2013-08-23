@@ -1,3 +1,83 @@
+/** new Design */
+
+/**
+ * ===== Main header =====
+ */
+
+.header {
+    float: left;
+    background-image: linear-gradient(to bottom, #FFFFFF, #F2F2F2);
+}
+
+.header, .header h1 {
+    margin: 0 .2em;
+    padding: 0;
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: normal;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.header h1, .header a, [id=navigation], [id=navigation] a {
+    color: #777;
+}
+
+/**
+ * ===== Navigation menu =====
+ */
+
+[id=navigation] {
+    vertical-align: top;
+    background: #FAFAFA;
+    background-image: linear-gradient(to bottom, #FFFFFF, #F2F2F2);
+    cursor: pointer;
+}
+
+[id=navigation] ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+[id=navigation] li {
+    display: inline-block;
+}
+
+[id=navigation] a {
+    display: inline-block;
+    padding: .8em;
+    text-decoration: none;
+}
+
+[id=navigation] a:hover, [id=navigation] a:focus, [id=navigation] a:active, [id=navigation] .active {
+    background: #E5E5E5;
+    color: #555555;
+}
+
+[id=navigation] .active {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.07) inset;
+}
+
+/**
+ * ===== Common styles =====
+ */
+
+.container {
+    margin-top: .5em;
+    padding:  .5em;
+}
+
+.hidden {
+    max-height: 0;
+    overflow: hidden;
+}
+
+#dates_range.hidden {
+    padding: 0;
+    margin: 0;
+}
+
+/** Old design */
 #flash-warnings, #flash-errors {
     padding: .2em 1em .2em 80px;
     border-radius: 6px;
@@ -23,6 +103,7 @@
 
 #options_sidebar, #refine_query {
     margin-right: .5em;
+    margin-bottom: .5em;
 }
 
 #options_sidebar select {
@@ -212,6 +293,7 @@ em.hl {
 
 #dates_range {
     margin:0 1em 1em;
+    padding-top: 30px;
 }
 
 .breadcrumb {
@@ -345,13 +427,37 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
     border-radius: 6px;
 }
 
-/* Lastly, apply responsive CSS fixes as necessary */
+/* Mobile view */
 @media ( max-width : 767px) {
-    #footer {
-        margin-left: -20px;
-        margin-right: -20px;
-        padding-left: 20px;
-        padding-right: 20px;
+    /**
+     * ===== Main header =====
+     */
+    [id=navigation] {
+        position: relative;
+    }
+
+    [id=navigation]:after {
+        content: "\2261"; /* unicode "burger" */
+        position: absolute;
+        top: -0.85em;
+        right: 0;
+        width: 0.8em;
+        text-align: center;
+        font-size: 4em;
+        font-weight: bold;
+        line-height: 1;
+    }
+
+    .header, .header h1, [id=navigation], [id=navigation] a, [id=navigation] li {
+        display: block;
+    }
+
+    .header {
+        float: none;
+    }
+
+    .container {
+        padding: 0;
     }
 }
 
