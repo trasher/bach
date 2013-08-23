@@ -1,31 +1,31 @@
 bach_indexation_homepage:
-    pattern:  /indexation
+    pattern:  /
     defaults: { _controller: BachIndexationBundle:Default:index }
 
 bach_indexation_queue:
-    pattern:  /indexation/queue
+    pattern:  /queue
     defaults: { _controller: BachIndexationBundle:Default:queue }
 
 bach_indexation_upload_process:
-    pattern:  /indexation/uploadProcess
+    pattern:  /uploadProcess
     defaults: { _controller: BachIndexationBundle:Default:indexProcess }
     requirements:
         _method:  POST
 
 bach_indexation_purge:
-    pattern:  /indexation/purge
+    pattern:  /purge
     defaults: { _controller: BachIndexationBundle:Default:purge }
 
 bach_indexation_deletedocuments:
-    pattern:  /indexation/remove
+    pattern:  /remove
     defaults: { _controller: BachIndexationBundle:Default:removeDocuments }
     requirements:
         _method: POST
 
 bach_indexation_empty:
-    pattern:  /indexation/empty
+    pattern:  /empty
     defaults: { _controller: BachIndexationBundle:Default:empty }
 
 bach_indexation_add:
-    pattern: /indexation/add
+    pattern: /add
     defaults: { _controller: BachIndexationBundle:Default:add }

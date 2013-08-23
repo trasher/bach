@@ -1,32 +1,32 @@
 administration_dashboard:
-    pattern: /administration/dashboard
+    pattern: /dashboard
     defaults: { _controller: AdministrationBundle:Default:dashboard }
 administration_fields:
-    pattern: /administration/fields
+    pattern: /fields
     defaults: { _controller: AdministrationBundle:Fields:refresh }
 administration_fieldstype:
-    pattern:  /administration/fieldstype
+    pattern:  /fieldstype
     defaults: { _controller: AdministrationBundle:Types:refresh }
 administration_dynamicfields:
-    pattern:  /administration/dynamicfields
+    pattern:  /dynamicfields
     defaults: { _controller: AdministrationBundle:DynamicFields:refresh }
 administration_copyfields:
-    pattern: /administration/copyfields
+    pattern: /copyfields
     defaults: { _controller: AdministrationBundle:CopyFields:refresh }
 administration_uniquekey:
-    pattern:  /administration/uniquekey
+    pattern:  /uniquekey
     defaults: { _controller: AdministrationBundle:UniqueKey:refresh }
 administration_analyzers:
-    pattern:  /administration/analyzers
+    pattern:  /analyzers
     defaults: { _controller: AdministrationBundle:Analyzers:refresh }
 administration_performance:
-    pattern:  /administration/performance/index
+    pattern:  /performance/index
     defaults: { _controller: AdministrationBundle:Performance:refresh }
 administration_performance_submit:
-    pattern:  /administration/performance/submit
+    pattern:  /performance/submit
     defaults: { _controller: AdministrationBundle:Performance:submit }
 administration_coreadmin:
-    pattern:  /administration/coreadmin
+    pattern:  /coreadmin
     defaults: { _controller: AdministrationBundle:CoreAdmin:refresh }
 administration_fiel:
     pattern:  /fiel
