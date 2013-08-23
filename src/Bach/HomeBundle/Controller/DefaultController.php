@@ -325,6 +325,24 @@ class DefaultController extends Controller
         $max_date = $statsResults['cDateEnd']->getMax();
 
         if ( $min_date && $max_date ) {
+            $step_unit = 'months';
+            $step = 1;
+
+            $php_min_date = new \DateTime($min_date);
+            $php_max_date = new \DateTime($max_date);
+
+            $diff = $php_min_date->diff($php_max_date);
+            if ( $diff->y > 100 ) {
+                $step_unit = 'years';
+                //$step = round($diff->y / 100, 0, PHP_ROUND_HALF_UP);
+                $step = $diff->y / 100;
+            } else if ($diff->m > 100 ) {
+                $step = round($diff->m / 100, 0, PHP_ROUND_HALF_UP);
+            }
+
+            $templateVars['date_step_unit'] = $step_unit;
+            $templateVars['date_step'] = $step;
+
             $templateVars['min_date'] = explode('-', $min_date);
             if ( isset($filters['cDateBegin']) ) {
                 $templateVars['selected_min_date'] = explode(

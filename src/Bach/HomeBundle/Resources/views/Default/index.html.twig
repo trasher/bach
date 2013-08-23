@@ -252,7 +252,7 @@
             var _is_first_load = true;
             $('#dates_range').removeClass('hidden').dateRangeSlider({
                 step: {
-                    months: 1
+                    {{ date_step_unit }}: {{ date_step }}
                 },
                 bounds:
                 {
