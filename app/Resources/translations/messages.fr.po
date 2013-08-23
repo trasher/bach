@@ -31,11 +31,8 @@ msgstr "Gestion de l'indexation"
 msgid "Indexation"
 msgstr "Indexation"
 
-msgid "Application administration"
-msgstr "Administration de l'application"
-
 msgid "Administration"
-msgstr "Adminsitration"
+msgstr "Administration"
 
 msgid "Error"
 msgstr "Erreur"
