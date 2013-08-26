@@ -18,6 +18,7 @@
     <link href="{{ asset('css/jquery-ui/jquery.ui.button.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/jquery-ui/jquery.ui.resizable.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/jquery-ui/jquery.ui.dialog.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('css/jquery-ui/jquery.ui.tooltip.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     {% block css %}{% endblock %}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if IE]>
@@ -86,8 +87,6 @@
     <script src="{{ asset('js/jquery-1.10.2.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-dropdown.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-button.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/bootstrap-tooltip.js') }}" type="text/javascript"></script>
-    {#<script src="{{ asset('js/bootstrap-modal.js') }}" type="text/javascript"></script>#}
 
     <script src="{{ asset('js/jquery-ui/jquery.ui.core.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.widget.min.js')  }}" type="text/javascript"></script>
@@ -97,6 +96,7 @@
     <script src="{{ asset('js/jquery-ui/jquery.ui.resizable.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.button.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.dialog.min.js')  }}" type="text/javascript"></script>
+    <script src="{{ asset('js/jquery-ui/jquery.ui.tooltip.min.js')  }}" type="text/javascript"></script>
 
     <script src="{{ asset('js/anaphore.js') }}" type="text/javascript"></script>
     <script>
@@ -134,10 +134,7 @@
             $('#renamdialog').bind('show');
 
             //tooltip on each a
-            $('a').tooltip({
-                'selector': '',
-                'placement': 'bottom'
-            });
+            $('a').tooltip();
 
             //global help display window
             var _help = $('#help_window');
