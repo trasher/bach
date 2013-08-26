@@ -291,8 +291,7 @@ em.hl {
 #tagcloud a.tag9 { font-size: 2.5em; font-weight: 900; }
 
 #dates_range {
-    margin:0 1em 1em;
-    padding-top: 30px;
+    margin:0 2em .5em;
 }
 
 .breadcrumb {
