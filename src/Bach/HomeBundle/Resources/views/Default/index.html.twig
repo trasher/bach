@@ -33,18 +33,18 @@
             </h3>
 
             <ul class="nav nav-tabs">
-                {% for facet_field in facets|keys %}
-                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ facet_field }}" data-toggle="tab">{{ facet_field }}</a></li>
+                {% for facet_field,facet in facets %}
+                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ facet_field }}" data-toggle="tab">{{ facet.label }}</a></li>
                 {% endfor %}
             </ul>
 
             <div class="tab-content">
-                {% for facet_field,facet_res in facets %}
+                {% for facet_field,facet in facets %}
                 <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ facet_field }}">
                     <section id="list_{{ facet_field }}">
                         <ul class="nav nav-list">
                         {% set index_name = 'c' ~ facet_field|capitalize %}
-                        {% for facet,count in facet_res %}
+                        {% for facet,count in facet.content %}
                             <li>
                             {% if attribute(filters, index_name) is not defined or attribute(filters, index_name) is defined and facet not in attribute(filters, index_name) %}
                                 <a href="{{ path('bach_search', {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
