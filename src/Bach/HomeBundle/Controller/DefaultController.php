@@ -343,10 +343,9 @@ class DefaultController extends Controller
             $diff = $php_min_date->diff($php_max_date);
             if ( $diff->y > 100 ) {
                 $step_unit = 'years';
-                //$step = round($diff->y / 100, 0, PHP_ROUND_HALF_UP);
                 $step = $diff->y / 100;
             } else if ($diff->m > 100 ) {
-                $step = round($diff->m / 100, 0, PHP_ROUND_HALF_UP);
+                $step = $diff->m / 100;
             }
 
             $templateVars['date_step_unit'] = $step_unit;
