@@ -1,6 +1,17 @@
 /** new Design */
 
 /**
+ * ===== Global elements =====
+ */
+html, .ui-widget {
+    font-family: Century Gothic,Avant Garde,Arial,Helvetica,sans-serif;
+}
+
+html {
+    font-size: .85em;
+}
+
+/**
  * ===== Main header =====
  */
 
@@ -15,6 +26,11 @@
     display: inline-block;
     font-size: 1.1em;
     font-weight: normal;
+}
+
+.header h1 a {
+    display: inline-block;
+    padding: 10px;
 }
 
 .header h1, .header a, [id=navigation], [id=navigation] a {
@@ -58,8 +74,96 @@
 }
 
 /**
+ * ===== Aside menu =====
+ */
+
+[id=refine] {
+    width: 15em;
+    float: left;
+    margin-right: .5em;
+    margin-left: .2em;
+}
+
+[id=refine] h2 {
+    color: #999999;
+    font-size: .85em;
+    font-weight: bold;
+    line-height: 1.1em;
+    text-transform: uppercase;
+}
+
+[id=refine] a {
+    color: #222;
+}
+
+[id=refine] li.active a {
+  background-color: #0088cc;
+}
+
+[id=refine] h3 {
+    font-size: 100%;
+    background: url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6;
+    border: 1px solid #D3D3D3;
+    border-radius: 4px 4px 0 0;
+    padding: .1em .5em;
+    font-weight: 400;
+    color: #212121;
+    margin-bottom: 0;
+}
+
+[id=refine] > div > div {
+    border: 1px solid #D3D3D3;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: .3em .5em;
+}
+
+[id=refine] > ul {
+    border-radius: 4px;
+}
+
+[id=refine] div.ui-accordion-content {
+    padding: .3em .5em;
+}
+
+[id=refine] h3, [id=refine] h3.ui-accordion-header {
+    padding-top: .1em;
+    padding-bottom: .1em;
+}
+
+[id=refine] ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+[id=refine] ul a {
+    display: block;
+    padding: .1em 0;
+}
+
+[id=refine] a:hover {
+    background-color: #eee;
+    text-decoration: none;
+}
+
+/**
+ * ===== Search results =====
+ */
+
+/** === Main display (old method) === */
+
+[id=search_results] article {
+    clear: right;
+}
+
+/**
  * ===== Common styles =====
  */
+
+.w-menu {
+    margin-left: 15.5em;
+}
 
 .container {
     margin-top: .5em;
@@ -74,6 +178,15 @@
 #dates_range.hidden {
     padding: 0;
     margin: 0;
+}
+
+/**
+ * ===== Forms stuff =====
+ */
+
+input.largeinput {
+    min-width: 25em;
+    width: 80%;
 }
 
 /** Old design */
@@ -100,20 +213,6 @@
     border: 1px solid #dc0000;
 }
 
-#options_sidebar, #refine_query {
-    margin-right: .5em;
-    margin-bottom: .5em;
-}
-
-#options_sidebar select {
-    margin: 0;
-}
-
-#refine_query .nav-tabs > li > a {
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
 .result_pic {
     float: right;
     margin: 0 0 0 1em;
@@ -121,10 +220,6 @@
 
 .clear {
     clear: both;
-}
-
-.sidebar-nav {
-    padding: 2px 0;
 }
 
 #searchQuery_perform_search span {
@@ -204,18 +299,6 @@
     width:250px;
 }
 
-.sidebar-nav-fixed{
-    padding: 9px 0;
-    position:fixed;
-    left:20px;
-    top:90px;
-    width:250px;
-}
-
-.row-fluid > .span-fixed-sidebar {
-    margin-left: 290px;
-}
-
 .selectfixed{
     padding: 0px 0;
     position:fixed;
@@ -247,12 +330,6 @@ em.hl {
     float: right;
     font-weight: normal;
     font-size: .85em;
-    text-transform: none;
-    text-shadow: none;
-}
-.clear-btn + .tooltip {
-    font-weight: normal;
-    font-size: 1em;
     text-transform: none;
     text-shadow: none;
 }
@@ -408,7 +485,6 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
     display: inline-block;
 }
 
-
 .access a {
     display: inline-block;
     padding: .1em .3em;
@@ -456,6 +532,26 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
 
     .container {
         padding: 0;
+    }
+
+    [id=refine] {
+        width: auto;
+        float: none;
+        margin-right: 0;
+    }
+
+    .w-menu {
+        margin-left: 0;
+    }
+
+    input.largeinput {
+        min-width: 5em;
+        width: 85%;
+    }
+
+    .access {
+        position: relative;
+        top:0;
     }
 }
 

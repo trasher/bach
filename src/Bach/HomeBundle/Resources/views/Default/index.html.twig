@@ -13,6 +13,7 @@
 
 {% block css %}
     <link href="{{ asset('css/jqrangeslider/iThing-min.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('css/jquery-ui/jquery.ui.accordion.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
 {% endblock %}
 
 {% block container %}
@@ -22,61 +23,51 @@
     </div>
     {% endif %}
 
-    <aside class="span2" role="search">
+    <aside id="refine" role="search">
         {% if facets is defined and searchResults|length > 0 %}
-        <div class="well-free" id="refine_query">
-            <h3 class="nav-header">
-                {% trans %}Refine Query{% endtrans %}
-                {% if filters is defined %}
-                <a href="{{ path('bach_search', {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{% trans %}Clear refined query{% endtrans %}">{% trans %}Clear{% endtrans %}</a>
-                {% endif %}
-            </h3>
-
-            <ul class="nav nav-tabs">
-                {% for facet_field,facet in facets %}
-                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ facet_field }}" data-toggle="tab">{{ facet.label }}</a></li>
-                {% endfor %}
-            </ul>
-
-            <div class="tab-content">
-                {% for facet_field,facet in facets %}
-                <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ facet_field }}">
-                    <section id="list_{{ facet_field }}">
-                        <ul class="nav nav-list">
-                        {% set index_name = 'c' ~ facet_field|capitalize %}
-                        {% for facet,count in facet.content %}
-                            <li>
-                            {% if attribute(filters, index_name) is not defined or attribute(filters, index_name) is defined and facet not in attribute(filters, index_name) %}
-                                <a href="{{ path('bach_search', {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
-                            {% endif %}
-                            </li>
-                        {% endfor %}
-                        </ul>
-                    </section>
+        <h2>
+            {% trans %}Refine Query{% endtrans %}
+            {% if filters is defined %}
+            <a href="{{ path('bach_search', {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{% trans %}Clear refined query{% endtrans %}">{% trans %}Clear{% endtrans %}</a>
+            {% endif %}
+        </h2>
+        <div id="facets">
+            {% for facet_field,facet in facets %}
+                <h3>{{ facet.label }}</h3>
+                <div>
+                    <ul>
+                    {% set index_name = 'c' ~ facet_field|capitalize %}
+                    {% for facet,count in facet.content %}
+                        {% if attribute(filters, index_name) is not defined or attribute(filters, index_name) is defined and facet not in attribute(filters, index_name) %}
+                        <li>
+                            <a href="{{ path('bach_search', {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
                 </div>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
         {% endif %}
 
         {% if sidebar|length > 0 %}
-        <ul class="nav nav-list well" id="options_sidebar">
+        <h2>{% trans %}Search options{% endtrans %}</h2>
+        <div id="search_options">
             {% for name,item in sidebar %}
-            <li class="nav-header">{{ name }}</li>
+            <h3>{{ name }}</h3>
+            <div>
+                <ul>
                 {% for choice in item %}
-                    {% if choice.selected  %}
-                    <li class="active"><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
-                    {% else %}
-                    <li><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
-                    {% endif %}
+                    <li{% if choice.selected  %} class="active"{% endif %}><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
                 {% endfor %}
+                </ul>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
         {% endif %}
-
     </aside>
 
-    <div class="span9">
+    <div class="content w-menu">
         <div id="dates_range" class="hidden"></div>
         {% if filters is defined %}
             {% set coma = ', ' %}
@@ -97,40 +88,32 @@
             </nav>
         {% endif %}
 
-        <div class="row-fluid">
-            <div class="span9">
-                <div class="container">
-                    <div class="row-fluid">
-                        <div>
-                            <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search">
-                                <div class="input-append">
-                                    {{ form_widget(form.query) }}
-                                    {{ form_widget(form._token) }}
-                                    {{ form_widget(form.perform_search) }}
-                                </div>
-                            </form>
-                            {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
-                            <aside id="suggestions">
-                                {% trans %}Additionnal serch suggestions:{% endtrans %}
-                                {% for term,termResult in suggestions %}
-                                    {% if termResult|length > 0 %}
-                                        {% for suggest in termResult %}
-                                            <a href="{{ path('bach_search', {query_terms: suggest}) }} ">{{ suggest }}</a>
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endfor %}
-                            </aside>
-                            {% endif %}
-                        </div>
-                    </div>
+        <div>
+            <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search">
+                <div class="input-append">
+                    {{ form_widget(form.query) }}
+                    {{ form_widget(form._token) }}
+                    {{ form_widget(form.perform_search) }}
                 </div>
-            </div>
+            </form>
+            {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
+            <aside id="suggestions">
+                {% trans %}Additionnal serch suggestions:{% endtrans %}
+                {% for term,termResult in suggestions %}
+                    {% if termResult|length > 0 %}
+                        {% for suggest in termResult %}
+                            <a href="{{ path('bach_search', {query_terms: suggest}) }}">{{ suggest }}</a>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </aside>
+            {% endif %}
         </div>
 
         {% if searchResults is defined %}
         <section id="search_results" role="main">
             {% if searchResults|length > 0 %}
-            <div class="row-fluid">
+            <div class="results_count">
                 {% if resultCount == 1 %}
                     {% trans %}1 result{% endtrans %}
                 {% else %}
@@ -138,7 +121,7 @@
                 {% endif %}
             </div>
                 {% for document in searchResults %}
-                    <article class="row-fluid" id="result_{{ document.uniqid }}">
+                    <article id="result_{{ document.uniqid }}" role="document">
                         {% if show_pics %}
                         <figure class="result_pic">
                             {% if document.dao is defined %}
@@ -239,6 +222,7 @@
     <script src="{{ asset('js/jquery-ui/jquery.ui.resizable.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.button.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.dialog.min.js')  }}" type="text/javascript"></script>
+    <script src="{{ asset('js/jquery-ui/jquery.ui.accordion.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jQDateRangeSlider-min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-tab.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-typeahead.js') }}" type="text/javascript"></script>
@@ -248,6 +232,10 @@
             return d.getFullYear()+ '-' + pad(d.getMonth()+1)+ '-' + pad(d.getDate());
         }
         $(function(){
+            $('#facets').accordion({
+                heightStyle: 'content',
+                collapsible: true
+            });
             {% if min_date is defined and max_date is defined %}
             var _is_first_load = true;
             $('#dates_range').removeClass('hidden').dateRangeSlider({

@@ -58,7 +58,7 @@ class SearchQueryFormType extends AbstractType
             array(
                 'attr'  => array(
                     'placeholder'   => _('Enter your search'),
-                     'class'        => 'input-big span12',
+                     'class'        => 'largeinput',
                      'value'        => $this->_value,
                      'autocomplete' => 'off'
                 )
