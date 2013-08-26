@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-08-22 12:42+0200\n"
-"PO-Revision-Date: 2013-08-22 12:42+0100\n"
+"PO-Revision-Date: 2013-08-26 11:56+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: fr_FR.utf8\n"
@@ -96,7 +96,7 @@ msgstr "Documents divers"
 
 #: src/Bach/HomeBundle/Twig/DisplayDao.php:310
 msgid "Play '%name%'"
-msgstr "Jouer « %name »"
+msgstr "Jouer « %name% »"
 
 #: src/Bach/HomeBundle/Twig/DisplayDao.php:343
 msgid ""
