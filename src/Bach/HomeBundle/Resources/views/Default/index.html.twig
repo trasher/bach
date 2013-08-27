@@ -236,21 +236,27 @@
                 heightStyle: 'content',
                 collapsible: true
             });
+
             {% if min_date is defined and max_date is defined %}
             var _is_first_load = true;
             $('#dates_range').removeClass('hidden').dateRangeSlider({
+                formatter:function(val){
+                    var year = val.getFullYear();
+                    return year;
+                },
+                arrows: false,
                 step: {
                     {{ date_step_unit }}: {{ date_step }}
                 },
                 bounds:
                 {
-                    min: new Date({{ min_date[0] }}, {{ min_date[1] - 1 }}, {{ min_date[2] }}),
-                    max: new Date({{ max_date[0] }}, {{ max_date[1] - 1 }}, {{ max_date[2] }})
+                    min: new Date({{ min_date }}, 0, 1),
+                    max: new Date({{ max_date }}, 11, 31)
                 },
                 defaultValues:
                 {
-                    min: new Date({{ selected_min_date[0] }}, {{ selected_min_date[1] - 1 }}, {{ selected_min_date[2] }}),
-                    max: new Date({{ selected_max_date[0] }}, {{ selected_max_date[1] - 1 }}, {{ selected_max_date[2] }})
+                    min: new Date({{ selected_min_date }}, 0, 1),
+                    max: new Date({{ selected_max_date }}, 11, 31)
                 }
             }).bind("valuesChanged", function(e, data){
                 if ( _is_first_load ) {
@@ -262,17 +268,17 @@
                     var _new_loc = _loc.substring(0, n != -1 ? n : _loc.lenght);
 
                     var _min = data.values.min;
-                    var _min_date = getDateString(_min);
+                    var _min_date = _min.getFullYear(); //getDateString(_min);
 
                     var _max = data.values.max;
-                    var _max_date = getDateString(_max);
+                    var _max_date = _max.getFullYear(); //getDateString(_max);
 
                     var _field = '';
                     var _value = '';
-                    if ( _min_date != '{{ selected_min_date[0] }}-{{ selected_min_date[1] }}-{{ selected_min_date[2] }}' ) {
+                    if ( _min_date != '{{ selected_min_date }}' ) {
                         _field = 'cDateBegin';
                         _value = _min_date;
-                    } else if ( _max_date != '{{ selected_max_date[0] }}-{{ selected_max_date[1] }}-{{ selected_max_date[2] }}' ) {
+                    } else if ( _max_date != '{{ selected_max_date }}' ) {
                         _field = 'cDateEnd';
                         _value = _max_date;
                     } else {

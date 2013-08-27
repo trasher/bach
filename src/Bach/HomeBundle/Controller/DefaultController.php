@@ -189,6 +189,12 @@ class DefaultController extends Controller
                 switch ( $filter_field ) {
                 case 'cDateBegin':
                 case 'cDateEnd':
+                    $php_date = \DateTime::createFromFormat('Y', $filter_value[0]);
+                    if ( $filter_field === 'cDateBegin' ) {
+                        $filter_value = array($php_date->format('Y-01-01'));
+                    } else {
+                        $filter_value = array($php_date->format('Y-12-31'));
+                    }
                     break;
                 default:
                     if ( isset($filters[$filter_field])
@@ -330,11 +336,10 @@ class DefaultController extends Controller
         $statsResults = $rsStats->getResults();
 
         $min_date = $statsResults['cDateBegin']->getMin();
-        $dates_count = $statsResults['cDateBegin']->getCount();
         $max_date = $statsResults['cDateEnd']->getMax();
 
         if ( $min_date && $max_date ) {
-            $step_unit = 'months';
+            $step_unit = 'years';
             $step = 1;
 
             $php_min_date = new \DateTime($min_date);
@@ -342,30 +347,29 @@ class DefaultController extends Controller
 
             $diff = $php_min_date->diff($php_max_date);
             if ( $diff->y > 100 ) {
-                $step_unit = 'years';
                 $step = $diff->y / 100;
-            } else if ($diff->m > 100 ) {
-                $step = $diff->m / 100;
             }
 
             $templateVars['date_step_unit'] = $step_unit;
             $templateVars['date_step'] = $step;
 
-            $templateVars['min_date'] = explode('-', $min_date);
+            $templateVars['min_date'] = $php_min_date->format('Y');
             if ( isset($filters['cDateBegin']) ) {
-                $templateVars['selected_min_date'] = explode(
+                $dbegin = explode(
                     '-',
                     $filters['cDateBegin'][0]
                 );
+                $templateVars['selected_min_date'] = $dbegin[0];
             } else {
                 $templateVars['selected_min_date'] = $templateVars['min_date'];
             }
-            $templateVars['max_date'] = explode('-', $max_date);
+            $templateVars['max_date'] = $php_max_date->format('Y');
             if ( isset($filters['cDateEnd']) ) {
-                $templateVars['selected_max_date'] = explode(
+                $dend = explode(
                     '-',
                     $filters['cDateEnd'][0]
                 );
+                $templateVars['selected_max_date'] = $dend[0];
             } else {
                 $templateVars['selected_max_date'] = $templateVars['max_date'];
             }
