@@ -227,17 +227,25 @@ class DefaultController extends Controller
 
             $facets = array();
             $faceset = $searchResults->getFacetSet();
+            $facets['document'] = array(
+                'label'         => _('document'),
+                'content'       => $faceset->getFacet('document'),
+                'index_name'    => 'archDescUnitTitle'
+            );
             $facets['subject'] = array(
-                'label'     => _('subject'),
-                'content'   => $faceset->getFacet('subject')
+                'label'         => _('subject'),
+                'content'       => $faceset->getFacet('subject'),
+                'index_name'    => 'cSubject'
             );
             $facets['persname'] = array(
-                'label'     => _('persname'),
-                'content'   => $faceset->getFacet('persname')
+                'label'         => _('persname'),
+                'content'       => $faceset->getFacet('persname'),
+                'index_name'    => 'cPersname'
             );
             $facets['geogname'] = array(
-                'label'     => _('geogname'),
-                'content'   => $faceset->getFacet('geogname')
+                'label'         => _('geogname'),
+                'content'       => $faceset->getFacet('geogname'),
+                'index_name'    => 'cGeogname'
             );
 
             $query = $this->get("solarium.client")->createSuggester();

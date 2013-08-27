@@ -36,7 +36,8 @@
                 <h3>{{ facet.label }}</h3>
                 <div>
                     <ul>
-                    {% set index_name = 'c' ~ facet_field|capitalize %}
+                    {#% set index_name = 'c' ~ facet_field|capitalize %#}
+                    {% set index_name = facet.index_name %}
                     {% for facet,count in facet.content %}
                         {% if attribute(filters, index_name) is not defined or attribute(filters, index_name) is defined and facet not in attribute(filters, index_name) %}
                         <li>

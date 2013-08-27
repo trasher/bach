@@ -93,6 +93,7 @@ class SolariumQueryFactory
         $facetSet->createFacetField('subject')->setField('cSubject');
         $facetSet->createFacetField('persname')->setField('cPersname');
         $facetSet->createFacetField('geogname')->setField('cGeogname');
+        $facetSet->createFacetField('document')->setField('archDescUnitTitle');
 
         foreach ( $container->getFields() as $name=>$value ) {
             if ( array_key_exists($name, $this->_decorators) ) {
