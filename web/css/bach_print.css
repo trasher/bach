@@ -1,4 +1,89 @@
+* {
+    font-family: "times new roman",times,serif;
+    text-align: justify;
+    quotes: "\201E" "\201C" "\201A" "\2018";
+}
+html {
+    font-size: 12pt;
+}
+
+a {
+    color: #520;
+}
+
+/** Probably useful rules */
+*[title]:after {
+    content:" ("attr(title)")";
+    color: #888;
+    background-color: inherit;
+    font-style: italic;
+    size: 80%;
+}
+
+q:before, blockquote:before {
+    content: open-quote;
+}
+
+q:after, blockquote:after {
+    content: close-quote;
+}
+
+*[cite]:after {
+    content: close-quote" (source: "attr(cite)")";
+    font-size: 80%;
+}
+
+/*img[alt]:after {
+    content: "\A ("attr(alt)")";
+}*/
+
+img[longdesc]:after {
+    content: "\A (description: "attr(longdesc)")";
+}
+
+/** Display some links */
+.custodhist a:link:after, .custodhist a:visited:after,
+.odd a:link:after, .odd a:visited:after,
+.scopecontent a:link:after, .scopecontent a:visited:after,
+.relatedmaterial a:link:after, .relatedmaterial a:visited:after,
+.bibliography a:link:after, .bibliography a:visited:after,
+{
+    content: " (" attr(href) ") ";
+    font-size: 90%;
+}
+
+
 /** Hide elements we do not want to print */
-.header, [id=navigation] {
+.header, [id=navigation], .access {
     display: none;
 }
+
+/** Take care of figures titles */
+figure  span.title {
+    display: block;
+}
+
+/** Display breadcrumb */
+.breadcrumb {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.breadcrumb li {
+    display: inline-block;
+}
+
+.breadcrumb li a {
+    display: inline-block;
+    padding: .1em .3em .1em 0;
+}
+
+.breadcrumb li a:before {
+    content: "» ";
+}
+
+.breadcrumb li:first-child a:before {
+    content: "";
+}
+
