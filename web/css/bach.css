@@ -82,6 +82,11 @@ html {
     float: left;
     margin-right: .5em;
     margin-left: .2em;
+    position: relative;
+}
+
+[id=refine].hidemenu {
+    margin-left: -15em;
 }
 
 [id=refine] h2 {
@@ -147,6 +152,19 @@ html {
     text-decoration: none;
 }
 
+/** === Handle bar === */
+
+#handle {
+    position: absolute;
+    top: 3em;
+    right: -.5em;
+    width: .5em;
+    background-color: rgba(0,0,0,.5);
+    height: 15em;
+    cursor: pointer;
+    color: white;
+}
+
 /**
  * ===== Search results =====
  */
@@ -161,8 +179,17 @@ html {
  * ===== Common styles =====
  */
 
+
+.content {
+    margin: 0 .5em 0 .2em;
+}
+
 .w-menu {
-    margin-left: 15.5em;
+    margin-left: 16em;
+}
+
+.w-handle {
+    margin-left: 1em;
 }
 
 .container {
@@ -187,13 +214,6 @@ html {
 input.largeinput {
     min-width: 25em;
     width: 80%;
-}
-
-/**
- * ===== Fragment display =====
- */
-article .content {
-    margin: 0 .2em;
 }
 
 /** Old design */
@@ -521,7 +541,7 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
     [id=navigation]:after {
         content: "\2261"; /* unicode "burger" */
         position: absolute;
-        top: -0.85em;
+        top: -0.95em;
         right: 0;
         width: 0.8em;
         text-align: center;
@@ -545,11 +565,11 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
     [id=refine] {
         width: auto;
         float: none;
-        margin-right: 0;
+        margin-right: .2em;
     }
 
     .w-menu {
-        margin-left: 0;
+        margin-left: .2em;
     }
 
     input.largeinput {
