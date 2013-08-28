@@ -159,10 +159,13 @@ html {
     top: 3em;
     right: -.5em;
     width: .5em;
-    background-color: rgba(0,0,0,.5);
     height: 15em;
     cursor: pointer;
+}
+
+#handle:hover, .hidemenu #handle {
     color: white;
+    background-color: rgba(0,0,0,.5);
 }
 
 /**
