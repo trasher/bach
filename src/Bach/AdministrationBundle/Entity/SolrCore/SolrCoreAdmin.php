@@ -844,7 +844,7 @@ class SolrCoreAdmin
             $newEntity->appendChild($newField);
 
             $newField = $doc->createElement('field');
-            $newField->setAttribute('column', 'end');
+            $newField->setAttribute('column', 'dend');
             $newField->setAttribute('name', 'cDateEnd');
             $newEntity->appendChild($newField);
 
