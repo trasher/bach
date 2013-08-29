@@ -144,7 +144,7 @@
                             </a>
                         </h3>
                         {% endspaceless %}
-                        {{ displayFragment(document.fragment)|raw }}
+                        {{ displayFragment(document.fragment, document.fragmentid)|raw }}
                     </article>
                 {% endfor %}
                 {% include 'pagination.html.twig' with {

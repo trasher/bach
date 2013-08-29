@@ -70,12 +70,13 @@ class DisplayEADFragment extends \Twig_Extension
      * Displays EAD fragment in HTML with XSLT
      *
      * @param string  $fragment    EAD fragment as XML
+     * @param string  $docid       Document unique identifier
      * @param boolean $full        Displays full fragment, default to false
      * @param boolean $hasChildren Document has children
      *
      * @return string
      */
-    public function display($fragment, $full = false, $hasChildren = false)
+    public function display($fragment, $docid, $full = false, $hasChildren = false)
     {
         $proc = new \XsltProcessor();
         $xsl = $proc->importStylesheet(
@@ -101,6 +102,7 @@ class DisplayEADFragment extends \Twig_Extension
 
         $xml = simplexml_load_string($fragment);
         $proc->setParameter('', 'full', $full);
+        $proc->setParameter('', 'docid', $docid);
         $proc->setParameter('', 'viewer_uri', $viewer_uri);
         if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');

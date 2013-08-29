@@ -1,4 +1,4 @@
-    <article id="result_{{ docid }}">
+    <article about="{{ docid }}">
         {% if ariane is defined %}
             <ul class="breadcrumb">
                 {% for fil in ariane %}
@@ -13,7 +13,7 @@
         {% else %}
             {% set hasChildren = true %}
         {% endif %}
-        {{ displayFragment(document.fragment, true, hasChildren)|raw }}
+        {{ displayFragment(document.fragment, docid, true, hasChildren)|raw }}
         {% if not children == false %}
             <section id="children_documents">
                 <header>

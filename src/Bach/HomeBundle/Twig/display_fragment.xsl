@@ -18,6 +18,7 @@ Displays an EAD fragment as HTML
     <xsl:param name="full" select="1"/>
     <xsl:param name="children" select="''"/>
     <xsl:param name="viewer_uri" select="''"/>
+    <xsl:param name="docid"/>
 
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
         <xsl:variable name="id">
@@ -218,7 +219,7 @@ Displays an EAD fragment as HTML
                     </strong>
                     <xsl:for-each select="../*[local-name() = $elt]">
                         <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
-                        <a link="{concat('%%%', $elt, '::', string(.), '%%%')}">
+                        <a link="{concat('%%%', $elt, '::', string(.), '%%%')}" about="{$docid}">
                             <xsl:if test="not(local-name() = 'function')">
                                 <xsl:attribute name="property">
                                     <xsl:choose>
@@ -505,6 +506,21 @@ Displays an EAD fragment as HTML
             <xsl:attribute name="link">
                 <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
                 <xsl:value-of select="concat('%%%', local-name(), '::', string(.), '%%%')"/>
+            </xsl:attribute>
+            <xsl:if test="not(local-name() = 'function')">
+                <xsl:attribute name="property">
+                    <xsl:choose>
+                        <xsl:when test="local-name() = 'subject'">dc:subject</xsl:when>
+                        <xsl:when test="local-name() = 'geogname'">gn:name</xsl:when>
+                        <xsl:otherwise>foaf:name</xsl:otherwise>
+                    </xsl:choose>
+                </xsl:attribute>
+                <xsl:attribute name="content">
+                    <xsl:value-of select="."/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="about">
+                <xsl:value-of select="$docid"/>
             </xsl:attribute>
             <xsl:value-of select="."/>
         </a>
