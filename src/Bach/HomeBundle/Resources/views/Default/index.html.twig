@@ -122,7 +122,7 @@
                 {% endif %}
             </div>
                 {% for document in searchResults %}
-                    <article id="result_{{ document.uniqid }}" role="document">
+                    <article id="result_{{ document.uniqid }}" role="document" about="{{ document.fragmentid }}">
                         {% if show_pics %}
                         <figure class="result_pic">
                             {% if document.dao is defined %}
@@ -133,15 +133,17 @@
                         </figure>
                         {% endif %}
 
+                        {% spaceless %}
                         <h3 property="dc:title">
                             <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
-                            {% if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 %}
+                            {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
                                 {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
-                            {% else %}
+                            {%- else -%}
                                 {{ document.cUnittitle }}
-                            {% endif %}
+                            {%- endif -%}
                             </a>
                         </h3>
+                        {% endspaceless %}
                         {{ displayFragment(document.fragment)|raw }}
                     </article>
                 {% endfor %}
