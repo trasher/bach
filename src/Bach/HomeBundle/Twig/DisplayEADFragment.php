@@ -31,6 +31,7 @@ class DisplayEADFragment extends \Twig_Extension
 {
     private $_router;
     private $_request;
+    private $_viewer_uri;
 
     /**
      * Main constructor
@@ -52,6 +53,18 @@ class DisplayEADFragment extends \Twig_Extension
     public function setRequest(Request $request = null)
     {
         $this->_request = $request;
+    }
+
+    /**
+     * Set viewer URI
+     *
+     * @param string $viewer_uri Viewer URL
+     *
+     * @return void
+     */
+    public function setViewer($viewer_uri)
+    {
+        $this->_viewer_uri = $viewer_uri;
     }
 
     /**
@@ -97,17 +110,13 @@ class DisplayEADFragment extends \Twig_Extension
             return 'href="' . str_replace('&', '&amp;', $href) . '"';
         };
 
-        //FIXME: get that one from parameters :'(
-        $viewer_uri = 'http://viewer.localhost';
-
         $xml = simplexml_load_string($fragment);
         $proc->setParameter('', 'full', $full);
         $proc->setParameter('', 'docid', $docid);
-        $proc->setParameter('', 'viewer_uri', $viewer_uri);
+        $proc->setParameter('', 'viewer_uri', $this->_viewer_uri);
         if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
         }
-        $proc->setParameter('', 'viewer_uri', $viewer_uri);
         $proc->registerPHPFunctions();
         $text = $proc->transformToXml($xml);
         //it is not possible to build routes from the XSL, so we'll build them here

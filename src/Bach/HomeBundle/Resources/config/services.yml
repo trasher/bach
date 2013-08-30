@@ -10,6 +10,7 @@ services:
         arguments: [ @router ]
         calls:
             - [setRequest, ['@?request=']]
+            - [setViewer, ['%viewer_uri%']]
         tags:
             - { name: twig.extension }
     bach.home.display_dao:
