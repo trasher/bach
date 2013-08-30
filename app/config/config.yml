@@ -99,4 +99,7 @@ nelmio_solarium:
             path: '%solr_path%'
             core: '%unimarc_corename%'
             timeout: 5
-
+bach_indexation:
+    types:
+        - ead
+        - unimarc

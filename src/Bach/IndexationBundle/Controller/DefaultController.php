@@ -377,17 +377,21 @@ class DefaultController extends Controller
     /**
      * Retrieve existing files list
      *
+     * @param string $format Type of files to retrieve
+     *
      * @todo: this should be in its own entity
      *
      * @return Iterator
      */
-    private function _getExistingFiles()
+    private function _getExistingFiles($format = null)
     {
         $existing_files = array();
-        $formats = array(
-            'ead',
-            'unimarc'
-        );
+
+        $formats = $this->container->getParameter('bach.types');
+
+        if ( $format !== null ) {
+            $formats = array($format);
+        }
 
         foreach ( $formats as $format ) {
             $finder = new Finder();
