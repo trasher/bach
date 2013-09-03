@@ -71,26 +71,65 @@ EOF
         //$context = $this->getContainer()->get('router')->getContext();
         $container = $this->getContainer();
 
-        $types = $container->getParameter('bach.types');
+        $known_types = $container->getParameter('bach.types');
+        $types = array();
 
         if ( $input->getArgument('type')) {
             $type = $input->getArgument('type');
-            if ( in_array($type, $types) ) {
+            if ( in_array($type, $known_types) ) {
                 $output->writeln('<info>Working with ' . $type  . ' type.</info>');
                 $types[] = $type;
             } else {
-                $output->writeln('<error>Unknown type! Please choose one of:' . "\n -" . implode("\n -", $types)  . '</error>');
+                $output->writeln(
+                    '<error>Unknown type! Please choose one of:' . "\n -" .
+                    implode("\n -", $known_types)  . '</error>'
+                );
                 die();
             }
         } else {
-            $output->writeln('<info>Working with all types (' . implode(', ', $types)   . ')</info>');
+            $types = $known_types;
+            $output->writeln(
+                '<info>Working with all types (' .
+                implode(', ', $types)   . ')</info>'
+            );
         }
 
-        //print_r($types);
+        print_r($types);
+        $tf = $container->get('bach.indexation.typesfiles');
+        $files  = $tf->getExistingFiles($types);
 
-        /*$integrationService = $this->getContainer()
-            ->get('bach.indexation.process.arch_file_integration');*/
-        /*$return = $integrationService->proceedQueue();*/
-        /*$output->writeln($return);*/
+        $return = '';
+        foreach ( $files as $type=>$list ) {
+            $this->_parsePaths($list, $type, $return);
+        }
+
+        $output->writeln($return);
+    }
+
+    /**
+     * Parse paths
+     *
+     * @param array  $entry   Current entry
+     * @param string $type    Current type
+     * @param string &$return Command output string
+     *
+     * @return void
+     */
+    private function _parsePaths($entry, $type, &$return)
+    {
+        $it = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($entry));
+        $keys = array();
+        foreach ($it as $key => $value) {
+            // Build long key name based on parent keys
+            if ( is_array($value) ) {
+                for ($i = $it->getDepth() - 1; $i >= 0; $i--) {
+                    $skey = $it->getSubIterator($i)->key();
+                    $key = $skey . '/' . $value;
+                }
+            } else {
+                $key = $value;
+            }
+            $return .= "\n" . $type . '/' . $key;
+        }
     }
 }
