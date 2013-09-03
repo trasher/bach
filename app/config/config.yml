@@ -103,3 +103,6 @@ bach_indexation:
     types:
         - ead
         - unimarc
+    paths:
+        ead: '%ead_files_path%'
+        unimarc: '%unimarc_files_path%'

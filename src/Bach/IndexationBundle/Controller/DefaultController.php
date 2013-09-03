@@ -18,7 +18,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Bach\IndexationBundle\Entity\Document;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
@@ -149,12 +148,14 @@ class DefaultController extends Controller
             }
         }
 
+        $tf = $this->container->get('bach.indexation.typesfiles');
+
         return $this->render(
             'BachIndexationBundle:Indexation:add.html.twig',
             array(
                 'directory_contents'    => null,
                 'upload_form'           => $form->createView(),
-                'existing_files'        => $this->_getExistingFiles()
+                'existing_files'        => $tf->getExistingFiles()
             )
         );
     }
@@ -373,66 +374,4 @@ class DefaultController extends Controller
             $this->get("router")->generate("bach_indexation_homepage")
         );
     }
-
-    /**
-     * Retrieve existing files list
-     *
-     * @param string $format Type of files to retrieve
-     *
-     * @todo: this should be in its own entity
-     *
-     * @return Iterator
-     */
-    private function _getExistingFiles($format = null)
-    {
-        $existing_files = array();
-
-        $formats = $this->container->getParameter('bach.types');
-
-        if ( $format !== null ) {
-            $formats = array($format);
-        }
-
-        foreach ( $formats as $format ) {
-            $finder = new Finder();
-            $finder->followLinks()
-                ->ignoreDotFiles(true)
-                ->ignoreVCS(true)
-                -> ignoreUnreadableDirs(true)
-                ->sortByType();
-
-            $path = $this->container->getParameter($format . '_files_path');
-            $existing_files[$format] = $this->_parseExistingFiles(
-                $finder->files()->in($path)
-            );
-        }
-
-        return $existing_files;
-    }
-
-    /**
-     * Parse existing files into an array for display
-     *
-     * @param Iterator $finder Finder results iterator
-     *
-     * @todo: this should be in its own entity
-     *
-     * @return array
-     */
-    private function _parseExistingFiles($finder)
-    {
-        $existing_files = array();
-        foreach ( $finder as $found ) {
-            if ( !$found->isDir() ) {
-                $parent = $found->getRelativePath();
-                if ( $parent !== '' ) {
-                    $existing_files[$parent][] = $found->getFileName();
-                } else if ( $found->getRealPath() !== false ) {
-                    $existing_files[] = $found->getFileName();
-                }
-            }
-        }
-        return $existing_files;
-    }
-
 }

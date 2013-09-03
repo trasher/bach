@@ -4,6 +4,7 @@ parameters:
     bach_indexation_universal_file_format_factory.class: Bach\IndexationBundle\Service\UniversalFileFormatFactory
     bach_indexation_pre_processor_factory.class: Bach\IndexationBundle\Service\PreProcessorFactory
     bach_indexation_process_arch_file_integration.class: Bach\IndexationBundle\Service\ArchFileIntegration
+    bach_indexation_typesfiles.class: Bach\IndexationBundle\Service\TypesFiles
 
 services:
     bach.indexation.file_driver_manager:
@@ -19,4 +20,7 @@ services:
     bach.indexation.process.arch_file_integration:
         class: "%bach_indexation_process_arch_file_integration.class%"
         arguments: [ @bach.indexation.file_driver_manager, @bach.indexation.data_bag_factory, @doctrine.orm.entity_manager ]
+    bach.indexation.typesfiles:
+        class: '%bach_indexation_typesfiles.class%'
+        arguments: [ '%bach.types%', '%bach.typespaths%' ]
 
