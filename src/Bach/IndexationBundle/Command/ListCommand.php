@@ -94,7 +94,6 @@ EOF
             );
         }
 
-        print_r($types);
         $tf = $container->get('bach.indexation.typesfiles');
         $files  = $tf->getExistingFiles($types);
 
