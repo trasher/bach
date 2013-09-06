@@ -21,6 +21,10 @@ parameters:
     ead_corename: EADUniversalFileFormat
     unimarc_corename: Unimarc
     viewer_uri: http://viewer.localhost/
+    #supported gettext bundle languages
+    gettext.locale_shortcuts:
+        en: en_US
+        fr: fr_FR
 
 bach_home:
     files:
