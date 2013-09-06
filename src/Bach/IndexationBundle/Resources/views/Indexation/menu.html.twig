@@ -1,10 +1,11 @@
-    <ul class="span2 nav nav-list well" id="options_sidebar">
-        <li class="nav-header">Gestion de l'indexation</li>
-        <li class="divider"></li>
+<aside id="refine">
+    <h2>{% trans %}Manage publishing{% endtrans %}</h2>
+    <ul>
         <li{% if current_route == 'bach_indexation_homepage' %} class="active"{% endif %}><a href="{{ path('bach_indexation_homepage') }}">Documents indexés</a></li>
-        <li{% if current_route == 'bach_indexation_queue' %} class="active"{% endif %}><a href="{{ path('bach_indexation_queue')  }}"><i class="icon-tasks"></i> File d'attente des tâches d'indexation</a></li>
+        <li{% if current_route == 'bach_indexation_queue' %} class="active"{% endif %}><a href="{{ path('bach_indexation_queue')  }}"><span class="icon-tasks"></span>File d'attente</a></li>
         <li class="divider"></li>
-        <li{% if current_route == 'bach_indexation_add' %} class="active"{% endif %}><a href="{{ path('bach_indexation_add') }}"><span class="icon-download-alt"></span> Indexer un nouveau fichier</a></li>
+        <li{% if current_route == 'bach_indexation_add' %} class="active"{% endif %}><a href="{{ path('bach_indexation_add') }}"><span class="icon-download-alt"></span>Indexer un nouveau fichier</a></li>
         <li class="divider"></li>
-        <li><a href="#help" role="button" id="show_help"><span class="icon-question-sign"></span> Aide</a></li>
+        <li><a href="#help" role="button" id="show_help"><span class="icon-question-sign"></span>{% trans %}Help{% endtrans %}</a></li>
     </ul>
+</aside>
