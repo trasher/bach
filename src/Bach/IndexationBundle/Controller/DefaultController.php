@@ -321,6 +321,7 @@ class DefaultController extends Controller
     public function emptyAction()
     {
         //remove solr indexed documents
+        //FIXME: check if solr cores exists!
         $client = $this->get("solarium.client.ead");
         $update = $client->createUpdate();
         $update->addDeleteQuery('*:*');
