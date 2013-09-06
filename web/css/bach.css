@@ -83,6 +83,7 @@ html {
     margin-right: .5em;
     margin-left: .2em;
     position: relative;
+    clear:both; /*Needed, but do not know why */
 }
 
 [id=refine].hidemenu {
