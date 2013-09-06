@@ -310,7 +310,7 @@ class DefaultController extends Controller
                 $i = 0;
                 //loop through returned result and normalize keyword hit counts
                 foreach ( $tags as $keyword=>$weight ) {
-                    if ( $i === 100 ) {
+                    if ( $i === 30 ) {
                         break;
                     }
 
