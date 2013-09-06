@@ -64,7 +64,7 @@ class ArchFileIntegration
 
         foreach ($tasks as $task) {
             try{
-                $this->integrate($task, null);
+                $this->integrate($task);
                 $task->setStatus(1);
             }catch(BadInputFileFormatException $e){
                 $task->setStatus(2);
@@ -84,14 +84,14 @@ class ArchFileIntegration
     /**
      * Proceed task database integration
      *
-     * @param Entity   $task Task to proceed
-     * @param Document $doc  Document
+     * @param Entity $task Task to proceed
      *
      * @return void
      */
-    public function integrate($task, $doc)
+    public function integrate($task)
     {
         $spl = new \SplFileInfo($task->getPath());
+        $doc = $task->getDocument();
         $format = $task->getFormat();
         $preprocessor = $task->getPreprocessor();
 

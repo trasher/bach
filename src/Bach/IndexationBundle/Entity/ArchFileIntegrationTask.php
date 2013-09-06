@@ -7,54 +7,48 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @UniqueEntity("filename")
+ * @UniqueEntity("document_id")
  */
 class ArchFileIntegrationTask
-{	
-	/**
-	* @ORM\Id
-	* @ORM\Column(type="integer")
-	* @ORM\GeneratedValue(strategy="AUTO")
-	*/
-	private $taskId;
-	
-	/**
-	* @ORM\Column(type="string", length=200)
-	*/
-	private $filename;
-	
-	/**
-	 * @ORM\Column(type="string", length=200, unique=true)
-	 */
-	private $path;
-	
-	/**
-	* @ORM\Column(type="string", length=30)
-	*/
-	private $format;
-	
-	/**
-	* @ORM\Column(type="string", length=200, nullable=true)
-	*/
-	private $preprocessor;
-	
-	/**
-	* @ORM\Column(type="integer", length=1)
-	*/
-	private $status;
-	
-	public function __construct($filename, $path, $format)
-	{
-		$this->filename = $filename;
-		$this->path = $path;
-		$this->format = $format;
-		$this->status = 0;
-	}
+{
+    /**
+    * @ORM\Id
+    * @ORM\Column(type="integer")
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
+    protected $taskId;
+
+    /**
+    * @ORM\Column(type="string", length=200, nullable=true)
+    */
+    protected $preprocessor;
+
+    /**
+    * @ORM\Column(type="integer", length=1)
+    */
+    protected $status;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Document", inversedBy="task")
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="id")
+     */
+    protected $document;
+
+    /**
+     * The constructor
+     *
+     * @param Document $document Stored document
+     */
+    public function __construct($document)
+    {
+        $this->document = $document;
+        $this->status = 0;
+    }
 
     /**
      * Get taskId
      *
-     * @return integer 
+     * @return integer
      */
     public function getTaskId()
     {
@@ -62,41 +56,15 @@ class ArchFileIntegrationTask
     }
 
     /**
-     * Set filename
-     *
-     * @param string $filename
-     * @return ArchFileIntegrationTask
-     */
-    public function setFilename($filename)
-    {
-        $this->filename = $filename;
-    
-        return $this;
-    }
-
-    /**
      * Get filename
      *
-     * @return string 
+     * @return string
      */
     public function getFilename()
     {
-        return $this->filename;
+        return $this->document->getName();
     }
-    
-    /**
-     * Set path
-     *
-     * @param string $path
-     * @return ArchFileIntegrationTask
-     */
-    public function setPath($path)
-    {
-    	$this->path = $path;
-    
-    	return $this;
-    }
-    
+
     /**
      * Get path
      *
@@ -104,45 +72,32 @@ class ArchFileIntegrationTask
      */
     public function getPath()
     {
-    	return $this->path;
-    }
-
-    /**
-     * Set format
-     *
-     * @param string $format
-     * @return ArchFileIntegrationTask
-     */
-    public function setFormat($format)
-    {
-        $this->format = $format;
-    
-        return $this;
+        return realpath($this->document->getAbsolutePath());
     }
 
     /**
      * Get format
      *
-     * @return string 
+     * @return string
      */
     public function getFormat()
     {
-        return $this->format;
+        return $this->document->getExtension();
     }
 
     /**
     * Set preprocessor
     *
-    * @param string $preprocessor
+    * @param string $preprocessor Pre processor
+    *
     * @return ArchFileIntegrationTask
     */
     public function setPreprocessor($preprocessor)
     {
-    	$this->preprocessor = $preprocessor;
-    
-    	return $this;
+        $this->preprocessor = $preprocessor;
+        return $this;
     }
-    
+
     /**
      * Get preprocessor
      *
@@ -150,19 +105,19 @@ class ArchFileIntegrationTask
      */
     public function getPreprocessor()
     {
-    	return $this->preprocessor;
+        return $this->preprocessor;
     }
-    
+
     /**
      * Set status
      *
-     * @param integer $status
+     * @param integer $status Stauts
+     *
      * @return ArchFileIntegrationTask
      */
     public function setStatus($status)
     {
         $this->status = $status;
-    
         return $this;
     }
 
@@ -174,5 +129,28 @@ class ArchFileIntegrationTask
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set associated document
+     *
+     * @param Document $document Document
+     *
+     * @return ArchFileIntegrationTask
+     */
+    public function setDocument($document)
+    {
+        $this->document = $document;
+        return $this;
+    }
+
+    /**
+     * Get associated document
+     *
+     * @return Document
+     */
+    public function getDocument()
+    {
+        return $this->document;
     }
 }

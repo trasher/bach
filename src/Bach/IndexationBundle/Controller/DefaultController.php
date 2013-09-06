@@ -44,7 +44,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $repo = $this->getDoctrine()->getRepository('BachIndexationBundle:Document');
-        $documents = $repo->findAll();
+        $documents = $repo->getPublishedDocuments();
 
         return $this->render(
             'BachIndexationBundle:Indexation:index.html.twig',
@@ -122,11 +122,7 @@ class DefaultController extends Controller
             $em->flush();
 
             //create a new task
-            $task = new ArchFileIntegrationTask(
-                $document->getName(),
-                realpath($document->getAbsolutePath()),
-                $document->getExtension()
-            );
+            $task = new ArchFileIntegrationTask($document);
 
             if ( $form->get('perform')->isClicked() ) {
                 //store file task in the database if perform action was requested
@@ -140,7 +136,7 @@ class DefaultController extends Controller
                 //and launch indexation process
                 $integrationService = $this->container
                     ->get('bach.indexation.process.arch_file_integration');
-                $res = $integrationService->integrate($task, $document);
+                $res = $integrationService->integrate($task);
 
                 return new RedirectResponse(
                     $this->get("router")->generate("bach_indexation_homepage")
@@ -361,6 +357,8 @@ class DefaultController extends Controller
             $platform->getTruncateTableSQL('EADUniversalFileFormat', true)
         );
 
+        //FIXME: remove integration task as well?
+        //FIXME: are files not deleted this way?
         $connection->executeUpdate(
             $platform->getTruncateTableSQL('Document', true)
         );

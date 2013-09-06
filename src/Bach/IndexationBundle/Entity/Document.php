@@ -53,6 +53,11 @@ class Document
      */
     protected $corename;
 
+    /**
+     * @ORM\OneToOne(targetEntity="ArchFileIntegrationTask", mappedBy="document")
+     */
+    protected $task;
+
     public function getAbsolutePath()
     {
         return null === $this->path ? null

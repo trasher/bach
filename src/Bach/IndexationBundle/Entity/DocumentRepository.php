@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class DocumentRepository extends EntityRepository
 {
+
+    /**
+     * Retrieve published document list
+     *
+     * @return array
+     */
+    public function getPublishedDocuments()
+    {
+        $query = 'SELECT d from BachIndexationBundle:Document d LEFT JOIN d.task t WHERE t.taskId IS NULL or t.status=1';
+        $results = $this->getEntityManager()->createQuery($query)->getResult();
+        return $results;
+    }
 }
