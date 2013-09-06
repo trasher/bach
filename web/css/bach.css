@@ -324,9 +324,9 @@ input.largeinput {
 .btn-fixed{
     padding: 9px 0;
     position:fixed;
-    left:20px;
-    top:530px;
-    width:250px;
+    left:.2em;
+    bottom:.5em;
+    width:15em;
 }
 
 .selectfixed{

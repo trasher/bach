@@ -3,11 +3,13 @@
 {% block container %}
     {# MENU #}
     {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
-    <div class="container-fluid">
+    <div class="content w-menu">
+        <form class="form-inline" action="{{ path('administration_dynamicfields') }}" method="POST" {{ form_enctype(form) }}>
+            <fieldset>
+                <legend>{% trans %}Dynamic fields{% endtrans %}</legend>
         <div class="row-fluid">
 
             <div class="span9">
-                <h3>Dynamic fields</h3>
                 <div align="right">
                     <div class="btn-toolbar">
                     <form action="{{ path('administration_dynamicfields') }}" method="POST">
@@ -20,10 +22,6 @@
                     </div>
                 </div>
 
-                <ul class="fields">
-                    <form class="form-inline" action="{{ path('administration_dynamicfields') }}" method="POST"
-
-                         {{ form_enctype(form) }}>
 
                         {% for field in form.dynamicFields %}
 
@@ -62,7 +60,6 @@
                         {{ form_widget(form._token) }}
                         <button name='submit' type="submit" class="btn btn-fixed btn-success">Valider</button>
 
-                </ul>
 
                     </div>
                 </div>
@@ -128,6 +125,7 @@
                     </div>
 
 
-                </form>
-            </div>
+            </fieldset>
+        </form>
+    </div>
 {% endblock %}

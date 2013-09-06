@@ -3,83 +3,69 @@
 {% block container %}
     {# MENU #}
     {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
-    <form class="form-inline" action="{{ path('administration_fields') }}" method="POST" {{ form_enctype(form) }}>
-
-        <div class="container-fluid">
-            <div class="row-fluid">
-
-                <div class="span9">
-                <h3>Fields</h3>
-                    <ul class="fields">
-
-                        {% for field in form.fields %}
-
-                        <div class="well control-group">
-                            <div class="controls">
-                                <div class="row-fluid show-grid">
-                                    <div class="span3">Name {{ form_widget(field.name) }}</div>
-                                    <div class="span3">Type {{ form_widget(field.type) }}</div>
-                                    <div class="span3">Default {{ form_widget(field.default) }}</div>
-                                    <div class="span3">{{ form_widget(field.indexed)
-                                        }}&nbsp;&nbsp;Indexed</div>
-                                </div>
-                                <p></p>
-                                <div class="row-fluid show-grid">
-                                    <div class="span12">
-                                        <div class="span3">&nbsp;&nbsp;&nbsp;</div>
-                                        <div class="span3">{{ form_widget(field.stored)
-                                            }}&nbsp;&nbsp;Stored</div>
-                                        <div class="span3">{{ form_widget(field.multiValued)
-                                            }}&nbsp;&nbsp;Multivalued</div>
-                                        <div class="span3">{{ form_widget(field.required)
-                                            }}&nbsp;&nbsp;Required</div>
-                                    </div>
-                                </div>
-                                <!--</div>-->
-                            </div>
-
+    <div class="content w-menu">
+        <form class="form-inline" action="{{ path('administration_fields') }}" method="POST" {{ form_enctype(form) }}>
+            <fieldset>
+                <legend>{% trans %}Fields{% endtrans %}</legend>
+                {% for field in form.fields %}
+                <div class="well control-group">
+                    <div class="controls">
+                        <div class="row-fluid show-grid">
+                            <div class="span3">Name {{ form_widget(field.name) }}</div>
+                            <div class="span3">Type {{ form_widget(field.type) }}</div>
+                            <div class="span3">Default {{ form_widget(field.default) }}</div>
+                            <div class="span3">{{ form_widget(field.indexed)
+                                }}&nbsp;Indexed</div>
                         </div>
-                        {% endfor %}
-                        {{ form_widget(form._token) }}
-                    </ul>
+                        <div class="row-fluid show-grid">
+                            <div class="span12">
+                                <div class="span3"></div>
+                                <div class="span3">{{ form_widget(field.stored)
+                                    }}&nbsp;Stored</div>
+                                <div class="span3">{{ form_widget(field.multiValued)
+                                    }}&nbsp;Multivalued</div>
+                                <div class="span3">{{ form_widget(field.required)
+                                    }}&nbsp;Required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {{ form_widget(form._token) }}
+            <button type="submit" class="btn btn-fixed btn-success">Valider</button>
+            </fieldset>
+        </form>
 
+        <div id="addFieldDialog" class="modal hide fade" tabindex="-1"
+            role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
+            style="display: none;">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">×</a>
+                <h3>Please enter a new title for this window.</h3>
+            </div>
+            <div class="modal-body">
+                <div class="divDialogElements">
+                    <input class="xlarge" id="xlInput" name="xlInput" type="text">
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-fixed btn-success">Valider</button>
-
-    </form>
-
-    <div id="addFieldDialog" class="modal hide fade" tabindex="-1"
-        role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
-        style="display: none;">
-        <div class="modal-header">
-            <a href="#" class="close" data-dismiss="modal">×</a>
-            <h3>Please enter a new title for this window.</h3>
-        </div>
-        <div class="modal-body">
-            <div class="divDialogElements">
-                <input class="xlarge" id="xlInput" name="xlInput" type="text">
+            <div class="modal-footer">
+                <a href="#" class="btn" onclick="closeDialog ();">{% trans %}Cancel{% endtrans %}</a>
+                 <a href="#" class="btn btn-primary" onclick="okClicked ();">{% trans %}OK{% endtrans %}</a>
             </div>
         </div>
-        <div class="modal-footer">
-            <a href="#" class="btn" onclick="closeDialog ();">Cancel</a> <a
-                href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
-        </div>
     </div>
-
     <script>
-            $(document).ready(function() {
-                $('#addFieldDialog').bind('show', function () {
-                    document.getElementById ("xlInput").value = document.title;
-                    });
+        $(document).ready(function() {
+            $('#addFieldDialog').bind('show', function () {
+                document.getElementById ("xlInput").value = document.title;
                 });
-            function closeDialog () {
-                $('#addFieldDialog').modal('hide'); 
-                };
-            function okClicked () {
-                document.title = document.getElementById ("xlInput").value;
-                closeDialog ();
-                };
-        </script>
+            });
+        function closeDialog () {
+            $('#addFieldDialog').modal('hide');
+        };
+        function okClicked () {
+            document.title = document.getElementById ("xlInput").value;
+            closeDialog ();
+        };
+    </script>
 {% endblock %}

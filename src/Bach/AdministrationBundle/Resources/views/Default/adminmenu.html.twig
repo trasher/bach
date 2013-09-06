@@ -1,60 +1,58 @@
-    <ul class="span2 nav nav-list well" id="options_sidebar">
-            <li class="nav-header">Solr Admin</li>
-            <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
-                <a href="{{ url('administration_dashboard') }}"><i class="icon-book"></i>Dashboard</a>
-            </li>
-            <li class="divider"></li>
-            <li>
-            <form action="{{ path('administration_dashboard') }}" method="POST">
-                <select name="selectedCore" class="span12" autocomplete="off" onchange="this.form.submit();">
-                    <option value="none">Sélectionnez un Noyau</option>
-                    {% for core in coreNames %}
-                        <option value="{{ core }}" {% if (coreName == core) %} selected="selected" {% endif %}>{{ core }}</option>
-                    {% endfor %}
-                </select>
-            </form>
-            </li>
-            <li class="menu-button">
-                <a href="{{ path('administration_newcore') }}" class="btn btn-success">Ajouter un noyau</a>
-            </li>
-            {% if (coreName != 'none' ) %}
-                <li class="nav-header">Solr Schema Config</li>
-                <li{% if current_route == 'administration_fields' %} class="active"{% endif %}>
-                    <a href="{{ url('administration_fields') }}"><span class="icon-book"></span>Fields</a>
-                </li>
-                <li{% if current_route == 'administration_dynamicfields' %} class="active"{% endif %}>
-                    <a href="{{ url('administration_dynamicfields') }}"><span class="icon-book"></span>Dynamic Fields</a>
-                </li>
-                <li{% if current_route == 'administration_copyfields' %} class="active"{% endif %}>
-                    <a href="{{ url('administration_copyfields') }}"><span class="icon-book"></span>Copy fields</a>
-                </li>
-                <li{% if current_route == 'administration_fieldstype' %} class="active"{% endif %}>
-                    <a href="{{ url('administration_fieldstype') }}"><span class="icon-book"></span>Fields Type</a>
-                    <ul>
-                        <li{% if current_route == 'administration_analyzers' %} class="active"{% endif %}>
-                            <a href="{{ url('administration_analyzers') }}"><span class="icon-book"></span> Analizers</a>
-                        </li>
-                    </ul>
-                </li>
-                <l{% if current_route == 'administration_uniquekey' %} class="active"{% endif %}>
-                    <a href="{{ url('administration_uniquekey') }}"><span class="icon-book"></span>Unique Key</a>
-                </li>
+<aside id="refine">
+    <h2>{% trans %}Solr Admin{% endtrans %}</h2>
+    <ul>
+        <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
+            <a href="{{ url('administration_dashboard') }}"><i class="icon-book"></i>Dashboard</a>
+        </li>
+        <li>
+        <form action="{{ path('administration_dashboard') }}" method="POST">
+            <select name="selectedCore" onchange="this.form.submit();">
+                <option value="none">Sélectionnez un Noyau</option>
+                {% for core in coreNames %}
+                <option value="{{ core }}" {% if (coreName == core) %} selected="selected" {% endif %}>{{ core }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        </li>
+        <li class="menu-button">
+            <a href="{{ path('administration_newcore') }}" class="btn btn-success">Ajouter un noyau</a>
+        </li>
+    </ul>
+{% if (coreName != 'none' ) %}
+    <h2>{% trans %}Solr Schema Config{% endtrans %}</h2>
+    <ul>
+        <li{% if current_route == 'administration_fields' %} class="active"{% endif %}>
+            <a href="{{ url('administration_fields') }}"><span class="icon-book"></span>Fields</a>
+        </li>
+        <li{% if current_route == 'administration_dynamicfields' %} class="active"{% endif %}>
+            <a href="{{ url('administration_dynamicfields') }}"><span class="icon-book"></span>Dynamic Fields</a>
+        </li>
+        <li{% if current_route == 'administration_copyfields' %} class="active"{% endif %}>
+            <a href="{{ url('administration_copyfields') }}"><span class="icon-book"></span>Copy fields</a>
+        </li>
+        <li{% if current_route == 'administration_fieldstype' %} class="active"{% endif %}>
+            <a href="{{ url('administration_fieldstype') }}"><span class="icon-book"></span>Fields Type</a>
+        </li>
+        <li{% if current_route == 'administration_analyzers' %} class="active"{% endif %}>
+            <a href="{{ url('administration_analyzers') }}"><span class="icon-book"></span> Analizers</a>
+        </li>
+        <li{% if current_route == 'administration_uniquekey' %} class="active"{% endif %}>
+            <a href="{{ url('administration_uniquekey') }}"><span class="icon-book"></span>Unique Key</a>
+        </li>
+    </ul>
 
-                <li class="divider"></li>
+    <h2>{% trans %}Solr Core Config{% endtrans %}</h2>
+    <ul>
+        <li{% if current_route == 'administration_coreadmin' %} class="active"{% endif %}>
+            <a href="{{ url('administration_coreadmin') }}"><span class="icon-book"></span> Core Admin</a>
+        </li>
+    </ul>
 
-                <li class="nav-header">Solr Core Config</li>
-                <li>
-                    <a href="{{ url('administration_coreadmin') }}"><span class="icon-book"></span> Core Admin</a>
-                </li>
-
-                <li class="divider"></li>
-
-                <li class="nav-header">Solr Performance Config</li>
-
-                <li{% if current_route == 'administration_performance' %} class="active"{% endif %}>
-                    <a href="{{ url('administration_performance') }}"><span class="icon-book"></span> Performance Admin</a>
-                </li>
-            {% endif %}
-        </ul>
-
-
+    <h2>Solr Performance Config</h2>
+    <ul>
+        <li{% if current_route == 'administration_performance' %} class="active"{% endif %}>
+            <a href="{{ url('administration_performance') }}"><span class="icon-book"></span> Performance Admin</a>
+        </li>
+    </ul>
+{% endif %}
+</aside>

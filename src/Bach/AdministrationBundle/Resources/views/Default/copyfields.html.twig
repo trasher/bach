@@ -3,56 +3,41 @@
 {% block container %}
     {# MENU #}
     {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="row-fluid">
+    <div class="content w-menu">
+        <form class="form-inline" action="{{ path('administration_copyfields') }}" method="POST" {{ form_enctype(form) }}>
+            <fieldset>
+                <legend>{% trans %}Copy fields{% endtrans %}</legend>
+                <div class="btn-toolbar">
+                    <button type="submit" value="selectAll" class="btn btn-warning btn-small">
+                        <span class="icon-white icon-pencil"></span> Tout séléctionner</a>
+                    </button>
+                    <button type="submit" value="deselectAll" class="btn btn-danger btn-small">
+                        <span class="icon-white icon-repeat"></span> Ne rien séléctionner</a>
+                    </button>
+                    <button type="submit" value="add" class="btn btn-primary btn-small">
+                        <span class="icon-white icon-random"></span> Ajouter</a>
+                    </button>
+                    <button type="submit" value="remove" class="btn btn-inverse btn-small">
+                        <span class="icon-white icon-ban-circle"></span> Supprimer</a>
+                    </button>
+                </div>
 
-                <div class="span9">
-                    <h3>Copy fields</h3>
-                    <div align="right">
-                        <div class="btn-toolbar">
-                            <button type="submit" value="selectAll"
-                                class="btn btn-warning btn-small">
-                                <i class="icon-white icon-pencil"></i> Tout séléctionner</a>
-                                <button type="submit" value="deselectAll"
-                                    class="btn btn-danger btn-small">
-                                    <i class="icon-white icon-repeat"></i> Ne rien séléctionner</a>
-                                    <button type="submit" value="add"
-                                        class="btn btn-primary btn-small">
-                                        <i class="icon-white icon-random"></i> ajouter</a>
-                                        <button type="submit" value="remove"
-                                            class="btn btn-inverse btn-small">
-                                            <i class="icon-white icon-ban-circle"></i> supprimer</a>
 
+                {# iterate over each existing tag and render its only field: name #}
+                {% for field in form.copyFields %}
+                    <div class="well">
+                        <div class="row-fluid show-grid">
+                            <div class="span4">source&nbsp;:&nbsp;{{ form_widget(field.source) }}</div>
+                            <div class="span4">destination&nbsp;:&nbsp;{{ form_widget(field.dest) }}</div>
+                            <div class="span4">Max Chars&nbsp;:&nbsp;{{ form_widget(field.maxChars) }}</div>
                         </div>
                     </div>
-
-
-                    <form class="form-inline" action="{{ path('administration_copyfields') }}" method="POST"
-
-                         {{ form_enctype(form) }}>
-
-                        <ul class="fields">
-                            {# iterate over each existing tag and render its only field: name
-                            #} {% for field in form.copyFields %}
-                            <div class="well row-fluid show-grid">
-                                <div class="span4">source&nbsp;&nbsp;&nbsp; :
-                                    &nbsp;&nbsp;&nbsp;{{ form_widget(field.source) }}</div>
-                                <div class="span4">destination&nbsp;&nbsp;&nbsp;
-                                    :&nbsp;&nbsp;&nbsp;{{ form_widget(field.dest) }}</div>
-                                <div class="span4">Max Chars&nbsp;&nbsp;&nbsp;
-                                    :&nbsp;&nbsp;&nbsp;{{ form_widget(field.maxChars) }}</div>
-                            </div>
-                            {% endfor %}
-                            {{ form_widget(form._token) }}
-                        </ul>
-                        <button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
-
-                    </form>
-
-                </div>
-            </div>
-        </div>
+                    {% endfor %}
+                    {{ form_widget(form._token) }}
+                    <button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
+            </fieldset>
+        </form>
+    </div>
         <div id="addFieldDialog" class="modal hide fade" tabindex="-1"
             role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true"
             style="display: none;">
@@ -66,8 +51,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn" onclick="closeDialog ();">Cancel</a> <a
-                    href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
+                <a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
+                 <a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
             </div>
         </div>
 
@@ -75,14 +60,14 @@
             $(document).ready(function() {
                 $('#addFieldDialog').bind('show', function () {
                     document.getElementById ("xlInput").value = document.title;
-                    });
                 });
+            });
             function closeDialog () {
-                $('#addFieldDialog').modal('hide'); 
-                };
+                $('#addFieldDialog').modal('hide');
+            };
             function okClicked () {
                 document.title = document.getElementById ("xlInput").value;
                 closeDialog ();
-                };
+            };
         </script>
 {% endblock %}
