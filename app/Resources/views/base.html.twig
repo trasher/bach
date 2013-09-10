@@ -29,6 +29,16 @@
 <body prefix="dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ gn: http://www.geonames.org/ontology#">
     <header class="header">
         <h1><a href="{{ path('bach_homepage') }}">Bach</a></h1>
+        <div id="user_login">
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('fos_user_profile_show') }}">{% trans %}Show profile{% endtrans %}</a> <a href="{{ path('fos_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a><br/>
+            <a href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+        {% else %}
+            <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+        {% endif %}
+        </div>
     </header>
     <nav role="navigation" id="navigation" class="nav-opened">
     {% spaceless %}
@@ -39,13 +49,18 @@
             <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
                 <a href="{{ path('bach_browse') }}">{% trans %}Browse{% endtrans %}</a>
             </li>
-
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {% if is_granted('ROLE_ARCHIVIST') %}
             <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
                 <a href="{{ path('bach_indexation_homepage') }}">{% trans %}Index{% endtrans %}</a>
             </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
             <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
                 <a href="{{ url('administration_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
             </li>
+                {% endif %}
+            {% endif %}
             {% block navbar %}{# It is possible to add entries in main menu #}{% endblock %}
         </ul>
     {% endspaceless %}

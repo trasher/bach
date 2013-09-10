@@ -49,7 +49,8 @@ class AppKernel extends Kernel
             new Lsw\GettextTranslationBundle\LswGettextTranslationBundle(),
             new Bach\IndexationBundle\BachIndexationBundle(),
             new Bach\HomeBundle\BachHomeBundle(),
-            new Bach\AdministrationBundle\AdministrationBundle()
+            new Bach\AdministrationBundle\AdministrationBundle(),
+            new FOS\UserBundle\FOSUserBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

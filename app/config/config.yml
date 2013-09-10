@@ -106,3 +106,8 @@ bach_indexation:
     paths:
         ead: '%ead_files_path%'
         unimarc: '%unimarc_files_path%'
+
+fos_user:
+    db_driver: orm
+    firewall_name: secured_area
+    user_class: Bach\HomeBundle\Entity\User

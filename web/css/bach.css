@@ -94,7 +94,6 @@ html {
     color: #999999;
     font-size: .85em;
     font-weight: bold;
-    line-height: 1.1em;
     text-transform: uppercase;
 }
 
@@ -220,6 +219,29 @@ input.largeinput {
     width: 80%;
 }
 
+/**
+ * ===== Login form stuff ======
+ */
+
+[id=login] {
+    clear: both;
+    text-align: center;
+}
+
+[id=login] form {
+    text-align: left;
+    width: 15em;
+    margin: 1em auto;
+}
+
+[id=user_login] {
+    position: absolute;
+    top: 0;
+    right: .5em;
+    font-size: .9em;
+    text-align: right;
+}
+
 /** Old design */
 #flash-warnings, #flash-errors {
     padding: .2em 1em .2em 80px;
@@ -268,7 +290,6 @@ input.largeinput {
 
 #search_results article h3 {
     font-size: 1.2em;
-    line-height: 1.8em;
     margin: 0;
 }
 
