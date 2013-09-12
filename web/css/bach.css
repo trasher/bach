@@ -79,10 +79,9 @@ html {
 
 [id=refine] {
     width: 15em;
-    float: left;
     margin-right: .5em;
     margin-left: .2em;
-    position: relative;
+    position: absolute;
     clear:both; /*Needed, but do not know why */
 }
 
@@ -174,10 +173,51 @@ html {
 
 /** === Main display (old method) === */
 
-[id=search_results] article {
+/*[id=search_results] article {
     clear: right;
+}*/
+
+[id=search_results] {
+    margin-top: .5em;
 }
 
+[id=search_results] article figure {
+/*    display: inline-block;*/
+    float:left;
+    width: 150px;
+    height: 150px;
+    margin: .2em 0;
+    text-align: center;
+}
+
+[id=search_results] article {
+    border-top: 1px solid #b2a0a0;
+    margin-top: .2em;
+    padding-top: .2em;
+    clear: left;
+}
+
+[id=search_results] article:first-of-type {
+    border-top: none;
+}
+
+[id=search_results] article > div {
+    margin-left: 155px;
+}
+
+[id=search_results] article h3 {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.no-image {
+    width: 140px;
+    height: 140px;
+}
+
+.pagination {
+    clear: both;
+}
 /**
  * ===== Common styles =====
  */
@@ -266,11 +306,6 @@ input.largeinput {
     border: 1px solid #dc0000;
 }
 
-.result_pic {
-    float: right;
-    margin: 0 0 0 1em;
-}
-
 .clear {
     clear: both;
 }
@@ -278,19 +313,6 @@ input.largeinput {
 #searchQuery_perform_search span {
     text-indent: 50px;
     overflow: hidden;
-}
-
-#search_results {
-    margin-top: .5em;
-}
-
-#search_results article figure {
-    margin-bottom: .5em;
-}
-
-#search_results article h3 {
-    font-size: 1.2em;
-    margin: 0;
 }
 
 /* ADMIN Interface related

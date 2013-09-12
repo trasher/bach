@@ -128,11 +128,12 @@
                             {% if document.dao is defined %}
                                 {{ displayDao(document.dao)|raw }}
                             {% else %}
-                                <img src="{{ asset('img/noimage.png') }}" class="img-polaroid" alt=""/>
+                                <img src="{{ asset('img/blank.gif') }}" class="no-image" alt=""/>
                             {% endif %}
                         </figure>
                         {% endif %}
 
+                        <div>
                         <h3 property="dc:title">
                             <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
                             {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
@@ -145,6 +146,7 @@
                             </a>
                         </h3>
                         {{ displayFragment(document.fragment, document.fragmentid)|raw }}
+                        </div>
                     </article>
                 {% endfor %}
                 {% include 'pagination.html.twig' with {
