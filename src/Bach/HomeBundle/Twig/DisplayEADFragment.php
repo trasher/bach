@@ -210,6 +210,9 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Separated material:':
             return _('Separated material:');
             break;
+        case 'Untitled unit':
+            return _('Untitled unit');
+            break;
         default:
             //FIXME: add an alert in logs, a translation may be missing!
             //return _($ref);

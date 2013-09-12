@@ -69,14 +69,12 @@ Displays an EAD fragment as HTML
 
     <xsl:template match="did" mode="full">
         <section class="did">
+            <xsl:if test="not(unittitle)">
+                <header>
+                    <h2 property="dc:title"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Untitled unit')"/></h2>
+                </header>
+            </xsl:if>
             <xsl:apply-templates mode="full"/>
-            <!--<h2><xsl:value-of select="unittitle"/></h2>
-            <span class="date">
-                <xsl:if test="unitdate/@label">
-                    <xsl:value-of select="unitdate/@label"/>
-                </xsl:if>
-                <xsl:value-of select="unitdate"/>
-            </span>-->
         </section>
     </xsl:template>
 
