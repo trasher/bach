@@ -22,14 +22,8 @@ msgstr "Persons"
 msgid "Places"
 msgstr "Places"
 
-msgid ""
-"This page displays only the 20 more relevant terms found. You may whish <a "
-"href=\"%href%\">to display all terms</a>, but note that it should take a "
-"long time to load in your browser."
-msgstr ""
-"This page displays only the 20 more relevant terms found. You may whish <a "
-"href=\"%href%\">to display all terms</a>, but note that it should take a "
-"long time to load in your browser."
+msgid "This page displays only the 20 more relevant terms found. You may whish <a href=\"%href%\">to display all terms</a>, but note that it should take a long time to load in your browser."
+msgstr "This page displays only the 20 more relevant terms found. You may whish <a href=\"%href%\">to display all terms</a>, but note that it should take a long time to load in your browser."
 
 msgid "Refine Query"
 msgstr "Refine Query"
@@ -66,3 +60,12 @@ msgstr "Welcome to Bach's!"
 
 msgid "Consult document"
 msgstr "Consult document"
+
+msgid "Search options"
+msgstr "Search options"
+
+msgid "Hide menu"
+msgstr "Hide menu"
+
+msgid "Show menu"
+msgstr "Show menu"

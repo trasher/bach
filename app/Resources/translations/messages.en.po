@@ -19,8 +19,8 @@ msgstr "Search"
 msgid "Browse"
 msgstr "Browse"
 
-msgid "Index"
-msgstr "Index"
+msgid "Publish"
+msgstr "Publish"
 
 msgid "Manage"
 msgstr "Manage"
@@ -36,3 +36,19 @@ msgstr "Help not available"
 
 msgid "No help is available for this section."
 msgstr "No help is available for this section."
+
+msgid "Please authenticate"
+msgstr "Please authenticate"
+
+msgid "Register a new account"
+msgstr "Register a new account"
+
+msgid "Account registered"
+msgstr "Account registered"
+
+msgid "User profile:"
+msgstr "User profile:"
+
+msgid "Edit %username% profile"
+msgstr "Edit %username% profile"
+
