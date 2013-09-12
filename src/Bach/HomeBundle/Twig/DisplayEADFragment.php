@@ -213,6 +213,15 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Untitled unit':
             return _('Untitled unit');
             break;
+        case 'Content':
+            return _('Content');
+            break;
+        case 'Documents':
+            return _('Documents');
+            break;
+        case 'Sub-units':
+            return _('Sub-units');
+            break;
         default:
             //FIXME: add an alert in logs, a translation may be missing!
             //return _($ref);

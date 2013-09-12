@@ -36,12 +36,12 @@ Displays an EAD fragment as HTML
                 <xsl:when test="$full = 1">
                     <xsl:if test="not($children = '') or .//dao|.//daoloc">
                         <ul class="access">
-                            <li><a href="#{$id}">Content</a></li>
+                            <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Content')"/></a></li>
                             <xsl:if test=".//dao|.//daoloc">
-                                <li><a href="#relative_documents">Documents</a></li>
+                                <li><a href="#relative_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Documents')"/></a></li>
                             </xsl:if>
                             <xsl:if test="not($children = '')">
-                                <li><a href="#children_documents">Sub-units</a></li>
+                                <li><a href="#children_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Sub-units')"/></a></li>
                             </xsl:if>
                         </ul>
                     </xsl:if>

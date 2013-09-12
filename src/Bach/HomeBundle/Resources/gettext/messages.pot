@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-22 12:42+0200\n"
+"POT-Creation-Date: 2013-09-12 16:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,6 @@ msgid "File does not exists."
 msgstr ""
 
 #: src/Bach/HomeBundle/Controller/DefaultController.php:84
-#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:79
 msgid "Results per page"
 msgstr ""
 
@@ -42,27 +41,31 @@ msgstr ""
 msgid "Show pictures"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:101
+#: src/Bach/HomeBundle/Controller/DefaultController.php:100
 msgid "Yes"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:106
+#: src/Bach/HomeBundle/Controller/DefaultController.php:101
 msgid "No"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:232
+#: src/Bach/HomeBundle/Controller/DefaultController.php:231
+msgid "document"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:236
 msgid "subject"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:233
+#: src/Bach/HomeBundle/Controller/DefaultController.php:241
 msgid "persname"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:234
+#: src/Bach/HomeBundle/Controller/DefaultController.php:246
 msgid "geogname"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:501
+#: src/Bach/HomeBundle/Controller/DefaultController.php:531
 msgid "%count% results found, 1 expected."
 msgstr ""
 
@@ -108,88 +111,104 @@ msgstr ""
 msgid "Documents are not supported (yet)."
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:134
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:145
 msgid "Publication informations"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:137
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:148
 msgid "Physical description"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:140
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:151
 msgid "Descriptors"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:146
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:157
 msgid "Extent:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:149
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:160
 msgid "Dimensions:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:152
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:163
 msgid "Appearance:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:155
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:166
 msgid "Title:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:158
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:169
 msgid "Corporate name:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:161
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:172
 msgid "Geographical name:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:167
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:178
 msgid "Personal name:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:170
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:181
 msgid "Function:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:173
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:184
 msgid "Name:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:176
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:187
 msgid "Relative documents"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:179
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:190
 msgid "Description:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:182
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:193
 msgid "Conservation history:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:185
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:196
 msgid "Arrangement:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:188
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:199
 msgid "Related material:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:191
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:202
 msgid "Bibliography:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:194
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:205
 msgid "Biography or history:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:197
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:208
 msgid "Acquisition information:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:200
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:211
 msgid "Separated material:"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:214
+msgid "Untitled unit"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:217
+msgid "Content"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:220
+msgid "Documents"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:223
+msgid "Sub-units"
 msgstr ""
 
 #: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:60

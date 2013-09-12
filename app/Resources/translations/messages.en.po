@@ -52,3 +52,9 @@ msgstr "User profile:"
 msgid "Edit %username% profile"
 msgstr "Edit %username% profile"
 
+msgid "Show profile"
+msgstr "Show profile"
+
+msgid "Edit profile"
+msgstr "Edit profile"
+

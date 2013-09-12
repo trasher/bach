@@ -69,3 +69,6 @@ msgstr "Hide menu"
 
 msgid "Show menu"
 msgstr "Show menu"
+
+msgid "Untitled unit"
+msgstr "Untitled unit"
