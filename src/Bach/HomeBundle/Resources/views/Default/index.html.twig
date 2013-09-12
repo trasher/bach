@@ -133,7 +133,6 @@
                         </figure>
                         {% endif %}
 
-                        {% spaceless %}
                         <h3 property="dc:title">
                             <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
                             {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
@@ -145,7 +144,6 @@
                             {%- endif -%}
                             </a>
                         </h3>
-                        {% endspaceless %}
                         {{ displayFragment(document.fragment, document.fragmentid)|raw }}
                     </article>
                 {% endfor %}
