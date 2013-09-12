@@ -72,6 +72,9 @@
                 </a>
             {% else %}
                 <a class="login" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                {% if openid %}
+                <a class="openid" href="{{ path('fp_openid_security_login') }}" title="{% trans %}Login with OpenID{% endtrans %}"><img src="{{ asset('img/openid-16x16.gif') }}" alt="OpenID"/></a>
+                {% endif %}
             {% endif %}
             </div>
 

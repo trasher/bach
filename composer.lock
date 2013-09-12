@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "15320b422bb7637e51ed66d2f44b087f",
+    "hash": "ec67b0f4b8d1103622eef633e3f6cc09",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -603,6 +603,107 @@
                 "orm"
             ],
             "time": "2013-05-11 07:51:12"
+        },
+        {
+            "name": "fp/lightopenid",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/formapro/LightOpenID.git",
+                "reference": "ad14146f9c93e90699888e150427aca431dc3c18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/formapro/LightOpenID/zipball/ad14146f9c93e90699888e150427aca431dc3c18",
+                "reference": "ad14146f9c93e90699888e150427aca431dc3c18",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "openid.php",
+                    "provider/provider.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Mewp",
+                    "email": "mewp151+gitorious.org@gmail.com"
+                }
+            ],
+            "description": "A PHP 5 library for easy openid authentication",
+            "homepage": "https://github.com/formapro/LightOpenID",
+            "keywords": [
+                "Authentication",
+                "OpenId",
+                "security"
+            ],
+            "time": "2012-04-04 08:39:51"
+        },
+        {
+            "name": "fp/openid-bundle",
+            "version": "2.0.0",
+            "target-dir": "Fp/OpenIdBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/formapro/FpOpenIdBundle.git",
+                "reference": "3f83e5dbe54e36ce49af8c081a90d9611687c210"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/formapro/FpOpenIdBundle/zipball/3f83e5dbe54e36ce49af8c081a90d9611687c210",
+                "reference": "3f83e5dbe54e36ce49af8c081a90d9611687c210",
+                "shasum": ""
+            },
+            "require": {
+                "fp/lightopenid": "dev-master",
+                "php": ">=5.3.2",
+                "symfony/symfony": "~2.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*@stable"
+            },
+            "suggest": {
+                "doctrine/mongodb-odm": "If you want store identities to mongodb",
+                "doctrine/orm": "If you want store identities to database"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Fp\\OpenIdBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kotlyar Maksim",
+                    "email": "kotlyar.maksim@gmail.com"
+                },
+                {
+                    "name": "Community",
+                    "homepage": "https://github.com/formapro/FpOpenIdBundle/contributors"
+                }
+            ],
+            "description": "Symfony2 OpenID security extension",
+            "homepage": "https://github.com/formapro/FpOpenIdBundle",
+            "keywords": [
+                "Authentication",
+                "OpenId",
+                "security"
+            ],
+            "time": "2013-07-11 11:45:41"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -2284,6 +2385,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "fp/lightopenid": 20,
         "atoum/atoum": 20,
         "atoum/atoum-bundle": 20,
         "jns/xhprof-bundle": 20

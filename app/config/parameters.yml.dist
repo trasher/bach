@@ -25,6 +25,7 @@ parameters:
     gettext.locale_shortcuts:
         en: en_US
         fr: fr_FR
+    openid_enabled: false
 
 bach_home:
     files:

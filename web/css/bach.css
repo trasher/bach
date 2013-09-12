@@ -685,6 +685,14 @@ form > footer {
     padding: .3em .2em;
 }
 
+.openid {
+    padding: .3em 0;
+}
+
+.openid img {
+    vertical-align: -15%;
+}
+
 /**
  * ===== Date slider =====
  */

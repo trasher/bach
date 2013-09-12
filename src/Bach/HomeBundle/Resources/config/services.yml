@@ -20,3 +20,6 @@ services:
             - [setRequest, ['@?request=']]
         tags:
             - { name: twig.extension }
+    bach.home.openid_user_manager:
+        class: Bach\HomeBundle\Entity\OpenIdUserManager
+        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]

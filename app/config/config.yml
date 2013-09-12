@@ -23,6 +23,7 @@ twig:
     #cache: false
     globals:
         lang: '%locale%'
+        openid: '%openid_enabled%'
 
 # Assetic Configuration
 assetic:
@@ -111,3 +112,7 @@ fos_user:
     db_driver: orm
     firewall_name: secured_area
     user_class: Bach\HomeBundle\Entity\User
+
+fp_open_id:
+    db_driver: orm
+    identity_class: Bach\HomeBundle\Entity\OpenIdIdentity

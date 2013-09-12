@@ -50,7 +50,8 @@ class AppKernel extends Kernel
             new Bach\IndexationBundle\BachIndexationBundle(),
             new Bach\HomeBundle\BachHomeBundle(),
             new Bach\AdministrationBundle\AdministrationBundle(),
-            new FOS\UserBundle\FOSUserBundle()
+            new FOS\UserBundle\FOSUserBundle(),
+            new Fp\OpenIdBundle\FpOpenIdBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
