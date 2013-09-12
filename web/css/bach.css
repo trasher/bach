@@ -185,6 +185,10 @@ html {
     text-align: center;
 }
 
+[id=search_results] article figure a.flashplayer img {
+    margin-top: 33px;
+}
+
 [id=search_results] article {
     border-top: 1px solid #b2a0a0;
     margin-top: .2em;
