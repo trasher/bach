@@ -173,16 +173,11 @@ html {
 
 /** === Main display (old method) === */
 
-/*[id=search_results] article {
-    clear: right;
-}*/
-
 [id=search_results] {
     margin-top: .5em;
 }
 
 [id=search_results] article figure {
-/*    display: inline-block;*/
     float:left;
     width: 150px;
     height: 150px;
@@ -218,6 +213,7 @@ html {
 .pagination {
     clear: both;
 }
+
 /**
  * ===== Common styles =====
  */
