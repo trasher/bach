@@ -16,8 +16,6 @@ security:
             id: fos_user.user_provider.username
 
     firewalls:
-
-
         secured_area:
             pattern:    ^/
             form_login:
@@ -25,8 +23,6 @@ security:
                 csrf_provider: form.csrf_provider
             logout: true
             anonymous: true
-            #http_basic:
-            #    realm: "Secured Demo Area"
 
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
