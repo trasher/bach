@@ -446,6 +446,7 @@ em.hl {
 }
 
 .breadcrumb {
+    clear: both;
     margin: 0 .2em;
     padding: 0;
     list-style-type: none;
