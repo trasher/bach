@@ -151,7 +151,7 @@ class DisplayEADFragment extends \Twig_Extension
             return _('Descriptors');
             break;
         case 'Gender:':
-            return ('Gender:');
+            return _('Gender:');
             break;
         case 'Extent:':
             return _('Extent:');
@@ -172,7 +172,7 @@ class DisplayEADFragment extends \Twig_Extension
             return _('Geographical name:');
             break;
         case 'subject:':
-            return ('Subject:');
+            return _('Subject:');
             break;
         case 'persname:':
             return _('Personal name:');
