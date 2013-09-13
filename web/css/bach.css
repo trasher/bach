@@ -315,6 +315,14 @@ input.largeinput {
     text-align: right;
 }
 
+/**
+ * ===== Temporary... =====
+ */
+
+#tabs {
+    margin: 1em .5em;
+}
+
 /** Old design */
 #flash-warnings, #flash-errors {
     padding: .2em 1em .2em 80px;
