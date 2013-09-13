@@ -209,11 +209,6 @@ html {
     margin: 0;
 }
 
-.no-image {
-    width: 140px;
-    height: 140px;
-}
-
 .pagination {
     clear: both;
 }
@@ -625,6 +620,7 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
     [id=refine] {
         width: auto;
         float: none;
+        position: relative;
         margin-right: .2em;
     }
 
@@ -641,5 +637,14 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
         position: relative;
         top:0;
     }
+
+    .no-image {
+        display: none;
+    }
+
+    [id="search_results"] article > div {
+        margin-left: 0;
+    }
+
 }
 

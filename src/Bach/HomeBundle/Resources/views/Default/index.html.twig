@@ -124,11 +124,11 @@
                 {% for document in searchResults %}
                     <article id="result_{{ document.uniqid }}" role="document" about="{{ document.fragmentid }}">
                         {% if show_pics %}
-                        <figure class="result_pic">
+                        <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
                             {% if document.dao is defined %}
                                 {{ displayDao(document.dao)|raw }}
                             {% else %}
-                                <img src="{{ asset('img/blank.gif') }}" class="no-image" alt=""/>
+                                <img src="{{ asset('img/blank.gif') }}" alt=""/>
                             {% endif %}
                         </figure>
                         {% endif %}
