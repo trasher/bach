@@ -219,6 +219,44 @@ html {
 }
 
 /**
+ * ===== Document view =====
+ */
+
+.access {
+    margin: 0;
+    background: white;
+    position: fixed;
+    right: .2em;
+    top: 3.1em;
+    list-style-type: none;
+    text-align: right;
+    border-radius: 6px;
+    padding: .2em;
+    z-index: 1040;
+}
+
+/** Access link display inside dialog window */
+#display_doc .access {
+    position: absolute;
+    top: 0;
+}
+
+.access li {
+    display: inline-block;
+}
+
+.access a {
+    display: inline-block;
+    padding: .1em .3em;
+}
+
+.access li:last-child a {
+    border: none;
+}
+
+
+
+/**
  * ===== Common styles =====
  */
 
@@ -542,32 +580,6 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
 
 .htmlplayer.standalone {
     display: inline-block;
-}
-
-.access {
-    margin: 0;
-    background: white;
-    position: fixed;
-    right: .2em;
-    top: 3.1em;
-    list-style-type: none;
-    text-align: right;
-    border-radius: 6px;
-    padding: .2em;
-    z-index: 1040;
-}
-
-.access li {
-    display: inline-block;
-}
-
-.access a {
-    display: inline-block;
-    padding: .1em .3em;
-}
-
-.access li:last-child a {
-    border: none;
 }
 
 .physdesc {
