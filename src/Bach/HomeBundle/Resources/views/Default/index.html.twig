@@ -2,30 +2,11 @@
 
 {% form_theme form _self %}
 
-{% block _searchQuery_perform_search_widget %}
-{% spaceless %}
-    {% if label is empty %}
-        {% set label = name|humanize %}
-    {% endif %}
-    <button type="{{ type|default('submit') }}" {{ block('button_attributes') }}><span class="icon-search icon-white">{{ label|trans({}, translation_domain) }}</span></button>
-{% endspaceless %}
-{% endblock _searchQuery_perform_search_widget %}
-
 {% block css %}
     <link href="{{ asset('css/jqrangeslider/iThing-min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/jquery-ui/jquery.ui.accordion.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/jquery-ui/jquery.ui.menu.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/jquery-ui/jquery.ui.autocomplete.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
 {% endblock %}
 
-{% block container %}
-    {% if solr_qry is defined %}
-    <div class="debug">
-        Raw query: <pre>{{ solr_qry }}</pre>
-    </div>
-    {% endif %}
-
-    <aside id="refine" role="search">
+{% block menu %}
         {% if facets is defined and searchResults|length > 0 %}
         <h2>
             {% trans %}Refine Query{% endtrans %}
@@ -53,7 +34,7 @@
         </div>
         {% endif %}
 
-        {% if sidebar|length > 0 %}
+        {#{% if sidebar|length > 0 %}
         <h2>{% trans %}Search options{% endtrans %}</h2>
         <div id="search_options">
             {% for name,item in sidebar %}
@@ -67,123 +48,132 @@
             </div>
             {% endfor %}
         </div>
-        {% endif %}
-    </aside>
+        {% endif %}#}
 
-    <div class="content w-menu">
-        <div id="dates_range" class="hidden"></div>
-        {% if filters is defined %}
-            {% set coma = ', ' %}
-            <nav id="active_filters">
-                <strong>{% trans %}Active filters:{% endtrans %}</strong>
-                {% for filter_name,values in filters %}
-                <em>{{ filter_name }}:</em>
-                <ul>
-                    {% for value in values %}
-                    <li>
-                        <a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
-                            {{- value -}}
-                        </a>{% if loop.revindex > 1  %}{{- coma }}{% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% endfor %}
-            </nav>
+        {% if tagcloud is defined %}
+            <ul id="tagcloud">
+            {% for tag,weight in tagcloud %}
+                <li>
+                    <a href="{{ path('bach_search', {query_terms: tag|url_encode}) }}" class="tag{{ weight }}">{{ tag }}</a>
+                </li>
+            {% endfor %}
+            </ul>
         {% endif %}
 
+{% endblock %}
+
+{% block container %}
+
+    {% if searchResults is not defined %}
+        <h2 id="welcome">{% trans %}Welcome to Bach's!{% endtrans %}</h2>
+    {% endif %}
+
+    <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
-            <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search">
-                <div class="input-append">
-                    {{ form_widget(form.query) }}
-                    {{ form_widget(form._token) }}
-                    {{ form_widget(form.perform_search) }}
-                </div>
-            </form>
-            {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
-            <aside id="suggestions">
-                {% trans %}Additionnal serch suggestions:{% endtrans %}
-                {% for term,termResult in suggestions %}
-                    {% if termResult|length > 0 %}
-                        {% for suggest in termResult %}
-                            <a href="{{ path('bach_search', {query_terms: suggest}) }}">{{ suggest }}</a>
-                        {% endfor %}
+            {{ form_widget(form.query) }}
+            {{ form_widget(form._token) }}
+            {{ form_widget(form.perform_search) }}
+        </div>
+    </form>
+    {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
+    <aside id="suggestions">
+        {% trans %}Additionnal search suggestions:{% endtrans %}
+        {% for term,termResult in suggestions %}
+            {% if termResult|length > 0 %}
+                {% for suggest in termResult %}
+                    <a href="{{ path('bach_search', {query_terms: suggest}) }}">{{ suggest }}</a>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </aside>
+    {% endif %}
+
+    {% if filters is defined %}
+        {% set coma = ', ' %}
+        <nav id="active_filters">
+            <strong>{% trans %}Active filters:{% endtrans %}</strong>
+            {% for filter_name,values in filters %}
+            {#<em>{{ filter_name }}:</em>#}
+            <ul>
+                {% for value in values %}
+                <li>
+                    <a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
+                        {{ filter_name|trans }} > {{ value -}}
+                    </a>{% if loop.revindex > 1  %}{{- coma }}{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        </nav>
+    {% endif %}
+
+    <div id="dates_range" class="hidden"></div>
+
+    {% if solr_qry is defined %}
+    <div class="debug">
+        Raw query: <pre>{{ solr_qry }}</pre>
+    </div>
+    {% endif %}
+
+    {% if searchResults is defined %}
+    <section id="search_results" role="main">
+        {% if searchResults|length > 0 %}
+        <div class="results_count">
+            {% if resultCount == 1 %}
+                {% trans %}1 result{% endtrans %}
+            {% else %}
+                {% trans %}Results %resultStart% to %resultEnd% on %resultCount%{% endtrans %}
+            {% endif %}
+        </div>
+            {% for document in searchResults %}
+                <article id="result_{{ document.uniqid }}" role="document" about="{{ document.fragmentid }}">
+                    {% if show_pics %}
+                    <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
+                        {% if document.dao is defined %}
+                            {{ displayDao(document.dao)|raw }}
+                        {% else %}
+                            <img src="{{ asset('img/blank.gif') }}" alt=""/>
+                        {% endif %}
+                    </figure>
                     {% endif %}
+
+                    <div>
+                    <h3 property="dc:title">
+                        <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
+                        {%- elseif document.cUnittitle is defined -%}
+                            {{ document.cUnittitle }}
+                        {%- else -%}
+                            {% trans %}Untitled unit{% endtrans %}
+                        {%- endif -%}
+                        </a>
+                    </h3>
+                    {{ displayFragment(document.fragment, document.fragmentid)|raw }}
+                    </div>
+                </article>
+            {% endfor %}
+            {% include 'pagination.html.twig' with {
+                currentFilters: { query_terms: q },
+                currentPage: page,
+                paginationPath: 'bach_search',
+                lastPage: totalPages
+            } only %}
+        {% else %}
+            <p>{% trans %}No result found.{% endtrans %}</p>
+            {% if scSearchResults is not null %}
+            <aside id="suggestions">
+                {% trans %}Spelling suggestions:{% endtrans %}
+                {% for suggestion in scSearchResults %}
+                    {% for word in suggestion.getWords() %}
+                        <a href="{{ path('bach_search', {query_terms: word.word}) }}">{{ word.word }}</a>
+                    {% endfor %}
                 {% endfor %}
             </aside>
             {% endif %}
-        </div>
-
-        {% if searchResults is defined %}
-        <section id="search_results" role="main">
-            {% if searchResults|length > 0 %}
-            <div class="results_count">
-                {% if resultCount == 1 %}
-                    {% trans %}1 result{% endtrans %}
-                {% else %}
-                    {% trans %}Results %resultStart% to %resultEnd% on %resultCount%{% endtrans %}
-                {% endif %}
-            </div>
-                {% for document in searchResults %}
-                    <article id="result_{{ document.uniqid }}" role="document" about="{{ document.fragmentid }}">
-                        {% if show_pics %}
-                        <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
-                            {% if document.dao is defined %}
-                                {{ displayDao(document.dao)|raw }}
-                            {% else %}
-                                <img src="{{ asset('img/blank.gif') }}" alt=""/>
-                            {% endif %}
-                        </figure>
-                        {% endif %}
-
-                        <div>
-                        <h3 property="dc:title">
-                            <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
-                            {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
-                                {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
-                            {%- elseif document.cUnittitle is defined -%}
-                                {{ document.cUnittitle }}
-                            {%- else -%}
-                                {% trans %}Untitled unit{% endtrans %}
-                            {%- endif -%}
-                            </a>
-                        </h3>
-                        {{ displayFragment(document.fragment, document.fragmentid)|raw }}
-                        </div>
-                    </article>
-                {% endfor %}
-                {% include 'pagination.html.twig' with {
-                    currentFilters: { query_terms: q },
-                    currentPage: page,
-                    paginationPath: 'bach_search',
-                    lastPage: totalPages
-                } only %}
-            {% else %}
-                <p>{% trans %}No result found.{% endtrans %}</p>
-                {% if scSearchResults is not null %}
-                <aside id="suggestions">
-                    {% trans %}Spelling suggestions:{% endtrans %}
-                    {% for suggestion in scSearchResults %}
-                        {% for word in suggestion.getWords() %}
-                            <a href="{{ path('bach_search', {query_terms: word.word}) }}">{{ word.word }}</a>
-                        {% endfor %}
-                    {% endfor %}
-                </aside>
-                {% endif %}
-            {% endif %}
-        </section>
-        {% else %}
-            {% trans %}Welcome to Bach's!{% endtrans %}
-            {% if tagcloud is defined %}
-                <ul id="tagcloud">
-                {% for tag,weight in tagcloud %}
-                    <li>
-                        <a href="{{ path('bach_search', {query_terms: tag|url_encode}) }}" class="tag{{ weight }}">{{ tag }}</a>
-                    </li>
-                {% endfor %}
-                </ul>
-            {% endif %}
         {% endif %}
-    </div>
+    </section>
+    {% endif %}
 {% endblock %}
 
 {# Binded when not in mobile mode #}
@@ -212,33 +202,11 @@
 
         return false;
     });
-
-    //hide menu option
-    var _handle = $('<div id="handle" title="{% trans %}Hide menu{% endtrans %}">«</div>').tooltip();
-    var _refine = $('#refine');
-    var _content = $('.content');
-
-    _handle.on('click', function(){
-        _refine.toggleClass('hidemenu');
-        _content.toggleClass('w-handle');
-        _menu_visible = !_menu_visible;
-        $('#dates_range').dateRangeSlider('resize');
-        if ( _menu_visible ) {
-            _handle.tooltip({content: '{% trans %}Hide menu{% endtrans %}'}).html('«');
-        } else {
-            _handle.tooltip({content: '{% trans %}Show menu{% endtrans %}'}).html('»');
-        }
-    });
-    _refine.prepend(_handle);
-
 {% endblock %}
 
 {# Binded when in mobile mode #}
 {% block mobile_js_on %}
     $('.display_doc').unbind('click');
-    $('#handle').remove();
-    $('.content').removeClass('w-handle');
-    $('#refine').removeClass('hidemenu');
 {% endblock %}
 
 {% block javascripts %}
@@ -263,6 +231,10 @@
         }
         $(function(){
             $('#facets').accordion({
+                icons: {
+                    header: 'ui-icon-circle-plus',
+                    activeHeader: 'ui-icon-circle-minus'
+                },
                 heightStyle: 'content',
                 collapsible: true
             });

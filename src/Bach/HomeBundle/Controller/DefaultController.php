@@ -310,7 +310,7 @@ class DefaultController extends Controller
                 $i = 0;
                 //loop through returned result and normalize keyword hit counts
                 foreach ( $tags as $keyword=>$weight ) {
-                    if ( $i === 30 ) {
+                    if ( $i === 20 ) {
                         break;
                     }
 
@@ -543,7 +543,7 @@ class DefaultController extends Controller
         $tplParams = array(
             'docid'         => $docid,
             'document'      => $doc,
-            'viewer_uri'    => $viewer_uri
+            'viewer_uri'    => $viewer_uri,
         );
 
         $parents = explode('/', $doc['parents']);
@@ -560,7 +560,9 @@ class DefaultController extends Controller
             $pquery->setFields('fragmentid, cUnittitle');
             $rs = $client->select($pquery);
             $ariane  = $rs->getDocuments();
-            $tplParams['ariane'] = $ariane;
+            if ( count($ariane) > 0 ) {
+                $tplParams['ariane'] = $ariane;
+            }
         }
 
         $cquery = $client->createSelect();
@@ -585,6 +587,12 @@ class DefaultController extends Controller
         } else {
             $tpl = 'BachHomeBundle:Default:display.html.twig';
         }
+
+        /** FIXME: find a suitable comportement for the stuff to avoid loops
+        $referer = $this->getRequest()->headers->get('referer');
+        if ( $referer !== null ) {
+            $tplParams['referer'] = $referer;
+        }*/
 
         return $this->render(
             $tpl,

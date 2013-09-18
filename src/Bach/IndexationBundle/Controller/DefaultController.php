@@ -88,9 +88,6 @@ class DefaultController extends Controller
                 'submit',
                 array(
                     'label' => _("Ajouter à la file d'attente"),
-                    'attr'  => array(
-                        'class' => 'btn btn-primary'
-                    )
                 )
             )
             ->add(
@@ -98,9 +95,6 @@ class DefaultController extends Controller
                 'submit',
                 array(
                     'label' => _("Lancer l'indexation"),
-                    'attr'  => array(
-                        'class' => 'btn btn-primary'
-                    )
                 )
             );
 

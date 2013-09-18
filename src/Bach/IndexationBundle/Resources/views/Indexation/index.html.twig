@@ -1,17 +1,13 @@
-{% extends '::base.html.twig' %}
+{% extends 'BachIndexationBundle:Indexation:main.html.twig' %}
 
 {% block container %}
-    {% include 'BachIndexationBundle:Indexation:menu.html.twig' %}
-
-<div class="content w-menu">
-
     <form id="documents" action="{{ path("bach_indexation_deletedocuments") }}" method="POST">
     <fieldset>
         <legend>
-            Documents indexés
-            <span class="btn-groups pull-right">
-                <a id="empty" href="{{ path("bach_indexation_empty") }}" class="btn btn-danger " title="Supprimer tous les documents indexés"><span class="icon-trash icon-white"></span></a>
-                <a href="{{ path('bach_indexation_homepage') }}" id="refresh" class="btn" title="Rafraîchir la liste"><span class="icon-refresh"></span></a>
+            {% trans %}Published documents{% endtrans %}
+            <span>
+                <a id="empty" href="{{ path("bach_indexation_empty") }}" class="btn btn-delete" title="{% trans %}Remove all published documents{% endtrans %}">{% trans %}Remove all{% endtrans %}</a>
+                <a href="{{ path('bach_indexation_homepage') }}" id="refresh" class="btn btn-refresh" title="{% trans %}Refresh list{% endtrans %}">{% trans %}Refresh{% endtrans %}</a>
             </span>
         </legend>
 
@@ -28,7 +24,7 @@
             <tfoot>
                 <tr>
                     <td colspan="6">
-                        <button type="submit" id="delete_documents" class="btn btn-danger " title="Supprimer les documents sélectionnés"><span class="icon-trash icon-white"></span></button>
+                        <button type="submit" id="delete_documents" class="btn btn-delete" title="{% trans %}Remove selected documents{% endtrans %}">{% trans %}Remove selected{% endtrans %}</button>
                     </td>
                 </tr>
             </tfoot>

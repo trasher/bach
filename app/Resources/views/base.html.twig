@@ -10,87 +10,99 @@
     <meta name="description" content="{% trans %}Bach archival search tool{% endtrans %}">
     <meta name="author" content="Anaphore">
     {% endblock %}
-    <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('css/reset.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach_print.css') }}" type="text/css" rel="stylesheet" media="print"/>
-    <link href="{{ asset('css/jquery-ui/jquery.ui.core.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/jquery-ui/jquery.ui.theme.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/jquery-ui/jquery.ui.button.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/jquery-ui/jquery.ui.resizable.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/jquery-ui/jquery.ui.dialog.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/jquery-ui/jquery.ui.tooltip.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('css/jquery-ui/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     {% block css %}{% endblock %}
+    <!--[if lt IE 9]>
+        <script src="{{ asset('js/html5-ie.js') }}"></script>
+        <link href="{{ asset('css/bach-ie.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <![endif]-->
+    <!--[if lte IE 7]>
+        <link href="{{ asset('css/bach-ie7.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <![endif]-->
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" />
 </head>
 <body prefix="dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ gn: http://www.geonames.org/ontology#">
-    <header class="header">
-        <h1><a href="{{ path('bach_homepage') }}">Bach</a></h1>
-        <div id="user_login">
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('fos_user_profile_show') }}">{% trans %}Show profile{% endtrans %}</a> <a href="{{ path('fos_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a><br/>
-            <a href="{{ path('fos_user_security_logout') }}">
-                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-            </a>
-        {% else %}
-            <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-        {% endif %}
-        </div>
-    </header>
-    <nav role="navigation" id="navigation" class="nav-opened">
-    {% spaceless %}
-        <ul>
-            <li{% if current_route == 'bach_homepage' %} class="active"{% endif %}>
-                <a href="{{ path('bach_homepage') }}">{% trans %}Search{% endtrans %}</a>
-            </li>
-            <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
-                <a href="{{ path('bach_browse') }}">{% trans %}Browse{% endtrans %}</a>
-            </li>
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {% if is_granted('ROLE_ARCHIVIST') %}
-            <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
-                <a href="{{ path('bach_indexation_homepage') }}">{% trans %}Publish{% endtrans %}</a>
-            </li>
-                {% endif %}
-                {% if is_granted('ROLE_ADMIN') %}
-            <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
-                <a href="{{ url('administration_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
-            </li>
-                {% endif %}
-            {% endif %}
-            {% block navbar %}{# It is possible to add entries in main menu #}{% endblock %}
-        </ul>
-    {% endspaceless %}
-    </nav>
-
-    {# Globally display errors #}
-    {% if app.session.flashbag.has('errors') %}
-    <div id="flash-errors" class="noscript">
-        <h3>{% trans %}Error{% endtrans %}</h3>
-        {% for flashMessage in app.session.flashbag.get('errors') %}
-        <div class="flash-message">
-            {{ flashMessage | raw }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {# Globally display warnings #}
-    {% if app.session.flashbag.has('warnings') %}
-    <div id="flash-warnings" class="noscript">
-        <h3>{% trans %}Warning{% endtrans %}</h3>
-        {% for flashMessage in app.session.flashbag.get('warnings') %}
-        <div class="flash-message">
-            {{ flashMessage | raw }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+    <aside id="menu" role="search">
+        <header class="header">
+            <h1><a href="{{ path('bach_homepage') }}"><img src="{{ asset('img/logo.png') }}" alt="Bach"/></a></h1>
+        </header>
+        {% block menu %}{% endblock %}
+    </aside>
 
     {# Main content #}
-    {% block container %} {% endblock %}
+    <div id="wrapper">
+        <div id="container">
+            <!--[if lte IE 7]>
+                <div id="oldie"><strong>{% trans %}Your browser is quite old, some features may not work.{% endtrans %}</strong><br/>{% trans %}You may have a better experience with a more recent or an alternative one.{% endtrans %}</div>
+            <![endif]-->
+
+            <nav role="navigation" id="navigation" class="nav-opened">
+            {% spaceless %}
+                <ul>
+                    <li{% if current_route == 'bach_homepage' or current_route == 'bach_search' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_homepage') }}">{% trans %}Search{% endtrans %}</a>
+                    </li>
+                    <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_browse') }}">{% trans %}Browse{% endtrans %}</a>
+                    </li>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {% if is_granted('ROLE_ARCHIVIST') %}
+                    <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_indexation_homepage') }}">{% trans %}Publish{% endtrans %}</a>
+                    </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                    <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
+                        <a href="{{ url('administration_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
+                    </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            {% endspaceless %}
+            </nav>
+
+            <div id="user_login">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('fos_user_profile_show') }}">{% trans %}Show profile{% endtrans %}</a> <a href="{{ path('fos_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a>
+                <a class="logout" href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+            {% else %}
+                <a class="login" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+            {% endif %}
+            </div>
+
+            {# Globally display errors #}
+            {% if app.session.flashbag.has('errors') %}
+            <div id="flash-errors" class="noscript">
+                <h3>{% trans %}Error{% endtrans %}</h3>
+                {% for flashMessage in app.session.flashbag.get('errors') %}
+                <div class="flash-message">
+                    {{ flashMessage | raw }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {# Globally display warnings #}
+            {% if app.session.flashbag.has('warnings') %}
+            <div id="flash-warnings" class="noscript">
+                <h3>{% trans %}Warning{% endtrans %}</h3>
+                {% for flashMessage in app.session.flashbag.get('warnings') %}
+                <div class="flash-message">
+                    {{ flashMessage | raw }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block container %} {% endblock %}
+        </div>
+    </div> {# /#wrapper #}
 
     {# Javascript that are required everywhere #}
-    <!--[if lt IE 9]>
-      <script src="{{ asset('js/html5.js') }}"></script>
-    <![endif]-->
     <script src="{{ asset('js/jquery-1.10.2.min.js') }}" type="text/javascript"></script>
     {# Additionnal page javascripts #}
     {% block javascripts %}

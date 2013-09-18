@@ -1,19 +1,16 @@
-{% extends '::base.html.twig' %}
+{% extends 'BachIndexationBundle:Indexation:main.html.twig' %}
 
 {% block container %}
-    {% include 'BachIndexationBundle:Indexation:menu.html.twig' %}
-
-<div class="content w-menu">
     <fieldset>
         <legend>
             File d'attente des tâches d'indexation
             <span class="btn-groups pull-right">
-                <a href="{{ path("bach_indexation_purge") }}" class="btn btn-danger " title="Supprimer les tâches traitées"><span class="icon-trash icon-white"></span></a>
-                <button id="refresh" class="btn"><span class="icon-refresh"></span></button>
+                <a href="{{ path("bach_indexation_purge") }}" class="btn btn-delete" title="Supprimer les tâches traitées">{% trans %}Remove finished tasks{% endtrans %}</a>
+                <a id="refresh" class="btn btn-refresh">{% trans %}Refresh{% endtrans %}</a>
             </span>
         </legend>
 
-        <table class="table table-bordered table-striped">
+        <table>
             <thead>
                 <tr>
                     <th>Nom du fichier</th>
@@ -47,7 +44,6 @@
             <p>La présente page liste les documents acutellement dans la file d'attente, qui est traitée régulièrement, en fonction du paramétrage établi sur le serveur. La couleur de la ligne correspondant à votre fichier dans le tableau ci-dessous vous indiquera le succès ou non de son indexation.</p>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block javascripts %}

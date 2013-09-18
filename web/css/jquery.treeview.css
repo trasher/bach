@@ -5,7 +5,7 @@
 }
 
 .treeview ul {
-	background-color: white;
+/*	background-color: white;*/
 	margin-top: 4px;
 }
 
@@ -69,8 +69,10 @@
 
 .filetree li { padding: 3px 0 2px 16px; }
 .filetree .folder, .filetree .file { padding: 1px 0 1px 20px; /*display: block;*/ }
-.filetree .folder { background: url(../img/treeview/folder.gif) 0 30% no-repeat; }
-.filetree li.expandable .folder { background: url(../img/treeview/folder-closed.gif) 0 30% no-repeat; }
+/*.filetree .folder { background: url(../img/treeview/folder.gif) 0 30% no-repeat; }*/
+.filetree .folder { background: url(../img/treeview/folder.png) 0 30% no-repeat; }
+/*.filetree li.expandable .folder { background: url(../img/treeview/folder-closed.gif) 0 30% no-repeat; }*/
+.filetree li.expandable .folder { background: url(../img/treeview/folder-closed.png) 0 30% no-repeat; }
 .filetree .file { background: url(../img/treeview/file.gif) 0 30% no-repeat; }
 
 .treeview input[type="checkbox"] {

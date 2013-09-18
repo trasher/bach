@@ -40,7 +40,7 @@ msgstr "Filtres actifs :"
 msgid "Remove filter on '%value%'"
 msgstr "Supprimer le filtre sur « %value% »"
 
-msgid "Additionnal serch suggestions:"
+msgid "Additionnal search suggestions:"
 msgstr "Suggestions de recherche complémentaires :"
 
 msgid "1 result"

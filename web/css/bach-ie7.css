@@ -1,0 +1,36 @@
+#oldie {
+    text-align: center;
+    background: #b73a34;
+    z-index: 1000;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+    padding: .5em 0;
+}
+
+/** IE7 does not understand inline-block on initial block elements... */
+.breadcrumb li,
+[id=navigation] li,
+.pagination li,
+.access li,
+[id=active_filters] ul,
+[id=active_filters] li,
+figure section a, figure section video,
+.htmlplayer.standalone
+{
+    zoom: 1; /*offre le layout à un élément (*)*/
+    display: inline;
+}
+
+/** Fix height... */
+[id=wrapper] {
+    position: relative;
+}
+
+/** IE7 does not understand 'inherit' here. */
+.ui-widget {
+    font-family: 'PT Sans Narrow', Verdana, Arial, sans-serif;
+    font-size: 1em;
+}
