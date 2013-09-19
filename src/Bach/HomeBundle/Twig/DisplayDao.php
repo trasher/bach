@@ -375,7 +375,7 @@ class DisplayDao extends \Twig_Extension
             if ( $standalone === true ) {
                 $class = ' class="';
                 if ( $ajax !== false ) {
-                    $class .= 'ajaxflashmusicplayer';
+                    $class .= 'ajaxflashmusicplayer ';
                 }
                 $class .= 'flashmusicplayer"';
             }
