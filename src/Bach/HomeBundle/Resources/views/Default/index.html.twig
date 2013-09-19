@@ -211,18 +211,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/jquery-ui/jquery.ui.core.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.widget.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.mouse.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.position.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.draggable.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.resizable.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.button.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.dialog.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.accordion.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.menu.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.autocomplete.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jQDateRangeSlider-min.js')  }}" type="text/javascript"></script>
+    <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         var _menu_visible = true;
         function getDateString(d) {
@@ -316,13 +309,8 @@
                     );
                 }
             });
-            /*$('#searchQuery_query').typeahead({
-                source: function(query, process) {
-                    return $.get('{{ path('bach_suggest') }}', {q: query}, function(data){
-                        return process(data)
-                    });
-                }
-            });*/
+
+            {% include 'BachHomeBundle:Default:flowplayer.js.twig' %}
         });
     </script>
 {% endblock %}

@@ -371,10 +371,13 @@ class DisplayDao extends \Twig_Extension
             $href = '/file/music/' . $dao;
             $ret = '<a' . $class . ' href="' . $href . '" title="' .
                 $title  . '">';
+            if ( $standalone === true ) {
+                $ret .= '<img src="/img/play.png" alt="' . $dao . '"/>';
+            }
             if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
             }
-            $ret .= $dao . '</a>';
+            $ret .= '</a>';
             break;
         case self::MISC:
             $href = '/file/misc/' . $dao;
