@@ -86,10 +86,11 @@ class DisplayEADFragment extends \Twig_Extension
      * @param string  $docid       Document unique identifier
      * @param boolean $full        Displays full fragment, default to false
      * @param boolean $hasChildren Document has children
+     * @param boolean $ajax        Called from ajax
      *
      * @return string
      */
-    public function display($fragment, $docid, $full = false, $hasChildren = false)
+    public function display($fragment, $docid, $full = false, $hasChildren = false, $ajax = false)
     {
         $proc = new \XsltProcessor();
         $xsl = $proc->importStylesheet(
@@ -116,6 +117,9 @@ class DisplayEADFragment extends \Twig_Extension
         $proc->setParameter('', 'viewer_uri', $this->_viewer_uri);
         if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
+        }
+        if ( $ajax === true ) {
+            $proc->setParameter('', 'ajax', 'true');
         }
         $proc->registerPHPFunctions();
         $text = $proc->transformToXml($xml);

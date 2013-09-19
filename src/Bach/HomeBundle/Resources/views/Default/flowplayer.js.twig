@@ -1,21 +1,32 @@
-            flowplayer("a.flashplayer", "{{ asset('/img/flowplayer-3.2.16.swf') }}");
-            flowplayer("a.flashmusicplayer", "{{ asset('/img/flowplayer-3.2.16.swf') }}", {
-                plugins: {
-                    audio: {
-                        url: "{{ asset('/img/flowplayer.audio-3.2.10.swf') }}"
-                    },
-                    controls: {
-                        url: '{{ asset('/img/flowplayer.controls-3.2.15.swf') }}',
-                        fullscreen: false,
-                        height: 30,
-                        autoHide: false
-                    }
-                },
-                clip: {
-                    autoPlay: false,
-                    onBeforeBegin: function() {
-                        flowplayer('player').close();
-                    }
+            _initflow = function(ajax = false) {
+                var _selector = 'a.flashplayer';
+                var _musicselector = 'a.flashmusicplayer';
+
+                if ( ajax == true ) {
+                    _selector = 'a.ajaxflashplayer';
+                    _musicselector = 'a.ajaxflashmusicplayer';
                 }
-            });
+
+                flowplayer(_selector, "{{ asset('/img/flowplayer-3.2.16.swf') }}");
+                flowplayer(_musicselector, "{{ asset('/img/flowplayer-3.2.16.swf') }}", {
+                    plugins: {
+                        audio: {
+                            url: "{{ asset('/img/flowplayer.audio-3.2.10.swf') }}"
+                        },
+                        controls: {
+                            url: '{{ asset('/img/flowplayer.controls-3.2.15.swf') }}',
+                            fullscreen: false,
+                            height: 30,
+                            autoHide: false
+                        }
+                    },
+                    clip: {
+                        autoPlay: false,
+                        onBeforeBegin: function() {
+                            flowplayer('player').close();
+                        }
+                    }
+                });
+            }
+            _initflow();
 

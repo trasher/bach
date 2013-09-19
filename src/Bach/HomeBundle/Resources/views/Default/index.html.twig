@@ -189,6 +189,7 @@
             $(this).attr('href') + '/ajax',
             function(data) {
                 _elt.append(data);
+                _initflow(true);
                 _elt.dialog({
                     height: _height,
                     width: _width,

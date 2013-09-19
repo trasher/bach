@@ -16,6 +16,7 @@ Displays an EAD fragment as HTML
     <xsl:output method="html" omit-xml-declaration="yes"/>
 
     <xsl:param name="full" select="1"/>
+    <xsl:param name="ajax" select="''"/>
     <xsl:param name="children" select="''"/>
     <xsl:param name="viewer_uri" select="''"/>
     <xsl:param name="docid"/>
@@ -56,7 +57,7 @@ Displays an EAD fragment as HTML
                             <!--<xsl:apply-templates select=".//dao|.//daoloc" mode="daos"/>-->
                             <xsl:variable name="daogrps" select=".//daogrp"/>
                             <xsl:variable name="daos" select=".//dao[not(parent::daogrp)]|.//daoloc[not(parent::daogrp)]"/>
-                            <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daogrps, $daos, $viewer_uri, 'medium')"/>
+                            <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daogrps, $daos, $viewer_uri, 'medium', $ajax)"/>
                         </figure>
                     </xsl:if>
                 </xsl:when>

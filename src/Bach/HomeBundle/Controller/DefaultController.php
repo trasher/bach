@@ -584,6 +584,7 @@ class DefaultController extends Controller
 
         if ( $ajax === 'ajax' ) {
             $tpl = 'BachHomeBundle:Default:content_display.html.twig';
+            $tplParams['ajax'] = true;
         } else {
             $tpl = 'BachHomeBundle:Default:display.html.twig';
         }

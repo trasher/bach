@@ -19,7 +19,7 @@
         {% else %}
             {% set hasChildren = true %}
         {% endif %}
-        {{ displayFragment(document.fragment, docid, true, hasChildren)|raw }}
+        {{ displayFragment(document.fragment, docid, true, hasChildren, ajax)|raw }}
         {% if not children == false %}
             <section id="children_documents">
                 <header>

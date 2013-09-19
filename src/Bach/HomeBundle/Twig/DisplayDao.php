@@ -114,12 +114,13 @@ class DisplayDao extends \Twig_Extension
      * @param NodeSet $daos       Documents list
      * @param string  $viewer     Viewer URL
      * @param string  $format     Format to display, defaults to thumb
+     * @param boolean $ajax       Is call came from ajax
      * @param boolean $standalone Is document standalone? Defaults to true.
      *
      * @return DOMElement
      */
     public static function displayDaos($daogrps, $daos, $viewer, $format = 'thumb',
-        $standalone = true
+        $ajax = false, $standalone = true
     ) {
         //start root element
         $res = '<div>';
@@ -149,7 +150,8 @@ class DisplayDao extends \Twig_Extension
                             $dao,
                             $daotitle,
                             $viewer,
-                            $format/*,
+                            $format,
+                            $ajax/*,
                             false*/
                         );
                     }
@@ -291,12 +293,13 @@ class DisplayDao extends \Twig_Extension
      * @param string  $daotitle   Document title, if any
      * @param string  $viewer     Viewer URL
      * @param string  $format     Format to display
+     * @param boolean $ajax       Does call came from ajax
      * @param boolean $standalone Is a standalone document, defaults to true
      *
      * @return string
      */
     public static function proceedDao($dao, $daotitle, $viewer, $format,
-        $standalone = true
+        $ajax = false, $standalone = true
     ) {
         $ret = null;
 
@@ -351,7 +354,11 @@ class DisplayDao extends \Twig_Extension
             $href = '/file/video/' . $dao;
             $class = '';
             if ( $standalone === true ) {
-                $class = ' class="flashplayer"';
+                $class = ' class="';
+                if ( $ajax !== false ) {
+                    $class .= 'ajaxflashplayer ';
+                }
+                $class .= 'flashplayer"';
             }
             $ret = '<a' . $class . ' href="' . $href . '" title="' .
                 $title  . '">';
@@ -366,7 +373,11 @@ class DisplayDao extends \Twig_Extension
         case self::FLA_SOUND;
             $class = '';
             if ( $standalone === true ) {
-                $class = ' class="flashmusicplayer"';
+                $class = ' class="';
+                if ( $ajax !== false ) {
+                    $class .= 'ajaxflashmusicplayer';
+                }
+                $class .= 'flashmusicplayer"';
             }
             $href = '/file/music/' . $dao;
             $ret = '<a' . $class . ' href="' . $href . '" title="' .
