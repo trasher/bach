@@ -54,12 +54,13 @@
 {% endif %}
 {% endblock %}
 
-{% block javascripts %}
+{% block js_calls %}
     {{ parent() }}
     <script src="{{ asset('js/jquery-ui/jquery.ui.tabs.min.js') }}" type="text/javascript"></script>
-    <script type="text/javascript">
+{% endblock %}
+
+{% block javascripts %}
         $(function() {
             $('#tabs').tabs();
         });
-    </script>
 {% endblock %}

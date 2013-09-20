@@ -10,10 +10,11 @@
     {% endif %}
 {% endblock %}
 
-{% block javascripts %}
+{% block js_calls %}
     {{ parent() }}
     <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
-    <script type="text/javascript">
+{% endblock %}
+
+{% block javascripts %}
         {% include 'BachHomeBundle:Default:flowplayer.js.twig' %}
-    </script>
 {% endblock %}
