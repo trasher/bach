@@ -1,6 +1,14 @@
 {% for facet_field,facet in facets %}
 <div>
-    <ol>
+    <form id="live-search" action="" method="post">
+        <fieldset>
+            <label for="filter">{% trans %}Enter a text to filter:{% endtrans %}</label>
+            <input type="text" class="text-input" id="filter" value="" />
+            <span id="filter-count"></span>
+        </fieldset>
+    </form>
+
+    <ol id="facets_list">
     {% set index_name = facet.index_name %}
     {% set facet_content = facet.content %}
 
@@ -12,3 +20,29 @@
     </ol>
 </div>
 {% endfor %}
+
+<script type="text/javascript">
+    $("#filter").keyup(function(){
+        $('#filter-count').text('{% trans %}Searching ...{% endtrans %}');
+
+        // Retrieve the input field text and reset the count to zero
+        var filter = $(this).val(), count = 0;
+
+        // Loop through the comment list
+        $('#facets_list li').each(function(){
+            // If the list item does not contain the text phrase fade it out
+            if ($(this).text().search(new RegExp(filter, 'i')) < 0) {
+                $(this).fadeOut();
+
+            // Show the list item if the phrase matches and increase the count by 1
+            } else {
+                $(this).show();
+                count++;
+            }
+        });
+
+        // Update the count
+        var numberItems = count;
+        $("#filter-count").text('{% trans %}%count filtered results{% endtrans %}'.replace('%count', count));
+    });
+</script>

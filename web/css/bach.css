@@ -472,6 +472,15 @@ h2.back a:hover {
     display: inline-block;
 }
 
+[id=live-search] {
+    background: #a3968d;
+    margin-bottom: .5em;
+}
+
+[id=live-search] fieldset, [id=live-search] input {
+    font-size: .9em;
+}
+
 /**
  * ===== Common styles =====
  */
