@@ -18,17 +18,24 @@
             {% for facet_field,facet in facets %}
                 <h3>{{ facet.label }}</h3>
                 <div>
-                    <ul>
+                    <ol>
                     {#% set index_name = 'c' ~ facet_field|capitalize %#}
                     {% set index_name = facet.index_name %}
-                    {% for facet,count in facet.content %}
-                        {% if attribute(filters, index_name) is not defined or attribute(filters, index_name) is defined and facet not in attribute(filters, index_name) %}
+
+                    {% if facet_name is defined and facet_name == index_name %}
+                        {% set facet_content = facet.content %}
+                    {% else %}
+                        {% set facet_content = facet.content[:10] %}
+                    {% endif %}
+                    {% for facet,count in facet_content %}
                         <li>
                             <a href="{{ path('bach_search', {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
                         </li>
-                        {% endif %}
                     {% endfor %}
-                    </ul>
+                    {% if facet.content|length > 10 and not (facet_name is defined and facet_name == index_name) %}
+                        <li class="show_more"><a href="{{ path('bach_fullfacet', {query_terms: q, facet_name: index_name}) }}">Show more ({{ facet.content|length - 10 }} left)</a></li>
+                    {% endif %}
+                    </ol>
                 </div>
             {% endfor %}
         </div>
@@ -63,7 +70,6 @@
 {% endblock %}
 
 {% block container %}
-
     {% if searchResults is not defined %}
         <h2 id="welcome">{% trans %}Welcome to Bach's!{% endtrans %}</h2>
     {% endif %}
@@ -203,6 +209,45 @@
 
         return false;
     });
+
+    $('.show_more a').click(function() {
+        var _this = $(this);
+        var _facet_name = $(_this.parents('div')[0]).prev('h3').text();
+
+        var _elt = $('<div id="display_facets" title="' + _facet_name + '"></div>');
+        _elt.appendTo('body');
+
+        var _width = $(window).width() * 0.8;
+        var _height = $(window).height() * 0.8;
+
+        $.ajax({
+            url: _this.attr('href') + '/ajax',
+            type: 'POST',
+            beforeSend: function() {
+                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                $('body').append(_img);
+            },
+            complete: function() {
+                $('#loading').remove();
+            },
+            success: function(data) {
+                _elt.append(data);
+                _elt.dialog({
+                    height: _height,
+                    width: _width,
+                    modal: true,
+                    close: function(event, ui){
+                        _elt.remove();
+                    }
+                });
+            },
+            error: function(){
+                alert('{% trans %}An error occured loading terms :("{% endtrans %}');
+            }
+        });
+
+        return false;
+    })
 {% endblock %}
 
 {# Binded when in mobile mode #}

@@ -32,3 +32,7 @@ bach_get_file:
     requirements:
         type: video|music|image
         name: '.+'
+
+bach_fullfacet:
+    pattern: /fullfacet/{query_terms}/{facet_name}/{ajax}
+    defaults: { _controller: BachHomeBundle:Default:index, 'query_terms': null, 'facet_name': null, 'ajax': false }

@@ -41,13 +41,16 @@ class DefaultController extends Controller
     /**
      * Serve default page
      *
-     * @param string $query_terms Term(s) we search for
-     * @param int    $page        Page
+     * @param string  $query_terms Term(s) we search for
+     * @param int     $page        Page
+     * @param string  $facet_name  Display more terms in suggests
+     * @param boolean $ajax        Fomr ajax call
      *
      * @return void
      */
-    public function indexAction($query_terms = null, $page = 1)
-    {
+    public function indexAction($query_terms = null, $page = 1,
+        $facet_name = null, $ajax = false
+    ) {
         $request = $this->getRequest();
         $session = $request->getSession();
 
@@ -122,6 +125,10 @@ class DefaultController extends Controller
             'show_pics'     => $sidebar->getItemValue('show_pics'),
             'viewer_uri'    => $viewer_uri
         );
+
+        if ( $facet_name !== null ) {
+            $templateVars['facet_name'] = $facet_name;
+        }
 
         if ( !is_null($query_terms) ) {
             // On effectue une recherche
@@ -225,52 +232,83 @@ class DefaultController extends Controller
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
 
+            $faceted_fields = array(
+                'document'  => array(
+                    'trad'          => _('document'),
+                    'index_name'    =>'archDescUnitTitle'
+                ),
+                'subject'   => array(
+                    'trad'          => _('subject'),
+                    'index_name'    => 'cSubject'
+                ),
+                'persname'  => array(
+                    'trad'          => _('persname'),
+                    'index_name'    => 'cPersname'
+                ),
+                'geogname'  => array(
+                    'trad'          =>_('geogname'),
+                    'index_name'    => 'cGeogname'
+                )
+            );
             $facets = array();
             $faceset = $searchResults->getFacetSet();
-            $facets['document'] = array(
-                'label'         => _('document'),
-                'content'       => $faceset->getFacet('document'),
-                'index_name'    => 'archDescUnitTitle'
-            );
-            $facets['subject'] = array(
-                'label'         => _('subject'),
-                'content'       => $faceset->getFacet('subject'),
-                'index_name'    => 'cSubject'
-            );
-            $facets['persname'] = array(
-                'label'         => _('persname'),
-                'content'       => $faceset->getFacet('persname'),
-                'index_name'    => 'cPersname'
-            );
-            $facets['geogname'] = array(
-                'label'         => _('geogname'),
-                'content'       => $faceset->getFacet('geogname'),
-                'index_name'    => 'cGeogname'
-            );
 
-            $query = $this->get("solarium.client")->createSuggester();
-            $query->setQuery(strtolower($query_terms));
-            $query->setDictionary('suggest');
-            $query->setOnlyMorePopular(true);
-            $query->setCount(10);
-            //$query->setCollate(true);
-            $suggestions = $this->get("solarium.client")->suggester($query);
+            if ( $ajax !== false && $facet_name !== false ) {
+                foreach ($faceted_fields as $key=>$field) {
+                    if ( $field['index_name'] === $facet_name ) {
+                        $faceted_fields = array($key => $field);
+                        break;
+                    }
+                }
+            }
 
-            $templateVars['resultCount'] = $resultCount;
-            $templateVars['resultByPage'] = $resultByPage;
-            $templateVars['totalPages'] = ceil($resultCount/$resultByPage);
-            $templateVars['searchResults'] = $searchResults;
-            $templateVars['hlSearchResults'] = $hlSearchResults;
-            $templateVars['scSearchResults'] = $scSearchResults;
+            foreach ( $faceted_fields as $name=>$descr ) {
+                $field_facets = $faceset->getFacet($name);
+                $values = array();
+                foreach ( $field_facets as $item=>$count ) {
+                    if ( !isset($filters[$descr['index_name']])
+                        || !in_array($item, $filters[$descr['index_name']])
+                    ) {
+                        $values[$item] = $count;
+                    }
+                }
+                if ( count($values) > 0 ) {
+                    arsort($values);
+                    $facets[$name] = array(
+                        'label'         => $descr['trad'],
+                        'content'       => $values,
+                        'index_name'    => $descr['index_name']
+                    );
+                }
+            }
+
+            if ( $ajax === false ) {
+                $query = $this->get("solarium.client")->createSuggester();
+                $query->setQuery(strtolower($query_terms));
+                $query->setDictionary('suggest');
+                $query->setOnlyMorePopular(true);
+                $query->setCount(10);
+                //$query->setCollate(true);
+                $suggestions = $this->get("solarium.client")->suggester($query);
+
+
+                $templateVars['resultCount'] = $resultCount;
+                $templateVars['resultByPage'] = $resultByPage;
+                $templateVars['totalPages'] = ceil($resultCount/$resultByPage);
+                $templateVars['searchResults'] = $searchResults;
+                $templateVars['hlSearchResults'] = $hlSearchResults;
+                $templateVars['scSearchResults'] = $scSearchResults;
+            }
             $templateVars['facets'] = $facets;
 
-            $templateVars['resultStart'] = ($page - 1) * $resultByPage + 1;
-            $resultEnd = ($page - 1) * $resultByPage + $resultByPage;
-            if ( $resultEnd > $resultCount ) {
-                $resultEnd = $resultCount;
+            if ( $ajax === false ) {
+                $templateVars['resultStart'] = ($page - 1) * $resultByPage + 1;
+                $resultEnd = ($page - 1) * $resultByPage + $resultByPage;
+                if ( $resultEnd > $resultCount ) {
+                    $resultEnd = $resultCount;
+                }
+                $templateVars['resultEnd'] = $resultEnd;
             }
-            $templateVars['resultEnd'] = $resultEnd;
-
         } else {
             $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
 
@@ -324,81 +362,80 @@ class DefaultController extends Controller
         }
 
         //get min and max dates
-        /*if ( $current_query === null ) {
-            $current_query = $this->get('solarium.client')->createSelect();
-            $current_query->setQuery('*:*');
-        }
-        $current_query->setRows(0);
-        $stats = $current_query->getStats();*/
+        if ( $ajax === false ) {
+            $query = $this->get('solarium.client')->createSelect();
+            $query->setQuery('*:*');
+            $query->setRows(0);
+            $stats = $query->getStats();
 
-        $query = $this->get('solarium.client')->createSelect();
-        $query->setQuery('*:*');
-        $query->setRows(0);
-        $stats = $query->getStats();
+            $stats->createField('cDateBegin');
+            $stats->createField('cDateEnd');
+            $rs = $this->get('solarium.client')->select($query);
+            $rsStats = $rs->getStats();
+            $statsResults = $rsStats->getResults();
 
-        $stats->createField('cDateBegin');
-        $stats->createField('cDateEnd');
-        $rs = $this->get('solarium.client')->select($query);
-        /*$rs = $this->get('solarium.client')->select($current_query);*/
-        $rsStats = $rs->getStats();
-        $statsResults = $rsStats->getResults();
+            $min_date = $statsResults['cDateBegin']->getMin();
+            $max_date = $statsResults['cDateEnd']->getMax();
 
-        $min_date = $statsResults['cDateBegin']->getMin();
-        $max_date = $statsResults['cDateEnd']->getMax();
+            if ( $min_date && $max_date ) {
+                $step_unit = 'years';
+                $step = 1;
 
-        if ( $min_date && $max_date ) {
-            $step_unit = 'years';
-            $step = 1;
+                $php_min_date = new \DateTime($min_date);
+                $php_max_date = new \DateTime($max_date);
 
-            $php_min_date = new \DateTime($min_date);
-            $php_max_date = new \DateTime($max_date);
+                $diff = $php_min_date->diff($php_max_date);
+                if ( $diff->y > 100 ) {
+                    $step = $diff->y / 100;
+                }
 
-            $diff = $php_min_date->diff($php_max_date);
-            if ( $diff->y > 100 ) {
-                $step = $diff->y / 100;
+                $templateVars['date_step_unit'] = $step_unit;
+                $templateVars['date_step'] = $step;
+
+                $templateVars['min_date'] = $php_min_date->format('Y');
+                if ( isset($filters['cDateBegin']) ) {
+                    $dbegin = explode(
+                        '-',
+                        $filters['cDateBegin'][0]
+                    );
+                    $templateVars['selected_min_date'] = $dbegin[0];
+                } else {
+                    $templateVars['selected_min_date'] = $templateVars['min_date'];
+                }
+                $templateVars['max_date'] = $php_max_date->format('Y');
+                if ( isset($filters['cDateEnd']) ) {
+                    $dend = explode(
+                        '-',
+                        $filters['cDateEnd'][0]
+                    );
+                    $templateVars['selected_max_date'] = $dend[0];
+                } else {
+                    $templateVars['selected_max_date'] = $templateVars['max_date'];
+                }
             }
 
-            $templateVars['date_step_unit'] = $step_unit;
-            $templateVars['date_step'] = $step;
-
-            $templateVars['min_date'] = $php_min_date->format('Y');
-            if ( isset($filters['cDateBegin']) ) {
-                $dbegin = explode(
-                    '-',
-                    $filters['cDateBegin'][0]
-                );
-                $templateVars['selected_min_date'] = $dbegin[0];
-            } else {
-                $templateVars['selected_min_date'] = $templateVars['min_date'];
+            $templateVars['form'] = $form->createView();
+            if ( $this->container->get('kernel')->getEnvironment() == 'dev'
+                && isset($factory)
+            ) {
+                //let's pass Solr raw query to template
+                $templateVars['solr_qry'] = $factory->getRequest()->getUri();
             }
-            $templateVars['max_date'] = $php_max_date->format('Y');
-            if ( isset($filters['cDateEnd']) ) {
-                $dend = explode(
-                    '-',
-                    $filters['cDateEnd'][0]
-                );
-                $templateVars['selected_max_date'] = $dend[0];
-            } else {
-                $templateVars['selected_max_date'] = $templateVars['max_date'];
+
+            if ( isset($suggestions) && $suggestions->count() > 0 ) {
+                $templateVars['suggestions'] = $suggestions;
             }
-        }
 
-        $templateVars['form'] = $form->createView();
-        if ( $this->container->get('kernel')->getEnvironment() == 'dev'
-            && isset($factory)
-        ) {
-            //let's pass Solr raw query to template
-            $templateVars['solr_qry'] = $factory->getRequest()->getUri();
+            return $this->render(
+                'BachHomeBundle:Default:index.html.twig',
+                $templateVars
+            );
+        } else {
+            return $this->render(
+                'BachHomeBundle:Default:facet.html.twig',
+                $templateVars
+            );
         }
-
-        if ( isset($suggestions) && $suggestions->count() > 0 ) {
-            $templateVars['suggestions'] = $suggestions;
-        }
-
-        return $this->render(
-            'BachHomeBundle:Default:index.html.twig',
-            $templateVars
-        );
     }
 
     /**

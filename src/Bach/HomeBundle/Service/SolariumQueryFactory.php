@@ -88,7 +88,7 @@ class SolariumQueryFactory
         }
 
         $facetSet = $this->_query->getFacetSet();
-        $facetSet->setLimit(10);
+        $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);
         $facetSet->createFacetField('subject')->setField('cSubject');
         $facetSet->createFacetField('persname')->setField('cPersname');
