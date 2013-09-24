@@ -326,6 +326,8 @@ class DefaultController extends Controller
                 $templateVars['resultEnd'] = $resultEnd;
             }
         } else {
+            $tag_max = 20;
+
             $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
 
             $query = $this->get("solarium.client")->createSelect();
@@ -333,7 +335,7 @@ class DefaultController extends Controller
             $query->setStart(0)->setRows(0);
 
             $facetSet = $query->getFacetSet();
-            $facetSet->setLimit(100);
+            $facetSet->setLimit($tag_max);
             $facetSet->setMinCount(1);
             $facetSet->createFacetField('subject')->setField('cSubject');
             $facetSet->createFacetField('persname')->setField('cPersname');
@@ -356,15 +358,15 @@ class DefaultController extends Controller
 
                 $values = array_values($tags);
                 $max = $values[0];
-                $min = $values[100];
-                //10 levels
-                $range = ($max - $min) / 9;
+                $min = $values[$tag_max];
+                //5 levels
+                $range = ($max - $min) / 5;
 
                 $tagcloud = array();
                 $i = 0;
                 //loop through returned result and normalize keyword hit counts
                 foreach ( $tags as $keyword=>$weight ) {
-                    if ( $i === 20 ) {
+                    if ( $i === $tag_max ) {
                         break;
                     }
 

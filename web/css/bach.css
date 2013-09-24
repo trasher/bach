@@ -679,16 +679,13 @@ form > footer {
     color: white!important;
 }
 
-#tagcloud a.tag1 { font-size: 0.5em; font-weight: 100; }
-#tagcloud a.tag2 { font-size: 0.6em; font-weight: 200; color: #473d3e; }
-#tagcloud a.tag3 { font-size: 0.7em; font-weight: 300; color: #473d3e; }
-#tagcloud a.tag4 { font-size: 0.8em; font-weight: 400; color: #473d3e; }
-#tagcloud a.tag5 { font-size: 0.9em; font-weight: 500; color: #76615c; }
-#tagcloud a.tag6 { font-size: 1em; font-weight: 600; color: #76615c; }
-#tagcloud a.tag7 { font-size: 1.1em; font-weight: 700; color: #76615c; }
-#tagcloud a.tag8 { font-size: 1.2em; font-weight: 800; color: #a2968a; }
-#tagcloud a.tag9 { font-size: 1.3em; font-weight: 900; color: #a2968a; }
-#tagcloud a.tag10 { font-size: 1.4em; font-weight: 900; color: #a2968a; }
+#tagcloud a.tag0 { font-size: 0.8em; font-weight: 200; }
+#tagcloud a.tag1 { font-size: 0.9em; font-weight: 200; color: #473d3e; }
+#tagcloud a.tag2 { font-size: 1em; font-weight: 400; color: #76615c; }
+#tagcloud a.tag3 { font-size: 1.1em; font-weight: 500; color: #76615c; }
+#tagcloud a.tag4 { font-size: 1.3em; font-weight: 700; color: #a2968a; }
+#tagcloud a.tag5 { font-size: 1.4em; font-weight: 800; color: #a2968a; }
+
 
 /**
  * ===== Browse tabs =====
