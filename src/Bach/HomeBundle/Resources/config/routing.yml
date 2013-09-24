@@ -13,8 +13,8 @@ bach_do_search:
     defaults: { _controller: BachHomeBundle:Default:doSearch }
 
 bach_browse:
-    pattern: /browse/{part}/{show_all}
-    defaults: { _controller: BachHomeBundle:Default:browse, part: 'cSubject', 'show_all': false }
+    pattern: /browse/{part}/{show_all}/{ajax}
+    defaults: { _controller: BachHomeBundle:Default:browse, part: 'cSubject', 'show_all': false, 'ajax': false }
 
 bach_suggest:
     pattern: /suggest

@@ -350,7 +350,6 @@
             });*/
 
             $('#searchQuery_query').autocomplete({
-                {#source: '{{ path('bach_suggest') }}'#}
                 source: function(request, response) {
                     $.getJSON(
                         '{{ path('bach_suggest') }}', {

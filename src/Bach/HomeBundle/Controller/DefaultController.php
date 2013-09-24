@@ -490,10 +490,11 @@ class DefaultController extends Controller
      *
      * @param string  $part     Part to browse
      * @param boolean $show_all Show all results
+     * @param boolean $ajax     If we were called from ajax
      *
      * @return void
      */
-    public function browseAction($part = null, $show_all = false)
+    public function browseAction($part, $show_all = false, $ajax = false)
     {
         $templateVars = array(
             'part'          => $part
@@ -509,27 +510,44 @@ class DefaultController extends Controller
         if ( $show_all === 'show_all' ) {
             $limit = -1;
             $templateVars['show_all'] = true;
+        } else {
+            $templateVars['show_all'] = 'false';
         }
         $query->setLimit($limit);
-        //$query->setLowerbound('i');
 
-        $query->setFields('cSubject,cPersname,cGeogname');
+        $query->setFields($part);
 
         $found_terms = $client->terms($query);
         foreach ( $found_terms as $field=>$terms ) {
             $lists[$field] = array();
+            $current_values = array();
             foreach ( $terms as $term=>$count ) {
-                $lists[$field][] = array(
+                $current_values[$term] = array(
                     'term'  => $term,
                     'count' => $count
                 );
             }
+            if ( $show_all === 'show_all' ) {
+                if ( defined('SORT_FLAG_CASE') ) {
+                    ksort($current_values, SORT_FLAG_CASE | SORT_NATURAL);
+                } else {
+                    //fallback for PHP < 5.4
+                    ksort($current_values, SORT_LOCALE_STRING);
+                }
+            }
+            $lists[$field] = $current_values;
         }
 
         $templateVars['lists'] = $lists;
 
+        if ( $ajax === false ) {
+            $tpl_name = 'browse';
+        } else {
+            $tpl_name = 'browse_tab_contents';
+        }
+
         return $this->render(
-            'BachHomeBundle:Default:browse.html.twig',
+            'BachHomeBundle:Default:' . $tpl_name  . '.html.twig',
             $templateVars
         );
     }

@@ -1,0 +1,45 @@
+    {% if part == 'cSubject' %}
+    <div id="cSubject">
+        <h4>{% trans %}Subjects{% endtrans %}{% if lists.cSubject is defined %} ({{ lists.cSubject | length }}{% if show_all is sameas('false') %} - <a class="show_all" title="{% trans %}Show all subjects (this my take some time){% endtrans %}" href="{{ path('bach_browse', {part: 'cSubject', show_all: 'show_all'}) }}">{% trans %}Show all{% endtrans %}</a>{% endif %}){% endif %}</h4>
+        <section id="list_cSubjects">
+        {% if lists.cSubject is defined %}
+            <ul>
+            {% for cSubject in lists.cSubject %}
+                <li><a href="{{ path('bach_search', {filter_field: 'cSubject', filter_value: cSubject.term}) }}">{{ cSubject.term }} ({{ cSubject.count }})</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </section>
+    </div>
+    {% endif %}
+
+    {% if part == 'cPersname' %}
+    <div id="cPersname">
+        <h4>{% trans %}Persons{% endtrans %}{% if lists.cPersname is defined %} ({{ lists.cPersname | length }}{% if show_all is sameas('false') %} - <a class="show_all" title="{% trans %}Show all persons (this my take some time){% endtrans %}" href="{{ path('bach_browse', {part: 'cPersname', show_all: 'show_all'}) }}">{% trans %}Show all{% endtrans %}{% endif %}</a>){% endif %}</h4>
+        <section id="list_cPersnames">
+        {% if lists.cPersname is defined %}
+            <ul>
+            {% for cPersname in lists.cPersname %}
+                <li><a href="{{ path('bach_search', {filter_field: 'cPersname', filter_value: cPersname.term}) }}">{{ cPersname.term }} ({{ cPersname.count }})</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </section>
+    </div>
+    {% endif %}
+
+    {% if part == 'cGeogname' %}
+    <div id="cGeogname">
+        <h4>{% trans %}Places{% endtrans %}{% if lists.cGeogname is defined %} ({{ lists.cGeogname | length }}{% if show_all is sameas('false') %} - <a class="show_all" title="{% trans %}Show all places (this my take some time){% endtrans %}" href="{{ path('bach_browse', {part: 'cGeogname', show_all: 'show_all'}) }}">{% trans %}Show all{% endtrans %}</a>{% endif %}){% endif %}</h4>
+        <section id="list_cGeognames">
+        {% if lists.cGeogname is defined %}
+            <ul>
+            {% for cGeogname in lists.cGeogname %}
+                <li><a href="{{ path('bach_search', {filter_field: 'cGeogname', filter_value: cGeogname.term}) }}">{{ cGeogname.term }} ({{ cGeogname.count }})</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </section>
+    </div>
+    {% endif %}
+
