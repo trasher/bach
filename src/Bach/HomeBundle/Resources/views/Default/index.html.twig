@@ -184,7 +184,10 @@
 
 {# Binded when not in mobile mode #}
 {% block mobile_js_off %}
-    $('.display_doc').click(function(){
+    $('.display_doc').click(function(event){
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
         var _elt = $('<div id="display_doc" title="{% trans %}Consult document{% endtrans %}"></div>');
         _elt.appendTo('body');
 
