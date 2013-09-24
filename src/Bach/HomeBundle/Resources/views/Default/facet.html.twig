@@ -5,7 +5,17 @@
             <label for="filter">{% trans %}Enter a text to filter:{% endtrans %}</label>
             <input type="text" class="text-input" id="filter" value="" />
             <span id="filter-count"></span>
+            <span class="fright">
+                <label for="facet_order">{% trans %}Order:{% endtrans %}</label>
+                <select name="facet_order" id="facet_order">
+                    <option value="0"{% if facet_order is not defined or facet_order != '1' %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
+                    <option value="1"{% if facet_order is defined and facet_order == 1 %} selected="selected"{% endif %}>{% trans %}Alphabetic{% endtrans %}</option>
+                </select>
+            </span>
         </fieldset>
+        {% if orig_href is defined %}
+            <input type="hidden" name="orig_href" id="orig_href" value="{{ orig_href }}"/>
+        {% endif %}
     </form>
 
     <ol id="facets_list">
@@ -45,4 +55,34 @@
         var numberItems = count;
         $("#filter-count").text('{% trans %}%count filtered results{% endtrans %}'.replace('%count', count));
     });
+
+    $('#facet_order').change(function(){
+        $.ajax({
+            url: $('#orig_href').val(),
+            data: {
+                facet_order: $('#facet_order option:selected').val(),
+                orig_href: $('#orig_href').val()
+            },
+            type: 'POST',
+            beforeSend: function() {
+                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                $('body').append(_img);
+            },
+            complete: function() {
+                $('#loading').remove();
+            },
+            success: function(data) {
+                var _elt = $('#display_facets');
+                _elt.empty();
+                _elt.append(data);
+            },
+            error: function(){
+                alert('{% trans %}An error occured loading terms :("{% endtrans %}');
+            }
+        });
+    });
+
+        $('#live-search').submit(function(){
+            return false;
+        });
 </script>

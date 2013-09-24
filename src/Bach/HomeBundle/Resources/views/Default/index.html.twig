@@ -222,6 +222,9 @@
 
         $.ajax({
             url: _this.attr('href') + '/ajax',
+            data: {
+                orig_href: _this.attr('href') + '/ajax'
+            },
             type: 'POST',
             beforeSend: function() {
                 var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');

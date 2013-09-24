@@ -475,6 +475,7 @@ h2.back a:hover {
 [id=live-search] {
     background: #a3968d;
     margin-bottom: .5em;
+    padding: .2em;
 }
 
 [id=live-search] fieldset, [id=live-search] input {
@@ -534,6 +535,10 @@ h2.back a:hover {
     -moz-box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
     -webkitbox-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
     box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
+}
+
+.fright {
+    float: right;
 }
 
 /**

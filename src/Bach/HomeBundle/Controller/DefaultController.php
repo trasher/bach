@@ -273,7 +273,23 @@ class DefaultController extends Controller
                     }
                 }
                 if ( count($values) > 0 ) {
-                    arsort($values);
+                    //facet order
+                    $facet_order = $request->get('facet_order');
+                    if ( !$facet_order || $facet_order == 0 ) {
+                        arsort($values);
+                    } else {
+                        if ( defined('SORT_FLAG_CASE') ) {
+                            ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
+                        } else {
+                            //fallback for PHP < 5.4
+                            ksort(SORT_LOCALE_STRING);
+                        }
+                    }
+
+                    //get original URL if any
+                    $templateVars['orig_href'] = $request->get('orig_href');
+                    $templateVars['facet_order'] = $request->get('facet_order');
+
                     $facets[$name] = array(
                         'label'         => $descr['trad'],
                         'content'       => $values,
