@@ -282,7 +282,7 @@ class DefaultController extends Controller
                             ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
                         } else {
                             //fallback for PHP < 5.4
-                            ksort(SORT_LOCALE_STRING);
+                            ksort($values, SORT_LOCALE_STRING);
                         }
                     }
 
