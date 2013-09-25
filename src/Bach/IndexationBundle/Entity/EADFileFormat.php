@@ -169,8 +169,16 @@ class EADFileFormat extends MappedFileFormat
     /**
      * Fields types, if not string
      */
-    public static $types = array(
+    /*public static $types = array(
         'cUnittitle' => 'text'
+    );*/
+
+
+    /**
+     * String fields that must have a text version
+     */
+    public static $textMapped = array(
+        'cUnittitle' => 'tcUnittitle'
     );
 
     /**

@@ -87,6 +87,11 @@ class SolariumQueryFactory
             }
         }
 
+        if ( $container->isOrdered() ) {
+            $qry = $this->_query;
+            $this->_query->addSort('cUnittitle', $qry::SORT_ASC);
+        }
+
         $facetSet = $this->_query->getFacetSet();
         $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);

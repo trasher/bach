@@ -132,6 +132,11 @@
             {% endif %}
             {% spaceless %}
             <nav id="change_view">
+                <label for="results_order">{% trans %}Order:{% endtrans %}</label>
+                <select name="results_order" id="results_order">
+                    <option value="0"{% if results_order is not defined or results_order != '1' %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
+                    <option value="1"{% if results_order is defined and results_order == 1 %} selected="selected"{% endif %}>{% trans %}Alphabetic{% endtrans %}</option>
+                </select>
                 <a href="{{ path('bach_search', {query_terms: q, view: 'list'}) }}" class="btn-list{% if view == 'list' %} selected{% endif %}" title="{% trans %}View search results as a list{% endtrans %}">{% trans %}List{% endtrans %}</a>
                 <a href="{{ path('bach_search', {query_terms: q, view: 'thumbs'}) }}" class="btn-thumb{% if view == 'thumbs' %} selected{% endif %}" title="{% trans %}View search results as thumbnails{% endtrans %}">{% trans %}Thumnails{% endtrans %}</a>
             </nav>
@@ -315,6 +320,11 @@
                 },
                 heightStyle: 'content',
                 collapsible: true
+            });
+
+            $('#results_order').change(function(){
+                var _da_url = '{{ path('bach_search', {query_terms: q, results_order: 'ORDER'}) }}';
+                window.location.href  = _da_url.replace('ORDER', $('#results_order option:selected').val());
             });
 
             {% if min_date is defined and max_date is defined %}

@@ -332,6 +332,14 @@ legend {
     background-color: #d1c6c0;
 }
 
+[id=change_view] label {
+    vertical-align: 70%;
+}
+
+[id=change_view] select {
+    vertical-align: top;
+}
+
 /** === Main display (old method) === */
 
 [id=search_results] {

@@ -517,6 +517,12 @@ class SolrCoreAdmin
             $fields_types = $orm_name::$types;
         }
 
+        $fields_text_mapped = array();
+        if ( property_exists($orm_name, 'textMapped') ) {
+            //retrieve fields text mapping from entity
+            $fields_text_mapped = $orm_name::$textMapped;
+        }
+
         foreach ($fields as $f) {
             $newFieldType = $doc->createElement('field');
             $newFieldType->setAttribute('name', $f);
@@ -545,6 +551,21 @@ class SolrCoreAdmin
             }
 
             $elt->appendChild($newFieldType);
+
+            if ( isset($fields_text_mapped[$f]) ) {
+                $newFieldType = $doc->createElement('field');
+                $newFieldType->setAttribute('name', 't' . $f);
+                $newFieldType->setAttribute('type', 'text');
+
+                if ( in_array($f, $multivalued_fields) ) {
+                    $newFieldType->setAttribute('multiValued', 'true');
+                }
+
+                $newFieldType->setAttribute('indexed', 'true');
+                $newFieldType->setAttribute('stored', 'false');
+                $elt->appendChild($newFieldType);
+            }
+
         }
 
         //add fulltext field
@@ -638,6 +659,16 @@ class SolrCoreAdmin
                     $cf->setAttribute('dest', 'descriptors');
                     $doc->documentElement->appendChild($cf);
                 }
+            }
+        }
+
+        //add copy fields for text mapped fields
+        foreach ( $fields_text_mapped as $fo=>$fd ) {
+            if ( in_array($fo, $fields) ) {
+                $cf = $doc->createElement('copyField');
+                $cf->setAttribute('source', $fo);
+                $cf->setAttribute('dest', $fd);
+                $doc->documentElement->appendChild($cf);
             }
         }
 

@@ -26,8 +26,12 @@ namespace Bach\HomeBundle\Entity;
  */
 class SolariumQueryContainer
 {
+    const ORDER_RELEVANCE = 0;
+    const ORDER_ALPHA = 1;
+
     private $_fields = array();
     private $_filters = array();
+    private $_order = self::ORDER_RELEVANCE;
 
     /**
      * Set field
@@ -65,6 +69,18 @@ class SolariumQueryContainer
     public function setFilters($filters)
     {
         $this->_filters = $filters;
+    }
+
+    /**
+     * Set order
+     *
+     * @param int $order Order
+     *
+     * @return void
+     */
+    public function setOrder($order)
+    {
+        $this->_order = $order;
     }
 
     /**
@@ -123,4 +139,27 @@ class SolariumQueryContainer
         return $this->_filters;
     }
 
+    /**
+     * Get order
+     *
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->_order;
+    }
+
+    /**
+     * Should query be ordered?
+     *
+     * @return boolean
+     */
+    public function isOrdered()
+    {
+        if ( $this->_order != self::ORDER_RELEVANCE ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -83,6 +83,15 @@ class DefaultController extends Controller
             //TODO log something if view is not known?
         }
 
+        $order = $session->get('results_order');
+        if ( $request->get('results_order') !== null ) {
+            $requested_order = $request->get('results_order');
+            if ( $requested_order == 1  || $requested_view == 0 ) {
+                $order = $requested_order;
+                $session->set('results_order', $order);
+            }
+        }
+
         //instanciate - if needed - sidebar values
         $resultByPage = $session->get('results_by_page');
         if ( !$resultByPage ) {
@@ -138,7 +147,8 @@ class DefaultController extends Controller
             'sidebar'       => $builder->compileToArray(),
             'show_pics'     => $sidebar->getItemValue('show_pics'),
             'viewer_uri'    => $viewer_uri,
-            'view'          => $view
+            'view'          => $view,
+            'results_order' => $order
         );
 
         if ( $facet_name !== null ) {
@@ -153,6 +163,8 @@ class DefaultController extends Controller
             );
 
             $container = new SolariumQueryContainer();
+            $container->setOrder($order);
+
             $container->setField(
                 'show_pics',
                 $sidebar->getItemValue('show_pics')
