@@ -301,6 +301,37 @@ legend {
  * ===== Search results =====
  */
 
+/** View switcher */
+[id=change_view] {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.btn-list, .btn-thumb {
+    background: transparent url(../img/sprite.png) 0 0 no-repeat;
+    display: inline-block;
+    width: 29px;
+    height: 29px;
+    border: none;
+    text-indent: 35px;
+    line-height: 30px;
+    overflow: hidden;
+    padding: 0;
+}
+
+.btn-list {
+    background-position: -11px -58px;
+}
+
+.btn-thumb {
+    background-position: -11px -109px;
+}
+
+.btn-list.selected, .btn-list:hover, .btn-thumb.selected, .btn-thumb:hover {
+    background-color: #d1c6c0;
+}
+
 /** === Main display (old method) === */
 
 [id=search_results] {
@@ -314,6 +345,12 @@ legend {
     margin: 0 0 .5em 0;
     text-align: center;
     overflow: hidden;
+}
+
+[id=search_results] article.thumbs figure {
+    float: none;
+    margin: 0;
+    width: auto;
 }
 
 [id=search_results] article figure a.flashplayer img {
@@ -349,6 +386,15 @@ legend {
     clear: left;
 }
 
+[id=search_results] article.thumbs {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    border: none;
+    padding: 0;
+}
+
 [id=search_results] article:first-of-type {
     border-top: none;
 }
@@ -357,10 +403,18 @@ legend {
     margin-left: 155px;
 }
 
+[id=search_results] article.thumbs > div {
+    margin-left: 0;
+}
+
 [id=search_results] article h3 {
     font-size: 1.2em;
     font-weight: bold;
     margin: 0 0 .2em 0;
+}
+
+[id=search_results] article.thumbs h3 {
+    font-size: 1em;
 }
 
 [id=search_results] article h3 a {
@@ -372,6 +426,7 @@ legend {
 }
 
 .results_count {
+    position: relative;
     background: #a3968d;
     color: white;
     padding: .5em;

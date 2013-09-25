@@ -69,6 +69,20 @@ class DefaultController extends Controller
             $query_terms = '*:*';
         }
 
+        $view = $session->get('view');
+        if ( !$view ) {
+            $view = 'list';
+        }
+
+        if ( $request->get('view') ) {
+            $requested_view = $request->get('view');
+            if ( $requested_view === 'list' || $requested_view === 'thumbs' ) {
+                $view = $requested_view;
+                $session->set('view', $view);
+            }
+            //TODO log something if view is not known?
+        }
+
         //instanciate - if needed - sidebar values
         $resultByPage = $session->get('results_by_page');
         if ( !$resultByPage ) {
@@ -123,7 +137,8 @@ class DefaultController extends Controller
             'page'          => $page,
             'sidebar'       => $builder->compileToArray(),
             'show_pics'     => $sidebar->getItemValue('show_pics'),
-            'viewer_uri'    => $viewer_uri
+            'viewer_uri'    => $viewer_uri,
+            'view'          => $view
         );
 
         if ( $facet_name !== null ) {

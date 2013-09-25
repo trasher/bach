@@ -130,9 +130,29 @@
             {% else %}
                 {% trans %}Results %resultStart% to %resultEnd% on %resultCount%{% endtrans %}
             {% endif %}
+            {% spaceless %}
+            <nav id="change_view">
+                <a href="{{ path('bach_search', {query_terms: q, view: 'list'}) }}" class="btn-list{% if view == 'list' %} selected{% endif %}" title="{% trans %}View search results as a list{% endtrans %}">{% trans %}List{% endtrans %}</a>
+                <a href="{{ path('bach_search', {query_terms: q, view: 'thumbs'}) }}" class="btn-thumb{% if view == 'thumbs' %} selected{% endif %}" title="{% trans %}View search results as thumbnails{% endtrans %}">{% trans %}Thumnails{% endtrans %}</a>
+            </nav>
+            {% endspaceless %}
         </div>
             {% for document in searchResults %}
-                <article id="result_{{ document.uniqid }}" role="document" about="{{ document.fragmentid }}">
+                <article id="result_{{ document.uniqid }}" role="document" about="{{ document.fragmentid }}"{% if view == 'thumbs' %} class="thumbs"{% endif %}>
+                    {% if view == 'thumbs' %}
+                    <h3 property="dc:title">
+                        <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
+                        {%- elseif document.cUnittitle is defined -%}
+                            {{ document.cUnittitle }}
+                        {%- else -%}
+                            {% trans %}Untitled unit{% endtrans %}
+                        {%- endif -%}
+                        </a>
+                    </h3>
+                    {% endif %}
+
                     {% if show_pics %}
                     <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
                         {% if document.dao is defined %}
@@ -143,6 +163,7 @@
                     </figure>
                     {% endif %}
 
+                    {% if view == 'list' %}
                     <div>
                     <h3 property="dc:title">
                         <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
@@ -157,6 +178,7 @@
                     </h3>
                     {{ displayFragment(document.fragment, document.fragmentid)|raw }}
                     </div>
+                    {% endif %}
                 </article>
             {% endfor %}
             {% include 'pagination.html.twig' with {
