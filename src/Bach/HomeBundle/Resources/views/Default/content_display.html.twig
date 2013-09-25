@@ -70,6 +70,11 @@ POSSIBILITY OF SUCH DAMAGE.
             {% if context == true %}
             <a href="{{ path('bach_ead_html', {'docid': document.headerId, 'expanded': 'expanded'}) }}#{{ document.fragmentid }}">{{ _('Locate in document tree') }}</a>
             {% endif %}
+            {% if html_export %}
+            {% if context == true %} - {% endif %}
+            {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+            <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('View in edited document') }}</a>
+            {% endif %}
         </header>
         {% if children == false %}
             {% set hasChildren = false %}

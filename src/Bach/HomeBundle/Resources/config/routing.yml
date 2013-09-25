@@ -198,6 +198,27 @@ bach_ead_html:
     requirements:
         _method: GET
 
+bach_htmldoc_ext:
+    pattern: /htmldoc/{maindir}/{file}.{ext}
+    defaults: { _controller: BachHomeBundle:Default:displayHtmlDocumentExt}
+    requirements:
+        _method: GET
+        file: '.+'
+        ext: 'js|css|png|gif'
+
+bach_htmlsubdoc:
+    pattern: /htmldoc/{maindir}/{file}.{ext}
+    defaults: { _controller: BachHomeBundle:Default:displayHtmlSubDocument}
+    requirements:
+        _method: GET
+        ext: 'html|htm'
+
+bach_htmldoc:
+    pattern: /htmldoc/{docid}
+    defaults: { _controller: BachHomeBundle:Default:displayHtmlDocument}
+    requirements:
+        _method: GET
+
 dynamic_css:
     pattern: /css/{name}.css
     defaults: { _controller: BachHomeBundle:Default:dynamicCss, _format: css }

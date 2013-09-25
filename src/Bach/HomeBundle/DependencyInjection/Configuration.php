@@ -86,6 +86,9 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->scalarNode('misc')
             ->defaultValue($default_base_path . 'misc/')
+            ->end()
+            ->scalarNode('html')
+            ->defaultValue($default_base_path . 'html/')
             ->end();
 
         return $treeBuilder;

@@ -51,6 +51,7 @@ use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
 use Bach\HomeBundle\Entity\Filters;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Bach home controller
@@ -605,6 +606,11 @@ class DefaultController extends SearchController
             }
         }
 
+        //check if HTML export do exist
+        $html_export = $this->container->getParameter('bach_files_html') .
+            '/' . $doc['headerId'] . '.html';
+        $tplParams['html_export'] = file_exists($html_export);
+
         return $this->render(
             $tpl,
             $tplParams
@@ -828,4 +834,106 @@ class DefaultController extends SearchController
     {
         return 'view_params';
     }
+
+    /**
+     * Display HTML version of the document
+     *
+     * @param string $docid The document ID to load
+     *
+     * @return void
+     */
+    public function displayHtmlDocumentAction($docid)
+    {
+        $path = $this->container->getParameter('bach_files_html') .
+            '/' . $docid . '.html';
+        $html_contents = file_get_contents($path);
+
+        return $this->render(
+            'BachHomeBundle:Default:html_contents.html.twig',
+            array(
+                'html_contents' => $html_contents
+            )
+        );
+
+    }
+
+    /**
+     * Display HTML sub-document
+     *
+     * @param string $maindir Main directory where resources are stored
+     * @param string $file    The file to load
+     * @param string $ext     File extension
+     *
+     * @return void
+     */
+    public function displayHtmlSubDocumentAction($maindir, $file, $ext)
+    {
+        $path = $this->container->getParameter('bach_files_html') .
+            '/' . $maindir . '/' . $file . '.' . $ext;
+        $html_contents = file_get_contents($path);
+
+        $viewer_uri = $this->container->getParameter('viewer_uri');
+
+        $callback = function ($matches) use ($viewer_uri) {
+            $img_path = str_replace('../', '', $matches[2]);
+            $href = $viewer_uri . 'viewer/' . $img_path;
+            $thumb_href = $viewer_uri . 'ajax/img/' . $img_path . '/format/medium';
+
+            return '<a href="' . $href . '"><img' . $matches[1] . ' src="' .
+                $thumb_href . '"' . $matches[3] . '/></a>';
+        };
+
+
+        $html_contents = preg_replace_callback(
+            '@<img(.*)src="(.*)"(.+)/>@',
+            $callback,
+            $html_contents
+        );
+
+        return $this->render(
+            'BachHomeBundle:Default:html_contents.html.twig',
+            array(
+                'html_contents' => $html_contents
+            )
+        );
+
+    }
+
+    /**
+     * Display scripts/css/images for HTML version of the document
+     *
+     * @param string $maindir Main directory where resources are stored
+     * @param string $file    The file to load
+     * @param string $ext     File extension
+     *
+     * @return void
+     */
+    public function displayHtmlDocumentExtAction($maindir, $file, $ext)
+    {
+        $path = $this->container->getParameter('bach_files_html') .
+            '/' . $maindir . '/' . $file . '.' . $ext;
+
+        $mime = null;
+        switch( $ext ) {
+        case 'js':
+            $mime = 'text/javascript';
+            break;
+        case 'css':
+            $mime = 'text/css';
+            break;
+        default:
+            $mime = mime_content_type($path);
+            break;
+        }
+
+        $fp = fopen($path, 'rb');
+        $contents = stream_get_contents($fp);
+        fclose($fp);
+        $headers = array(
+            'Content-Type'      => $mime
+        );
+
+        return new Response($contents, 200, $headers);
+    }
+
 }

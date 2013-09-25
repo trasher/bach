@@ -149,3 +149,4 @@ bach_home:
         videos: '%kernel.root_dir%/../data/videos/'
         musics: '%kernel.root_dir%/../data/musics/'
         misc: '%kernel.root_dir%/../data/files/'
+        html: '%kernel.root_dir%/../data/html/'
