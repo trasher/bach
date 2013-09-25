@@ -194,9 +194,16 @@
         var _width = $(window).width() * 0.8;
         var _height = $(window).height() * 0.8;
 
-        $.get(
-            $(this).attr('href') + '/ajax',
-            function(data) {
+        $.ajax({
+            url: $(this).attr('href') + '/ajax',
+            beforeSend: function() {
+                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                $('body').append(_img);
+            },
+            complete: function() {
+                $('#loading').remove();
+            },
+            success: function(data) {
                 _elt.append(data);
                 _initflow(true);
                 _elt.dialog({
@@ -207,8 +214,11 @@
                         _elt.remove();
                     }
                 });
+            },
+            error: function(){
+                alert('{% trans %}An error occured loading terms :("{% endtrans %}');
             }
-        );
+        });
 
         return false;
     });
