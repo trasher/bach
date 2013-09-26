@@ -1,13 +1,17 @@
 {% extends 'AdministrationBundle:Default:main.html.twig' %}
 
+{% block css %}
+    <link href="{{ asset('css/jqplot/jquery.jqplot.min.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
 {% block container %}
     <section id="ram_usage">
         <h4>Utilisation de la mémoire volatile (MB)</h4>
-        <div id="chart_div"></div>
+        <div id="memory"></div>
     </section>
     <section id="swap_usage">
         <h4>Utilisation de la mémoire SWAP</h4>
-        <div id="chart_div2"></div>
+        <div id="swap"></div>
     </section>
 
     <section id="cores">
@@ -45,54 +49,54 @@
 {% endblock %}
 
 {% block js_calls %}
-    <!-- FIXME: remove google API with something OSS -->
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="{{ asset('js/jqplot/jquery.jqplot.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/jqplot/plugins/jqplot.meterGaugeRenderer.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.tabs.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block javascripts %}
     $(function(){
         $('#cores_accordion').tabs();
+
+        var _total_memory = {{ SystemFreeVirtualMemory + SystemUsedVirtualMemory}};
+        var _memory_hlimit = {{ (SystemFreeVirtualMemory + SystemUsedVirtualMemory) /8 * 7 }};
+        var _memory_llimit = {{ (SystemFreeVirtualMemory + SystemUsedVirtualMemory) /8 * 5 }};
+
+        var _v_memory = [{{ SystemUsedVirtualMemory }}];
+        var _memory_plot = $.jqplot('memory',[_v_memory],{
+            seriesDefaults: {
+                renderer: $.jqplot.MeterGaugeRenderer,
+                rendererOptions: {
+                    intervals:[_memory_llimit, _memory_hlimit, _total_memory],
+                    intervalColors:['#66cc66', '#E7E658', '#cc6666'],
+                    max: _total_memory,
+                }
+            },
+            grid: {
+                background: 'transparent'
+            }
+        });
+
+        var _total_swap = {{ SystemFreeSwapMemory + SystemUsedSwapMemory}};
+        var _swap_hlimit = {{ (SystemFreeSwapMemory + SystemUsedSwapMemory) /8 * 5 }};
+        var _swap_llimit = {{ (SystemFreeSwapMemory + SystemUsedSwapMemory) /8 * 3 }};
+
+        var _s_memory = [{{ SystemUsedSwapMemory }}];
+        var _swap_plot = $.jqplot('swap',[_s_memory],{
+            seriesDefaults: {
+                renderer: $.jqplot.MeterGaugeRenderer,
+                rendererOptions: {
+                    intervals:[_swap_llimit, _swap_hlimit, _total_swap],
+                    intervalColors:['#66cc66', '#E7E658', '#cc6666'],
+                    max: _total_swap,
+                }
+            },
+            grid: {
+                background: 'transparent'
+            }
+        });
+
     });
-      // Load the Visualization API and the piechart package.
-      google.load('visualization', '1.0', {'packages':['corechart']});
-
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawChart);
-
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows([
-          ['Free', {{ SystemFreeVirtualMemory }}],
-          ['Used', {{ SystemUsedVirtualMemory }}]
-        ]);
-
-        var data2 = new google.visualization.DataTable();
-        data2.addColumn('string', 'Topping');
-        data2.addColumn('number', 'Slices');
-        data2.addRows([
-          ['Free', {{ SystemFreeSwapMemory }}],
-          ['Used', {{ SystemUsedSwapMemory }}]
-        ]);
-
-        // Set chart options
-        var options = {'width':'50%',
-                       'height':300};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-
-        var chart2 = new google.visualization.PieChart(document.getElementById('chart_div2'));
-        chart2.draw(data2, options);
-      }
 {% endblock %}
 
 

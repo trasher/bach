@@ -816,12 +816,17 @@ legend > span {
       -------------------------------------------------- */
 #ram_usage, #swap_usage {
     width: 49%;
-    float: left;
+    display: inline-block;
     margin-right: 0.5%;
 }
 
+#memory, #swap {
+    width: 200px;
+    height: 150px;
+    margin: 0 auto;
+}
+
 #swap_usage {
-    float:right;
     margin-right: 0;
 }
 
