@@ -1,9 +1,6 @@
-{% extends '::base.html.twig' %}
+{% extends 'AdministrationBundle:Default:main.html.twig' %}
 
 {% block container %}
-    {# MENU #}
-    {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
-    <div class="content w-menu">
         <form class="form-inline" action="{{ path('administration_fields') }}" method="POST" {{ form_enctype(form) }}>
             <fieldset>
                 <legend>{% trans %}Fields{% endtrans %}</legend>
@@ -32,7 +29,7 @@
                 </div>
                 {% endfor %}
                 {{ form_widget(form._token) }}
-            <button type="submit" class="btn btn-fixed btn-success">Valider</button>
+            <button type="submit" class="jbtn">Valider</button>
             </fieldset>
         </form>
 
@@ -53,8 +50,9 @@
                  <a href="#" class="btn btn-primary" onclick="okClicked ();">{% trans %}OK{% endtrans %}</a>
             </div>
         </div>
-    </div>
-    <script>
+{% endblock %}
+
+{% block javascripts %}
         $(document).ready(function() {
             $('#addFieldDialog').bind('show', function () {
                 document.getElementById ("xlInput").value = document.title;
@@ -67,5 +65,5 @@
             document.title = document.getElementById ("xlInput").value;
             closeDialog ();
         };
-    </script>
+
 {% endblock %}

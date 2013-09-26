@@ -1,25 +1,14 @@
-{% extends '::base.html.twig' %}
+{% extends 'AdministrationBundle:Default:main.html.twig' %}
 
 {% block container %}
-    {# MENU #}
-    {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
-    <div class="content w-menu">
         <form class="form-inline" action="{{ path('administration_copyfields') }}" method="POST" {{ form_enctype(form) }}>
             <fieldset>
                 <legend>{% trans %}Copy fields{% endtrans %}</legend>
                 <div class="btn-toolbar">
-                    <button type="submit" value="selectAll" class="btn btn-warning btn-small">
-                        <span class="icon-white icon-pencil"></span> Tout séléctionner</a>
-                    </button>
-                    <button type="submit" value="deselectAll" class="btn btn-danger btn-small">
-                        <span class="icon-white icon-repeat"></span> Ne rien séléctionner</a>
-                    </button>
-                    <button type="submit" value="add" class="btn btn-primary btn-small">
-                        <span class="icon-white icon-random"></span> Ajouter</a>
-                    </button>
-                    <button type="submit" value="remove" class="btn btn-inverse btn-small">
-                        <span class="icon-white icon-ban-circle"></span> Supprimer</a>
-                    </button>
+                    <button name="selectAll" type="submit" class="jbtn" >{% trans %}Select all{% endtrans %}</button>
+                    <button name="deselectAll" type="submit" class="jbtn">{% trans %}Unselect all{% endtrans %}</button>
+                    <button name="add" type="submit" class="jbtn" >{% trans %}Add{% endtrans %}</button>
+                    <button name="remove" type="submit" class="btn btn-delete">{% trans %}Delete{% endtrans %}</button>
                 </div>
 
 
@@ -34,7 +23,7 @@
                     </div>
                     {% endfor %}
                     {{ form_widget(form._token) }}
-                    <button name="submit" type="submit" class="btn btn-fixed btn-success">Valider</button>
+                    <button name="submit" type="submit" class="jbtn">Valider</button>
             </fieldset>
         </form>
     </div>
@@ -51,12 +40,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
-                 <a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
+                <a href="#" class="jbtn" onclick="closeDialog ();">Cancel</a>
+                 <a href="#" class="jbtn" onclick="okClicked ();">OK</a>
             </div>
-        </div>
+{% endblock %}
 
-        <script>
+{% block javascripts %}
             $(document).ready(function() {
                 $('#addFieldDialog').bind('show', function () {
                     document.getElementById ("xlInput").value = document.title;
@@ -69,5 +58,5 @@
                 document.title = document.getElementById ("xlInput").value;
                 closeDialog ();
             };
-        </script>
 {% endblock %}
+

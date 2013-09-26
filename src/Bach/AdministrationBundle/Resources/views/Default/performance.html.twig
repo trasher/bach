@@ -1,9 +1,6 @@
-{% extends '::base.html.twig' %}
+{% extends 'AdministrationBundle:Default:main.html.twig' %}
 
 {% block container %}
-    {# MENU #}
-    {% include 'AdministrationBundle:Default:adminmenu.html.twig' %}
-    <div class="content w-menu">
         <form action="{{ path('administration_performance_submit') }}" method="POST" {{ form_enctype(form) }}>
             <fieldset>
                 <legend>{% trans %}Cache{% endtrans %}</legend>
@@ -55,11 +52,10 @@
                         <div class="span2">:</div>
                         <div class="span4">{{ form_widget(form.queryResultAutowarmCount) }}</div>
                     </div>
-                    <button type="submit" class="btn btn-fixed btn-success">Valider</button>
+                    <button type="submit" class="jbtn">Valider</button>
                     {{ form_widget(form._token) }}
                 </div>
             </fieldset>
         </form>
-    </div>
 {% endblock %}
 
