@@ -1,6 +1,16 @@
 <?php
-/*
- * This file is part of the bach project.
+
+/**
+ * Document
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  */
 
 namespace Bach\IndexationBundle\Entity;
@@ -9,6 +19,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Document
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+
  * @ORM\Entity(repositoryClass="DocumentRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -58,46 +77,56 @@ class Document
      */
     protected $task;
 
+    /**
+     * Get absolute path to document
+     *
+     * @return string
+     */
     public function getAbsolutePath()
     {
-        return null === $this->path ? null
-                : $this->getUploadRootDir() . '/' . $this->path;
-    }
-
-    public function getWebPath()
-    {
-        return null === $this->path ? null
-                : $this->getUploadDir() . '/' . $this->path;
-    }
-
-    protected function getUploadRootDir()
-    {
-        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
-    }
-
-    protected function getUploadDir()
-    {
-        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
-        // le document/image dans la vue.
-        return 'uploads/documents';
+        $path = null;
+        if ( $this->path !== null ) {
+            $path = $this->getUploadRootDir() . '/' . $this->path;
+        }
+        return $path;
     }
 
     /**
+     * Retrieve upload dir absolute path
+     *
+     * FIXME: parametize!
+     *
+     * @return string
+     */
+    protected function getUploadRootDir()
+    {
+        return __DIR__ . '/../../../../web/uploads' . '/documents';
+    }
+
+    /**
+     * Prepare upload, set path and name
+     *
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
+     *
+     * @return void
      */
     public function preUpload()
     {
         if (null !== $this->file) {
-             $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+            $this->path = sha1(uniqid(mt_rand(), true)) . '.' .
+                $this->file->guessExtension();
              $this->name = $this->file->getClientOriginalName();
         }
     }
 
     /**
+     * Upload file
+     *
      * @ORM\PostPersist()
      * @ORM\PostUpdate()
+     *
+     * @return void
      */
     public function upload()
     {
@@ -115,11 +144,15 @@ class Document
     }
 
     /**
+     * Remove uploaded file
+     *
      * @ORM\PostRemove()
+     *
+     * @return void
      */
     public function removeUpload()
     {
-        if ($file = $this->getAbsolutePath()) {
+        if ( $file = $this->getAbsolutePath()) {
             unlink($file);
         }
     }
@@ -127,7 +160,7 @@ class Document
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -137,7 +170,8 @@ class Document
     /**
      * Set name
      *
-     * @param string $name
+     * @param string $name Name
+     *
      * @return Document
      */
     public function setName($name)
@@ -150,7 +184,7 @@ class Document
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -160,7 +194,8 @@ class Document
     /**
      * Set path
      *
-     * @param string $path
+     * @param string $path Path
+     *
      * @return Document
      */
     public function setPath($path)
@@ -173,23 +208,40 @@ class Document
     /**
      * Get path
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
         return $this->path;
     }
 
+    /**
+     * Get file
+     *
+     * @return SplFile
+     */
     public function getFile()
     {
         return $this->file;
     }
 
+    /**
+     * Set file
+     *
+     * @param SplFile $file File
+     *
+     * @return void
+     */
     public function setFile($file)
     {
         $this->file = $file;
     }
 
+    /**
+     * Get document extension
+     *
+     * @return string
+     */
     public function getExtension()
     {
         return $this->extension;
@@ -198,7 +250,7 @@ class Document
     /**
      * Set extension
      *
-     * @param string $extension
+     * @param string $extension Document extension
      *
      * @return Document
      */
@@ -243,7 +295,7 @@ class Document
     {
         if ( $this->extension === 'ead' ) {
             $xml = simplexml_load_file($this->file->getPathName());
-            $this->docid = $xml->eadheader->eadid;
+            $this->docid = (string)$xml->eadheader->eadid;
         }
         return $this;
     }

@@ -109,11 +109,33 @@ class DefaultController extends Controller
                     $document->getExtension() . '_corename'
                 )
             );
+            //generate document id
+            $document->generateDocId();
 
-            //store document reference
             $em = $this->getDoctrine()->getManager();
-            $em->persist($document);
-            $em->flush();
+
+            //check if document already exists, and remove it first
+            //TODO: parametize or find a better solution.
+            //Catching exception in flush does not work because EntityManager
+            //is dead after the Exception occurs :(
+            $qb = $em->createQueryBuilder();
+            $qb->add('select', 'd')
+                ->add('from', 'BachIndexationBundle:Document d')
+                ->add('where', 'd.docid = :id')
+                ->setParameter('id', $document->getDocId());
+
+            $query = $qb->getQuery();
+            $existing = $query->getResult();
+
+            if ( count($existing) > 0 ) {
+                $existing_doc = $existing[0];
+                $existing_doc->setFile($document->getFile());
+                $document = $existing_doc;
+            } else {
+                //store document reference
+                $em->persist($document);
+                $em->flush();
+            }
 
             //create a new task
             $task = new ArchFileIntegrationTask($document);
@@ -126,8 +148,24 @@ class DefaultController extends Controller
                     $this->get("router")->generate("bach_indexation_queue")
                 );
             } else {
-                //if performall action was requested, do not store in db
+                //if performall action was requested, do not store task in db
                 //and launch indexation process
+
+                if ( count($existing) > 0 ) {
+                    //first, remove document if it already has been published
+                    $this->removeDocumentsAction(
+                        array(
+                            $existing[0]->getExtension() . '::' .
+                            $existing[0]->getId()
+                        )
+                    );
+                    //persist document *after* deletion, to upload new file and so on
+                    //we have to change a field know to database, for doctrine to process persistence
+                    $task->getDocument()->setName(null);
+                    $em->persist($task->getDocument());
+                    $em->flush();
+                }
+
                 $integrationService = $this->container
                     ->get('bach.indexation.process.arch_file_integration');
                 $res = $integrationService->integrate($task);
@@ -230,11 +268,16 @@ class DefaultController extends Controller
     /**
      * Remove selected indexed documents, in both database and Solr
      *
+     * @param array $documents List of id to remove. If missing, 
+     *                         we'll take documents in GET.
+     *
      * @return void
      */
-    public function removeDocumentsAction()
+    public function removeDocumentsAction($documents = null)
     {
-        $documents = $this->get('request')->request->get('documents');
+        if ( $documents === null ) {
+            $documents = $this->get('request')->request->get('documents');
+        }
 
         $extensions = array();
         $ids = array();
