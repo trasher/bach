@@ -97,7 +97,8 @@ class EADDriverMapper implements DriverMapperInterface
 
         // Partie spécifique à l'ead
         if ( array_key_exists("parents", $data["c"]) ) {
-            $mappedData["parents"] = implode("/", $data["c"]["parents"]);
+            $mappedData["parents"] = implode("/", array_keys($data["c"]["parents"]));
+            $mappedData["parents_titles"] = $data["c"]["parents"];
         }
 
         $mappedData['fragmentid'] = $mappedData['headerId'] . '_' . $data['id'];

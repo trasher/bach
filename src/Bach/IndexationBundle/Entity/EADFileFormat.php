@@ -64,6 +64,11 @@ class EADFileFormat extends MappedFileFormat
     protected $daos;
 
     /**
+     * @ORM\OneToMany(targetEntity="EADParentTitle", mappedBy="eadfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $parents_titles;
+
+
      * @ORM\Column(type="text", length=100)
      */
     protected $fragmentid;
@@ -78,6 +83,7 @@ class EADFileFormat extends MappedFileFormat
         $this->indexes = new ArrayCollection();
         $this->dates = new ArrayCollection();
         $this->daos = new ArrayCollection();
+        $this->parents_titles = new ArrayCollection();
         parent::__construct($data);
     }
 
@@ -201,6 +207,10 @@ class EADFileFormat extends MappedFileFormat
             if ( in_array($key, self::$known_indexes) ) {
                 foreach ( $datum as $index ) {
                     $this->addIndex($key, $index);
+                }
+            } else if ( $key === 'parents_titles' ) {
+                foreach ( $datum as $d ) {
+                    $this->addParentTitle($d);
                 }
             } elseif (property_exists($this, $key)) {
                 $this->$key = $datum;
@@ -448,6 +458,41 @@ class EADFileFormat extends MappedFileFormat
     public function getDaos()
     {
         return $this->daos;
+    }
+
+    /**
+     * Add parent title
+     *
+     * @param string $title title
+     *
+     * @return EADFileFormat
+     */
+    public function addParentTitle($title)
+    {
+        $this->parents_titles[] = new EADParentTitle($this, $title);
+        return $this;
+    }
+
+    /**
+     * Remove parent title
+     *
+     * @param EADParentTitle $title Title
+     *
+     * @return void
+     */
+    public function removeParentTitle(EADParentTitle $title)
+    {
+        $this->parents_titles->removeElement($title);
+    }
+
+    /**
+     * Get parents titles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParentsTitles()
+    {
+        return $this->parents_titles;
     }
 
 }

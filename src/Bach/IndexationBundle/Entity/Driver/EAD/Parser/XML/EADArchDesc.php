@@ -162,6 +162,11 @@ class EADArchDesc
             }
 
             if ( $this->_xpath->query($this->_cnodes, $cNode)->length > 0 ) {
+                $current_title = '';
+                $title_xpath = $this->_xpath->query('./did/unittitle', $frag);
+                if ( $title_xpath->length == 1) {
+                    $current_title = $title_xpath->item(0)->nodeValue;
+                }
                 $results = array_merge(
                     $results,
                     $this->_recursiveCNodeSearch(
@@ -170,7 +175,7 @@ class EADArchDesc
                         array_merge(
                             $parents,
                             array(
-                                $nodeid
+                                $nodeid => $current_title
                             )
                         )
                     )
