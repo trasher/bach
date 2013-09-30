@@ -343,6 +343,65 @@ Displays an EAD fragment as HTML
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="list" mode="full">
+        <ul>
+            <xsl:apply-templates mode="full"/>
+        </ul>
+    </xsl:template>
+
+    <xsl:template match="defitem|change" mode="full">
+        <dl>
+            <xsl:apply-templates mode="full"/>
+        </dl>
+    </xsl:template>
+
+    <xsl:template match="label" mode="full">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'defitem'">
+                <dt>
+                    <xsl:apply-templates mode="full"/>
+                </dt>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="full"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="date" mode="full">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'change'">
+                <dt>
+                    <xsl:apply-templates mode="full"/>
+                </dt>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="full"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="item" mode="full">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'list'">
+                <li>
+                    <xsl:apply-templates mode="full"/>
+                </li>
+            </xsl:when>
+            <xsl:when test="$parent-name = 'defitem' or $parent-name = 'change'">
+                <dd>
+                    <xsl:apply-templates mode="full"/>
+                </dd>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="full"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xsl:template match="head" mode="full">
         <!-- Count direct parent that have a head child. That will include current node -->
         <xsl:variable name="count" select="count(ancestor::*/head)"/>

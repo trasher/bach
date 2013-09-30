@@ -100,6 +100,10 @@ legend {
     font-size: 1.1em;
     margin-bottom: 1em;
 }
+
+p {
+    margin: .2em 0 .3em;
+}
 /**
  * ===== Page bones =====
  */
@@ -431,6 +435,16 @@ legend {
 
 .content header {
     margin-bottom: .2em;
+}
+
+.content p {
+    text-align: justify;
+    text-indent: .5em;
+}
+
+.content ul {
+    margin: .2em 0 .2em 1.5em;
+    list-style-type: disc;
 }
 
 .results_count {
