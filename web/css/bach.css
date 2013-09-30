@@ -792,6 +792,24 @@ legend > span {
     float: right;
 }
 
+/**
+ * ===== Publication interface =====
+ */
+.list table {
+    width: 100%;
+}
+
+.list th {
+    font-weight: bold;
+    background-color: #a3968d;
+    color: white;
+    padding: .2em 0;
+}
+
+.list tbody tr:nth-child(even) {
+    background-color: #d1c6c0;
+}
+
 /** Old design */
 #flash-warnings, #flash-errors {
     padding: .2em 1em .2em 80px;

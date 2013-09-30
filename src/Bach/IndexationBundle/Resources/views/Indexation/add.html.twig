@@ -70,14 +70,15 @@
     </div>
 {% endblock %}
 
+{% block js_calls %}
+    <script src="{{ asset('js/jquery.treeview.js')  }}" type="text/javascript"></script>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/jquery.treeview.js')  }}" type="text/javascript"></script>
-    <script type="text/javascript">
         $(function(){
             $('.filetree').treeview({
                 collapsed: true
             });
         });
-    </script>
 {% endblock %}

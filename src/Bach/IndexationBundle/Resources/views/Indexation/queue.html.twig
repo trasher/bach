@@ -1,7 +1,7 @@
 {% extends 'BachIndexationBundle:Indexation:main.html.twig' %}
 
 {% block container %}
-    <fieldset>
+    <fieldset class="list">
         <legend>
             File d'attente des tâches d'indexation
             <span class="btn-groups pull-right">
@@ -48,11 +48,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
     $(document).ready(function(){
         $("#refresh").click(function(){
             location.reload();
         });
     });
-    </script>
 {% endblock %}
