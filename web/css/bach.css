@@ -401,7 +401,7 @@ p {
 [id=search_results] article.thumbs {
     display: inline-block;
     width: 200px;
-    height: 200px;
+    min-height: 200px;
     text-align: center;
     border: none;
     padding: 0;
