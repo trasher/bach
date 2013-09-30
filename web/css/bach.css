@@ -440,11 +440,35 @@ p {
 .content p {
     text-align: justify;
     text-indent: .5em;
+    line-height: 1.1em;
 }
 
 .content ul {
     margin: .2em 0 .2em 1.5em;
     list-style-type: disc;
+}
+
+.content table {
+    width: 100%;
+    border: 1px solid #a3968d;
+    margin: .5em 0;
+}
+
+.content th {
+    font-weight: bold;
+    background-color: #a3968d;
+    color: white;
+    padding: .2em 0;
+}
+
+.content td {
+    padding: .1em .2em;
+    border-left: 1px dashed #a3968d;
+    border-right: 1px dashed #a3968d;
+}
+
+.content tbody tr:nth-child(even) {
+    background-color: #d1c6c0;
 }
 
 .results_count {
