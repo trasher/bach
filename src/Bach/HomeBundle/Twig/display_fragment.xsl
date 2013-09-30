@@ -469,10 +469,13 @@ Displays an EAD fragment as HTML
         <xsl:choose>
             <xsl:when test="@href">
                 <a href="{@href}">
-                    <xsl:if test="@title">
+                    <xsl:if test="@title and . != ''">
                         <xsl:attribute name="title">
                             <xsl:value-of select="@title"/>
                         </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="@title and . = ''">
+                        <xsl:value-of select="@title"/>
                     </xsl:if>
                     <xsl:apply-templates mode="full"/>
                 </a>
