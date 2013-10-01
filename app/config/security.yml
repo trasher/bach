@@ -22,6 +22,7 @@ security:
             pattern:    ^/
             fp_openid:
                 create_user_if_not_exists: true
+                login_path: /login
                 provider: openid_user_manager
                 required_attributes:
                     - namePerson
