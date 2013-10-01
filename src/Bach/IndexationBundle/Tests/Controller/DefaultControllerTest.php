@@ -40,11 +40,11 @@ class DefaultController extends WebTestCase
         $this->request()->GET('/notexists/')
             ->hasStatus(404);
 
-        $this->request()->GET('/indexation')
+        /*$this->request()->GET('/indexation')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
-            ->hasElement('form#documents');
+            ->hasElement('form#documents');*/
     }
 
     /**
@@ -52,7 +52,7 @@ class DefaultController extends WebTestCase
      *
      * @return void
      */
-    public function testAdd()
+    /*public function testAdd()
     {
         $this->request()->GET('/indexation/add')
             ->hasStatus(200)
@@ -64,14 +64,14 @@ class DefaultController extends WebTestCase
             ->hasElement('#form_file')
             ->end()
             ->hasElement('#form_extension');
-    }
+    }*/
 
     /**
      * Test queue action
      *
      * @return void
      */
-    public function testQueue()
+    /*public function testQueue()
     {
         $this->request()->GET('/indexation/queue')
             ->hasStatus(200)
@@ -79,6 +79,6 @@ class DefaultController extends WebTestCase
             ->crawler
             ->hasElement('body')
             ->hasChild('table')->exactly(1);
-    }
+    }*/
 }
 

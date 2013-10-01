@@ -4,7 +4,7 @@ imports:
 framework:
     test: ~
     session:
-        storage_id: session.storage.mock_file        
+        storage_id: session.storage.mock_file
     templating:
         assets_base_urls: /
 
@@ -15,4 +15,10 @@ web_profiler:
 swiftmailer:
     disable_delivery: true
 
-    
+jns_xhprof:
+    enabled: false
+
+security:
+    firewalls:
+        secured_area:
+            http_basic:
