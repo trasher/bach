@@ -61,7 +61,7 @@ class DefaultController extends WebTestCase
             ->crawler
             ->hasElement('#search_results')
             ->hasChild('p')
-            ->withContent('Aucun résultat n\'a été trouvé.')
+            ->withContent('Aucun résultat trouvé.')
             ->end()
             ->hasChild('#suggestions')
             ->hasChild('a')
