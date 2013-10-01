@@ -66,5 +66,44 @@ class DefaultController extends WebTestCase
             ->hasChild('#suggestions')
             ->hasChild('a')
             ->withContent('cayenne');
+
+        //a successfull request, with filtering only
+        $this->request->GET('/search?filter_field=cSubject&filter_value=enjeux+internationaux')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8')
+            ->crawler
+            ->hasElement('#active_filters')
+            ->hasChild('ul')->exactly(1)
+            ->end()->end()
+            ->hasElement('#search_results')
+            ->hasChild('article');
+
+        $this->request->GET('/search/Cayenne?view=thumbs')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8')
+            ->crawler
+            ->hasElement('#search_results')
+            ->hasChild('article.thumbs');
+
+        $this->request->GET('/search/Cayenne?result_order=1')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8')
+            ->crawler
+            ->hasElement('#search_results')
+            ->hasChild('article');
+    }
+
+    /**
+     * test facet listing
+     *
+     * @return void
+     */
+    public function testFacetList()
+    {
+        $this->request->GET('/fullfacet/*:*/cSubject/ajax')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8')
+            ->crawler
+            ->hasElement('#facets_list');
     }
 }
