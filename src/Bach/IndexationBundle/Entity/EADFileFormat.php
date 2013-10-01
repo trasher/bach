@@ -68,7 +68,7 @@ class EADFileFormat extends MappedFileFormat
      */
     protected $parents_titles;
 
-    /*
+    /**
      * @ORM\Column(type="text", length=100)
      */
     protected $fragmentid;
