@@ -3,7 +3,7 @@
 <html lang="{{ lang }}">
 <head>
     <meta charset="utf-8">
-    <title>Bach</title>
+    <title>Bach{% block title_extend %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="{% trans %}Bach archival search tool{% endtrans %}">
     {% block page_metadata %}

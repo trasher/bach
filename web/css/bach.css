@@ -454,11 +454,15 @@ p {
     margin: .5em 0;
 }
 
-.content th {
+.content thead th {
     font-weight: bold;
     background-color: #a3968d;
     color: white;
     padding: .2em 0;
+}
+
+.content thead th a {
+    color: white;
 }
 
 .content td {
@@ -854,6 +858,56 @@ legend > span {
 
 .list tbody tr:nth-child(even) {
     background-color: #d1c6c0;
+}
+
+/**
+ * Sonata overrides
+ */
+
+div.sonata-bc {
+    background: transparent;
+}
+
+div.sonata-bc .navbar {
+    margin-bottom: .5em;
+}
+
+div.sonata-bc .btn, .form-actions .btn {
+    height: auto;
+    text-indent: 0;
+    width: auto;
+}
+
+.form-actions .btn {
+    background: #332928;
+    color: white;
+}
+
+div.sonata-bc .table-striped tbody tr:nth-child(2n+1) td, div.sonata-bc .table-striped tbody tr:nth-child(2n+1) th {
+    background-color: transparent;
+}
+
+div.sonata-bc a, div.sonata-bc .btn-link {
+    color: #b73a34;
+}
+
+div.sonata-bc .well {
+    background-color: #d1c6c0;
+    border-radius: 0;
+}
+
+div.sonata-bc .breadcrumb {
+    border-radius: 0;
+}
+
+div.sonata-bc .form-horizontal .form-actions {
+    text-align: center;
+    padding-left: 0;
+}
+
+div.sonata-bc .table-bordered thead:first-child tr:first-child th:first-child, div.sonata-bc .table-bordered tbody:first-child tr:first-child td:first-child,
+div.sonata-bc .table-bordered thead:first-child tr:first-child th:last-child, div.sonata-bc .table-bordered tbody:first-child tr:first-child td:last-child {
+    border-radius: 0;
 }
 
 /** Old design */
