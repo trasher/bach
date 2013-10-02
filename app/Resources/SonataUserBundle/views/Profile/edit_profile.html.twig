@@ -1,0 +1,64 @@
+{% extends '::base.html.twig' %}
+
+{% block menu %}
+    <ul>
+        <li{% if current_route == 'sonata_user_profile_show' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a></li>
+        <li{% if current_route == 'sonata_user_profile_edit' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a></li>
+        <li{% if current_route == 'sonata_user_profile_edit_authentication' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit_authentication') }}">{% trans %}Edit authentication{% endtrans %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block container %}
+    <h2>{{ "title_user_account" | trans({}, 'SonataUserBundle')}} - {{ "title_user_edit_profile" | trans({}, 'SonataUserBundle')}}</h2>
+
+    {{ form_errors(form) }}
+
+    {% form_theme form _self %}
+
+    {% block form_row %}
+
+        {# custom field row output #}
+    {% endblock form_row %}
+
+    <form action="{{ path('sonata_user_profile_edit') }}" method="POST" class="form-horizontal">
+        <div class="control-group">
+            {{ form_label(form.gender, 'form.label_gender'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.gender) }}</div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.firstname, 'form.label_firstname'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.firstname) }}</div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.lastname, 'form.label_lastname'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.lastname) }}</div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.website , 'form.label_website'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.website) }}</div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.dateOfBirth, 'form.label_date_of_birth'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.dateOfBirth, {'attr': {'class': 'span1'}}) }}</div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.biography, 'form.label_biography'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.biography) }}</div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.locale, 'form.label_locale'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.locale) }}</div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.timezone, 'form.label_timezone'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.timezone) }}</div>
+        </div>
+        <div class="control-group">
+            {{ form_label(form.phone, 'form.label_phone'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            <div class="controls">{{ form_widget(form.phone) }}</div>
+        </div>
+
+        {{ form_rest(form) }}
+        <input type="submit" name="submit" value="{{ 'sonata_user_submit'|trans({}, 'SonataUserBundle') }}" />
+    </form>
+{% endblock %}

@@ -55,8 +55,13 @@
                     </li>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
+                    <li{% if current_route == 'sonata_admin_dashboard' %} class="active"{% endif %}>
+                        <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
+                    </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
-                        <a href="{{ url('administration_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
+                        <a href="{{ url('administration_dashboard') }}">{% trans %}Manage Solr{% endtrans %}</a>
                     </li>
                         {% endif %}
                     {% endif %}
@@ -66,7 +71,7 @@
 
             <div id="user_login">
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('fos_user_profile_show') }}">{% trans %}Show profile{% endtrans %}</a> <a href="{{ path('fos_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a>
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a>
                 <a class="logout" href="{{ path('fos_user_security_logout') }}">
                     {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                 </a>

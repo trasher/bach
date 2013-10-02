@@ -1,0 +1,31 @@
+{% extends '::base.html.twig' %}
+
+{% block menu %}
+    <ul>
+        <li{% if current_route == 'sonata_user_profile_show' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a></li>
+        <li{% if current_route == 'sonata_user_profile_edit' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a></li>
+        <li{% if current_route == 'sonata_user_profile_edit_authentication' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit_authentication') }}">{% trans %}Edit authentication{% endtrans %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block container %}
+    <h2>{% trans %}My profile{% endtrans %}</h2>
+
+    <section>
+        <p>
+            <strong>{{ 'show.label_lastname'|trans({}, 'SonataUserBundle') }} :</strong> {{ app.user.lastname }}
+        </p>
+        <p>
+            <strong>{{ 'show.label_firstname'|trans({}, 'SonataUserBundle') }} :</strong> {{ app.user.firstname }}
+        </p>
+        <p>
+            <strong>{{ 'show.label_username'|trans({}, 'SonataUserBundle') }} :</strong> {{ app.user.username }}
+        </p>
+        <p>
+            <strong>{{ 'show.label_email'|trans({}, 'SonataUserBundle') }} :</strong> {{ app.user.email }}
+        </p>
+        <p>
+            <strong>{{ 'show.label_website'|trans({}, 'SonataUserBundle') }} :</strong> {% if app.user.website %}<a href="{{ app.user.website }}">{{ app.user.website }}</a>{% endif %}
+        </p>
+    </section>
+{% endblock %}

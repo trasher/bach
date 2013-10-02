@@ -48,7 +48,7 @@ class OpenIdIdentity extends BaseUserIdentity
       *
       * @var Symfony\Component\Security\Core\User\UserInterface
       *
-      * @ORM\ManyToOne(targetEntity="Bach\HomeBundle\Entity\User", fetch="EAGER")
+      * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User", fetch="EAGER")
       * @ORM\JoinColumns({
       *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
       * })

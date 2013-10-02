@@ -51,7 +51,16 @@ class AppKernel extends Kernel
             new Bach\HomeBundle\BachHomeBundle(),
             new Bach\AdministrationBundle\AdministrationBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new Fp\OpenIdBundle\FpOpenIdBundle()
+            new Fp\OpenIdBundle\FpOpenIdBundle(),
+            //Sonata dependencies
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\jQueryBundle\SonatajQueryBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),
+            new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
+            new Application\Sonata\UserBundle\ApplicationSonataUserBundle
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
