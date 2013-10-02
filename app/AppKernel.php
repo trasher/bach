@@ -70,6 +70,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new atoum\AtoumBundle\AtoumAtoumBundle();
             $bundles[] = new Jns\Bundle\XhprofBundle\JnsXhprofBundle();
+            $bundles[] = new Elao\WebProfilerExtraBundle\WebProfilerExtraBundle();
         }
 
         return $bundles;
