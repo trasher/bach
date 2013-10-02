@@ -23,6 +23,8 @@ $loader = include_once __DIR__ . '/../app/bootstrap.php.cache';
  * $loader = new ApcClassLoader('sf2', $loader); $loader->register(true);
  */
 
+$loader = new ApcClassLoader('bach', $loader); $loader->register(true);
+
 require_once __DIR__ . '/../app/AppKernel.php';
 // require_once __DIR__.'/../app/AppCache.php';
 
