@@ -149,3 +149,22 @@ sonata_user:
             name: sonata_user_profile_form
             validation_groups: [Profile]
 
+#lsw_memcache:
+#    session:
+#        client: bach
+#    doctrine:
+#        metadata_cache:
+#            client: bach
+#            entity_manager: bach          # the name of your entity_manager connection
+#            document_manager: bach        # the name of your document_manager connection
+#        result_cache:
+#            client: bach
+#            entity_manager: [bach, read]  # you may specify multiple entity_managers
+#            prefix: "result_"                # you may specify a prefix for the entries
+#        query_cache:
+#            client: bach
+#            entity_manager: bach
+#    clients:
+#        bach:
+#            hosts:
+#              - { dsn: localhost, port: 11211 }
