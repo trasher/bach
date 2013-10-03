@@ -871,6 +871,18 @@ legend > span {
     background-color: #d1c6c0;
 }
 
+tr.task_success td {
+    background-color: #dff0d8;
+}
+
+tr.task_error td {
+    background-color: #f2dede;
+}
+
+tr.task_warning td {
+    background-color: #fcf8e3;
+}
+
 /**
  * Sonata overrides
  */

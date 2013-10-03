@@ -21,7 +21,7 @@
             <tbody>
                 {% if tasks|length > 0 %}
                 {% for task in tasks %}
-                <tr class="{{ task.status }}">
+                <tr class="task_{{ task.status }}">
                     <td>{{ task.filename }}</td>
                     <td>{{ task.format }}</td>
                     <td>{{ task.size }}</td>
