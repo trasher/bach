@@ -54,11 +54,16 @@ EOF
             )->addArgument(
                 'type',
                 InputArgument::REQUIRED,
-                'Documents type. If omitted, will default to "ead".'
+                'Documents type.'
             )->addArgument(
                 'document',
                 InputArgument::IS_ARRAY | InputArgument::REQUIRED,
                 'Document(s) name(s) to proceed'
+            )->addOption(
+                'dry-run',
+                null,
+                InputOption::VALUE_NONE,
+                'Do not really publish.'
             );
     }
 
@@ -72,6 +77,76 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $type = null;
+        $container = $this->getContainer();
+        $known_types = $container->getParameter('bach.types');
+
+        if ( $input->getArgument('type')) {
+            $type = $input->getArgument('type');
+
+            if ( !in_array($type, $known_types) ) {
+                $msg = _('Unknown type! Please choose one of:');
+                $output->writeln(
+                    '<error>' . $msg . "\n -" .
+                    implode("\n -", $known_types)  . '</error>'
+                );
+                die();
+            }
+        }
+
+        $output->writeln(
+            $msg = str_replace(
+                '%type',
+                $type,
+                _('Publishing "%type" documents.')
+            )
+        );
+
+        //let's check if files exists
+        $to_publish = $input->getArgument('document');
+
+        //let's proceed
+        $tf = $container->get('bach.indexation.typesfiles');
+        $files_to_publish = $tf->getExistingFiles($type, $to_publish);
+
+        $output->writeln(
+            "\n" .  _('Following files are about to be published: ')
+        );
+        $output->writeln(
+            implode("\n", $files_to_publish[$type])
+        );
+
+        $choices = array(_('yes'), _('no'));
+        $dialog = $this->getHelperSet()->get('dialog');
+        $confirm = $dialog->ask(
+            $output,
+            "\n" . _('Are you ok (y/n)?'),
+            'FooBundle',
+            $choices
+        );
+
+        if ( $confirm === 'yes' || $confirm === 'y' ) {
+            $output->writeln(
+                '<fg=green;options=bold>' .
+                _('Publication begins...') .
+                '</fg=green;options=bold>'
+            );
+            $progress = $this->getHelperSet()->get('progress');
+            $progress->start($output, count($files_to_publish[$type]));
+            foreach ( $files_to_publish[$type] as $ftp ) {
+
+                $progress->advance();
+            }
+            $progress->finish();
+        } else {
+            $output->writeln(
+                '<fg=red;options=bold>' .
+                _('Command canceled by user.') .
+                '</fg=red;options=bold>'
+            );
+
+        }
+
         /*$integrationService = $this->getContainer()
             ->get('bach.indexation.process.arch_file_integration');*/
         /*$return = $integrationService->proceedQueue();*/

@@ -30,6 +30,7 @@ class TypesFiles
 {
     private $_formats;
     private $_paths;
+    private $_dirs;
 
     /**
      * Main constructor
@@ -47,10 +48,11 @@ class TypesFiles
      * Retrieve existing files list
      *
      * @param string|array $format Type of files to retrieve
+     * @param string|array $paths  Directories or files to limit on
      *
      * @return Iterator
      */
-    public function getExistingFiles($format = null)
+    public function getExistingFiles($format = null, $paths = null)
     {
         $existing_files = array();
 
@@ -59,6 +61,12 @@ class TypesFiles
                 $this->_formats = array($format);
             } else {
                 $this->_formats = $format;
+            }
+        }
+
+        if ( $paths !== null ) {
+            if ( !is_array($paths) ) {
+                $paths = array($paths);
             }
         }
 
@@ -71,9 +79,40 @@ class TypesFiles
                 ->sortByType();
 
             $path = $this->_paths[$format];
-            $existing_files[$format] = $this->_parseExistingFiles(
-                $finder->files()->in($path)
-            );
+            if ( $paths === null ) {
+                $existing_files[$format] = $this->_parseExistingFiles(
+                    $finder->files()->in($path)
+                );
+            } else {
+                $found_files = array();
+                foreach ( $paths as $p ) {
+                    if ( file_exists($path . $p) ) {
+                        if ( is_dir($path . $p) ) {
+                            $files = $this->_parseExistingFiles(
+                                $finder->files()->in($path . $p)
+                            );
+                            $found_files = array_merge(
+                                $found_files,
+                                $files
+                            );
+                        } else {
+                            $found_files = array_merge(
+                                $found_files,
+                                array($path . $p)
+                            );
+                        }
+                    } else {
+                        throw new \RuntimeException(
+                            str_replace(
+                                '%path',
+                                $p,
+                                _('File or directory %path does not exists!')
+                            )
+                        );
+                    }
+                }
+                $existing_files[$format] = $found_files;
+            }
         }
 
         return $existing_files;
