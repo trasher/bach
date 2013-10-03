@@ -175,9 +175,9 @@ class EADFileFormat extends MappedFileFormat
     /**
      * Fields types, if not string
      */
-    /*public static $types = array(
-        'cUnittitle' => 'text'
-    );*/
+    public static $types = array(
+        'cUnittitle' => 'alphaOnlySort'
+    );
 
 
     /**
