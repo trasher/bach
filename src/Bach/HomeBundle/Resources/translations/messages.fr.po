@@ -31,9 +31,6 @@ msgstr "Personnes"
 msgid "Places"
 msgstr "Lieux"
 
-msgid "This page displays only the 20 more relevant terms found. You may whish <a href=\"%href%\">to display all terms</a>, but note that it should take a long time to load in your browser."
-msgstr "Cette page n'affiche que les 20 premiers termes les plus pertinents. Vous souhaiterez peut-être <a href=\"%href%\">afficher tous les termes</a>, mais notez que cela peut prendre un temps considérable à s'afficher dans votre navigateur."
-
 msgid "Active filters:"
 msgstr "Filtres actifs :"
 
@@ -61,14 +58,65 @@ msgstr "Bienvenue dans Bach !"
 msgid "Consult document"
 msgstr "Consulter le document"
 
-msgid "Search options"
-msgstr "Options de recherche"
-
-msgid "Hide menu"
-msgstr "Cacher le menu"
-
-msgid "Show menu"
-msgstr "Afficher le menu"
-
 msgid "Untitled unit"
 msgstr "Unité sans intitulé"
+
+msgid "Enter a text to filter:"
+msgstr "Entrez un texte pour filter :"
+
+msgid "Order:"
+msgstr "Ordre :"
+
+msgid "Relevance (default)"
+msgstr "Pertinence (défaut)"
+
+msgid "Alphabetic"
+msgstr "Alphabétique"
+
+msgid "Searching ..."
+msgstr "Recherche..."
+
+msgid "%count filtered results"
+msgstr "%count résultats filtrés"
+
+msgid "Loading..."
+msgstr "Chargement..."
+
+msgid "Currently loading..."
+msgstr "En cours de chargement..."
+
+msgid "An error occured loading terms :("
+msgstr "Une erreur est survenue au chargement des termes"
+
+msgid "View search results as a list, with images"
+msgstr "Voir les résultats de recherche en liste, avec images"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "View search results as a list, without images"
+msgstr "Voir les résultats de recherche en liste, sans images"
+
+msgid "Text only list"
+msgstr "Liste texte"
+
+msgid "View search results as thumbnails"
+msgstr "Voir les résultats de recherche en miniatures"
+
+msgid "Thumnails"
+msgstr "Miniatures"
+
+msgid "Show all subjects (this my take some time)"
+msgstr "Afficher tous les sujets (cela peut prendre un certain temps)"
+
+msgid "Show all"
+msgstr "Afficher tous"
+
+msgid "Show all persons (this my take some time)"
+msgstr "Afficher toutes les personnes (cela peut prendre un certain temps)"
+
+msgid "Show all places (this my take some time)"
+msgstr "Afficher tous les lieux (cela peut prendre un certain temps)"
+
+msgid "Back to search results"
+msgstr "Retour aux résultats de recherche"

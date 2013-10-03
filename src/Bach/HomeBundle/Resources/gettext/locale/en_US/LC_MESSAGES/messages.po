@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-12 16:05+0200\n"
-"PO-Revision-Date: 2013-09-12 16:11+0100\n"
+"POT-Creation-Date: 2013-10-03 13:17+0200\n"
+"PO-Revision-Date: 2013-10-03 13:18+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: en_US\n"
@@ -33,75 +33,59 @@ msgstr "Misc files path is not defined!"
 msgid "File does not exists."
 msgstr "File does not exists."
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:84
-msgid "Results per page"
-msgstr "Results per page"
-
-#: src/Bach/HomeBundle/Controller/DefaultController.php:95
-msgid "Show pictures"
-msgstr "Show pictures"
-
-#: src/Bach/HomeBundle/Controller/DefaultController.php:100
-msgid "Yes"
-msgstr "Yes"
-
-#: src/Bach/HomeBundle/Controller/DefaultController.php:101
-msgid "No"
-msgstr "No"
-
-#: src/Bach/HomeBundle/Controller/DefaultController.php:231
+#: src/Bach/HomeBundle/Controller/DefaultController.php:195
 msgid "document"
 msgstr "Document"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:236
+#: src/Bach/HomeBundle/Controller/DefaultController.php:199
 msgid "subject"
 msgstr "Subjects"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:241
+#: src/Bach/HomeBundle/Controller/DefaultController.php:203
 msgid "persname"
 msgstr "Persons"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:246
+#: src/Bach/HomeBundle/Controller/DefaultController.php:207
 msgid "geogname"
 msgstr "Places"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:531
+#: src/Bach/HomeBundle/Controller/DefaultController.php:562
 msgid "%count% results found, 1 expected."
 msgstr "%count% results found, 1 expected."
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:200
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:202
 msgid "Images"
 msgstr "Images"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:209
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:211
 msgid "Series"
 msgstr "Series"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:218
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:220
 msgid "Sounds"
 msgstr "Sounds"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:227
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:229
 msgid "Flash sounds"
 msgstr "Flash sounds"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:236
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:238
 msgid "Videos"
 msgstr "Videos"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:245
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:247
 msgid "Flash videos"
 msgstr "Flash videos"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:254
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:256
 msgid "Miscellaneous documents"
 msgstr "Miscellaneous documents"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:310
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:313
 msgid "Play '%name%'"
 msgstr "Play '%name%'"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:343
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:346
 msgid ""
 "Your browser does not support this video format, you may want to download "
 "file and watch it offline"
@@ -109,107 +93,115 @@ msgstr ""
 "Your browser does not support this video format, you may want to download "
 "file and watch it offline"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:381
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:395
 msgid "Documents are not supported (yet)."
 msgstr "Documents are not supported (yet)."
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:145
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:149
 msgid "Publication informations"
 msgstr "Publication informations"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:148
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:152
 msgid "Physical description"
 msgstr "Physical description"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:151
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:155
 msgid "Descriptors"
 msgstr "Descriptors"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:157
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:158
+msgid "Gender:"
+msgstr "Gender:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:161
 msgid "Extent:"
 msgstr "Extent:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:160
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:164
 msgid "Dimensions:"
 msgstr "Dimensions:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:163
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:167
 msgid "Appearance:"
 msgstr "Appearance:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:166
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:170
 msgid "Title:"
 msgstr "Title:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:169
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:173
 msgid "Corporate name:"
 msgstr "Corporate name:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:172
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:176
 msgid "Geographical name:"
 msgstr "Geographical name:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:178
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:179
+msgid "Subject:"
+msgstr "Subject:"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:182
 msgid "Personal name:"
 msgstr "Personal name:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:181
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:185
 msgid "Function:"
 msgstr "Function:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:184
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:188
 msgid "Name:"
 msgstr "Name:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:187
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:191
 msgid "Relative documents"
 msgstr "Relative documents"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:190
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:194
 msgid "Description:"
 msgstr "Description:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:193
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:197
 msgid "Conservation history:"
 msgstr "Conservation history:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:196
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:200
 msgid "Arrangement:"
 msgstr "Arrangement:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:199
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:203
 msgid "Related material:"
 msgstr "Related material:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:202
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:206
 msgid "Bibliography:"
 msgstr "Bibliography:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:205
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:209
 msgid "Biography or history:"
 msgstr "Biography or history:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:208
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:212
 msgid "Acquisition information:"
 msgstr "Acquisition information:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:211
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:215
 msgid "Separated material:"
 msgstr "Separated material:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:214
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:218
 msgid "Untitled unit"
 msgstr "Untitled unit"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:217
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:221
 msgid "Content"
 msgstr "Content"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:220
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:224
 msgid "Documents"
 msgstr "Documents"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:223
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:227
 msgid "Sub-units"
 msgstr "Sub-units"
 
@@ -217,6 +209,32 @@ msgstr "Sub-units"
 msgid "Enter your search"
 msgstr "Enter your search"
 
-#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:70
+#: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:69
 msgid "Search"
 msgstr "Search"
+
+#: src/Bach/HomeBundle/Entity/OpenIdUserManager.php:78
+msgid "No corresponding user was found!"
+msgstr "No corresponding user was found!"
+
+#: src/Bach/HomeBundle/Entity/ViewParams.php:125
+#, php-format
+msgid "View %s is not known!"
+msgstr "View %s is not known!"
+
+#: src/Bach/HomeBundle/Entity/ViewParams.php:160
+#, php-format
+msgid "Order %s is not known!"
+msgstr "Order %s is not known!"
+
+#~ msgid "Results per page"
+#~ msgstr "Results per page"
+
+#~ msgid "Show pictures"
+#~ msgstr "Show pictures"
+
+#~ msgid "Yes"
+#~ msgstr "Yes"
+
+#~ msgid "No"
+#~ msgstr "No"

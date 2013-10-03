@@ -138,7 +138,7 @@
                     <option value="1"{% if results_order == 1 %} selected="selected"{% endif %}>{% trans %}Alphabetic{% endtrans %}</option>
                 </select>
                 <a href="{{ path('bach_search', {query_terms: q, view: 'list'}) }}" class="btn-list{% if view == 'list' %} selected{% endif %}" title="{% trans %}View search results as a list, with images{% endtrans %}">{% trans %}List{% endtrans %}</a>
-                <a href="{{ path('bach_search', {query_terms: q, view: 'txtlist'}) }}" class="btn-txtlist{% if view == 'txtlist' %} selected{% endif %}" title="{% trans %}View search results as a list, without imsages{% endtrans %}">{% trans %}Text only list{% endtrans %}</a>
+                <a href="{{ path('bach_search', {query_terms: q, view: 'txtlist'}) }}" class="btn-txtlist{% if view == 'txtlist' %} selected{% endif %}" title="{% trans %}View search results as a list, without images{% endtrans %}">{% trans %}Text only list{% endtrans %}</a>
                 <a href="{{ path('bach_search', {query_terms: q, view: 'thumbs'}) }}" class="btn-thumb{% if view == 'thumbs' %} selected{% endif %}" title="{% trans %}View search results as thumbnails{% endtrans %}">{% trans %}Thumnails{% endtrans %}</a>
             </nav>
             {% endspaceless %}
@@ -244,7 +244,7 @@
                 });
             },
             error: function(){
-                alert('{% trans %}An error occured loading terms :("{% endtrans %}');
+                alert('{% trans %}An error occured loading terms :({% endtrans %}');
             }
         });
 
@@ -286,7 +286,7 @@
                 });
             },
             error: function(){
-                alert('{% trans %}An error occured loading terms :("{% endtrans %}');
+                alert('{% trans %}An error occured loading terms :({% endtrans %}');
             }
         });
 

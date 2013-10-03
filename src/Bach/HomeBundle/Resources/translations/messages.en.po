@@ -10,6 +10,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 
+msgid "Refine Query"
+msgstr "Refine Query"
+
+msgid "Clear refined query"
+msgstr "Clear refined query"
+
+msgid "Clear"
+msgstr "Clear"
+
+
 msgid "Sub units"
 msgstr "Sub units"
 
@@ -21,18 +31,6 @@ msgstr "Persons"
 
 msgid "Places"
 msgstr "Places"
-
-msgid "This page displays only the 20 more relevant terms found. You may whish <a href=\"%href%\">to display all terms</a>, but note that it should take a long time to load in your browser."
-msgstr "This page displays only the 20 more relevant terms found. You may whish <a href=\"%href%\">to display all terms</a>, but note that it should take a long time to load in your browser."
-
-msgid "Refine Query"
-msgstr "Refine Query"
-
-msgid "Clear refined query"
-msgstr "Clear refined query"
-
-msgid "Clear"
-msgstr "Clear"
 
 msgid "Active filters:"
 msgstr "Active filters:"
@@ -61,14 +59,65 @@ msgstr "Welcome to Bach's!"
 msgid "Consult document"
 msgstr "Consult document"
 
-msgid "Search options"
-msgstr "Search options"
-
-msgid "Hide menu"
-msgstr "Hide menu"
-
-msgid "Show menu"
-msgstr "Show menu"
-
 msgid "Untitled unit"
 msgstr "Untitled unit"
+
+msgid "Enter a text to filter:"
+msgstr "Enter a text to filter:"
+
+msgid "Order:"
+msgstr "Order:"
+
+msgid "Relevance (default)"
+msgstr "Relevance (default)"
+
+msgid "Alphabetic"
+msgstr "Alphabetic"
+
+msgid "Searching ..."
+msgstr "Searching ..."
+
+msgid "%count filtered results"
+msgstr "%count filtered results"
+
+msgid "Loading..."
+msgstr "Loading..."
+
+msgid "Currently loading..."
+msgstr "Currently loading..."
+
+msgid "An error occured loading terms :("
+msgstr "An error occured loading terms :("
+
+msgid "View search results as a list, with images"
+msgstr "View search results as a list, with images"
+
+msgid "List"
+msgstr "List"
+
+msgid "View search results as a list, without images"
+msgstr "View search results as a list, without images"
+
+msgid "Text only list"
+msgstr "Text only list"
+
+msgid "View search results as thumbnails"
+msgstr "View search results as thumbnails"
+
+msgid "Thumnails"
+msgstr "Thumnails"
+
+msgid "Show all subjects (this my take some time)"
+msgstr "Show all subjects (this my take some time)"
+
+msgid "Show all"
+msgstr "Show all"
+
+msgid "Show all persons (this my take some time)"
+msgstr "Show all persons (this my take some time)"
+
+msgid "Show all places (this my take some time)"
+msgstr "Show all places (this my take some time)"
+
+msgid "Back to search results"
+msgstr "Back to search results"
