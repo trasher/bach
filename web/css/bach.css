@@ -312,7 +312,7 @@ p {
     right: 0;
 }
 
-.btn-list, .btn-thumb {
+.btn-list, .btn-thumb, .btn-txtlist {
     background: transparent url(../img/sprite.png) 0 0 no-repeat;
     display: inline-block;
     width: 29px;
@@ -325,14 +325,21 @@ p {
 }
 
 .btn-list {
+    background-position: -11px -408px;
+}
+
+.btn-txtlist {
     background-position: -11px -58px;
 }
+
 
 .btn-thumb {
     background-position: -11px -109px;
 }
 
-.btn-list.selected, .btn-list:hover, .btn-thumb.selected, .btn-thumb:hover {
+.btn-list.selected, .btn-list:hover,
+.btn-txtlist.selected, .btn-txtlist:hover,
+.btn-thumb.selected, .btn-thumb:hover {
     background-color: #d1c6c0;
 }
 
@@ -413,6 +420,10 @@ p {
 
 [id=search_results] article > div {
     margin-left: 155px;
+}
+
+[id=search_results] article > div.nopic {
+    margin-left: 0;
 }
 
 [id=search_results] article.thumbs > div {

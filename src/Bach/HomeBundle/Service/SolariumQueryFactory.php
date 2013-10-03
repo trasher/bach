@@ -14,6 +14,7 @@
 namespace Bach\HomeBundle\Service;
 
 use Symfony\Component\Finder\Finder;
+use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 use Bach\IndexationBundle\Exception\BadInputFileFormatException;
@@ -89,7 +90,10 @@ class SolariumQueryFactory
 
         if ( $container->isOrdered() ) {
             $qry = $this->_query;
-            $this->_query->addSort('cUnittitle', $qry::SORT_ASC);
+            $this->_query->addSort(
+                $container->getOrderField(),
+                ($container->getOrderDirection() === ViewParams::ORDER_ASC) ? $qry::SORT_ASC : $qry::SORT_DESC
+            );
         }
 
         $facetSet = $this->_query->getFacetSet();

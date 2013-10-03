@@ -15,12 +15,9 @@ namespace Bach\HomeBundle\Controller;
 
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
-use Bach\HomeBundle\Entity\Sidebar\OptionSidebarItemChoice;
-use Bach\HomeBundle\Builder\OptionSidebarBuilder;
-use Bach\HomeBundle\Entity\Sidebar\OptionSidebarItem;
-use Bach\HomeBundle\Entity\Sidebar\OptionSidebar;
 use Bach\HomeBundle\Entity\SearchForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,6 +55,16 @@ class DefaultController extends Controller
             $query_terms = urldecode($query_terms);
         }
 
+        /** Manage view parameters */
+        $view_params = $session->get('view_params');
+        if ( !$view_params ) {
+            $view_params = new ViewParams();
+        }
+        //set current view parameters according to request
+        $view_params->bind($request);
+        //store new view parameters
+        $session->set('view_params', $view_params);
+
         $filters = $session->get('filters');
         if ( !is_array($filters) ) {
             $filters = array();
@@ -69,86 +76,15 @@ class DefaultController extends Controller
             $query_terms = '*:*';
         }
 
-        $view = $session->get('view');
-        if ( !$view ) {
-            $view = 'list';
-        }
-
-        if ( $request->get('view') ) {
-            $requested_view = $request->get('view');
-            if ( $requested_view === 'list' || $requested_view === 'thumbs' ) {
-                $view = $requested_view;
-                $session->set('view', $view);
-            }
-            //TODO log something if view is not known?
-        }
-
-        $order = $session->get('results_order');
-        if ( $request->get('results_order') !== null ) {
-            $requested_order = $request->get('results_order');
-            if ( $requested_order == 1  || $requested_view == 0 ) {
-                $order = $requested_order;
-                $session->set('results_order', $order);
-            }
-        }
-
-        //instanciate - if needed - sidebar values
-        $resultByPage = $session->get('results_by_page');
-        if ( !$resultByPage ) {
-            $resultByPage = 10;
-        }
-
-        $showPics = $session->get('show_pics');
-        if ( !isset($showPics) ) {
-            $showPics = 1;
-        }
-
-        // Construction de la barre de gauche comprenant les options de recherche
-        $sidebar = new OptionSidebar();
-
-        $resultsItem = new OptionSidebarItem(
-            _('Results per page'),
-            "qo_pr",
-            $resultByPage
-        );
-        $resultsItem
-            ->appendChoice(new OptionSidebarItemChoice("10", 10))
-            ->appendChoice(new OptionSidebarItemChoice("20", 20))
-            ->appendChoice(new OptionSidebarItemChoice("50", 50));
-        $sidebar->append($resultsItem);
-
-        $picturesItem = new OptionSidebarItem(
-            _('Show pictures'),
-            'show_pics',
-            $showPics
-        );
-        $picturesItem
-            ->appendChoice(new OptionSidebarItemChoice(_('Yes'), 1))
-            ->appendChoice(new OptionSidebarItemChoice(_('No'), 0));
-        $sidebar->append($picturesItem);
-
-        $sidebar->bind(
-            $request,
-            $this->get('router')->generate(
-                'bach_search',
-                array(
-                    'query_terms'   => urlencode($query_terms),
-                    'page'          => $page
-                )
-            )
-        );
-
         $viewer_uri = $this->container->getParameter('viewer_uri');
 
-        $builder = new OptionSidebarBuilder($sidebar);
         $templateVars = array(
             'q'             => urlencode($query_terms),
             'page'          => $page,
-            'sidebar'       => $builder->compileToArray(),
-            'show_pics'     => $sidebar->getItemValue('show_pics'),
+            'show_pics'     => $view_params->showPics(),
             'viewer_uri'    => $viewer_uri,
-            'view'          => $view,
-            'results_order' => $order
+            'view'          => $view_params->getView(),
+            'results_order' => $view_params->getOrder()
         );
 
         if ( $facet_name !== null ) {
@@ -163,24 +99,19 @@ class DefaultController extends Controller
             );
 
             $container = new SolariumQueryContainer();
-            $container->setOrder($order);
+            $container->setOrder($view_params->getOrder());
 
             $container->setField(
                 'show_pics',
-                $sidebar->getItemValue('show_pics')
+                $view_params->showPics()
             );
             $container->setField("main", $query_terms);
-
-            $resultByPage = intval($sidebar->getItemValue("qo_pr"));
-
-            $session->set('results_by_page', $resultByPage);
-            $session->set('show_pics', $sidebar->getItemValue('show_pics'));
 
             $container->setField(
                 "pager",
                 array(
-                    "start"     => ($page - 1) * $resultByPage,
-                    "offset"    => $resultByPage
+                    "start"     => ($page - 1) * $view_params->getResultsbyPage(),
+                    "offset"    => $view_params->getResultsbyPage()
                 )
             );
 
@@ -336,8 +267,8 @@ class DefaultController extends Controller
 
 
                 $templateVars['resultCount'] = $resultCount;
-                $templateVars['resultByPage'] = $resultByPage;
-                $templateVars['totalPages'] = ceil($resultCount/$resultByPage);
+                $templateVars['resultByPage'] = $view_params->getResultsbyPage();
+                $templateVars['totalPages'] = ceil($resultCount/$view_params->getResultsbyPage());
                 $templateVars['searchResults'] = $searchResults;
                 $templateVars['hlSearchResults'] = $hlSearchResults;
                 $templateVars['scSearchResults'] = $scSearchResults;
@@ -345,8 +276,8 @@ class DefaultController extends Controller
             $templateVars['facets'] = $facets;
 
             if ( $ajax === false ) {
-                $templateVars['resultStart'] = ($page - 1) * $resultByPage + 1;
-                $resultEnd = ($page - 1) * $resultByPage + $resultByPage;
+                $templateVars['resultStart'] = ($page - 1) * $view_params->getResultsbyPage() + 1;
+                $resultEnd = ($page - 1) * $view_params->getResultsbyPage() + $view_params->getResultsbyPage();
                 if ( $resultEnd > $resultCount ) {
                     $resultEnd = $resultCount;
                 }

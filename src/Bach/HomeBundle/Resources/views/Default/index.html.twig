@@ -134,10 +134,11 @@
             <nav id="change_view">
                 <label for="results_order">{% trans %}Order:{% endtrans %}</label>
                 <select name="results_order" id="results_order">
-                    <option value="0"{% if results_order is not defined or results_order != '1' %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
-                    <option value="1"{% if results_order is defined and results_order == 1 %} selected="selected"{% endif %}>{% trans %}Alphabetic{% endtrans %}</option>
+                    <option value="0"{% if results_order == 0 %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
+                    <option value="1"{% if results_order == 1 %} selected="selected"{% endif %}>{% trans %}Alphabetic{% endtrans %}</option>
                 </select>
-                <a href="{{ path('bach_search', {query_terms: q, view: 'list'}) }}" class="btn-list{% if view == 'list' %} selected{% endif %}" title="{% trans %}View search results as a list{% endtrans %}">{% trans %}List{% endtrans %}</a>
+                <a href="{{ path('bach_search', {query_terms: q, view: 'list'}) }}" class="btn-list{% if view == 'list' %} selected{% endif %}" title="{% trans %}View search results as a list, with images{% endtrans %}">{% trans %}List{% endtrans %}</a>
+                <a href="{{ path('bach_search', {query_terms: q, view: 'txtlist'}) }}" class="btn-txtlist{% if view == 'txtlist' %} selected{% endif %}" title="{% trans %}View search results as a list, without imsages{% endtrans %}">{% trans %}Text only list{% endtrans %}</a>
                 <a href="{{ path('bach_search', {query_terms: q, view: 'thumbs'}) }}" class="btn-thumb{% if view == 'thumbs' %} selected{% endif %}" title="{% trans %}View search results as thumbnails{% endtrans %}">{% trans %}Thumnails{% endtrans %}</a>
             </nav>
             {% endspaceless %}
@@ -168,8 +169,8 @@
                     </figure>
                     {% endif %}
 
-                    {% if view == 'list' %}
-                    <div>
+                    {% if view == 'list' or view == 'txtlist' %}
+                    <div{% if not show_pics %} class="nopic"{% endif %}>
                     <h3 property="dc:title">
                         <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
                         {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
