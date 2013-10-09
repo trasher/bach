@@ -86,21 +86,34 @@ class Document
     {
         $path = null;
         if ( $this->path !== null ) {
-            $path = $this->getUploadRootDir() . '/' . $this->path;
+            $path = $this->_upload_dir . '/' . $this->path;
         }
         return $path;
     }
 
     /**
-     * Retrieve upload dir absolute path
+     * Set upload directory. Also creates subdirectory if missing.
      *
-     * FIXME: parametize!
+     * @param string $dir Application upload directory
      *
-     * @return string
+     * @return Document
      */
-    protected function getUploadRootDir()
+    public function setUploadDir($dir)
     {
-        return __DIR__ . '/../../../../web/uploads' . '/documents';
+        $this->_upload_dir = $dir . '/published_docs';
+        if ( !file_exists($this->_upload_dir) ) {
+            $res = mkdir($this->_upload_dir);
+            if ( $res !== true ) {
+                throw new \RuntimeException(
+                    str_replace(
+                        '%dir',
+                        $this->_upload_dir,
+                        _('Cannot create upload directory %dir')
+                    )
+                );
+            }
+        }
+        return $this;
     }
 
     /**
@@ -138,7 +151,7 @@ class Document
         // va automatiquement être lancée par la méthode move(). Cela va empêcher
         // proprement l'entité d'être persistée dans la base de données si
         // erreur il y a
-        $this->file->move($this->getUploadRootDir(), $this->path);
+        $this->file->move($this->_upload_dir, $this->path);
 
         unset($this->file);
     }

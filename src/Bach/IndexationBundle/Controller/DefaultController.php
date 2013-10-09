@@ -63,6 +63,9 @@ class DefaultController extends Controller
     public function addAction()
     {
         $document = new Document();
+        $document->setUploadDir(
+            $this->container->getParameter('upload_dir')
+        );
         $form = $this->createForm('document', $document);
         $form->handleRequest($this->getRequest());
 
@@ -173,6 +176,9 @@ class DefaultController extends Controller
         $tasks = array();
 
         foreach ($entities as $entity) {
+            $entity->getDocument()->setUploadDir(
+                $this->container->getParameter('upload_dir')
+            );
             $spl = new \SplFileInfo($entity->getPath());
             $tasks[] = array(
                 'filename'  => $entity->getFilename(),

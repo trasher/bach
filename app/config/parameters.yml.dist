@@ -26,6 +26,7 @@ parameters:
         en: en_US
         fr: fr_FR
     openid_enabled: false
+    upload_dir: '%kernel.root_dir%/../web/uploads/'
 
 bach_home:
     files:
