@@ -19,9 +19,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+Use Symfony\Component\HttpFoundation\File\File;
 /*use Bach\IndexationBundle\Generator\FileDriverGenerator;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Finder\Finder;*/
+use Bach\IndexationBundle\Entity\Document;
+use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
 
 /**
  * Publication command
@@ -136,6 +139,8 @@ EOF
         }
 
         if ( $confirm === 'yes' || $confirm === 'y' ) {
+            $em = $this->getContainer()->get('doctrine')->getManager();
+
             $output->writeln(
                 '<fg=green;options=bold>' .
                 _('Publication begins...') .
@@ -143,11 +148,34 @@ EOF
             );
             $progress = $this->getHelperSet()->get('progress');
             $progress->start($output, count($files_to_publish[$type]));
+
+            $integrationService = $this->getContainer()
+                ->get('bach.indexation.process.arch_file_integration');
+
             foreach ( $files_to_publish[$type] as $ftp ) {
-                /*$integrationService = $this->getContainer()
-                    ->get('bach.indexation.process.arch_file_integration');*/
-                /*$return = $integrationService->proceedQueue();*/
-                /*$output->writeln($return);*/
+                $document = new Document();
+
+                $document->setUploadDir(
+                    $this->getContainer()->getParameter('upload_dir')
+                );
+                $document->setFile(new File($ftp));
+                $document->setNotUploaded();
+                $document->setExtension($type);
+                $document->setCorename(
+                    $this->getContainer()->getParameter(
+                        $document->getExtension() . '_corename'
+                    )
+                );
+
+                $em->persist($document);
+                $em->flush();
+
+                //create a new task
+                $task = new ArchFileIntegrationTask($document);
+
+                $res = $integrationService->integrate($task);
+
+                unset($task, $document);
 
                 $progress->advance();
             }

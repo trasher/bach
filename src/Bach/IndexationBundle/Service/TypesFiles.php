@@ -89,7 +89,8 @@ class TypesFiles
                     if ( file_exists($path . $p) ) {
                         if ( is_dir($path . $p) ) {
                             $files = $this->_parseExistingFiles(
-                                $finder->files()->in($path . $p)
+                                $finder->files()->in($path . $p),
+                                $path . $p
                             );
                             $found_files = array_merge(
                                 $found_files,
@@ -122,19 +123,24 @@ class TypesFiles
      * Parse existing files into an array for display
      *
      * @param Iterator $finder Finder results iterator
+     * @param string   $path   Parent path to prepend
      *
      * @return array
      */
-    private function _parseExistingFiles($finder)
+    private function _parseExistingFiles($finder, $path = null)
     {
         $existing_files = array();
         foreach ( $finder as $found ) {
             if ( !$found->isDir() ) {
                 $parent = $found->getRelativePath();
+                $filename = $found->getFileName();
+                if ( $path !== null ) {
+                    $filename = $path . '/' . $filename;
+                }
                 if ( $parent !== '' ) {
-                    $existing_files[$parent][] = $found->getFileName();
+                    $existing_files[$parent][] = $filename;
                 } else if ( $found->getRealPath() !== false ) {
-                    $existing_files[] = $found->getFileName();
+                    $existing_files[] = $filename;
                 }
             }
         }

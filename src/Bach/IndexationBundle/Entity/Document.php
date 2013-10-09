@@ -77,6 +77,8 @@ class Document
      */
     protected $task;
 
+    protected $uploaded = true;
+
     /**
      * Get absolute path to document
      *
@@ -129,7 +131,11 @@ class Document
         if (null !== $this->file) {
             $this->path = sha1(uniqid(mt_rand(), true)) . '.' .
                 $this->file->guessExtension();
-             $this->name = $this->file->getClientOriginalName();
+            if ( $this->uploaded ) {
+                $this->name = $this->file->getClientOriginalName();
+            } else {
+                $this->name = $this->file->getFileName();
+            }
         }
     }
 
@@ -147,11 +153,14 @@ class Document
             return;
         }
 
-        // s'il y a une erreur lors du déplacement du fichier, une exception
-        // va automatiquement être lancée par la méthode move(). Cela va empêcher
-        // proprement l'entité d'être persistée dans la base de données si
-        // erreur il y a
-        $this->file->move($this->_upload_dir, $this->path);
+        if ( $this->uploaded ) {
+            $this->file->move($this->_upload_dir, $this->path);
+        } else {
+            copy(
+                $this->file,
+                $this->_upload_dir . '/' . $this->path
+            );
+        }
 
         unset($this->file);
     }
@@ -334,5 +343,10 @@ class Document
     {
         $this->corename = $corename;
         return $this;
+    }
+
+    public function setNotUploaded()
+    {
+        $this->uploaded = false;
     }
 }
