@@ -59,19 +59,14 @@ class ArchFileIntegration
     {
         $repository = $this->_entityManager
             ->getRepository('BachIndexationBundle:ArchFileIntegrationTask');
-
-        $tasks = $repository->findByStatus(0);
+        $tasks = $repository->findByStatus(ArchFileIntegrationTask::STATUS_NONE);
 
         foreach ($tasks as $task) {
-            try{
+            try {
                 $this->integrate($task);
-                $task->setStatus(1);
-            }catch(BadInputFileFormatException $e){
-                $task->setStatus(2);
-            }catch(UnknownDriverParserException $e){
-                $task->setStatus(3);
-            }catch(\DomainException $e){
-                $task->setStatus(4);
+                $task->setStatus(ArchFileIntegrationTask::STATUS_OK);
+            } catch(\Exception $e) {
+                $task->setStatus(ArchFileIntegrationTask::STATUS_KO);
             }
 
             //anyways, presist task

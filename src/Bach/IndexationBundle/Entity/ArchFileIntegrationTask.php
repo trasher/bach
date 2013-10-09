@@ -11,6 +11,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class ArchFileIntegrationTask
 {
+    const STATUS_NONE = 0;
+    const STATUS_OK = 1;
+    const STATUS_KO = 2;
+
     /**
     * @ORM\Id
     * @ORM\Column(type="integer")
@@ -42,7 +46,7 @@ class ArchFileIntegrationTask
     public function __construct($document)
     {
         $this->document = $document;
-        $this->status = 0;
+        $this->status = self::STATUS_NONE;
     }
 
     /**

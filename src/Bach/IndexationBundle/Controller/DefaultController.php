@@ -182,18 +182,15 @@ class DefaultController extends Controller
 
             switch ( (int)$entity->getStatus() ) {
             default:
-            case 0:
+            case ArchFileIntegrationTask::STATUS_NONE:
                 $status = "";
                 break;
-            case 1:
+            case ArchFileIntegrationTask::STATUS_OK:
                 $status = "success";
                 break;
-            case 2:
-            case 3:
+            case ArchFileIntegrationTask::STATUS_KO:
+            default:
                 $status = "error";
-                break;
-            case 4:
-                $status = "warning";
                 break;
             }
             $tasks[count($tasks)-1]['status'] = $status;
@@ -217,7 +214,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
             'SELECT t FROM BachIndexationBundle:ArchFileIntegrationTask t ' .
-            'WHERE t.status > 0'
+            'WHERE t.status > ' . ArchFileIntegrationTask::STATUS_NONE
         );
         $tasks = $query->getResult();
 
@@ -226,7 +223,7 @@ class DefaultController extends Controller
         }
         $em->flush();
         return new RedirectResponse(
-            $this->get("router")->generate("bach_indexation_homepage")
+            $this->get("router")->generate("bach_indexation_queue")
         );
     }
 
