@@ -21,7 +21,7 @@ class DocumentRepository extends EntityRepository
     public function getPublishedDocuments()
     {
         $query = 'SELECT d from BachIndexationBundle:Document d LEFT JOIN d.task t WHERE t.taskId IS NULL or t.status=1';
-        $results = $this->getEntityManager()->createQuery($query)->getResult();
+        $results = $this->getManager()->createQuery($query)->getResult();
         return $results;
     }
 }
