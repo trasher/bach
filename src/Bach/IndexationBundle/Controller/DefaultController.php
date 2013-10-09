@@ -359,6 +359,9 @@ class DefaultController extends Controller
             $platform->getTruncateTableSQL('EADDaos', true)
         );
         $connection->executeUpdate(
+            $platform->getTruncateTableSQL('EADParentTitle', true)
+        );
+        $connection->executeUpdate(
             $platform->getTruncateTableSQL('EADUniversalFileFormat', true)
         );
 
@@ -366,6 +369,10 @@ class DefaultController extends Controller
         //FIXME: are files not deleted this way?
         $connection->executeUpdate(
             $platform->getTruncateTableSQL('Document', true)
+        );
+
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('ArchFileIntegrationTask', true)
         );
 
         try {
