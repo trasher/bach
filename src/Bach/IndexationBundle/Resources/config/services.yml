@@ -5,6 +5,7 @@ parameters:
     bach_indexation_pre_processor_factory.class: Bach\IndexationBundle\Service\PreProcessorFactory
     bach_indexation_process_arch_file_integration.class: Bach\IndexationBundle\Service\ArchFileIntegration
     bach_indexation_typesfiles.class: Bach\IndexationBundle\Service\TypesFiles
+    bach_indexation_documenttype.class: Bach\IndexationBundle\Form\Type\DocumentType
 
 services:
     bach.indexation.file_driver_manager:
@@ -24,3 +25,8 @@ services:
         class: '%bach_indexation_typesfiles.class%'
         arguments: [ '%bach.types%', '%bach.typespaths%' ]
 
+    bach.indexation.form.type.document:
+        class: '%bach_indexation_documenttype.class%'
+        arguments: [ '%bach.types%' ]
+        tags:
+            - { name: form.type, alias: document}

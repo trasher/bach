@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
+use Bach\IndexationBundle\Form\Type\DocumentType;
 
 /**
  * Default indexation controller
@@ -62,43 +63,7 @@ class DefaultController extends Controller
     public function addAction()
     {
         $document = new Document();
-        $builder = $this->createFormBuilder($document);
-
-        $builder
-            ->add(
-                'file',
-                'file',
-                array(
-                    "label" => _("Fichier à indexer")
-                )
-            )
-            ->add(
-                'extension',
-                'choice',
-                array(
-                    "choices" => array(
-                        "ead"       => "EAD",
-                        "unimarc"   => "UNIMARC"
-                    ),
-                    "label"    =>    _("Format du fichier")
-                )
-            )
-            ->add(
-                'perform',
-                'submit',
-                array(
-                    'label' => _("Ajouter à la file d'attente"),
-                )
-            )
-            ->add(
-                'performall',
-                'submit',
-                array(
-                    'label' => _("Lancer l'indexation"),
-                )
-            );
-
-        $form = $builder->getForm();
+        $form = $this->createForm('document', $document);
         $form->handleRequest($this->getRequest());
 
         if ($form->isValid()) {
@@ -268,7 +233,7 @@ class DefaultController extends Controller
     /**
      * Remove selected indexed documents, in both database and Solr
      *
-     * @param array $documents List of id to remove. If missing, 
+     * @param array $documents List of id to remove. If missing,
      *                         we'll take documents in GET.
      *
      * @return void
