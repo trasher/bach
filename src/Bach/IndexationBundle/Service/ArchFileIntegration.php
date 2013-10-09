@@ -102,6 +102,7 @@ class ArchFileIntegration
         }
 
         $this->_entityManager->flush();
+        $this->_entityManager->clear();
 
         $sca = new SolrCoreAdmin();
         $sca->fullImport($doc->getCorename());
