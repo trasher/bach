@@ -60,6 +60,11 @@ EOF
                 InputArgument::IS_ARRAY | InputArgument::REQUIRED,
                 'Document(s) name(s) to proceed'
             )->addOption(
+                'assume-yes',
+                null,
+                InputOption::VALUE_NONE,
+                'Assume yes for all questions'
+            )->addOption(
                 'dry-run',
                 null,
                 InputOption::VALUE_NONE,
@@ -116,14 +121,19 @@ EOF
             implode("\n", $files_to_publish[$type])
         );
 
-        $choices = array(_('yes'), _('no'));
-        $dialog = $this->getHelperSet()->get('dialog');
-        $confirm = $dialog->ask(
-            $output,
-            "\n" . _('Are you ok (y/n)?'),
-            'FooBundle',
-            $choices
-        );
+        $confirm = null;
+        if ( $input->getOption('assume-yes') ) {
+            $confirm = 'yes';
+        } else {
+            $choices = array(_('yes'), _('no'));
+            $dialog = $this->getHelperSet()->get('dialog');
+            $confirm = $dialog->ask(
+                $output,
+                "\n" . _('Are you ok (y/n)?'),
+                null,
+                $choices
+            );
+        }
 
         if ( $confirm === 'yes' || $confirm === 'y' ) {
             $output->writeln(
@@ -134,6 +144,10 @@ EOF
             $progress = $this->getHelperSet()->get('progress');
             $progress->start($output, count($files_to_publish[$type]));
             foreach ( $files_to_publish[$type] as $ftp ) {
+                /*$integrationService = $this->getContainer()
+                    ->get('bach.indexation.process.arch_file_integration');*/
+                /*$return = $integrationService->proceedQueue();*/
+                /*$output->writeln($return);*/
 
                 $progress->advance();
             }
@@ -146,10 +160,5 @@ EOF
             );
 
         }
-
-        /*$integrationService = $this->getContainer()
-            ->get('bach.indexation.process.arch_file_integration');*/
-        /*$return = $integrationService->proceedQueue();*/
-        /*$output->writeln($return);*/
     }
 }
