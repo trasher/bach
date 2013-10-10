@@ -6,6 +6,7 @@ app/spool/*
 app/bootstrap/*
 app/config/parameters.ini
 app/config/parameters.yml
+app/config/constants.php
 app/bootstrap.php.cache
 web/bundles/*
 !Uploader

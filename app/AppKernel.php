@@ -12,6 +12,10 @@
  * @link     http://anaphore.eu
  */
 
+if ( file_exists(__DIR__ . '/config/constants.php') ) {
+    include_once __DIR__ . '/config/constants.php';
+}
+
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 

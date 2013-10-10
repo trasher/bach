@@ -1,0 +1,13 @@
+<?php
+
+if ( !defined('BACH_FILES_VIDEOS') ) {
+    define('BACH_FILES_VIDEOS', '/var/www/videos/');
+}
+
+if ( !defined('BACH_FILES_MUSICS') ) {
+    define('BACH_FILES_MUSICS', '/var/www/musics/');
+}
+
+if ( !defined('BACH_FILES_MISC') ) {
+    define('BACH_FILES_MISC', '/var/www/misc_files/');
+}
