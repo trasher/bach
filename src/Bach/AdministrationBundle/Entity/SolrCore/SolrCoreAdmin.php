@@ -46,13 +46,9 @@ class SolrCoreAdmin
      *
      * @param BachCoreAdminConfigReader $reader Config reader.
      */
-    public function __construct(BachCoreAdminConfigReader $reader = null)
+    public function __construct(BachCoreAdminConfigReader $reader)
     {
-        if ($reader == null) {
-            $this->_reader = new BachCoreAdminConfigReader();
-        } else {
-            $this->_reader = $reader;
-        }
+        $this->_reader = $reader;
     }
 
     /**

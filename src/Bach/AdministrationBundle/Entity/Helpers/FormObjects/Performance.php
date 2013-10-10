@@ -1,8 +1,29 @@
 <?php
+/**
+ * Performance form
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 
 use Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance;
 
+/**
+ * Performance form
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class Performance
 {
     public $queryResultWindowsSize;
@@ -14,11 +35,20 @@ class Performance
     public $queryResultCacheSize;
     public $queryResultInitialCacheSize;
     public $queryResultAutowarmCount;
-    
-    public function __construct($coreName = null)
+
+    private $_xmlp;
+
+    /**
+     * Constructor
+     *
+     * @param XMLProcess $xmlp     XMLProcess instance
+     * @param string     $coreName Core name
+     */
+    public function __construct($xmlp, $coreName = null)
     {
+        $this->_xmlp = $xmlp;
         if ($coreName != null) {
-            $sp = new SolrPerformance($coreName);
+            $sp = new SolrPerformance($xmlp, $coreName);
             $this->queryResultWindowsSize = $sp->getQueryResultWindowsSize();
             $parameters = $sp->getDocumentCacheParameters();
             $this->documentCacheClass = $parameters[0];
@@ -32,22 +62,29 @@ class Performance
             $this->queryResultAutowarmCount = $parameters[3];
         }
     }
-    
+
+    /**
+     * Save
+     *
+     * @param string $coreName Core name
+     *
+     * @return void
+     */
     public function saveAll($coreName)
     {
         $sp = new SolrPerformance($coreName);
         $sp->setDocumentCacheParameters(
-                $this->documentCacheClass,
-                $this->documentCacheSize,
-                $this->documentCacheInitialSize
-                );
+            $this->documentCacheClass,
+            $this->documentCacheSize,
+            $this->documentCacheInitialSize
+        );
         $sp->setQueryResultMaxDocsCached($this->queryResultMaxDocsCached);
         $sp->setQueryResultCacheParameters(
-                $this->queryResultClassSize,
-                $this->queryResultCacheSize,
-                $this->queryResultInitialCacheSize,
-                $this->queryResultAutowarmCount
-                );
+            $this->queryResultClassSize,
+            $this->queryResultCacheSize,
+            $this->queryResultInitialCacheSize,
+            $this->queryResultAutowarmCount
+        );
         $sp->save();
     }
 }

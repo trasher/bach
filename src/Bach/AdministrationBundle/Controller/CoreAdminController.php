@@ -69,6 +69,9 @@ class CoreAdminController extends Controller
     public function refreshAction(Request $request)
     {
         $session = $request->getSession();
+        $configreader = $this->container->get('bach.administration.configreader');
+        $sca = new SolrCoreAdmin($configreader);
+
         if ($request->isMethod('GET')) {
             /*$form = $this->createForm(
                 new CoreCreationForm()
@@ -87,7 +90,10 @@ class CoreAdminController extends Controller
             array(
                 'coreName' => $session->get('coreName'),
                 'coreNames' => $session->get('coreNames'),
-                'coreStatus' => new CoreStatus($session->get('coreName'))
+                'coreStatus' => new CoreStatus(
+                    $sca,
+                    $session->get('coreName')
+                )
             )
         );
     }
@@ -102,7 +108,8 @@ class CoreAdminController extends Controller
     private function _createCore(Request $request)
     {
         $session = $request->getSession();
-        $sca = new SolrCoreAdmin();
+        $configreader = $this->container->get('bach.administration.configreader');
+        $sca = new SolrCoreAdmin($configreader);
         $cc = new CoreCreation();
         $form = $this->createForm(
             new CoreCreationForm(

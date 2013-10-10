@@ -58,11 +58,12 @@ class DefaultController extends Controller
         if (!isset($coreName)) {
             $coreName = 'none';
         }
-        $sca = new SolrCoreAdmin();
+        $configreader = $this->container->get('bach.administration.configreader');
+        $sca = new SolrCoreAdmin($configreader);
         $coreNames = $sca->getStatus()->getCoreNames();
         $coresInfo = array();
         foreach ($coreNames as $cn) {
-            $coresInfo[$cn] = new CoreStatus($cn);
+            $coresInfo[$cn] = new CoreStatus($sca, $cn);
         }
         $session = $this->getRequest()->getSession();
         $session->set('coreNames', $coreNames);
@@ -70,7 +71,7 @@ class DefaultController extends Controller
         if ($coreName == 'none') {
             $session->set('xmlP', null);
         } else {
-            $session->set('xmlP', new XMLProcess($coreName));
+            $session->set('xmlP', new XMLProcess($sca, $coreName));
         }
 
         $db = new Dashboard();

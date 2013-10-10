@@ -32,24 +32,76 @@ class BachCoreAdminConfigReader
     const CONFIG_FILE_NAME = "BachSolrCoreConfig.xml";
 
     private $_doc;
+    private $_filepath;
+
+    private $_ssl;
+    private $_host;
+    private $_port;
+    private $_path;
 
     /**
      * Constructor. Reads the config XML file.
+     *
+     * @param boolean $ssl  Solr SSL host
+     * @param string  $host Solr host
+     * @param string  $port Solr port
+     * @param string  $path Solr path
      */
-    public function __construct()
+    public function __construct( $ssl, $host, $port, $path )
     {
-        $filepath = __DIR__.'/../../Resources/config/' . self::CONFIG_FILE_NAME;
+        $this->_ssl = $ssl;
+        $this->_host = $host;
+        $this->_port = $port;
+        $this->_path = $path;
+
+        $this->_filepath = __DIR__.'/../../Resources/config/' .
+            self::CONFIG_FILE_NAME;
         libxml_use_internal_errors(true);
-        $this->_doc = simplexml_load_file($filepath);
+        $this->_loadDoc();
 
         if ( $this->_doc === false ) {
             $msg = __METHOD__ . ' | An error occured loading XML file ' .
-                $filepath . ":\n";
+                $this->_filepath . ":\n";
             foreach ( libxml_get_errors() as $error ) {
                 $msg .= "\t" . $error->message . "\n";
             }
             throw new \RuntimeException($msg);
         }
+    }
+
+    /**
+     * Loads XML document
+     *
+     * @return void
+     */
+    private function _loadDoc()
+    {
+        $this->_doc = simplexml_load_file($this->_filepath);
+    }
+
+    /**
+     * On unserialization
+     *
+     * @return void
+     */
+    public function __wakeup()
+    {
+        $this->_loadDoc();
+    }
+
+    /**
+     * On serialization
+     *
+     * @return void
+     */
+    public function __sleep()
+    {
+        return array(
+            '_host',
+            '_port',
+            '_path',
+            '_filepath'
+        );
     }
 
     /**
@@ -80,7 +132,23 @@ class BachCoreAdminConfigReader
      */
     public function getCoresURL()
     {
-        return $this->_doc->solrCoresURL;
+        $url_pattern = 'http%ssl://%host:%port%path';
+        $url = str_replace(
+            array(
+                '%ssl',
+                '%host',
+                '%port',
+                '%path'
+            ),
+            array(
+                ($this->_ssl == true) ? 's' : '',
+                $this->_host,
+                $this->_port,
+                $this->_path
+            ),
+            $url_pattern
+        );
+        return $url;
     }
 
     /**

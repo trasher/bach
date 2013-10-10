@@ -14,6 +14,8 @@ use DOMElement;
  */
 class XMLProcess
 {
+    private $_sca;
+
     protected $doc;
     protected $xmlVersion;
     protected $xmlEncoding;
@@ -24,19 +26,20 @@ class XMLProcess
      * XMLProcess constructor. Retreive path to schema.xml file for current core and
      * load this file.
      *
+     * @param SolrCoreAdmin $sca      Core admin instance
      * @param string        $coreName Core name
      */
-    public function __construct($coreName)
+    public function __construct($sca, $coreName)
     {
-        $solrCore = new SolrCoreAdmin();
-        $this->filePath = $solrCore->getSchemaPath($coreName);
+        $this->_sca = $sca;
+        $this->filePath = $this->_sca->getSchemaPath($coreName);
         $this->rootElement = $this->loadXML();
     }
 
     /**
      * Load schema.xml file.
      *
-     * @return \Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement
+     * @return SolrXMLElement
      */
     public function loadXML()
     {

@@ -1,4 +1,16 @@
 <?php
+/**
+ * Field form
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Field;
@@ -10,52 +22,106 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-
+/**
+ * Field form entry
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class FieldForm extends AbstractType
 {
+    private $_xmlp;
+
+    /**
+     * Main constructor
+     *
+     * @param XMLProcess $xmlp XMLProcess instance
+     */
+    public function __construct(XMLProcess $xmlp)
+    {
+        $this->_xmlp = $xmlp;
+    }
+
+    /**
+     * Builds the form
+     *
+     * @param FormBuilderInterface $builder Form builder
+     * @param array                $options Form options
+     *
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $bachTagType = BachSchemaConfigReader::FIELD_TAG;
         $reader = new BachSchemaConfigReader();
-        
+
         // Form attributes
         $attr = $reader->getAttributeByTag($bachTagType, 'name');
-        $builder->add('name', 'text', array(
+        $builder->add(
+            'name',
+            'text',
+            array(
                 'label'    => $attr->getLabel(),
                 'required' => true,
                 'read_only' => true
-            ));
+            )
+        );
         $attr = $reader->getAttributeByTag($bachTagType, 'type');
-        $builder->add('type', 'choice', array(
+        $builder->add(
+            'type',
+            'choice',
+            array(
                 'label'    => $attr->getLabel(),
                 'required' => true,
-                'choices'  => $this->retreiveTypeAttributeValues(),
-                ));
+                'choices'  => $this->_retrieveTypeAttributeValues(),
+            )
+        );
         $attr = $reader->getAttributeByTag($bachTagType, 'indexed');
-        $builder->add('indexed', 'checkbox', array(
+        $builder->add(
+            'indexed',
+            'checkbox',
+            array(
                 'label'    => $attr->getLabel(),
                 'required' => false
-                ));
+            )
+        );
         $attr = $reader->getAttributeByTag($bachTagType, 'stored');
-        $builder->add('stored', 'checkbox', array(
+        $builder->add(
+            'stored',
+            'checkbox', array(
                 'label'    => $attr->getLabel(),
                 'required' => false
-                ));
+            )
+        );
         $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
-        $builder->add('multiValued', 'checkbox', array(
+        $builder->add(
+            'multiValued',
+            'checkbox', array(
                 'label'    => $attr->getLabel(),
                 'required' => false
-                ));
+            )
+        );
         $attr = $reader->getAttributeByTag($bachTagType, 'default');
-        $builder->add('default', 'text', array(
+        $builder->add(
+            'default',
+            'text',
+            array(
                 'label'    => $attr->getLabel(),
                 'required' => false
-                ));
+            )
+        );
         $attr = $reader->getAttributeByTag($bachTagType, 'required');
-        $builder->add('required', 'checkbox', array(
+        $builder->add(
+            'required',
+            'checkbox',
+            array(
                 'label'    => $attr->getLabel(),
                 'required' => false
-                ));
+            )
+        );
         /*
          * Other Attributes that can be added to the application in the future
          */
@@ -84,51 +150,51 @@ class FieldForm extends AbstractType
                 'label' => $attr->getLabel(),
                 'required' => $attr->isRequired()));*/
     }
-    
+
+    /**
+     * Sets default options
+     *
+     * @param OptionsResolverInterface $resolver Resolver
+     *
+     * @return void
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
                 'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\Field',
-        ));
+            )
+        );
     }
 
+    /**
+     * Get form name
+     *
+     * @return string
+     */
     public function getName()
     {
         return 'fieldForm';
     }
-    
+
     /**
-     * Get available values for type attribute. Only values from the schema.xml in typeField tags
-     * can be used.
+     * Get available values for type attribute. Only values from the
+     * schema.xml in typeField tags can be used.
+     *
      * @return multitype:NULL
      */
-    private function retreiveTypeAttributeValues()
+    private function _retrieveTypeAttributeValues()
     {
         $choices = array();
-        /*$session = new Session();
-        if ($session->has('schema')) {
-            $xmlProcess = $session->get('schema');*/
-            $xmlP = new XMLProcess($_SESSION['_sf2_attributes']['coreName']);
-            $types = $xmlP->getElementsByName('types');
-            $types = $types[0];
-            $types = $types->getElementsByName('fieldType');
-            foreach ($types as $t) {
-                $schemaAttr = $t->getAttribute('name');
-                if (!$this->isContains($choices, $schemaAttr->getValue())) {
-                    $choices[$schemaAttr->getValue()] = $schemaAttr->getValue();
-                }
-            }
-        //}
-        return $choices;
-    }
-    
-    private function isContains($choices, $name)
-    {
-        foreach ($choices as $c) {
-            if ($c == $name) {
-                return true;
+        $types = $this->_xmlp->getElementsByName('types');
+        $types = $types[0];
+        $types = $types->getElementsByName('fieldType');
+        foreach ($types as $t) {
+            $schemaAttr = $t->getAttribute('name');
+            if ( !in_array($schemaAttr->getValue(), $choices) ) {
+                $choices[$schemaAttr->getValue()] = $schemaAttr->getValue();
             }
         }
-        return false;
+        return $choices;
     }
 }

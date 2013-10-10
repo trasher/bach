@@ -11,34 +11,55 @@ use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 class UniqueKeyController extends Controller
 {
+
+    /**
+     * Refresh
+     *
+     * @param Request $request Request
+     *
+     * @return void
+     */
     public function refreshAction(Request $request)
     {
         $session = $request->getSession();
+        $xmlp = $session->get('xmlP');
+
         if ($request->isMethod('GET')) {
-            $form = $this->createForm(new UniqueKeyForm(), new UniqueKey($session->get('xmlP')));
+            $form = $this->createForm(
+                new UniqueKeyForm($xmlp),
+                new UniqueKey($xmlp)
+            );
         } else {
             $btn = $request->request->get('submit');
             if (isset($btn)) {
-                $form = $this->submitAction($request, $session->get('xmlP'));
+                $form = $this->submitAction($request, $xmlp);
             } elseif (isset($btn)) {
                 echo 'ELSIF';
             }
         }
-        return $this->render('AdministrationBundle:Default:uniquekey.html.twig', array(
-                'form' => $form->createView(),
-                'coreName' => $session->get('coreName'),
+        return $this->render(
+            'AdministrationBundle:Default:uniquekey.html.twig',
+            array(
+                'form'      => $form->createView(),
+                'coreName'  => $session->get('coreName'),
                 'coreNames' => $session->get('coreNames')
-        ));
+            )
+        );
     }
-    
+
     public function submitAction(Request $request, XMLProcess $xmlP)
     {
         $session = $request->getSession();
-        $uk = new UniqueKey();
-        $form = $this->createForm(new UniqueKeyForm(), $uk);
+        $xmlp = $session->get('xmlP');
+
+        $uk = new UniqueKey($xmlp);
+        $form = $this->createForm(
+            new UniqueKeyForm($xmlp),
+            $uk
+        );
         $form->bind($request);
         if ($form->isValid()) {
-            $uk->save($xmlP);
+            $uk->save($xmlp);
         }
         return $form;
     }

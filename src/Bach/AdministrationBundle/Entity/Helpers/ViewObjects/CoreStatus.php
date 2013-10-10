@@ -13,9 +13,14 @@ class CoreStatus
     public $maxDoc;
     public $size;
 
-    public function __construct($coreName)
+    /**
+     * Main constructor
+     *
+     * @param SolrCoreAdmin $sca      Solr core admin instance
+     * @param string        $coreName Core name
+     */
+    public function __construct($sca, $coreName)
     {
-        $sca = new SolrCoreAdmin();
         $status = $sca->getStatus($coreName);
         $status = $status->getCoreStatus($coreName);
         $this->startTime = $status->getStartTime()->format('d/m/Y H:i');
@@ -24,6 +29,6 @@ class CoreStatus
         $this->uptime = $status->getUptime();
         $this->numDocs = $status->getNumDocs();
         $this->maxDoc = $status->getMaxDoc();
-        $this->size = $status->getSizeInBytes(); 
+        $this->size = $status->getSizeInBytes();
     }
 }

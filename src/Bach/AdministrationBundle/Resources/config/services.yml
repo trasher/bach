@@ -1,7 +1,12 @@
 parameters:
     administration.xmlimport.class: Bach\AdministrationBundle\Service\XMLImport
+    administration.configreader.class: Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader
 
 services:
     bach.administration.xmlimport:
          class: %administration.xmlimport.class%
          arguments: [ @doctrine.orm.entity_manager ]
+
+    bach.administration.configreader:
+        class: %administration.configreader.class%
+        arguments: [ '%solr_ssl%', '%solr_host%', '%solr_port%', '%solr_path%' ]
