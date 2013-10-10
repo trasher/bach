@@ -6,9 +6,12 @@
                     _selector = 'a.ajaxflashplayer';
                     _musicselector = 'a.ajaxflashmusicplayer';
                 }
+                var _musicplay = $(_musicselector)[0];
+                $(_musicplay).attr('id', 'musicplayer').removeClass(_musicselector);
+                _playlist = _buildPlaylist(_musicselector)
 
                 flowplayer(_selector, "{{ asset('/img/flowplayer-3.2.16.swf') }}");
-                flowplayer(_musicselector, "{{ asset('/img/flowplayer-3.2.16.swf') }}", {
+                flowplayer('musicplayer', "{{ asset('/img/flowplayer-3.2.16.swf') }}", {
                     plugins: {
                         audio: {
                             url: "{{ asset('/img/flowplayer.audio-3.2.10.swf') }}"
@@ -22,11 +25,25 @@
                     },
                     clip: {
                         autoPlay: false,
-                        onBeforeBegin: function() {
-                            flowplayer('player').close();
-                        }
+                        autoBuffering: true
                     }
                 });
+            }
+
+            _buildPlaylist = function(selector) {
+                var _list= [];
+                var _count = 0;
+                $(selector).each(function(){
+                    var _this = $(this);
+                    if ( _count > 0 ) {
+                        _this.on('click', function(){
+                            flowplayer('musicplayer').play(_this.attr('href'));
+                            return false;
+                        });
+                    }
+                    _count++;
+                });
+                return _list;
             }
             _initflow();
 
