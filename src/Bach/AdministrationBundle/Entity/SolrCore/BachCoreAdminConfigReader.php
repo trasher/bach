@@ -13,8 +13,6 @@
 
 namespace Bach\AdministrationBundle\Entity\SolrCore;
 
-use DOMDocument;
-
 /**
  * Bach core configuration reader
  *

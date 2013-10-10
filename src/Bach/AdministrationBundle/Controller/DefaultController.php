@@ -15,25 +15,43 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-//use Bach\AdministrationBundle\Controller\XMLProcess;
-
 class DefaultController extends Controller
 {
+    /**
+     * Administration index
+     *
+     * @return void
+     */
     public function indexAction()
     {
         return $this->render('AdministrationBundle:Default:index.html.twig');
     }
 
+    /**
+     * Solr cores administration interface
+     *
+     * @return void
+     */
     public function coreadminAction()
     {
         return $this->render('AdministrationBundle:Default:coreadmin.html.twig');
     }
 
+    /**
+     * Solr performance interface
+     *
+     * @return void
+     */
     public function performanceAction()
     {
         return $this->render('AdministrationBundle:Default:performance.html.twig');
     }
 
+    /**
+     * Displays dashboard
+     *
+     * @return void
+     */
     public function dashboardAction()
     {
         $coreName = $this->getRequest()->request->get('selectedCore');
