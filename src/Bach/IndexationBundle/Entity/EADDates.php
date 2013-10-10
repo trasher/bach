@@ -3,6 +3,7 @@
 namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Bach\IndexationBundle\Entity\EADFileFormat;
 
 /**
  * EADDates
@@ -188,7 +189,6 @@ class EADDates
             //TODO: add a parameter somewhere to decide if we throw or not
             //throw $e;
         }
-        
     }
 
     /**
@@ -365,20 +365,20 @@ class EADDates
     /**
      * Set eadfile
      *
-     * @param \Bach\IndexationBundle\Entity\UniversalFileFormat\EADFileFormat $eadfile
+     * @param EADFileFormat $eadfile EAD File
+     *
      * @return EADDates
      */
-    public function setEadfile(\Bach\IndexationBundle\Entity\UniversalFileFormat\EADFileFormat $eadfile = null)
+    public function setEadfile(EADFileFormat $eadfile = null)
     {
         $this->eadfile = $eadfile;
-    
         return $this;
     }
 
     /**
      * Get eadfile
      *
-     * @return \Bach\IndexationBundle\Entity\UniversalFileFormat\EADFileFormat 
+     * @return EADFileFormat
      */
     public function getEadfile()
     {
