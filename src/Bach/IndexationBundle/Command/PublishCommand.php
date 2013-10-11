@@ -85,6 +85,15 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $dry = $input->getOption('dry-run');
+        if ( $dry === true ) {
+            $output->writeln(
+                '<fg=green;options=bold>' .
+                _('Running in dry mode') .
+                '</fg=green;options=bold>'
+            );
+        }
+
         $type = null;
         $container = $this->getContainer();
         $known_types = $container->getParameter('bach.types');
@@ -167,13 +176,17 @@ EOF
                     )
                 );
 
-                $em->persist($document);
-                $em->flush();
+                if ( $dry === false ) {
+                    $em->persist($document);
+                    $em->flush();
+                }
 
                 //create a new task
                 $task = new ArchFileIntegrationTask($document);
 
-                $res = $integrationService->integrate($task);
+                if ( $dry === false ) {
+                    $res = $integrationService->integrate($task);
+                }
 
                 unset($task, $document);
 
