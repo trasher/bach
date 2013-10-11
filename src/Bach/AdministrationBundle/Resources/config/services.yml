@@ -9,4 +9,4 @@ services:
 
     bach.administration.configreader:
         class: %administration.configreader.class%
-        arguments: [ '%solr_ssl%', '%solr_host%', '%solr_port%', '%solr_path%' ]
+        arguments: [ '%solr_ssl%', '%solr_host%', '%solr_port%', '%solr_path%', '%kernel.cache_dir%', '%kernel.root_dir%' ]

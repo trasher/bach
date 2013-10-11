@@ -11,3 +11,12 @@ if ( !defined('BACH_FILES_MUSICS') ) {
 if ( !defined('BACH_FILES_MISC') ) {
     define('BACH_FILES_MISC', '/var/www/misc_files/');
 }
+
+if ( !defined('BACH_LOG_DIR') ) {
+    define('BACH_LOG_DIR', '/var/log/bach');
+}
+
+if ( !defined('BACH_CACHE_DIR') ) {
+    define('BACH_CACHE_DIR', '/var/lib/bach/cache');
+}
+

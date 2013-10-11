@@ -14,7 +14,7 @@ class SolrCoreResponse
     const ERROR_MSG_XPATH = '/response/lst[@name="error"]/str[@name="msg"]';
     const ERROR_TRACE_XPATH = '/response/lst[@name="error"]/str[@name="trace"]';
     const CORE_NAMES = '/response/lst[@name="status"]/lst[@name]/@name';
-    
+
     private $status;
     private $doc;
     private $xpath;
@@ -35,7 +35,7 @@ class SolrCoreResponse
             $this->status = $nodeList->item(0)->nodeValue;
         }
     }
-    
+
     /**
      * Get response status (0 if all is ok).
      * @return Ambigous <NULL, string>
@@ -44,7 +44,7 @@ class SolrCoreResponse
     {
         return $this->status;
     }
-    
+
     /**
      * Get error code if exist otherwise returns null.
      * @return Ambigous <NULL, string>
@@ -54,7 +54,7 @@ class SolrCoreResponse
         $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_CODE_XPATH);
         return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
     }
-    
+
     /**
      * Get error message if exist otherwise returns null.
      * @return Ambigous <NULL, string>
@@ -64,7 +64,7 @@ class SolrCoreResponse
         $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_MSG_XPATH);
         return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
     }
-    
+
     /**
      * Get error trace if exist otherwise returns null.
      * @return Ambigous <NULL, string>
@@ -74,7 +74,7 @@ class SolrCoreResponse
         $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_TRACE_XPATH);
         return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
     }
-    
+
     /**
      * If response status is 0 returns true otherwise returns false.
      * @return Ambigous <NULL, string>
@@ -83,7 +83,7 @@ class SolrCoreResponse
     {
         return $this->status == 0 ? true : false;
     }
-    
+
     /**
      * Get array of core names.
      * @return array<string>
@@ -96,7 +96,7 @@ class SolrCoreResponse
         }
         return $coreNameArray;
     }
-    
+
     /**
      * Get status of a Solr core.
      * @return SolrCoreStatus
@@ -104,7 +104,7 @@ class SolrCoreResponse
     public function getCoreStatus($coreName) {
         return new SolrCoreStatus($this->xpath, $coreName);
     }
-    
+
     private function getNodeValue($xpath)
     {
         $nodeList = $this->xpath->query($xpath);

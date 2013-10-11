@@ -126,6 +126,10 @@ class SolrCoreAdmin
         } else {
             //cores dir is read only or does not exists locally,
             //let's use a temporary dir for new core creation
+            $tmp_path = $this->_reader->getTempCorePath();
+            if ( !file_exists($tmp_path) ) {
+                mkdir($tmp_path);
+            }
             $coreInstanceDirPath = $this->_reader->getTempCorePath() .
                 $coreInstanceDir;
         }
@@ -165,9 +169,9 @@ class SolrCoreAdmin
             'action'        => 'CREATE',
             'name'          => $coreName,
             'instanceDir'   => $coreInstanceDir,
-            'config'        => $this->_reader->getConfigFileName(),
-            'schema'        => $this->_reader->getSchemaFileName(),
-            'dataDir'       => $this->_reader->getCoreDataDir()
+            'config'        => $this->_reader->getDefaultConfigFileName(),
+            'schema'        => $this->_reader->getDefaultSchemaFileName(),
+            'dataDir'       => $this->_reader->getDefaultDataDir()
         );
 
         if ( is_writeable($this->_reader->getCoresPath()) ) {
@@ -227,6 +231,9 @@ class SolrCoreAdmin
     public function getTempCoresNames()
     {
         $path = $this->_reader->getTempCorePath();
+        if ( !file_exists($path) ) {
+            return;
+        }
 
         $finder = new Finder();
         $finder
@@ -389,9 +396,7 @@ class SolrCoreAdmin
      */
     public function getSchemaPath($coreName)
     {
-        $coreInstanceDir = $this->getStatus($coreName)
-            ->getCoreStatus($coreName)->getInstanceDir();
-        return $this->_reader->getSolrSchemaFileName($coreName);
+        return $this->_reader->getSchemaPath($coreName);
     }
 
     /**
@@ -403,9 +408,8 @@ class SolrCoreAdmin
      */
     public function getConfigPath($coreName)
     {
-        $coreInstanceDir = $this->getStatus($coreName)
-            ->getCoreStatus($coreName)->getInstanceDir();
-        return $coreInstanceDir . $this->_reader->getCoreConfigDir() . '/' .
+        $conf_dir = $this->_reader->getConfDir($coreName);
+        return $conf_dir .
            $this->_reader->getConfigFileName();
     }
 
@@ -465,8 +469,8 @@ class SolrCoreAdmin
     private function _createSchema($coreInstanceDirPath, $coreName, $orm_name)
     {
         $schemaFilePath = $coreInstanceDirPath . '/' .
-            $this->_reader->getCoreConfigDir() . '/' .
-            $this->_reader->getSchemaFileName();
+            $this->_reader->getDefaultConfigDir() . '/' .
+            $this->_reader->getDefaultSchemaFileName();
         $doc = new DOMDocument();
         $doc->formatOutput = true;
         $doc->preserveWhiteSpace = false;
@@ -779,8 +783,8 @@ class SolrCoreAdmin
         $tableName, $orm_name, $db_params
     ) {
         $dataConfigFilePath = $coreInstanceDirPath . '/' .
-            $this->_reader->getCoreConfigDir() . '/' .
-            $this->_reader->getDataConfigFileName();
+            $this->_reader->getDefaultConfigDir() . '/' .
+            $this->_reader->getDefaultDataConfigFileName();
 
         $doc = new DOMDocument();
         $doc->formatOutput = true;

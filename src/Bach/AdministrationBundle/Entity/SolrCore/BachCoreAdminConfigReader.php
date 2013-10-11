@@ -31,52 +31,58 @@ class BachCoreAdminConfigReader
 {
     const CONFIG_FILE_NAME = "BachSolrCoreConfig.xml";
 
-    private $_doc;
     private $_filepath;
+
+    private $_xml_status = null;
 
     private $_ssl;
     private $_host;
     private $_port;
     private $_path;
+    private $_cache_dir;
+    private $_root_dir;
 
     /**
      * Constructor. Reads the config XML file.
      *
-     * @param boolean $ssl  Solr SSL host
-     * @param string  $host Solr host
-     * @param string  $port Solr port
-     * @param string  $path Solr path
+     * @param boolean $ssl   Solr SSL host
+     * @param string  $host  Solr host
+     * @param string  $port  Solr port
+     * @param string  $path  Solr path
+     * @param string  $cache Application cache directory
+     * @param string  $root  Application root directory
      */
-    public function __construct( $ssl, $host, $port, $path )
+    public function __construct( $ssl, $host, $port, $path, $cache, $root )
     {
         $this->_ssl = $ssl;
         $this->_host = $host;
         $this->_port = $port;
         $this->_path = $path;
+        $this->_cache_dir = $cache;
+        $this->_root_dir = $root;
 
-        $this->_filepath = __DIR__.'/../../Resources/config/' .
-            self::CONFIG_FILE_NAME;
-        libxml_use_internal_errors(true);
-        $this->_loadDoc();
-
-        if ( $this->_doc === false ) {
-            $msg = __METHOD__ . ' | An error occured loading XML file ' .
-                $this->_filepath . ":\n";
-            foreach ( libxml_get_errors() as $error ) {
-                $msg .= "\t" . $error->message . "\n";
-            }
-            throw new \RuntimeException($msg);
-        }
+        $this->_loadStatus();
     }
 
     /**
-     * Loads XML document
+     * Loads status from Solr app
      *
      * @return void
      */
-    private function _loadDoc()
+    private function _loadStatus()
     {
-        $this->_doc = simplexml_load_file($this->_filepath);
+        $url = $this->getCoresURL() . '/admin/cores?action=STATUS';
+        $context  = stream_context_create(
+            array(
+                'http' => array(
+                    'header' => 'Accept: application/xml'
+                )
+            )
+        );
+        $xml = file_get_contents($url, false, $context);
+        $xml = simplexml_load_string($xml);
+
+        $this->_xml_status = $xml;
     }
 
     /**
@@ -86,7 +92,7 @@ class BachCoreAdminConfigReader
      */
     public function __wakeup()
     {
-        $this->_loadDoc();
+        $this->_loadStatus();
     }
 
     /**
@@ -97,6 +103,7 @@ class BachCoreAdminConfigReader
     public function __sleep()
     {
         return array(
+            '_ssl',
             '_host',
             '_port',
             '_path',
@@ -111,7 +118,18 @@ class BachCoreAdminConfigReader
      */
     public function getCoresPath()
     {
-        return $this->_doc->solrCoresPath;
+        $xpath = "//lst[@name='status']/lst[1]/@name";
+        $result = $this->_xml_status->xpath($xpath);
+        $core_name = (string)$result[0];
+
+        $instance_dir = $this->getInstanceDir($core_name);
+        $cores_path = str_replace(
+            $core_name . '/',
+            '',
+            $instance_dir
+        );
+
+        return $cores_path;
     }
 
     /**
@@ -121,8 +139,7 @@ class BachCoreAdminConfigReader
      */
     public function getTempCorePath()
     {
-        //FIXME: parametize
-        return '/var/www/bach/app/cache/tmpCores/';
+        return $this->_cache_dir . '/tmpCores/';
     }
 
     /**
@@ -158,7 +175,7 @@ class BachCoreAdminConfigReader
      */
     public function getCoreTemplatePath()
     {
-        return (string)$this->_doc->solrCoreTemplatePath;
+        return $this->_root_dir . '/config/coreTemplate';
     }
 
     /**
@@ -166,9 +183,9 @@ class BachCoreAdminConfigReader
      *
      * @return string
      */
-    public function getCoreDataDir()
+    public function getDefaultDataDir()
     {
-        return $this->_doc->solrCoreDataDirectoryName;
+        return 'data';
     }
 
     /**
@@ -176,31 +193,56 @@ class BachCoreAdminConfigReader
      *
      * @return string
      */
-    public function getCoreConfigDir()
+    public function getDefaultConfigDir()
     {
-        return $this->_doc->solrCoreConfigDirectoryName;
+        return 'conf/';
     }
 
     /**
-     * Get name of configuration file (usually solrconfig.xml)
+     * Get default name for configuration file
      *
      * @return string
      */
-    public function getConfigFileName()
+    public function getDefaultConfigFileName()
     {
-        return $this->_doc->solrConfigFileName;
+        return 'solrconfig.xml';
     }
 
     /**
      * Get name of schema file (usually schema.xml)
      *
      * @return string
-     *
-     * @deprecated See getSolrSchemaFileName
      */
-    public function getSchemaFileName()
+    public function getDefaultSchemaFileName()
     {
-        return $this->_doc->solrSchemaFileName;
+        return 'schema.xml';
+    }
+
+    /**
+     * Get instance directory
+     *
+     * @param string $core Core name
+     *
+     * @return string
+     */
+    public function getInstanceDir($core)
+    {
+        $xpath = "//lst[@name='" . $core . "']/str[@name='instanceDir']";
+        $result = $this->_xml_status->xpath($xpath);
+        return (string)$result[0];
+    }
+
+    /**
+     * Get config dir
+     *
+     * @param string $core Core name
+     *
+     * @return string
+     */
+    public function getConfDir($core)
+    {
+        $instance_dir = $this->getInstanceDir($core);
+        return $instance_dir . 'conf/';
     }
 
     /**
@@ -210,29 +252,12 @@ class BachCoreAdminConfigReader
      *
      * @return String
      */
-    public function getSolrSchemaFileName($coreName)
+    public function getSchemaPath($coreName)
     {
-        //http://trojan:8080/solr/admin/cores?action=STATUS
-        $url = $this->getCoresURL() . '/admin/cores?action=STATUS';
-        $context  = stream_context_create(
-            array(
-                'http' => array(
-                    'header' => 'Accept: application/xml'
-                )
-            )
-        );
-        $xml = file_get_contents($url, false, $context);
-        $xml = simplexml_load_string($xml);
-
-        $path = null;
-
-        $xpath = "//lst[@name='" . $coreName . "']/str[@name='instanceDir']";
-        $result = $xml->xpath($xpath);
-
-        $path = $result[0] . 'conf/';
+        $path = $this->getConfDir($coreName);
 
         $xpath = "//lst[@name='" . $coreName . "']/str[@name='schema']";
-        $result = $xml->xpath($xpath);
+        $result = $this->_xml_status->xpath($xpath);
 
         $path .= $result[0];
         return $path;
@@ -243,23 +268,8 @@ class BachCoreAdminConfigReader
      *
      * @return string
      */
-    public function getDataConfigFileName()
+    public function getDefaultDataConfigFileName()
     {
-        return $this->_doc->solrDataConfigFileName;
-    }
-
-    /**
-     * Get database parameters
-     *
-     * @return string
-     */
-    public function getDatabaseParameters()
-    {
-        $data = array();
-        $elts = (array)$this->_doc->databaseConfig;
-        foreach ( $elts as $k=>$v  ) {
-            $data[$k] = $v;
-        }
-        return $data;
+        return 'data-config.xml';
     }
 }
