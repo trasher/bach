@@ -96,9 +96,20 @@ class ArchFileIntegration
             $preprocessor
         );
 
+        $count = 0;
+        //disable SQL Logger...
+        $this->_entityManager->getConnection()->getConfiguration()
+            ->setSQLLogger(null);
         foreach ($universalFileFormats as $universalFileFormat) {
             $universalFileFormat->setDocId($doc);
             $this->_entityManager->persist($universalFileFormat);
+            unset($universalFileFormat);
+
+            $count++;
+
+            if ( $count % 100 === 0 ) {
+                $this->_entityManager->flush();
+            }
         }
 
         $this->_entityManager->flush();
@@ -112,8 +123,5 @@ class ArchFileIntegration
                 )
             );
         }
-
-        $sca = new SolrCoreAdmin();
-        $sca->fullImport($doc->getCorename());
     }
 }

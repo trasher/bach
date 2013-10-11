@@ -22,6 +22,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
 use Bach\IndexationBundle\Form\Type\DocumentType;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 /**
  * Default indexation controller
@@ -70,6 +71,11 @@ class DefaultController extends Controller
         $form->handleRequest($this->getRequest());
 
         if ($form->isValid()) {
+            // enable memory profiling
+            if (extension_loaded('memprof')) {
+                memprof_enable();
+            }
+
             $document = $form->getData();
             //set core name
             $document->setCorename(
@@ -99,6 +105,9 @@ class DefaultController extends Controller
                 $existing_doc = $existing[0];
                 $existing_doc->setFile($document->getFile());
                 $document = $existing_doc;
+                $document->setUploadDir(
+                    $this->container->getParameter('upload_dir')
+                );
             } else {
                 //store document reference
                 $em->persist($document);
@@ -128,7 +137,8 @@ class DefaultController extends Controller
                         )
                     );
                     //persist document *after* deletion, to upload new file and so on
-                    //we have to change a field know to database, for doctrine to process persistence
+                    //we have to change a field know to database,
+                    //for doctrine to process persistence
                     $task->getDocument()->setName(null);
                     $em->persist($task->getDocument());
                     $em->flush();
@@ -137,6 +147,11 @@ class DefaultController extends Controller
                 $integrationService = $this->container
                     ->get('bach.indexation.process.arch_file_integration');
                 $res = $integrationService->integrate($task);
+
+                $configreader = $this->container
+                    ->get('bach.administration.configreader');
+                $sca = new SolrCoreAdmin($configreader);
+                $sca->fullImport($task->getDocument()->getCorename());
 
                 return new RedirectResponse(
                     $this->get("router")->generate("bach_indexation_homepage")

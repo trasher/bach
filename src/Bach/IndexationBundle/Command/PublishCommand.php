@@ -88,8 +88,8 @@ EOF
         // enable memory profiling
         if (extension_loaded('memprof')) {
             memprof_enable();
-            $count = 0;
         }
+        $count = 0;
 
         $dry = $input->getOption('dry-run');
         if ( $dry === true ) {
@@ -198,6 +198,12 @@ EOF
 
                 $progress->advance();
             }
+
+            $configreader = $this->getContainer()
+                ->get('bach.administration.configreader');
+            $sca = new SolrCoreAdmin($configreader);
+            $sca->fullImport($task->getDocument()->getCorename());
+
             $progress->finish();
         } else {
             $output->writeln(
