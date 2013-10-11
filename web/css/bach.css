@@ -1016,14 +1016,28 @@ em.hl {
 
 figure section {
     text-align: center;
+    margin-bottom: 100px;
+}
+
+.content figure section ul{
+    list-style-type:none;
+    height: 15em;
+    overflow: auto;
+}
+.content figure section li:nth-child(even){
+    background-color: #d1c6c0;
+}
+
+figure.result_pic li{
+list-style-type: none;
 }
 
 figure section a, figure section video {
+    background-repeat: repeat-x;
     display: inline-block;
-    width: 300px;
-    text-align: center;
+    width: 600px;
+    text-align: left;
     vertical-align: middle;
-    margin: .2em;
     position: relative;
 }
 
@@ -1031,6 +1045,12 @@ figure section a.flashplayer span.title {
     position: absolute;
     bottom: 0;
     left: 0;
+}
+
+#musicplayer {
+    height: 30px;
+    margin-bottom: 20px;
+    width: 300px;
 }
 
 figure  span.title {
@@ -1165,4 +1185,3 @@ a.flashmusicplayer p, a.flashmusicplayer h2 {
         position: relative;
     }
 }
-

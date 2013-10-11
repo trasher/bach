@@ -164,9 +164,12 @@ class DisplayDao extends \Twig_Extension
                 if ( $group['title'] !== null ) {
                     $res .= '<header><h4>' . $group['title'] . '</h4></header>';
                 }
+                
+                $res .= '<ul>';
                 foreach ( $group['content'] as $document ) {
                     $res .= $document;
                 }
+                $res .= '</ul>';
                 $res .= '</section>';
             }
         }
@@ -227,9 +230,11 @@ class DisplayDao extends \Twig_Extension
             if ( count($results[self::FLA_SOUND]) > 0 ) {
                 $res .= '<section id="sounds">';
                 $res .= '<header><h4>' . _('Flash sounds') . '</h4></header>';
+                $res .= '<ul>';
                 foreach ( $results[self::FLA_SOUND] as $sound ) {
                     $res .= $sound;
                 }
+                $res .= '</ul>';
                 $res .= '</section>';
             }
 
@@ -312,7 +317,6 @@ class DisplayDao extends \Twig_Extension
             ($daotitle) ? $daotitle : $dao,
             _("Play '%name%'")
         );
-
         switch ( self::_getType($dao) ) {
         case self::SERIES:
             $ret = '<a href="' . $viewer . 'series/' . $dao . '">';
@@ -380,19 +384,16 @@ class DisplayDao extends \Twig_Extension
                 $class .= 'flashmusicplayer"';
             }
             $href = '/file/music/' . $dao;
-            $ret = '<a' . $class . ' href="' . $href . '" title="' .
+            $ret = '<li><a' . $class . ' href="' . $href . '" title="' .
                 $title  . '">';
-            if ( $standalone === true ) {
-                $ret .= '<img src="/img/play.png" alt="' . $dao . '"/>';
-            }
             if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
             }
-            $ret .= '</a>';
-            break;
+            $ret .= '</a></li>';
+                        break;
         case self::MISC:
             $href = '/file/misc/' . $dao;
-            $ret = _('Documents are not supported (yet).');
+            $ret .= _('Documents are not supported (yet).');
             break;
         }
 

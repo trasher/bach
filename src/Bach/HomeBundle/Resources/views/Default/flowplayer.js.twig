@@ -7,41 +7,42 @@
                     _musicselector = 'a.ajaxflashmusicplayer';
                 }
                 var _musicplay = $(_musicselector)[0];
-                $(_musicplay).attr('id', 'musicplayer').removeClass(_musicselector);
-                _playlist = _buildPlaylist(_musicselector)
+                var _omusicplay = $(_musicplay);
+                var _player = $(_omusicplay).clone().empty();
+                _player.attr('id', 'musicplayer').removeClass(_musicselector);
+                $(_omusicplay.parents("ul")[0]).before(_player);
+                _playlist = _buildPlaylist(_musicselector);
 
                 flowplayer(_selector, "{{ asset('/img/flowplayer-3.2.16.swf') }}");
-                flowplayer('musicplayer', "{{ asset('/img/flowplayer-3.2.16.swf') }}", {
-                    plugins: {
-                        audio: {
-                            url: "{{ asset('/img/flowplayer.audio-3.2.10.swf') }}"
+                if ($('#musicplayer').length > 0){
+                    flowplayer('musicplayer', "{{ asset('/img/flowplayer-3.2.16.swf') }}", {
+                        plugins: {
+                            audio: {
+                                url: "{{ asset('/img/flowplayer.audio-3.2.10.swf') }}"
+                            },
+                            controls: {
+                                url: '{{ asset('/img/flowplayer.controls-3.2.15.swf') }}',
+                                fullscreen: false,
+                                height: 30,
+                                autoHide: false
+                            }
                         },
-                        controls: {
-                            url: '{{ asset('/img/flowplayer.controls-3.2.15.swf') }}',
-                            fullscreen: false,
-                            height: 30,
-                            autoHide: false
+                        clip: {
+                            autoPlay: false,
+                            autoBuffering: true
                         }
-                    },
-                    clip: {
-                        autoPlay: false,
-                        autoBuffering: true
-                    }
-                });
+                    });
+                }
             }
 
             _buildPlaylist = function(selector) {
                 var _list= [];
-                var _count = 0;
                 $(selector).each(function(){
                     var _this = $(this);
-                    if ( _count > 0 ) {
-                        _this.on('click', function(){
-                            flowplayer('musicplayer').play(_this.attr('href'));
-                            return false;
-                        });
-                    }
-                    _count++;
+                    _this.on('click', function(){
+                        flowplayer('musicplayer').play(_this.attr('href'));
+                        return false;
+                    });
                 });
                 return _list;
             }
