@@ -1,6 +1,27 @@
 {% extends 'BachIndexationBundle:Indexation:main.html.twig' %}
 
 {% block container %}
+
+    {# Validation results #}
+    {% if app.session.flashbag.has('documentvalidation') %}
+    <div id="flash-warnings" class="noscript">
+        <h3>{% trans %}Validation results{% endtrans %}</h3>
+        {% for flashMessage in app.session.flashbag.get('documentvalidation') %}
+        <div class="flash-message">
+            {{ flashMessage | raw }}
+        </div>
+        {% endfor %}
+        {% if app.session.flashbag.has('documentvalidation_errors') %}
+            {% for flashMessage in app.session.flashbag.get('documentvalidation_errors') %}
+                <div class="flash-errors">
+                {{ flashMessage | raw }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    {% endif %}
+
     <form id="published_documents" class="list" action="{{ path("bach_indexation_deletedocuments") }}" method="POST">
     <fieldset>
         <legend>
@@ -39,7 +60,7 @@
                     <td>{{ document.getExtension }}</td>
                     <td>{{ document.getName }}</td>
                     <td></td>
-                    <td></td>
+                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}"><img src="" alt="Validate against EAD DTD"/></a>{% endif %}</td>
                 </tr>
                 {% endfor %}
             </tbody>

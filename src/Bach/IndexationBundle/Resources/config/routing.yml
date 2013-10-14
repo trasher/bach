@@ -29,3 +29,7 @@ bach_indexation_empty:
 bach_indexation_add:
     pattern: /add
     defaults: { _controller: BachIndexationBundle:Default:add }
+
+bach_eaddtd_validate:
+    pattern: /validate/ead/{docid}/{ajax}
+    defaults: { _controller BachIndexationBundle:Default:validateDocument, ajax: false, type: 'ead' }

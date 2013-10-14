@@ -400,4 +400,93 @@ class DefaultController extends Controller
             $this->get("router")->generate("bach_indexation_homepage")
         );
     }
+
+    /**
+     * Validate document
+     *
+     * @param int     $docid Document unique identifier
+     * @param string  $type  Document type
+     * @param boolean $ajax  Called from ajax
+     *
+     * @return void
+     */
+    public function validateDocumentAction($docid, $type, $ajax = false)
+    {
+        $msg = '';
+        //for now, we can only validate EAD DTD
+        if ( $type !== 'ead' ) {
+             $msg = _('Could not validate non EAD documents (for now).');
+        } else {
+            $repo = $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:Document');
+            $document = $repo->findOneByDocid($docid);
+
+            $document->setUploadDir($this->container->getParameter('upload_dir'));
+            $xml_file = $document->getAbsolutePath();
+
+            if ( !file_exists($xml_file) ) {
+                $msg = str_replace(
+                    '%docid%',
+                    $docid,
+                    _('Corresponding file for %docid% document no longer exists on disk.')
+                );
+            } else {
+                $oxml_document = new \DOMDocument();
+                $oxml_document->load($xml_file);
+
+                $root = 'ead';
+                $creator = new \DOMImplementation;
+                $doctype = $creator->createDocumentType(
+                    $root,
+                    null,
+                    __DIR__ . '/../Resources/dtd/ead-2002/ead.dtd'
+                );
+                $xml_document = $creator->createDocument(null, null, $doctype);
+                $xml_document->encoding = "utf-8";
+
+                $oldNode = $oxml_document->getElementsByTagName($root)->item(0);
+                $newNode = $xml_document->importNode($oldNode, true);
+                $xml_document->appendChild($newNode);
+
+                libxml_use_internal_errors(true);
+
+                $valid = @$xml_document->validate();
+
+                if ( $valid ) {
+                    $msg = str_replace(
+                        '%docid%',
+                        $docid,
+                        _('Document %docid% is valid and DTD compliant!')
+                    );
+                } else {
+                    $msg = str_replace(
+                        array('%type%', '%docid%'),
+                        array($type, $docid),
+                        _('%type% document %docid% is not valid!')
+                    );
+                }
+
+                foreach ( libxml_get_errors() as $error ) {
+                    $xml_errors[] = $error->message;
+                    $this->get('session')->getFlashBag()->add(
+                        'documentvalidation_errors',
+                        $error->message . ' (line: ' . $error->line .
+                        ' col: ' . $error->column . ')'
+                    );
+                }
+            }
+        }
+
+        $this->get('session')->getFlashBag()->add(
+            'documentvalidation',
+            $msg
+        );
+
+        if ( $ajax === false ) {
+            return new RedirectResponse(
+                $this->get("router")->generate("bach_indexation_homepage")
+            );
+        }
+
+    }
 }
