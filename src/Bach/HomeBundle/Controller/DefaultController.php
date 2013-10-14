@@ -549,7 +549,7 @@ class DefaultController extends Controller
         $client = $this->get("solarium.client");
         $query = $client->createSelect();
         $query->setQuery('fragmentid:"' . $docid . '"');
-        $query->setFields('headerId, fragment, parents');
+        $query->setFields('headerId, fragment, parents, archDescUnitTitle');
         $query->setStart(0)->setRows(1);
 
         $rs = $client->select($query);
@@ -575,6 +575,7 @@ class DefaultController extends Controller
             'docid'         => $docid,
             'document'      => $doc,
             'viewer_uri'    => $viewer_uri,
+            'archdesc'      => $doc['archDescUnitTitle']
         );
 
         $parents = explode('/', $doc['parents']);

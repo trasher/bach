@@ -1,7 +1,13 @@
     <article about="{{ docid }}">
-        {% if ariane is defined %}
+        {% if ariane is defined or archdesc is defined %}
             <ul class="breadcrumb">
-                {% for fil in ariane %}
+                {% if archdesc is defined %}
+                    <li>
+                        <a href="#" property="dc:isPartOf">{{ archdesc }}</a>
+                    </li>
+                {% endif %}
+                {% if ariane is defined %}
+                    {% for fil in ariane %}
                     <li>
                         <a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">
                         {%- if fil.cUnittitle is defined -%}
@@ -11,7 +17,8 @@
                         {%- endif -%}
                         </a>
                     </li>
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         {% endif %}
         {% if children == false %}
