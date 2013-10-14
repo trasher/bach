@@ -548,7 +548,7 @@ class DefaultController extends Controller
     {
         $client = $this->get("solarium.client");
         $query = $client->createSelect();
-        $query->setQuery('fragmentid:' . $docid);
+        $query->setQuery('fragmentid:"' . $docid . '"');
         $query->setFields('headerId, fragment, parents');
         $query->setStart(0)->setRows(1);
 
@@ -585,7 +585,7 @@ class DefaultController extends Controller
                 if ( $query !== null ) {
                     $query .= ' | ';
                 }
-                $query .= 'fragmentid:' . $doc['headerId'] . '_' . $p;
+                $query .= 'fragmentid:"' . $doc['headerId'] . '_' . $p . '"';
             }
             $pquery->setQuery($query);
             $pquery->setFields('fragmentid, cUnittitle');
@@ -601,7 +601,7 @@ class DefaultController extends Controller
         if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
             $pid = $doc['parents'] . '/' . $pid;
         }
-        $query = '+headerId:' . $doc['headerId'] . ' +parents: ' . $pid;
+        $query = '+headerId:"' . $doc['headerId'] . '" +parents: ' . $pid;
         $cquery->setQuery($query);
         $cquery->setFields('fragmentid, cUnittitle');
         $rs = $client->select($cquery);
