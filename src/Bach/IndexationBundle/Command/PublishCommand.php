@@ -25,6 +25,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Finder\Finder;*/
 use Bach\IndexationBundle\Entity\Document;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 /**
  * Publication command
