@@ -12,11 +12,12 @@
         </div>
         {% endfor %}
         {% if app.session.flashbag.has('documentvalidation_errors') %}
+            <p><a href="#" id="toggleerrors">{% trans %}Show/hide errors{% endtrans %}</a></p>
+            <div class="flash-errors hidden">
             {% for flashMessage in app.session.flashbag.get('documentvalidation_errors') %}
-                <div class="flash-errors">
-                {{ flashMessage | raw }}
-                </div>
+                <p>{{ flashMessage | raw }}</p>
             {% endfor %}
+            </div>
         {% endif %}
 
     </div>
@@ -91,6 +92,10 @@
                     return confirm('Souhaitez-vous supprimer les ' + _count + ' documents sélectionnés ?');
                 }
             }
+        });
+
+        $('#toggleerrors').click(function(){
+            $(this).parent().next('div').toggleClass('hidden');
         });
     });
 {% endblock %}
