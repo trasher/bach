@@ -49,6 +49,11 @@ class EADFileFormat extends MappedFileFormat
     protected $fragment;
 
     /**
+     * @ORM\Column(type="integer", length=10, nullable=true)
+     */
+    protected $elt_order;
+
+    /**
      * @ORM\OneToMany(targetEntity="EADIndexes", mappedBy="eadfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $indexes;
@@ -130,6 +135,7 @@ class EADFileFormat extends MappedFileFormat
         'uniqid',
         'headerId',
         'parents',
+        'elt_order',
         'archDescScopeContent',
         'fragment',
         'fragmentid',
@@ -176,9 +182,9 @@ class EADFileFormat extends MappedFileFormat
      * Fields types, if not string
      */
     public static $types = array(
-        'cUnittitle' => 'alphaOnlySort'
+        'cUnittitle'    => 'alphaOnlySort',
+        'elt_order'     => 'int'
     );
-
 
     /**
      * String fields that must have a text version

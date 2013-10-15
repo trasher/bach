@@ -136,6 +136,11 @@ class EADDriverMapper implements DriverMapperInterface
             }
         }
 
+        //c elements order
+        if ( isset($data['c']['order']) ) {
+            $mappedData['elt_order'] = $data['c']['order'];
+        }
+
         return $mappedData;
     }
 }

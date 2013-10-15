@@ -90,10 +90,20 @@ class SolariumQueryFactory
 
         if ( $container->isOrdered() ) {
             $qry = $this->_query;
-            $this->_query->addSort(
-                $container->getOrderField(),
-                ($container->getOrderDirection() === ViewParams::ORDER_ASC) ? $qry::SORT_ASC : $qry::SORT_DESC
-            );
+            $order = $container->getOrderField();
+            if ( is_array($order) ) {
+                foreach ( $order as $field) {
+                    $this->_query->addSort(
+                        $field,
+                        ($container->getOrderDirection() === ViewParams::ORDER_ASC) ? $qry::SORT_ASC : $qry::SORT_DESC
+                    );
+                }
+            } else {
+                $this->_query->addSort(
+                    $container->getOrderField(),
+                    ($container->getOrderDirection() === ViewParams::ORDER_ASC) ? $qry::SORT_ASC : $qry::SORT_DESC
+                );
+            }
         }
 
         $facetSet = $this->_query->getFacetSet();

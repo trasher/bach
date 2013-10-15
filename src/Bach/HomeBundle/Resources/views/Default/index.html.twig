@@ -136,6 +136,7 @@
                 <select name="results_order" id="results_order">
                     <option value="0"{% if results_order == 0 %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
                     <option value="1"{% if results_order == 1 %} selected="selected"{% endif %}>{% trans %}Alphabetic{% endtrans %}</option>
+                    <option value="2"{% if results_order == 2 %} selected="selected"{% endif %}>{% trans %}Document logic{% endtrans %}</option>
                 </select>
                 <a href="{{ path('bach_search', {query_terms: q, view: 'list'}) }}" class="btn-list{% if view == 'list' %} selected{% endif %}" title="{% trans %}View search results as a list, with images{% endtrans %}">{% trans %}List{% endtrans %}</a>
                 <a href="{{ path('bach_search', {query_terms: q, view: 'txtlist'}) }}" class="btn-txtlist{% if view == 'txtlist' %} selected{% endif %}" title="{% trans %}View search results as a list, without images{% endtrans %}">{% trans %}Text only list{% endtrans %}</a>

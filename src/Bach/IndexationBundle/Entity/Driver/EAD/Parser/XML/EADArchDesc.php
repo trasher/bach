@@ -140,6 +140,15 @@ class EADArchDesc
                     $frag->removeChild($oldc);
                 }
             }
+            //remove ordering field as well
+            $order = $this->_xpath->query('did/unitid[@type="ordre_c"]', $frag);
+            if ( $order->length > 0 ) {
+                $results[$nodeid]['order'] = $order->item(0)->nodeValue;
+                $did = $frag->getElementsByTagName('did')->item(0);
+                foreach ( $order as $oldorder ) {
+                    $did->removeChild($oldorder);
+                }
+            }
             $results[$nodeid]['fragment'] = $frag->ownerDocument->saveXML($frag);
 
             foreach ( $fields as $field ) {

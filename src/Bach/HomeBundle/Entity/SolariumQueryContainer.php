@@ -148,7 +148,7 @@ class SolariumQueryContainer
             return 'cUnittitle';
             break;
         case ViewParams::ORDER_DOC_LOGIC:
-            return 'cOrder';
+            return array('archDescUnitTitle', 'elt_order');
             break;
         }
         return $this->_order;

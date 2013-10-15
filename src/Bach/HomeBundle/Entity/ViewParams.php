@@ -28,7 +28,7 @@ class ViewParams
 {
     const ORDER_RELEVANCE = 0;
     const ORDER_TITLE = 1;
-    const ORDER_DOC_LOGIC = 3;
+    const ORDER_DOC_LOGIC = 2;
 
     const ORDER_ASC = 0;
     const ORDER_DESC = 1;
