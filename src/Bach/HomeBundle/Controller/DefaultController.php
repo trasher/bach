@@ -84,7 +84,8 @@ class DefaultController extends Controller
             'show_pics'     => $view_params->showPics(),
             'viewer_uri'    => $viewer_uri,
             'view'          => $view_params->getView(),
-            'results_order' => $view_params->getOrder()
+            'results_order' => $view_params->getOrder(),
+            'illustrated'   => $view_params->getIllustrated()
         );
 
         if ( $facet_name !== null ) {
@@ -100,6 +101,7 @@ class DefaultController extends Controller
 
             $container = new SolariumQueryContainer();
             $container->setOrder($view_params->getOrder());
+            $container->isIllustrated($view_params->getIllustrated());
 
             $container->setField(
                 'show_pics',

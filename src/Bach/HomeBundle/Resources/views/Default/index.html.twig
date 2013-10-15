@@ -132,6 +132,8 @@
             {% endif %}
             {% spaceless %}
             <nav id="change_view">
+                <label for="illustrated" title="{% trans %}Show only illustrated documents{% endtrans %}">{% trans %}Illustrated{% endtrans %}</label>
+                <input type="checkbox" name="illustrated" id="illustrated"{% if illustrated == true  %} checked="checked"{% endif %}/>
                 <label for="results_order">{% trans %}Order:{% endtrans %}</label>
                 <select name="results_order" id="results_order">
                     <option value="0"{% if results_order == 0 %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
@@ -328,6 +330,11 @@
                 var _da_url = '{{ path('bach_search', {query_terms: q, results_order: 'ORDER'}) }}';
                 window.location.href  = _da_url.replace('ORDER', $('#results_order option:selected').val());
             });
+
+            $('#illustrated').change(function(){
+                var _da_url = '{{ path('bach_search', {query_terms: q, illustrated: 'ILLUSTRATED'}) }}';
+                window.location.href  = _da_url.replace('ILLUSTRATED', $(this).is(':checked'));
+            }).prev('label').tooltip();
 
             {% if min_date is defined and max_date is defined %}
             var _is_first_load = true;

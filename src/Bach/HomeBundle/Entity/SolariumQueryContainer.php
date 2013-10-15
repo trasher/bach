@@ -29,6 +29,7 @@ class SolariumQueryContainer
     private $_fields = array();
     private $_filters = array();
     private $_order = ViewParams::ORDER_RELEVANCE;
+    private $_illustrated = false;
 
     /**
      * Set field
@@ -176,5 +177,20 @@ class SolariumQueryContainer
         } else {
             return false;
         }
+    }
+
+    /**
+     * Retrieve only illustrated documents
+     *
+     * @param boolean $boolean Change value
+     *
+     * @return boolean
+     */
+    public function isIllustrated($boolean = null)
+    {
+        if ( $boolean !== null ) {
+            $this->_illustrated = $boolean;
+        }
+        return $this->_illustrated;
     }
 }

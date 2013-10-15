@@ -88,6 +88,11 @@ class SolariumQueryFactory
             }
         }
 
+        if ( $container->isIllustrated() ) {
+            $this->_query->createFilterQuery('illustrated')
+                ->setQuery('+dao:*');
+        }
+
         if ( $container->isOrdered() ) {
             $qry = $this->_query;
             $order = $container->getOrderField();

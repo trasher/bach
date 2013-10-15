@@ -351,6 +351,11 @@ p {
     vertical-align: top;
 }
 
+[id=illustrated] {
+    vertical-align: 40%;
+    margin-right: .5em;
+}
+
 /** === Main display (old method) === */
 
 [id=search_results] {
