@@ -58,21 +58,26 @@ EOF
             )->addArgument(
                 'type',
                 InputArgument::REQUIRED,
-                'Documents type.'
+                _('Documents type')
             )->addArgument(
                 'document',
                 InputArgument::IS_ARRAY | InputArgument::REQUIRED,
-                'Document(s) name(s) to proceed'
+                _('Documents names or directories to proceed')
             )->addOption(
                 'assume-yes',
                 null,
                 InputOption::VALUE_NONE,
-                'Assume yes for all questions'
+                _('Assume yes for all questions')
+            )->addOption(
+                'solr-only',
+                null,
+                InputOption::VALUE_NONE,
+                _('Publish only in solr (full-import)')
             )->addOption(
                 'dry-run',
                 null,
                 InputOption::VALUE_NONE,
-                'Do not really publish.'
+                _('Do not really publish.')
             );
     }
 
@@ -162,48 +167,56 @@ EOF
                 _('Publication begins...') .
                 '</fg=green;options=bold>'
             );
-            $progress = $this->getHelperSet()->get('progress');
-            $progress->start($output, count($files_to_publish[$type]));
 
-            $integrationService = $this->getContainer()
-                ->get('bach.indexation.process.arch_file_integration');
-
-            foreach ( $files_to_publish[$type] as $ftp ) {
-                $document = new Document();
-
-                $document->setUploadDir(
-                    $this->getContainer()->getParameter('upload_dir')
-                );
-                $document->setFile(new File($ftp));
-                $document->setNotUploaded();
-                $document->setExtension($type);
-                $document->setCorename(
-                    $this->getContainer()->getParameter(
-                        $document->getExtension() . '_corename'
-                    )
-                );
-
-                if ( $dry === false ) {
-                    $em->persist($document);
-                    $em->flush();
-                }
-
-                //create a new task
-                $task = new ArchFileIntegrationTask($document);
-
-                if ( $dry === false ) {
-                    $res = $integrationService->integrate($task);
-                }
-
-                unset($task, $document);
-
-                $progress->advance();
+            if ( $input->getOption('solr-only') ) {
+                $steps = 1;
+            } else {
+                $steps = count($files_to_publish[$type]);
+                //add solr step
+                $steps++;
             }
 
-            $configreader = $this->getContainer()
-                ->get('bach.administration.configreader');
-            $sca = new SolrCoreAdmin($configreader);
-            $sca->fullImport($task->getDocument()->getCorename());
+            $progress = $this->getHelperSet()->get('progress');
+            $progress->start($output, $steps);
+
+            if ( !$input->getOption('solr-only') ) {
+                $integrationService = $this->getContainer()
+                    ->get('bach.indexation.process.arch_file_integration');
+
+                foreach ( $files_to_publish[$type] as $ftp ) {
+                    $progress->advance();
+
+                    $document = new Document();
+
+                    $document->setUploadDir(
+                        $this->getContainer()->getParameter('upload_dir')
+                    );
+                    $document->setFile(new File($ftp));
+                    $document->setNotUploaded();
+                    $document->setExtension($type);
+                    $document->setCorename(
+                        $this->getContainer()->getParameter(
+                            $document->getExtension() . '_corename'
+                        )
+                    );
+
+                    if ( $dry === false ) {
+                        $em->persist($document);
+                        $em->flush();
+                    }
+
+                    //create a new task
+                    $task = new ArchFileIntegrationTask($document);
+
+                    if ( $dry === false ) {
+                        $res = $integrationService->integrate($task);
+                    }
+
+                    unset($task, $document);
+                }
+            }
+
+            $this->_solrFullImport($type, $progress, $dry);
 
             $progress->finish();
         } else {
@@ -213,6 +226,28 @@ EOF
                 '</fg=red;options=bold>'
             );
 
+        }
+    }
+
+    /**
+     * Proceedd solr full data import
+     *
+     * @param string  $type     Documents type
+     * @param Helper  $progress Progress bar instance
+     * @param boolean $dry      Dry run mode
+     *
+     * @return void
+     */
+    private function _solrFullImport($type, $progress, $dry)
+    {
+        $progress->advance();
+        $configreader = $this->getContainer()
+            ->get('bach.administration.configreader');
+        $sca = new SolrCoreAdmin($configreader);
+        if ( $dry === false ) {
+            $sca->fullImport(
+                $this->getContainer()->getParameter($type . '_corename')
+            );
         }
     }
 }
