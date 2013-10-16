@@ -312,27 +312,6 @@ p {
     right: 0;
 }
 
-.select_container {
-    display: inline-block;
-    background: transparent url(../img/select_arrow.png) 100% 50% no-repeat;
-    border: 1px solid #d1c6c0;
-    overflow: hidden;
-    width: 12em;
-    vertical-align: 2px;
-    margin: 0 .1em;
-    line-height: auto;
-}
-
-.select_container select {
-    background: none;
-    border: none;
-    width: 14em;
-    display: inline-block;
-    color: #fff;
-    -webkit-appearance: none;
-    margin: 0;
-}
-
 [id=change_view] input[type="checkbox"] + label {
 }
 
@@ -362,6 +341,35 @@ p {
 [id=change_view] .select_container {
     line-height: 1em;
     margin-top: 3px;
+}
+
+[id=change_view] label {
+    vertical-align: 70%;
+}
+
+[id=change_view] select {
+    vertical-align: top;
+}
+
+.select_container {
+    display: inline-block;
+    background: transparent url(../img/select_arrow.png) 100% 50% no-repeat;
+    border: 1px solid #d1c6c0;
+    overflow: hidden;
+    width: 12em;
+    vertical-align: 2px;
+    margin: 0 .1em;
+    line-height: auto;
+}
+
+.select_container select {
+    background: none;
+    border: none;
+    width: 14em;
+    display: inline-block;
+    color: #fff;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .btn-list, .btn-thumb, .btn-txtlist {
@@ -394,14 +402,6 @@ p {
 .btn-txtlist.selected, .btn-txtlist:hover,
 .btn-thumb.selected, .btn-thumb:hover {
     background-color: #d1c6c0;
-}
-
-[id=change_view] label {
-    vertical-align: 70%;
-}
-
-[id=change_view] select {
-    vertical-align: top;
 }
 
 [id=illustrated] {
@@ -682,6 +682,10 @@ h2.back a:hover {
 .well {
     padding: .5em;
     background-color: #d1c6c0;
+}
+
+.center {
+    text-align: center;
 }
 
 /* loading animation */
