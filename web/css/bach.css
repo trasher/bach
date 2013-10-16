@@ -17,7 +17,7 @@
   src: local('PT Sans Narrow Bold'), local('PTSans-NarrowBold'), url(../img/PTSans-NarrowBold.woff) format('woff');
 }
 
-html {
+html, input, select {
     font-family: 'PT Sans Narrow', Verdana, Arial, sans-serif;
     font-size: 1em;
 }
@@ -312,6 +312,58 @@ p {
     right: 0;
 }
 
+.select_container {
+    display: inline-block;
+    background: transparent url(../img/select_arrow.png) 100% 50% no-repeat;
+    border: 1px solid #d1c6c0;
+    overflow: hidden;
+    width: 12em;
+    vertical-align: 2px;
+    margin: 0 .1em;
+    line-height: auto;
+}
+
+.select_container select {
+    background: none;
+    border: none;
+    width: 14em;
+    display: inline-block;
+    color: #fff;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+[id=change_view] input[type="checkbox"] + label {
+}
+
+[id=change_view] input[type="checkbox"] {
+    display: none;
+}
+
+[id=change_view] input[type="checkbox"] + label span {
+    display: inline-block;
+    background: url(../img/checkbox.png) 0 -20px no-repeat;
+    width: 22px;
+    height: 19px;
+    vertical-align: middle;
+    cursor: pointer;
+    margin: 0 .5em 0 .2em;
+}
+
+[id=change_view] input[type="checkbox"]:checked + label span {
+    background-position: 0 0;
+}
+
+[id=change_view] > * {
+    line-height: 30px;
+    vertical-align: top;
+}
+
+[id=change_view] .select_container {
+    line-height: 1em;
+    margin-top: 3px;
+}
+
 .btn-list, .btn-thumb, .btn-txtlist {
     background: transparent url(../img/sprite.png) 0 0 no-repeat;
     display: inline-block;
@@ -322,6 +374,7 @@ p {
     line-height: 30px;
     overflow: hidden;
     padding: 0;
+    vertical-align: top;
 }
 
 .btn-list {
