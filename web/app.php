@@ -16,15 +16,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 $loader = include_once __DIR__ . '/../app/bootstrap.php.cache';
 
-// Use APC for autoloading to improve performance
-// Change 'sf2' by the prefix you want in order to prevent key conflict
-// with another application
-/*
- * $loader = new ApcClassLoader('sf2', $loader); $loader->register(true);
- */
-
-/** FIXME: name *must* be unique if more than one app in sinstalled on the server! */
-$loader = new ApcClassLoader('bach', $loader);
+// Use APC(u) for autoloading, improve perfs
+// Key *must* be unique if multiple applications
+// are running on the same server.
+$loader = new ApcClassLoader(
+    __DIR__ . '_bach_app',
+    $loader
+);
 $loader->register(true);
 
 require_once __DIR__ . '/../app/AppKernel.php';
