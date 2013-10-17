@@ -206,23 +206,4 @@ class CoreAdminController extends Controller
 
         return $params;
     }
-
-    /**
-     * Retrieve core fields from table
-     *
-     * @param array $tableName Name of the table
-     *
-     * @return array
-     */
-    private function _getFieldsFromDataBase($tableName)
-    {
-        $sql = "SELECT COLUMN_NAME AS name FROM information_schema.COLUMNS WHERE TABLE_NAME ='" . $tableName . "'";
-        $connection = $this->getDoctrine()->getConnection();
-        $result = $connection->query($sql);
-        $res = array();
-        while ( $row = $result->fetch() ) {
-            $res[]=$row['name'];
-        }
-        return $res;
-    }
 }
