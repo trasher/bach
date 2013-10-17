@@ -7,6 +7,7 @@ $coverageField = new atoum\report\fields\runner\coverage\html(
 );
 $coverageField->setRootUrl('file://' . realpath(__DIR__ . '/code-coverage'));
 
+$xunitWriter = new atoum\writers\file(__DIR__ . '/atoum.xunit.xml');
 
 $coverageField->addSrcDirectory(
     __DIR__.'/src/Bach/HomeBundle/',
@@ -27,6 +28,10 @@ $coverageField->addSrcDirectory(
     }
 );
 
+$xunitReport = new atoum\reports\asynchronous\xunit();
+$xunitReport->addWriter($xunitWriter);
+
+$runner->addReport($xunitReport);
 $script
     ->addDefaultReport()
     ->addField($coverageField);
