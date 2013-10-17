@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Bach" default="dist">
+    <property name="source" value="src" />
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <echo msg="Making directories..." />
+        <mkdir dir="${project.basedir}/build" />
+        <mkdir dir="${project.basedir}/build/api" />
+        <mkdir dir="${project.basedir}/build/code-browser" />
+        <mkdir dir="${project.basedir}/build/coverage" />
+        <mkdir dir="${project.basedir}/build/logs" />
+        <mkdir dir="${project.basedir}/build/pdepend" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+    <target name="build" depends="prepare,install-deps">
+        <echo msg="Copying files to build directory..." />
+
+        <!--<echo msg="Copying ./about.php to ./build directory..." />
+        <copy file="./about.php" tofile="./build/about.php" />
+
+        <echo msg="Copying ./browsers.php to ./build directory..." />
+        <copy file="./browsers.php" tofile="./build/browsers.php" />
+
+        <echo msg="Copying ./contact.php to ./build directory..." />
+        <copy file="./contact.php" tofile="./build/contact.php" />-->
+    </target>
+
+    <!-- ============================================  -->
+    <!-- (DEFAULT)  Target: dist                       --> 
+    <!-- ============================================  -->
+    <target name="dist" depends="build,build-classmap">
+        <echo msg="Creating archive..." />
+
+        <!--<tar destfile="./build/build.tar.gz" compression="gzip">
+            <fileset dir="./build">
+                <include name="*" />
+            </fileset>
+        </tar>
+
+        <echo msg="Files copied and compressed in build directory OK!" />-->
+    </target>
+
+    <target name="install-deps">
+        <composer command="install"/>
+    </target>
+
+    <target name="build-classmap">
+        <composer command="dump-autoload">
+            <arg value="-o"/>
+        </composer>
+    </target>
+
+    <target name="qa" description="Quality Assurance tasks" depends="build">
+        <phingcall target="pdepend" />
+        <!--<phingcall target="phpmd" />-->
+        <phingcall target="phpcpd" />
+        <phingcall target="phploc" />
+        <phingcall target="phpcs" />
+        <!--<phingcall target="phpdoc" />-->
+        <!--<phingcall target="phpunit" />-->
+        <phingcall target="phpcb" />
+    </target>
+
+    <!-- ====================== -->
+    <!-- Coding standards check -->
+    <!-- ====================== -->
+    <target name="phpcs">
+        <phpcodesniffer standard="PEAR">
+            <fileset dir="${project.basedir}/${source}">
+                <include name="**/*.php"/>
+            </fileset>
+            <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
+        </phpcodesniffer>
+    </target>
+
+    <!-- ================== -->
+    <!-- Dependencies check -->
+    <!-- ================== -->
+    <target name="pdepend">
+        <phpdepend file="${project.basedir}/${source}">
+            <logger type="jdepend-xml" outfile="${project.basedir}/build/logs/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${project.basedir}/build/pdepend/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${project.basedir}/build/pdepend/overview-pyramid.svg" />
+        </phpdepend>
+    </target>
+
+    <!-- ============= -->
+    <!-- Mess detector -->
+    <!-- ============= -->
+    <target name="phpmd">
+        <phpmd file="${project.basedir}/${source}">
+            <formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
+        </phpmd>
+    </target>
+
+    <!-- =================== -->
+    <!-- Copy/paste detector -->
+    <!-- =================== -->
+    <target name="phpcpd">
+        <phpcpd file="${project.basedir}/${source}">
+            <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
+        </phpcpd>
+    </target>
+
+    <!-- ===================== -->
+    <!-- Some stats on project -->
+    <!-- ===================== -->
+    <target name="phploc">
+        <exec logoutput="true" dir="${project.basedir}" command="phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
+    </target>
+
+    <!-- ===================== -->
+    <!-- CodeBrowser generator -->
+    <!-- ===================== -->
+    <target name="phpcb">
+        <exec logoutput="true" command="phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}' --output '${project.basedir}/build/code-browser'" escape="false" />
+    </target>
+
+    <target name="clean" description="Clean all builds">
+        <delete dir="${project.basedir}/build"/>
+    </target>
+
+</project>
