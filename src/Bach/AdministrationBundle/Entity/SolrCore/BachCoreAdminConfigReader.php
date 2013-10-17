@@ -122,11 +122,11 @@ class BachCoreAdminConfigReader
         $result = $this->_xml_status->xpath($xpath);
         $core_name = (string)$result[0];
 
-        $instance_dir = $this->getInstanceDir($core_name);
+        $data_dir = $this->getDataDir($core_name);
         $cores_path = str_replace(
-            $core_name . '/',
+            $core_name . '/' . $this->getDefaultDataDir() . '/',
             '',
-            $instance_dir
+            $data_dir
         );
 
         return $cores_path;
@@ -216,6 +216,20 @@ class BachCoreAdminConfigReader
     public function getDefaultSchemaFileName()
     {
         return 'schema.xml';
+    }
+
+    /**
+     * Get data directory
+     *
+     * @param string $core Core name
+     *
+     * @return string
+     */
+    public function getDataDir($core)
+    {
+        $xpath = "//lst[@name='" . $core . "']/str[@name='dataDir']";
+        $result = $this->_xml_status->xpath($xpath);
+        return (string)$result[0];
     }
 
     /**
