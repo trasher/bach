@@ -471,27 +471,24 @@ Displays an EAD fragment as HTML
     <xsl:template match="extref|archref" mode="full">
         <xsl:choose>
             <xsl:when test="@href">
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:choose>
-                            <xsl:when test="not(substring(@href, 1, 8) = 'http://')">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDocumentLink', string(@href))"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="@href"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:attribute>
-                    <xsl:if test="@title and . != ''">
-                        <xsl:attribute name="title">
-                            <xsl:value-of select="@title"/>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:if test="@title and . = ''">
-                        <xsl:value-of select="@title"/>
-                    </xsl:if>
-                    <xsl:apply-templates mode="full"/>
-                </a>
+                <xsl:choose>
+                    <xsl:when test="not(substring(@href, 1, 8) = 'http://')">
+                        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), string(@title), $viewer_uri)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <a href="{@href}">
+                            <xsl:if test="@title and . != ''">
+                                <xsl:attribute name="title">
+                                    <xsl:value-of select="@title"/>
+                                </xsl:attribute>
+                            </xsl:if>
+                            <xsl:if test="@title and . = ''">
+                                <xsl:value-of select="@title"/>
+                            </xsl:if>
+                            <xsl:apply-templates mode="full"/>
+                        </a>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates mode="full"/>
@@ -521,7 +518,8 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="dao|daoloc" mode="daos">
-        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), $viewer_uri, 'medium')"/>
+        <xsl:variable name="title" value="@title"/>
+        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), $title, $viewer_uri, 'medium')"/>
         <!--<a href="{concat($viewer_uri, '/viewer/', @href)}">
             <img>
                 <xsl:attribute name="src">

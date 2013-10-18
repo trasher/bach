@@ -278,14 +278,15 @@ class DisplayDao extends \Twig_Extension
      * Get a DAO as XML nodes (XSLT will display them as string otherwise)
      *
      * @param string $dao    Document name
+     * @param string $title  Document title
      * @param string $viewer Viewer URL
      * @param string $format Format to display, defaults to thumb
      *
      * @return DOMElement
      */
-    public static function getDao($dao, $viewer, $format = 'thumb')
+    public static function getDao($dao, $title, $viewer, $format = 'thumb')
     {
-        $str = self::proceedDao($dao, null, $viewer, $format);
+        $str = self::proceedDao($dao, $title, $viewer, $format);
         $sxml = simplexml_load_string($str);
         $doc = dom_import_simplexml($sxml);
         return $doc;
@@ -392,8 +393,18 @@ class DisplayDao extends \Twig_Extension
             $ret .= '</a></li>';
             break;
         case self::MISC:
+            $title = str_replace(
+                '%name%',
+                $dao,
+                _("Display '%name%'")
+            );
+
             $href = '/file/misc/' . $dao;
-            $ret .= _('Documents are not supported (yet).');
+            $ret = '<a href="' . $href . '" title="' . $title  . '">';
+            if ( $daotitle ) {
+                $ret .= '<span class="title">' . $daotitle . '</span>';
+            }
+            $ret .= '</a>';
             break;
         }
 
