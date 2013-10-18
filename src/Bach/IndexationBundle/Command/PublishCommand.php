@@ -115,9 +115,9 @@ EOF
 
             if ( !in_array($type, $known_types) ) {
                 $msg = _('Unknown type! Please choose one of:');
-                $output->writeln(
-                    '<error>' . $msg . "\n -" .
-                    implode("\n -", $known_types)  . '</error>'
+                throw new \UnexpectedValueException(
+                    $msg . "\n -" .
+                    implode("\n -", $known_types)
                 );
                 die();
             }

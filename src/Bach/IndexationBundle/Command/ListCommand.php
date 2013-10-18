@@ -76,11 +76,11 @@ EOF
                 $output->writeln('<info>Working with ' . $type  . ' type.</info>');
                 $types[] = $type;
             } else {
-                $output->writeln(
-                    '<error>Unknown type! Please choose one of:' . "\n -" .
-                    implode("\n -", $known_types)  . '</error>'
+                $msg = _('Unknown type! Please choose one of:');
+                throw new \UnexpectedValueException(
+                    $msg . "\n -" .
+                    implode("\n -", $known_types)
                 );
-                die();
             }
         } else {
             $types = $known_types;
