@@ -357,7 +357,6 @@ p {
     border: 1px solid #d1c6c0;
     overflow: hidden;
     width: 12em;
-    vertical-align: 2px;
     margin: 0 .1em;
     line-height: auto;
 }
