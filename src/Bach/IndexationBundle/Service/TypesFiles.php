@@ -106,7 +106,7 @@ class TypesFiles
                         throw new \RuntimeException(
                             str_replace(
                                 '%path',
-                                $p,
+                                $path . $p,
                                 _('File or directory %path does not exists!')
                             )
                         );
