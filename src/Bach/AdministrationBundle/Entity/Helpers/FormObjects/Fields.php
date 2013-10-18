@@ -2,7 +2,6 @@
 namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
-use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 class Fields
 {

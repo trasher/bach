@@ -13,8 +13,6 @@
 
 namespace Bach\AdministrationBundle\Entity\Dashboard;
 
-use DOMDocument;
-
 /**
  * Bach dashboard utilities
  *

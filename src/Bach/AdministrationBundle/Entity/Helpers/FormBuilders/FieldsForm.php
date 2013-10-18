@@ -16,7 +16,6 @@ namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
-use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 /**

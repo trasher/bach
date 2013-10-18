@@ -14,14 +14,10 @@
 namespace Bach\IndexationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Bach\IndexationBundle\Entity\Document;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Process\Process;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
-use Bach\IndexationBundle\Form\Type\DocumentType;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 /**
@@ -344,11 +340,11 @@ class DefaultController extends Controller
         $update->addCommit();
         $result = $client->update($update);
 
-        $client = $this->get("solarium.client.unimarc");
+        /*$client = $this->get("solarium.client.unimarc");
         $update = $client->createUpdate();
         $update->addDeleteQuery('*:*');
         $update->addCommit();
-        $result = $client->update($update);
+        $result = $client->update($update);*/
 
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();

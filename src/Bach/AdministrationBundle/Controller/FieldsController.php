@@ -1,8 +1,6 @@
 <?php
 namespace Bach\AdministrationBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Fields;
 use Symfony\Component\HttpFoundation\Request;

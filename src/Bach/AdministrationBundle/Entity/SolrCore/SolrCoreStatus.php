@@ -1,9 +1,7 @@
 <?php
 namespace Bach\AdministrationBundle\Entity\SolrCore;
 
-use DOMXPath;
 use DateTime;
-use DateInterval;
 
 /**
  * Represantation of status of a Solr core

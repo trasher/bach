@@ -16,7 +16,6 @@ use Fp\OpenIdBundle\Model\UserManager;
 use Fp\OpenIdBundle\Model\IdentityManagerInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
 /**
  * Bach openid user manager

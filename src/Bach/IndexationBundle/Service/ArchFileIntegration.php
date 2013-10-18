@@ -13,9 +13,6 @@
 
 namespace Bach\IndexationBundle\Service;
 
-use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-use Bach\IndexationBundle\Exception\BadInputFileFormatException;
-use Bach\IndexationBundle\Exception\UnknownDriverParserException;
 use Doctrine\ORM\EntityManager;
 
 /**

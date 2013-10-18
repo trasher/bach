@@ -15,12 +15,10 @@ namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Bach\AdministrationBundle\Entity\SolrSchema\BachAttribute;
 use Bach\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Dynamic field form

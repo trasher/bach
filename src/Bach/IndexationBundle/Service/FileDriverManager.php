@@ -17,7 +17,6 @@ namespace Bach\IndexationBundle\Service;
 use Bach\IndexationBundle\Entity\FileDriver;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Finder\SplFileInfo;
 use Bach\IndexationBundle\Entity\UniversalFileFormat;
 use Bach\IndexationBundle\Entity\DataBag;
 

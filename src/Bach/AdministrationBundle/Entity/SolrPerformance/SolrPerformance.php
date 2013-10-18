@@ -1,9 +1,6 @@
 <?php
 namespace Bach\AdministrationBundle\Entity\SolrPerformance;
 
-use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-
-use JMS\DiExtraBundle\Annotation\AfterSetup;
 use DOMDocument;
 use DOMNodeList;
 

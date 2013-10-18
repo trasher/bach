@@ -17,7 +17,6 @@ use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
 use Symfony\Component\Finder\Finder;
 use Exception;
 use DOMDocument;
-use DOMElement;
 
 /**
  * Bach solr core administration

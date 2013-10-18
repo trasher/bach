@@ -1,8 +1,6 @@
 <?php
 namespace Bach\AdministrationBundle\Entity\SolrSchema;
 
-use Doctrine\ORM\Mapping as ORM;
-
 class SolrXMLElement
 {
 	protected $name;

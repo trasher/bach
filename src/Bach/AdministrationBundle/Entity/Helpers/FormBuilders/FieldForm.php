@@ -13,14 +13,11 @@
 
 namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
-use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Field;
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Bach\AdministrationBundle\Entity\SolrSchema\BachAttribute;
 use Bach\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Field form entry

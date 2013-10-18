@@ -17,9 +17,6 @@ use Symfony\Component\Finder\Finder;
 use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
-use Bach\IndexationBundle\Exception\BadInputFileFormatException;
-use Bach\IndexationBundle\Exception\UnknownDriverParserException;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Bach Solarium query factory

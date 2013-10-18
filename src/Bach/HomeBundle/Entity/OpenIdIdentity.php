@@ -12,10 +12,8 @@
  */
 namespace Bach\HomeBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Fp\OpenIdBundle\Entity\UserIdentity as BaseUserIdentity;
-use Fp\OpenIdBundle\Model\UserIdentityInterface;
 
 /**
  * Bach users

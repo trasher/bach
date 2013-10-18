@@ -6,7 +6,6 @@
 
 namespace Bach\IndexationBundle\Service;
 
-use Bach\IndexationBundle\PreProcessorInterface;
 use Bach\IndexationBundle\Entity\PreProcessor\XSLTPreProcessor;
 use Bach\IndexationBundle\Entity\PreProcessor\JavaPreProcessor;
 use Bach\IndexationBundle\Entity\PreProcessor\PHPPreProcessor;
