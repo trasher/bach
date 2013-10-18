@@ -30,7 +30,7 @@ bach_get_file:
     pattern: /file/{type}/{name}
     defaults: { _controller BachHomeBundle:Files:getFile }
     requirements:
-        type: video|music|image
+        type: video|music|image|misc
         name: '.+'
 
 bach_fullfacet:

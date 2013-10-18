@@ -390,7 +390,7 @@ class DisplayDao extends \Twig_Extension
                 $ret .= '<span class="title">' . $daotitle . '</span>';
             }
             $ret .= '</a></li>';
-                        break;
+            break;
         case self::MISC:
             $href = '/file/misc/' . $dao;
             $ret .= _('Documents are not supported (yet).');
@@ -440,6 +440,19 @@ class DisplayDao extends \Twig_Extension
             $type = self::SERIES;
         }
         return $type;
+    }
+
+    /**
+     * Get link to document
+     *
+     * @param string $href Link
+     *
+     * @return string
+     */
+    public static function getDocumentLink($href)
+    {
+        $href = '/file/misc/' . $href;
+        return $href;
     }
 
     /**

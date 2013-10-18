@@ -286,7 +286,7 @@ Displays an EAD fragment as HTML
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="scopecontent|odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial" mode="full">
+    <xsl:template match="scopecontent|odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial|otherfindaid" mode="full">
         <section class="{local-name()}">
             <xsl:if test="not(head)">
                 <xsl:variable name="count" select="count(ancestor::*/head)"/>
@@ -316,6 +316,9 @@ Displays an EAD fragment as HTML
                             </xsl:when>
                             <xsl:when test="local-name() = 'separatedmaterial'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Separated material:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'otherfindaid'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Other finding aid:')"/>
                             </xsl:when>
                         </xsl:choose>
                     </xsl:element>
@@ -465,10 +468,20 @@ Displays an EAD fragment as HTML
         </xsl:element>
     </xsl:template>
 
-    <xsl:template match="extref" mode="full">
+    <xsl:template match="extref|archref" mode="full">
         <xsl:choose>
             <xsl:when test="@href">
-                <a href="{@href}">
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:choose>
+                            <xsl:when test="not(substring(@href, 1, 8) = 'http://')">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDocumentLink', string(@href))"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="@href"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:attribute>
                     <xsl:if test="@title and . != ''">
                         <xsl:attribute name="title">
                             <xsl:value-of select="@title"/>
