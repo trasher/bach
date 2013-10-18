@@ -138,7 +138,7 @@ class SolrCoreAdmin
         if ($this->_coreExist($coreName)) {
             $this->_errors[] = str_replace(
                 '%corename',
-                $corename,
+                $coreName,
                 _('A core named %corename already exists!')
             ) . '<br/>' . _('Core has not been created.');
             return false;
