@@ -1,0 +1,14 @@
+services:
+    sonata.admin.facets:
+        class: Bach\HomeBundle\Admin\FacetsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Search", label: "Facets" }
+        arguments:
+            - ~
+            - Bach\HomeBundle\Entity\Facets
+            - 'PixSortableBehaviorBundle:SortableAdmin'
+            - @bach.administration.configreader
+        calls:
+            - [ setTranslationDomain, [BachHomeBundle]]
+            - [ setContainer, [@service_container] ]
+            - [ setPositionService, [@pix_sortable_behavior.position] ]

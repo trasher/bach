@@ -841,7 +841,25 @@ class SolrCoreAdmin
             }
         }
 
-        //take care fo dates
+        //take care of dynamic descriptors
+        if ( property_exists($orm_name, 'dynamic_descriptors') ) {
+            //retrieve and add additional fields from entity
+            $dyndescr_fields = $orm_name::$dynamic_descriptors;
+            foreach ( $dyndescr_fields as $cond=>$func ) {
+                $newEntity = $doc->createElement('entity');
+                $newEntity->setAttribute('name', 'dyn_' . $cond);
+                $newEntity->setAttribute(
+                    'query',
+                    'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
+                    '\'${SolrXMLFile.uniqid}\' AND ' . $cond . ' IS NOT NULL'
+                );
+                $newEntity->setAttribute('transformer', 'script:' . $func);
+                $newEntity->appendChild($newField);
+                $elt->appendChild($newEntity);
+            }
+        }
+
+        //take care of dates
         if ( property_exists($orm_name, 'dates') ) {
             $mapping = $this->_em->getClassMetadata($orm_name)
                 ->getAssociationMapping('dates');
@@ -920,7 +938,7 @@ class SolrCoreAdmin
 
     /**
      * Retrieve errors
-     * 
+     *
      * @return array
      */
     public function getErrors()

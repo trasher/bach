@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: @BachHomeBundle/Resources/config/admin.yml}
 
 framework:
     translator:      { fallback: "en" }
@@ -70,7 +71,6 @@ swiftmailer:
     spool:     { type: memory }
 
 # Solarium Configuration
-
 nelmio_solarium:
     clients:
         default:
@@ -170,3 +170,9 @@ sonata_user:
 #        bach:
 #            hosts:
 #              - { dsn: localhost, port: 11211 }
+
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            sortable: true

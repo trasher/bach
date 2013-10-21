@@ -17,6 +17,7 @@ use Symfony\Component\Finder\Finder;
 use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
+use Bach\HomeBundle\Entity\Facets;
 
 /**
  * Bach Solarium query factory
@@ -53,10 +54,11 @@ class SolariumQueryFactory
      * Perform a query into Solr
      *
      * @param SolariumQueryContainer $container Solarium container
+     * @param array                  $facets    Facets
      *
      * @return \Solarium\QueryType\Select\Result\Result
      */
-    public function performQuery(SolariumQueryContainer $container)
+    public function performQuery(SolariumQueryContainer $container, $facets)
     {
         $this->_query = $this->_client->createSelect();
 
@@ -111,10 +113,12 @@ class SolariumQueryFactory
         $facetSet = $this->_query->getFacetSet();
         $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);
-        $facetSet->createFacetField('subject')->setField('cSubject');
-        $facetSet->createFacetField('persname')->setField('cPersname');
-        $facetSet->createFacetField('geogname')->setField('cGeogname');
-        $facetSet->createFacetField('document')->setField('archDescUnitTitle');
+
+        //dynamically create facets
+        foreach ( $facets as $facet ) {
+            $facetSet->createFacetField($facet->getSolrFieldName())
+                ->setField($facet->getSolrFieldName());
+        }
 
         foreach ( $container->getFields() as $name=>$value ) {
             if ( array_key_exists($name, $this->_decorators) ) {

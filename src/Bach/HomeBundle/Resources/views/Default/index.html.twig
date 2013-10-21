@@ -104,7 +104,7 @@
                 {% for value in values %}
                 <li>
                     <a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
-                        {{ filter_name|trans }} > {{ value -}}
+                        {{ facet_names[filter_name] }} > {{ value -}}
                     </a>{% if loop.revindex > 1  %}{{- coma }}{% endif %}
                 </li>
                 {% endfor %}

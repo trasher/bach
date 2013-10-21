@@ -1,11 +1,29 @@
 <?php
-
+/**
+ * Bach EAD File Format entity
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
+ * Bach EAD File Format entity
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ *
  * @ORM\Entity
  * @ORM\Table(name="EADUniversalFileFormat")
  */
@@ -198,6 +216,39 @@ class EADFileFormat extends MappedFileFormat
      */
     public static $nonindexed = array(
         'fragment'
+    );
+
+    /**
+     * Dynamic descriptors discover
+     *
+     * array(
+     *  db column name not null => solr function called (defined in schema.xml)
+     * )
+     */
+    public static $dynamic_descriptors = array(
+        'source'    => 'makeSourcesDynamics',
+        'role'      => 'makeRolesDynamics'
+    );
+
+    /**
+     * Fields that should not be used for facetting
+     */
+    public static $facet_excluded = array(
+        '_version_',
+        'fragment',
+        'fragmentid',
+        'fulltext',
+        'parent_unittitle',
+        'parents',
+        'spell',
+        'suggestions',
+        'tcUnittitle',
+        'uniqid',
+        'cScopcontent',
+        'cDate',
+        'cDateNormal',
+        'cDateBegin',
+        'cDateEnd'
     );
 
     /**

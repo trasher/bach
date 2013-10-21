@@ -994,6 +994,10 @@ div.sonata-bc .table-bordered thead:first-child tr:first-child th:last-child, di
     border-radius: 0;
 }
 
+div.sonata-bc .btn-group {
+    font-size: 1em;
+}
+
 /** Old design */
 #flash-warnings, #flash-errors {
     padding: .2em 1em .2em 80px;

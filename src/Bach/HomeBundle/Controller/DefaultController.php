@@ -185,48 +185,37 @@ class DefaultController extends Controller
                 $templateVars['filters'] = $filters;
             }
 
+            $conf_facets = $this->getDoctrine()->getRepository('BachHomeBundle:Facets')->findBy(
+                array('active' => true),
+                array('position' => 'ASC')
+            );
+
             $factory = $this->get("bach.home.solarium_query_factory");
-            $searchResults = $factory->performQuery($container);
+            $searchResults = $factory->performQuery($container, $conf_facets);
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
 
-            $faceted_fields = array(
-                'document'  => array(
-                    'trad'          => _('document'),
-                    'index_name'    =>'archDescUnitTitle'
-                ),
-                'subject'   => array(
-                    'trad'          => _('subject'),
-                    'index_name'    => 'cSubject'
-                ),
-                'persname'  => array(
-                    'trad'          => _('persname'),
-                    'index_name'    => 'cPersname'
-                ),
-                'geogname'  => array(
-                    'trad'          =>_('geogname'),
-                    'index_name'    => 'cGeogname'
-                )
-            );
             $facets = array();
-            $faceset = $searchResults->getFacetSet();
+            $facetset = $searchResults->getFacetSet();
 
             if ( $ajax !== false && $facet_name !== false ) {
-                foreach ($faceted_fields as $key=>$field) {
-                    if ( $field['index_name'] === $facet_name ) {
-                        $faceted_fields = array($key => $field);
+                foreach ( $conf_facets as $facet ) {
+                    if ( $facet->getSolrFieldName() === $facet_name ) {
+                        $conf_facets = array($facet);
                         break;
                     }
                 }
             }
 
-            foreach ( $faceted_fields as $name=>$descr ) {
-                $field_facets = $faceset->getFacet($name);
+            $facet_names = array();
+            foreach ( $conf_facets as $facet ) {
+                $facet_names[$facet->getSolrFieldName()] = $facet->getFrLabel();
+                $field_facets = $facetset->getFacet($facet->getSolrFieldName());
                 $values = array();
                 foreach ( $field_facets as $item=>$count ) {
-                    if ( !isset($filters[$descr['index_name']])
-                        || !in_array($item, $filters[$descr['index_name']])
+                    if ( !isset($filters[$facet->getSolrFieldName()])
+                        || !in_array($item, $filters[$facet->getSolrFieldName()])
                     ) {
                         $values[$item] = $count;
                     }
@@ -249,13 +238,14 @@ class DefaultController extends Controller
                     $templateVars['orig_href'] = $request->get('orig_href');
                     $templateVars['facet_order'] = $request->get('facet_order');
 
-                    $facets[$name] = array(
-                        'label'         => $descr['trad'],
+                    $facets[$facet->getSolrFieldName()] = array(
+                        'label'         => $facet->getFrLabel(),
                         'content'       => $values,
-                        'index_name'    => $descr['index_name']
+                        'index_name'    => $facet->getSolrFieldName()
                     );
                 }
             }
+            $templateVars['facet_names'] = $facet_names;
 
             if ( $ajax === false ) {
                 $query = $this->get("solarium.client")->createSuggester();

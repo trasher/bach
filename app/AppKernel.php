@@ -66,7 +66,9 @@ class AppKernel extends Kernel
             new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
             new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
             //new Lsw\MemcacheBundle\LswMemcacheBundle(),
-            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle()
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Pix\SortableBehaviorBundle\PixSortableBehaviorBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
