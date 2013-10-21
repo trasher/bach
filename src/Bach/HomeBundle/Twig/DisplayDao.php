@@ -51,14 +51,16 @@ class DisplayDao extends \Twig_Extension
      *
      * @param UrlGeneratorInterface $router     Router
      * @param string                $viewer_uri Viewer URI
+     * @param string                $covers_dir Covers directory
      */
-    public function __construct(Router $router, $viewer_uri)
+    public function __construct(Router $router, $viewer_uri, $covers_dir)
     {
         $this->_router = $router;
         if ( !(substr($viewer_uri, -1) === '/') ) {
             $viewer_uri .= '/';
         }
         $this->_viewer = $viewer_uri;
+        $this->_covers_dir = $covers_dir;
     }
 
     /**
@@ -97,11 +99,27 @@ class DisplayDao extends \Twig_Extension
     public function display($daos, $all = false, $format = 'thumb')
     {
         if ( $all === false ) {
-            return self::proceedDao($daos[0], null, $this->_viewer, $format);
+            return self::proceedDao(
+                $daos[0],
+                null,
+                $this->_viewer,
+                $format,
+                false,
+                true,
+                $this->_covers_dir
+            );
         } else {
             $res = '';
             foreach ( $daos as $dao ) {
-                $res .= self::proceedDao($dao, null, $this->_viewer, $format);
+                $res .= self::proceedDao(
+                    $dao,
+                    null,
+                    $this->_viewer,
+                    $format,
+                    false,
+                    true,
+                    $this->_covers_dir
+                );
             }
             return $res;
         }
@@ -277,16 +295,26 @@ class DisplayDao extends \Twig_Extension
     /**
      * Get a DAO as XML nodes (XSLT will display them as string otherwise)
      *
-     * @param string $dao    Document name
-     * @param string $title  Document title
-     * @param string $viewer Viewer URL
-     * @param string $format Format to display, defaults to thumb
+     * @param string $dao        Document name
+     * @param string $title      Document title
+     * @param string $viewer     Viewer URL
+     * @param string $format     Format to display, defaults to thumb
+     * @param string $covers_dir Covers directory
      *
      * @return DOMElement
      */
-    public static function getDao($dao, $title, $viewer, $format = 'thumb')
-    {
-        $str = self::proceedDao($dao, $title, $viewer, $format);
+    public static function getDao($dao, $title, $viewer, $format = 'thumb',
+        $covers_dir = null
+    ) {
+        $str = self::proceedDao(
+            $dao,
+            $title,
+            $viewer,
+            $format,
+            false,
+            true,
+            $covers_dir
+        );
         $sxml = simplexml_load_string($str);
         $doc = dom_import_simplexml($sxml);
         return $doc;
@@ -301,11 +329,12 @@ class DisplayDao extends \Twig_Extension
      * @param string  $format     Format to display
      * @param boolean $ajax       Does call came from ajax
      * @param boolean $standalone Is a standalone document, defaults to true
+     * @param boolean $covers_dir Covers directory
      *
      * @return string
      */
     public static function proceedDao($dao, $daotitle, $viewer, $format,
-        $ajax = false, $standalone = true
+        $ajax = false, $standalone = true, $covers_dir = null
     ) {
         $ret = null;
 
@@ -401,7 +430,37 @@ class DisplayDao extends \Twig_Extension
 
             $href = '/file/misc/' . $dao;
             $ret = '<a href="' . $href . '" title="' . $title  . '">';
-            if ( $daotitle ) {
+            if ( $covers_dir !== null ) {
+                //check if a cover exists
+                $name_wo_ext = str_replace(
+                    ltrim(strstr($dao, '.'), '.'),
+                    '',
+                    $dao
+                );
+
+                $cover_name = $name_wo_ext .= 'jpg';
+                $src = '';
+                $alt = '';
+
+                if ( file_exists($covers_dir . '/' . $cover_name) ) {
+                    $src = '/file/covers/';
+                    if ( $format === 'thumbs' ) {
+                        $src = 'thumb/';
+                    }
+                    $src .= $cover_name;
+                } else {
+                    $filetype = self::_guessFileType($dao);
+                    $src = '/img/' . $filetype . 'nocover.png';
+                }
+
+                if ( $daotitle ) {
+                    $alt = $daotitle;
+                } else {
+                    $alt = $dao;
+                }
+
+                $ret .='<img src="' . $src . '" alt="' . $alt . '"/>';
+            } else if ( $daotitle ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
             } else {
                 $ret .= $dao;
@@ -411,6 +470,60 @@ class DisplayDao extends \Twig_Extension
         }
 
         return $ret;
+    }
+
+    /**
+     * Guess a file type from its name
+     *
+     * @param string $name File name
+     *
+     * @return string
+     */
+    private static function _guessFileType($name)
+    {
+        $ext_reg = "/^(.+)\.(.+)$/i";
+        preg_match($ext_reg, $name, $matches);
+        if ( isset($matches[2]) ) {
+            switch ( strtolower($matches[2]) ) {
+            case 'pdf':
+                return 'pdf_';
+                break;
+            case 'doc':
+            case 'docx':
+            case 'odt':
+                return 'doc_';
+                break;
+            case 'xlsx':
+            case 'xls':
+            case 'ods':
+                return 'sheet_';
+                break;
+            case 'xml':
+                return 'xml_';
+                break;
+            case 'txt':
+                return 'txt_';
+                break;
+            case 'jpg':
+            case 'jpeg':
+            case 'gif':
+            case 'tif':
+            case 'bmp':
+                return 'img_';
+                break;
+            case 'webm':
+            case 'flv':
+            case 'avi':
+            case 'mpg':
+                return 'movie_';
+                break;
+            default:
+                return '';
+                break;
+            }
+        } else {
+            return '';
+        }
     }
 
     /**

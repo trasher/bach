@@ -11,11 +11,12 @@ services:
         calls:
             - [setRequest, ['@?request=']]
             - [setViewer, ['%viewer_uri%']]
+            - [setCOversDir, ['%covers_dir%']]
         tags:
             - { name: twig.extension }
     bach.home.display_dao:
         class: Bach\HomeBundle\Twig\DisplayDao
-        arguments: [ @router, '%viewer_uri%' ]
+        arguments: [ @router, '%viewer_uri%', '%covers_dir%' ]
         calls:
             - [setRequest, ['@?request=']]
         tags:

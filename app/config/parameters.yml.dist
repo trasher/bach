@@ -28,6 +28,7 @@ parameters:
         fr: fr_FR
     openid_enabled: false
     upload_dir: '%kernel.root_dir%/../web/uploads/'
+    covers_dir: '%kernel.root_dir%/../web/covers/'
     show_map: true
     show_expos: false
     has_cdc: false

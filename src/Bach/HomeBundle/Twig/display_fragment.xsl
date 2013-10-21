@@ -19,6 +19,7 @@ Displays an EAD fragment as HTML
     <xsl:param name="ajax" select="''"/>
     <xsl:param name="children" select="''"/>
     <xsl:param name="viewer_uri" select="''"/>
+    <xsl:param name="covers_dir" select="''"/>
     <xsl:param name="cdc" select="'false'"/>
     <xsl:param name="docid"/>
 
@@ -485,7 +486,7 @@ Displays an EAD fragment as HTML
             <xsl:when test="@href">
                 <xsl:choose>
                     <xsl:when test="not(substring(@href, 1, 8) = 'http://')">
-                        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), string(@title), $viewer_uri)"/>
+                        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), string(@title), $viewer_uri, 'thumb', $covers_dir)"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <a href="{@href}">

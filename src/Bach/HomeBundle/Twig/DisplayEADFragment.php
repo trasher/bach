@@ -32,6 +32,7 @@ class DisplayEADFragment extends \Twig_Extension
     private $_router;
     private $_request;
     private $_viewer_uri;
+    private $_covers_dir;
 
     /**
      * Main constructor
@@ -65,6 +66,18 @@ class DisplayEADFragment extends \Twig_Extension
     public function setViewer($viewer_uri)
     {
         $this->_viewer_uri = $viewer_uri;
+    }
+
+    /**
+     * Set covers directory
+     *
+     * @param string $dir Covers directory
+     *
+     * @return void
+     */
+    public function setCoversDir($dir)
+    {
+        $this->_covers_dir = $dir;
     }
 
     /**
@@ -115,6 +128,7 @@ class DisplayEADFragment extends \Twig_Extension
         $proc->setParameter('', 'full', $full);
         $proc->setParameter('', 'docid', $docid);
         $proc->setParameter('', 'viewer_uri', $this->_viewer_uri);
+        $proc->setParameter('', 'covers_dir', $this->_covers_dir);
         if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
         }

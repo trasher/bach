@@ -92,4 +92,65 @@ class FilesController extends Controller
         fclose($out);
         fclose($file);
     }
+
+    /**
+     * Get a cover
+     *
+     * @param string $name File name
+     *
+     * @return void
+     */
+    public function getCoverAction($name)
+    {
+        $path = $this->container->getParameter('covers_dir');
+        $path .= '/' . $name;
+
+        if ( !file_exists($path) ) {
+            throw new \RuntimeException(
+                str_replace(
+                    '%file',
+                    $path,
+                    _('File %file does not exists.')
+                )
+            );
+        }
+
+        $mime = mime_content_type($path);
+        header('Cache-Control: public');
+        header('Content-type: ' . $mime);
+
+        $width = 300;
+        $height = 300;
+
+        list($owidth, $oheight) = getimagesize($path);
+        if ( $owidth > 300 || $oheight > 300 ) {
+            $ratio_orig = $owidth/$oheight;
+            if ($width/$height > $ratio_orig) {
+                $width = $height*$ratio_orig;
+            } else {
+                $height = $width/$ratio_orig;
+            }
+
+            $image_p = imagecreatetruecolor($width, $height);
+            $image = imagecreatefromjpeg($path);
+            imagecopyresampled(
+                $image_p,
+                $image,
+                0,
+                0,
+                0,
+                0,
+                $width,
+                $height,
+                $owidth,
+                $oheight
+            );
+
+            imagejpeg($image_p, null, 100);
+        } else {
+            $width = $owidth;
+            $height = $oheight;
+        }
+    }
+
 }

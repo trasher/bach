@@ -601,6 +601,7 @@ class DefaultController extends Controller
         }
 
         $viewer_uri = $this->container->getParameter('viewer_uri');
+        $covers_dir = $this->container->getParameter('covers_dir');
 
         $docs  = $rs->getDocuments();
         $doc = $docs[0];
