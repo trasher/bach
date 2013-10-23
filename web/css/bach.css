@@ -982,6 +982,21 @@ div.sonata-bc .well {
 
 div.sonata-bc .breadcrumb {
     border-radius: 0;
+    background: #d1c6c0;
+    color: #404040;
+    margin-bottom: .2em;
+}
+
+div.sonata-bc .breadcrumb .divider {
+    color: #404040;
+}
+
+div.sonata-bc .breadcrumb li {
+    text-shadow: none;
+}
+
+div.sonata-bc .breadcrumb li a {
+    color: #4a4041;
 }
 
 div.sonata-bc .form-horizontal .form-actions {
