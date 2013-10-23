@@ -1733,12 +1733,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pix-digital/pixSortableBehaviorBundle.git",
-                "reference": "9048dbeb55ab5ca07243a5cf0c64245279dcc5ea"
+                "reference": "416bdc79d207150d9de6fe5ff532f45d3351deb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pix-digital/pixSortableBehaviorBundle/zipball/9048dbeb55ab5ca07243a5cf0c64245279dcc5ea",
-                "reference": "9048dbeb55ab5ca07243a5cf0c64245279dcc5ea",
+                "url": "https://api.github.com/repos/pix-digital/pixSortableBehaviorBundle/zipball/416bdc79d207150d9de6fe5ff532f45d3351deb7",
+                "reference": "416bdc79d207150d9de6fe5ff532f45d3351deb7",
                 "shasum": ""
             },
             "require": {
@@ -1781,7 +1781,7 @@
                 "sonata",
                 "sortable"
             ],
-            "time": "2013-10-08 09:35:11"
+            "time": "2013-10-23 13:55:21"
         },
         {
             "name": "psr/log",
@@ -2466,12 +2466,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataUserBundle.git",
-                "reference": "6344c16f86747a561f80b549d5b038722f99f99e"
+                "reference": "f4a57d9792d424bb1ab0fa54dd46708bad85cb7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataUserBundle/zipball/6344c16f86747a561f80b549d5b038722f99f99e",
-                "reference": "6344c16f86747a561f80b549d5b038722f99f99e",
+                "url": "https://api.github.com/repos/sonata-project/SonataUserBundle/zipball/f4a57d9792d424bb1ab0fa54dd46708bad85cb7e",
+                "reference": "f4a57d9792d424bb1ab0fa54dd46708bad85cb7e",
                 "shasum": ""
             },
             "require": {
@@ -2521,7 +2521,7 @@
                 "sonata",
                 "user"
             ],
-            "time": "2013-10-22 07:54:14"
+            "time": "2013-10-23 13:32:50"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
