@@ -34,7 +34,7 @@ class Fields
      *
      * @param BachCoreAdminConfigReader $reader Config reader
      */
-    public function __construct($reader)
+    public function __construct($reader = null)
     {
         $this->_reader = $reader;
     }
@@ -67,7 +67,7 @@ class Fields
         foreach ( $known_fields->lst as $field ) {
             $name = (string)$field['name'];
             if ( !in_array($name, $exclude) ) {
-                $facet_fields[$name] = $name;
+                $facet_fields[$name] = $this->getFieldLabel($name);
             }
         }
 
@@ -81,7 +81,7 @@ class Fields
      * @param string $url     HTTP URL
      * @param array  $options Request options
      *
-     * @return ??
+     * @return string
      */
     private function _send($url, $options = null)
     {
@@ -118,6 +118,100 @@ class Fields
         }
 
         return $response;
-        //return new SolrCoreResponse($response);
+    }
+
+    /**
+     * Retrieve localized label for field
+     *
+     * @param string $name Field name
+     *
+     * @return string
+     */
+    public function getFieldLabel($name)
+    {
+        switch ( $name ) {
+        case 'archDescRepository':
+            return _('Document repository');
+            break;
+        case 'archDescUnitDate':
+            return _('Document date');
+            break;
+        case 'archDescUnitTitle':
+            return _('Document title');
+            break;
+        case 'cCorpname':
+            return _('Corporate name');
+            break;
+        case 'cGenreform':
+            return _('Physical characteristic');
+            break;
+        case 'cGeogname':
+            return _('Geographical name');
+            break;
+        case 'cPersname':
+            return _('Personal name');
+            break;
+        case 'cSubject':
+            return _('Subject');
+            break;
+        case 'cUnitid':
+            return _('Unit ID');
+            break;
+        case 'cUnittitle':
+            return _('Unit title');
+            break;
+        case 'descriptors':
+            return ('Descriptors');
+            break;
+        case 'headerAuthor':
+            return _('File description author');
+            break;
+        case 'headerId':
+            return _('Document identifier');
+            break;
+        case 'headerPublisher':
+            return _('Document publisher');
+            break;
+        default:
+            /*case 'dyndescr_cCorpname_auteur':
+            case 'dyndescr_cGenreform_liste-typedocAC':
+            case 'dyndescr_cGeogname_batiment':
+            case 'dyndescr_cGeogname_liste-commune':
+            case 'dyndescr_cGeogname_liste-courdeau':
+            case 'dyndescr_cGeogname_liste-coursdeau':
+            case 'dyndescr_cGeogname_liste-departement':
+            case 'dyndescr_cGeogname_liste-quartier':
+            case 'dyndescr_cGeogname_liste-sectioncom':
+            case 'dyndescr_cPersname_auteur':
+            case 'dyndescr_cSubject_contexte-historique':
+            case 'dyndescr_cSubject_liste-programme':
+            case 'dyndescr_cSubject_liste-theme':*/
+            if ( strpos($name, 'dyndescr_') === 0 ) {
+                //TODO try to guess a name?
+                return $this->guessDynamicFieldLabel($name);
+            } else {
+                //unknown field, return name as is.
+                return $name;
+            }
+            break;
+        }
+    }
+
+    /**
+     * Guess dynamic field label
+     *
+     * @param string $name Field name
+     *
+     * @return string
+     */
+    public function guessDynamicFieldLabel($name)
+    {
+        $exploded = explode(
+            '_',
+            str_replace('dyndescr_', '', $name)
+        );
+        $field_label = $this->getFieldLabel($exploded[0]);
+        $dynamic_name = str_replace('dyndescr_' . $exploded[0] . '_', '', $name);
+        return $field_label . ' (' . $dynamic_name . ')';
     }
 }

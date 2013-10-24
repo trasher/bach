@@ -150,8 +150,13 @@ class FacetsAdmin extends Admin
         );
 
         $listMapper
-            ->addIdentifier('solr_field_name')
-            ->add('active', null, array('editable' => true))
+            ->addIdentifier(
+                'solr_field_name',
+                null,
+                array(
+                    'template' => 'AdministrationBundle:Admin:show_field.html.twig'
+                )
+            )->add('active', null, array('editable' => true))
             ->add('fr_label')
             ->add('en_label')
             ->add(
@@ -189,5 +194,18 @@ class FacetsAdmin extends Admin
     public function setPositionService(PositionHandler $positionHandler)
     {
         $this->positionService = $positionHandler;
+    }
+
+    /**
+     * Retrieve localized label for field
+     *
+     * @param string $name Field name
+     *
+     * @return string
+     */
+    public function getFieldLabel($name)
+    {
+        $fields = new Fields();
+        return $fields->getFieldLabel($name);
     }
 }
