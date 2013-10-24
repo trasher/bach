@@ -26,7 +26,6 @@ namespace Bach\AdministrationBundle\Entity\SolrCore;
  */
 class Fields
 {
-    private $_luke_uri = '%core/admin/luke';
     private $_reader;
 
     /**

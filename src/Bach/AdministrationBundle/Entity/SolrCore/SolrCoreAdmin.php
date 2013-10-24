@@ -181,7 +181,6 @@ class SolrCoreAdmin
         } else {
             //a temporary core has been created. User has to copy it the right
             //place, and only then tell Bach/Solr to register it
-            //FIXME: find a way to inform user!
             $solr_url = $this->_reader->getCoresURL() . '/admin/cores?';
             foreach ( $create_params as $key=>$param ) {
                 $solr_url .=  $key . '=' . $param . '&';

@@ -99,8 +99,6 @@ class EADDates
             case 'type':
                 $this->$attr = $value;
                 break;
-            default:
-                //FIXME: throw a warning, attribute is not mapped
             }
         }
     }
