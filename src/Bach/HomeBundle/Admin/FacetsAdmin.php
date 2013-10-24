@@ -39,6 +39,7 @@ class FacetsAdmin extends Admin
     private $_reader;
     private $_container;
     private $_positionService;
+    private $_search_core;
 
     protected $datagridValues = array(
         '_page'         => 1,
@@ -55,10 +56,13 @@ class FacetsAdmin extends Admin
      * @param string                    $class              ?
      * @param string                    $baseControllerName ?
      * @param BachCoreAdminConfigReader $reader             Config reader.
+     * @param string                    $search_core        Search core name
      */
-    public function __construct($code, $class, $baseControllerName, $reader)
-    {
+    public function __construct($code, $class, $baseControllerName, $reader,
+        $search_core
+    ) {
         $this->_reader = $reader;
+        $this->_search_core = $search_core;
         parent::__construct($code, $class, $baseControllerName);
     }
 
@@ -72,9 +76,8 @@ class FacetsAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $fields = new Fields($this->_reader);
-        /** FIXME: get core */
         $facet_fields = $fields->getFacetFields(
-            'EADUniversalFileFormat',
+            $this->_search_core,
             EADFileFormat::$facet_excluded
         );
 

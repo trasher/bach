@@ -8,6 +8,7 @@ services:
             - Bach\HomeBundle\Entity\Facets
             - 'PixSortableBehaviorBundle:SortableAdmin'
             - @bach.administration.configreader
+            - '%solr_search_core%'
         calls:
             - [ setTranslationDomain, [BachHomeBundle]]
             - [ setContainer, [@service_container] ]
