@@ -310,7 +310,13 @@ class DefaultController extends Controller
 
                 $values = array_values($tags);
                 $max = $values[0];
-                $min = $values[$tag_max];
+                $min = null;
+                if ( count($values) < $tag_max ) {
+                    $min = $values[count($values)-1];
+                } else {
+                    $min = $values[$tag_max];
+                }
+
                 //5 levels
                 $range = ($max - $min) / 5;
 
