@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-25 14:27+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/Bach/IndexationBundle/Form/Type/DocumentType.php:60
+msgid "File to publish"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Form/Type/DocumentType.php:68
+msgid "File format"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Form/Type/DocumentType.php:75
+msgid "Add to queue"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Form/Type/DocumentType.php:82
+msgid "Publish"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:414
+msgid "Could not validate non EAD documents (for now)."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:427
+#, php-format
+msgid "Corresponding file for %docid% document no longer exists on disk."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:455
+msgid "Document %docid% is valid and DTD compliant!"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:461
+msgid "%type% document %docid% is not valid!"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/ListCommand.php:79
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:117
+msgid "Unknown type! Please choose one of:"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:61
+msgid "Documents type"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:65
+msgid "Documents names or directories to proceed"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:70
+msgid "Assume yes for all questions"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:75
+msgid "Publish only in solr (full-import)"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:80
+msgid "Do not really publish."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:104
+msgid "Running in dry mode"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:130
+msgid "Publishing \"%type\" documents."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:142
+msgid "Following files are about to be published: "
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
+msgid "yes"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
+msgid "no"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:156
+msgid "Are you ok (y/n)?"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:167
+msgid "Publication begins..."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:225
+msgid "Command canceled by user."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Entity/Document.php:112
+#, php-format
+msgid "Cannot create upload directory %dir"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Service/TypesFiles.php:110
+msgid "File or directory %path does not exists!"
+msgstr ""

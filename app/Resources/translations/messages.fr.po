@@ -58,11 +58,12 @@ msgstr "Afficher le profil"
 msgid "Edit profile"
 msgstr "Modifier le profil"
 
-msgid "Show only illustrated documents"
-msgstr "Afficher uniquement les documents illustrés"
+msgid "Edit authentication"
+msgstr "Modifier l'authentification"
 
-msgid "Illustrated"
-msgstr "Illustrés"
+msgid "My profile"
+msgstr "Mon profil"
 
-msgid "Document logic"
-msgstr "Logique du document"
+msgid "Manage Solr"
+msgstr "Gérer Solr"
+

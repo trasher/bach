@@ -36,11 +36,11 @@
         {% if documents is defined and documents|length > 0 %}
         <table>
             <thead>
-                <th>Id</th>
-                <th>Identifiant</th>
-                <th>Type</th>
-                <th>Fichier</th>
-                <th>Titre</th>
+                <th>#</th>
+                <th>{% trans %}Identifier{% endtrans %}</th>
+                <th>{% trans %}Type{% endtrans %}</th>
+                <th>{% trans %}File{% endtrans %}</th>
+                <th>{% trans %}Title{% endtrans %}</th>
                 <th></th>
             </thead>
             <tfoot>
@@ -61,13 +61,13 @@
                     <td>{{ document.getExtension }}</td>
                     <td>{{ document.getName }}</td>
                     <td></td>
-                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}"><img src="" alt="Validate against EAD DTD"/></a>{% endif %}</td>
+                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}"><img src="" alt="{% trans %}Validate against EAD DTD{% endtrans %}"/></a>{% endif %}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         {% else %}
-            <p>Aucun document n'est actuellement indexé.</p>
+            <p>{% trans %}No documents published yet.{% endtrans %}</p>
         {% endif %}
     </fieldset>
     </form>
@@ -77,19 +77,19 @@
     {{ parent() }}
     $(document).ready(function(){
         $('#empty').click(function(){
-            return confirm('Souhaitez-vous réllement supprimer tous les documents indexés ?\n\nCette action n\'est pas réversible !');
+            return confirm('{% trans %}Do you really want to remove all published document?\n\nThis can not be undone!{% endtrans %}');
         });
 
         $('#delete_documents').click(function(){
             var _count = $('#documents :checked').length;
             if ( _count == 0 ) {
-                alert('Veuillez sélectionner au moins un document.');
+                alert('{% trans %}Please select at least one document.{% endtrans %}');
                 return false;
             } else {
                 if ( _count == 1 ) {
-                    return confirm('Souhaitez-vous supprimer le document sélectionné ?');
+                    return confirm('{% trans%}Do you want to remove selected document?{%endtrans%}');
                 } else {
-                    return confirm('Souhaitez-vous supprimer les ' + _count + ' documents sélectionnés ?');
+                    return confirm('{% trans %}Do you want to remove all %count selected documents?{% endtrans %}'.replace(/%count/, _count));
                 }
             }
         });

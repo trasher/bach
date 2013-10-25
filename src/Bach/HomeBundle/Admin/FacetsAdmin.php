@@ -157,12 +157,29 @@ class FacetsAdmin extends Admin
                 'solr_field_name',
                 null,
                 array(
-                    'template' => 'AdministrationBundle:Admin:show_field.html.twig'
+                    'template'  => 'AdministrationBundle:Admin:show_field.html.twig',
+                    'label'     => _('Solr field name')
                 )
-            )->add('active', null, array('editable' => true))
-            ->add('fr_label')
-            ->add('en_label')
-            ->add(
+            )->add(
+                'active',
+                null,
+                array(
+                    'editable'  => true,
+                    'label'     => _('Active')
+                )
+            )->add(
+                'fr_label',
+                null,
+                array(
+                    'label' => _('French text')
+                )
+            )->add(
+                'en_label',
+                null,
+                array(
+                    'label' => _('English text')
+                )
+            )->add(
                 '_action',
                 'actions',
                 array(

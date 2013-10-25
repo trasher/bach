@@ -1,5 +1,5 @@
 <aside id="refine">
-    <h2>{% trans %}Solr Admin{% endtrans %}</h2>
+    <h2>{% trans %}Administration{% endtrans %}</h2>
     <ul>
         <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
             <a href="{{ url('administration_dashboard') }}">Dashboard</a>
@@ -7,7 +7,7 @@
         <li>
         <form action="{{ path('administration_dashboard') }}" method="POST">
             <select name="selectedCore" onchange="this.form.submit();">
-                <option value="none">Sélectionnez un Noyau</option>
+                <option value="none">{% trans %}Select a core{% endtrans %}</option>
                 {% for core in coreNames %}
                 <option value="{{ core }}" {% if (coreName == core) %} selected="selected" {% endif %}>{{ core }}</option>
                 {% endfor %}
@@ -15,43 +15,43 @@
         </form>
         </li>
         <li>
-            <a href="{{ path('administration_newcore') }}" class="jbtn">Ajouter un noyau</a>
+            <a href="{{ path('administration_newcore') }}" class="jbtn">{% trans %}Add new core{% endtrans %}</a>
         </li>
     </ul>
 {% if (coreName != 'none' ) %}
-    <h2>{% trans %}Solr Schema Config{% endtrans %}</h2>
+    <h2>{% trans %}Schema{% endtrans %}</h2>
     <ul>
         <li{% if current_route == 'administration_fields' %} class="active"{% endif %}>
-            <a href="{{ url('administration_fields') }}">Fields</a>
+            <a href="{{ url('administration_fields') }}">{% trans %}Fields{% endtrans %}</a>
         </li>
         <li{% if current_route == 'administration_dynamicfields' %} class="active"{% endif %}>
-            <a href="{{ url('administration_dynamicfields') }}">Dynamic Fields</a>
+            <a href="{{ url('administration_dynamicfields') }}">{% trans %}Dynamic Fields{% endtrans %}</a>
         </li>
         <li{% if current_route == 'administration_copyfields' %} class="active"{% endif %}>
-            <a href="{{ url('administration_copyfields') }}">Copy fields</a>
+            <a href="{{ url('administration_copyfields') }}">{% trans %}Copy fields{% endtrans %}</a>
         </li>
         <li{% if current_route == 'administration_fieldstype' %} class="active"{% endif %}>
-            <a href="{{ url('administration_fieldstype') }}">Fields Type</a>
+            <a href="{{ url('administration_fieldstype') }}">{% trans %}Fields Type{% endtrans %}</a>
         </li>
         <li{% if current_route == 'administration_analyzers' %} class="active"{% endif %}>
-            <a href="{{ url('administration_analyzers') }}"> Analizers</a>
+            <a href="{{ url('administration_analyzers') }}">{% trans %}Analyzers{% endtrans %}</a>
         </li>
         <li{% if current_route == 'administration_uniquekey' %} class="active"{% endif %}>
-            <a href="{{ url('administration_uniquekey') }}">Unique Key</a>
+            <a href="{{ url('administration_uniquekey') }}">{% trans %}Unique Key{% endtrans %}</a>
         </li>
     </ul>
 
-    <h2>{% trans %}Solr Core Config{% endtrans %}</h2>
+    <h2>{% trans %}Administration{% endtrans %}</h2>
     <ul>
         <li{% if current_route == 'administration_coreadmin' %} class="active"{% endif %}>
-            <a href="{{ url('administration_coreadmin') }}">Core Admin</a>
+            <a href="{{ url('administration_coreadmin') }}">{% trans %}Core Admin{% endtrans %}</a>
         </li>
     </ul>
 
-    <h2>Solr Performance Config</h2>
+    <h2>{% trans %}Performance{% endtrans %}</h2>
     <ul>
         <li{% if current_route == 'administration_performance' %} class="active"{% endif %}>
-            <a href="{{ url('administration_performance') }}">Performance Admin</a>
+            <a href="{{ url('administration_performance') }}">{% trans %}Performance Admin{% endtrans %}</a>
         </li>
     </ul>
 {% endif %}

@@ -12,8 +12,8 @@
             {{ form_errors(upload_form.file) }}
             {{ form_errors(upload_form.extension) }}
         {#<fieldset>
-            <legend>Fichiers existants</legend>
-            <p>Sélectionnez un ou plusieurs fichiers que vous souhaitez indexer.</p>
+            <legend>{% trans %}Existing files{'endtrans %}</legend>
+            <p>{% trans %}Select files or directories you want to publish{% endtran %}</p>
             <div class="well">
             {% if existing_files is defined %}
                 {% for format,files in existing_files %}
@@ -40,13 +40,13 @@
                 </ul>
                 {% endfor %}
             {% else %}
-                <p>Aucun fichier n'existe actuellement sur le serveur.</p>
+                <p>{% trans %}No files on server.{% endtrans %}</p>
             {% endif %}
             </div>
         </fieldset>#}
 
         <fieldset>
-            <legend>Envoi d'un nouveau fichier</legend>
+            <legend>{% trans %}Send a new file{% endtrans%}</legend>
             <div class="well">
                 {{ form_label(upload_form.file) }}
                 {{ form_widget(upload_form.file) }}<br/>
@@ -63,9 +63,9 @@
     {{ form_end(upload_form) }}
 
     <div id="help_window">
-        <h3>Aide de l'indexation</h3>
+        <h3>{% trans %}Publication help{% endtrans %}</h3>
         <div>
-            <p>Le processus d'indexation consiste à extraire d'un fichier toutes les informations utiles. Sélectionnez le fichier que vous souhaitez indexer et renseignez son format (EAD/UNIMARC,etc.).<br/>Vous pourrez ensuite choisir de lancer l'indexation, ou d'ajouter le document à la file d'attente pour un traitement ultérieur (utile notamment pour les fichiers volumineux).</p>
+            <p>{% trans %}Publication process will extract all useful informations from a file. Select file you want to publish, its format (EAD, UNIMARC, etc.).<br/>Then you will choose either to proceed publication, or to add the job to the queue for a further publication (used for bg files).{% endtrans %}</p>
         </div>
     </div>
 {% endblock %}

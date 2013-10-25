@@ -3,7 +3,7 @@
 {% block container %}
     <fieldset class="list">
         <legend>
-            Tâches de publication
+            {% trans %}Publication tasks{% endtrans %}
             <span class="btn-groups pull-right">
                 <a href="{{ path("bach_indexation_purge") }}" class="btn btn-delete" title="Supprimer les tâches traitées">{% trans %}Remove finished tasks{% endtrans %}</a>
                 <a id="refresh" class="btn btn-refresh">{% trans %}Refresh{% endtrans %}</a>
@@ -13,9 +13,9 @@
         <table>
             <thead>
                 <tr>
-                    <th>Nom du fichier</th>
-                    <th>Format</th>
-                    <th>Taille</th>
+                    <th>{% trans %}File name{% endtrans %}</th>
+                    <th>{% trans %}Format{% endtrans %}</th>
+                    <th>{% trans %}Size{% endtrans%}</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +29,7 @@
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="3">Aucune tache de publication en cours</td>
+                    <td colspan="3">{% trans%}No publication in queue{% endtrans %}</td>
                 </tr>
                 {% endif %}
             </tbody>
@@ -37,11 +37,9 @@
     </fieldset>
 
     <div id="help_window">
-        <h3>File d'attente de publication</h3>
+        <h3>{% trans %}Publication queue{% endtrans %}</h3>
         <div>
-            <p>Le processus d'indexation consiste à extraire d'un fichier toutes les informations utiles.</p>
-            <p>Lors du lancement d'une indexation, vous avez la possibilité d'ajouter les éléments à al file d'attente, ou des les indexer directement. La seconde solution n'est pas parfois pas possible, notamment avec des documents volumineux.</p>
-            <p>La présente page liste les documents actuellement dans la file d'attente, qui est traitée régulièrement, en fonction du paramétrage établi sur le serveur. La couleur de la ligne correspondant à votre fichier dans le tableau vous indiquera le succès ou non de son indexation.</p>
+            <p>{% trans %}Publication queue list all documents that are waiting to be published. Publication happens depending on server parameters. Line color will inform you about publication success or failure.{% endtrans %}</p>
         </div>
     </div>
 {% endblock %}

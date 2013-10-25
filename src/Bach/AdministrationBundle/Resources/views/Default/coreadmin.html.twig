@@ -3,8 +3,8 @@
 {% block container %}
         <fieldset>
             <legend>Core</legend>
-            <a href="#" class="jbtn">Recharger</a>
-            <a href="#" class="btn btn-delete">Supprimer</a>
+            <a href="#" class="jbtn">{% trans %}Reload{% endtrans %}</a>
+            <a href="#" class="btn btn-delete">{% trans %}Remove{% endtrans %}</a>
 
             <div class="well">
                 <strong>{% trans %}Up since:{% endtrans %}</strong> {{ coreStatus.startTime }}<br/>

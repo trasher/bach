@@ -1,0 +1,129 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "Remove finished tasks"
+msgstr "Remove finished tasks"
+
+msgid "Refresh"
+msgstr "Refresh"
+
+msgid "Validation results"
+msgstr "Validation results"
+
+msgid "Show/hide errors"
+msgstr "Show/hide errors"
+
+msgid "Published documents"
+msgstr "Published documents"
+
+msgid "Remove all published documents"
+msgstr "Remove all published documents"
+
+msgid "Remove all"
+msgstr "Remove all"
+
+msgid "Refresh list"
+msgstr "Refresh list"
+
+msgid "Remove selected documents"
+msgstr "Remove selected documents"
+
+msgid "Remove selected"
+msgstr "Remove selected"
+
+msgid "Manage publishing"
+msgstr "Manage publishing"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Publication tasks"
+msgstr "Publication tasks"
+
+msgid "File name"
+msgstr "File name"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Size"
+msgstr "Size"
+
+msgid "No publication in queue"
+msgstr "No publication in queue"
+
+msgid "Publication queue"
+msgstr "Publication queue"
+
+msgid ""
+"Publication queue list all documents that are waiting to be published. "
+"Publication happens depending on server parameters. Line color will inform "
+"you about publication success or failure."
+msgstr ""
+"Publication queue list all documents that are waiting to be published. "
+"Publication happens depending on server parameters. Line color will inform "
+"you about publication success or failure."
+
+msgid "Send a new file"
+msgstr "Send a new file"
+
+msgid "Publication help"
+msgstr "Publication help"
+
+msgid ""
+"Publication process will extract all useful informations from a file. Select "
+"file you want to publish, its format (EAD, UNIMARC, etc.).<br/>Then you will "
+"choose either to proceed publication, or to add the job to the queue for a "
+"further publication (used for bg files)."
+msgstr ""
+"Publication process will extract all useful informations from a file. Select "
+"file you want to publish, its format (EAD, UNIMARC, etc.).<br/>Then you will "
+"choose either to proceed publication, or to add the job to the queue for a "
+"further publication (used for bg files)."
+
+msgid "Identifier"
+msgstr "Identifier"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "File"
+msgstr "File"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Validate against EAD DTD"
+msgstr "Validate against EAD DTD"
+
+msgid "No documents published yet."
+msgstr "No documents published yet."
+
+msgid ""
+"Do you really want to remove all published document?\\n\\nThis can not be "
+"undone!"
+msgstr ""
+"Do you really want to remove all published document?\\n\\nThis can not be "
+"undone!"
+
+msgid "Please select at least one document."
+msgstr "Please select at least one document."
+
+msgid "Do you want to remove selected document?"
+msgstr "Do you want to remove selected document?"
+
+msgid "Do you want to remove all %count selected documents?"
+msgstr "Do you want to remove all %count selected documents?"
+
+msgid "Publish new file"
+msgstr "Publish new file"
