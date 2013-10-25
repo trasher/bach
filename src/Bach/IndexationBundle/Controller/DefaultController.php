@@ -280,6 +280,7 @@ class DefaultController extends Controller
         $query = $qb->getQuery();
         $docs = $query->getResult();
         foreach ($docs as $doc) {
+            $doc->setUploadDir($this->container->getParameter('upload_dir'));
             $em->remove($doc);
         }
 
