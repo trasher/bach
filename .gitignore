@@ -2,9 +2,6 @@
 ######################
 app/logs/*
 app/cache/*
-app/spool/*
-app/bootstrap/*
-app/config/parameters.ini
 app/config/parameters.yml
 app/config/constants.php
 app/bootstrap.php.cache
@@ -43,4 +40,8 @@ quick_gen_project_*.sh
 #test generatedrated files
 code-coverage/
 
+#files to publish
 files/
+
+#generated i18n
+app/Resources/gettext/
