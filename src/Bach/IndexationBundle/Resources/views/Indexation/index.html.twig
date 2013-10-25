@@ -81,7 +81,7 @@
         });
 
         $('#delete_documents').click(function(){
-            var _count = $('#documents :checked').length;
+            var _count = $('#published_documents :checked').length;
             if ( _count == 0 ) {
                 alert('{% trans %}Please select at least one document.{% endtrans %}');
                 return false;
