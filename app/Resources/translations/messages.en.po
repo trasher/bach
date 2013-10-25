@@ -58,3 +58,12 @@ msgstr "Show profile"
 msgid "Edit profile"
 msgstr "Edit profile"
 
+msgid "Show only illustrated documents"
+msgstr "Show only illustrated documents"
+
+msgid "Illustrated"
+msgstr "Illustrated"
+
+msgid "Document logic"
+msgstr "Document logic"
+

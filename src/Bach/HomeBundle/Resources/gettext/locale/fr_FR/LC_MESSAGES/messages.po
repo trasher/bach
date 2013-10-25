@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-03 13:17+0200\n"
-"PO-Revision-Date: 2013-10-03 13:20+0100\n"
+"POT-Creation-Date: 2013-10-25 14:27+0200\n"
+"PO-Revision-Date: 2013-10-25 14:30+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: fr_FR.utf8\n"
@@ -33,59 +33,51 @@ msgstr "Le chemin des fichiers divers n'est pas défini !"
 msgid "File does not exists."
 msgstr "Le fichier n'existe pas."
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:195
-msgid "document"
-msgstr "Document"
+#: src/Bach/HomeBundle/Controller/DefaultController.php:212
+msgid "Start date"
+msgstr "Date de début"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:199
-msgid "subject"
-msgstr "Sujets"
+#: src/Bach/HomeBundle/Controller/DefaultController.php:213
+msgid "End date"
+msgstr "Date de fin"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:203
-msgid "persname"
-msgstr "Personnes"
-
-#: src/Bach/HomeBundle/Controller/DefaultController.php:207
-msgid "geogname"
-msgstr "Lieux"
-
-#: src/Bach/HomeBundle/Controller/DefaultController.php:562
+#: src/Bach/HomeBundle/Controller/DefaultController.php:556
 msgid "%count% results found, 1 expected."
 msgstr "%count% résultats trouvés, 1 attendu."
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:202
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:205
 msgid "Images"
 msgstr "Images"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:211
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:214
 msgid "Series"
 msgstr "Séries"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:220
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:223
 msgid "Sounds"
 msgstr "Sons"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:229
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:232
 msgid "Flash sounds"
 msgstr "Sons Flash"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:238
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:243
 msgid "Videos"
 msgstr "Vidéos"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:247
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:252
 msgid "Flash videos"
 msgstr "Vidéos Flash"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:256
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:261
 msgid "Miscellaneous documents"
 msgstr "Documents divers"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:313
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:319
 msgid "Play '%name%'"
 msgstr "Jouer « %name% »"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:346
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:351
 msgid ""
 "Your browser does not support this video format, you may want to download "
 "file and watch it offline"
@@ -93,9 +85,9 @@ msgstr ""
 "Votre navigateur ne supporte pas ce format de vidéo, vous souhaiterez peut-"
 "être télécharger le fichier et le visionner hors ligne"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:395
-msgid "Documents are not supported (yet)."
-msgstr "Les documents divers ne sont pas (encore) supportés."
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:399
+msgid "Display '%name%'"
+msgstr "Afficher « %name% »"
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:149
 msgid "Publication informations"
@@ -205,6 +197,22 @@ msgstr "Documents"
 msgid "Sub-units"
 msgstr "Sous-unités"
 
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:90
+msgid "Solr field name"
+msgstr "Nom du champ Solr"
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:97
+msgid "Activate facet"
+msgstr "Activer la facette"
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:103
+msgid "French text"
+msgstr "Texte français"
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:109
+msgid "English text"
+msgstr "Texte anglais"
+
 #: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:60
 msgid "Enter your search"
 msgstr "Entrez votre recherche"
@@ -213,19 +221,34 @@ msgstr "Entrez votre recherche"
 msgid "Search"
 msgstr "Chercher"
 
-#: src/Bach/HomeBundle/Entity/OpenIdUserManager.php:78
+#: src/Bach/HomeBundle/Entity/OpenIdUserManager.php:77
 msgid "No corresponding user was found!"
 msgstr "Aucun utilisateur correspondant n'a été trouvé !"
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:125
+#: src/Bach/HomeBundle/Entity/ViewParams.php:126
 #, php-format
 msgid "View %s is not known!"
 msgstr "La vue %s est inconnue !"
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:160
+#: src/Bach/HomeBundle/Entity/ViewParams.php:161
 #, php-format
 msgid "Order %s is not known!"
 msgstr "L'ordre %s est inconnu !"
+
+#~ msgid "document"
+#~ msgstr "Document"
+
+#~ msgid "subject"
+#~ msgstr "Sujets"
+
+#~ msgid "persname"
+#~ msgstr "Personnes"
+
+#~ msgid "geogname"
+#~ msgstr "Lieux"
+
+#~ msgid "Documents are not supported (yet)."
+#~ msgstr "Les documents divers ne sont pas (encore) supportés."
 
 #~ msgid "Results per page"
 #~ msgstr "Résultats par page"

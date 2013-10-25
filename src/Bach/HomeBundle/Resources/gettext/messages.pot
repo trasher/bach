@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-03 13:17+0200\n"
+"POT-Creation-Date: 2013-10-25 14:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,66 +33,58 @@ msgstr ""
 msgid "File does not exists."
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:195
-msgid "document"
+#: src/Bach/HomeBundle/Controller/DefaultController.php:212
+msgid "Start date"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:199
-msgid "subject"
+#: src/Bach/HomeBundle/Controller/DefaultController.php:213
+msgid "End date"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:203
-msgid "persname"
-msgstr ""
-
-#: src/Bach/HomeBundle/Controller/DefaultController.php:207
-msgid "geogname"
-msgstr ""
-
-#: src/Bach/HomeBundle/Controller/DefaultController.php:562
+#: src/Bach/HomeBundle/Controller/DefaultController.php:556
 msgid "%count% results found, 1 expected."
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:202
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:205
 msgid "Images"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:211
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:214
 msgid "Series"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:220
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:223
 msgid "Sounds"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:229
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:232
 msgid "Flash sounds"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:238
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:243
 msgid "Videos"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:247
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:252
 msgid "Flash videos"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:256
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:261
 msgid "Miscellaneous documents"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:313
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:319
 msgid "Play '%name%'"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:346
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:351
 msgid ""
 "Your browser does not support this video format, you may want to download "
 "file and watch it offline"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:395
-msgid "Documents are not supported (yet)."
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:399
+msgid "Display '%name%'"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:149
@@ -203,6 +195,22 @@ msgstr ""
 msgid "Sub-units"
 msgstr ""
 
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:90
+msgid "Solr field name"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:97
+msgid "Activate facet"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:103
+msgid "French text"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:109
+msgid "English text"
+msgstr ""
+
 #: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:60
 msgid "Enter your search"
 msgstr ""
@@ -211,16 +219,16 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: src/Bach/HomeBundle/Entity/OpenIdUserManager.php:78
+#: src/Bach/HomeBundle/Entity/OpenIdUserManager.php:77
 msgid "No corresponding user was found!"
 msgstr ""
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:125
+#: src/Bach/HomeBundle/Entity/ViewParams.php:126
 #, php-format
 msgid "View %s is not known!"
 msgstr ""
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:160
+#: src/Bach/HomeBundle/Entity/ViewParams.php:161
 #, php-format
 msgid "Order %s is not known!"
 msgstr ""
