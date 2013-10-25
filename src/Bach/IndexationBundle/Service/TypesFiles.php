@@ -80,9 +80,11 @@ class TypesFiles
 
             $path = $this->_paths[$format];
             if ( $paths === null ) {
-                $existing_files[$format] = $this->_parseExistingFiles(
-                    $finder->files()->in($path)
-                );
+                if ( file_exists($path) && is_dir($path) ) {
+                    $existing_files[$format] = $this->_parseExistingFiles(
+                        $finder->files()->in($path)
+                    );
+                }
             } else {
                 $found_files = array();
                 foreach ( $paths as $p ) {
