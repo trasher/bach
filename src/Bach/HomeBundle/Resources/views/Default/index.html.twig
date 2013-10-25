@@ -99,7 +99,6 @@
         <nav id="active_filters">
             <strong>{% trans %}Active filters:{% endtrans %}</strong>
             {% for filter_name,values in filters %}
-            {#<em>{{ filter_name }}:</em>#}
             <ul>
                 {% for value in values %}
                 <li>

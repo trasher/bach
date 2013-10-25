@@ -208,7 +208,10 @@ class DefaultController extends Controller
                 }
             }
 
-            $facet_names = array();
+            $facet_names = array(
+                'cDateBegin'    => _('Start date'),
+                'cDateEnd'      => _('End date')
+            );
             foreach ( $conf_facets as $facet ) {
                 $facet_names[$facet->getSolrFieldName()] = $facet->getFrLabel();
                 $field_facets = $facetset->getFacet($facet->getSolrFieldName());
