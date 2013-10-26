@@ -38,7 +38,7 @@ Thumbs.db
 quick_gen_project_*.sh
 
 #test generatedrated files
-code-coverage/
+tests-results/
 
 #files to publish
 files/

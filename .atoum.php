@@ -1,13 +1,21 @@
 <?php
 use \mageekguy\atoum;
 
+$tests_dir = __DIR__ . '/tests-results/';
+$coverage_dir = $tests_dir . 'code-coverage/';
+
+if ( !file_exists($tests_dir) ) {
+    mkdir($tests_dir);
+    mkdir($tests_dir . 'code-coverage');
+}
+
 $coverageField = new atoum\report\fields\runner\coverage\html(
     'Bach',
-    __DIR__ . '/code-coverage'
+    $coverage_dir
 );
-$coverageField->setRootUrl('file://' . realpath(__DIR__ . '/code-coverage'));
+$coverageField->setRootUrl('file://' . realpath($coverage_dir));
 
-$xunitWriter = new atoum\writers\file(__DIR__ . '/atoum.xunit.xml');
+$xunitWriter = new atoum\writers\file($tests_dir . '/atoum.xunit.xml');
 
 $coverageField->addSrcDirectory(
     __DIR__.'/src/Bach/HomeBundle/',
