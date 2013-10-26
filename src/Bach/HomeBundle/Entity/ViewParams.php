@@ -39,7 +39,7 @@ class ViewParams
 
     private $_show_pics = true;
     private $_results_by_page = 10;
-    private $_view = 'list';
+    private $_view = self::VIEW_LIST;
     private $_order = self::ORDER_RELEVANCE;
     private $_illustrated = false;
 
