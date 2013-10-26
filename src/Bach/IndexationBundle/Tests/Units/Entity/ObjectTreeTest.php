@@ -68,6 +68,25 @@ class ObjectTree extends Units\Test
         $root_name = $tree->getName();
 
         $this->string($root_name)->isIdenticalTo('root');
+
+        $this->exception(
+            function () use ( $tree ) {
+                $tree->get('child')->append(
+                    new ObjectSheet('bar', new Foo())
+                );
+            }
+        )->hasMessage('ObjectTree sheet conflict name');
+
+        $this->exception(
+            function () use ( $tree ) {
+                $tree->append(
+                    new Ot('child')
+                );
+            }
+        )->hasMessage('ObjectTree sheet conflict name');
+
+        $get_false = $tree->get('doesnotexists');
+        $this->boolean($get_false)->isFalse();
     }
 }
 

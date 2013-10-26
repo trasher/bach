@@ -15,6 +15,7 @@ namespace Bach\HomeBundle\Tests\Units\Entity;
 
 use atoum\AtoumBundle\Test\Units;
 use Bach\HomeBundle\Entity\SolariumQueryContainer as Container;
+use Bach\HomeBundle\Entity\ViewParams;
 
 /**
  * Bach SolariumQueryContainer unit tests
@@ -103,5 +104,45 @@ class SolariumQueryContainer extends Units\Test
         );
 
         $this->array($filters)->isIdenticalTo($attendee_filters);
+
+        $ordered = $qc->isOrdered();
+        $this->boolean($ordered)->isFalse();
+
+        //test order
+        $attendee_order = $this->faker->name;
+        $qc->setOrder($attendee_order);
+        $order = $qc->getOrderField();
+
+        $this->variable($order)->isIdenticalTo($attendee_order);
+
+        $ordered = $qc->isOrdered();
+        $this->boolean($ordered)->isTrue();
+
+        //test order on known fields
+        $qc->setOrder(ViewParams::ORDER_TITLE);
+        $order = $qc->getOrderField();
+
+        $this->string($order)->isIdenticalTo('cUnittitle');
+
+        $qc->setOrder(ViewParams::ORDER_DOC_LOGIC);
+        $attendee_orders = array(
+            'archDescUnitTitle',
+            'elt_order'
+        );
+
+        $order = $qc->getOrderField();
+
+        $this->array($order)->isIdenticalTo($attendee_orders);
+
+        $attendee_direction = ViewParams::ORDER_ASC;
+        $direction = $qc->getOrderDirection();
+
+        $this->variable($direction)->isIdenticalTo($attendee_direction);
+
+        $illustrated = $qc->isIllustrated();
+        $this->boolean($illustrated)->isFalse();
+
+        $illustrated = $qc->isIllustrated(true);
+        $this->boolean($illustrated)->isTrue();
     }
 }

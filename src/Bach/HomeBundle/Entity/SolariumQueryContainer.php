@@ -172,7 +172,7 @@ class SolariumQueryContainer
      */
     public function isOrdered()
     {
-        if ( $this->_order != ViewParams::ORDER_RELEVANCE ) {
+        if ( $this->_order !== ViewParams::ORDER_RELEVANCE ) {
             return true;
         } else {
             return false;
