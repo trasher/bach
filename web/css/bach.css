@@ -1043,19 +1043,19 @@ div.sonata-bc .btn-group {
 
 /* ADMIN Interface related
       -------------------------------------------------- */
-#ram_usage, #swap_usage {
-    width: 49%;
+#ram_usage, #swap_usage, #jvm_usage {
+    width: 33%;
     display: inline-block;
-    margin-right: 0.5%;
+    margin-right: 0.2%;
 }
 
-#memory, #swap {
+#memory, #swap, #jvm {
     width: 200px;
     height: 150px;
     margin: 0 auto;
 }
 
-#swap_usage {
+#jvm_usage {
     margin-right: 0;
 }
 

@@ -5,13 +5,24 @@
 {% endblock %}
 
 {% block container %}
+    <h2>{% trans %}Solr server informations{% endtrans %}</h2>
+    <ul class="well">
+        <li><strong>{% trans %}Solr version:{% endtrans %}</strong> {{ solr_version }}</li>
+        <li><strong>{% trans %}JVM:{% endtrans %}</strong> {{ jvm_version }}</li>
+        <li><strong>{% trans %}System:{% endtrans %}</strong> {{ system_version }}</li>
+        <li><strong>{% trans %}Load average:{% endtrans %}</strong> {{ load_average }}</li>
+    </ul>
     <section id="ram_usage">
-        <h4>Utilisation de la mémoire volatile (MB)</h4>
+        <h4>{% trans %}System memory{% endtrans %}</h4>
         <div id="memory"></div>
     </section>
     <section id="swap_usage">
-        <h4>Utilisation de la mémoire SWAP</h4>
+        <h4>{% trans %}Swap{% endtrans %}</h4>
         <div id="swap"></div>
+    </section>
+    <section id="jvm_usage">
+        <h4>{% trans %}JVM memory{% endtrans %}</h4>
+        <div id="jvm"></div>
     </section>
 
     <section id="cores">
@@ -58,11 +69,11 @@
     $(function(){
         $('#cores_accordion').tabs();
 
-        var _total_memory = {{ SystemFreeVirtualMemory + SystemUsedVirtualMemory}};
-        var _memory_hlimit = {{ (SystemFreeVirtualMemory + SystemUsedVirtualMemory) /8 * 7 }};
-        var _memory_llimit = {{ (SystemFreeVirtualMemory + SystemUsedVirtualMemory) /8 * 5 }};
+        var _total_memory = {{ total_virt_mem }};
+        var _memory_hlimit = {{ total_virt_mem /8 * 7 }};
+        var _memory_llimit = {{ total_virt_mem /8 * 5 }};
 
-        var _v_memory = [{{ SystemUsedVirtualMemory }}];
+        var _v_memory = [{{ used_virt_mem }}];
         var _memory_plot = $.jqplot('memory',[_v_memory],{
             seriesDefaults: {
                 renderer: $.jqplot.MeterGaugeRenderer,
@@ -77,11 +88,11 @@
             }
         });
 
-        var _total_swap = {{ SystemFreeSwapMemory + SystemUsedSwapMemory}};
-        var _swap_hlimit = {{ (SystemFreeSwapMemory + SystemUsedSwapMemory) /8 * 5 }};
-        var _swap_llimit = {{ (SystemFreeSwapMemory + SystemUsedSwapMemory) /8 * 3 }};
+        var _total_swap = {{ total_swap }};
+        var _swap_hlimit = {{ total_swap /8 * 5 }};
+        var _swap_llimit = {{ total_swap /8 * 3 }};
 
-        var _s_memory = [{{ SystemUsedSwapMemory }}];
+        var _s_memory = [{{ used_swap }}];
         var _swap_plot = $.jqplot('swap',[_s_memory],{
             seriesDefaults: {
                 renderer: $.jqplot.MeterGaugeRenderer,
@@ -89,6 +100,25 @@
                     intervals:[_swap_llimit, _swap_hlimit, _total_swap],
                     intervalColors:['#66cc66', '#E7E658', '#cc6666'],
                     max: _total_swap,
+                }
+            },
+            grid: {
+                background: 'transparent'
+            }
+        });
+
+        var _total_jvm = {{ total_jvm }};
+        var _jvm_hlimit = {{ total_jvm /8 * 7 }};
+        var _jvm_llimit = {{ total_jvm /8 * 5 }};
+
+        var _j_memory = [{{ used_jvm }}];
+        var _memory_plot = $.jqplot('jvm',[_j_memory],{
+            seriesDefaults: {
+                renderer: $.jqplot.MeterGaugeRenderer,
+                rendererOptions: {
+                    intervals:[_jvm_llimit, _jvm_hlimit, _total_jvm],
+                    intervalColors:['#66cc66', '#E7E658', '#cc6666'],
+                    max: _total_jvm,
                 }
             },
             grid: {

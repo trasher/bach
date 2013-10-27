@@ -43,7 +43,7 @@ class BachCoreAdminConfigReader
     private $_root_dir;
 
     /**
-     * Constructor. Reads the config XML file.
+     * Constructor
      *
      * @param boolean $ssl   Solr SSL host
      * @param string  $host  Solr host

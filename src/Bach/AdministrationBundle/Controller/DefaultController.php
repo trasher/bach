@@ -3,9 +3,8 @@
 namespace Bach\AdministrationBundle\Controller;
 
 use Bach\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
-use Bach\AdministrationBundle\Entity\Dashboard\Dashboard;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-
+use Bach\AdministrationBundle\Entity\SolrAdmin\Infos;
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -48,6 +47,15 @@ class DefaultController extends Controller
      */
     public function dashboardAction()
     {
+        $solr_infos = new Infos(
+            $this->container->getParameter('solr_ssl'),
+            $this->container->getParameter('solr_host'),
+            $this->container->getParameter('solr_port'),
+            $this->container->getParameter('solr_path')
+        );
+
+        $solr_infos->loadSystemInfos();
+
         $coreName = $this->getRequest()->request->get('selectedCore');
         if (!isset($coreName)) {
             $coreName = 'none';
@@ -68,26 +76,25 @@ class DefaultController extends Controller
             $session->set('xmlP', new XMLProcess($sca, $coreName));
         }
 
-        $db = new Dashboard();
-
-        $SystemFreeVirtualMemory=$db->getSystemFreeVirtualMemory();
-        $SystemUsedVirtualMemory = $db->getSystemTotalVirtualMemory()-$SystemFreeVirtualMemory;
-        $SystemFreeSwapMemory=$db->getSystemFreeSwapMemory();
-        $SystemUsedSwapMemory=$db->getSystemTotalSwapMemory()-$SystemFreeSwapMemory;
-
         $tmpCoreNames = $sca->getTempCoresNames();
 
         return $this->render(
             'AdministrationBundle:Default:dashboard.html.twig',
             array(
-                'coreName'                  => $coreName,
-                'coreNames'                 => $coreNames,
-                'tmpCoresNames'             => $tmpCoreNames,
-                'SystemUsedVirtualMemory'   => $SystemUsedVirtualMemory,
-                'SystemFreeVirtualMemory'   => $SystemFreeVirtualMemory,
-                'SystemUsedSwapMemory'      => $SystemUsedSwapMemory,
-                'SystemFreeSwapMemory'      => $SystemFreeSwapMemory,
-                'coresInfo'                 => $coresInfo
+                'coreName'          => $coreName,
+                'coreNames'         => $coreNames,
+                'tmpCoresNames'     => $tmpCoreNames,
+                'coresInfo'         => $coresInfo,
+                'total_virt_mem'    => $solr_infos->getTotalVirtMem(),
+                'used_virt_mem'     => $solr_infos->getUsedVirtMem(),
+                'total_swap'        => $solr_infos->getTotalSwap(),
+                'used_swap'         => $solr_infos->getUsedSwap(),
+                'total_jvm'         => $solr_infos->getTotalJvmMem(),
+                'used_jvm'          => $solr_infos->getUsedJvmMem(),
+                'solr_version'      => $solr_infos->getSolrVersion(),
+                'jvm_version'       => $solr_infos->getJvmInfos(),
+                'system_version'    => $solr_infos->getSystemInfos(),
+                'load_average'      => $solr_infos->getLoadAverage()
             )
         );
     }
