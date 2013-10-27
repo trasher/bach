@@ -227,7 +227,8 @@ class DisplayEADFragment extends \Twig_Extension
             return _('Sub-units');
             break;
         default:
-            //FIXME: add an alert in logs, a translation may be missing!
+            //TODO: add an alert in logs, a translation may be missing!
+            //Should we really throw an exception here?
             //return _($ref);
             throw new \RuntimeException(
                 'Translation from XSL reference "' . $ref . '" is not known!'

@@ -284,7 +284,9 @@ class EADFileFormat extends MappedFileFormat
                     $this->addDao($dao);
                 }
             } else {
-                //FIXME: throw a warning
+                throw new \RuntimeException(
+                    __CLASS__ . ' - Key ' . $key . ' is not known!'
+                );
             }
         }
     }

@@ -81,7 +81,7 @@ class FileDriverManager
                                 $mapper = $reflection->newInstance();
                             }
                         } catch (\RuntimeException $e) {
-                            //FIXME
+                            throw $e;
                         }
                     }
 
@@ -93,7 +93,7 @@ class FileDriverManager
                             }
                         }
                         catch (\RuntimeException $e) {
-                            //FIXME
+                            throw $e;
                         }
                     }
 
@@ -178,7 +178,7 @@ class FileDriverManager
                     );
                 }
             } catch(\RuntimeException $e) {
-                //FIXME
+                throw $e;
             }
         }
     }
