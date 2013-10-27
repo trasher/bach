@@ -944,4 +944,58 @@ class SolrCoreAdmin
     {
         return $this->_errors;
     }
+
+    /**
+     * Get database parameters from current config,
+     * to use values in newly created core
+     *
+     * @param string $driver   Database driver
+     * @param string $host     Database host
+     * @param string $port     Database port
+     * @param string $dbname   Database name
+     * @param string $user     Database user
+     * @param string $password Database password
+     *
+     * @return array
+     */
+    public function getJDBCDatabaseParameters(
+        $driver, $host, $port, $dbname, $user, $password
+    ) {
+        $params = array();
+
+        $driver = str_replace(
+            'pdo_',
+            '',
+            $driver
+        );
+        if ( $driver == 'pgsql' ) {
+            $driver = 'postgresql';
+        }
+        if ( $port !== null ) {
+            $port = ':' . $port;
+        } else {
+            $port = '';
+        }
+
+        $dsn = 'jdbc:' . $driver . '://' . $host . $port . '/' . $dbname;
+
+        $jdbc_driver = null;
+        switch ( $driver ) {
+        case 'mysql':
+            $jdbc_driver = 'com.mysql.jdbc.Driver';
+            break;
+        case 'postgresql':
+            $jdbc_driver = 'org.postgresql.Driver';
+            break;
+        default:
+            throw new \RuntimeException('Unknown database driver ' . $driver);
+        }
+
+        $params['driver'] = $jdbc_driver;
+        $params['url'] = $dsn;
+        $params['user'] = $user;
+        $params['password'] = $password;
+
+        return $params;
+    }
 }

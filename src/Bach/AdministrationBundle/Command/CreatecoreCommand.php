@@ -30,8 +30,6 @@ use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
- *
- * FIXME: remove duplicated code from CoreController :/
  */
 class CreatecoreCommand extends ContainerAwareCommand
 {
@@ -94,7 +92,15 @@ EOF
             break;
         }
 
-        $db_params = $this->_getJDBCDatabaseParameters();
+        $db_params = $sca->getJDBCDatabaseParameters(
+            $this->getContainer()->getParameter('database_driver'),
+            $this->getContainer()->getParameter('database_host'),
+            $this->getContainer()->getParameter('database_port'),
+            $this->getContainer()->getParameter('database_name'),
+            $this->getContainer()->getParameter('database_user'),
+            $this->getContainer()->getParameter('database_password')
+        );
+
         $result = $sca->create(
             $core_name,
             $core_name,
@@ -105,53 +111,6 @@ EOF
         );
 
         $output->writeln($result);
-    }
-
-    /**
-     * Get database parameters from current config,
-     * to use values in newly created core
-     *
-     * @return array
-     */
-    private function _getJDBCDatabaseParameters()
-    {
-        $params = array();
-
-        $driver = str_replace(
-            'pdo_',
-            '',
-            $this->getContainer()->getParameter('database_driver')
-        );
-        if ( $driver == 'pgsql' ) {
-            $driver = 'postgresql';
         }
-        $host = $this->getContainer()->getParameter('database_host');
-        $port = '';
-        if ( $this->getContainer()->getParameter('database_port') !== null ) {
-            $port = ':' . $this->getContainer()->getParameter('database_port');
-        }
-        $dbname = $this->getContainer()->getParameter('database_name');
-
-        $dsn = 'jdbc:' . $driver . '://' . $host . $port . '/' . $dbname;
-
-        $jdbc_driver = null;
-        switch ( $driver ) {
-        case 'mysql':
-            $jdbc_driver = 'com.mysql.jdbc.Driver';
-            break;
-        case 'postgresql':
-            $jdbc_driver = 'org.postgresql.Driver';
-            break;
-        default:
-            throw new \RuntimeException('Unknown database driver ' . $driver);
-        }
-
-        $params['driver'] = $jdbc_driver;
-        $params['url'] = $dsn;
-        $params['user'] = $this->getContainer()->getParameter('database_user');
-        $params['password'] = $this->getContainer()
-            ->getParameter('database_password');
-
-        return $params;
     }
 }
