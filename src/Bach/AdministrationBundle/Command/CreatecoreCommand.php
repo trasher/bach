@@ -77,7 +77,7 @@ EOF
         $type = $input->getArgument('type');
 
         if ( !$type ) {
-            $tye = 'EADUniversalFileFormat';
+            $type = 'EADUniversalFileFormat';
         }
 
         $configreader = $container->get('bach.administration.configreader');

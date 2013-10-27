@@ -20,9 +20,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 Use Symfony\Component\HttpFoundation\File\File;
-/*use Bach\IndexationBundle\Generator\FileDriverGenerator;
-use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Finder\Finder;*/
 use Bach\IndexationBundle\Entity\Document;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
