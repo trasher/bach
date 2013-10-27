@@ -110,7 +110,30 @@ EOF
             $db_params
         );
 
-        $output->writeln($result);
+        if ( $result === false ) {
+            foreach ( $sca->getErrors() as $e ) {
+                $e = str_replace('<br/>', "\n", $e);
+                $output->writeln(
+                    '<fg=red;options=bold>' . $e . '</fg=red;options=bold>'
+                );
+            }
+
+            foreach ( $sca->getWarnings() as $w ) {
+                $e = str_replace('<br/>', "\n", $w);
+                $output->writeln(
+                    '<fg=orange;options=bold>' . $w . '</fg=orange;options=bold>'
+                );
+            }
+        } else {
+            $output->writeln(
+                '<fg=green;options=bold>' .
+                str_replace(
+                    '%corename',
+                    $core_name,
+                    _('Core %corename has been created and loaded :)')
+                ) .
+                '</fg=green;options=bold>'
+            );
         }
     }
 }
