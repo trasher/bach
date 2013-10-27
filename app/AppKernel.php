@@ -68,7 +68,8 @@ class AppKernel extends Kernel
             //new Lsw\MemcacheBundle\LswMemcacheBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Pix\SortableBehaviorBundle\PixSortableBehaviorBundle()
+            new Pix\SortableBehaviorBundle\PixSortableBehaviorBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
