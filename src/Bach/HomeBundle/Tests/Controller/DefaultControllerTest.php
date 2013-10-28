@@ -55,6 +55,7 @@ class DefaultController extends WebTestCase
             ->hasChild('article');
 
         //a not successfull request, with one spelling suggestion
+        //FIXME: the french text will fail if app is in english... We should find a fix for that.
         $this->request->GET('/search/cyenne')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
