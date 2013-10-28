@@ -121,7 +121,7 @@ EOF
             foreach ( $sca->getWarnings() as $w ) {
                 $e = str_replace('<br/>', "\n", $w);
                 $output->writeln(
-                    '<fg=orange;options=bold>' . $w . '</fg=orange;options=bold>'
+                    '<fg=yellow;options=bold>' . $w . '</fg=yellow;options=bold>'
                 );
             }
         } else {
