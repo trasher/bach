@@ -6,18 +6,14 @@
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
     <!-- ============================================  -->
-    <target name="prepare" depends="prepare-build,prepare-pdepend">
+    <target name="prepare">
         <echo msg="Making directories..." />
         <mkdir dir="${project.basedir}/build/api" />
         <mkdir dir="${project.basedir}/build/code-browser" />
         <mkdir dir="${project.basedir}/build/coverage" />
         <mkdir dir="${project.basedir}/build/logs" />
-    </target>
-    <target name="prepare-build">
         <mkdir dir="${project.basedir}/build" />
         <mkdir dir="${project.basedir}/build/bach" />
-    </target>
-    <target name="prepare-pdepend">
         <mkdir dir="${project.basedir}/build/pdepend" />
     </target>
 
@@ -83,7 +79,7 @@
     <!-- ================================ -->
     <!-- Copy and clean vendors libraries -->
     <!-- ================================ -->
-    <target name="clean-vendors" depends="prepare-build">
+    <target name="clean-vendors" depends="prepare">
         <copy todir="${project.basedir}/build/bach/vendor" >
             <fileset dir="vendor">
                 <patternset>
@@ -154,7 +150,7 @@
     <!-- ================== -->
     <!-- Dependencies check -->
     <!-- ================== -->
-    <target name="pdepend" depends="prepare-pdepend">
+    <target name="pdepend" depends="prepare">
         <phpdepend file="${project.basedir}/${source}" excludeDirectories="skeleton">
             <logger type="jdepend-xml" outfile="${project.basedir}/build/logs/jdepend.xml" />
             <logger type="jdepend-chart" outfile="${project.basedir}/build/pdepend/dependencies.svg" />
@@ -165,7 +161,7 @@
     <!-- ============= -->
     <!-- Mess detector -->
     <!-- ============= -->
-    <target name="phpmd">
+    <target name="phpmd" depends="prepare">
         <phpmd file="${project.basedir}/${source}">
             <formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
         </phpmd>
@@ -174,7 +170,7 @@
     <!-- =================== -->
     <!-- Copy/paste detector -->
     <!-- =================== -->
-    <target name="phpcpd">
+    <target name="phpcpd" depends="prepare">
         <phpcpd file="${project.basedir}/${source}">
             <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
         </phpcpd>
@@ -183,14 +179,14 @@
     <!-- ===================== -->
     <!-- Some stats on project -->
     <!-- ===================== -->
-    <target name="phploc">
+    <target name="phploc" depends="prepare">
         <exec logoutput="true" dir="${project.basedir}" command="phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
     </target>
 
     <!-- ===================== -->
     <!-- CodeBrowser generator -->
     <!-- ===================== -->
-    <target name="phpcb">
+    <target name="phpcb" depends="prepare">
         <exec logoutput="true" command="phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}' --output '${project.basedir}/build/code-browser'" escape="false" />
     </target>
 
