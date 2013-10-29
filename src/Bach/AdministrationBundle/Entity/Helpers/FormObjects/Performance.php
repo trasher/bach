@@ -1,6 +1,6 @@
 <?php
 /**
- * Performance form
+ * Performance form object
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@ namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 use Bach\AdministrationBundle\Entity\SolrPerformance\SolrPerformance;
 
 /**
- * Performance form
+ * Performance form object
  *
  * @category Administration
  * @package  Bach

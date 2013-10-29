@@ -1,18 +1,43 @@
 <?php
+/**
+ * Copy field form object
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
-
 use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
-
 use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
+
+/**
+ * Copy field form object
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class CopyField
 {
     public $source;
     public $dest;
     public $maxChars;
 
+    /**
+     * Constructor
+     *
+     * @param SolrXMLElement $fieldElt Solr field
+     */
     public function __construct(SolrXMLElement $fieldElt = null)
     {
         if ($fieldElt != null) {
@@ -24,7 +49,14 @@ class CopyField
             $this->maxChars = $attr !== null ? $attr->getValue() : null;
         }
     }
-    
+
+    /**
+     * Add field
+     *
+     * @param XMLProcess $xmlP XMLProcess instance
+     *
+     * @return void
+     */
     public function addField(XMLProcess $xmlP)
     {
         $solrXMLElt = new SolrXMLElement('copyField');
@@ -40,7 +72,12 @@ class CopyField
         $schema = $xmlP->getElementsByName('schema');
         $schema->addElement($solrXMLElt);
     }
-    
+
+    /**
+     * Get Solr XML element, with relevant attributes
+     *
+     * @return SolrXMLElement
+     */
     public function getSolrXMLElement()
     {
         $elt = new SolrXMLElement('copyField');

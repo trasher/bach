@@ -1,12 +1,39 @@
 <?php
+/**
+ * Fields form object
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
+
+/**
+ * Fields form object
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class Fields
 {
     public $fields;
-    
+
+    /**
+     * Constructor
+     *
+     * @param XMLProcess $xmlP XMLProcess instance
+     */
     public function __construct(XMLProcess $xmlP = null)
     {
         $this->fields = array();
@@ -19,7 +46,14 @@ class Fields
             }
         }
     }
-    
+
+    /**
+     * Save
+     *
+     * @param XMLProcess $xmlP XMLProcess instance
+     *
+     * @return void
+     */
     public function save(XMLProcess $xmlP)
     {
         $fieldsArray = array();
