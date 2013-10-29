@@ -91,6 +91,13 @@ class AnalyzerForm extends AbstractType
         return 'analyzerTypeForm';
     }
 
+    /**
+     * Get available values for type attribute.
+     *
+     * @param BachSchemaConfigReader $reader Config reader
+     *
+     * @return multitype:NULL
+     */
     private function _retrieveClassAttributeValues(BachSchemaConfigReader $reader)
     {
         $attr = $reader->getAttributeByTag(

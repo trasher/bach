@@ -11,10 +11,10 @@
  * @link     http://anaphore.eu
  */
 
-namespace Bach\HomeBundle\Tests\Units\Controller;
+namespace Bach\HomeBundle\Tests\Controller;
 
 use atoum\AtoumBundle\Test\Units\WebTestCase;
-use atoum\AtoumBundle\Tests\Controller\ControllerTest;
+use atoum\AtoumBundle\Test\Controller\ControllerTest;
 
 /**
  * Bach default controller unit tests
@@ -27,7 +27,7 @@ use atoum\AtoumBundle\Tests\Controller\ControllerTest;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class DefaultController extends WebTestCase
+class DefaultController extends ControllerTest
 {
     /**
      * Test index action

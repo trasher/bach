@@ -1,11 +1,31 @@
 <?php
+/**
+ * Bach solr core response
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Entity\SolrCore;
 
 use DOMDocument;
 use DOMXPath;
 
 /**
- * Represents Solr response to administration queries (error code, message, trace; core status)
+ * Bach solr core response encapsulation
+ * Represents Solr response to administration queries
+ * (error code, message, trace; core status)
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  */
 class SolrCoreResponse
 {
@@ -15,83 +35,89 @@ class SolrCoreResponse
     const ERROR_TRACE_XPATH = '/response/lst[@name="error"]/str[@name="trace"]';
     const CORE_NAMES = '/response/lst[@name="status"]/lst[@name]/@name';
 
-    private $status;
-    private $doc;
-    private $xpath;
+    private $_status;
+    private $_xpath;
 
     /**
      * Constructor. Create DOMDocument object from Solr XMLResponse string
-     * @param string $XMLResponse
+     *
+     * @param string $XMLResponse XML string repsonse from Solr
      */
     public function __construct($XMLResponse)
     {
         $doc = new DOMDocument();
         $doc->loadXML($XMLResponse);
-        $this->xpath = new DOMXPath($doc);
-        $nodeList = $this->xpath->query(SolrCoreResponse::STATUS_XPATH);
+        $this->_xpath = new DOMXPath($doc);
+        $nodeList = $this->_xpath->query(SolrCoreResponse::STATUS_XPATH);
         if ($nodeList->length == 0) {
-            $this->status = null;
+            $this->_status = null;
         } else {
-            $this->status = $nodeList->item(0)->nodeValue;
+            $this->_status = $nodeList->item(0)->nodeValue;
         }
     }
 
     /**
      * Get response status (0 if all is ok).
+     *
      * @return Ambigous <NULL, string>
      */
     public function getStatus()
     {
-        return $this->status;
+        return $this->_status;
     }
 
     /**
      * Get error code if exist otherwise returns null.
+     *
      * @return Ambigous <NULL, string>
      */
     public function getCode()
     {
-        $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_CODE_XPATH);
+        $nodeList = $this->_xpath->query(SolrCoreResponse::ERROR_CODE_XPATH);
         return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
     }
 
     /**
      * Get error message if exist otherwise returns null.
+     *
      * @return Ambigous <NULL, string>
      */
     public function getMessage()
     {
-        $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_MSG_XPATH);
+        $nodeList = $this->_xpath->query(SolrCoreResponse::ERROR_MSG_XPATH);
         return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
     }
 
     /**
      * Get error trace if exist otherwise returns null.
+     *
      * @return Ambigous <NULL, string>
      */
     public function getTrace()
     {
-        $nodeList = $this->xpath->query(SolrCoreResponse::ERROR_TRACE_XPATH);
+        $nodeList = $this->_xpath->query(SolrCoreResponse::ERROR_TRACE_XPATH);
         return $nodeList->length == 0 ? null : $nodeList->item(0)->nodeValue;
     }
 
     /**
      * If response status is 0 returns true otherwise returns false.
+     *
      * @return Ambigous <NULL, string>
      */
     public function isOk()
     {
-        return $this->status == 0 ? true : false;
+        return $this->_status == 0 ? true : false;
     }
 
     /**
      * Get array of core names.
+     *
      * @return array<string>
      */
     public function getCoreNames()
     {
-        $nodeList = $this->xpath->query(SolrCoreResponse::CORE_NAMES);
-        foreach($nodeList as $n) {
+        $nodeList = $this->_xpath->query(SolrCoreResponse::CORE_NAMES);
+        foreach ($nodeList as $n) {
             $coreNameArray[] = $n->nodeValue;
         }
         return $coreNameArray;
@@ -99,19 +125,13 @@ class SolrCoreResponse
 
     /**
      * Get status of a Solr core.
+     *
+     * @param string $coreName Core name
+     *
      * @return SolrCoreStatus
      */
-    public function getCoreStatus($coreName) {
-        return new SolrCoreStatus($this->xpath, $coreName);
-    }
-
-    private function getNodeValue($xpath)
+    public function getCoreStatus($coreName)
     {
-        $nodeList = $this->xpath->query($xpath);
-        if ($nodeList->length == 0) {
-            return null;
-        } else {
-           return $nodeList->item(0)->nodeValue;
-        }
+        return new SolrCoreStatus($this->_xpath, $coreName);
     }
 }

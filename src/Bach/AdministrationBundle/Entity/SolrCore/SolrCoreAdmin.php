@@ -111,8 +111,9 @@ class SolrCoreAdmin
      *
      * @return boolean|SolrCoreResponse
      */
-    public function create($coreType, $coreName, $tableName, $orm_name, $em, $db_params)
-    {
+    public function create($coreType, $coreName, $tableName, 
+        $orm_name, $em, $db_params
+    ) {
         $coreInstanceDir =  preg_replace('/[^a-zA-Z0-9-_]/', '', $coreName); 
         $coreInstanceDirPath = null;
         $this->_em = $em;
