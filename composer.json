@@ -38,6 +38,7 @@
         "atoum/atoum": "dev-master",
         "atoum/atoum-bundle": "dev-master",
         "jns/xhprof-bundle": "dev-master",
+        "facebook/xhprof": "*@dev",
         "elao/web-profiler-extra-bundle" : "dev-master"
     },
     "suggest": {
