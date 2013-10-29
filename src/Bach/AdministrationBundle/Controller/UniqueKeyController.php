@@ -1,4 +1,16 @@
 <?php
+/**
+ * Bach unique key controller
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Controller;
 
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\UniqueKey;
@@ -8,6 +20,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\UniqueKeyForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+
+/**
+ * Bach unique key controller
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 class UniqueKeyController extends Controller
 {
@@ -47,6 +69,14 @@ class UniqueKeyController extends Controller
         );
     }
 
+    /**
+     * Submit
+     *
+     * @param Request    $request Request
+     * @param XMLProcess $xmlP    XMLProcess
+     *
+     * @return void
+     */
     public function submitAction(Request $request, XMLProcess $xmlP)
     {
         $session = $request->getSession();

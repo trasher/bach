@@ -1,4 +1,16 @@
 <?php
+/**
+ * Bach dynamic fields controller
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Controller;
 
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\DynamicField;
@@ -10,6 +22,15 @@ use Bach\AdministrationBundle\Entity\Helpers\FormObjects\DynamicFields;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
+/**
+ * Bach dynamic fields controller
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class DynamicFieldsController extends Controller
 {
 
@@ -47,14 +68,22 @@ class DynamicFieldsController extends Controller
             )
         );
     }
-    
-    private function addDynamicFieldAction(Request $request)
+
+    /**
+     * Add dynamic field
+     *
+     * @param Request $request Request
+     *
+     * @return void
+     */
+    public function addDynamicFieldAction(Request $request)
     {
         $df = new DynamicField();
         $form = $this->createForm(new DynamicFieldsForm(), $df);
         //$form->bind($request);
         if ($form->isValid()) {
-            // If the data is valid, we save new field into the schema.xml file of corresponding core
+            // If the data is valid, we save new field into the
+            // schema.xml file of corresponding core
             /*$xmlP = $session->get('xmlP');
             $df->addField($xmlP);
             $xmlP->saveXML();*/
@@ -69,12 +98,15 @@ class DynamicFieldsController extends Controller
         );
     }
 
-    public function removeDynamicFieldsAction(Request $request)
-    {
-
-    }
-
-    private function submitAction(Request $request, XMLProcess $xmlP)
+    /**
+     * Submit
+     *
+     * @param Request    $request Request
+     * @param XMLProcess $xmlP    XMLProcess
+     *
+     * @return void
+     */
+    public function submitAction(Request $request, XMLProcess $xmlP)
     {
         $df = new DynamicFields($xmlP);
         $form = $this->createForm(new DynamicFieldsForm($xmlP), $df);

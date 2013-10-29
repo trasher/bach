@@ -23,8 +23,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /**
  * Bach core administration controller
  *
- * PHP version 5
- *
  * @category Administration
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>

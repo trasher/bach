@@ -1,4 +1,15 @@
 <?php
+/**
+ * Bach fields controller
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 namespace Bach\AdministrationBundle\Controller;
 
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\FieldsForm;
@@ -7,6 +18,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
+/**
+ * Bach fields controller
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class FieldsController extends Controller
 {
 
@@ -39,7 +59,15 @@ class FieldsController extends Controller
         );
     }
 
-    private function submitAction(Request $request, XMLProcess $xmlP)
+    /**
+     * Submit
+     *
+     * @param Request    $request Request
+     * @param XMLProcess $xmlP    XMLProcess
+     *
+     * @return void
+     */
+    public function submitAction(Request $request, XMLProcess $xmlP)
     {
         $f = new Fields();
         $form = $this->createForm(new FieldsForm(), $f);

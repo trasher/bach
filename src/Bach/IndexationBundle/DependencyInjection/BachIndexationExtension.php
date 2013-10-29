@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * Bach IndexationBundle dependency injection extension
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 namespace Bach\IndexationBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -8,14 +18,27 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * This is the class that loads and manages your bundle configuration
+ * Bach IndexationBundle dependency injection extension
  *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * This is the class that loads and manage bundle configuration
+ * See {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  */
 class BachIndexationExtension extends Extension
 {
+
     /**
-     * {@inheritDoc}
+     * Load configuration
+     *
+     * @param array            $configs   Configuration values
+     * @param ContainerBuilder $container Container
+     *
+     * @return void
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -25,7 +48,10 @@ class BachIndexationExtension extends Extension
         $container->setParameter('bach.types', $config['types']);
         $container->setParameter('bach.typespaths', $config['paths']);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader(
+            $container,
+            new FileLocator(__DIR__.'/../Resources/config')
+        );
         $loader->load('services.yml');
     }
 }
