@@ -51,4 +51,5 @@ $script
 
 $script
     ->noCodeCoverageForNamespaces('Symfony')
+    ->noCodeCoverageForNamespaces('Fp')
     ->noCodeCoverageForClasses('Twig_Extension');
