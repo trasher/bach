@@ -40,7 +40,7 @@ $coverageField->addSrcDirectory(
 $xunitReport = new atoum\reports\asynchronous\xunit();
 $xunitReport->addWriter($xunitWriter);
 
-$clover = new \mageekguy\atoum\reports\asynchronous\clover();
+$clover = new atoum\reports\asynchronous\clover();
 $clover->addWriter($cloverWriter);
 
 $runner->addReport($xunitReport);
