@@ -16,6 +16,7 @@ $coverageField = new atoum\report\fields\runner\coverage\html(
 $coverageField->setRootUrl('file://' . realpath($coverage_dir));
 
 $xunitWriter = new atoum\writers\file($tests_dir . '/atoum.xunit.xml');
+$cloverWriter = new atoum\writers\file($tests_dir . '/clover.xml');
 
 $coverageField->addSrcDirectory(
     __DIR__.'/src/Bach/HomeBundle/',
@@ -39,7 +40,15 @@ $coverageField->addSrcDirectory(
 $xunitReport = new atoum\reports\asynchronous\xunit();
 $xunitReport->addWriter($xunitWriter);
 
+$clover = new \mageekguy\atoum\reports\asynchronous\clover();
+$clover->addWriter($cloverWriter);
+
 $runner->addReport($xunitReport);
+$runner->addReport($clover);
 $script
     ->addDefaultReport()
     ->addField($coverageField);
+
+$script
+    ->noCodeCoverageForNamespaces('Symfony')
+    ->noCodeCoverageForClasses('Twig_Extension');
