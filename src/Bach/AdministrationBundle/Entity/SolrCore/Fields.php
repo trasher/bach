@@ -64,9 +64,12 @@ class Fields
         $known_fields = $nl[0];
 
         foreach ( $known_fields->lst as $field ) {
-            $name = (string)$field['name'];
-            if ( !in_array($name, $exclude) ) {
-                $facet_fields[$name] = $this->getFieldLabel($name);
+            $type = $field->xpath('str[@name="type"]');
+            if ( (string)$type[0] === 'string' ) {
+                $name = (string)$field['name'];
+                if ( !in_array($name, $exclude) ) {
+                    $facet_fields[$name] = $this->getFieldLabel($name);
+                }
             }
         }
 
@@ -171,22 +174,11 @@ class Fields
         case 'headerPublisher':
             return _('Document publisher');
             break;
+        case 'headerLanguage':
+            return _('Document language');
+            break;
         default:
-            /*case 'dyndescr_cCorpname_auteur':
-            case 'dyndescr_cGenreform_liste-typedocAC':
-            case 'dyndescr_cGeogname_batiment':
-            case 'dyndescr_cGeogname_liste-commune':
-            case 'dyndescr_cGeogname_liste-courdeau':
-            case 'dyndescr_cGeogname_liste-coursdeau':
-            case 'dyndescr_cGeogname_liste-departement':
-            case 'dyndescr_cGeogname_liste-quartier':
-            case 'dyndescr_cGeogname_liste-sectioncom':
-            case 'dyndescr_cPersname_auteur':
-            case 'dyndescr_cSubject_contexte-historique':
-            case 'dyndescr_cSubject_liste-programme':
-            case 'dyndescr_cSubject_liste-theme':*/
             if ( strpos($name, 'dyndescr_') === 0 ) {
-                //TODO try to guess a name?
                 return $this->guessDynamicFieldLabel($name);
             } else {
                 //unknown field, return name as is.
