@@ -1,6 +1,6 @@
 <?php
 /**
- * Bach HomeBundle
+ * Bach Virtual Expositions Bundle
  *
  * PHP version 5
  *
@@ -11,12 +11,12 @@
  * @link     http://anaphore.eu
  */
 
-namespace Bach\HomeBundle;
+namespace Bach\ExposBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Bach HomeBundle
+ * Bach Virtual Expositions Bundle
  *
  * @category Search
  * @package  Bach
@@ -24,6 +24,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class BachHomeBundle extends Bundle
+class ExposBundle extends Bundle
 {
 }

@@ -1,0 +1,3 @@
+expos_homepage:
+    pattern:  /{name}
+    defaults: { _controller: ExposBundle:Default:index }

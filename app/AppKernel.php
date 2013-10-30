@@ -69,7 +69,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Pix\SortableBehaviorBundle\PixSortableBehaviorBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Bach\ExposBundle\ExposBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

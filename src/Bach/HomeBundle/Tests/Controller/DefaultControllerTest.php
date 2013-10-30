@@ -19,8 +19,6 @@ use atoum\AtoumBundle\Test\Controller\ControllerTest;
 /**
  * Bach default controller unit tests
  *
- * PHP version 5
- *
  * @category Tests
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
