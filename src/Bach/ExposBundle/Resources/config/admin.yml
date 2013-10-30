@@ -1,0 +1,53 @@
+services:
+    sonata.admin.expos:
+        class: Bach\ExposBundle\Admin\ExpositionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Virtual expositions", label: "Expositions", label_catalogue: "ExposBundle" }
+        arguments:
+            - ~
+            - Bach\ExposBundle\Entity\Exposition
+            - 'PixSortableBehaviorBundle:SortableAdmin'
+        calls:
+            - [ setTranslationDomain, [BachExposBundle]]
+            - [ setContainer, [@service_container] ]
+            - [ setPositionService, [@pix_sortable_behavior.position] ]
+
+    sonata.admin.rooms:
+        class: Bach\ExposBundle\Admin\RoomAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Virtual expositions", label: "Rooms", label_catalogue: "ExposBundle" }
+        arguments:
+            - ~
+            - Bach\ExposBundle\Entity\Room
+            - 'PixSortableBehaviorBundle:SortableAdmin'
+        calls:
+            - [ setTranslationDomain, [BachExposBundle]]
+            - [ setContainer, [@service_container] ]
+            - [ setPositionService, [@pix_sortable_behavior.position] ]
+
+    sonata.admin.panels:
+        class: Bach\ExposBundle\Admin\PanelAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Virtual expositions", label: "Panels", label_catalogue: "ExposBundle" }
+        arguments:
+            - ~
+            - Bach\ExposBundle\Entity\Panel
+            - 'PixSortableBehaviorBundle:SortableAdmin'
+        calls:
+            - [ setTranslationDomain, [BachExposBundle]]
+            - [ setContainer, [@service_container] ]
+            - [ setPositionService, [@pix_sortable_behavior.position] ]
+
+    sonata.admin.documents:
+        class: Bach\ExposBundle\Admin\DocumentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Virtual expositions", label: "Documents", label_catalogue: "ExposBundle" }
+        arguments:
+            - ~
+            - Bach\ExposBundle\Entity\Document
+            - 'PixSortableBehaviorBundle:SortableAdmin'
+        calls:
+            - [ setTranslationDomain, [BachExposBundle]]
+            - [ setContainer, [@service_container] ]
+            - [ setPositionService, [@pix_sortable_behavior.position] ]
+
