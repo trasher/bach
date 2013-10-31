@@ -99,6 +99,14 @@ class ExpositionAdmin extends Admin
                     'required'  => false,
                     'label'     => _('Put exposition online/offline')
                 )
+            )->add(
+                'description',
+                'ckeditor',
+                array(
+                    'config_name'   => 'bach_head_edit',
+                    'required'      => false,
+                    'label'         => _('Exposition description')
+                )
             );
     }
 
@@ -127,7 +135,8 @@ class ExpositionAdmin extends Admin
             ->add('name')
             ->add('beginDate')
             ->add('endDate')
-            ->add('online');
+            ->add('online')
+            ->add('description');
     }
 
     /**

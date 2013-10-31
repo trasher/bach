@@ -79,10 +79,11 @@ class PanelAdmin extends Admin
                 )
             )->add(
                 'description',
-                null,
+                'ckeditor',
                 array(
-                    'required'  => false,
-                    'label'     => _('Panel brief description')
+                    'config_name'   => 'bach_head_edit',
+                    'required'      => false,
+                    'label'         => _('Panel brief description')
                 )
             );
     }

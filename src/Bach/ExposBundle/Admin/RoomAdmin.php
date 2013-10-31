@@ -79,9 +79,10 @@ class RoomAdmin extends Admin
                 )
             )->add(
                 'description',
-                null,
+                'ckeditor',
                 array(
-                    'label' => _('Room brief description')
+                    'config_name'   => 'bach_head_edit',
+                    'label'         => _('Room brief description')
                 )
             );
     }

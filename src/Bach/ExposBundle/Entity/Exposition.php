@@ -76,6 +76,13 @@ class Exposition
     protected $online;
 
     /**
+     * @var text
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
      * @var int
      *
      * @Gedmo\SortablePosition
@@ -206,6 +213,29 @@ class Exposition
     public function getOnline()
     {
         return $this->online;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description Panel brief description
+     *
+     * @return Panel
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
