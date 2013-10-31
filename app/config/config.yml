@@ -31,7 +31,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [BachIndexationBundle]
+    bundles:        [BachIndexationBundle,FMElfinderBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -177,3 +177,43 @@ stof_doctrine_extensions:
     orm:
         default:
             sortable: true
+
+ivory_ck_editor:
+    configs:
+        #full edit configuration, for Expos contents
+        bach_full_edit:
+            toolbar: 'bach_full_toolbar'
+            uiColor: '#a3968d'
+            filebrowserBrowseRoute: elfinder
+        #head edit configuration, lighter, for Expos briefs descriptions
+        bach_head_edit:
+            toolbar: 'bach_head_toolbar'
+            uiColor: '#a3968d'
+            filebrowserBrowseRoute: elfinder
+    toolbars:
+        configs:
+            bach_head_toolbar: [ '@head_paragraph', '-', '@basicstyles', '-',  '@head_links', '@head_insert', '@editing', '-', '@document', '-', '@tools' ]
+            bach_full_toolbar: [ '@styles', '-', '@colors', '-', '@basicstyles', '-', '@links', '/', '@paragraph', '-', '@insert', '-', '@clipboard', '/', '@editing', '-', '@document', '-', '@tools' ]
+        items:
+            styles: [ 'Styles', 'Format', 'Font', 'FontSize']
+            colors: [ 'TextColor', 'BGColor']
+            basicstyles: [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ]
+            clipboard: [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ]
+            paragraph: [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ]
+            head_paragraph: [ 'NumberedList','BulletedList','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ]
+            links: [ 'Link', 'Unlink', 'Anchor' ]
+            head_links: [ 'Link', 'Unlink' ]
+            insert: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ]
+            head_insert: [ 'Image', 'SpecialChar' ]
+            editing: [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ]
+            document: [ 'Source', '-', 'Templates' ]
+            tools: [ 'Maximize', 'ShowBlocks' ]
+            head_tools: [ 'Maximize' ]
+
+fm_elfinder:
+    editor: ckeditor
+    connector:
+        roots:
+            uploads:
+                path: uploads/media
+

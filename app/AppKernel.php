@@ -70,7 +70,9 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Pix\SortableBehaviorBundle\PixSortableBehaviorBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new Bach\ExposBundle\ExposBundle()
+            new Bach\ExposBundle\ExposBundle(),
+            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+            new FM\ElfinderBundle\FMElfinderBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

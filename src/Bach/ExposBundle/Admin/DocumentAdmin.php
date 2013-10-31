@@ -85,15 +85,17 @@ class DocumentAdmin extends Admin
                 )
             )->add(
                 'description',
-                null,
+                'ckeditor',
                 array(
+                    'config_name' => 'bach_head_edit',
                     'required'  => false,
                     'label'     => _('Document brief description')
                 )
             )->add(
                 'content',
-                null,
+                'ckeditor',
                 array(
+                    'config_name' => 'bach_full_edit',
                     'label' => _('Document content')
                 )
             );

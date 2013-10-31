@@ -10,6 +10,7 @@
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
+
 namespace Bach\HomeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

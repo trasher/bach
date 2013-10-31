@@ -10,6 +10,8 @@
     <meta name="description" content="{% trans %}Bach archival search tool{% endtrans %}">
     <meta name="author" content="Anaphore">
     {% endblock %}
+    {# Scripts should be at the bottom of the page... But SonataAdmin is *not* happy with that -_- #}
+    <script src="{{ asset('js/jquery-1.10.2.min.js') }}" type="text/javascript"></script>
     <link href="{{ asset('css/reset.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach_print.css') }}" type="text/css" rel="stylesheet" media="print"/>
@@ -111,7 +113,6 @@
     </div> {# /#wrapper #}
 
     {# Javascript that are required everywhere #}
-    <script src="{{ asset('js/jquery-1.10.2.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.core.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.widget.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.mouse.min.js')  }}" type="text/javascript"></script>

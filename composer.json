@@ -32,7 +32,9 @@
         "stof/doctrine-extensions-bundle": "~1.1@dev",
         "pixassociates/sortable-behavior-bundle": "0.1.*@dev",
         "symfony/icu": "1.1.*",
-        "doctrine/doctrine-fixtures-bundle": "2.2.*"
+        "doctrine/doctrine-fixtures-bundle": "2.2.*",
+        "egeloen/ckeditor-bundle": "2.*",
+        "helios-ag/fm-elfinder-bundle": "1.*"
     },
     "require-dev": {
         "atoum/atoum": "dev-master",
