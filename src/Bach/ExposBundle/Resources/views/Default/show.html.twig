@@ -1,0 +1,46 @@
+{% extends '::base.html.twig' %}
+
+
+{% block menu %}
+    <div id="expos">
+    {% for expo in expos %}
+        <h3>{{ expo.getName }}</h3>
+        <div>
+            <ul>
+                {% if expo.getId != current_expo.getId %}
+                <li>
+                        <a href="{{ path('expos_show', {name: expo.getUrl}) }}">{% trans %}See exposition{% endtrans %}</a>
+                </li>
+                {% endif %}
+                <li>le reste...</li>
+            </ul>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
+
+{% block js_calls %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery-ui/jquery.ui.accordion.min.js')  }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block javascripts %}
+    $('#expos').accordion({
+        icons: {
+            header: 'ui-icon-circle-plus',
+            activeHeader: 'ui-icon-circle-minus'
+        },
+        active: {{ position }},
+        heightStyle: 'content',
+        collapsible: true
+    });
+{% endblock %}
+
+{% block container %}
+    <h2>{{ current_expo.getName }}</h2>
+    {% if current_expo.getDescription != null %}
+        <div class="well">
+            {{ current_expo.getDescription|raw }}
+        </div>
+    {% endif %}
+{% endblock %}

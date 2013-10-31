@@ -6,5 +6,28 @@
 {% endblock %}
 
 {% block container %}
-<h2>{% trans %}Welcome to %name% exposition!{% endtrans %}</h2>
+<h2>{% trans %}Visit our virtual expositions{% endtrans %}</h2>
+
+{% if expos %}
+    {% for expo in expos %}
+        <article>
+            <head>
+                <h3><a href="{{ path('expos_show',  {name: expo.getUrl}) }}">{{ expo.getName }}</a></h3>
+                {% if expo.getEndDate != null %}
+                    {{ expo.getBeginDate|date(_('Y-m-d')) }} - {{ expo.getEndDate|date(_('Y-m-d')) }}
+                {% else %}
+                    {% trans with {'%date%': expo.getBeginDate|date(_('Y-m-d'))} %}Since %date%{% endtrans %}
+                {% endif %}
+                {% if expo.getDescription != null %}
+                    <div>
+                        {{ expo.getDescription|raw }}
+                    </div>
+                {% endif %}
+            </head>
+        </acticle>
+    {% endfor %}
+{% else %}
+    <p>{% trans %}No virtual expositions are available for now. Please come back again later.{% endtrans %}</p>
+{% endif %}
+
 {% endblock %}

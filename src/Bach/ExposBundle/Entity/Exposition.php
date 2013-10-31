@@ -50,7 +50,7 @@ class Exposition
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=20)
+     * @ORM\Column(name="url", type="string", length=20, unique=true)
      */
     protected $url;
 

@@ -50,6 +50,9 @@
                     <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
                         <a href="{{ path('bach_browse') }}">{% trans %}Browse{% endtrans %}</a>
                     </li>
+                    <li{% if current_route == 'expos_homepage' %} class="active"{% endif %}>
+                        <a href="{{ path('expos_homepage') }}">{% trans %}Virtual expositions{% endtrans %}</a>
+                    </li>
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         {% if is_granted('ROLE_ARCHIVIST') %}
                     <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>

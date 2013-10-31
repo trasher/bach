@@ -1,3 +1,7 @@
 expos_homepage:
-    pattern:  /{name}
+    pattern: /
     defaults: { _controller: ExposBundle:Default:index }
+
+expos_show:
+    pattern:  /{name}
+    defaults: { _controller: ExposBundle:Default:show }

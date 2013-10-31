@@ -1,6 +1,6 @@
 expos:
     resource: "@ExposBundle/Resources/config/routing.yml"
-    prefix:   /expositions/
+    prefix:   /expos/
 
 administration:
     resource: "@AdministrationBundle/Resources/config/routing.yml"
