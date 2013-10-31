@@ -192,7 +192,7 @@ ivory_ck_editor:
             filebrowserBrowseRoute: elfinder
     toolbars:
         configs:
-            bach_head_toolbar: [ '@head_paragraph', '-', '@basicstyles', '-',  '@head_links', '@head_insert', '@editing', '-', '@document', '-', '@tools' ]
+            bach_head_toolbar: [ '@head_paragraph', '-', '@basicstyles', '-',  '@head_links', '@head_insert', '@editing', '-', '@document', '-', '@head_tools' ]
             bach_full_toolbar: [ '@styles', '-', '@colors', '-', '@basicstyles', '-', '@links', '/', '@paragraph', '-', '@insert', '-', '@clipboard', '/', '@editing', '-', '@document', '-', '@tools' ]
         items:
             styles: [ 'Styles', 'Format', 'Font', 'FontSize']
