@@ -78,20 +78,20 @@ class DocumentAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Document name')
+                    'label' => _('Name')
                 )
             )->add(
                 'url',
                 null,
                 array(
                     'required'  => false,
-                    'label'     => _('Document URL')
+                    'label'     => _('URL')
                 )
             )->add(
                 'title',
                 null,
                 array(
-                    'label' => _('Document title')
+                    'label' => _('Title')
                 )
             )->add(
                 'description',
@@ -99,14 +99,14 @@ class DocumentAdmin extends Admin
                 array(
                     'config_name' => 'bach_head_edit',
                     'required'  => false,
-                    'label'     => _('Document brief description')
+                    'label'     => _('Short description')
                 )
             )->add(
                 'content',
                 'ckeditor',
                 array(
                     'config_name' => 'bach_full_edit',
-                    'label' => _('Document content')
+                    'label' => _('Full content')
                 )
             );
     }
@@ -133,11 +133,19 @@ class DocumentAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('url')
-            ->add('title')
-            ->add('description')
-            ->add('content');
+            ->add(
+                'name',
+                null,
+                array(
+                    'label' => _('Name')
+                )
+            )->add(
+                'title',
+                null,
+                array(
+                    'label' => _('Title')
+                )
+            );
     }
 
     /**
@@ -158,7 +166,7 @@ class DocumentAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Document name')
+                    'label' => _('Name')
                 )
             )->add(
                 'panel',
@@ -167,10 +175,10 @@ class DocumentAdmin extends Admin
                     'label' => _('Panel')
                 )
             )->add(
-                'url',
+                'title',
                 null,
                 array(
-                    'label' => _('Document URL')
+                    'label' => _('Title')
                 )
             )->add(
                 '_action',

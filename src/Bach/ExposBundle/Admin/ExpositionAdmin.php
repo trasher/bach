@@ -70,20 +70,20 @@ class ExpositionAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Exposition name')
+                    'label' => _('Name')
                 )
             )->add(
                 'url',
                 null,
                 array(
                     'required'  => false,
-                    'label'     => _('Exposition URL')
+                    'label'     => _('URL')
                 )
             )->add(
                 'beginDate',
                 null,
                 array(
-                    'label' => _('Begining date')
+                    'label' => _('Start date')
                 )
             )->add(
                 'endDate',
@@ -97,7 +97,7 @@ class ExpositionAdmin extends Admin
                 null,
                 array(
                     'required'  => false,
-                    'label'     => _('Put exposition online/offline')
+                    'label'     => _('Set exposition online/offline')
                 )
             )->add(
                 'description',
@@ -105,7 +105,7 @@ class ExpositionAdmin extends Admin
                 array(
                     'config_name'   => 'bach_head_edit',
                     'required'      => false,
-                    'label'         => _('Exposition description')
+                    'label'         => _('Description')
                 )
             );
     }
@@ -132,11 +132,19 @@ class ExpositionAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('beginDate')
-            ->add('endDate')
-            ->add('online')
-            ->add('description');
+            ->add(
+                'name',
+                null,
+                array(
+                    'label' => _('Name')
+                )
+            )->add(
+                'online',
+                null,
+                array(
+                    'label' => _('Online')
+                )
+            );
     }
 
     /**
@@ -157,7 +165,7 @@ class ExpositionAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Exposition name')
+                    'label' => _('Name')
                 )
             )->add(
                 'online',

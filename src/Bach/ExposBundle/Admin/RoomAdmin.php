@@ -78,21 +78,21 @@ class RoomAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Room name')
+                    'label' => _('Name')
                 )
             )->add(
                 'url',
                 null,
                 array(
                     'required'  => false,
-                    'label'     => _('Room URL')
+                    'label'     => _('URL')
                 )
             )->add(
                 'description',
                 'ckeditor',
                 array(
                     'config_name'   => 'bach_head_edit',
-                    'label'         => _('Room brief description')
+                    'label'         => _('Short description')
                 )
             );
     }
@@ -119,9 +119,13 @@ class RoomAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('url')
-            ->add('description');
+            ->add(
+                'name',
+                null,
+                array(
+                    'label' => _('Name')
+                )
+            );
     }
 
     /**
@@ -142,7 +146,7 @@ class RoomAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Room name')
+                    'label' => _('Name')
                 )
             )->add(
                 'exposition',
@@ -154,7 +158,7 @@ class RoomAdmin extends Admin
                 'url',
                 null,
                 array(
-                    'label' => _('Room URL')
+                    'label' => _('URL')
                 )
             )->add(
                 '_action',

@@ -78,14 +78,14 @@ class PanelAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Panel name')
+                    'label' => _('Name')
                 )
             )->add(
                 'url',
                 null,
                 array(
                     'required'  => false,
-                    'label'     => _('Panel URL')
+                    'label'     => _('URL')
                 )
             )->add(
                 'description',
@@ -93,7 +93,7 @@ class PanelAdmin extends Admin
                 array(
                     'config_name'   => 'bach_head_edit',
                     'required'      => false,
-                    'label'         => _('Panel brief description')
+                    'label'         => _('Short description')
                 )
             );
     }
@@ -120,9 +120,13 @@ class PanelAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('url')
-            ->add('description');
+            ->add(
+                'name',
+                null,
+                array(
+                    'label' => _('Name')
+                )
+            );
     }
 
     /**
@@ -143,7 +147,7 @@ class PanelAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Panel name')
+                    'label' => _('Name')
                 )
             )->add(
                 'room',
@@ -155,7 +159,7 @@ class PanelAdmin extends Admin
                 'url',
                 null,
                 array(
-                    'label' => _('Panel URL')
+                    'label' => _('URL')
                 )
             )->add(
                 '_action',
