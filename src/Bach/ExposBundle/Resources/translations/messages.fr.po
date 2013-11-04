@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "Go to exposition"
+msgstr "Aller à l'exposition"
+
+msgid "Visit our virtual expositions"
+msgstr "Visitez nos expositions virtuelles"
+
+msgid "Since %date%"
+msgstr "Depuis %date%"
+
+msgid ""
+"No virtual expositions are available for now. Please come back again later."
+msgstr ""
+"Aucune exposition virtuelle n'est disponible pour le moment. Veuillez "
+"réessayer plus tard."
+
+msgid "Virtual expositions"
+msgstr "Expositions virtuelles"

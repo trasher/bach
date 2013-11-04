@@ -1,0 +1,145 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: src/Bach/ExposBundle@20131104153538\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-11-04 15:35+0100\n"
+"PO-Revision-Date: 2013-11-04 15:38+0100\n"
+"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: src/Bach/ExposBundle/Resources/gettext/twig.cache.php:432
+#: src/Bach/ExposBundle/Resources/gettext/twig.cache.php:434
+#: src/Bach/ExposBundle/Resources/gettext/twig.cache.php:440
+msgid "Y-m-d"
+msgstr "d/m/Y"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:73
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:139
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:168
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:81
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:127
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:150
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:81
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:126
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:149
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:81
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:140
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:169
+msgid "Name"
+msgstr "Nom"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:80
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:88
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:162
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:88
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:161
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:88
+msgid "URL"
+msgstr "URL"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:86
+msgid "Start date"
+msgstr "Date de début"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:93
+msgid "End date"
+msgstr "Date de fin"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:100
+msgid "Set exposition online/offline"
+msgstr "Définir l'exposition en ligne/hors ligne"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:108
+msgid "Description"
+msgstr "Description"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:145
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:175
+msgid "Online"
+msgstr "En ligne"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:181
+msgid "Begin"
+msgstr "Début"
+
+#: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:187
+msgid "End"
+msgstr "Fin"
+
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:72
+msgid "Select a room"
+msgstr "Sélectionnez une salle"
+
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:75
+msgid "No room selected"
+msgstr "Aucune salle sélectionnée"
+
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:96
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:95
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:102
+msgid "Short description"
+msgstr "Courte description"
+
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:156
+msgid "Room"
+msgstr "Salle"
+
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:72
+msgid "Select an exposition"
+msgstr "Sélectionnez une exposition"
+
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:75
+msgid "No exposition selected"
+msgstr "Aucune exposition sélectionnée"
+
+#: src/Bach/ExposBundle/Admin/RoomAdmin.php:155
+msgid "Exposition"
+msgstr "Exposition"
+
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:72
+msgid "Select a panel"
+msgstr "Sélectionnez un panneau"
+
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:75
+msgid "No panel selected"
+msgstr "Aucun panneau sélectionné"
+
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:94
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:146
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:181
+msgid "Title"
+msgstr "Titre"
+
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:109
+msgid "Full content"
+msgstr "Contenu complet"
+
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:175
+msgid "Panel"
+msgstr "Panneau"
+
+#: src/Bach/ExposBundle/Entity/Exposition.php:298
+msgid "New exposition"
+msgstr "Nouvelle exposition"
+
+#: src/Bach/ExposBundle/Entity/Document.php:260
+msgid "New document"
+msgstr "Nouveau document"
+
+#: src/Bach/ExposBundle/Entity/Panel.php:238
+msgid "New panel"
+msgstr "Nouveau panneau"
+
+#: src/Bach/ExposBundle/Entity/Room.php:237
+msgid "New room"
+msgstr "Nouvelle salle"

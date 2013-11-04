@@ -69,7 +69,8 @@ class PanelAdmin extends Admin
                 'sonata_type_model',
                 array(
                     'btn_add'   => false,
-                    'empty_value' => _('Select a room')
+                    'empty_value' => _('Select a room'),
+                    'label' => _('Panel')
                 ),
                 array(
                     'placeholder' => _('No room selected')
