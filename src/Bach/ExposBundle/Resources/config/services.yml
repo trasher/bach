@@ -1,0 +1,7 @@
+parameters:
+#    expos.example.class: Bach\ExposBundle\Example
+
+services:
+#    expos.example:
+#        class: %expos.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
