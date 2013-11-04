@@ -12,7 +12,7 @@
     {% for expo in expos %}
         <article>
             <head>
-                <h3><a href="{{ path('expos_show',  {name: expo.getUrl}) }}">{{ expo.getName }}</a></h3>
+                <h3><a href="{{ path('expos_show',  {expo: expo.getUrl}) }}">{{ expo.getName }}</a></h3>
                 {% if expo.getEndDate != null %}
                     {{ expo.getBeginDate|date(_('Y-m-d')) }} - {{ expo.getEndDate|date(_('Y-m-d')) }}
                 {% else %}

@@ -65,6 +65,16 @@ class RoomAdmin extends Admin
     {
         $formMapper
             ->add(
+                'exposition',
+                'sonata_type_model',
+                array(
+                    'btn_add'   => false,
+                    'empty_value' => _('Select an exposition')
+                ),
+                array(
+                    'placeholder' => _('No exposition selected')
+                )
+            )->add(
                 'name',
                 null,
                 array(
@@ -133,6 +143,12 @@ class RoomAdmin extends Admin
                 null,
                 array(
                     'label' => _('Room name')
+                )
+            )->add(
+                'exposition',
+                null,
+                array(
+                    'label' => _('Exposition')
                 )
             )->add(
                 'url',

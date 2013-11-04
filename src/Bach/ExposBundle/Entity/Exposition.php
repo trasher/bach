@@ -14,6 +14,7 @@
 namespace Bach\ExposBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -89,6 +90,19 @@ class Exposition
      * @ORM\Column(name="position", type="integer")
      */
     protected $position;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Room", mappedBy="exposition", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $rooms;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->rooms = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -248,4 +262,36 @@ class Exposition
         return $this->position;
     }
 
+    /**
+     * Add room
+     *
+     * @param Room $room Room
+     *
+     * @return Exposition
+     */
+    public function addRoom(Room $room)
+    {
+        $this->rooms[] = $room;
+        return $this;
+    }
+
+    /**
+     * Get rooms
+     *
+     * @return ArrayCollection
+     */
+    public function getRooms()
+    {
+        return $this->rooms;
+    }
+
+    /**
+     * String representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

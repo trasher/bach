@@ -14,6 +14,7 @@
 namespace Bach\ExposBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -68,6 +69,25 @@ class Room
      * @ORM\Column(name="position", type="integer")
      */
     protected $position;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Exposition", inversedBy="rooms")
+     * @ORM\JoinColumn(name="exposition_id", referencedColumnName="id")
+     */
+    protected $exposition;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Panel", mappedBy="room", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $panels;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->panels = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -149,13 +169,68 @@ class Room
     }
 
     /**
+     * Attach exposition
+     *
+     * @param Exposition $expo Exposition
+     *
+     * @return Room
+     */
+    public function setExposition(Exposition $expo)
+    {
+        $this->exposition = $expo;
+        return $this;
+    }
+
+    /**
+     * Get epxosition
+     *
+     * @return Exposition
+     */
+    public function getExposition()
+    {
+        return $this->exposition;
+    }
+
+    /**
      * Get position
      *
-     * @return integer 
+     * @return integer
      */
     public function getPosition()
     {
         return $this->position;
     }
 
+    /**
+     * Add panel
+     *
+     * @param Panel $panel Panel
+     *
+     * @return Room
+     */
+    public function addPanel(Panel $panel)
+    {
+        $this->panels[] = $panel;
+        return $this;
+    }
+
+    /**
+     * Get panels
+     *
+     * @return ArrayCollection
+     */
+    public function getPanels()
+    {
+        return $this->panels;
+    }
+
+    /**
+     * String representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

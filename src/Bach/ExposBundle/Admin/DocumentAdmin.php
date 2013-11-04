@@ -65,6 +65,16 @@ class DocumentAdmin extends Admin
     {
         $formMapper
             ->add(
+                'panel',
+                'sonata_type_model',
+                array(
+                    'btn_add'   => false,
+                    'empty_value' => _('Select a panel')
+                ),
+                array(
+                    'placeholder' => _('No panel selected')
+                )
+            )->add(
                 'name',
                 null,
                 array(
@@ -148,26 +158,19 @@ class DocumentAdmin extends Admin
                 'name',
                 null,
                 array(
-                    'label' => _('Exposition name')
+                    'label' => _('Document name')
                 )
             )->add(
-                'online',
+                'panel',
                 null,
                 array(
-                    'editable'  => true,
-                    'label'     => _('Online')
+                    'label' => _('Panel')
                 )
             )->add(
-                'beginDate',
+                'url',
                 null,
                 array(
-                    'label' => _('Begin')
-                )
-            )->add(
-                'endDate',
-                null,
-                array(
-                    'label' => _('End')
+                    'label' => _('Document URL')
                 )
             )->add(
                 '_action',

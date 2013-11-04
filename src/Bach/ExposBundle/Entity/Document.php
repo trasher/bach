@@ -84,6 +84,12 @@ class Document
     protected $position;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Panel", inversedBy="documents")
+     * @ORM\JoinColumn(name="panel_id", referencedColumnName="id")
+     */
+    protected $panel;
+
+    /**
      * Get id
      *
      * @return integer
@@ -209,6 +215,29 @@ class Document
     }
 
     /**
+     * Attach panel
+     *
+     * @param Panel $panel Panel
+     *
+     * @return Document
+     */
+    public function setPanel(Panel $panel)
+    {
+        $this->panel = $panel;
+        return $this;
+    }
+
+    /**
+     * Get panel
+     *
+     * @return Panel
+     */
+    public function getPanel()
+    {
+        return $this->panel;
+    }
+
+    /**
      * Get position
      *
      * @return int
@@ -218,4 +247,13 @@ class Document
         return $this->position;
     }
 
+    /**
+     * String representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

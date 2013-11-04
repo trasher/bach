@@ -51,16 +51,16 @@ class DefaultController extends Controller
     /**
      * Exposition page
      *
-     * @param string $name Exposition name
+     * @param string $expo Exposition name
      *
      * @return void
      */
-    public function showAction($name)
+    public function showAction($expo)
     {
         $repository = $this->getDoctrine()->getRepository('ExposBundle:Exposition');
 
         $expos = $repository->findCurrent();
-        $expo = $repository->findOneByUrl($name);
+        $expo = $repository->findOneByUrl($expo);
 
         $position = -1;
         foreach ( $expos as $ex ) {
@@ -71,7 +71,7 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'ExposBundle:Default:show.html.twig',
+            'ExposBundle:Default:show_expo.html.twig',
             array(
                 'position'      => $position,
                 'expos'         => $expos,
@@ -79,4 +79,82 @@ class DefaultController extends Controller
             )
         );
     }
+
+    /**
+     * Room page
+     *
+     * @param string $expo Exposition name
+     * @param string $room Room name
+     *
+     * @return void
+     */
+    public function showRoomAction($expo, $room)
+    {
+        $repository = $this->getDoctrine()->getRepository('ExposBundle:Room');
+        $room = $repository->findOneByUrl($room);
+
+        $repository = $this->getDoctrine()->getRepository('ExposBundle:Exposition');
+        $expos = $repository->findCurrent();
+        $expo = $repository->findOneByUrl($expo);
+
+        $position = -1;
+        foreach ( $expos as $ex ) {
+            $position++;
+            if ( $ex->getId() === $expo->getId() ) {
+                break;
+            }
+        }
+
+        return $this->render(
+            'ExposBundle:Default:show_room.html.twig',
+            array(
+                'position'      => $position,
+                'expos'         => $expos,
+                'current_expo'  => $expo,
+                'current_room'  => $room
+            )
+        );
+    }
+
+    /**
+     * Panel page
+     *
+     * @param string $expo  Exposition name
+     * @param string $room  Room name
+     * @param string $panel Panel name
+     *
+     * @return void
+     */
+    public function showPanelAction($expo, $room, $panel)
+    {
+        $repository = $this->getDoctrine()->getRepository('ExposBundle:Panel');
+        $panel = $repository->findOneByUrl($panel);
+
+        $room = $panel->getRoom();
+
+        $repository = $this->getDoctrine()->getRepository('ExposBundle:Exposition');
+        $expos = $repository->findCurrent();
+        $expo = $repository->findOneByUrl($expo);
+
+        $position = -1;
+        foreach ( $expos as $ex ) {
+            $position++;
+            if ( $ex->getId() === $expo->getId() ) {
+                break;
+            }
+        }
+
+        return $this->render(
+            'ExposBundle:Default:show_panel.html.twig',
+            array(
+                'position'      => $position,
+                'expos'         => $expos,
+                'current_expo'  => $expo,
+                'current_room'  => $room,
+                'current_panel' => $panel
+            )
+        );
+    }
+
+
 }

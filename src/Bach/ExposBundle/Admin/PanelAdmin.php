@@ -65,6 +65,16 @@ class PanelAdmin extends Admin
     {
         $formMapper
             ->add(
+                'room',
+                'sonata_type_model',
+                array(
+                    'btn_add'   => false,
+                    'empty_value' => _('Select a room')
+                ),
+                array(
+                    'placeholder' => _('No room selected')
+                )
+            )->add(
                 'name',
                 null,
                 array(
@@ -134,6 +144,12 @@ class PanelAdmin extends Admin
                 null,
                 array(
                     'label' => _('Panel name')
+                )
+            )->add(
+                'room',
+                null,
+                array(
+                    'label' => _('Room')
                 )
             )->add(
                 'url',

@@ -1,0 +1,25 @@
+{% extends 'ExposBundle:Default:show.html.twig' %}
+
+{% block container %}
+    <h2>{{ current_panel.getName }}</h2>
+    {% if current_panel.getDescription != null %}
+        <div class="well">
+            {{ current_panel.getDescription|raw }}
+        </div>
+    {% endif %}
+
+    {% if current_panel.getDocuments %}
+    <section>
+        {% for document in current_panel.getDocuments %}
+            <h3>
+                <a href="{{ path('panel_show', {expo: current_expo.getUrl, room: current_room.getUrl, panel: current_panel.getUrl}) }}">{{ document.getName  }}</a>
+            </h3>
+            {% if document.getDescription %}
+            <div>
+                {{ document.getDescription|raw }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+    {% endif %}
+{% endblock %}

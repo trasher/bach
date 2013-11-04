@@ -1,18 +1,23 @@
 {% extends '::base.html.twig' %}
 
-
 {% block menu %}
     <div id="expos">
     {% for expo in expos %}
         <h3>{{ expo.getName }}</h3>
         <div>
             <ul>
-                {% if expo.getId != current_expo.getId %}
+                {% if current_route != 'expos_show' or expo.getId != current_expo.getId %}
                 <li>
-                        <a href="{{ path('expos_show', {name: expo.getUrl}) }}">{% trans %}See exposition{% endtrans %}</a>
+                    <a href="{{ path('expos_show', {expo: expo.getUrl}) }}">{% trans %}Go to exposition{% endtrans %}</a>
                 </li>
                 {% endif %}
-                <li>le reste...</li>
+                {% if expo.getRooms() %}
+                    {% for room in expo.getRooms %}
+                <li>
+                    <a href="{{ path('room_show', {expo: expo.getUrl, room: room.getUrl}) }}">{{ room.getName  }}</a>
+                </li>
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
     {% endfor %}
@@ -34,13 +39,4 @@
         heightStyle: 'content',
         collapsible: true
     });
-{% endblock %}
-
-{% block container %}
-    <h2>{{ current_expo.getName }}</h2>
-    {% if current_expo.getDescription != null %}
-        <div class="well">
-            {{ current_expo.getDescription|raw }}
-        </div>
-    {% endif %}
 {% endblock %}

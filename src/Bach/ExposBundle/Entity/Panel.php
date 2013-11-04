@@ -14,6 +14,7 @@
 namespace Bach\ExposBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -68,6 +69,25 @@ class Panel
      * @ORM\Column(name="position", type="integer")
      */
     protected $position;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Room", inversedBy="panels")
+     * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
+     */
+    protected $room;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Document", mappedBy="panel", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $documents;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->documents = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -148,14 +168,70 @@ class Panel
         return $this->description;
     }
 
+
+    /**
+     * Attach room
+     *
+     * @param Room $room Room
+     *
+     * @return Panel
+     */
+    public function setRoom(Room $room)
+    {
+        $this->room = $room;
+        return $this;
+    }
+
+    /**
+     * Get room
+     *
+     * @return Room
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
+
+    /**
+     * Add document
+     *
+     * @param Document $doc Document
+     *
+     * @return Panel
+     */
+    public function addDocument(Document $doc)
+    {
+        $this->documents[] = $doc;
+        return $this;
+    }
+
+    /**
+     * Get documents
+     *
+     * @return ArrayCollection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
+    }
+
     /**
      * Get position
      *
-     * @return integer 
+     * @return integer
      */
     public function getPosition()
     {
         return $this->position;
     }
 
+    /**
+     * String representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

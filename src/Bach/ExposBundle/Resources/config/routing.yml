@@ -3,5 +3,13 @@ expos_homepage:
     defaults: { _controller: ExposBundle:Default:index }
 
 expos_show:
-    pattern:  /{name}
+    pattern:  /{expo}
     defaults: { _controller: ExposBundle:Default:show }
+
+room_show:
+    pattern: /{expo}/{room}
+    defaults: { _controller: ExposBundle:Default:showRoom }
+
+panel_show:
+    pattern: /{expo}/{room}/{panel}
+    defaults: { _controller: ExposBundle:Default:showPanel }
