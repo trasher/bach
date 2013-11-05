@@ -64,7 +64,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //$context = $this->getContainer()->get('router')->getContext();
         $container = $this->getContainer();
 
         $known_types = $container->getParameter('bach.types');

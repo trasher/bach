@@ -37,13 +37,6 @@ class DynamicField
     public $multiValued = null;
     public $default = null;
     public $required = null;
-    /* Attributes that may be added to the application in the future */
-    /*public $omitNorms;
-    public $omitTermFreqAndPositions;
-    public $omitPositions;
-    public $termVectors;
-    public $termPositions;
-    public $termOffsets;*/
 
     /**
      * Constructor
@@ -77,13 +70,6 @@ class DynamicField
             if ( $attr !== null ) {
                 $this->required = $this->_toBoolean($attr->getValue());
             }
-            /* Attributes that may be added to the application in the future */
-            /*$this->omitNorms = $element->getAttribute('omitNorms')->getValue();
-             $this->omitTermFreqAndPositions = $element->getAttribute('omitTermFreqAndPositions')->getValue();
-            $this->omitPositions = $element->getAttribute('omitPositions')->getValue();
-            $this->termVectors = $element->getAttribute('termVectors')->getValue();
-            $this->termPositions = $element->getAttribute('termPositions')->getValue();
-            $this->termOffsets = $element->getAttribute('termOffsets')->getValue();*/
         }
     }
 

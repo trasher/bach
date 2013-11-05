@@ -256,7 +256,6 @@ class DefaultController extends Controller
                 $query->setDictionary('suggest');
                 $query->setOnlyMorePopular(true);
                 $query->setCount(10);
-                //$query->setCollate(true);
                 $suggestions = $this->get("solarium.client")->suggester($query);
 
 

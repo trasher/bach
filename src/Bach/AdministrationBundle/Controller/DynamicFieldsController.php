@@ -80,14 +80,7 @@ class DynamicFieldsController extends Controller
     {
         $df = new DynamicField();
         $form = $this->createForm(new DynamicFieldsForm(), $df);
-        //$form->bind($request);
-        if ($form->isValid()) {
-            // If the data is valid, we save new field into the
-            // schema.xml file of corresponding core
-            /*$xmlP = $session->get('xmlP');
-            $df->addField($xmlP);
-            $xmlP->saveXML();*/
-        }
+
         return $this->render(
             'AdministrationBundle:Default:dynamicfields.html.twig',
             array(

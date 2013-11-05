@@ -152,9 +152,6 @@ class EADArchDesc
             $results[$nodeid]['fragment'] = $frag->ownerDocument->saveXML($frag);
 
             foreach ( $fields as $field ) {
-                //with child inheritance
-                //$nodes = $this->_xpath->query($field, $cNode);
-                //without child inheritance
                 $nodes = $this->_xpath->query($field, $frag);
                 $results[$nodeid][$field] = array();
 

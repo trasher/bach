@@ -69,11 +69,7 @@ class CoreAdminController extends Controller
         $configreader = $this->container->get('bach.administration.configreader');
         $sca = new SolrCoreAdmin($configreader);
 
-        if ($request->isMethod('GET')) {
-            /*$form = $this->createForm(
-                new CoreCreationForm()
-            );*/
-        } else {
+        if (!$request->isMethod('GET')) {
             $btn = $request->request->get('createCoreOk');
             if (isset($btn)) {
                 $this->_createCore($request);

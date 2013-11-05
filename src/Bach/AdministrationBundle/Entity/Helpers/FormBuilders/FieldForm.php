@@ -119,33 +119,6 @@ class FieldForm extends AbstractType
                 'required' => false
             )
         );
-        /*
-         * Other Attributes that can be added to the application in the future
-         */
-        /*$attr = $reader->getAttributeByTag($bachTagType, 'omitNorms');
-        $builder->add('omitNorms', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'omitTermFreqAndPositions');
-        $builder->add('omitTermFreqAndPositions', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'omitPositions');
-        $builder->add('omitPositions', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'termVectors');
-        $builder->add('termVectors', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'termPositions');
-        $builder->add('termPositions', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'termOffsets');
-        $builder->add('termOffsets', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));*/
     }
 
     /**

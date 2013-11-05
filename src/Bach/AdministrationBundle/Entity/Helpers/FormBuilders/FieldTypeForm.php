@@ -102,32 +102,6 @@ class FieldTypeForm extends AbstractType
                 'required' => false
             )
         );
-
-        // Other Attributes that can be added to the application in the future
-        /*$attr = $reader->getAttributeByTag($bachTagType, 'indexed');
-        $builder->add('indexed', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'stored');
-        $builder->add('stored', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
-        $builder->add('multiValued', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'omitNorms');
-        $builder->add('omitNorms', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'omitTermFreqAndPositions');
-        $builder->add('omitTermFreqAndPositions', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));
-        $attr = $reader->getAttributeByTag($bachTagType, 'omitPositions');
-        $builder->add('omitPositions', 'checkbox', array(
-                'label' => $attr->getLabel(),
-                'required' => $attr->isRequired()));*/
     }
 
     /**

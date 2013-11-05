@@ -160,7 +160,6 @@ class EADDates
             }
         } catch ( \Exception $e ) {
             //TODO: add a parameter somewhere to decide if we throw or not
-            //throw $e;
         }
 
         //try to set end date
