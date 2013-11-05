@@ -17,7 +17,6 @@ use Symfony\Component\Finder\Finder;
 use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
-use Bach\HomeBundle\Entity\Facets;
 
 /**
  * Bach Solarium query factory

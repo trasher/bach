@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\AnalyzersForm;
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Analyzers;
-use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
