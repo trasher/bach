@@ -14,6 +14,7 @@
 namespace Bach\IndexationBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
 
 /**
  * Archival file integration in database
