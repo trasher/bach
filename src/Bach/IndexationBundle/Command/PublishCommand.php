@@ -116,7 +116,6 @@ EOF
                     $msg . "\n -" .
                     implode("\n -", $known_types)
                 );
-                die();
             }
         }
 
