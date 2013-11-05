@@ -31,7 +31,7 @@ class UNIMARCDriverMapper implements DriverMapperInterface
     /**
      * Translate elements
      *
-     * @param arrya $data Document data
+     * @param array $data Document data
      *
      * @return array
      */

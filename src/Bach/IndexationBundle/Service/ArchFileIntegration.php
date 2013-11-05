@@ -77,11 +77,11 @@ class ArchFileIntegration
     /**
      * Proceed task database integration
      *
-     * @param Entity $task Task to proceed
+     * @param ArchFileIntegrationTask $task Task to proceed
      *
      * @return void
      */
-    public function integrate($task)
+    public function integrate(ArchFileIntegrationTask $task)
     {
         $spl = new \SplFileInfo($task->getPath());
         $doc = $task->getDocument();

@@ -19,7 +19,7 @@ class CoreStatus
      * @param SolrCoreAdmin $sca      Solr core admin instance
      * @param string        $coreName Core name
      */
-    public function __construct($sca, $coreName)
+    public function __construct(SolrCoreAdmin $sca, $coreName)
     {
         $status = $sca->getStatus($coreName);
         $status = $status->getCoreStatus($coreName);

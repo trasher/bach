@@ -23,7 +23,13 @@ class SolrPerformance
     private $doc;
     private $path;
 
-    public function __construct($sca, $coreName)
+    /**
+     * Main constructor
+     *
+     * @param SolrCoreAdmin $sca      Solr core admin instance
+     * @param string        $coreName Core name
+     */
+    public function __construct(SolrCoreAdmin $sca, $coreName)
     {
         $this->path = $sca->getConfigPath($coreName);
         $this->doc = new DOMDocument();
