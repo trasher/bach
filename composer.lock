@@ -3355,12 +3355,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "7353dca86e2192f7b71640865c0b10c57cc224bb"
+                "reference": "4736eafa3b189b624624b51882e35602a866c933"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/7353dca86e2192f7b71640865c0b10c57cc224bb",
-                "reference": "7353dca86e2192f7b71640865c0b10c57cc224bb",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/4736eafa3b189b624624b51882e35602a866c933",
+                "reference": "4736eafa3b189b624624b51882e35602a866c933",
                 "shasum": ""
             },
             "require": {
@@ -3421,7 +3421,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2013-10-30 10:45:34"
+            "time": "2013-11-05 12:22:24"
         },
         {
             "name": "atoum/atoum-bundle",
