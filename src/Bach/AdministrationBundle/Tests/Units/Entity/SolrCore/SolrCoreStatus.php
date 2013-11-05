@@ -1,21 +1,70 @@
 <?php
-namespace Bach\AdministrationBundle\Tests\Entity\SolrCore;
+/**
+ * Bach SolrCoreStatus unit tests
+ *
+ * PHP version 5
+ *
+ * @category Tests
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
+namespace Bach\AdministrationBundle\Tests\Units\Entity\SolrCore;
+
+use atoum\AtoumBundle\Test\Units;
+use Symfony\Component\Yaml\Parser;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreResponse;
-use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreStatus;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreStatus as CoreStatus;
+use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
 
-class SolrCoreStatusTest extends \PHPUnit_Framework_TestCase
+/**
+ * Bach BachCoreAdminConfigReader unit tests
+ *
+ * @category Tests
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+class SolrCoreStatus extends Units\Test
 {
-    private $sca;
-    private $scs;
-    
-    public function __construct()
+    private $_sca;
+    private $_scs;
+
+    /**
+     * Set up tests
+     *
+     * @param stgring $testMethod Method tested
+     *
+     * @return void
+     */
+    public function beforeTestMethod($testMethod)
     {
-        $this->sca = new SolrCoreAdmin();
+        //load configuration
+        $config_file = 'app/config/parameters.yml';
+        $yaml = new Parser();
+        $this->conf = $yaml->parse(
+            file_get_contents($config_file)
+        );
+
+        $this->params = $this->conf['parameters'];
+
+        $config_reader = new BachCoreAdminConfigReader(
+            false, 
+            $this->params['solr_host'],
+            $this->params['solr_port'],
+            $this->params['solr_path'],
+            'app/cache/test',
+            'app'
+        );
+        $this->_sca = new SolrCoreAdmin($config_reader);
+        $this->_scs = $this->_sca->getStatus($this->params['solr_search_core'])->getCoreStatus($this->params['solr_search_core']);
     }
-    
-    public function setUp()
+
+    /*public function setUp()
     {
         $this->sca->create('TestCoreStatus', 'TestCoreStatus');
         $scr = $this->sca->getStatus('TestCoreStatus');
@@ -26,19 +75,20 @@ class SolrCoreStatusTest extends \PHPUnit_Framework_TestCase
     {
         $this->sca->delete('TestCoreStatus');
         unset($this->scs);
-    }
-    
+    }*/
+
+    /**
+     * Test if core is default
+     *
+     * @return void
+     */
     public function testIsDefaultCore()
     {
-        $object = $this->scs->isDefaultCore();
-        if ($object === null) {
-            $this->assertTrue(false);
-        } else {
-            $this->assertFalse($object, 'IsDefaultCore error!');
-        }
+        $is_default = $this->_scs->isDefaultCore();
+        $this->boolean($is_default)->isFalse();
     }
-    
-    public function testGetInstanceDir()
+
+    /*public function testGetInstanceDir()
     {
         $object = $this->scs->getInstanceDir();
         if ($object === null) {
@@ -131,5 +181,5 @@ class SolrCoreStatusTest extends \PHPUnit_Framework_TestCase
     public function testGetSize()
     {
         $this->assertEquals($this->scs->getSize(), '65 bytes', 'GetSize error!');
-    }
+    }*/
 }
