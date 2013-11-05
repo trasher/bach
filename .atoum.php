@@ -1,4 +1,25 @@
 <?php
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * Bach configuration for atoum.
+ *
+ * To launch the code coverage, please make sure you have pecl-xdebug installed,
+ * and run:
+ * $ php app/console atoum
+ *
+ * PHP version 5
+ *
+ * @category  Main
+ * @package   Tests
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2013 Anaphore
+ * @license   Unknown http://unknown.com
+ * @link      http://anaphore.eu
+ */
+
 use \mageekguy\atoum;
 
 $tests_dir = __DIR__ . '/tests-results/';
