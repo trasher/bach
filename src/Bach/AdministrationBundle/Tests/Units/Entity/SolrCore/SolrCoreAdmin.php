@@ -21,8 +21,6 @@ use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin as CoreAdmin;
 /**
  * Bach SolrCoreAdmin unit tests
  *
- * PHP version 5
- *
  * @category Tests
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
