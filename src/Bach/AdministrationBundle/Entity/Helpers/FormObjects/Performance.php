@@ -72,7 +72,7 @@ class Performance
      */
     public function saveAll($coreName)
     {
-        $sp = new SolrPerformance($coreName);
+        $sp = new SolrPerformance($this->_xmlp, $coreName);
         $sp->setDocumentCacheParameters(
             $this->documentCacheClass,
             $this->documentCacheSize,

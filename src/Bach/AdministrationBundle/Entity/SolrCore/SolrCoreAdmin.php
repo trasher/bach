@@ -409,7 +409,7 @@ class SolrCoreAdmin
     {
         $conf_dir = $this->_reader->getConfDir($coreName);
         return $conf_dir .
-           $this->_reader->getConfigFileName();
+           $this->_reader->getDefaultConfigFileName();
     }
 
     /**

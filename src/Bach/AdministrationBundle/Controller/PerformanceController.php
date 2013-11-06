@@ -16,6 +16,7 @@ namespace Bach\AdministrationBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\PerformanceForm;
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Performance;
+use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -40,9 +41,11 @@ class PerformanceController extends Controller
     public function refreshAction(Request $request)
     {
         $session = $this->getRequest()->getSession();
+        $configreader = $this->container->get('bach.administration.configreader');
+        $sca = new SolrCoreAdmin($configreader);
         $form = $this->createForm(
             new PerformanceForm(),
-            new Performance($session->get('coreName'))
+            new Performance($sca, $session->get('coreName'))
         );
         return $this->render(
             'AdministrationBundle:Default:performance.html.twig',
@@ -61,8 +64,10 @@ class PerformanceController extends Controller
      */
     public function submitAction()
     {
+        $configreader = $this->container->get('bach.administration.configreader');
+        $sca = new SolrCoreAdmin($configreader);
         $session = $this->getRequest()->getSession();
-        $perf = new Performance();
+        $perf = new Performance($sca, $session->get('coreName'));
         $form = $this->createForm(
             new PerformanceForm(),
             $perf
