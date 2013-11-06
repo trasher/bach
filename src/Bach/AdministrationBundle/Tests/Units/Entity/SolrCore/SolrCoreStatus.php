@@ -15,13 +15,10 @@ namespace Bach\AdministrationBundle\Tests\Units\Entity\SolrCore;
 
 use atoum\AtoumBundle\Test\Units;
 use Symfony\Component\Yaml\Parser;
-use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreResponse;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreStatus as CoreStatus;
-use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader;
 
 /**
- * Bach BachCoreAdminConfigReader unit tests
+ * Bach SolrCoreStatus unit tests
  *
  * @category Tests
  * @package  Bach
@@ -64,29 +61,16 @@ class SolrCoreStatus extends Units\Test
         $this->_scs = $this->_sca->getStatus($this->params['solr_search_core'])->getCoreStatus($this->params['solr_search_core']);
     }
 
-    /*public function setUp()
-    {
-        $this->sca->create('TestCoreStatus', 'TestCoreStatus');
-        $scr = $this->sca->getStatus('TestCoreStatus');
-        $this->scs = $scr->getCoreStatus('TestCoreStatus');
-    }
-    
-    public function tearDown()
-    {
-        $this->sca->delete('TestCoreStatus');
-        unset($this->scs);
-    }*/
-
     /**
      * Test if core is default
      *
      * @return void
      */
-    public function testIsDefaultCore()
+    /*public function testIsDefaultCore()
     {
         $is_default = $this->_scs->isDefaultCore();
         $this->boolean($is_default)->isFalse();
-    }
+    }*/
 
     /*public function testGetInstanceDir()
     {
