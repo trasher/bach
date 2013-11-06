@@ -1,4 +1,16 @@
 <?php
+/**
+ * Bach schema.xml processor
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Entity\SolrSchema;
 
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
@@ -7,10 +19,14 @@ use DOMNode;
 use DOMElement;
 
 /**
- * This class depends on SolrCoreAdmin class and use SolrXMLAttribute and SolrXMLElement classes
- * to work with schema.xml file (load, save, retreive information).
- * @author TELECOM Nancy group
+ * Work with schema.xml file (load, save, retreive information).
  *
+ * @category Administration
+ * @package  Bach
+ * @author   TELECOM Nancy group <none@none.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  */
 class XMLProcess
 {
