@@ -65,7 +65,7 @@ class SolrXMLAttribute
      */
     public function setValue($value)
     {
-        $this->value = $value; 
+        $this->value = $value;
         return $this;
     }
 
