@@ -105,16 +105,6 @@ class SolrXMLElement
     }
 
     /**
-     * Remove attributes
-     *
-     * @param \Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute $attributes
-     */
-    public function removeAttribute(SolrXMLAttribute $attribute)
-    {
-        $this->attributes->removeElement($attribute);
-    }
-
-    /**
      * Get attributes
      *
      * @return array
