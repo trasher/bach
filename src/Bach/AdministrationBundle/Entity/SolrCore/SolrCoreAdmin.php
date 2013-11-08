@@ -602,6 +602,32 @@ class SolrCoreAdmin
         $descriptors->setAttribute('stored', 'false');
         $elt->appendChild($descriptors);
 
+        //add dynamic descriptors field
+        $dyn_descriptors = $doc->createElement('dynamicField');
+        $dyn_descriptors->setAttribute('name', 'dyndescr_*');
+        $dyn_descriptors->setAttribute('type', 'string');
+        $dyn_descriptors->setAttribute('multiValued', 'true');
+        $dyn_descriptors->setAttribute('indexed', 'true');
+        $dyn_descriptors->setAttribute('stored', 'true');
+        $elt->appendChild($dyn_descriptors);
+
+        //expanded fields
+        if ( property_exists($orm_name, 'expanded_mappings') ) {
+            $expanded_mappings = $orm_name::$expanded_mappings;
+
+            foreach ( $expanded_mappings as $f ) {
+                if ( in_array($f['source'], $fields) ) {
+                    $expanded = $doc->createElement('field');
+                    $expanded->setAttribute('name', $f['dest']);
+                    $expanded->setAttribute('type', $f['type']);
+                    $expanded->setAttribute('multiValued', $f['multivalued']);
+                    $expanded->setAttribute('indexed', $f['indexed']);
+                    $expanded->setAttribute('stored', $f['stored']);
+                    $elt->appendChild($expanded);
+                }
+            }
+        }
+
         //add new created elements
         $doc->documentElement->appendChild($elt);
 
@@ -668,6 +694,20 @@ class SolrCoreAdmin
                 $cf->setAttribute('source', $fo);
                 $cf->setAttribute('dest', $fd);
                 $doc->documentElement->appendChild($cf);
+            }
+        }
+
+        //other specific mappings
+        if ( property_exists($orm_name, 'expanded_mappings') ) {
+            $expanded_mappings = $orm_name::$expanded_mappings;
+
+            foreach ( $expanded_mappings as $f ) {
+                if ( in_array($f['source'], $fields) ) {
+                    $cf = $doc->createElement('copyField');
+                    $cf->setAttribute('source', $f['source']);
+                    $cf->setAttribute('dest', $f['dest']);
+                    $doc->documentElement->appendChild($cf);
+                }
             }
         }
 

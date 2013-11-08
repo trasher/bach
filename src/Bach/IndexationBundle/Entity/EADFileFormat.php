@@ -143,7 +143,9 @@ class EADFileFormat extends MappedFileFormat
         'cDate',
         'cDateNormal',
         'cDateBegin',
-        'cDateEnd'
+        'cDateEnd',
+        'subject_w_expanded',
+        'parent_unittitle'
     );
 
     /**
@@ -159,7 +161,8 @@ class EADFileFormat extends MappedFileFormat
         'fragmentid',
         'cDateBegin',
         'cDateEnd',
-        'dao'
+        'dao',
+        'subject_w_expanded'
     );
 
     /**
@@ -200,8 +203,9 @@ class EADFileFormat extends MappedFileFormat
      * Fields types, if not string
      */
     public static $types = array(
-        'cUnittitle'    => 'alphaOnlySort',
-        'elt_order'     => 'int'
+        'cUnittitle'            => 'alphaOnlySort',
+        'elt_order'             => 'int',
+        'subject_w_expanded'   => 'skosLabel'
     );
 
     /**
@@ -252,7 +256,19 @@ class EADFileFormat extends MappedFileFormat
         'dao',
         'headerAddress',
         'headerDate',
-        'archDescOrigination'
+        'archDescOrigination',
+        'subject_w_expanded'
+    );
+
+    public static $expanded_mappings = array(
+        array(
+            'source'        => 'cSubject',
+            'dest'          => 'subject_w_expanded',
+            'type'          => 'skos_w_label',
+            'multivalued'   => 'true',
+            'indexed'       => 'true',
+            'stored'        => 'true'
+        )
     );
 
     /**
