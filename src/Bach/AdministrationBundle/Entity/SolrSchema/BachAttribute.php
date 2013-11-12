@@ -1,71 +1,154 @@
 <?php
+/**
+ * Bach attribute
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Entity\SolrSchema;
 
 use DOMElement;
 
+/**
+ * Bach attribute
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class BachAttribute
 {
-    private $name;
-    private $label;
-    private $type;
-    private $required;
-    private $default;
-    private $values;
-    private $desc;
-    
+    private $_name;
+    private $_label;
+    private $_type;
+    private $_required;
+    private $_default;
+    private $_values;
+    private $_desc;
+
+    /**
+     * Constructor
+     *
+     * @param DOMElement $elt         Original DOM element
+     * @param string     $lang        Lang
+     * @param string     $defaultLang Default lang
+     */
     public function __construct(DOMElement $elt, $lang, $defaultLang)
     {
-        $this->name = $elt->getAttribute('name');
-        $this->label = $this->retreiveNodeValueByLang($elt, 'label', $lang, $defaultLang);
-        $this->type = $elt->getAttribute('type');
-        $this->required = $elt->getAttribute('required') == 'true' ? true : false;
-        $this->default = $elt->getAttribute('default');
-        $this->values = array();
+        $this->_name = $elt->getAttribute('name');
+        $this->_label = $this->_retrieveNodeValueByLang(
+            $elt,
+            'label',
+            $lang,
+            $defaultLang
+        );
+        $this->_type = $elt->getAttribute('type');
+        $this->_required = $elt->getAttribute('required') == 'true' ? true : false;
+        $this->_default = $elt->getAttribute('default');
+        $this->_values = array();
         $nodeList = $elt->getElementsByTagName('value');
         foreach ($nodeList as $e) {
-            $this->values[$e->nodeValue] = $e->nodeValue;
+            $this->_values[$e->nodeValue] = $e->nodeValue;
         }
-        $this->desc = $this->retreiveNodeValueByLang($elt, 'desc', $lang, $defaultLang);
-        
+        $this->_desc = $this->_retrieveNodeValueByLang(
+            $elt,
+            'desc',
+            $lang,
+            $defaultLang
+        );
     }
-    
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
     public function getName()
     {
-        return $this->name;
+        return $this->_name;
     }
-    
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
     public function getLabel()
     {
-        return $this->label;
+        return $this->_label;
     }
-    
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
     public function getType()
     {
-        return $this->type;
+        return $this->_type;
     }
-    
+
+    /**
+     * Is required
+     *
+     * @return boolean
+     */
     public function isRequired()
     {
-        return $this->required;
+        return $this->_required;
     }
-    
+
+    /**
+     * Get default
+     *
+     * @return string
+     */
     public function getDefault()
     {
-        return $this->Default;
+        return $this->_default;
     }
-    
+
+    /**
+     * Get values
+     *
+     * @return array
+     */
     public function getValues()
     {
-        return $this->values;
+        return $this->_values;
     }
-    
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
     public function getDesc()
     {
-        return $this->desc;
+        return $this->_desc;
     }
-    
-    private function retreiveNodeValueByLang(DOMElement $elt, $tagName, $lang, $defaultLang)
-    {
+
+    /**
+     * Retrieve a node value for a lang
+     *
+     * @param DOMElement $elt         Original DOM element
+     * @param string     $tagName     Tag name
+     * @param string     $lang        Lang
+     * @param string     $defaultLang Default lang
+     *
+     * @return string
+     */
+    private function _retrieveNodeValueByLang(
+        DOMElement $elt, $tagName, $lang, $defaultLang
+    ) {
         $nodeList = $elt->getElementsByTagName($tagName);
         foreach ($nodeList as $e) {
             if ($e->getAttribute('lang') == $lang) {

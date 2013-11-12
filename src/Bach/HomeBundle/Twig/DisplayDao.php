@@ -151,8 +151,7 @@ class DisplayDao extends \Twig_Extension
                             $daotitle,
                             $viewer,
                             $format,
-                            $ajax/*,
-                            false*/
+                            $ajax
                         );
                     }
                 }
@@ -164,7 +163,7 @@ class DisplayDao extends \Twig_Extension
                 if ( $group['title'] !== null ) {
                     $res .= '<header><h4>' . $group['title'] . '</h4></header>';
                 }
-                
+
                 $res .= '<ul>';
                 foreach ( $group['content'] as $document ) {
                     $res .= $document;
@@ -258,7 +257,8 @@ class DisplayDao extends \Twig_Extension
 
             if ( count($results[self::MISC]) > 0 ) {
                 $res .= '<section id="other">';
-                $res .= '<header><h4>' . _('Miscellaneous documents') . '</h4></header>';
+                $res .= '<header><h4>' . _('Miscellaneous documents') .
+                    '</h4></header>';
                 foreach ( $results[self::MISC] as $other ) {
                     $res .= $other;
                 }
@@ -425,7 +425,10 @@ class DisplayDao extends \Twig_Extension
         $vid_reg = "/^(.+)\.(" . implode('|', self::$_videos_extensions) . ")$/i";
         $fla_reg = "/^(.+)\.(" . implode('|', self::$_flash_extensions) . ")$/i";
         $snd_reg = "/^(.+)\.(" . implode('|', self::$_sounds_extensions) . ")$/i";
-        $fla_snd_reg = "/^(.+)\.(" . implode('|', self::$_flash_sounds_extensions) . ")$/i";
+        $fla_snd_reg = "/^(.+)\.(" . implode(
+            '|',
+            self::$_flash_sounds_extensions
+        ) . ")$/i";
 
         $type = null;
         if ( preg_match($fla_reg, $dao, $matches) ) {

@@ -18,8 +18,6 @@ use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 /**
  * Bach Solarium main decorator
  *
- * PHP version 5
- *
  * @category Search
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
@@ -42,7 +40,9 @@ class MainDecorator extends SolariumQueryDecoratorAbstract
     {
         if ( $data !== '*:*' ) {
             $dismax = $query->getDisMax();
-            $dismax->setQueryFields('descriptors^2 tcUnittitle^1 parent_unittitle^1 fulltext^0.1');
+            $dismax->setQueryFields(
+                'descriptors^2 tcUnittitle^1 parent_unittitle^1 fulltext^0.1'
+            );
         }
         $query->setQuery($data);
     }

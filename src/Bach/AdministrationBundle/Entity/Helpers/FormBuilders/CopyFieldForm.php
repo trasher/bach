@@ -66,7 +66,7 @@ class CopyFieldForm extends AbstractType
             array(
                 'label'    => $attr->getLabel(),
                 'required' => true,
-                'choices'  => $this->retreiveUniqueKeyValues()
+                'choices'  => $this->_retrieveUniqueKeyValues()
             )
         );
         $attr = $reader->getAttributeByTag($bachTagType, 'dest');
@@ -76,7 +76,7 @@ class CopyFieldForm extends AbstractType
             array(
                 'label'    => $attr->getLabel(),
                 'required' => true,
-                'choices'  => $this->retreiveUniqueKeyValues()
+                'choices'  => $this->_retrieveUniqueKeyValues()
             )
         );
         $attr = $reader->getAttributeByTag($bachTagType, 'maxChars');
@@ -122,7 +122,7 @@ class CopyFieldForm extends AbstractType
      *
      * @return multitype:NULL
      */
-    private function retreiveUniqueKeyValues()
+    private function _retrieveUniqueKeyValues()
     {
         $choices = array();
         $fieldsTag = $this->_xmlp->getElementsByName('fields');
