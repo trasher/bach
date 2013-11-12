@@ -894,7 +894,6 @@ class SolrCoreAdmin
                     '\'${SolrXMLFile.uniqid}\' AND ' . $cond . ' IS NOT NULL'
                 );
                 $newEntity->setAttribute('transformer', 'script:' . $func);
-                $newEntity->appendChild($newField);
                 $elt->appendChild($newEntity);
             }
         }
