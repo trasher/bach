@@ -111,6 +111,15 @@ class EADFileFormat extends MappedFileFormat
     }
 
     /**
+     * Extra fields not in database
+     */
+    public static $extra_fields = array(
+        'parents_titles' => 'unittitle'
+    );
+
+    public static $mapped_extra_db = array();
+
+    /**
      * Additional fields not directly managed by the entity
      */
     public static $known_indexes = array(
@@ -145,7 +154,7 @@ class EADFileFormat extends MappedFileFormat
         'cDateBegin',
         'cDateEnd',
         'subject_w_expanded',
-        'parent_unittitle'
+        'parents_titles'
     );
 
     /**
@@ -205,7 +214,8 @@ class EADFileFormat extends MappedFileFormat
     public static $types = array(
         'cUnittitle'            => 'alphaOnlySort',
         'elt_order'             => 'int',
-        'subject_w_expanded'   => 'skosLabel'
+        'subject_w_expanded'    => 'skosLabel',
+        'parents_titles'        => 'text'
     );
 
     /**
@@ -242,7 +252,7 @@ class EADFileFormat extends MappedFileFormat
         'fragment',
         'fragmentid',
         'fulltext',
-        'parent_unittitle',
+        'parents_titles',
         'parents',
         'spell',
         'suggestions',

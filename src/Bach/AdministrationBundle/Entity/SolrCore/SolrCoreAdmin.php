@@ -486,9 +486,15 @@ class SolrCoreAdmin
         $fields = $this->_em->getClassMetadata($orm_name)->getFieldNames();
 
         if ( property_exists($orm_name, 'known_indexes') ) {
-            //retrieve and add additional fields from entity
+            //retrieve and add indexes fields from entity
             $ad_fields = $orm_name::$known_indexes;
             $fields = array_merge($fields, $ad_fields);
+        }
+
+        if ( property_exists($orm_name, 'extra_fields') ) {
+            //retrieve and add additional fields from entity
+            $ex_fields = $orm_name::$extra_fields;
+            $fields = array_merge($fields, array_keys($ex_fields));
         }
 
         //retrieve multivalued fields
@@ -841,8 +847,10 @@ class SolrCoreAdmin
         $query = 'SELECT * FROM ' . $tableName;
         $elt->setAttribute('query', $query);
 
+        $meta = $this->_em->getClassMetadata($orm_name);
+
         //main fields from entity
-        $fields = $this->_em->getClassMetadata($orm_name)->getFieldNames();
+        $fields = $meta->getFieldNames();
 
         foreach ($fields as $f ) {
             $newField = $doc->createElement('field');
@@ -852,13 +860,12 @@ class SolrCoreAdmin
         }
 
         if ( property_exists($orm_name, 'descriptors')
-            && $this->_em->getClassMetadata($orm_name)->hasAssociation('indexes')
+            && $meta->hasAssociation('indexes')
         ) {
             //retrieve and add additional fields from entity
             $ad_fields = $orm_name::$descriptors;
 
-            $mapping = $this->_em->getClassMetadata($orm_name)
-                ->getAssociationMapping('indexes');
+            $mapping = $meta->getAssociationMapping('indexes');
             $mapping_entity = $this->_em->getClassMetadata(
                 $mapping['targetEntity']
             );
@@ -900,8 +907,7 @@ class SolrCoreAdmin
 
         //take care of dates
         if ( property_exists($orm_name, 'dates') ) {
-            $mapping = $this->_em->getClassMetadata($orm_name)
-                ->getAssociationMapping('dates');
+            $mapping = $meta->getAssociationMapping('dates');
             $mapping_entity = $this->_em->getClassMetadata(
                 $mapping['targetEntity']
             );
@@ -939,9 +945,8 @@ class SolrCoreAdmin
         }
 
         //take care of daos
-        if ( $this->_em->getClassMetadata($orm_name)->hasAssociation('daos') ) {
-            $mapping = $this->_em->getClassMetadata($orm_name)
-                ->getAssociationMapping('daos');
+        if ( $meta->hasAssociation('daos') ) {
+            $mapping = $meta->getAssociationMapping('daos');
             $mapping_entity = $this->_em->getClassMetadata(
                 $mapping['targetEntity']
             );
@@ -960,6 +965,35 @@ class SolrCoreAdmin
 
             $newEntity->appendChild($newField);
             $elt->appendChild($newEntity);
+        }
+
+        //take care of extra fields
+        if ( property_exists($orm_name, 'extra_fields') ) {
+            //retrieve and add additional fields from entity
+            $ex_fields = $orm_name::$extra_fields;
+            foreach ( $ex_fields as $fname=>$fdb ) {
+                if ( $meta->hasAssociation($fname) ) {
+                    $mapping = $meta->getAssociationMapping($fname);
+                    $mapping_entity = $this->_em->getClassMetadata(
+                        $mapping['targetEntity']
+                    );
+                    $mapping_table = $mapping_entity->getTablename();
+
+                    $newEntity = $doc->createElement('entity');
+                    $newEntity->setAttribute('name', $fname);
+                    $newEntity->setAttribute(
+                        'query',
+                        'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
+                        '\'${SolrXMLFile.uniqid}\''
+                    );
+                    $newField = $doc->createElement('field');
+                    $newField->setAttribute('column', $fdb);
+                    $newField->setAttribute('name', $fname);
+
+                    $newEntity->appendChild($newField);
+                    $elt->appendChild($newEntity);
+                }
+            }
         }
 
         $doc->save($dataConfigFilePath);
