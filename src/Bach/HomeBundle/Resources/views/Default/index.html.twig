@@ -41,22 +41,6 @@
         </div>
         {% endif %}
 
-        {#{% if sidebar|length > 0 %}
-        <h2>{% trans %}Search options{% endtrans %}</h2>
-        <div id="search_options">
-            {% for name,item in sidebar %}
-            <h3>{{ name }}</h3>
-            <div>
-                <ul>
-                {% for choice in item %}
-                    <li{% if choice.selected  %} class="active"{% endif %}><a href="{{ choice.url }}">{{ choice.alias }}</a></li>
-                {% endfor %}
-                </ul>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}#}
-
         {% if tagcloud is defined %}
             <ul id="tagcloud">
             {% for tag,weight in tagcloud %}
@@ -131,8 +115,6 @@
             {% endif %}
             {% spaceless %}
             <nav id="change_view">
-                <input type="checkbox" name="illustrated" id="illustrated"{% if illustrated == true  %} checked="checked"{% endif %}/>
-                <label for="illustrated" title="{% trans %}Show only illustrated documents{% endtrans %}">{% trans %}Illustrated{% endtrans %}<span></span></label>
                 <label for="results_order">{% trans %}Order:{% endtrans %}</label>
                 <div class="select_container">
                     <select name="results_order" id="results_order">

@@ -41,7 +41,6 @@ class ViewParams
     private $_results_by_page = 10;
     private $_view = self::VIEW_LIST;
     private $_order = self::ORDER_RELEVANCE;
-    private $_illustrated = false;
 
     private $_request;
 
@@ -165,28 +164,6 @@ class ViewParams
     }
 
     /**
-     * Get illustrated parameter
-     *
-     * @return boolean
-     */
-    public function getIllustrated()
-    {
-        return $this->_illustrated;
-    }
-
-    /**
-     * Set illustrated
-     *
-     * @param boolean $illustrated Illustrated or not
-     *
-     * @return void
-     */
-    public function setIllustrated($illustrated)
-    {
-        $this->_illustrated = $illustrated;
-    }
-
-    /**
      * Bind request
      *
      * @param Request $request Request to bind to
@@ -209,14 +186,6 @@ class ViewParams
             || $request->get('results_order') === '0'
         ) {
             $this->setOrder((int)$request->get('results_order'));
-        }
-
-        if ( $request->get('illustrated') ) {
-            if ( $request->get('illustrated') == 'true' ) {
-                $this->setIllustrated(true);
-            } else {
-                $this->setIllustrated(false);
-            }
         }
     }
 }

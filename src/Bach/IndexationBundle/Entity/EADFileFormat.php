@@ -263,7 +263,6 @@ class EADFileFormat extends MappedFileFormat
         'cDateNormal',
         'cDateBegin',
         'cDateEnd',
-        'dao',
         'headerAddress',
         'headerDate',
         'archDescOrigination',

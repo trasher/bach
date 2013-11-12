@@ -37,6 +37,9 @@ class SolariumQueryFactory
     private $_highlitght;
     private $_spellcheck;
     private $_query;
+    private $_qry_facets_fields = array(
+        'dao'
+    );
 
     /**
      * Factory constructor
@@ -78,6 +81,15 @@ class SolariumQueryFactory
                     //and end date filter
                     $this->_query->createFilterQuery($name)
                         ->setQuery('+' . $name . ':[* TO ' . $v . ']');
+                } else if ( $name === 'dao' ) {
+                    $query = null;
+                    if ( $v === _('Yes') ) {
+                        $query = '+' . $name . ':*';
+                    } else {
+                        $query = '-' . $name . ':*';
+                    }
+                    $this->_query->createFilterQuery($name)
+                        ->setQuery($query);
                 } else {
                     $this->_query->createFilterQuery($name . $i)
                         ->setQuery('+' . $name . ':"' . $v . '"');
@@ -86,25 +98,26 @@ class SolariumQueryFactory
             }
         }
 
-        if ( $container->isIllustrated() ) {
-            $this->_query->createFilterQuery('illustrated')
-                ->setQuery('+dao:*');
-        }
-
         if ( $container->isOrdered() ) {
             $qry = $this->_query;
             $order = $container->getOrderField();
+            $direction = $qry::SORT_DESC;
+
+            if ($container->getOrderDirection() === ViewParams::ORDER_ASC) {
+                $direction = $qry::SORT_ASC;
+            }
+
             if ( is_array($order) ) {
                 foreach ( $order as $field) {
                     $this->_query->addSort(
                         $field,
-                        ($container->getOrderDirection() === ViewParams::ORDER_ASC) ? $qry::SORT_ASC : $qry::SORT_DESC
+                        $direction
                     );
                 }
             } else {
                 $this->_query->addSort(
                     $container->getOrderField(),
-                    ($container->getOrderDirection() === ViewParams::ORDER_ASC) ? $qry::SORT_ASC : $qry::SORT_DESC
+                    $direction
                 );
             }
         }
@@ -115,8 +128,21 @@ class SolariumQueryFactory
 
         //dynamically create facets
         foreach ( $facets as $facet ) {
-            $facetSet->createFacetField($facet->getSolrFieldName())
-                ->setField($facet->getSolrFieldName());
+            if ( !in_array($facet->getSolrFieldName(), $this->_qry_facets_fields) ) {
+                $facetSet->createFacetField($facet->getSolrFieldName())
+                    ->setField($facet->getSolrFieldName());
+            } else {
+                switch($facet->getSolrFieldName()) {
+                case 'dao':
+                    $fmq = $facetSet->createFacetMultiQuery('dao');
+                    $fmq->createQuery(_('Yes'), 'dao:*');
+                    $fmq->createQuery(_('No'), '-dao:*');
+                    break;
+                default:
+                    throw new \RuntimeException('Unknown facet query field!');
+                    break;
+                }
+            }
         }
 
         foreach ( $container->getFields() as $name=>$value ) {

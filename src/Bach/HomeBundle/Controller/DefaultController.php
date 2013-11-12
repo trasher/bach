@@ -83,8 +83,7 @@ class DefaultController extends Controller
             'show_pics'     => $view_params->showPics(),
             'viewer_uri'    => $viewer_uri,
             'view'          => $view_params->getView(),
-            'results_order' => $view_params->getOrder(),
-            'illustrated'   => $view_params->getIllustrated()
+            'results_order' => $view_params->getOrder()
         );
 
         if ( $facet_name !== null ) {
@@ -100,7 +99,6 @@ class DefaultController extends Controller
 
             $container = new SolariumQueryContainer();
             $container->setOrder($view_params->getOrder());
-            $container->isIllustrated($view_params->getIllustrated());
 
             $container->setField(
                 'show_pics',
@@ -185,10 +183,12 @@ class DefaultController extends Controller
                 $templateVars['filters'] = $filters;
             }
 
-            $conf_facets = $this->getDoctrine()->getRepository('BachHomeBundle:Facets')->findBy(
-                array('active' => true),
-                array('position' => 'ASC')
-            );
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array('active' => true),
+                    array('position' => 'ASC')
+                );
 
             $factory = $this->get("bach.home.solarium_query_factory");
             $searchResults = $factory->performQuery($container, $conf_facets);
@@ -224,28 +224,34 @@ class DefaultController extends Controller
                     }
                 }
                 if ( count($values) > 0 ) {
-                    //facet order
-                    $facet_order = $request->get('facet_order');
-                    if ( !$facet_order || $facet_order == 0 ) {
-                        arsort($values);
-                    } else {
-                        if ( defined('SORT_FLAG_CASE') ) {
-                            ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
+                    if ( $facet->getSolrFieldName() !== 'dao' ) {
+                        //facet order
+                        $facet_order = $request->get('facet_order');
+                        if ( !$facet_order || $facet_order == 0 ) {
+                            arsort($values);
                         } else {
-                            //fallback for PHP < 5.4
-                            ksort($values, SORT_LOCALE_STRING);
+                            if ( defined('SORT_FLAG_CASE') ) {
+                                ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
+                            } else {
+                                //fallback for PHP < 5.4
+                                ksort($values, SORT_LOCALE_STRING);
+                            }
                         }
                     }
 
-                    //get original URL if any
-                    $templateVars['orig_href'] = $request->get('orig_href');
-                    $templateVars['facet_order'] = $request->get('facet_order');
+                    if ( $facet->getSolrFieldName() !== 'dao'
+                        || $facet->getSolrFieldName() === 'dao' && count($values) > 1
+                    ) {
+                        //get original URL if any
+                        $templateVars['orig_href'] = $request->get('orig_href');
+                        $templateVars['facet_order'] = $request->get('facet_order');
 
-                    $facets[$facet->getSolrFieldName()] = array(
-                        'label'         => $facet->getFrLabel(),
-                        'content'       => $values,
-                        'index_name'    => $facet->getSolrFieldName()
-                    );
+                        $facets[$facet->getSolrFieldName()] = array(
+                            'label'         => $facet->getFrLabel(),
+                            'content'       => $values,
+                            'index_name'    => $facet->getSolrFieldName()
+                        );
+                    }
                 }
             }
             $templateVars['facet_names'] = $facet_names;
