@@ -215,7 +215,9 @@ class EADFileFormat extends MappedFileFormat
         'cUnittitle'            => 'alphaOnlySort',
         'elt_order'             => 'int',
         'subject_w_expanded'    => 'skosLabel',
-        'parents_titles'        => 'text'
+        'parents_titles'        => 'text',
+        'cDateBegin'            => 'date',
+        'cDateEnd'              => 'date'
     );
 
     /**

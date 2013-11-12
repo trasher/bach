@@ -72,15 +72,15 @@ class SolariumQueryFactory
             $i = 0;
             foreach ( $value as $v ) {
                 if ( $name === 'cDateBegin' ) {
-                    //no $i in name here since we only want ONE begin 
+                    //no $i in name here since we only want ONE begin
                     //and end date filter
                     $this->_query->createFilterQuery($name)
-                        ->setQuery('+' . $name . ':[' . $v . ' TO *]');
+                        ->setQuery('+' . $name . ':[' . $v . 'T00:00:00Z TO *]');
                 } else if ( $name === 'cDateEnd' ) {
-                    //no $i in name here since we only want ONE begin 
+                    //no $i in name here since we only want ONE begin
                     //and end date filter
                     $this->_query->createFilterQuery($name)
-                        ->setQuery('+' . $name . ':[* TO ' . $v . ']');
+                        ->setQuery('+' . $name . ':[* TO ' . $v . 'T00:00:00Z]');
                 } else if ( $name === 'dao' ) {
                     $query = null;
                     if ( $v === _('Yes') ) {
