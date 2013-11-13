@@ -72,7 +72,11 @@ class FilesController extends Controller
 
         if ( !file_exists($path) ) {
             throw new \RuntimeException(
-                _('File does not exists.')
+                str_replace(
+                    '%file',
+                    $path,
+                    _('File %file does not exists.')
+                )
             );
         }
 
