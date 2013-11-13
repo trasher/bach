@@ -249,19 +249,21 @@ class DefaultController extends Controller
                 );
 
             $factory = $this->get("bach.home.solarium_query_factory");
-            if ( !isset($filters['cDate']) ) {
-                $factory->setDatesBounds(
-                    $templateVars['selected_min_date'],
-                    $templateVars['selected_max_date']
-                );
-            } else {
-                list($start, $end) = explode('|', $filters['cDate'][0]);
-                $bdate = new \DateTime($start);
-                $edate = new \DateTime($end);
-                $factory->setDatesBounds(
-                    $bdate->format('Y'),
-                    $edate->format('Y')
-                );
+            if ( $ajax === false ) {
+                if ( !isset($filters['cDate']) ) {
+                    $factory->setDatesBounds(
+                        $templateVars['selected_min_date'],
+                        $templateVars['selected_max_date']
+                    );
+                } else {
+                    list($start, $end) = explode('|', $filters['cDate'][0]);
+                    $bdate = new \DateTime($start);
+                    $edate = new \DateTime($end);
+                    $factory->setDatesBounds(
+                        $bdate->format('Y'),
+                        $edate->format('Y')
+                    );
+                }
             }
             $searchResults = $factory->performQuery($container, $conf_facets);
             $hlSearchResults = $factory->getHighlighting();

@@ -101,8 +101,6 @@ class SolariumQueryFactory
                         list($start, $end) = explode('|', $v);
                         $bdate = new \DateTime($start);
                         $edate = new \DateTime($end);
-                        /*$edate->add(new \DateInterval('P' . $this->_date_gap . 'Y'));
-                        $edate->sub(new \DateInterval('PT1S'));*/
                         $this->_query->createFilterQuery($name)
                             ->setQuery(
                                 '+cDateBegin:[' .
@@ -110,11 +108,6 @@ class SolariumQueryFactory
                                 ' TO ' .
                                 $edate->format('Y-m-d\TH:i:s\Z')  . ']'
                             );
-                        /*$this->_date_gap = null;
-                        $this->setDatesBounds(
-                            $bdate->format('Y'),
-                            $edate->format('Y')
-                        );*/
                     }
                 } else {
                     $this->_query->createFilterQuery($name . $i)
@@ -165,11 +158,13 @@ class SolariumQueryFactory
                     $fmq->createQuery(_('No'), '-dao:*');
                     break;
                 case 'cDate':
-                    $fr = $facetSet->createFacetRange('cDate');
-                    $fr->setField('cDateBegin');
-                    $fr->setStart($this->_low_date);
-                    $fr->setgap('+' . $this->_date_gap . 'YEARS');
-                    $fr->setEnd($this->_up_date);
+                    if ( isset($this->_low_date) && isset($this->_up_date) ) {
+                        $fr = $facetSet->createFacetRange('cDate');
+                        $fr->setField('cDateBegin');
+                        $fr->setStart($this->_low_date);
+                        $fr->setgap('+' . $this->_date_gap . 'YEARS');
+                        $fr->setEnd($this->_up_date);
+                    }
                     break;
                 default:
                     throw new \RuntimeException('Unknown facet query field!');
