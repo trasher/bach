@@ -261,7 +261,6 @@ class EADFileFormat extends MappedFileFormat
         'tcUnittitle',
         'uniqid',
         'cScopcontent',
-        'cDate',
         'cDateNormal',
         'cDateBegin',
         'cDateEnd',

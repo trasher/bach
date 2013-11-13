@@ -90,6 +90,59 @@ class DefaultController extends Controller
             $templateVars['facet_name'] = $facet_name;
         }
 
+        if ( $ajax === false ) {
+            $query = $this->get('solarium.client')->createSelect();
+            $query->setQuery('*:*');
+            $query->setRows(0);
+            $stats = $query->getStats();
+
+            $stats->createField('cDateBegin');
+            $stats->createField('cDateEnd');
+            $rs = $this->get('solarium.client')->select($query);
+            $rsStats = $rs->getStats();
+            $statsResults = $rsStats->getResults();
+
+            $min_date = $statsResults['cDateBegin']->getMin();
+            $max_date = $statsResults['cDateEnd']->getMax();
+
+            if ( $min_date && $max_date ) {
+                $step_unit = 'years';
+                $step = 1;
+
+                $php_min_date = new \DateTime($min_date);
+                $php_max_date = new \DateTime($max_date);
+
+                $diff = $php_min_date->diff($php_max_date);
+                if ( $diff->y > 100 ) {
+                    $step = $diff->y / 100;
+                }
+
+                $templateVars['date_step_unit'] = $step_unit;
+                $templateVars['date_step'] = $step;
+
+                $templateVars['min_date'] = $php_min_date->format('Y');
+                if ( isset($filters['cDateBegin']) ) {
+                    $dbegin = explode(
+                        '-',
+                        $filters['cDateBegin'][0]
+                    );
+                    $templateVars['selected_min_date'] = $dbegin[0];
+                } else {
+                    $templateVars['selected_min_date'] = $templateVars['min_date'];
+                }
+                $templateVars['max_date'] = $php_max_date->format('Y');
+                if ( isset($filters['cDateEnd']) ) {
+                    $dend = explode(
+                        '-',
+                        $filters['cDateEnd'][0]
+                    );
+                    $templateVars['selected_max_date'] = $dend[0];
+                } else {
+                    $templateVars['selected_max_date'] = $templateVars['max_date'];
+                }
+            }
+        }
+
         if ( !is_null($query_terms) ) {
             // On effectue une recherche
             $form = $this->createForm(
@@ -149,6 +202,7 @@ class DefaultController extends Controller
 
                 $filter_field = $request->get('filter_field');
                 $filter_value = array($request->get('filter_value'));
+                $templateVars['current_filter_field'] = $filter_field;
 
                 switch ( $filter_field ) {
                 case 'cDateBegin':
@@ -159,6 +213,9 @@ class DefaultController extends Controller
                     } else {
                         $filter_value = array($php_date->format('Y-12-31'));
                     }
+                    break;
+                case 'cDate':
+                    //nothing to to, but avoid to have mutliple date range filters
                     break;
                 default:
                     if ( isset($filters[$filter_field])
@@ -191,6 +248,20 @@ class DefaultController extends Controller
                 );
 
             $factory = $this->get("bach.home.solarium_query_factory");
+            if ( !isset($filters['cDate']) ) {
+                $factory->setDatesBounds(
+                    $templateVars['selected_min_date'],
+                    $templateVars['selected_max_date']
+                );
+            } else {
+                list($start, $end) = explode('|', $filters['cDate'][0]);
+                $bdate = new \DateTime($start);
+                $edate = new \DateTime($end);
+                $factory->setDatesBounds(
+                    $bdate->format('Y'),
+                    $edate->format('Y')
+                );
+            }
             $searchResults = $factory->performQuery($container, $conf_facets);
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
@@ -213,16 +284,58 @@ class DefaultController extends Controller
                 'cDateEnd'      => _('End date')
             );
             foreach ( $conf_facets as $facet ) {
-                $facet_names[$facet->getSolrFieldName()] = $facet->getFrLabel();
-                $field_facets = $facetset->getFacet($facet->getSolrFieldName());
+                $solr_field = $facet->getSolrFieldName();
+                $facet_names[$solr_field] = $facet->getFrLabel();
+                $field_facets = $facetset->getFacet($solr_field);
                 $values = array();
+                $facet_labels = array();
                 foreach ( $field_facets as $item=>$count ) {
-                    if ( !isset($filters[$facet->getSolrFieldName()])
-                        || !in_array($item, $filters[$facet->getSolrFieldName()])
+                    if ( !isset($filters[$solr_field])
+                        || !in_array($item, $filters[$solr_field])
                     ) {
+                        if ( $solr_field === 'cDate' ) {
+                            $start = null;
+                            $end = null;
+
+                            if ( strpos('|', $item) !== false ) {
+                                list($start, $end) = explode('|', $item);
+                            } else {
+                                $start = $item;
+                            }
+                            $bdate = new \DateTime($start);
+
+                            $edate = null;
+                            if ( !$end ) {
+                                $edate = new \DateTime($start);
+                                $edate->add(
+                                    new \DateInterval(
+                                        'P' . $factory->getDateGap()  . 'Y'
+                                    )
+                                );
+                                $edate->sub(new \DateInterval('PT1S'));
+                            } else {
+                                $edate = new \DateTime($end);
+                            }
+                            if ( !isset($facet_labels[$solr_field]) ) {
+                                $facet_labels[$solr_field] = array();
+                            }
+
+                            $item = $bdate->format('Y-m-d\TH:i:s\Z') . '|' .
+                                $edate->format('Y-m-d\TH:i:s\Z');
+
+                            $ys = $bdate->format('Y');
+                            $ye = $edate->format('Y');
+
+                            if ( $ys != $ye ) {
+                                $facet_labels[$solr_field][$item] = $ys . '-' . $ye;
+                            } else {
+                                $facet_labels[$solr_field][$item] = $ys;
+                            }
+                        }
                         $values[$item] = $count;
                     }
                 }
+
                 if ( count($values) > 0 ) {
                     if ( $facet->getSolrFieldName() !== 'dao' ) {
                         //facet order
@@ -253,6 +366,29 @@ class DefaultController extends Controller
                         );
                     }
                 }
+            }
+
+            if ( isset($filters['cDate']) ) {
+                //set label for current date range filter
+                if ( !isset($facet_labels['cDate'])) {
+                    $facet_labels['cDate'] = array();
+                }
+                list($start, $end) = explode('|', $filters['cDate'][0]);
+                $bdate = new \DateTime($start);
+                $edate = new \DateTime($end);
+
+                $ys = $bdate->format('Y');
+                $ye = $edate->format('Y');
+
+                if ( $ys != $ye ) {
+                    $facet_labels['cDate'][$filters['cDate'][0]] = $ys . '-' . $ye;
+                } else {
+                    $facet_labels['cDate'][$filters['cDate'][0]] = $ys;
+                }
+            }
+
+            if ( count($facet_labels) > 0 ) {
+                $templateVars['facet_labels'] = $facet_labels;
             }
             $templateVars['facet_names'] = $facet_names;
 
@@ -344,57 +480,6 @@ class DefaultController extends Controller
 
         //get min and max dates
         if ( $ajax === false ) {
-            $query = $this->get('solarium.client')->createSelect();
-            $query->setQuery('*:*');
-            $query->setRows(0);
-            $stats = $query->getStats();
-
-            $stats->createField('cDateBegin');
-            $stats->createField('cDateEnd');
-            $rs = $this->get('solarium.client')->select($query);
-            $rsStats = $rs->getStats();
-            $statsResults = $rsStats->getResults();
-
-            $min_date = $statsResults['cDateBegin']->getMin();
-            $max_date = $statsResults['cDateEnd']->getMax();
-
-            if ( $min_date && $max_date ) {
-                $step_unit = 'years';
-                $step = 1;
-
-                $php_min_date = new \DateTime($min_date);
-                $php_max_date = new \DateTime($max_date);
-
-                $diff = $php_min_date->diff($php_max_date);
-                if ( $diff->y > 100 ) {
-                    $step = $diff->y / 100;
-                }
-
-                $templateVars['date_step_unit'] = $step_unit;
-                $templateVars['date_step'] = $step;
-
-                $templateVars['min_date'] = $php_min_date->format('Y');
-                if ( isset($filters['cDateBegin']) ) {
-                    $dbegin = explode(
-                        '-',
-                        $filters['cDateBegin'][0]
-                    );
-                    $templateVars['selected_min_date'] = $dbegin[0];
-                } else {
-                    $templateVars['selected_min_date'] = $templateVars['min_date'];
-                }
-                $templateVars['max_date'] = $php_max_date->format('Y');
-                if ( isset($filters['cDateEnd']) ) {
-                    $dend = explode(
-                        '-',
-                        $filters['cDateEnd'][0]
-                    );
-                    $templateVars['selected_max_date'] = $dend[0];
-                } else {
-                    $templateVars['selected_max_date'] = $templateVars['max_date'];
-                }
-            }
-
             $templateVars['form'] = $form->createView();
             if ( $this->container->get('kernel')->getEnvironment() == 'dev'
                 && isset($factory)

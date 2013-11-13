@@ -29,7 +29,13 @@
                     {% endif %}
                     {% for facet,count in facet_content %}
                         <li>
-                            <a href="{{ path('bach_search', {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
+                            <a href="{{ path('bach_search', {query_terms: q, filter_field: index_name, filter_value: facet}) }}">
+                            {% if facet_labels[index_name] is defined %}
+                                {{ facet_labels[index_name][facet] }} ({{ count }})
+                            {% else %}
+                                {{ facet }} ({{ count }})
+                            {% endif %}
+                            </a>
                         </li>
                     {% endfor %}
                     {% if facet.content|length > 10 and not (facet_name is defined and facet_name == index_name) %}
@@ -87,7 +93,12 @@
                 {% for value in values %}
                 <li>
                     <a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
-                        {{ facet_names[filter_name] }} > {{ value -}}
+                        {{ facet_names[filter_name] }} >
+                        {% if facet_labels[filter_name] is defined %}
+                            {{ facet_labels[filter_name][value] -}}
+                        {% else %}
+                            {{ value -}}
+                        {% endif %}
                     </a>{% if loop.revindex > 1  %}{{- coma }}{% endif %}
                 </li>
                 {% endfor %}

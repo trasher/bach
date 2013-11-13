@@ -38,8 +38,12 @@ class SolariumQueryFactory
     private $_spellcheck;
     private $_query;
     private $_qry_facets_fields = array(
-        'dao'
+        'dao',
+        'cDate'
     );
+    private $_low_date;
+    private $_up_date;
+    private $_date_gap;
 
     /**
      * Factory constructor
@@ -90,6 +94,28 @@ class SolariumQueryFactory
                     }
                     $this->_query->createFilterQuery($name)
                         ->setQuery($query);
+                } else if ( $name === 'cDate' ) {
+                    if ( strpos('|', $v === false) ) {
+                        throw new \RuntimeException('Invalid date range!');
+                    } else {
+                        list($start, $end) = explode('|', $v);
+                        $bdate = new \DateTime($start);
+                        $edate = new \DateTime($end);
+                        /*$edate->add(new \DateInterval('P' . $this->_date_gap . 'Y'));
+                        $edate->sub(new \DateInterval('PT1S'));*/
+                        $this->_query->createFilterQuery($name)
+                            ->setQuery(
+                                '+cDateBegin:[' .
+                                $bdate->format('Y-m-d\TH:i:s\Z') .
+                                ' TO ' .
+                                $edate->format('Y-m-d\TH:i:s\Z')  . ']'
+                            );
+                        /*$this->_date_gap = null;
+                        $this->setDatesBounds(
+                            $bdate->format('Y'),
+                            $edate->format('Y')
+                        );*/
+                    }
                 } else {
                     $this->_query->createFilterQuery($name . $i)
                         ->setQuery('+' . $name . ':"' . $v . '"');
@@ -137,6 +163,13 @@ class SolariumQueryFactory
                     $fmq = $facetSet->createFacetMultiQuery('dao');
                     $fmq->createQuery(_('Yes'), 'dao:*');
                     $fmq->createQuery(_('No'), '-dao:*');
+                    break;
+                case 'cDate':
+                    $fr = $facetSet->createFacetRange('cDate');
+                    $fr->setField('cDateBegin');
+                    $fr->setStart($this->_low_date);
+                    $fr->setgap('+' . $this->_date_gap . 'YEARS');
+                    $fr->setEnd($this->_up_date);
                     break;
                 default:
                     throw new \RuntimeException('Unknown facet query field!');
@@ -251,5 +284,42 @@ class SolariumQueryFactory
     public function getQuery()
     {
         return $this->_query;
+    }
+
+    /**
+     * Set dates bounds
+     *
+     * @param string $low Low bound
+     * @param string $up  Up bound
+     *
+     * @return void
+     */
+    public function setDatesBounds($low, $up)
+    {
+        if ( !isset($this->_date_gap) ) {
+            $low = \DateTime::createFromFormat('Y', $low);
+            $up = \DateTime::createFromFormat('Y', $up);
+
+            $this->_low_date = $low->format('Y-01-01') . 'T00:00:00Z';
+            $this->_up_date = $up->format('Y-12-31') . 'T23:59:59Z';
+
+
+            $diff = $low->diff($up);
+            $gap = 1;
+            if ( $diff->y > 10 ) {
+                $gap = ceil($diff->y / 10);
+            }
+            $this->_date_gap = $gap;
+        }
+    }
+
+    /**
+     * Get date gap
+     *
+     * @return int
+     */
+    public function getDateGap()
+    {
+        return $this->_date_gap;
     }
 }
