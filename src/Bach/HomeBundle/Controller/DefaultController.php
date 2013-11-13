@@ -215,6 +215,7 @@ class DefaultController extends Controller
                     }
                     break;
                 case 'cDate':
+                case 'dao':
                     //nothing to to, but avoid to have mutliple date range filters
                     break;
                 default:
