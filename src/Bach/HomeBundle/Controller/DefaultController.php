@@ -149,38 +149,30 @@ class DefaultController extends Controller
 
             if ( $request->get('filter_field') ) {
 
-                $filter_field = $request->get('filter_field');
-                $filter_value = array($request->get('filter_value'));
-                $templateVars['current_filter_field'] = $filter_field;
+                $filter_fields = $request->get('filter_field');
+                $filter_values = $request->get('filter_value');
 
-                switch ( $filter_field ) {
-                case 'cDateBegin':
-                case 'cDateEnd':
-                    $php_date = \DateTime::createFromFormat('Y', $filter_value[0]);
-                    if ( $filter_field === 'cDateBegin' ) {
-                        $filter_value = array($php_date->format('Y-01-01'));
-                    } else {
-                        $filter_value = array($php_date->format('Y-12-31'));
-                    }
-                    break;
-                case 'cDate':
-                case 'dao':
-                    //nothing to to, but avoid to have mutliple date range filters
-                    break;
-                default:
-                    if ( isset($filters[$filter_field])
-                        && is_array($filters[$filter_field])
-                        && !in_array($filter_value[0], $filters[$filter_field])
-                    ) {
-                        $new_value = $filter_value[0];
-                        $filter_value = $filters[$filter_field];
-                        array_push(
-                            $filter_value,
-                            $new_value
-                        );
-                    }
+                if ( !is_array($filter_fields) ) {
+                    $filter_fields = array($filter_fields);
                 }
-                $filters[$filter_field] = $filter_value;
+                if ( !is_array($filter_values) ) {
+                    $filter_values = array($filter_values);
+                }
+
+                if ( count($filter_fields) != count($filter_values) ) {
+                    throw new \RuntimeException(
+                        'Filter fieds and value does not match!'
+                    );
+                }
+
+                for ( $i = 0; $i < count($filter_fields); $i++ ) {
+                    $this->_addFilter(
+                        $filters,
+                        $filter_fields[$i],
+                        array($filter_values[$i])
+                    );
+                }
+
                 $session->set('filters', $filters);
             }
 
@@ -424,10 +416,12 @@ class DefaultController extends Controller
             if ( is_array($slider_dates) ) {
                 $templateVars = array_merge($templateVars, $slider_dates);
             }
+            $by_year = $factory->getResultsByYear();
+            $templateVars['by_year'] = $by_year;
 
             $templateVars['form'] = $form->createView();
             if ( $this->container->get('kernel')->getEnvironment() == 'dev'
-                && isset($factory)
+                && isset($factory) && $factory->getRequest() !== null
             ) {
                 //let's pass Solr raw query to template
                 $templateVars['solr_qry'] = $factory->getRequest()->getUri();
@@ -447,6 +441,47 @@ class DefaultController extends Controller
                 $templateVars
             );
         }
+    }
+
+    /**
+     * Add a filter
+     *
+     * @param array  &$filters Active filters
+     * @param string $field    Filter field
+     * @param string $value    Filter value
+     *
+     * @return void
+     */
+    private function _addFilter(&$filters, $field, $value)
+    {
+        switch ( $field ) {
+        case 'cDateBegin':
+        case 'cDateEnd':
+            $php_date = \DateTime::createFromFormat('Y', $value[0]);
+            if ( $field === 'cDateBegin' ) {
+                $value = array($php_date->format('Y-01-01'));
+            } else {
+                $value = array($php_date->format('Y-12-31'));
+            }
+            break;
+        case 'cDate':
+        case 'dao':
+            //nothing to to, but avoid to have mutliple date range filters
+            break;
+        default:
+            if ( isset($filters[$field])
+                && is_array($filters[$field])
+                && !in_array($value[0], $filters[$field])
+            ) {
+                $new_value = $value[0];
+                $value = $filters[$field];
+                array_push(
+                    $value,
+                    $new_value
+                );
+            }
+        }
+        $filters[$field] = $value;
     }
 
     /**

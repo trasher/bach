@@ -678,6 +678,11 @@ h2.back a:hover {
     margin: 0;
 }
 
+#dates_plot {
+    height: 100px;
+    width: 100%;
+}
+
 .well {
     padding: .5em;
     background-color: #d1c6c0;

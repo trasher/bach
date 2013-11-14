@@ -335,13 +335,55 @@ class SolariumQueryFactory
     }
 
     /**
-     * Load dates bounds from index stats
-     *
-     * @param boolean $all Use *:* as a query if true, use current query if false
+     * Get number of results per year, to draw plot
      *
      * @return array
      */
-    private function _loadDatesFromStats($all = true)
+    public function getResultsByYear()
+    {
+        $query = $this->_client->createSelect();
+        $query->setQuery('*:*');
+        $query->setRows(0);
+        $query->setFields('cDateBegin');
+
+        $facetSet = $query->getFacetSet();
+        $facetSet->setLimit(-1);
+
+        list($min_date, $max_date) = $this->_loadDatesFromStats(true, true);
+        $low_date = new \DateTime($min_date);
+        $up_date = new \DateTime($max_date);
+
+        $fr = $facetSet->createFacetRange('cDate');
+        $fr->setField('cDateBegin');
+        $fr->setStart($low_date->format('Y-01-01\T00:00:00\Z'));
+        $fr->setgap('+1YEARS');
+        $fr->setEnd($up_date->format('Y-01-01\T00:00:00\Z'));
+
+        $rs = $this->_client->select($query);
+        $facetSet = $rs->getFacetSet();
+        $dates = $facetSet->getFacet('cDate');
+
+        $results = array();
+        foreach ( $dates as $d=>$count ) {
+            $_date = new \DateTime($d);
+            $results[] = array(
+                (string)$_date->format('Y'),
+                $count
+            );
+        }
+
+        return $results;
+    }
+
+    /**
+     * Load dates bounds from index stats
+     *
+     * @param boolean $all   Use *:* as a query if true, use current query if false
+     * @param boolean $begin Work only on begin date
+     *
+     * @return array
+     */
+    private function _loadDatesFromStats($all = true, $begin = false)
     {
         $query = $this->_client->createSelect();
         if ( $all === true ) {
@@ -360,7 +402,12 @@ class SolariumQueryFactory
         $statsResults = $rsStats->getResults();
 
         $min_date = $statsResults['cDateBegin']->getMin();
-        $max_date = $statsResults['cDateEnd']->getMax();
+        $max_date = null;
+        if ( $begin === false ) {
+            $max_date = $statsResults['cDateEnd']->getMax();
+        } else {
+            $max_date = $statsResults['cDateBegin']->getMax();
+        }
 
         return array($min_date, $max_date);
     }
@@ -451,7 +498,7 @@ class SolariumQueryFactory
      */
     private function _getDates($filters)
     {
-        list($min_date, $max_date) = $this->_loadDatesFromStats(false);
+        list($min_date, $max_date) = $this->_loadDatesFromStats(false, true);
         if ( !isset($filters['cDate']) ) {
             $low = new \DateTime($min_date);
             $up = new \DateTime($max_date);
