@@ -41,6 +41,10 @@ class SolariumQueryFactory
         'dao',
         'cDate'
     );
+
+    private $_max_low_date;
+    private $_max_up_date;
+
     private $_low_date;
     private $_up_date;
     private $_date_gap;
@@ -57,6 +61,18 @@ class SolariumQueryFactory
     }
 
     /**
+     * Prepare solr Query
+     *
+     * @param SolariumQueryContainer $container Solarium container
+     *
+     * @return void
+     */
+    public function prepareQuery(SolariumQueryContainer $container)
+    {
+        $this->_buildQuery($container);
+    }
+
+    /**
      * Perform a query into Solr
      *
      * @param SolariumQueryContainer $container Solarium container
@@ -65,6 +81,30 @@ class SolariumQueryFactory
      * @return \Solarium\QueryType\Select\Result\Result
      */
     public function performQuery(SolariumQueryContainer $container, $facets)
+    {
+        //create query
+        if ( !$this->_query ) {
+            $this->_buildQuery($container);
+        }
+
+        //dynamically create facets
+        $this->_addFacets($facets);
+
+        $this->_request = $this->_client->createRequest($this->_query);
+        $rs = $this->_client->select($this->_query);
+        $this->_highlitght = $rs->getHighlighting();
+        $this->_spellcheck = $rs->getSpellcheck();
+        return $rs;
+    }
+
+    /**
+     * Build query
+     *
+     * @param SolariumQueryContainer $container Solarium container
+     *
+     * @return void
+     */
+    private function _buildQuery($container)
     {
         $this->_query = $this->_client->createSelect();
 
@@ -141,11 +181,37 @@ class SolariumQueryFactory
             }
         }
 
+        foreach ( $container->getFields() as $name=>$value ) {
+            if ( array_key_exists($name, $this->_decorators) ) {
+                //Decorate the query
+                $this->_decorators[$name]->decorate($this->_query, $value);
+                if ( method_exists($this->_decorators[$name], 'getHlFields') ) {
+                    if ( trim($hl_fields) !== '' ) {
+                        $hl_fields .=',';
+                    }
+                    $hl_fields .= $this->_decorators[$name]->getHlFields();
+                }
+            }
+        }
+
+        $hl->setFields($hl_fields);
+        //on highlithed unititles, we always want the full string
+        $hl->getField('cUnittitle')->setFragSize(0);
+    }
+
+    /**
+     * Dynamically add facets to query
+     *
+     * @param array $facets Facets
+     *
+     * @return void
+     */
+    private function _addFacets($facets)
+    {
         $facetSet = $this->_query->getFacetSet();
         $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);
 
-        //dynamically create facets
         foreach ( $facets as $facet ) {
             if ( !in_array($facet->getSolrFieldName(), $this->_qry_facets_fields) ) {
                 $facetSet->createFacetField($facet->getSolrFieldName())
@@ -172,29 +238,6 @@ class SolariumQueryFactory
                 }
             }
         }
-
-        foreach ( $container->getFields() as $name=>$value ) {
-            if ( array_key_exists($name, $this->_decorators) ) {
-                //Decorate the query
-                $this->_decorators[$name]->decorate($this->_query, $value);
-                if ( method_exists($this->_decorators[$name], 'getHlFields') ) {
-                    if ( trim($hl_fields) !== '' ) {
-                        $hl_fields .=',';
-                    }
-                    $hl_fields .= $this->_decorators[$name]->getHlFields();
-                }
-            }
-        }
-
-        $hl->setFields($hl_fields);
-        //on highlithed unititles, we always want the full string
-        $hl->getField('cUnittitle')->setFragSize(0);
-
-        $this->_request = $this->_client->createRequest($this->_query);
-        $rs = $this->_client->select($this->_query);
-        $this->_highlitght = $rs->getHighlighting();
-        $this->_spellcheck = $rs->getSpellcheck();
-        return $rs;
     }
 
     /**
@@ -226,6 +269,100 @@ class SolariumQueryFactory
             } catch(\RuntimeException $e) {
             }
         }
+    }
+
+    /**
+     * Get extreme dates from index stats
+     *
+     * @param array $filters Active filters
+     *
+     * @return array
+     */
+    public function getSliderDates($filters)
+    {
+        list($min_date, $max_date) = $this->_loadDatesFromStats();
+
+        $results = array(
+            'date_step_unit'    => null,
+            'date_step'         => null,
+            'min_date'          => null,
+            'selected_min_date' => null,
+            'max_date'          => null,
+            'selected_max_date' => null
+        );
+
+        if ( $min_date && $max_date ) {
+            $step_unit = 'years';
+            $step = 1;
+
+            $php_min_date = new \DateTime($min_date);
+            $php_max_date = new \DateTime($max_date);
+
+            $diff = $php_min_date->diff($php_max_date);
+            if ( $diff->y > 100 ) {
+                $step = $diff->y / 100;
+            }
+
+            $results['date_step_unit'] = $step_unit;
+            $results['date_step'] = $step;
+
+            $results['min_date'] = $php_min_date->format('Y');
+            if ( isset($filters['cDateBegin']) ) {
+                $dbegin = explode(
+                    '-',
+                    $filters['cDateBegin'][0]
+                );
+                $results['selected_min_date'] = $dbegin[0];
+            } else {
+                $results['selected_min_date'] = $results['min_date'];
+            }
+            $results['max_date'] = $php_max_date->format('Y');
+            if ( isset($filters['cDateEnd']) ) {
+                $dend = explode(
+                    '-',
+                    $filters['cDateEnd'][0]
+                );
+                $results['selected_max_date'] = $dend[0];
+            } else {
+                $results['selected_max_date'] = $results['max_date'];
+            }
+
+            $this->_max_low_date = $php_min_date;
+            $this->_max_up_date = $php_max_date;
+
+            return $results;
+        }
+    }
+
+    /**
+     * Load dates bounds from index stats
+     *
+     * @param boolean $all Use *:* as a query if true, use current query if false
+     *
+     * @return array
+     */
+    private function _loadDatesFromStats($all = true)
+    {
+        $query = $this->_client->createSelect();
+        if ( $all === true ) {
+            $query->setQuery('*:*');
+        } else {
+            $query = clone $this->_query;
+        }
+        $query->setRows(0);
+        $stats = $query->getStats();
+
+        $stats->createField('cDateBegin');
+        $stats->createField('cDateEnd');
+
+        $rs = $this->_client->select($query);
+        $rsStats = $rs->getStats();
+        $statsResults = $rsStats->getResults();
+
+        $min_date = $statsResults['cDateBegin']->getMin();
+        $max_date = $statsResults['cDateEnd']->getMax();
+
+        return array($min_date, $max_date);
     }
 
     /**
@@ -284,20 +421,17 @@ class SolariumQueryFactory
     /**
      * Set dates bounds
      *
-     * @param string $low Low bound
-     * @param string $up  Up bound
+     * @param array $filters Active filters
      *
      * @return void
      */
-    public function setDatesBounds($low, $up)
+    public function setDatesBounds($filters)
     {
-        if ( !isset($this->_date_gap) ) {
-            $low = \DateTime::createFromFormat('Y', $low);
-            $up = \DateTime::createFromFormat('Y', $up);
+        list($low,$up) = $this->_getDates($filters);
 
+        if ( !isset($this->_date_gap) ) {
             $this->_low_date = $low->format('Y-01-01') . 'T00:00:00Z';
             $this->_up_date = $up->format('Y-12-31') . 'T23:59:59Z';
-
 
             $diff = $low->diff($up);
             $gap = 1;
@@ -306,6 +440,27 @@ class SolariumQueryFactory
             }
             $this->_date_gap = $gap;
         }
+    }
+
+    /**
+     * Get dates bounds within query
+     *
+     * @param array $filters Active filters
+     *
+     * @return array
+     */
+    private function _getDates($filters)
+    {
+        list($min_date, $max_date) = $this->_loadDatesFromStats(false);
+        if ( !isset($filters['cDate']) ) {
+            $low = new \DateTime($min_date);
+            $up = new \DateTime($max_date);
+        } else {
+            list($start, $end) = explode('|', $filters['cDate'][0]);
+            $low = new \DateTime($start);
+            $up = new \DateTime($end);
+        }
+        return array($low, $up);
     }
 
     /**

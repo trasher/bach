@@ -90,58 +90,7 @@ class DefaultController extends Controller
             $templateVars['facet_name'] = $facet_name;
         }
 
-        if ( $ajax === false ) {
-            $query = $this->get('solarium.client')->createSelect();
-            $query->setQuery('*:*');
-            $query->setRows(0);
-            $stats = $query->getStats();
-
-            $stats->createField('cDateBegin');
-            $stats->createField('cDateEnd');
-            $rs = $this->get('solarium.client')->select($query);
-            $rsStats = $rs->getStats();
-            $statsResults = $rsStats->getResults();
-
-            $min_date = $statsResults['cDateBegin']->getMin();
-            $max_date = $statsResults['cDateEnd']->getMax();
-
-            if ( $min_date && $max_date ) {
-                $step_unit = 'years';
-                $step = 1;
-
-                $php_min_date = new \DateTime($min_date);
-                $php_max_date = new \DateTime($max_date);
-
-                $diff = $php_min_date->diff($php_max_date);
-                if ( $diff->y > 100 ) {
-                    $step = $diff->y / 100;
-                }
-
-                $templateVars['date_step_unit'] = $step_unit;
-                $templateVars['date_step'] = $step;
-
-                $templateVars['min_date'] = $php_min_date->format('Y');
-                if ( isset($filters['cDateBegin']) ) {
-                    $dbegin = explode(
-                        '-',
-                        $filters['cDateBegin'][0]
-                    );
-                    $templateVars['selected_min_date'] = $dbegin[0];
-                } else {
-                    $templateVars['selected_min_date'] = $templateVars['min_date'];
-                }
-                $templateVars['max_date'] = $php_max_date->format('Y');
-                if ( isset($filters['cDateEnd']) ) {
-                    $dend = explode(
-                        '-',
-                        $filters['cDateEnd'][0]
-                    );
-                    $templateVars['selected_max_date'] = $dend[0];
-                } else {
-                    $templateVars['selected_max_date'] = $templateVars['max_date'];
-                }
-            }
-        }
+        $factory = $this->get("bach.home.solarium_query_factory");
 
         if ( !is_null($query_terms) ) {
             // On effectue une recherche
@@ -241,6 +190,8 @@ class DefaultController extends Controller
                 $templateVars['filters'] = $filters;
             }
 
+            $factory->prepareQuery($container);
+
             $conf_facets = $this->getDoctrine()
                 ->getRepository('BachHomeBundle:Facets')
                 ->findBy(
@@ -248,23 +199,10 @@ class DefaultController extends Controller
                     array('position' => 'ASC')
                 );
 
-            $factory = $this->get("bach.home.solarium_query_factory");
             if ( $ajax === false ) {
-                if ( !isset($filters['cDate']) ) {
-                    $factory->setDatesBounds(
-                        $templateVars['selected_min_date'],
-                        $templateVars['selected_max_date']
-                    );
-                } else {
-                    list($start, $end) = explode('|', $filters['cDate'][0]);
-                    $bdate = new \DateTime($start);
-                    $edate = new \DateTime($end);
-                    $factory->setDatesBounds(
-                        $bdate->format('Y'),
-                        $edate->format('Y')
-                    );
-                }
+                $factory->setDatesBounds($filters);
             }
+
             $searchResults = $factory->performQuery($container, $conf_facets);
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
@@ -481,8 +419,12 @@ class DefaultController extends Controller
             }
         }
 
-        //get min and max dates
         if ( $ajax === false ) {
+            $slider_dates = $factory->getSliderDates($filters);
+            if ( is_array($slider_dates) ) {
+                $templateVars = array_merge($templateVars, $slider_dates);
+            }
+
             $templateVars['form'] = $form->createView();
             if ( $this->container->get('kernel')->getEnvironment() == 'dev'
                 && isset($factory)
