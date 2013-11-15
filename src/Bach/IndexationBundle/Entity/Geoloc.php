@@ -42,7 +42,7 @@ class Geoloc
     /**
      * @var integer
      *
-     * @ORM\Column(name="place_id", type="integer")
+     * @ORM\Column(name="place_id", type="integer", unique=true)
      */
     protected $place_id;
 
@@ -56,7 +56,7 @@ class Geoloc
     /**
      * @var integer
      *
-     * @ORM\Column(name="osm_id", type="integer")
+     * @ORM\Column(name="osm_id", type="integer", unique=true)
      */
     protected $osm_id;
 
@@ -70,14 +70,14 @@ class Geoloc
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     protected $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="indexed_name", type="string", length=255)
+     * @ORM\Column(name="indexed_name", type="string", length=255, unique=true)
      */
     protected $indexed_name;
 
