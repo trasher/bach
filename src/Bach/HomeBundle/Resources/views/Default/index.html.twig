@@ -506,15 +506,20 @@
                 info.update();
             }
 
-            function zoomToFeature(e) {
+{#            function zoomToFeature(e) {
                 map.fitBounds(e.target.getBounds());
+            }
+#}
+            function facetFeature(e) {
+                var _da_url = '{{ path('bach_search', {query_terms: q, filter_field: 'cGeogname'}) }}';
+                window.location.href  = _da_url + '&filter_value=' + e.target.feature.properties.name;
             }
 
             function onEachFeature(feature, layer) {
                 layer.on({
                     mouseover: highlightFeature,
                     mouseout: resetHighlight,
-                    click: zoomToFeature
+                    click: facetFeature
                 });
             }
 
