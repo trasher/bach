@@ -442,7 +442,24 @@
                 attribution: '© Données cartographiques <a href="http://openstreetmap.org">Contributeurs OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, © Imagerie <a href="http://cloudmade.com">CloudMade</a>'
             }).addTo(map);
 
-            // get color depending on population density value
+            // control that shows location info on hover
+            var info = L.control();
+
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+
+            info.update = function (props) {
+                this._div.innerHTML = (props ?
+                    '<b>' + props.name + '</b>'
+                    : 'Hover over a zone');
+            };
+
+            info.addTo(map);
+
+            // get color depending on number of results
             function getColor(d) {
                 return d > 200 ? '#800026' :
                     d > 100    ? '#BD0026' :
