@@ -431,7 +431,7 @@ class DefaultController extends Controller
                 $templateVars['suggestions'] = $suggestions;
             }
 
-            $geojson = $factory->getGeoJson();
+            $geojson = $factory->getGeoJson(is_null($query_terms));
             $templateVars['geojson'] = $geojson;
 
             return $this->render(

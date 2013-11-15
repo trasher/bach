@@ -378,12 +378,21 @@ class SolariumQueryFactory
     /**
      * Retrieve GeoJSON informations
      *
+     * @param boolean $all Use *:* as a query if true, use current query if false
+     *
      * @return array
      */
-    public function getGeoJson()
+    public function getGeoJson($all = true)
     {
         $query = $this->_client->createSelect();
-        $query->setQuery('*:*');
+
+        $query = $this->_client->createSelect();
+        if ( $all === true ) {
+            $query->setQuery('*:*');
+        } else {
+            $query = clone $this->_query;
+        }
+
         $query->setRows(0);
         $query->setFields('geojson');
 
