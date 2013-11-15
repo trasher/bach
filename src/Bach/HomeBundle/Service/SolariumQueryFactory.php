@@ -376,6 +376,44 @@ class SolariumQueryFactory
     }
 
     /**
+     * Retrieve GeoJSON informations
+     *
+     * @return array
+     */
+    public function getGeoJson()
+    {
+        $query = $this->_client->createSelect();
+        $query->setQuery('*:*');
+        $query->setRows(0);
+        $query->setFields('geojson');
+
+        $facetSet = $query->getFacetSet();
+        $facetSet->setLimit(-1);
+        $facetSet->setMinCount(1);
+
+        $fr = $facetSet->createFacetField('geojson');
+        $fr->setField('geojson');
+
+        $rs = $this->_client->select($query);
+        $facetSet = $rs->getFacetSet();
+        $geojson = $facetSet->getFacet('geojson');
+
+        $results = '{"type": "FeatureCollection", "features":[';
+        $i = 1;
+        foreach ( $geojson as $json=>$count ) {
+            $results .= "\n" . '{"type": "Feature", "id":"' . $i .
+                '", "properties":{"name": "placebo", "results": ' . $count
+                . '}, "geometry": ' . $json . '}';
+            if ( $i < count($geojson) ) {
+                $results .= ', ';
+            }
+        }
+        $results .= ']}';
+
+        return $results;
+    }
+
+    /**
      * Load dates bounds from index stats
      *
      * @param boolean $all   Use *:* as a query if true, use current query if false

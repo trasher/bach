@@ -4,6 +4,9 @@
 
 {% block css %}
     <link href="{{ asset('css/jqrangeslider/iThing-min.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('js/leaflet/leaflet.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <!--[if lte IE 8]><link href="{{ asset('js/leaflet/leaflet.ie.css') }}" type="text/css" rel="stylesheet" media="screen" /><![endif]-->
 {% endblock %}
 
 {% block menu %}
@@ -109,6 +112,7 @@
 
     <div id="dates_plot" class="hidden"></div>
     <div id="dates_range" class="hidden"></div>
+    <div id="map" class="hidden"></div>
 
     {% if solr_qry is defined %}
     <div class="debug">
@@ -305,6 +309,8 @@
     <script src="{{ asset('js/jQDateRangeSlider-min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/flot/jquery.flot.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/flot/jquery.flot.selection.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/leaflet/leaflet.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.js') }}" type="text/javascript"></script>
     <!--[if lte IE 8]><script src="{{ asset('js/jqplot/excanvas.min.js') }}" type="text/javascript"></script><![endif]-->
     <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
 {% endblock %}
@@ -422,8 +428,107 @@
                     Math.ceil(ranges.xaxis.to)
                 );
             });
-
             {% endif %}
+
+            $('#map').removeClass('hidden');
+            //TODO: calculate initial position
+            var map = L.map('map').setView([43.8776, 4.3877], 8);
+
+            var fullScreen = new L.Control.FullScreen();
+            map.addControl(fullScreen);
+
+            L.tileLayer('http://{s}.tile.cloudmade.com/852b7821064f43a59604e98d9536680b/997/256/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '© Données cartographiques <a href="http://openstreetmap.org">Contributeurs OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, © Imagerie <a href="http://cloudmade.com">CloudMade</a>'
+            }).addTo(map);
+
+            // get color depending on population density value
+            function getColor(d) {
+                return d > 200 ? '#800026' :
+                    d > 100    ? '#BD0026' :
+                    d > 50     ? '#E31A1C' :
+                    d > 20     ? '#FC4E2A' :
+                    d > 10     ? '#FD8D3C' :
+                    d > 5      ? '#FEB24C' :
+                    d > 1      ? '#FED976' :
+                                 '#FFEDA0' ;
+            }
+
+            function style(feature) {
+                return {
+                    weight: 2,
+                    opacity: 1,
+                    color: 'white',
+                    dashArray: '3',
+                    fillOpacity: 0.7,
+                    fillColor: getColor(feature.properties.results)
+                };
+            }
+
+            function highlightFeature(e) {
+                var layer = e.target;
+
+                layer.setStyle({
+                    weight: 1,
+                    color: '#666',
+                    dashArray: '',
+                    fillOpacity: 0.7
+                });
+
+                if (!L.Browser.ie && !L.Browser.opera) {
+                    layer.bringToFront();
+                }
+
+                info.update(layer.feature.properties);
+            }
+
+            var geojson;
+
+            function resetHighlight(e) {
+                geojson.resetStyle(e.target);
+                info.update();
+            }
+
+            function zoomToFeature(e) {
+                map.fitBounds(e.target.getBounds());
+            }
+
+            function onEachFeature(feature, layer) {
+                layer.on({
+                    mouseover: highlightFeature,
+                    mouseout: resetHighlight,
+                    click: zoomToFeature
+                });
+            }
+
+            geojson = L.geoJson({{ geojson|raw  }}, {
+                style: style,
+                onEachFeature: onEachFeature
+            }).addTo(map);
+
+            var legend = L.control({position: 'bottomright'});
+
+            legend.onAdd = function (map) {
+
+                var div = L.DomUtil.create('div', 'info legend'),
+                    grades = [0, 1, 5, 10, 20, 50, 100, 200],
+                    labels = [],
+                    from, to;
+
+                for (var i = 0; i < grades.length; i++) {
+                    from = grades[i];
+                    to = grades[i + 1];
+
+                    labels.push(
+                        '<i style="background:' + getColor(from + 1) + '"></i> ' +
+                        from + (to ? '&ndash;' + to : '+'));
+                }
+
+                div.innerHTML = labels.join('<br>');
+                return div;
+            };
+
+            legend.addTo(map);
 
             //handle viewer links
             //fullscreen does not work for the moment when binded into an iframe

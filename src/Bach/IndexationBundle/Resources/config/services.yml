@@ -6,6 +6,7 @@ parameters:
     bach_indexation_process_arch_file_integration.class: Bach\IndexationBundle\Service\ArchFileIntegration
     bach_indexation_typesfiles.class: Bach\IndexationBundle\Service\TypesFiles
     bach_indexation_documenttype.class: Bach\IndexationBundle\Form\Type\DocumentType
+    bach_indexation_nominatim.class: Bach\IndexationBundle\Service\Nominatim
 
 services:
     bach.indexation.file_driver_manager:
@@ -30,3 +31,6 @@ services:
         arguments: [ '%bach.types%' ]
         tags:
             - { name: form.type, alias: document}
+
+    bach.indexation.nominatim:
+        class: '%bach_indexation_nominatim.class%'

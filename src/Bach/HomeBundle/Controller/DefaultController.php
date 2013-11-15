@@ -431,6 +431,9 @@ class DefaultController extends Controller
                 $templateVars['suggestions'] = $suggestions;
             }
 
+            $geojson = $factory->getGeoJson();
+            $templateVars['geojson'] = $geojson;
+
             return $this->render(
                 'BachHomeBundle:Default:index.html.twig',
                 $templateVars
