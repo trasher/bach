@@ -20,10 +20,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bach\IndexationBundle\Entity\Geoloc;
 use Bach\IndexationBundle\Entity\EADIndexes;
-/*Use Symfony\Component\HttpFoundation\File\File;
-use Bach\IndexationBundle\Entity\Document;
-use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
-use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;*/
 
 /**
  * Geolocalization command
