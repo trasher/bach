@@ -432,7 +432,7 @@
 
             $('#map').removeClass('hidden');
             //TODO: calculate initial position
-            var map = L.map('map').setView([43.8776, 4.3877], 8);
+            var map = L.map('map');
 
             var fullScreen = new L.Control.FullScreen();
             map.addControl(fullScreen);
@@ -527,6 +527,8 @@
                 style: style,
                 onEachFeature: onEachFeature
             }).addTo(map);
+
+            map.fitBounds(geojson.getBounds());
 
             var legend = L.control({position: 'bottomright'});
 
