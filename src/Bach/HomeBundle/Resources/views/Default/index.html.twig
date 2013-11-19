@@ -431,8 +431,7 @@
             {% endif %}
 
             $('#map').removeClass('hidden');
-            //TODO: calculate initial position
-            var map = L.map('map');
+            var map = L.map('map').setView([47.010, 5.087], 5);
 
             var fullScreen = new L.Control.FullScreen();
             map.addControl(fullScreen);
@@ -442,6 +441,7 @@
                 attribution: '© Données cartographiques <a href="http://openstreetmap.org">Contributeurs OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, © Imagerie <a href="http://cloudmade.com">CloudMade</a>'
             }).addTo(map);
 
+{% if geojson != null %}
             // control that shows location info on hover
             var info = L.control();
 
@@ -492,11 +492,11 @@
                         dashArray: '',
                         fillOpacity: 0.7
                     });
-                } catch (e) {}
 
-                if (!L.Browser.ie && !L.Browser.opera) {
-                    layer.bringToFront();
-                }
+                    if (!L.Browser.ie && !L.Browser.opera) {
+                        layer.bringToFront();
+                    }
+                } catch (ex) {}
 
                 info.update(layer.feature.properties);
             }
@@ -508,10 +508,6 @@
                 info.update();
             }
 
-{#            function zoomToFeature(e) {
-                map.fitBounds(e.target.getBounds());
-            }
-#}
             function facetFeature(e) {
                 var _da_url = '{{ path('bach_search', {query_terms: q, filter_field: 'cGeogname'}) }}';
                 window.location.href  = _da_url + '&filter_value=' + e.target.feature.properties.name;
@@ -555,7 +551,7 @@
             };
 
             legend.addTo(map);
-
+{% endif %}
             //handle viewer links
             //fullscreen does not work for the moment when binded into an iframe
             /*$('.result_pic > a').on('click', function(){
