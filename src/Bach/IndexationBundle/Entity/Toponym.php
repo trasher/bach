@@ -29,7 +29,9 @@ class Toponym
     const TYPE_TOWN = 0;
     const TYPE_SPECIFIC = 1;
     const TYPE_NOMINATED = 2;
+    const TYPE_COUNTRY = 3;
 
+    private $_original;
     private $_type;
     private $_name;
     private $_specific_name;
@@ -74,6 +76,7 @@ class Toponym
      */
     public function parse($name)
     {
+        $this->_original = $name;
         $regex = '#(.[^\(]+)\s?(\((.[^;]+)(\s?;\s?(.+))?\))?(\s--(.+))?#';
 
         //handle non standards rejected forms
@@ -142,7 +145,30 @@ class Toponym
             }
         }
 
+        $this->_checkForCountry();
+
         return $this;
+    }
+
+    /**
+     * Check if current name is a country
+     *
+     * @return void
+     */
+    private function _checkForCountry()
+    {
+        if ( $this->_name !== null
+            && $this->_country === null
+            && $this->_county === null
+        ) {
+            /** TODO: calculate locale */
+            $countries = \Symfony\Component\Locale\Locale::getDisplayCountries('fr');
+
+            if ( in_array($this->_name, $countries) ) {
+                $this->_type = self::TYPE_COUNTRY;
+                $this->_country = $this->_name;
+            }
+        }
     }
 
     /**
@@ -216,6 +242,16 @@ class Toponym
     }
 
     /**
+     * Get original name
+     *
+     * @return string
+     */
+    public function getOriginal()
+    {
+        return $this->_original;
+    }
+
+    /**
      * Can current toponym be localized on OSM?
      *
      * @return boolean
@@ -250,5 +286,15 @@ class Toponym
         }
 
         return $can;
+    }
+
+    /**
+     * Get string representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->_original;
     }
 }

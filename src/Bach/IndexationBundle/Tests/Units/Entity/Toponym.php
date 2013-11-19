@@ -309,5 +309,67 @@ class Toponym extends Units\Test
         $this->variable($subdivision)->isNull();
         $this->boolean($localizable)->isTrue();
 
+        $test = new Entity();
+        $test->parse('Paris');
+
+        $type = $test->getType();
+        $name = $test->getName();
+        $specific = $test->getSpecificName();
+        $country = $test->getCountry();
+        $county = $test->getCounty();
+        $nomination = $test->getNomination();
+        $subdivision = $test->getSubdivision();
+        $localizable = $test->canBeLocalized();
+
+        $this->variable($type)->isIdenticalTo($test::TYPE_TOWN);
+        $this->string($name)->isIdenticalTo('Paris');
+        $this->variable($specific)->isNull();
+        $this->variable($country)->isNull();
+        $this->variable($county)->isNull();
+        $this->variable($nomination)->isNull();
+        $this->variable($subdivision)->isNull();
+        $this->boolean($localizable)->isTrue();
+
+        $test = new Entity();
+        $test->parse('Niger');
+
+        $type = $test->getType();
+        $name = $test->getName();
+        $specific = $test->getSpecificName();
+        $country = $test->getCountry();
+        $county = $test->getCounty();
+        $nomination = $test->getNomination();
+        $subdivision = $test->getSubdivision();
+        $localizable = $test->canBeLocalized();
+
+        $this->variable($type)->isIdenticalTo($test::TYPE_COUNTRY);
+        $this->string($name)->isIdenticalTo('Niger');
+        $this->variable($specific)->isNull();
+        $this->string($country)->isIdenticalTo('Niger');
+        $this->variable($county)->isNull();
+        $this->variable($nomination)->isNull();
+        $this->variable($subdivision)->isNull();
+        $this->boolean($localizable)->isTrue();
+
+        $test = new Entity();
+        $test->parse('Niger (France)');
+
+        $type = $test->getType();
+        $name = $test->getName();
+        $specific = $test->getSpecificName();
+        $country = $test->getCountry();
+        $county = $test->getCounty();
+        $nomination = $test->getNomination();
+        $subdivision = $test->getSubdivision();
+        $localizable = $test->canBeLocalized();
+
+        $this->variable($type)->isIdenticalTo($test::TYPE_TOWN);
+        $this->string($name)->isIdenticalTo('Niger');
+        $this->variable($specific)->isNull();
+        $this->string($country)->isIdenticalTo('France');
+        $this->variable($county)->isNull();
+        $this->variable($nomination)->isNull();
+        $this->variable($subdivision)->isNull();
+        $this->boolean($localizable)->isTrue();
     }
 }

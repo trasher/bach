@@ -18,7 +18,7 @@ use Bach\IndexationBundle\Entity\ObjectTree as Ot;
 use Bach\IndexationBundle\Entity\ObjectSheet;
 
 /**
- * Bach SolariumQueryContainer unit tests
+ * Bach ObjectTree unit tests
  *
  * PHP version 5
  *

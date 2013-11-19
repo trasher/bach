@@ -400,36 +400,23 @@ class SolariumQueryFactory
         $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);
 
-        $pivot = $facetSet->createFacetPivot('geojson-names');
-        $pivot->addFields('geojson, cGeogname');
+        $geo = $facetSet->createFacetField('geojson');
+        $geo->setField('geojson');
 
         $rs = $this->_client->select($query);
         $facetSet = $rs->getFacetSet();
-        $geojson = $facetSet->getFacet('geojson-names');
+        $geojson = $facetSet->getFacet('geojson');
 
         $results = '{"type": "FeatureCollection", "features":[';
         $i = 1;
-        foreach ( $geojson as $pivot ) {
-            $sub = $pivot->getPivot();
-            if ( count($sub) > 1 ) {
-                //FIXME: what to do? :(
-                /*$names = array();
-                foreach ( $sub as $p ) {
-                    $names[] = $p->getValue();
-                }
-                throw new \RuntimeException(
-                    'More than one pivot child :(' .
-                    "\n" . print_r($names, true)
-                );*/
-            } else {
-                $name = $sub[0]->getValue();
-                $results .= "\n" . '{"type": "Feature", "id":"' . $i .
-                    '", "properties":{"name": "' . $name  . '", "results": ' .
-                    $pivot->getCount() . '}, "geometry": ' .
-                    $pivot->getValue() . '}';
-                if ( $i < count($geojson) ) {
-                    $results .= ', ';
-                }
+        foreach ( $geojson as $json=>$count ) {
+            $name = 'Placebo';
+            $results .= "\n" . '{"type": "Feature", "id":"' . $i .
+                '", "properties":{"name": "' . $name  . '", "results": ' .
+                $count . '}, "geometry": ' .
+                $json . '}';
+            if ( $i < count($geojson) ) {
+                $results .= ', ';
             }
         }
         $results .= ']}';

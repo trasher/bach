@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bach\IndexationBundle\Entity\Geoloc;
 use Bach\IndexationBundle\Entity\EADIndexes;
+use Bach\IndexationBundle\Entity\Toponym;
 
 /**
  * Geolocalization command
@@ -49,10 +50,35 @@ informations from OSM Nominatim, and store them in the
 database.
 EOF
             )->addOption(
+                'find',
+                null,
+                InputOption::VALUE_REQUIRED,
+                _('Use specified value for localizations to find (may use % joker)')
+            )->addOption(
+                'limit',
+                null,
+                InputOption::VALUE_REQUIRED,
+                _('Limit number of results.')
+            )->addOption(
+                'test',
+                null,
+                InputOption::VALUE_NONE,
+                _('Do not store anything, just query nominatim.')
+            )->addOption(
                 'dry-run',
                 null,
                 InputOption::VALUE_NONE,
-                _('Just give a try at the first occurence, do not store anything.')
+                _('Just give a try with parameted occurences, do not store anything.')
+            )->addOption(
+                'silent',
+                null,
+                InputOption::VALUE_NONE,
+                _('Quiet mode')
+            )->addOption(
+                'moreverbose',
+                null,
+                InputOption::VALUE_NONE,
+                _('Verbose mode')
             );
     }
 
@@ -68,11 +94,31 @@ EOF
     {
         $count = 0;
 
+        $quiet = $input->getOption('silent');
+        $verbose = $input->getOption('moreverbose');
+
+        if ( $quiet && $verbose ) {
+            $output->writeln(
+                '<fg=red;options=bold>' .
+                _('You may not use "quiet" and "verbose" together.') .
+                '</fg=red;options=bold>'
+            );
+        }
+
         $dry = $input->getOption('dry-run');
-        if ( $dry === true ) {
+        if ( $dry === true && !$quiet ) {
             $output->writeln(
                 '<fg=green;options=bold>' .
                 _('Running in dry mode') .
+                '</fg=green;options=bold>'
+            );
+        }
+
+        $test = $input->getOption('test');
+        if ( $test === true && !$quiet ) {
+            $output->writeln(
+                '<fg=green;options=bold>' .
+                _('Running in test mode') .
                 '</fg=green;options=bold>'
             );
         }
@@ -81,7 +127,7 @@ EOF
         $em = $doctrine->getManager();
 
         $repo = $doctrine->getRepository('BachIndexationBundle:EADIndexes');
-        $query = $repo->createQueryBuilder('a')
+        $qb = $repo->createQueryBuilder('a')
             ->select('DISTINCT a.name')
             ->leftJoin(
                 'BachIndexationBundle:Geoloc',
@@ -91,33 +137,125 @@ EOF
             )
             ->where('a.type = :type')
             ->andWhere('g.indexed_name IS NULL')
-            ->setParameter('type', 'cGeogname')
-            ->getQuery();
+            ->setParameter('type', 'cGeogname');
+
+        $limit = $input->getOption('limit');
+        if ( $limit && !$quiet ) {
+            $output->writeln(
+                '<fg=green;options=bold>' .
+                str_replace(
+                    '%i',
+                    $limit,
+                    _('Set limit to %i entries.')
+                ) .
+                '</fg=green;options=bold>'
+            );
+            $qb->setMaxResults($limit);
+        }
+
+        $find = $input->getOption('find');
+        if ( $find ) {
+            if ( !$quiet ) {
+                $output->writeln(
+                    '<fg=green;options=bold>' .
+                    str_replace(
+                        '%search',
+                        $find,
+                        _('Search on: %search')
+                    ) .
+                    '</fg=green;options=bold>'
+                );
+            }
+            $qb->andWhere('a.name LIKE :name')
+                ->setParameter('name', $find);
+        }
+
+        $query = $qb->getQuery();
+
+        if ( $verbose ) {
+            $output->writeln(
+                _('Query:') . "\n" . $query->getSQL()
+            );
+        }
+
         $bdd_places = $query->getResult();
 
         $places = array();
         foreach ( $bdd_places as $p ) {
-            //clean & dedup
-            list($newname,) = explode('(', $p['name']);
+            //create toponyms & dedup
             if ( !isset($places[$p['name']]) ) {
-                $places[$p['name']]= $newname;
+                $places[$p['name']]= new Toponym($p['name']);
             }
         }
 
-        echo 'Search for ' . count($places) . " places.\n\n";
+        if ( !$quiet ) {
+            $output->writeln(
+                str_replace(
+                    '%count',
+                    count($places),
+                    _('Search for %count places.')
+                ) . "\n\n"
+            );
+        }
 
-        //For test purposes
-        //$places = array('Aigues-Mortes (Gard, France)' => 'Aigues-Mortes');
+        if ( $test ) {
+            $values = array(
+                'Aigues-Mortes (Gard, France)',
+                'Gévaudan (France ; baillage)',
+                'Soyouz (ELS) (Sinnamary, Guyane, France ; ensemble de lancement)'
+            );
+
+            $places = array();
+            foreach ( $values as $val ) {
+                $places[$val] = new Toponym($val);
+            }
+        }
         $nominatim = $this->getContainer()->get('bach.indexation.Nominatim');
 
-        foreach ( $places as $orig=>$place ) {
-            $result = $nominatim->retrieveCity($place);
+        foreach ( $places as $orig=>$toponym ) {
+            if ( $toponym->canBeLocalized() ) {
+                $output->writeln(
+                    '<fg=green;>' .
+                    str_replace(
+                        '%t',
+                        $toponym->__toString(),
+                        _('Localizing %t...')
+                    ) .
+                    '</fg=green;>'
+                );
 
-            if ( $result !== false ) {
-                $ent = new Geoloc($orig, $place, $result);
-                $em->persist($ent);
+                $result = $nominatim->proceed($toponym);
+
+                if ( $result !== false ) {
+                    $ent = new Geoloc($toponym, $result);
+                    $output->writeln(
+                        '<fg=green;>     ' .
+                        str_replace(
+                            array('%name', '%type'),
+                            array($ent->getName(), $ent->getType()),
+                            _('Found %name (%type)')
+                        ) .
+                        '</fg=green;>'
+                    );
+
+                    if ( !$dry) {
+                        $em->persist($ent);
+                    }
+                }
+            } else {
+                $output->writeln(
+                    '<fg=red;>' .
+                    str_replace(
+                        '%t',
+                        $toponym->__toString(),
+                        _('Toponym %t cannot be localized.')
+                    ) .
+                    '</fg=red;>'
+                );
             }
         }
-        $em->flush();
+        if ( !$dry ) {
+            $em->flush();
+        }
     }
 }

@@ -485,12 +485,14 @@
             function highlightFeature(e) {
                 var layer = e.target;
 
-                layer.setStyle({
-                    weight: 1,
-                    color: '#666',
-                    dashArray: '',
-                    fillOpacity: 0.7
-                });
+                try{
+                    layer.setStyle({
+                        weight: 1,
+                        color: '#666',
+                        dashArray: '',
+                        fillOpacity: 0.7
+                    });
+                } catch (e) {}
 
                 if (!L.Browser.ie && !L.Browser.opera) {
                     layer.bringToFront();

@@ -13,6 +13,8 @@
 
 namespace Bach\IndexationBundle\Service;
 
+use Bach\IndexationBundle\Entity\Toponym;
+
 /**
  * Nominatim query
  *
@@ -28,39 +30,84 @@ class Nominatim
         'format'            => 'xml',
         'polygon_geojson'   => '1',
         'email'             => 'dev@anaphore.eu',
-        'limit'             => '2',
-        'countrycodes'      => 'fr',
-        'county'            => 'Gard'
+        'limit'             => '2'
     );
     private $_uri = "http://nominatim.openstreetmap.org/search";
 
-    /*private $_formats;
-    private $_paths;
-    private $_dirs;*/
-
     /**
-     * Main constructor
+     * Get results for a toponym
      *
-     * @param array $formats List of known types
-     * @param array $paths   List of types files paths
+     * @param Toponym $toponym Toponym
+     *
+     * @return string
      */
-    /*public function __construct($formats, $paths)
+    public function proceed(Toponym $toponym)
     {
-        $this->_formats = $formats;
-        $this->_paths = $paths;
-    }*/
+        $options = $this->_query_options;
+
+        if ( $toponym->getCountry() !== null ) {
+            $options['country'] = $toponym->getCountry();
+        }
+
+        if ( $toponym->getCounty() !== null ) {
+            if ( $toponym->getCounty() !== 'Guyane' ) {
+                $options['county'] = $toponym->getCounty();
+            } else {
+                //specfiic case for Guyane :/
+                if ( isset($options['country']) ) {
+                    unset($options['country']);
+                }
+                $options['state'] = $toponym->getCounty();
+            }
+        }
+
+        if ( $toponym->getType() === Toponym::TYPE_TOWN ) {
+            $options['city'] = $toponym->getName();
+        } elseif ( $toponym->getType() === Toponym::TYPE_SPECIFIC ) {
+            if ( $toponym->getName() !== '' ) {
+                $options['city'] = $toponym->getName();
+            }
+            $options['q'] = $toponym->getSpecificName();
+        }
+
+        $result = $this->_send(
+            $this->_uri,
+            $options
+        );
+
+        $xml = new \SimpleXMLElement($result);
+        $places = $xml->xpath('//place');
+
+        if ( count($places) > 1 ) {
+            echo 'More than one place find for ' . $toponym->__toString() .
+                ", ignoring.\n";
+            return false;
+        } else if (count($places) == 0 ) {
+            echo 'No result found for ' . $toponym->__toString() . " :(\n";
+            return false;
+        } else {
+            return $places[0];
+        }
+
+    }
 
     /**
      * Retrieve a city by its name
      *
-     * @param string $name City name
+     * @param Toponym $toponym Toponym
      *
      * @return SimpleXMLElement
      */
-    public function retrieveCity($name)
+    public function retrieveCity(Toponym $toponym)
     {
         $options = $this->_query_options;
-        $options['city'] = $name;
+        $options['city'] = $toponym->getName();
+        if ( $toponym->getCounty() !== null ) {
+            $options['county'] = $toponym->getCounty();
+        }
+        if ( $toponym->getCountry() !== null ) {
+            $options['country'] = $toponym->getCountry();
+        }
 
         /*$result = $this->_send(
             $this->_uri,
@@ -95,7 +142,7 @@ XML;
      * @param string $url     HTTP URL
      * @param array  $options Request options
      *
-     * @return SolrCoreResponse
+     * @return string
      */
     private function _send($url, $options)
     {

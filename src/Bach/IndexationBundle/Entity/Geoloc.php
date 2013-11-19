@@ -42,7 +42,7 @@ class Geoloc
     /**
      * @var integer
      *
-     * @ORM\Column(name="place_id", type="integer", unique=true)
+     * @ORM\Column(name="place_id", type="integer")
      */
     protected $place_id;
 
@@ -56,7 +56,7 @@ class Geoloc
     /**
      * @var integer
      *
-     * @ORM\Column(name="osm_id", type="integer", unique=true)
+     * @ORM\Column(name="osm_id", type="integer")
      */
     protected $osm_id;
 
@@ -70,7 +70,7 @@ class Geoloc
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     protected $name;
 
@@ -105,14 +105,17 @@ class Geoloc
     /**
       * The constructor
       *
-      * @param string           $orig_name Original indexed name
-      * @param string           $name      Cleaned name
-      * @param SimpleXMLElement $data      Result from Nominatim
+      * @param string           $toponym Toponym
+      * @param SimpleXMLElement $data    Result from Nominatim
       */
-    public function __construct($orig_name, $name, $data)
+    public function __construct(Toponym $toponym, $data)
     {
-        $this->indexed_name = $orig_name;
-        $this->name = $name;
+        $this->indexed_name = $toponym->getOriginal();
+        if ( $toponym->getName() !== null ) {
+            $this->name = $toponym->getName();
+        } else {
+            $this->name = $toponym->getSpecificName();
+        }
         $this->place_id = (string)$data['place_id'];
         $this->type = (string)$data['type'];
         $this->osm_id = (string)$data['osm_id'];
