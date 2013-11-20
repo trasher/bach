@@ -508,10 +508,10 @@
                 info.update(layer.feature.properties);
             }
 
-            var geojson;
+            var allpoints;
 
             function resetHighlight(e) {
-                geojson.resetStyle(e.target);
+                allpoints.resetStyle(e.target);
                 info.update();
             }
 
@@ -528,12 +528,14 @@
                 });
             }
 
-            geojson = L.geoJson({{ geojson|raw  }}, {
+            allpoints = L.geoJson({{ geojson|raw  }}, {
                 style: style,
                 onEachFeature: onEachFeature
-            }).addTo(map);
+            })
 
-            map.fitBounds(geojson.getBounds());
+            var _layers = L.layerGroup([allpoints]).addTo(map);
+            map.fitBounds(allpoints.getBounds());
+
 
             var legend = L.control({position: 'bottomright'});
 
@@ -558,6 +560,27 @@
             };
 
             legend.addTo(map);
+            var _zones_loaded = false;
+
+            function checkZones(e) {
+                zoom = map.getZoom();
+
+                if ( zoom >= 9 && _zones_loaded == false
+                    || zoom >= 9 && e.type == 'dragend'
+                 ) {
+                    //if we've just zoomed, or if we drag map, reload zones
+                    _zones_loaded = true;
+                    console.log('load zones');
+                }
+
+                if ( zoom < 9 && _zones_loaded == true ) {
+                    _zones_loaded = false;
+                    console.log('unload zones');
+                }
+            }
+
+            map.on('zoomend', checkZones);
+            map.on('dragend', checkZones);
     {% endif %}
 {% endif %}
             //handle viewer links
