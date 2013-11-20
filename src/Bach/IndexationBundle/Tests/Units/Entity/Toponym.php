@@ -52,27 +52,6 @@ class Toponym extends Units\Test
      */
     public function testParse()
     {
-
-        $values = array(
-            'Nîmes',
-            'Nîmes (Gard, France)',
-            'Nîmes (France)',
-            'Thouzon (Le Thor, Vaucluse, France)',
-            'Crique Mouche (Cayenne, Guyane, France ; crique)',
-            'montagne de Kaw (Guyane, France ; site naturel)',
-            'Caderousse (Vaucluse, France) -- Portail du Pont',
-            'Rhône (Suisse/France ; cours d\'eau) -- Brouteaux et créments',
-            'Rivières, péage et port de (Caderousse, Vaucluse, France)',
-            'Codolet, île de (Codolet, Gard, France)',
-            'Languedoc (France ; province)'
-        );
-        $values_fail = array(
-            /* Term into parenthesis will fail */
-            'Soyouz (ELS) (Sinnamary, Guyane, France ; ensemble de lancement)',
-            /* Unknown description */
-            'Gévaudan (France ; baillage)'
-        );
-
         $test = new Entity();
         $test->parse('Nîmes');
 
@@ -196,7 +175,7 @@ class Toponym extends Units\Test
         $this->string($county)->isIdenticalTo('Guyane');
         $this->string($nomination)->isIdenticalTo('site naturel');
         $this->variable($subdivision)->isNull();
-        $this->boolean($localizable)->isTrue();
+        $this->boolean($localizable)->isFalse();
 
         $test = new Entity();
         $test->parse('Crique Mouche (Cayenne, Guyane, France ; crique)');
@@ -217,7 +196,7 @@ class Toponym extends Units\Test
         $this->string($county)->isIdenticalTo('Guyane');
         $this->string($nomination)->isIdenticalTo('crique');
         $this->variable($subdivision)->isNull();
-        $this->boolean($localizable)->isTrue();
+        $this->boolean($localizable)->isFalse();
 
         $test = new Entity();
         $test->parse('Languedoc (France ; province)');
@@ -307,7 +286,7 @@ class Toponym extends Units\Test
         $this->string($county)->isIdenticalTo('Guyane');
         $this->string($nomination)->isIdenticalTo('ensemble de lancement');
         $this->variable($subdivision)->isNull();
-        $this->boolean($localizable)->isTrue();
+        $this->boolean($localizable)->isFalse();
 
         $test = new Entity();
         $test->parse('Paris');
@@ -369,6 +348,26 @@ class Toponym extends Units\Test
         $this->string($country)->isIdenticalTo('France');
         $this->variable($county)->isNull();
         $this->variable($nomination)->isNull();
+        $this->variable($subdivision)->isNull();
+        $this->boolean($localizable)->isTrue();
+
+        $test = new Entity('Ouest (Haïti ; département)');
+
+        $type = $test->getType();
+        $name = $test->getName();
+        $specific = $test->getSpecificName();
+        $country = $test->getCountry();
+        $county = $test->getCounty();
+        $nomination = $test->getNomination();
+        $subdivision = $test->getSubdivision();
+        $localizable = $test->canBeLocalized();
+
+        $this->variable($type)->isIdenticalTo($test::TYPE_STATE);
+        $this->string($name)->isIdenticalTo('Ouest');
+        $this->variable($specific)->isNull();
+        $this->string($country)->isIdenticalTo('Haïti');
+        $this->variable($county)->isNull();
+        $this->string($nomination)->isIdenticalTo('département');
         $this->variable($subdivision)->isNull();
         $this->boolean($localizable)->isTrue();
     }

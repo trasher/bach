@@ -30,6 +30,7 @@ class Toponym
     const TYPE_SPECIFIC = 1;
     const TYPE_NOMINATED = 2;
     const TYPE_COUNTRY = 3;
+    const TYPE_STATE = 4;
 
     private $_original;
     private $_type;
@@ -103,10 +104,15 @@ class Toponym
             $this->_name = trim($matches[1]);
 
             if ( isset($matches[5]) && trim($matches[5] !== '') ) {
-                $this->_type = self::TYPE_NOMINATED;
                 $this->_nomination = trim($matches[5]);
-                $this->_specific_name = trim($matches[1]);
-                $this->_name = null;
+                if ( $this->_nomination === 'département' ) {
+                    $this->_type = self::TYPE_STATE;
+                    $this->_name = trim($matches[1]);
+                } else {
+                    $this->_type = self::TYPE_NOMINATED;
+                    $this->_specific_name = trim($matches[1]);
+                    $this->_name = null;
+                }
             }
 
             if ( isset($matches[7]) && trim($matches[7]) !== '' ) {
@@ -266,23 +272,11 @@ class Toponym
             $can = false;
         }
 
-        if ( $this->_nomination !== null && $can === true ) {
-            switch ( strtolower($this->_nomination) ) {
-            case 'cours d\'eau':
-            case 'fleuve':
-            case 'ancien département':
-            case 'diocèse':
-            case 'terroir':
-            case 'province':
-            case 'conté':
-            case 'duché':
-            case 'baillage':
-                $can = false;
-                break;
-            }
-            if ( strpos($this->_nomination, 'paroisse ') === 0 ) {
-                $can = false;
-            }
+        if ( $this->_nomination !== null
+            && $this->_nomination !== 'département'
+            && $can === true
+        ) {
+            $can = false;
         }
 
         return $can;
