@@ -112,7 +112,9 @@
 
     <div id="dates_plot" class="hidden"></div>
     <div id="dates_range" class="hidden"></div>
+    {% if show_map %}
     <div id="map" class="hidden"></div>
+    {% endif %}
 
     {% if solr_qry is defined %}
     <div class="debug">
@@ -430,8 +432,13 @@
             });
             {% endif %}
 
+{% if show_map %}
             $('#map').removeClass('hidden');
+    {% if geojson is defined and geojson != null %}
+            var map = L.map('map');
+    {% else %}
             var map = L.map('map').setView([47.010, 5.087], 5);
+    {% endif %}
 
             var fullScreen = new L.Control.FullScreen();
             map.addControl(fullScreen);
@@ -441,7 +448,7 @@
                 attribution: '© Données cartographiques <a href="http://openstreetmap.org">Contributeurs OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, © Imagerie <a href="http://cloudmade.com">CloudMade</a>'
             }).addTo(map);
 
-{% if geojson != null %}
+    {% if geojson is defined and geojson != null %}
             // control that shows location info on hover
             var info = L.control();
 
@@ -551,6 +558,7 @@
             };
 
             legend.addTo(map);
+    {% endif %}
 {% endif %}
             //handle viewer links
             //fullscreen does not work for the moment when binded into an iframe

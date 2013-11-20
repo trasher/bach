@@ -76,6 +76,7 @@ class DefaultController extends Controller
         }
 
         $viewer_uri = $this->container->getParameter('viewer_uri');
+        $show_map = $this->container->getParameter('show_map');
 
         $templateVars = array(
             'q'             => urlencode($query_terms),
@@ -83,7 +84,8 @@ class DefaultController extends Controller
             'show_pics'     => $view_params->showPics(),
             'viewer_uri'    => $viewer_uri,
             'view'          => $view_params->getView(),
-            'results_order' => $view_params->getOrder()
+            'results_order' => $view_params->getOrder(),
+            'show_map'      => $show_map
         );
 
         if ( $facet_name !== null ) {
@@ -431,8 +433,10 @@ class DefaultController extends Controller
                 $templateVars['suggestions'] = $suggestions;
             }
 
-            $geojson = $factory->getGeoJson(is_null($query_terms));
-            $templateVars['geojson'] = $geojson;
+            if ( $show_map ) {
+                $geojson = $factory->getGeoJson(is_null($query_terms));
+                $templateVars['geojson'] = $geojson;
+            }
 
             return $this->render(
                 'BachHomeBundle:Default:index.html.twig',

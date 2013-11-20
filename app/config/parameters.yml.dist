@@ -28,6 +28,7 @@ parameters:
         fr: fr_FR
     openid_enabled: false
     upload_dir: '%kernel.root_dir%/../web/uploads/'
+    show_map: true
 
 bach_home:
     files:
