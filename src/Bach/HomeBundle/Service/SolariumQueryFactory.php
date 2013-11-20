@@ -17,6 +17,8 @@ use Symfony\Component\Finder\Finder;
 use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
+use Solarium\QueryType\Select\Result\Facet\Field;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Bach Solarium query factory
@@ -39,7 +41,8 @@ class SolariumQueryFactory
     private $_query;
     private $_qry_facets_fields = array(
         'dao',
-        'cDate'
+        'cDate',
+        'cGeogname'
     );
 
     private $_max_low_date;
@@ -77,10 +80,11 @@ class SolariumQueryFactory
      *
      * @param SolariumQueryContainer $container Solarium container
      * @param array                  $facets    Facets
+     * @param boolean                $show_map  Is map displayed?
      *
      * @return \Solarium\QueryType\Select\Result\Result
      */
-    public function performQuery(SolariumQueryContainer $container, $facets)
+    public function performQuery(SolariumQueryContainer $container, $facets, $show_map)
     {
         //create query
         if ( !$this->_query ) {
@@ -88,7 +92,7 @@ class SolariumQueryFactory
         }
 
         //dynamically create facets
-        $this->_addFacets($facets);
+        $this->_addFacets($facets, $show_map);
 
         $this->_request = $this->_client->createRequest($this->_query);
         $rs = $this->_client->select($this->_query);
@@ -202,15 +206,17 @@ class SolariumQueryFactory
     /**
      * Dynamically add facets to query
      *
-     * @param array $facets Facets
+     * @param array   $facets   Facets
+     * @param boolean $show_map Is map displayed?
      *
      * @return void
      */
-    private function _addFacets($facets)
+    private function _addFacets($facets, $show_map)
     {
         $facetSet = $this->_query->getFacetSet();
         $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);
+        $map_facet = false;
 
         foreach ( $facets as $facet ) {
             if ( !in_array($facet->getSolrFieldName(), $this->_qry_facets_fields) ) {
@@ -232,11 +238,25 @@ class SolariumQueryFactory
                         $fr->setEnd($this->_up_date);
                     }
                     break;
+                case 'cGeogname':
+                    $facetSet->createFacetField($facet->getSolrFieldName())
+                        ->setField($facet->getSolrFieldName());
+                    if ( $show_map ) {
+                        $map_facet = true;
+                    }
+                    break;
                 default:
                     throw new \RuntimeException('Unknown facet query field!');
                     break;
                 }
             }
+        }
+
+        //check if map facet is present
+        if ( $show_map && !$map_facet ) {
+            //add relevant facet
+            $facetSet->createFacetField('cGeogname')
+                ->setField('cGeogname');
         }
     }
 
@@ -378,48 +398,44 @@ class SolariumQueryFactory
     /**
      * Retrieve GeoJSON informations
      *
-     * @param boolean $all Use *:* as a query if true, use current query if false
+     * @param Facet\Field      $map_facets Map facets
+     * @param EntityRepository $repo       Entity repository
      *
-     * @return array
+     * @return string
      */
-    public function getGeoJson($all = true)
+    public function getGeoJson(Field $map_facets, EntityRepository $repo)
     {
-        $query = $this->_client->createSelect();
-
-        $query = $this->_client->createSelect();
-        if ( $all === true ) {
-            $query->setQuery('*:*');
-        } else {
-            $query = clone $this->_query;
+        $results = null;
+        $values = array();
+        foreach ( $map_facets as $item=>$count ) {
+            $values[$item] = $count;
         }
 
-        $query->setRows(0);
-        $query->setFields('geojson');
+        $qb = $repo->createQueryBuilder('g');
+        $qb->where('g.indexed_name IN (:names)')
+            ->setParameter('names', array_keys($values));
 
-        $facetSet = $query->getFacetSet();
-        $facetSet->setLimit(-1);
-        $facetSet->setMinCount(1);
+        $query = $qb->getQuery();
+        $polygons = $query->getResult();
 
-        $geo = $facetSet->createFacetField('geojson');
-        $geo->setField('geojson');
-
-        $rs = $this->_client->select($query);
-        $facetSet = $rs->getFacetSet();
-        $geojson = $facetSet->getFacet('geojson');
-
-        $results = null;
-        if ( $geojson->count() > 0 ) {
+        //prepare json
+        if ( count($polygons) > 0 ) {
             $results = '{"type": "FeatureCollection", "features":[';
             $i = 1;
-            foreach ( $geojson as $json=>$count ) {
-                $name = 'Placebo';
-                $results .= "\n" . '{"type": "Feature", "id":"' . $i .
+            foreach ( $polygons as $polygon ) {
+                $id = $polygon->getId();
+                $name = $polygon->getIndexedName();
+                $count = $values[$name];
+                $json = $polygon->getGeojson();
+
+                $results .= "\n" . '{"type": "Feature", "id":"' . $id .
                     '", "properties":{"name": "' . $name  . '", "results": ' .
                     $count . '}, "geometry": ' .
                     $json . '}';
-                if ( $i < count($geojson) ) {
+                if ( $i < count($polygons) ) {
                     $results .= ', ';
                 }
+                $i++;
             }
             $results .= ']}';
         }

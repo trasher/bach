@@ -94,6 +94,7 @@ class DefaultController extends Controller
 
         $factory = $this->get("bach.home.solarium_query_factory");
 
+        $map_facets = null;
         if ( !is_null($query_terms) ) {
             // On effectue une recherche
             $form = $this->createForm(
@@ -197,7 +198,12 @@ class DefaultController extends Controller
                 $factory->setDatesBounds($filters);
             }
 
-            $searchResults = $factory->performQuery($container, $conf_facets);
+            $searchResults = $factory->performQuery(
+                $container,
+                $conf_facets,
+                $show_map
+            );
+
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
@@ -219,10 +225,16 @@ class DefaultController extends Controller
                 'cDateEnd'      => _('End date')
             );
             $facet_labels = array();
+
             foreach ( $conf_facets as $facet ) {
                 $solr_field = $facet->getSolrFieldName();
                 $facet_names[$solr_field] = $facet->getFrLabel();
                 $field_facets = $facetset->getFacet($solr_field);
+
+                if ( $solr_field === 'cGeogname' && $show_map ) {
+                    $map_facets = $field_facets;
+                }
+
                 $values = array();
                 foreach ( $field_facets as $item=>$count ) {
                     if ( !isset($filters[$solr_field])
@@ -303,6 +315,11 @@ class DefaultController extends Controller
                 }
             }
 
+            if ( $show_map && !$map_facets ) {
+                //map facets missing, add them!
+                $map_facets = $facetset->getFacet('cGeogname');
+            }
+
             if ( isset($filters['cDate']) ) {
                 //set label for current date range filter
                 if ( !isset($facet_labels['cDate'])) {
@@ -334,7 +351,6 @@ class DefaultController extends Controller
                 $query->setOnlyMorePopular(true);
                 $query->setCount(10);
                 $suggestions = $this->get("solarium.client")->suggester($query);
-
 
                 $templateVars['resultCount'] = $resultCount;
                 $templateVars['resultByPage'] = $view_params->getResultsbyPage();
@@ -380,6 +396,10 @@ class DefaultController extends Controller
 
             $facet = $rs->getFacetSet()->getFacet('geogname');
             $tags = array_merge($tags, $facet->getValues());
+
+            if ( $show_map ) {
+                $map_facets = $facet;
+            }
 
             if ( count($tags) > 0 ) {
                 arsort($tags, SORT_NUMERIC);
@@ -434,7 +454,11 @@ class DefaultController extends Controller
             }
 
             if ( $show_map ) {
-                $geojson = $factory->getGeoJson(is_null($query_terms));
+                $geojson = $factory->getGeoJson(
+                    $map_facets,
+                    $this->getDoctrine()
+                        ->getRepository('BachIndexationBundle:Geoloc')
+                );
                 $templateVars['geojson'] = $geojson;
             }
 
