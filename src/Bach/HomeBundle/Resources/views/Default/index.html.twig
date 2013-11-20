@@ -311,8 +311,10 @@
     <script src="{{ asset('js/jQDateRangeSlider-min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/flot/jquery.flot.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/flot/jquery.flot.selection.min.js') }}" type="text/javascript"></script>
+{% if show_map %}
     <script src="{{ asset('js/leaflet/leaflet.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.js') }}" type="text/javascript"></script>
+{% endif %}
     <!--[if lte IE 8]><script src="{{ asset('js/jqplot/excanvas.min.js') }}" type="text/javascript"></script><![endif]-->
     <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
 {% endblock %}
@@ -350,11 +352,6 @@
                 var _da_url = '{{ path('bach_search', {query_terms: q, results_order: 'ORDER'}) }}';
                 window.location.href  = _da_url.replace('ORDER', $('#results_order option:selected').val());
             });
-
-            $('#illustrated').change(function(){
-                var _da_url = '{{ path('bach_search', {query_terms: q, illustrated: 'ILLUSTRATED'}) }}';
-                window.location.href  = _da_url.replace('ILLUSTRATED', $(this).is(':checked'));
-            }).prev('label').tooltip();
 
             {% if min_date is defined and max_date is defined %}
             var _is_first_load = true;
@@ -536,8 +533,7 @@
             var _layers = L.layerGroup([allpoints]).addTo(map);
             map.fitBounds(allpoints.getBounds());
 
-
-            var legend = L.control({position: 'bottomright'});
+            {#var legend = L.control({position: 'bottomright'});
 
             legend.onAdd = function (map) {
 
@@ -559,8 +555,10 @@
                 return div;
             };
 
-            legend.addTo(map);
+            legend.addTo(map);#}
+
             var _zones_loaded = false;
+            var _zones_layer;
 
             function checkZones(e) {
                 zoom = map.getZoom();
@@ -570,12 +568,30 @@
                  ) {
                     //if we've just zoomed, or if we drag map, reload zones
                     _zones_loaded = true;
-                    console.log('load zones');
+                        var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX'}) }}';
+
+                        $.ajax({
+                            url: _da_url.replace('BBOX', map.getBounds().toBBoxString()),
+                            success: function(data) {
+                                if ( !_zones_layer ) {
+                                    _zones_layer = L.geoJson(data, {
+                                        style: style,
+                                        onEachFeature: onEachFeature
+                                    });
+                                    _layers.addLayer(_zones_layer);
+                                } else {
+                                    if ( _layers.hasLayer(_zones_layer) ) {
+                                        _layers.addLayer(_zones_layer);
+                                    }
+                                    _zones_layer.addData(data);
+                                }
+                            }
+                        });
                 }
 
                 if ( zoom < 9 && _zones_loaded == true ) {
                     _zones_loaded = false;
-                    console.log('unload zones');
+                    _layers.removeLayer(_zones_layer);
                 }
             }
 

@@ -404,23 +404,46 @@ class SolariumQueryFactory
      *
      * @return string
      */
-    public function getGeoJson(Field $map_facets, EntityRepository $repo, $zones = false)
-    {
+    public function getGeoJson(
+        Field $map_facets, EntityRepository $repo, $zones = false
+    ) {
         $result = null;
         $values = array();
+        $parameters = array();
+
         foreach ( $map_facets as $item=>$count ) {
             $values[$item] = $count;
         }
 
         $qb = $repo->createQueryBuilder('g');
-        $qb->where('g.indexed_name IN (:names)')
-            ->setParameter('names', array_keys($values));
+        $qb->where('g.indexed_name IN (:names)');
+        $parameters['names'] = array_keys($values);
 
-        //$sql="SELECT * FROM `MyTable`  WHERE (longitude BETWEEN '$west_long' AND '$east_long') AND (lat BETWEEN '$north_lat' AND '$south_lat')";
+        if ( $zones != false ) {
+            list($swest_lon, $swest_lat, $neast_lon, $neast_lat) = explode(',', $zones);
+            $qb
+                ->andWhere('g.lon BETWEEN :west_lon AND :east_lon')
+                ->andWhere('g.lat BETWEEN :north_lat AND :south_lat');
+
+            $parameters = array_merge(
+                $parameters,
+                array(
+                    'west_lon'  => $swest_lon,
+                    'east_lon'  => $neast_lon,
+                    'north_lat' => $swest_lat,
+                    'south_lat' => $neast_lat
+                )
+            );
+
+            //$sql="SELECT * FROM `MyTable`  WHERE 
+            //(longitude BETWEEN '$west_long' AND '$east_long')
+            //AND (lat BETWEEN '$north_lat' AND '$south_lat')";
+        }
+
+        $qb->setParameters($parameters);
 
         $query = $qb->getQuery();
         $polygons = $query->getResult();
-
 
         //prepare json
         if ( count($polygons) > 0 ) {
@@ -433,7 +456,7 @@ class SolariumQueryFactory
                 $json = $polygon->getGeojson();
 
                 $geometry = null;
-                if ( $zones === true
+                if ( $zones !== false
                     && ((strlen($json) < 30000 && $count <= 100)
                     || $count > 100)
                 ) {

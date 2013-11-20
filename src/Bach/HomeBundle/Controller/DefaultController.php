@@ -20,6 +20,7 @@ use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Bach home controller
@@ -454,6 +455,7 @@ class DefaultController extends Controller
             }
 
             if ( $show_map ) {
+                $session->set('map_facets', $map_facets);
                 $geojson = $factory->getGeoJson(
                     $map_facets,
                     $this->getDoctrine()
@@ -472,6 +474,31 @@ class DefaultController extends Controller
                 $templateVars
             );
         }
+    }
+
+    /**
+     * Get geographical zones
+     *
+     * @param stirng $bbox Bounding box
+     *
+     * @return json
+     */
+    public function getZonesAction($bbox)
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        $factory = $this->get("bach.home.solarium_query_factory");
+
+        $geojson = $factory->getGeoJson(
+            $session->get('map_facets'),
+            $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:Geoloc'),
+            $bbox
+        );
+
+        $response = new Response($geojson);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
     /**

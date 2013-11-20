@@ -36,3 +36,7 @@ bach_get_file:
 bach_fullfacet:
     pattern: /fullfacet/{query_terms}/{facet_name}/{ajax}
     defaults: { _controller: BachHomeBundle:Default:index, 'query_terms': null, 'facet_name': null, 'ajax': false }
+
+bach_geozones:
+    pattern: /geo/zones/{bbox}
+    defaults: {_controller: BachHomeBundle:Default:getZones}
