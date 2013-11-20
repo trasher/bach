@@ -445,7 +445,7 @@
 
             L.tileLayer('http://{s}.tile.cloudmade.com/852b7821064f43a59604e98d9536680b/997/256/{z}/{x}/{y}.png', {
                 maxZoom: 18,
-                attribution: '© Données cartographiques <a href="http://openstreetmap.org">Contributeurs OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, © Imagerie <a href="http://cloudmade.com">CloudMade</a>'
+                attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {% trans %}© Imagery{% endtrans %} <a href="http://cloudmade.com">CloudMade</a>'
             }).addTo(map);
 
     {% if geojson is defined and geojson != null %}

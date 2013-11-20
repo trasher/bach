@@ -122,12 +122,15 @@ msgstr "Show all places (this my take some time)"
 msgid "Back to search results"
 msgstr "Back to search results"
 
-msgid "Show only illustrated documents"
-msgstr "Show only illustrated documents"
-
-msgid "Illustrated"
-msgstr "Illustrated"
-
 msgid "Document logic"
 msgstr "Document logic"
+
+msgid "© Cartographic data"
+msgstr "© Cartographic data"
+
+msgid "OpenStreetMap contributors"
+msgstr "OpenStreetMap contributors"
+
+msgid "© Imagery"
+msgstr "© Imagery"
 

@@ -121,12 +121,15 @@ msgstr "Afficher tous les lieux (cela peut prendre un certain temps)"
 msgid "Back to search results"
 msgstr "Retour aux résultats de recherche"
 
-msgid "Show only illustrated documents"
-msgstr "Afficher uniquement les documents illustrés"
-
-msgid "Illustrated"
-msgstr "Illustrés"
-
 msgid "Document logic"
 msgstr "Logique du document"
+
+msgid "© Cartographic data"
+msgstr "© Données cartopgraphiques"
+
+msgid "OpenStreetMap contributors"
+msgstr "Contributeurs OpenStreetMap"
+
+msgid "© Imagery"
+msgstr "© Imagerie"
 
