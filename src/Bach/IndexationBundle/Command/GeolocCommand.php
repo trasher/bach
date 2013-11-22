@@ -92,8 +92,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $count = 0;
-
         $quiet = $input->getOption('silent');
         $verbose = $input->getOption('moreverbose');
 
@@ -184,7 +182,11 @@ EOF
         foreach ( $bdd_places as $p ) {
             //create toponyms & dedup
             if ( !isset($places[$p['name']]) ) {
-                $places[$p['name']]= new Toponym($p['name']);
+                try {
+                    $places[$p['name']]= new Toponym($p['name']);
+                } catch ( \RuntimeException $e ) {
+                    //pass
+                }
             }
         }
 
@@ -193,7 +195,7 @@ EOF
                 str_replace(
                     '%count',
                     count($places),
-                    _('Search for %count places.')
+                    _('Found %count places in the database.')
                 ) . "\n\n"
             );
         }
@@ -211,6 +213,11 @@ EOF
             }
         }
         $nominatim = $this->getContainer()->get('bach.indexation.Nominatim');
+
+        //stats
+        $total = count($places);
+        $found = 0;
+        $fail = 0;
 
         foreach ( $places as $orig=>$toponym ) {
             if ( $toponym->canBeLocalized() ) {
@@ -241,8 +248,12 @@ EOF
                     if ( !$dry) {
                         $em->persist($ent);
                     }
+                    $found++;
+                } else {
+                    $fail++;
                 }
             } else {
+                $fail++;
                 $output->writeln(
                     '<fg=red;>' .
                     str_replace(
@@ -256,6 +267,38 @@ EOF
         }
         if ( !$dry ) {
             $em->flush();
+        }
+
+        if ( !$quiet ) {
+            $pfail = $fail * 100 / $total;
+            $pfound = $found * 100 / $total;
+
+            $color = 'white';
+            if ( $found >= $fail ) {
+                $color = 'green';
+            } else {
+                $color = 'red';
+            }
+
+            $output->writeln(
+                "\n" . '<fg=' .$color . ';options=bold>' .
+                str_replace(
+                    array(
+                        '%found',
+                        '%fail',
+                        '%total',
+                        '%percent'
+                    ),
+                    array(
+                        $pfound,
+                        $pfail,
+                        $total,
+                        ''
+                    ),
+                    _('Localization finished: %found% found, %fail% fail on %total entries')
+                ) .
+                '</fg=' .$color . ';options=bold>'
+            );
         }
     }
 }
