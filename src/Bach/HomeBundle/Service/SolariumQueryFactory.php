@@ -452,6 +452,11 @@ class SolariumQueryFactory
                     $count = $values[$name];
                     $json = $polygon->getGeojson();
 
+                    if ( !isset($values[$name]) ) {
+                        //for MySQL, Vénéjan is the same as Venejan...
+                        continue;
+                    }
+
                     $geometry = null;
                     if ( $zones !== false
                         && strlen($json) < 50000
