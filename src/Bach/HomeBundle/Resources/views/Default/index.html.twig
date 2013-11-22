@@ -560,14 +560,13 @@
             };
 
             var _zones_loaded = false;
+            var _state_changed = false;
             var _zones_layer;
 
             function checkZones(e) {
                 zoom = map.getZoom();
 
-                if ( zoom >= 9 && _zones_loaded == false
-                    || zoom >= 9 && e.type == 'dragend'
-                 ) {
+                if ( zoom >= 9 ) {
                     //if we've just zoomed, or if we drag map, reload zones
                     _zones_loaded = true;
                     var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX'}) }}';
@@ -581,20 +580,27 @@
                                     onEachFeature: onEachFeature
                                 });
                                 _layers.addLayer(_zones_layer);
+                                _state_changed = true;
 
                             } else {
-                                if ( _layers.hasLayer(_zones_layer) ) {
+                                if ( !_layers.hasLayer(_zones_layer) ) {
                                     _layers.addLayer(_zones_layer);
+                                    _state_changed = true;
                                 }
+
+                                _zones_layer.clearLayers();
                                 _zones_layer.addData(data);
                             }
 
-                            if ( !_legend ) {
-                                _loadLegend();
-                            }
+                            if ( _state_changed ) {
+                                if ( !_legend ) {
+                                    _loadLegend();
+                                }
 
-                            if ( e.type != 'dragend' ) {
-                                _legend.addTo(map);
+                                if ( e.type != 'dragend' ) {
+                                    _legend.addTo(map);
+                                }
+                                _state_changed = false;
                             }
 
                         }
@@ -610,6 +616,7 @@
 
             map.on('zoomend', checkZones);
             map.on('dragend', checkZones);
+            map.on('resize', checkZones);
     {% endif %}
 {% endif %}
             //handle viewer links

@@ -91,14 +91,14 @@ class Geoloc
     /**
      * @var string
      *
-     * @ORM\Column(name="lat", type="string", length=30)
+     * @ORM\Column(name="lat", type="decimal", scale=12, precision=18)
      */
     protected $lat;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lon", type="string", length=30)
+     * @ORM\Column(name="lon", type="decimal", scale=12, precision=18)
      */
     protected $lon;
 

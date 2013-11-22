@@ -428,16 +428,12 @@ class SolariumQueryFactory
             $parameters = array_merge(
                 $parameters,
                 array(
-                    'west_lon'  => $swest_lon,
-                    'east_lon'  => $neast_lon,
-                    'north_lat' => $swest_lat,
-                    'south_lat' => $neast_lat
+                    'west_lon'  => (float)$swest_lon,
+                    'east_lon'  => (float)$neast_lon,
+                    'north_lat' => (float)$swest_lat,
+                    'south_lat' => (float)$neast_lat
                 )
             );
-
-            //$sql="SELECT * FROM `MyTable`  WHERE 
-            //(longitude BETWEEN '$west_long' AND '$east_long')
-            //AND (lat BETWEEN '$north_lat' AND '$south_lat')";
         }
 
         $qb->setParameters($parameters);
@@ -457,8 +453,7 @@ class SolariumQueryFactory
 
                 $geometry = null;
                 if ( $zones !== false
-                    && ((strlen($json) < 30000 && $count <= 100)
-                    || $count > 100)
+                    && strlen($json) < 50000
                 ) {
                     $geometry = $json;
                 } else {
