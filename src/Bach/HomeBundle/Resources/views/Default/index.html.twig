@@ -533,29 +533,31 @@
             var _layers = L.layerGroup([allpoints]).addTo(map);
             map.fitBounds(allpoints.getBounds());
 
-            {#var legend = L.control({position: 'bottomright'});
+            var _legend;
 
-            legend.onAdd = function (map) {
+            function _loadLegend() {
+                _legend = L.control({position: 'bottomright'});
+                _legend.onAdd = function (map) {
 
-                var div = L.DomUtil.create('div', 'info legend'),
-                    grades = [0, 1, 5, 10, 20, 50, 100, 200],
-                    labels = [],
-                    from, to;
+                    var div = L.DomUtil.create('div', 'info legend'),
+                        {# TODO: it would be better to set grades dynamically as it depends on searhc results/corpus #}
+                        grades = [0, 1, 5, 10, 20, 50, 100, 200],
+                        labels = [],
+                        from, to;
 
-                for (var i = 0; i < grades.length; i++) {
-                    from = grades[i];
-                    to = grades[i + 1];
+                    for (var i = 0; i < grades.length; i++) {
+                        from = grades[i];
+                        to = grades[i + 1];
 
-                    labels.push(
-                        '<i style="background:' + getColor(from + 1) + '"></i> ' +
-                        from + (to ? '&ndash;' + to : '+'));
-                }
+                        labels.push(
+                            '<i style="background:' + getColor(from + 1) + '"></i> ' +
+                            from + (to ? '&ndash;' + to : '+'));
+                    }
 
-                div.innerHTML = labels.join('<br>');
-                return div;
+                    div.innerHTML = labels.join('<br/>');
+                    return div;
+                };
             };
-
-            legend.addTo(map);#}
 
             var _zones_loaded = false;
             var _zones_layer;
@@ -568,30 +570,41 @@
                  ) {
                     //if we've just zoomed, or if we drag map, reload zones
                     _zones_loaded = true;
-                        var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX'}) }}';
+                    var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX'}) }}';
 
-                        $.ajax({
-                            url: _da_url.replace('BBOX', map.getBounds().toBBoxString()),
-                            success: function(data) {
-                                if ( !_zones_layer ) {
-                                    _zones_layer = L.geoJson(data, {
-                                        style: style,
-                                        onEachFeature: onEachFeature
-                                    });
+                    $.ajax({
+                        url: _da_url.replace('BBOX', map.getBounds().toBBoxString()),
+                        success: function(data) {
+                            if ( !_zones_layer ) {
+                                _zones_layer = L.geoJson(data, {
+                                    style: style,
+                                    onEachFeature: onEachFeature
+                                });
+                                _layers.addLayer(_zones_layer);
+
+                            } else {
+                                if ( _layers.hasLayer(_zones_layer) ) {
                                     _layers.addLayer(_zones_layer);
-                                } else {
-                                    if ( _layers.hasLayer(_zones_layer) ) {
-                                        _layers.addLayer(_zones_layer);
-                                    }
-                                    _zones_layer.addData(data);
                                 }
+                                _zones_layer.addData(data);
                             }
-                        });
+
+                            if ( !_legend ) {
+                                _loadLegend();
+                            }
+
+                            if ( e.type != 'dragend' ) {
+                                _legend.addTo(map);
+                            }
+
+                        }
+                    });
                 }
 
                 if ( zoom < 9 && _zones_loaded == true ) {
                     _zones_loaded = false;
                     _layers.removeLayer(_zones_layer);
+                    map.removeControl(_legend);
                 }
             }
 
