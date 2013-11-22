@@ -411,74 +411,76 @@ class SolariumQueryFactory
         $values = array();
         $parameters = array();
 
-        foreach ( $map_facets as $item=>$count ) {
-            $values[$item] = $count;
-        }
+        if ( count($map_facets) > 0 ) {
+            foreach ( $map_facets as $item=>$count ) {
+                $values[$item] = $count;
+            }
 
-        $qb = $repo->createQueryBuilder('g');
-        $qb->where('g.indexed_name IN (:names)');
-        $parameters['names'] = array_keys($values);
+            $qb = $repo->createQueryBuilder('g');
+            $qb->where('g.indexed_name IN (:names)');
+            $parameters['names'] = array_keys($values);
 
-        if ( $zones != false ) {
-            list($swest_lon, $swest_lat, $neast_lon, $neast_lat) = explode(',', $zones);
-            $qb
-                ->andWhere('g.lon BETWEEN :west_lon AND :east_lon')
-                ->andWhere('g.lat BETWEEN :north_lat AND :south_lat');
+            if ( $zones != false ) {
+                list($swest_lon, $swest_lat, $neast_lon, $neast_lat) = explode(',', $zones);
+                $qb
+                    ->andWhere('g.lon BETWEEN :west_lon AND :east_lon')
+                    ->andWhere('g.lat BETWEEN :north_lat AND :south_lat');
 
-            $parameters = array_merge(
-                $parameters,
-                array(
-                    'west_lon'  => (float)$swest_lon,
-                    'east_lon'  => (float)$neast_lon,
-                    'north_lat' => (float)$swest_lat,
-                    'south_lat' => (float)$neast_lat
-                )
-            );
-        }
-
-        $qb->setParameters($parameters);
-
-        $query = $qb->getQuery();
-        $polygons = $query->getResult();
-
-        //prepare json
-        if ( count($polygons) > 0 ) {
-            $i = 1;
-            $results = array();
-            foreach ( $polygons as $polygon ) {
-                $id = $polygon->getId();
-                $name = $polygon->getIndexedName();
-                $count = $values[$name];
-                $json = $polygon->getGeojson();
-
-                $geometry = null;
-                if ( $zones !== false
-                    && strlen($json) < 50000
-                ) {
-                    $geometry = $json;
-                } else {
-                    //polygon are too heavy, lets display a point instead
-                    $lon = $polygon->getLon();
-                    $lat = $polygon->getLat();
-                    $geometry = str_replace(
-                        array('%lon', '%lat'),
-                        array($lon, $lat),
-                        '{"type":"Point","coordinates":[%lon,%lat]}'
-                    );
-                }
-
-                $results[] = str_replace(
-                    '%geometry',
-                    $geometry,
-                    "\n" . '{"type": "Feature", "id":"' . $id .
-                    '", "properties":{"name": "' . $name  . '", "results": ' .
-                    $count . '}, "geometry": %geometry}'
+                $parameters = array_merge(
+                    $parameters,
+                    array(
+                        'west_lon'  => (float)$swest_lon,
+                        'east_lon'  => (float)$neast_lon,
+                        'north_lat' => (float)$swest_lat,
+                        'south_lat' => (float)$neast_lat
+                    )
                 );
             }
-            if ( count($results) > 0 ) {
-                $result = '{"type": "FeatureCollection", "features":[';
-                $result .= implode(',', $results);
-                $result .= ']}';
+
+            $qb->setParameters($parameters);
+
+            $query = $qb->getQuery();
+            $polygons = $query->getResult();
+
+            //prepare json
+            if ( count($polygons) > 0 ) {
+                $i = 1;
+                $results = array();
+                foreach ( $polygons as $polygon ) {
+                    $id = $polygon->getId();
+                    $name = $polygon->getIndexedName();
+                    $count = $values[$name];
+                    $json = $polygon->getGeojson();
+
+                    $geometry = null;
+                    if ( $zones !== false
+                        && strlen($json) < 50000
+                    ) {
+                        $geometry = $json;
+                    } else {
+                        //polygon are too heavy, lets display a point instead
+                        $lon = $polygon->getLon();
+                        $lat = $polygon->getLat();
+                        $geometry = str_replace(
+                            array('%lon', '%lat'),
+                            array($lon, $lat),
+                            '{"type":"Point","coordinates":[%lon,%lat]}'
+                        );
+                    }
+
+                    $results[] = str_replace(
+                        '%geometry',
+                        $geometry,
+                        "\n" . '{"type": "Feature", "id":"' . $id .
+                        '", "properties":{"name": "' . $name  . '", "results": ' .
+                        $count . '}, "geometry": %geometry}'
+                    );
+                }
+                if ( count($results) > 0 ) {
+                    $result = '{"type": "FeatureCollection", "features":[';
+                    $result .= implode(',', $results);
+                    $result .= ']}';
+                }
             }
         }
 
