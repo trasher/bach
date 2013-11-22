@@ -145,7 +145,8 @@ class Toponym
                     break;
                 default:
                     throw new \RuntimeException(
-                        'Found ' . count($splitted)
+                        __CLASS__ . 'Found ' . count($splitted) .
+                        ' (original: ' . $name
                     );
                 }
             }
