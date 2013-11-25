@@ -687,6 +687,11 @@ h2.back a:hover {
     height: 300px;
 }
 
+div.sonata-bc #map {
+    width: 300px;
+    float: right;
+}
+
 #map .info {
     padding: 6px 8px;
     background: white;

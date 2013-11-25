@@ -107,6 +107,8 @@ class Geoloc
      *
      * @param string           $toponym Toponym
      * @param SimpleXMLElement $data    Result from Nominatim
+     *
+     * @return Geoloc
      */
     public function hydrate(Toponym $toponym, $data)
     {
@@ -123,6 +125,8 @@ class Geoloc
         $this->geojson = (string)$data['geojson'];
         $this->lat = (string)$data['lat'];
         $this->lon = (string)$data['lon'];
+
+        return $this;
     }
 
     /**
@@ -340,5 +344,19 @@ class Geoloc
     public function getLon()
     {
         return $this->lon;
+    }
+
+    /**
+     * String representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if ( $this->getIndexedName() ) {
+            return $this->getIndexedName();
+        } else {
+            return _('New geoloc entry');
+        }
     }
 }

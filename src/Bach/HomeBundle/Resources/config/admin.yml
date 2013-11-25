@@ -22,5 +22,6 @@ services:
             - Bach\IndexationBundle\Entity\Geoloc
             - ~
         calls:
+            - [ setTemplate, [edit, BachHomeBundle:Admin:edit_wmap.html.twig] ]
             - [ setTranslationDomain, [BachHomeBundle]]
 
