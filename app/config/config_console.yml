@@ -1,0 +1,5 @@
+#use php app/console [...] env=console or
+#export SYMFONY_ENV=console
+imports:
+    - { resource: config_dev.yml }
+
