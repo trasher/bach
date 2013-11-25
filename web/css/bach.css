@@ -1049,6 +1049,15 @@ div.sonata-bc .btn-group {
     font-size: 1em;
 }
 
+div.sonata-bc .pagination a, div.sonata-bc .pagination span {
+    border: none;
+}
+
+div.sonata-bc .pagination {
+    border: none;
+    padding: 0;
+}
+
 /*
  * ===== Leaflet overrides =====
  */

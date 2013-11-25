@@ -103,12 +103,12 @@ class Geoloc
     protected $lon;
 
     /**
-      * The constructor
-      *
-      * @param string           $toponym Toponym
-      * @param SimpleXMLElement $data    Result from Nominatim
-      */
-    public function __construct(Toponym $toponym, $data)
+     * Hydrate entity from toponym
+     *
+     * @param string           $toponym Toponym
+     * @param SimpleXMLElement $data    Result from Nominatim
+     */
+    public function hydrate(Toponym $toponym, $data)
     {
         $this->indexed_name = $toponym->getOriginal();
         if ( $toponym->getName() !== null ) {

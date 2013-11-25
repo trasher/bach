@@ -1,6 +1,6 @@
 <?php
 /**
- * Bach facets adminstration (for SonataAdminBundle)
+ * Bach geolocalisation adminstration (for SonataAdminBundle)
  *
  * PHP version 5
  *
@@ -23,7 +23,7 @@ use Pix\SortableBehaviorBundle\Services\PositionHandler;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
- * Bach facets management
+ * Bach geolocalisation management
  *
  * @category Search
  * @package  Bach
@@ -31,20 +31,23 @@ use Sonata\AdminBundle\Route\RouteCollection;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class FacetsAdmin extends Admin
+class GeolocAdmin extends Admin
 {
-    private $_reader;
+    protected $baseRouteName = 'admin_vendor_bundlename_adminclassname';
+    protected $baseRoutePattern = 'geoloc';
+
+    /*private $_reader;
     private $_container;
     private $_positionService;
-    private $_search_core;
+    private $_search_core;*/
 
-    protected $datagridValues = array(
+    /*protected $datagridValues = array(
         '_page'         => 1,
         '_sort_order'   => 'ASC',
         '_sort_by'      => 'position'
-    );
+    );*/
 
-    public $last_position = 0;
+    /*public $last_position = 0;*/
 
     /**
      * Constructor
@@ -55,13 +58,13 @@ class FacetsAdmin extends Admin
      * @param BachCoreAdminConfigReader $reader             Config reader.
      * @param string                    $search_core        Search core name
      */
-    public function __construct($code, $class, $baseControllerName, $reader,
+    /*public function __construct($code, $class, $baseControllerName, $reader,
         $search_core
     ) {
         $this->_reader = $reader;
         $this->_search_core = $search_core;
         parent::__construct($code, $class, $baseControllerName);
-    }
+    }*/
 
     /**
      * Fields to be shown on create/edit forms
@@ -72,13 +75,60 @@ class FacetsAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $fields = new Fields($this->_reader);
+        $iname_params = array(
+            'required'  => true,
+            'disabled'  => false,
+        );
+
+        if ( $this->getSubject()->getId() !== null ) {
+            $iname_params = array(
+                'required'  => false,
+                'disabled'  => true,
+            );
+        }
+
+        $formMapper
+            ->add(
+                'indexed_name',
+                null,
+                $iname_params
+            )->add(
+                'name'
+            )->add(
+                'place_id'
+            )->add(
+                'type'
+            )->add(
+                'osm_id'
+            )->add(
+                'bbox',
+                null,
+                array(
+                    'label' => _('Bounding box')
+                )
+            )->add(
+                'lat',
+                null,
+                array(
+                    'label' => _('Latitude')
+                )
+            )->add(
+                'lon',
+                null,
+                array(
+                    'label' => _('Longitude')
+                )
+            )->add(
+                'geojson'
+            );
+
+        /*$fields = new Fields($this->_reader);
         $facet_fields = $fields->getFacetFields(
             $this->_search_core,
             EADFileFormat::$facet_excluded
-        );
+        );*/
 
-        $formMapper
+        /*$formMapper
             ->add(
                 'solr_field_name',
                 'choice',
@@ -105,7 +155,7 @@ class FacetsAdmin extends Admin
                 array(
                     'label' => _('English text')
                 )
-            );
+            );*/
     }
 
     /**
@@ -115,10 +165,10 @@ class FacetsAdmin extends Admin
      *
      * @return void
      */
-    protected function configureRoutes(RouteCollection $collection)
+    /*protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('move', $this->getRouterIdParameter() . '/move/{position}');
-    }
+    }*/
 
     /**
      * Fields to be shown on filter forms
@@ -130,10 +180,13 @@ class FacetsAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('indexed_name');
+
+        /*$datagridMapper
             ->add('solr_field_name')
             ->add('active')
             ->add('fr_label')
-            ->add('en_label');
+            ->add('en_label');*/
     }
 
     /**
@@ -145,7 +198,28 @@ class FacetsAdmin extends Admin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
-        $this->last_position = $this->positionService->getLastPosition(
+        $listMapper
+            ->addIdentifier(
+                'indexed_name',
+                null,
+                array(
+                    'label' => _('Indexed name')
+                )
+            )->add(
+                'lat',
+                null,
+                array(
+                    'label' => _('Latitude')
+                )
+            )->add(
+                'lon',
+                null,
+                array(
+                    'label' => _('Longitude')
+                )
+            );
+
+        /*$this->last_position = $this->positionService->getLastPosition(
             $this->getRoot()->getClass()
         );
 
@@ -186,7 +260,7 @@ class FacetsAdmin extends Admin
                         ),
                     )
                 )
-            );
+            );*/
     }
 
     /**
@@ -196,10 +270,10 @@ class FacetsAdmin extends Admin
      *
      * @return void
      */
-    public function setContainer(ContainerInterface $container)
+    /*public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
-    }
+    }*/
 
     /**
      * Position handler injection
@@ -208,10 +282,10 @@ class FacetsAdmin extends Admin
      *
      * @return void
      */
-    public function setPositionService(PositionHandler $positionHandler)
+    /*public function setPositionService(PositionHandler $positionHandler)
     {
         $this->positionService = $positionHandler;
-    }
+    }*/
 
     /**
      * Retrieve localized label for field
@@ -220,9 +294,9 @@ class FacetsAdmin extends Admin
      *
      * @return string
      */
-    public function getFieldLabel($name)
+    /*public function getFieldLabel($name)
     {
         $fields = new Fields();
         return $fields->getFieldLabel($name);
-    }
+    }*/
 }

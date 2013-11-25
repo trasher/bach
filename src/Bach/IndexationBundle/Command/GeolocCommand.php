@@ -234,7 +234,8 @@ EOF
                 $result = $nominatim->proceed($toponym);
 
                 if ( $result !== false ) {
-                    $ent = new Geoloc($toponym, $result);
+                    $ent = new Geoloc();
+                    $ent->hydrate($toponym, $result);
                     $output->writeln(
                         '<fg=green;>     ' .
                         str_replace(
