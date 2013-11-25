@@ -6,6 +6,7 @@
     <link href="{{ asset('css/jqrangeslider/iThing-min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('js/leaflet/leaflet.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('js/leaflet/leaflet.geosearch/l.geosearch.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <!--[if lte IE 8]><link href="{{ asset('js/leaflet/leaflet.ie.css') }}" type="text/css" rel="stylesheet" media="screen" /><![endif]-->
 {% endblock %}
 
@@ -314,6 +315,8 @@
 {% if show_map %}
     <script src="{{ asset('js/leaflet/leaflet.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/leaflet/leaflet.geosearch/l.control.geosearch.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/leaflet/leaflet.geosearch/l.geosearch.provider.openstreetmap.js') }}" type="text/javascript"></script>
 {% endif %}
     <!--[if lte IE 8]><script src="{{ asset('js/jqplot/excanvas.min.js') }}" type="text/javascript"></script><![endif]-->
     <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
@@ -439,6 +442,14 @@
 
             var fullScreen = new L.Control.FullScreen();
             map.addControl(fullScreen);
+
+            new L.Control.GeoSearch({
+                provider: new L.GeoSearch.Provider.OpenStreetMap(),
+                showMarker: false,
+                searchLabel: '{% trans %}Enter your search...{% endtrans %}',
+                notFoundMessage: '{% trans %}Sorry, that place cannot be found.{% endtrans %}',
+                zoomLevel: 10
+            }).addTo(map);
 
             L.tileLayer('http://{s}.tile.cloudmade.com/852b7821064f43a59604e98d9536680b/997/256/{z}/{x}/{y}.png', {
                 maxZoom: 18,
