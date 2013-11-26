@@ -7,15 +7,72 @@ security:
         FOS\UserBundle\Model\UserInterface: sha512
 
     role_hierarchy:
-        ROLE_ARCHIVIST:     ROLE_USER
+        #facets adminsitration ACLs
+        ROLE_SONATA_FACETS_READER:
+            - ROLE_SONATA_ADMIN_FACETS_LIST
+            - ROLE_SONATA_ADMIN_FACETS_VIEW
+        ROLE_SONATA_FACETS_EDITOR:
+            - ROLE_SONATA_FACETS_READER
+            - ROLE_SONATA_ADMIN_FACETS_CREATE
+            - ROLE_SONATA_ADMIN_FACETS_EDIT
+        ROLE_SONATA_FACETS_ADMIN:
+            - ROLE_SONATA_FACETS_EDITOR
+            - ROLE_SONATA_ADMIN_FACETS_DELETE
+            - ROLE_SONATA_ADMIN_FACETS_EXPORT
+        #geoloc adminsitration ACLs
+        ROLE_SONATA_GEOLOC_READER:
+            - ROLE_SONATA_ADMIN_GEOLOC_LIST
+            - ROLE_SONATA_ADMIN_GEOLOC_VIEW
+        ROLE_SONATA_GEOLOC_EDITOR:
+            - ROLE_SONATA_GEOLOC_READER
+            - ROLE_SONATA_ADMIN_GEOLOC_CREATE
+            - ROLE_SONATA_ADMIN_GEOLOC_EDIT
+        ROLE_SONATA_GEOLOC_ADMIN:
+            - ROLE_SONATA_GEOLOC_EDITOR
+            - ROLE_SONATA_ADMIN_GEOLOC_DELETE
+            - ROLE_SONATA_ADMIN_GEOLOC_EXPORT
+        #expos adminsitration ACLs
+        ROLE_SONATA_EXPOS_READER:
+            - ROLE_SONATA_ADMIN_EXPOS_LIST
+            - ROLE_SONATA_ADMIN_EXPOS_VIEW
+            - ROLE_SONATA_ADMIN_ROOMS_LIST
+            - ROLE_SONATA_ADMIN_ROOMS_VIEW
+            - ROLE_SONATA_ADMIN_PANELS_LIST
+            - ROLE_SONATA_ADMIN_PANELS_VIEW
+            - ROLE_SONATA_ADMIN_DOCUMENTS_LIST
+            - ROLE_SONATA_ADMIN_DOCUMENTS_VIEW
+        ROLE_SONATA_EXPOS_EDITOR:
+            - ROLE_SONATA_EXPOS_READER
+            - ROLE_SONATA_ADMIN_EXPOS_CREATE
+            - ROLE_SONATA_ADMIN_EXPOS_EDIT
+            - ROLE_SONATA_ADMIN_ROOMS_CREATE
+            - ROLE_SONATA_ADMIN_ROOMS_EDIT
+            - ROLE_SONATA_ADMIN_PANELS_CREATE
+            - ROLE_SONATA_ADMIN_PANELS_EDIT
+            - ROLE_SONATA_ADMIN_DOCUMENTS_CREATE
+            - ROLE_SONATA_ADMIN_DOCUMENTS_EDIT
+        ROLE_SONATA_EXPOS_ADMIN:
+            - ROLE_SONATA_EXPOS_EDITOR
+            - ROLE_SONATA_ADMIN_EXPOS_DELETE
+            - ROLE_SONATA_ADMIN_EXPOS_EXPORT
+            - ROLE_SONATA_ADMIN_ROOMS_DELETE
+            - ROLE_SONATA_ADMIN_ROOMS_EXPORT
+            - ROLE_SONATA_ADMIN_PANELS_DELETE
+            - ROLE_SONATA_ADMIN_PANELS_EXPORT
+            - ROLE_SONATA_ADMIN_DOCUMENTS_DELETE
+            - ROLE_SONATA_ADMIN_DOCUMENTS_EXPORT
+
+        ROLE_ARCHIVIST:     [ROLE_USER, ROLE_CONTENT_ADMIN]
+        ROLE_CONTENT_ADMIN: [ROLE_SONATA_FACETS_EDITOR, ROLE_SONATA_EXPOS_EDITOR, ROLE_SONATA_GEOLOC_EDITOR]
         ROLE_ADMIN:         [ROLE_USER, ROLE_ARCHIVIST, ROLE_SONATA_ADMIN]
         ROLE_SUPER_ADMIN:   [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        openid_user_manager:
-            id: bach.home.openid_user_manager
+        #order matters: if fos is not in the first place, impersonating will fail
         fos_userbundle:
             id: fos_user.user_provider.username
+        openid_user_manager:
+            id: bach.home.openid_user_manager
 
     firewalls:
         # Disabling the security for the web debug toolbar, the profiler and Assetic.
@@ -40,6 +97,7 @@ security:
                 csrf_provider: form.csrf_provider
             logout: true
             anonymous: true
+            switch_user: true
 
         admin:
             pattern:            /admin(.*)
@@ -58,17 +116,15 @@ security:
         connection: default
 
     access_control:
+        # Login pages needs to be access without credential
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login_openid$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path : ^/indexation, roles: ROLE_ARCHIVIST }
-
-        # Admin login page needs to be access without credential
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         # Secured part of the site
-        # This config requires being logged for the whole site and having the admin role for the admin part.
-        # Change these rules to adapt them to your needs
         - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN] }
+        - { path: ^/admin/sonata, roles: ROLE_SUPER_ADMIN }
+        - { path : ^/indexation, roles: ROLE_ARCHIVIST }
+

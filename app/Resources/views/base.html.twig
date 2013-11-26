@@ -77,7 +77,7 @@
             <div id="user_login">
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a>
-                <a class="logout" href="{{ path('fos_user_security_logout') }}">
+                <a class="logout" href="{% if is_granted('ROLE_PREVIOUS_ADMIN') %}?_switch_user=_exit{% else %}{{ path('fos_user_security_logout') }}{% endif %}">
                     {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                 </a>
             {% else %}

@@ -138,6 +138,8 @@ sonata_block:
 sonata_admin:
     title: Super Admin
     title_logo: /img/logo.png
+    security:
+        handler: sonata.admin.security.handler.role
 
 sonata_user:
     security_acl: false
@@ -151,6 +153,7 @@ sonata_user:
             #handler: sonata_user.profile.form.handler.default
             name: sonata_user_profile_form
             validation_groups: [Profile]
+    impersonating_route: bach_homepage
 
 #lsw_memcache:
 #    session:
