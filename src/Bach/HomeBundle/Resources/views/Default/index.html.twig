@@ -446,8 +446,8 @@
             new L.Control.GeoSearch({
                 provider: new L.GeoSearch.Provider.OpenStreetMap(),
                 showMarker: false,
-                searchLabel: '{% trans %}Enter your search...{% endtrans %}',
-                notFoundMessage: '{% trans %}Sorry, that place cannot be found.{% endtrans %}',
+                searchLabel: '{{ 'Enter your search...'|trans|escape('js') }}',
+                notFoundMessage: '{{ 'Sorry, that place cannot be found.'|trans|escape('js') }}',
                 zoomLevel: 10
             }).addTo(map);
 
