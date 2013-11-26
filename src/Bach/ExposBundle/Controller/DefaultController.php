@@ -80,8 +80,8 @@ class DefaultController extends Controller
                 )
             );
         } else {
-            throw new \RuntimeException(
-                _('Exposition not found!')
+            throw $this->createNotFoundException(
+                _('Cannot found requested exposition!')
             );
         }
     }
