@@ -62,22 +62,28 @@ class DefaultController extends Controller
         $expos = $repository->findCurrent();
         $expo = $repository->findOneByUrl($expo);
 
-        $position = -1;
-        foreach ( $expos as $ex ) {
-            $position++;
-            if ( $ex->getId() === $expo->getId() ) {
-                break;
+        if ( $expo ) {
+            $position = -1;
+            foreach ( $expos as $ex ) {
+                $position++;
+                if ( $ex->getId() === $expo->getId() ) {
+                    break;
+                }
             }
-        }
 
-        return $this->render(
-            'ExposBundle:Default:show_expo.html.twig',
-            array(
-                'position'      => $position,
-                'expos'         => $expos,
-                'current_expo'  => $expo
-            )
-        );
+            return $this->render(
+                'ExposBundle:Default:show_expo.html.twig',
+                array(
+                    'position'      => $position,
+                    'expos'         => $expos,
+                    'current_expo'  => $expo
+                )
+            );
+        } else {
+            throw new \RuntimeException(
+                _('Exposition not found!')
+            );
+        }
     }
 
     /**

@@ -1,0 +1,11 @@
+{% extends '::base.html.twig' %}
+
+{% block title_extend %}{% trans %}An error occured :({% endtrans %}{% endblock %}
+
+{% block container %}
+    <div class="page_error">
+        <h2>{% trans %}An error occured.{%endtrans %}</h2>
+        <p>{% trans %}The server returned:{%endtrans %} "{{ status_code }} {{ status_text }}".</p>
+        <p>{% trans %}Please go back and try again, or report the issue.{% endtrans %}</p>
+    </div>
+{% endblock %}

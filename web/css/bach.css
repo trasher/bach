@@ -759,9 +759,12 @@ div.sonata-bc #map {
     float: right;
 }
 
-#notfound {
-    text-align: center;
+.page_error h2, .page_error h3 {
     color: #b73a34;
+}
+
+.page_error {
+    text-align: center;
     margin-top: 10em;
 }
 
