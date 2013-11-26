@@ -133,3 +133,8 @@ msgstr "Contributeurs OpenStreetMap"
 msgid "© Imagery"
 msgstr "© Imagerie"
 
+msgid "Enter your search..."
+msgstr "Entrez votre recherche..."
+
+msgid "Sorry, that place cannot be found."
+msgstr "Désolé, ce lieu n'a pas été trouvé."

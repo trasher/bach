@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-25 14:27+0200\n"
-"PO-Revision-Date: 2013-10-25 14:30+0100\n"
+"POT-Creation-Date: 2013-11-26 14:06+0100\n"
+"PO-Revision-Date: 2013-11-26 14:10+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: fr_FR.utf8\n"
@@ -29,47 +29,48 @@ msgstr "Le chemin des musiques n'est pas défini !"
 msgid "Misc files path is not defined!"
 msgstr "Le chemin des fichiers divers n'est pas défini !"
 
-#: src/Bach/HomeBundle/Controller/FilesController.php:75
-msgid "File does not exists."
-msgstr "Le fichier n'existe pas."
+#: src/Bach/HomeBundle/Controller/FilesController.php:78
+#, php-format
+msgid "File %file does not exists."
+msgstr "Le fichier %file n'existe pas."
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:212
+#: src/Bach/HomeBundle/Controller/DefaultController.php:225
 msgid "Start date"
 msgstr "Date de début"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:213
+#: src/Bach/HomeBundle/Controller/DefaultController.php:226
 msgid "End date"
 msgstr "Date de fin"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:556
+#: src/Bach/HomeBundle/Controller/DefaultController.php:690
 msgid "%count% results found, 1 expected."
 msgstr "%count% résultats trouvés, 1 attendu."
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:205
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:204
 msgid "Images"
 msgstr "Images"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:214
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:213
 msgid "Series"
 msgstr "Séries"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:223
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:222
 msgid "Sounds"
 msgstr "Sons"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:232
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:231
 msgid "Flash sounds"
 msgstr "Sons Flash"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:243
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:242
 msgid "Videos"
 msgstr "Vidéos"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:252
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:251
 msgid "Flash videos"
 msgstr "Vidéos Flash"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:261
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:260
 msgid "Miscellaneous documents"
 msgstr "Documents divers"
 
@@ -197,21 +198,62 @@ msgstr "Documents"
 msgid "Sub-units"
 msgstr "Sous-unités"
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:90
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:107
+msgid "Bounding box"
+msgstr "Bounding box"
+
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:113
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:212
+msgid "Latitude"
+msgstr "Latitude"
+
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:119
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:218
+msgid "Longitude"
+msgstr "Longitude"
+
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:206
+msgid "Indexed name"
+msgstr "Nom indexé"
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:87
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:158
 msgid "Solr field name"
 msgstr "Nom du champ Solr"
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:97
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:94
 msgid "Activate facet"
 msgstr "Activer la facette"
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:103
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:100
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:171
 msgid "French text"
 msgstr "Texte français"
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:109
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:106
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:177
 msgid "English text"
 msgstr "Texte anglais"
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:165
+msgid "Active"
+msgstr "Actif"
+
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:45
+msgid "Document"
+msgstr "Document"
+
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:50
+msgid "Subject"
+msgstr "Sujet"
+
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:55
+msgid "Personal name"
+msgstr "Nom de personne"
+
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:60
+msgid "Geographical name"
+msgstr "Nom géographique"
 
 #: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:60
 msgid "Enter your search"
@@ -225,15 +267,24 @@ msgstr "Chercher"
 msgid "No corresponding user was found!"
 msgstr "Aucun utilisateur correspondant n'a été trouvé !"
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:126
+#: src/Bach/HomeBundle/Entity/ViewParams.php:125
 #, php-format
 msgid "View %s is not known!"
 msgstr "La vue %s est inconnue !"
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:161
+#: src/Bach/HomeBundle/Entity/ViewParams.php:160
 #, php-format
 msgid "Order %s is not known!"
 msgstr "L'ordre %s est inconnu !"
+
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:134
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:229
+msgid "Yes"
+msgstr "Oui"
+
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:230
+msgid "No"
+msgstr "Non"
 
 #~ msgid "document"
 #~ msgstr "Document"
@@ -255,9 +306,3 @@ msgstr "L'ordre %s est inconnu !"
 
 #~ msgid "Show pictures"
 #~ msgstr "Afficher les images"
-
-#~ msgid "Yes"
-#~ msgstr "Oui"
-
-#~ msgid "No"
-#~ msgstr "Non"

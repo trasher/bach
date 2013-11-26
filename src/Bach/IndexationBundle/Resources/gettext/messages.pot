@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-25 14:27+0200\n"
+"POT-Creation-Date: 2013-11-26 14:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,77 +33,144 @@ msgstr ""
 msgid "Publish"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:414
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:415
 msgid "Could not validate non EAD documents (for now)."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:427
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:428
 #, php-format
 msgid "Corresponding file for %docid% document no longer exists on disk."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:455
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:456
 msgid "Document %docid% is valid and DTD compliant!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:461
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:462
 msgid "%type% document %docid% is not valid!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/ListCommand.php:79
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:117
+#: src/Bach/IndexationBundle/Command/ListCommand.php:78
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:114
 msgid "Unknown type! Please choose one of:"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:61
-msgid "Documents type"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:56
+msgid "Use specified value for localizations to find (may use % joker)"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:65
-msgid "Documents names or directories to proceed"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:61
+msgid "Limit number of results."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:70
-msgid "Assume yes for all questions"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:66
+msgid "Do not store anything, just query nominatim."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:75
-msgid "Publish only in solr (full-import)"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:71
+msgid "Just give a try with parameted occurences, do not store anything."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:80
-msgid "Do not really publish."
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:76
+msgid "Quiet mode"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:104
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:81
+msgid "Verbose mode"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:101
+msgid "You may not use \"quiet\" and \"verbose\" together."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:110
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:101
 msgid "Running in dry mode"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:130
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:119
+msgid "Running in test mode"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:147
+msgid "Set limit to %i entries."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:162
+#, php-format
+msgid "Search on: %search"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:175
+msgid "Query:"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:198
+#, php-format
+msgid "Found %count places in the database."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:229
+msgid "Localizing %t..."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:244
+msgid "Found %name (%type)"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:263
+msgid "Toponym %t cannot be localized."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:299
+msgid "Localization finished: %found% found, %fail% fail on %total entries"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:58
+msgid "Documents type"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:62
+msgid "Documents names or directories to proceed"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:67
+msgid "Assume yes for all questions"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:72
+msgid "Publish only in solr (full-import)"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:77
+msgid "Do not really publish."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:126
 msgid "Publishing \"%type\" documents."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:142
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:138
 msgid "Following files are about to be published: "
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:148
 msgid "yes"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:148
 msgid "no"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:156
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
 msgid "Are you ok (y/n)?"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:167
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:163
 msgid "Publication begins..."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:225
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:221
 msgid "Command canceled by user."
 msgstr ""
 
@@ -112,6 +179,10 @@ msgstr ""
 msgid "Cannot create upload directory %dir"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Service/TypesFiles.php:110
+#: src/Bach/IndexationBundle/Entity/Geoloc.php:359
+msgid "New geoloc entry"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Service/TypesFiles.php:112
 msgid "File or directory %path does not exists!"
 msgstr ""

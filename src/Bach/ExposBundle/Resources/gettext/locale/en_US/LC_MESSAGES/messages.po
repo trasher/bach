@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/ExposBundle@20131104153538\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-04 15:35+0100\n"
-"PO-Revision-Date: 2013-11-04 15:36+0100\n"
+"POT-Creation-Date: 2013-11-26 14:21+0100\n"
+"PO-Revision-Date: 2013-11-26 14:21+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_US\n"
@@ -16,6 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
+
+#: src/Bach/ExposBundle/Controller/DefaultController.php:84
+msgid "Cannot found requested exposition!"
+msgstr "Cannot found requested exposition!"
 
 #: src/Bach/ExposBundle/Resources/gettext/twig.cache.php:432
 #: src/Bach/ExposBundle/Resources/gettext/twig.cache.php:434
@@ -26,9 +30,9 @@ msgstr "Y-m-d"
 #: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:73
 #: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:139
 #: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:168
-#: src/Bach/ExposBundle/Admin/PanelAdmin.php:81
-#: src/Bach/ExposBundle/Admin/PanelAdmin.php:127
-#: src/Bach/ExposBundle/Admin/PanelAdmin.php:150
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:82
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:128
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:151
 #: src/Bach/ExposBundle/Admin/RoomAdmin.php:81
 #: src/Bach/ExposBundle/Admin/RoomAdmin.php:126
 #: src/Bach/ExposBundle/Admin/RoomAdmin.php:149
@@ -39,8 +43,8 @@ msgid "Name"
 msgstr "Name"
 
 #: src/Bach/ExposBundle/Admin/ExpositionAdmin.php:80
-#: src/Bach/ExposBundle/Admin/PanelAdmin.php:88
-#: src/Bach/ExposBundle/Admin/PanelAdmin.php:162
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:89
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:163
 #: src/Bach/ExposBundle/Admin/RoomAdmin.php:88
 #: src/Bach/ExposBundle/Admin/RoomAdmin.php:161
 #: src/Bach/ExposBundle/Admin/DocumentAdmin.php:88
@@ -80,17 +84,22 @@ msgstr "End"
 msgid "Select a room"
 msgstr "Select a room"
 
-#: src/Bach/ExposBundle/Admin/PanelAdmin.php:75
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:73
+#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:175
+msgid "Panel"
+msgstr "Panel"
+
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:76
 msgid "No room selected"
 msgstr "No room selected"
 
-#: src/Bach/ExposBundle/Admin/PanelAdmin.php:96
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:97
 #: src/Bach/ExposBundle/Admin/RoomAdmin.php:95
 #: src/Bach/ExposBundle/Admin/DocumentAdmin.php:102
 msgid "Short description"
 msgstr "Short description"
 
-#: src/Bach/ExposBundle/Admin/PanelAdmin.php:156
+#: src/Bach/ExposBundle/Admin/PanelAdmin.php:157
 msgid "Room"
 msgstr "Room"
 
@@ -123,10 +132,6 @@ msgstr "Title"
 #: src/Bach/ExposBundle/Admin/DocumentAdmin.php:109
 msgid "Full content"
 msgstr "Full content"
-
-#: src/Bach/ExposBundle/Admin/DocumentAdmin.php:175
-msgid "Panel"
-msgstr "Panel"
 
 #: src/Bach/ExposBundle/Entity/Exposition.php:298
 msgid "New exposition"

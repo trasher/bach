@@ -177,6 +177,18 @@ class Fields
         case 'headerLanguage':
             return _('Document language');
             break;
+        case 'dao':
+            return _('Digital substitute');
+            break;
+        case 'cDate':
+            return _('Dates periods');
+            break;
+        case 'archDescUnitId':
+            return _('Archival description identifier');
+            break;
+        case 'archDescAccessRestrict':
+            return _('Archival description access restriction');
+            break;
         default:
             if ( strpos($name, 'dyndescr_') === 0 ) {
                 return $this->guessDynamicFieldLabel($name);

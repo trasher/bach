@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-25 14:27+0200\n"
+"POT-Creation-Date: 2013-11-26 14:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,47 +29,48 @@ msgstr ""
 msgid "Misc files path is not defined!"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/FilesController.php:75
-msgid "File does not exists."
+#: src/Bach/HomeBundle/Controller/FilesController.php:78
+#, php-format
+msgid "File %file does not exists."
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:212
+#: src/Bach/HomeBundle/Controller/DefaultController.php:225
 msgid "Start date"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:213
+#: src/Bach/HomeBundle/Controller/DefaultController.php:226
 msgid "End date"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:556
+#: src/Bach/HomeBundle/Controller/DefaultController.php:690
 msgid "%count% results found, 1 expected."
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:205
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:204
 msgid "Images"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:214
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:213
 msgid "Series"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:223
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:222
 msgid "Sounds"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:232
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:231
 msgid "Flash sounds"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:243
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:242
 msgid "Videos"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:252
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:251
 msgid "Flash videos"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:261
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:260
 msgid "Miscellaneous documents"
 msgstr ""
 
@@ -195,20 +196,61 @@ msgstr ""
 msgid "Sub-units"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:90
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:107
+msgid "Bounding box"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:113
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:212
+msgid "Latitude"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:119
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:218
+msgid "Longitude"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:206
+msgid "Indexed name"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:87
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:158
 msgid "Solr field name"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:97
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:94
 msgid "Activate facet"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:103
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:100
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:171
 msgid "French text"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:109
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:106
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:177
 msgid "English text"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:165
+msgid "Active"
+msgstr ""
+
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:45
+msgid "Document"
+msgstr ""
+
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:50
+msgid "Subject"
+msgstr ""
+
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:55
+msgid "Personal name"
+msgstr ""
+
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:60
+msgid "Geographical name"
 msgstr ""
 
 #: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:60
@@ -223,12 +265,21 @@ msgstr ""
 msgid "No corresponding user was found!"
 msgstr ""
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:126
+#: src/Bach/HomeBundle/Entity/ViewParams.php:125
 #, php-format
 msgid "View %s is not known!"
 msgstr ""
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:161
+#: src/Bach/HomeBundle/Entity/ViewParams.php:160
 #, php-format
 msgid "Order %s is not known!"
+msgstr ""
+
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:134
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:229
+msgid "Yes"
+msgstr ""
+
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:230
+msgid "No"
 msgstr ""

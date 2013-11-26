@@ -267,7 +267,8 @@ class EADFileFormat extends MappedFileFormat
         'headerAddress',
         'headerDate',
         'archDescOrigination',
-        'subject_w_expanded'
+        'subject_w_expanded',
+        'archDescScopeContent'
     );
 
     public static $expanded_mappings = array(

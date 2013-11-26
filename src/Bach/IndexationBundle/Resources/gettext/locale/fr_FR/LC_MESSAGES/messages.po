@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/IndexationBundle@20131025143701\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-25 14:27+0200\n"
-"PO-Revision-Date: 2013-10-25 14:46+0100\n"
+"POT-Creation-Date: 2013-11-26 14:10+0100\n"
+"PO-Revision-Date: 2013-11-26 14:18+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr_FR\n"
@@ -33,77 +33,148 @@ msgstr "Ajouter à la queue"
 msgid "Publish"
 msgstr "Publier"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:414
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:415
 msgid "Could not validate non EAD documents (for now)."
 msgstr "Impossible de valider des documents non EAD (pour le moment)."
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:427
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:428
 #, php-format
 msgid "Corresponding file for %docid% document no longer exists on disk."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:455
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:456
 msgid "Document %docid% is valid and DTD compliant!"
 msgstr "Le document %docid% est valide et conforme à la DTD !"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:461
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:462
 msgid "%type% document %docid% is not valid!"
 msgstr "Le document %type% %docid% n'est pas valide !"
 
-#: src/Bach/IndexationBundle/Command/ListCommand.php:79
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:117
+#: src/Bach/IndexationBundle/Command/ListCommand.php:78
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:114
 msgid "Unknown type! Please choose one of:"
 msgstr "Type inconnu ! Veuillez choisir entre :"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:61
-msgid "Documents type"
-msgstr "Type de documents"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:56
+msgid "Use specified value for localizations to find (may use % joker)"
+msgstr ""
+"Utiliser la valeur spécifiée pour trouver les localisations (utilisation du "
+"joker % possible)"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:65
-msgid "Documents names or directories to proceed"
-msgstr "Noms des documents ou des dossiers à traiter"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:61
+msgid "Limit number of results."
+msgstr "Limiter le nombre de résultats."
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:70
-msgid "Assume yes for all questions"
-msgstr "Répondre oui à toutes les questions"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:66
+msgid "Do not store anything, just query nominatim."
+msgstr "Ne rien stocker, juste interroger nominatim."
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:75
-msgid "Publish only in solr (full-import)"
-msgstr "Publier dans Solr uniquement (full-import)"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:71
+msgid "Just give a try with parameted occurences, do not store anything."
+msgstr "Effectuer un essai avec des occurrences  paramétrées, ne rien stocker."
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:80
-msgid "Do not really publish."
-msgstr "Ne pas publier réellement."
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:76
+msgid "Quiet mode"
+msgstr "Mode silencieux"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:104
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:81
+msgid "Verbose mode"
+msgstr "Mode verbeux"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:101
+msgid "You may not use \"quiet\" and \"verbose\" together."
+msgstr ""
+"Vous ne devriez pas utiliser « silencieux » et « verbeux » en même temps."
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:110
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:101
 msgid "Running in dry mode"
 msgstr "Lancer en mode essai"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:130
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:119
+msgid "Running in test mode"
+msgstr "Lancer en mode test"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:147
+msgid "Set limit to %i entries."
+msgstr "Fixe la limite à %i entrées."
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:162
+#, php-format
+msgid "Search on: %search"
+msgstr "Chercher sur : %search"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:175
+msgid "Query:"
+msgstr "Requête :"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:198
+#, php-format
+msgid "Found %count places in the database."
+msgstr "%count lieux trouvés dans la base."
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:229
+msgid "Localizing %t..."
+msgstr "Localisation de %t..."
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:244
+msgid "Found %name (%type)"
+msgstr "Trouve %name (%type)"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:263
+msgid "Toponym %t cannot be localized."
+msgstr "Le toponyme %t ne peut être localisé."
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:299
+msgid "Localization finished: %found% found, %fail% fail on %total entries"
+msgstr ""
+"Localisation terminée : %found trouvés, %fail échecs sur %total entrées"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:58
+msgid "Documents type"
+msgstr "Type de documents"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:62
+msgid "Documents names or directories to proceed"
+msgstr "Noms des documents ou des dossiers à traiter"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:67
+msgid "Assume yes for all questions"
+msgstr "Répondre oui à toutes les questions"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:72
+msgid "Publish only in solr (full-import)"
+msgstr "Publier dans Solr uniquement (full-import)"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:77
+msgid "Do not really publish."
+msgstr "Ne pas publier réellement."
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:126
 msgid "Publishing \"%type\" documents."
 msgstr "Publication des documents \"%type%\"."
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:142
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:138
 msgid "Following files are about to be published: "
 msgstr "Les fichiers suivants vont être publiés :"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:148
 msgid "yes"
 msgstr "oui"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:148
 msgid "no"
 msgstr "non"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:156
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
 msgid "Are you ok (y/n)?"
 msgstr "Êtes-vous d'accord (o/n) ?"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:167
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:163
 msgid "Publication begins..."
 msgstr "Démarrage de la publication"
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:225
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:221
 msgid "Command canceled by user."
 msgstr "Commande annulée par l'utilisateur."
 
@@ -112,6 +183,10 @@ msgstr "Commande annulée par l'utilisateur."
 msgid "Cannot create upload directory %dir"
 msgstr "Impossible de créer le dossier de dépôt %dir"
 
-#: src/Bach/IndexationBundle/Service/TypesFiles.php:110
+#: src/Bach/IndexationBundle/Entity/Geoloc.php:359
+msgid "New geoloc entry"
+msgstr "Nouvelle entrée de géolocalisation"
+
+#: src/Bach/IndexationBundle/Service/TypesFiles.php:112
 msgid "File or directory %path does not exists!"
 msgstr "Le fichier ou le dossier %path n'existe pas !"
