@@ -759,6 +759,12 @@ div.sonata-bc #map {
     float: right;
 }
 
+#notfound {
+    text-align: center;
+    color: #b73a34;
+    margin-top: 10em;
+}
+
 /**
  * ===== Forms stuff =====
  */

@@ -53,7 +53,7 @@
                     <li{% if current_route == 'expos_homepage' %} class="active"{% endif %}>
                         <a href="{{ path('expos_homepage') }}">{% trans %}Virtual expositions{% endtrans %}</a>
                     </li>
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         {% if is_granted('ROLE_ARCHIVIST') %}
                     <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
                         <a href="{{ path('bach_indexation_homepage') }}">{% trans %}Publish{% endtrans %}</a>
@@ -75,7 +75,7 @@
             </nav>
 
             <div id="user_login">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a>
                 <a class="logout" href="{% if is_granted('ROLE_PREVIOUS_ADMIN') %}?_switch_user=_exit{% else %}{{ path('fos_user_security_logout') }}{% endif %}">
                     {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
