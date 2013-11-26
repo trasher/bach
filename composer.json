@@ -26,7 +26,7 @@
         "fp/lightopenid": "*@dev",
         "sonata-project/admin-bundle": "2.2.*",
         "sonata-project/doctrine-orm-admin-bundle": "2.2.*",
-        "sonata-project/user-bundle": "2.2.x@dev",
+        "sonata-project/user-bundle": "2.2.x",
         "doctrine/migrations": "1.0.*@dev",
         "doctrine/doctrine-migrations-bundle": "2.1.*@dev",
         "stof/doctrine-extensions-bundle": "~1.1@dev",
