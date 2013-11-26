@@ -59,7 +59,7 @@
                         <a href="{{ path('bach_indexation_homepage') }}">{% trans %}Publish{% endtrans %}</a>
                     </li>
                         {% endif %}
-                        {% if is_granted('ROLE_ADMIN') %}
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CONTENT_ADMIN') %}
                     <li{% if current_route == 'sonata_admin_dashboard' %} class="active"{% endif %}>
                         <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
                     </li>
