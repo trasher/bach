@@ -156,7 +156,7 @@ class XMLProcess extends Units\Test
         $actual = $this->_xmlp->getElementsByName('fieldType');
 
         $this->array($actual)
-            ->hasSize(21);
+            ->hasSize(23);
 
         $node = $actual[0];
         $this->string($node->getName())->isIdenticalTo('fieldType');

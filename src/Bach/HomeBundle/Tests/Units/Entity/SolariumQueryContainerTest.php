@@ -138,11 +138,5 @@ class SolariumQueryContainer extends Units\Test
         $direction = $qc->getOrderDirection();
 
         $this->variable($direction)->isIdenticalTo($attendee_direction);
-
-        $illustrated = $qc->isIllustrated();
-        $this->boolean($illustrated)->isFalse();
-
-        $illustrated = $qc->isIllustrated(true);
-        $this->boolean($illustrated)->isTrue();
     }
 }

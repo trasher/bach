@@ -43,13 +43,11 @@ class ViewParams extends Units\WebTestCase
         $res_per_page = $vp->getResultsByPage();
         $view = $vp->getView();
         $order = $vp->getOrder();
-        $illustrated = $vp->getIllustrated();
 
         $this->boolean($show_pics)->isTrue();
         $this->variable($res_per_page)->isIdenticalTo(10);
         $this->string($view)->isIdenticalTo(Vp::VIEW_LIST);
         $this->variable($order)->isIdenticalTo(Vp::ORDER_RELEVANCE);
-        $this->boolean($illustrated)->isFalse();
 
         $client = static::createClient();
         $crawler = $client->request(
@@ -58,8 +56,7 @@ class ViewParams extends Units\WebTestCase
             array(
                 'view'              => Vp::VIEW_THUMBS,
                 'results_by_page'   => 13,
-                'results_order'     => 1,
-                'illustrated'       => true
+                'results_order'     => 1
             )
         );
         $req = $client->getRequest();
@@ -68,12 +65,10 @@ class ViewParams extends Units\WebTestCase
         $res_per_page = $vp->getResultsByPage();
         $view = $vp->getView();
         $order = $vp->getOrder();
-        $illustrated = $vp->getIllustrated();
 
         $this->variable($res_per_page)->isIdenticalTo(13);
         $this->string($view)->isIdenticalTo(Vp::VIEW_THUMBS);
         $this->variable($order)->isIdenticalTo(Vp::ORDER_TITLE);
-        $this->boolean($illustrated)->isTrue();
 
         $this->exception(
             function () use ( $vp ) {
@@ -92,14 +87,12 @@ class ViewParams extends Units\WebTestCase
             'POST',
             '/placebo',
             array(
-                'view'          => Vp::VIEW_TEXT_LIST,
-                'illustrated'   => false
+                'view'          => Vp::VIEW_TEXT_LIST
             )
         );
         $req = $client->getRequest();
         $vp->bind($req);
 
-        $this->string($view)->isIdenticalTo(Vp::VIEW_TEXT_LIST);
-        $this->boolean($illustrated)->isFalse();*/
+        $this->string($view)->isIdenticalTo(Vp::VIEW_TEXT_LIST);*/
     }
 }
