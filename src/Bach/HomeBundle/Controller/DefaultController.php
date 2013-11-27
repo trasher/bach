@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
+use Bach\HomeBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -748,6 +749,25 @@ class DefaultController extends Controller
         } else {
             $tpl = 'BachHomeBundle:Default:display.html.twig';
             $tplParams['ajax'] = false;
+        }
+
+        //retrieve comments
+        $query = $this->getDoctrine()->getManager()
+            ->createQuery(
+                'SELECT c, d FROM BachHomeBundle:Comment c
+                JOIN c.eadfile d
+                WHERE c.state = :state
+                AND d.fragmentid = :docid
+                ORDER BY c.creation_date, c.id DESC'
+            )->setParameters(
+                array(
+                    'state' => Comment::PUBLISHED,
+                    'docid' => $docid
+                )
+            );
+        $comments = $query->getResult();
+        if ( count($comments) > 0 ) {
+            $tplParams['comments'] = $comments;
         }
 
         /** FIXME: find a suitable comportement for the stuff to avoid loops

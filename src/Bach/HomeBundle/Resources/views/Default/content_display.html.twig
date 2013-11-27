@@ -41,11 +41,35 @@
                         {%- else -%}
                             {% trans %}Untitled unit{% endtrans %}
                         {%- endif -%}
-
                         </a>
                     </li>
                 {% endfor %}
                 </ul>
+            </section>
+        {% endif %}
+        {% if comments is defined %}
+            <section id="comments">
+                <header>
+                    <h3>{% trans %}User comments{% endtrans %}</h3>
+                </header>
+                {% for comment in comments %}
+                    <article>
+                        <header>
+                            <h4>
+                                {{ comment.subject }},
+                                <span class="author">
+                                {% if comment.getOpenedBy %}
+                                    {% trans with {'%user%': comment.getOpenedBy} %}By %user%{% endtrans %}
+                                {% endif %}
+                                {% trans with {'%date%': comment.getLocalizedCreationDate} %}on %date%{% endtrans %}
+                                </span>
+                            </h4>
+                        </header>
+                        <div>
+                            {{ comment.message|raw }}
+                        </div>
+                    </article>
+                {% endfor %}
             </section>
         {% endif %}
     </article>

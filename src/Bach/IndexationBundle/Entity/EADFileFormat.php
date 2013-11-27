@@ -97,6 +97,11 @@ class EADFileFormat extends MappedFileFormat
     protected $fragmentid;
 
     /**
+     * @ORM\OneToMany(targetEntity="\Bach\HomeBundle\Entity\Comment", mappedBy="eadfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $comments;
+
+    /**
      * The constructor
      *
      * @param array $data The input data
@@ -107,6 +112,7 @@ class EADFileFormat extends MappedFileFormat
         $this->dates = new ArrayCollection();
         $this->daos = new ArrayCollection();
         $this->parents_titles = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         parent::__construct($data);
     }
 

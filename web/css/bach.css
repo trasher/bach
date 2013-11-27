@@ -1079,15 +1079,26 @@ div.sonata-bc .pagination {
     z-index: 80!important;
 }
 
+/*
+ * ====== Comments ======
+ */
+#comments h3 {
+    border-bottom: 1px solid;
+}
+
+#comments header .author {
+    font-size: .85em;
+}
+
 /** Old design */
-#flash-warnings, #flash-errors {
+#flash-warnings, #flash-errors, #flash-success {
     padding: .2em 1em .2em 80px;
     border-radius: 6px;
     margin: 0 1em .5em;
     text-align: center;
 }
 
-#flash-warnings h3, #flash-errors h3 {
+#flash-warnings h3, #flash-errors h3, #flash-success h3 {
     margin: 0 0 .5em;
 }
 
@@ -1101,6 +1112,12 @@ div.sonata-bc .pagination {
     background: #dc0000 url(../img/error.png) 10px 50% no-repeat;
     background: rgba(220, 0, 0, 0.4) url(../img/error.png) 10px 50% no-repeat;
     border: 1px solid #dc0000;
+}
+
+#flash-success {
+    background: #04cc65 url(../img/error.png) 10px 50% no-repeat;
+    background: rgba(4, 204, 101, 0.4) url(../img/success.png) 10px 50% no-repeat;
+    border: 1px solid #04cc65;
 }
 
 .clear {

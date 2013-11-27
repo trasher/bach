@@ -25,3 +25,14 @@ services:
             - [ setTemplate, [edit, BachHomeBundle:Admin:edit_wmap.html.twig] ]
             - [ setTranslationDomain, [BachHomeBundle]]
 
+    sonata.admin.comment:
+        class: Bach\HomeBundle\Admin\CommentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Search", label: "Comments" }
+        arguments:
+            - ~
+            - Bach\HomeBundle\Entity\Comment
+            - BachHomeBundle:CommentAdmin
+        calls:
+            - [ setTranslationDomain, [BachHomeBundle]]
+

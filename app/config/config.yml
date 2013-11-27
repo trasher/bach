@@ -193,10 +193,15 @@ ivory_ck_editor:
             toolbar: 'bach_head_toolbar'
             uiColor: '#a3968d'
             filebrowserBrowseRoute: elfinder
+        #Comments configuration
+        bach_comment_edit:
+            toolbar: 'bach_comment_toolbar'
+            uiColor: '#a3968d'
     toolbars:
         configs:
             bach_head_toolbar: [ '@head_paragraph', '-', '@basicstyles', '-',  '@head_links', '@insert', '@editing', '-', '@document', '-', '@head_tools' ]
             bach_full_toolbar: [ '@styles', '-', '@colors', '-', '@basicstyles', '-', '@links', '/', '@paragraph', '-', '@insert', '-', '@clipboard', '/', '@editing', '-', '@document', '-', '@tools' ]
+            bach_comment_toolbar: [ '@head_paragraph', '-', '@basicstyles', '-',  '@head_links', '@editing', '-', '@head_tools' ]
         items:
             styles: [ 'Styles', 'Format', 'Font', 'FontSize']
             colors: [ 'TextColor', 'BGColor']

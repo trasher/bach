@@ -35,7 +35,7 @@ Displays an EAD fragment as HTML
         <div class="content" id="{$id}">
             <xsl:choose>
                 <xsl:when test="$full = 1">
-                    <xsl:if test="not($children = '') or .//dao|.//daoloc">
+                    <!--<xsl:if test="not($children = '') or .//dao|.//daoloc">-->
                         <ul class="access">
                             <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Content')"/></a></li>
                             <xsl:if test=".//dao|.//daoloc">
@@ -44,8 +44,9 @@ Displays an EAD fragment as HTML
                             <xsl:if test="not($children = '')">
                                 <li><a href="#children_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Sub-units')"/></a></li>
                             </xsl:if>
+                            <li><a href="__path_add_comment__"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Add comment')"/></a></li>
                         </ul>
-                    </xsl:if>
+                        <!--</xsl:if>-->
 
                     <xsl:apply-templates mode="full"/>
 

@@ -40,3 +40,7 @@ bach_fullfacet:
 bach_geozones:
     pattern: /geo/zones/{bbox}
     defaults: {_controller: BachHomeBundle:Default:getZones}
+
+bach_add_comment:
+    pattern: /comment/{docid}/add
+    defaults: { _controller: BachHomeBundle:Comments:add }

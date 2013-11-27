@@ -110,6 +110,17 @@
                 {% endfor %}
             </div>
             {% endif %}
+            {# Globally display success #}
+            {% if app.session.flashbag.has('success') %}
+            <div id="flash-success" class="noscript">
+                <h3>{% trans %}Done{% endtrans %}</h3>
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="flash-message">
+                    {{ flashMessage | raw }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
             {% block container %} {% endblock %}
         </div>

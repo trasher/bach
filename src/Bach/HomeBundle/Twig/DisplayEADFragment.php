@@ -129,6 +129,17 @@ class DisplayEADFragment extends \Twig_Extension
             $callback,
             $text
         );
+
+        $add_comment_path = $router->generate(
+            'bach_add_comment',
+            array('docid' => $docid)
+        );
+
+        $text = str_replace(
+            '__path_add_comment__',
+            $add_comment_path,
+            $text
+        );
         return $text;
     }
 
@@ -225,6 +236,9 @@ class DisplayEADFragment extends \Twig_Extension
             break;
         case 'Sub-units':
             return _('Sub-units');
+            break;
+        case 'Add comment':
+            return _('Add comment');
             break;
         default:
             //TODO: add an alert in logs, a translation may be missing!
