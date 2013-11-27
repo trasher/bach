@@ -223,4 +223,17 @@ class Facets
         return $this->position;
     }
 
+    /**
+     * String representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if ( $this->getSolrFieldName() ) {
+            return $this->getSolrFieldName();
+        } else {
+            return _('New facet');
+        }
+    }
 }
