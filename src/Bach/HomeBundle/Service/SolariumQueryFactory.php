@@ -449,13 +449,14 @@ class SolariumQueryFactory
                 foreach ( $polygons as $polygon ) {
                     $id = $polygon->getId();
                     $name = $polygon->getIndexedName();
-                    $count = $values[$name];
-                    $json = $polygon->getGeojson();
 
                     if ( !isset($values[$name]) ) {
                         //for MySQL, Vénéjan is the same as Venejan...
                         continue;
                     }
+
+                    $count = $values[$name];
+                    $json = $polygon->getGeojson();
 
                     $geometry = null;
                     if ( $zones !== false
