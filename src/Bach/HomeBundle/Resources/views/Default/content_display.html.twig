@@ -59,8 +59,11 @@
                                 {{ comment.subject }},
                                 <span class="author">
                                 {% if comment.getOpenedBy %}
-                                    {% trans with {'%user%': comment.getOpenedBy} %}By %user%{% endtrans %}
+                                    {% set uname = comment.getOpenedBy %}
+                                {% else %}
+                                    {% set uname = 'Anonymous'|trans %}
                                 {% endif %}
+                                {% trans with {'%user%': uname} %}By %user%{% endtrans %}
                                 {% trans with {'%date%': comment.getLocalizedCreationDate} %}on %date%{% endtrans %}
                                 </span>
                             </h4>
