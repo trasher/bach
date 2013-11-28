@@ -11,9 +11,11 @@
 {% block container %}
     <h2>{{ "title_user_account" | trans({}, 'SonataUserBundle')}} - {% trans %}Edit authentication{% endtrans %}</h2>
 
+    <div class="form">
     <form action="{{ path('sonata_user_profile_edit_authentication') }}" method="POST">
         {{ form_rest(form) }}
 
         <input type="submit" name="submit" value="{{ 'sonata_user_submit'|trans({}, 'SonataUserBundle') }}" />
     </form>
+    </div>
 {% endblock %}
