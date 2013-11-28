@@ -191,7 +191,7 @@ class CommentAdmin extends Admin
 
         if ( $this->hasRoute('edit') && $this->isGranted('edit') ) {
             $actions['publish'] = array(
-                'label'             => _('Publish comments"'),
+                'label'             => _('Publish comments'),
                 'ask_confirmation'  => true
             );
         }
