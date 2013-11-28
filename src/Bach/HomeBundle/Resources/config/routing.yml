@@ -20,6 +20,13 @@ bach_suggest:
     pattern: /suggest
     defaults: { _controller: BachHomeBundle:Default:doSuggest }
 
+bach_display_document_paginate:
+    pattern: /show/{docid}/{page}/{ajax}
+    defaults: { _controller BachHomeBundle:Default:displayDocument, page: 1, ajax: false }
+    requirements:
+        _method: GET
+        page: \d+
+
 bach_display_document:
     pattern: /show/{docid}/{ajax}
     defaults: { _controller BachHomeBundle:Default:displayDocument, ajax: false }

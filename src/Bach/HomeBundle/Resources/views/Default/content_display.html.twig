@@ -30,7 +30,7 @@
         {% if not children == false %}
             <section id="children_documents">
                 <header>
-                    <h3>{% trans %}Sub units{% endtrans %}</h3>
+                    <h3>{% trans %}Sub units{% endtrans %} ({{ count_children }})</h3>
                 </header>
                 <ul>
                 {% for child in children %}
@@ -45,6 +45,15 @@
                     </li>
                 {% endfor %}
                 </ul>
+                {% if totalPages > 1 %}
+                    {% include 'pagination.html.twig' with {
+                        currentFilters: { docid: docid },
+                        currentPage: page,
+                        paginationPath: 'bach_display_document_paginate',
+                        lastPage: totalPages,
+                        anchor: 'children_documents'
+                    } only %}
+                {% endif %}
             </section>
         {% endif %}
         {% if comments is defined %}

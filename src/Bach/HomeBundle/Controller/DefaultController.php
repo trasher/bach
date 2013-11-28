@@ -669,11 +669,12 @@ class DefaultController extends Controller
      * Document display
      *
      * @param int     $docid Document unique identifier
+     * @param int     $page  Page
      * @param boolean $ajax  Called from ajax
      *
      * @return void
      */
-    public function displayDocumentAction($docid, $ajax = false)
+    public function displayDocumentAction($docid, $page = 1, $ajax = false)
     {
         $client = $this->get("solarium.client");
         $query = $client->createSelect();
@@ -726,6 +727,7 @@ class DefaultController extends Controller
             }
         }
 
+        $max_results = 20;
         $cquery = $client->createSelect();
         $pid = substr($docid, strlen($doc['headerId']) + 1);
         if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
@@ -733,12 +735,20 @@ class DefaultController extends Controller
         }
         $query = '+headerId:"' . $doc['headerId'] . '" +parents: ' . $pid;
         $cquery->setQuery($query);
+        $cquery->setStart(($page - 1) * $max_results);
+        $cquery->setRows($max_results);
         $cquery->setFields('fragmentid, cUnittitle');
         $rs = $client->select($cquery);
         $children  = $rs->getDocuments();
+        $count_children = $rs->getNumFound();
 
         if ( count($children) > 0 ) {
+            $tplParams['count_children'] = $count_children;
             $tplParams['children'] = $children;
+            if ( count($children) < $count_children ) {
+                $tplParams['totalPages'] = ceil($count_children/$max_results);
+                $tplParams['page'] = $page;
+            }
         } else {
             $tplParams['children'] = false;
         }
