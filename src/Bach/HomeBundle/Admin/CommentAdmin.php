@@ -104,7 +104,7 @@ class CommentAdmin extends Admin
                 'subject',
                 null,
                 array(
-                    'label' => _('Suject')
+                    'label' => _('Subject')
                 )
             )->add(
                 'opened_by',

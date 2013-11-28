@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-26 14:06+0100\n"
-"PO-Revision-Date: 2013-11-26 14:09+0100\n"
+"POT-Creation-Date: 2013-11-28 09:47+0100\n"
+"PO-Revision-Date: 2013-11-28 09:47+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: en_US\n"
@@ -16,6 +16,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.5.4\n"
+
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:48
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:57
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:107
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:165
+#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:50
+msgid "Subject"
+msgstr "Subject"
+
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:56
+#: src/Bach/HomeBundle/Entity/Comment.php:395
+msgid "Comment"
+msgstr "Comment"
+
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:57
+#: src/Bach/HomeBundle/Entity/Comment.php:396
+msgid "Improvement"
+msgstr "Improvement"
+
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:58
+#: src/Bach/HomeBundle/Entity/Comment.php:397
+msgid "Bug"
+msgstr "Bug"
+
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:60
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:50
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:129
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:159
+msgid "Type"
+msgstr "Type"
+
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:68
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:63
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:81
+msgid "Message"
+msgstr "Message"
+
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:75
+msgid "Send your comment"
+msgstr "Send your comment"
+
+#: src/Bach/HomeBundle/Controller/CommentsController.php:72
+msgid "Your comment has been stored. Thank you!"
+msgstr "Your comment has been stored. Thank you!"
 
 #: src/Bach/HomeBundle/Controller/FilesController.php:46
 msgid "Videos path is not defined!"
@@ -34,15 +78,23 @@ msgstr "Misc files path is not defined!"
 msgid "File %file does not exists."
 msgstr "File %file does not exists."
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:225
+#: src/Bach/HomeBundle/Controller/CommentAdminController.php:63
+msgid "An error occured trying to publish comments :("
+msgstr "An error occured trying to publish comments :("
+
+#: src/Bach/HomeBundle/Controller/CommentAdminController.php:69
+msgid "Selected comments have been published"
+msgstr "Selected comments have been published"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:226
 msgid "Start date"
 msgstr "Start date"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:226
+#: src/Bach/HomeBundle/Controller/DefaultController.php:227
 msgid "End date"
 msgstr "End date"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:690
+#: src/Bach/HomeBundle/Controller/DefaultController.php:691
 msgid "%count% results found, 1 expected."
 msgstr "%count% results found, 1 expected."
 
@@ -90,113 +142,117 @@ msgstr ""
 msgid "Display '%name%'"
 msgstr "Display '%name%'"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:149
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:160
 msgid "Publication informations"
 msgstr "Publication informations"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:152
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:163
 msgid "Physical description"
 msgstr "Physical description"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:155
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:166
 msgid "Descriptors"
 msgstr "Descriptors"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:158
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:169
 msgid "Gender:"
 msgstr "Gender:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:161
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:172
 msgid "Extent:"
 msgstr "Extent:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:164
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:175
 msgid "Dimensions:"
 msgstr "Dimensions:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:167
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:178
 msgid "Appearance:"
 msgstr "Appearance:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:170
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:181
 msgid "Title:"
 msgstr "Title:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:173
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:184
 msgid "Corporate name:"
 msgstr "Corporate name:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:176
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:187
 msgid "Geographical name:"
 msgstr "Geographical name:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:179
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:190
 msgid "Subject:"
 msgstr "Subject:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:182
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:193
 msgid "Personal name:"
 msgstr "Personal name:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:185
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:196
 msgid "Function:"
 msgstr "Function:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:188
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:199
 msgid "Name:"
 msgstr "Name:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:191
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:202
 msgid "Relative documents"
 msgstr "Relative documents"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:194
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:205
 msgid "Description:"
 msgstr "Description:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:197
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:208
 msgid "Conservation history:"
 msgstr "Conservation history:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:200
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:211
 msgid "Arrangement:"
 msgstr "Arrangement:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:203
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:214
 msgid "Related material:"
 msgstr "Related material:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:206
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:217
 msgid "Bibliography:"
 msgstr "Bibliography:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:209
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:220
 msgid "Biography or history:"
 msgstr "Biography or history:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:212
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:223
 msgid "Acquisition information:"
 msgstr "Acquisition information:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:215
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:226
 msgid "Separated material:"
 msgstr "Separated material:"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:218
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:229
 msgid "Untitled unit"
 msgstr "Untitled unit"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:221
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:232
 msgid "Content"
 msgstr "Content"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:224
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:235
 msgid "Documents"
 msgstr "Documents"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:227
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:238
 msgid "Sub-units"
 msgstr "Sub-units"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:241
+msgid "Add comment"
+msgstr "Add comment"
 
 #: src/Bach/HomeBundle/Admin/GeolocAdmin.php:107
 msgid "Bounding box"
@@ -239,13 +295,33 @@ msgstr "English text"
 msgid "Active"
 msgstr "Active"
 
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:69
+msgid "Creation date"
+msgstr "Creation date"
+
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:75
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:113
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:152
+msgid "From"
+msgstr "From"
+
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:88
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:119
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:178
+msgid "State"
+msgstr "State"
+
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:171
+msgid "Date"
+msgstr "Date"
+
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:194
+msgid "Publish comments"
+msgstr "Publish comments"
+
 #: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:45
 msgid "Document"
 msgstr "Document"
-
-#: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:50
-msgid "Subject"
-msgstr "Subject"
 
 #: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:55
 msgid "Personal name"
@@ -254,6 +330,10 @@ msgstr "Personal name"
 #: src/Bach/HomeBundle/DataFixtures/ORM/LoadDefaultFacets.php:60
 msgid "Geographical name"
 msgstr "Geographical name"
+
+#: src/Bach/HomeBundle/Entity/Facets.php:236
+msgid "New facet"
+msgstr "New facet"
 
 #: src/Bach/HomeBundle/Entity/SearchQueryFormType.php:60
 msgid "Enter your search"
@@ -277,6 +357,26 @@ msgstr "View %s is not known!"
 msgid "Order %s is not known!"
 msgstr "Order %s is not known!"
 
+#: src/Bach/HomeBundle/Entity/Comment.php:154
+msgid "Y-m-d"
+msgstr "Y-m-d"
+
+#: src/Bach/HomeBundle/Entity/Comment.php:383
+msgid "New comment"
+msgstr "New comment"
+
+#: src/Bach/HomeBundle/Entity/Comment.php:409
+msgid "Moderated"
+msgstr "Moderated"
+
+#: src/Bach/HomeBundle/Entity/Comment.php:410
+msgid "Published"
+msgstr "Published"
+
+#: src/Bach/HomeBundle/Entity/Comment.php:411
+msgid "Rejected"
+msgstr "Rejected"
+
 #: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:134
 #: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:229
 msgid "Yes"
@@ -286,8 +386,8 @@ msgstr "Yes"
 msgid "No"
 msgstr "No"
 
-#~ msgid "document"
-#~ msgstr "Document"
+#~ msgid "Suject"
+#~ msgstr "Suject"
 
 #~ msgid "subject"
 #~ msgstr "Subjects"

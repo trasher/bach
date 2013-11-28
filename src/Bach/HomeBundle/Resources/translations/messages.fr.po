@@ -138,3 +138,28 @@ msgstr "Entrez votre recherche..."
 
 msgid "Sorry, that place cannot be found."
 msgstr "Désolé, ce lieu n'a pas été trouvé."
+
+msgid "User comments"
+msgstr "Commentaires utilisateurs"
+
+msgid "Anonymous"
+msgstr "Anonyme"
+
+msgid "By %user%"
+msgstr "Par %user%"
+
+msgid "on %date%"
+msgstr "le %date%"
+
+msgid "Back to document"
+msgstr "Retour au document"
+
+msgid "Add a comment"
+msgstr "Ajouter un commentaire"
+
+msgid "New comment"
+msgstr "Nouveau commentaire"
+
+msgid "Context:"
+msgstr "Contexte :"
+

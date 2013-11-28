@@ -140,3 +140,27 @@ msgstr "Enter your search..."
 msgid "Sorry, that place cannot be found."
 msgstr "Sorry, that place cannot be found."
 
+msgid "User comments"
+msgstr "User comments"
+
+msgid "Anonymous"
+msgstr "Anonymous"
+
+msgid "By %user%"
+msgstr "By %user%"
+
+msgid "on %date%"
+msgstr "on %date%"
+
+msgid "Back to document"
+msgstr "Back to document"
+
+msgid "Add a comment"
+msgstr "Add a comment"
+
+msgid "New comment"
+msgstr "New comment"
+
+msgid "Context:"
+msgstr "Context:"
+

@@ -83,8 +83,9 @@ class CommentsController extends Controller
             return $this->render(
                 'BachHomeBundle:Comment:add.html.twig',
                 array(
-                    'docid' => $docid,
-                    'form'  => $form->createView()
+                    'docid'     => $docid,
+                    'form'      => $form->createView(),
+                    'eadfile'   => $eadfile
                 )
             );
         }

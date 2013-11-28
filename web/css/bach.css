@@ -1096,6 +1096,25 @@ div.sonata-bc .pagination {
     font-size: .85em;
 }
 
+/*
+ * ===== Forms =====
+ */
+.form label {
+    display: inline-block;
+    width: 10em;
+    background-color: #a3968d;
+    padding: .2em .5em;
+    font-weight: bold;
+}
+
+.form input[type=text] {
+    width: 25em;
+}
+
+.form form > div > div {
+    margin-bottom: .2em;
+}
+
 /** Old design */
 #flash-warnings, #flash-errors, #flash-success {
     padding: .2em 1em .2em 80px;
