@@ -45,7 +45,7 @@
                     </li>
                 {% endfor %}
                 </ul>
-                {% if totalPages is defined and  totalPages > 1 %}
+                {% if totalPages is defined and totalPages > 1 %}
                     {% include 'pagination.html.twig' with {
                         currentFilters: { docid: docid },
                         currentPage: page,

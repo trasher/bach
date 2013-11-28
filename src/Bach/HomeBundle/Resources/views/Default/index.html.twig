@@ -554,7 +554,9 @@
             })
 
             var _layers = L.layerGroup([allpoints]).addTo(map);
-            map.fitBounds(allpoints.getBounds());
+            map.fitBounds(allpoints.getBounds(), {
+                padding: [50, 50]
+            });
 
             var _legend;
 
@@ -620,7 +622,7 @@
                                     _loadLegend();
                                 }
 
-                                if ( e.type != 'dragend' ) {
+                                if ( e && e.type != 'dragend' ) {
                                     _legend.addTo(map);
                                 }
                                 _state_changed = false;
@@ -640,6 +642,7 @@
             map.on('zoomend', checkZones);
             map.on('dragend', checkZones);
             map.on('resize', checkZones);
+            checkZones();
     {% endif %}
 {% endif %}
             //handle viewer links
