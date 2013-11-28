@@ -189,7 +189,7 @@ class CommentAdmin extends Admin
     {
         $actions = parent::getBatchActions();
 
-        if ( $this->hasRoute('edit') && $this->isGranted('edit') ) {
+        if ( $this->hasRoute('edit') && $this->isGranted('EDIT') ) {
             $actions['publish'] = array(
                 'label'             => _('Publish comments'),
                 'ask_confirmation'  => true
