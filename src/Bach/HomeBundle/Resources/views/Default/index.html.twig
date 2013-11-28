@@ -187,6 +187,18 @@
                         {%- endif -%}
                         </a>
                     </h3>
+                    {%- if document.parents_titles is defined -%}
+                        {% set parents_ids = document.parents|split('/') %}
+                        <p>
+                            {% for ptitle in document.parents_titles %}
+                                <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ parents_ids[loop.index0]}) }}" property="dc:isPartOf">
+                                    {{ ptitle }}
+                                </a>
+                                {% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                    {%- endif -%}
+
                     {{ displayFragment(document.fragment, document.fragmentid)|raw }}
                     </div>
                     {% endif %}
