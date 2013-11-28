@@ -1082,8 +1082,14 @@ div.sonata-bc .pagination {
 /*
  * ====== Comments ======
  */
+#comments {
+    background-color: #d1c6c0;
+    padding: .5em;
+    border-radius: 6px;
+}
+
 #comments h3 {
-    border-bottom: 1px solid;
+    border-bottom: 1px dashed;
 }
 
 #comments header .author {
