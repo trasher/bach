@@ -758,7 +758,7 @@ class DefaultController extends Controller
                 JOIN c.eadfile d
                 WHERE c.state = :state
                 AND d.fragmentid = :docid
-                ORDER BY c.creation_date, c.id DESC'
+                ORDER BY c.creation_date DESC, c.id DESC'
             )->setParameters(
                 array(
                     'state' => Comment::PUBLISHED,
