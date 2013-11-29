@@ -17,6 +17,7 @@ use Symfony\Component\Finder\Finder;
 use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
+use Bach\HomeBundle\Entity\Filters;
 use Solarium\QueryType\Select\Result\Facet\Field;
 use Doctrine\ORM\EntityRepository;
 
@@ -294,7 +295,7 @@ class SolariumQueryFactory
      *
      * @return array
      */
-    public function getSliderDates($filters)
+    public function getSliderDates(Filters $filters)
     {
         list($min_date, $max_date) = $this->_loadDatesFromStats();
 
@@ -585,7 +586,7 @@ class SolariumQueryFactory
      *
      * @return void
      */
-    public function setDatesBounds($filters)
+    public function setDatesBounds(Filters $filters)
     {
         list($low,$up) = $this->_getDates($filters);
 
@@ -609,7 +610,7 @@ class SolariumQueryFactory
      *
      * @return array
      */
-    private function _getDates($filters)
+    private function _getDates(Filters $filters)
     {
         list($min_date, $max_date) = $this->_loadDatesFromStats(false, true);
         if ( !$filters->offsetExists('cDate') ) {
