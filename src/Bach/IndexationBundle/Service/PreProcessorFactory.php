@@ -1,8 +1,16 @@
 <?php
 
-/*
-* This file is part of the Bach project.
-*/
+/**
+ * Pre processor factory
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Bach\IndexationBundle\Service;
 
@@ -11,48 +19,58 @@ use Bach\IndexationBundle\Entity\PreProcessor\JavaPreProcessor;
 use Bach\IndexationBundle\Entity\PreProcessor\PHPPreProcessor;
 use Bach\IndexationBundle\Entity\DataBag;
 
+
 /**
-* PreProcessorFactory provides PreProcessor
-*
-* @author Anaphore PI Team
-*/
+ * Pre processor factory
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <unknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class PreProcessorFactory
 {
-	private $dataBagFactory;
-	
-	public function __construct(DataBagFactory $factory)
-	{
-		$this->dataBagFactory = $factory;
-	}
-	
-	public function preProcess(DataBag $fileBag, $processorFilename)
-	{
-		$spl = new \SplFileInfo($processorFilename);
-		if ($spl->isFile()) {
-			switch($spl->getExtension())
-			{
-				case 'xsl':
-					$processor = new XSLTPreProcessor($this->dataBagFactory);
-					break;
-					
-				case 'java':
-					$processor = new JavaPreProcessor($this->dataBagFactory);
-					break;
-					
-				case 'php':
-					$processor = new PHPPreProcessor($this->dataBagFactory);
-					break;
-			}
-			
-			if(!is_null($processor))
-			{
-				return $processor->process($fileBag, $spl);
-			}else
-			{
-				return $fileBag;
-			}
-		} else {
-			return $fileBag;
-		}
-	}
+    private $dataBagFactory;
+    
+    public function __construct(DataBagFactory $factory)
+    {
+        $this->dataBagFactory = $factory;
+    }
+
+    /**
+     * Pre process data
+     *
+     * @param DataBag $fileBag           Data bag to process
+     * @param string  $processorFilename Processor name
+     *
+     * @return mixed
+     */
+    public function preProcess(DataBag $fileBag, $processorFilename)
+    {
+        $spl = new \SplFileInfo($processorFilename);
+        if ($spl->isFile()) {
+            switch($spl->getExtension())
+            {
+            case 'xsl':
+                $processor = new XSLTPreProcessor($this->dataBagFactory);
+                break;
+            case 'java':
+                $processor = new JavaPreProcessor($this->dataBagFactory);
+                break;
+            case 'php':
+                $processor = new PHPPreProcessor($this->dataBagFactory);
+                break;
+            }
+
+            if ( !is_null($processor) ) {
+                return $processor->process($fileBag, $spl);
+            } else {
+                return $fileBag;
+            }
+        } else {
+            return $fileBag;
+        }
+    }
 }

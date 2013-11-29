@@ -1,8 +1,29 @@
 <?php
+/**
+ * Core status view object
+ *
+ * PHP version 5
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
 namespace Bach\AdministrationBundle\Entity\Helpers\ViewObjects;
 
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
+/**
+ * Core status view object
+ *
+ * @category Administration
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class CoreStatus
 {
     public $startTime;

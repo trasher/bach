@@ -1,70 +1,99 @@
 <?php
+/**
+ * Object tree
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 namespace Bach\IndexationBundle\Entity;
 
 use Bach\IndexationBundle\ObjectTreeComponentInterface;
 
+/**
+ * Object tree
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 class ObjectTree implements ObjectTreeComponentInterface
 {
-    private $sheets = array();
-    private $children = array();
-    private $name;
+    private $_sheets = array();
+    private $_children = array();
+    private $_name;
 
     /**
-    * The constructor
-    * @param string $name The name of the tree
-    */
+     * The constructor
+     *
+     * @param string $name The name of the tree
+     */
     public function __construct($name)
     {
-        $this->name = $name;
+        $this->_name = $name;
     }
 
     /**
-    * Add a component to the tree
-    * @param ObjectTreeComponentInterface $sheet The component to add
-    */
+     * Add a component to the tree
+     *
+     * @param ObjectTreeComponentInterface $sheet The component to add
+     *
+     * @return void
+     */
     public function append(ObjectTreeComponentInterface $sheet)
     {
         if ($sheet instanceof ObjectTree) {
-            if (array_key_exists($sheet->getName(), $this->children)
-                || array_key_exists($sheet->getName(), $this->sheets)) {
+            if (array_key_exists($sheet->getName(), $this->_children)
+                || array_key_exists($sheet->getName(), $this->_sheets)
+            ) {
                 throw new \RuntimeException("ObjectTree sheet conflict name");
             } else {
-                $this->children[$sheet->getName()] = $sheet;
+                $this->_children[$sheet->getName()] = $sheet;
             }
         } elseif ($sheet instanceof ObjectSheet) {
-            if (array_key_exists($sheet->getName(), $this->children)
-            || array_key_exists($sheet->getName(), $this->sheets)) {
+            if (array_key_exists($sheet->getName(), $this->_children)
+                || array_key_exists($sheet->getName(), $this->_sheets)
+            ) {
                 throw new \RuntimeException("ObjectTree sheet conflict name");
             } else {
-                $this->sheets[$sheet->getName()] = $sheet;
+                $this->_sheets[$sheet->getName()] = $sheet;
             }
         }
     }
 
     /**
-    * Retrieve a component from the tree
-    * @param string $name The name of the component
-    * @return ObjectTree|ObjectSheet The tree component
-    */
+     * Retrieve a component from the tree
+     *
+     * @param string $name The name of the component
+     *
+     * @return ObjectTree|ObjectSheet The tree component
+     */
     public function get($name)
     {
-        if ( isset($this->children[$name]) ) {
-            return $this->children[$name];
+        if ( isset($this->_children[$name]) ) {
+            return $this->_children[$name];
         }
 
-        if ( isset($this->sheets[$name]) ) {
-            return $this->sheets[$name];
+        if ( isset($this->_sheets[$name]) ) {
+            return $this->_sheets[$name];
         }
 
         return false;
     }
 
     /**
-    * Name Getter
-    * @return string The name of the sheet
-    */
+     * Get name
+     *
+     * @return string The name of the sheet
+     */
     public function getName()
     {
-        return $this->name;
+        return $this->_name;
     }
 }

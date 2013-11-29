@@ -1,11 +1,31 @@
 <?php
+/**
+ * EAD DAOs entity
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
- * EADDaos
+ * EAD DAOs entity
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -182,7 +202,7 @@ class EADDaos
     /**
      * Set eadfile
      *
-     * @param EADFileFormat $eadfile
+     * @param EADFileFormat $eadfile EAD file
      *
      * @return EADDates
      */

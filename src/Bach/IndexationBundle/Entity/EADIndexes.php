@@ -1,11 +1,30 @@
 <?php
+/**
+ * EAD indexes entity
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * EADIndexes
+ * EAD indexes entity
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Anaphore PI Team <uknown@unknown.com>
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -133,7 +152,7 @@ class EADIndexes
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -166,20 +185,20 @@ class EADIndexes
     /**
      * Set name
      *
-     * @param string $name
+     * @param string $name Name
+     *
      * @return EADIndexes
      */
     public function setName($name)
     {
         $this->name = $name;
-    
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -189,20 +208,20 @@ class EADIndexes
     /**
      * Set normal
      *
-     * @param string $normal
+     * @param string $normal Normalized representation
+     *
      * @return EADIndexes
      */
     public function setNormal($normal)
     {
         $this->normal = $normal;
-    
         return $this;
     }
 
     /**
      * Get normal
      *
-     * @return string 
+     * @return string
      */
     public function getNormal()
     {
@@ -212,20 +231,20 @@ class EADIndexes
     /**
      * Set role
      *
-     * @param string $role
+     * @param string $role Role
+     *
      * @return EADIndexes
      */
     public function setRole($role)
     {
         $this->role = $role;
-    
         return $this;
     }
 
     /**
      * Get role
      *
-     * @return string 
+     * @return string
      */
     public function getRole()
     {
@@ -235,20 +254,20 @@ class EADIndexes
     /**
      * Set source
      *
-     * @param string $source
+     * @param string $source Source
+     *
      * @return EADIndexes
      */
     public function setSource($source)
     {
         $this->source = $source;
-    
         return $this;
     }
 
     /**
      * Get source
      *
-     * @return string 
+     * @return string
      */
     public function getSource()
     {
@@ -258,13 +277,13 @@ class EADIndexes
     /**
      * Set eadfile
      *
-     * @param EADFileFormat $eadfile
+     * @param EADFileFormat $eadfile EAD file reference
+     *
      * @return EADIndexes
      */
     public function setEadfile(EADFileFormat $eadfile = null)
     {
         $this->eadfile = $eadfile;
-    
         return $this;
     }
 
@@ -281,13 +300,13 @@ class EADIndexes
     /**
      * Set altrender
      *
-     * @param string $altrender
+     * @param string $altrender Alternate render
+     *
      * @return EADIndexes
      */
     public function setAltrender($altrender)
     {
         $this->altrender = $altrender;
-    
         return $this;
     }
 
@@ -304,20 +323,20 @@ class EADIndexes
     /**
      * Set audience
      *
-     * @param string $audience
+     * @param string $audience Audience
+     *
      * @return EADIndexes
      */
     public function setAudience($audience)
     {
         $this->audience = $audience;
-    
         return $this;
     }
 
     /**
      * Get audience
      *
-     * @return string 
+     * @return string
      */
     public function getAudience()
     {
@@ -327,20 +346,20 @@ class EADIndexes
     /**
      * Set authfilenumber
      *
-     * @param string $authfilenumber
+     * @param string $authfilenumber Authfilenumber
+     *
      * @return EADIndexes
      */
     public function setAuthfilenumber($authfilenumber)
     {
         $this->authfilenumber = $authfilenumber;
-    
         return $this;
     }
 
     /**
      * Get authfilenumber
      *
-     * @return string 
+     * @return string
      */
     public function getAuthfilenumber()
     {
@@ -350,20 +369,20 @@ class EADIndexes
     /**
      * Set encodinganalog
      *
-     * @param string $encodinganalog
+     * @param string $encodinganalog Encodinganalog
+     *
      * @return EADIndexes
      */
     public function setEncodinganalog($encodinganalog)
     {
         $this->encodinganalog = $encodinganalog;
-    
         return $this;
     }
 
     /**
      * Get encodinganalog
      *
-     * @return string 
+     * @return string
      */
     public function getEncodinganalog()
     {
@@ -373,20 +392,20 @@ class EADIndexes
     /**
      * Set eadid
      *
-     * @param string $eadid
+     * @param string $eadid EAD id
+     *
      * @return EADIndexes
      */
     public function setEadid($eadid)
     {
         $this->eadid = $eadid;
-    
         return $this;
     }
 
     /**
      * Get eadid
      *
-     * @return string 
+     * @return string
      */
     public function getEadid()
     {
@@ -396,20 +415,20 @@ class EADIndexes
     /**
      * Set rules
      *
-     * @param string $rules
+     * @param string $rules Rules
+     *
      * @return EADIndexes
      */
     public function setRules($rules)
     {
         $this->rules = $rules;
-    
         return $this;
     }
 
     /**
      * Get rules
      *
-     * @return string 
+     * @return string
      */
     public function getRules()
     {

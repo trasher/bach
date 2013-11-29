@@ -1,4 +1,15 @@
 <?php
+/**
+ * Archfile integration task
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
 
 namespace Bach\IndexationBundle\Entity;
 
@@ -6,6 +17,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * Archfile integration task
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ *
  * @ORM\Entity
  * @UniqueEntity("document_id")
  */
@@ -16,20 +35,20 @@ class ArchFileIntegrationTask
     const STATUS_KO = 2;
 
     /**
-    * @ORM\Id
-    * @ORM\Column(type="integer")
-    * @ORM\GeneratedValue(strategy="AUTO")
-    */
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
     protected $taskId;
 
     /**
-    * @ORM\Column(type="string", length=200, nullable=true)
-    */
+     * @ORM\Column(type="string", length=200, nullable=true)
+     */
     protected $preprocessor;
 
     /**
-    * @ORM\Column(type="integer", length=1)
-    */
+     * @ORM\Column(type="integer", length=1)
+     */
     protected $status;
 
     /**
@@ -128,7 +147,7 @@ class ArchFileIntegrationTask
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
