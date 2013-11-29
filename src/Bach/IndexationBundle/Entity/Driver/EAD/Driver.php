@@ -22,8 +22,6 @@ use Bach\IndexationBundle\Exception\UnknownDriverParserException;
 /**
  * EAD file format driver
  *
- * PHP version 5
- *
  * @category Indexation
  * @package  Bach
  * @author   Anaphore PI Team <uknown@unknown.com>

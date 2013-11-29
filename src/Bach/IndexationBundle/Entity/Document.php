@@ -344,6 +344,11 @@ class Document
         return $this;
     }
 
+    /**
+     * Set document as not uploaded
+     *
+     * @return void
+     */
     public function setNotUploaded()
     {
         $this->uploaded = false;

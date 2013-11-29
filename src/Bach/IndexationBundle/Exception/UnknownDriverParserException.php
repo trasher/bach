@@ -1,7 +1,14 @@
 <?php
-
-/*
- * This file is part of the bach project.
+/**
+ * Bach unknown driver parser Exception
+ *
+ * PHP version 5
+ *
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  */
 
 namespace Bach\IndexationBundle\Exception;
@@ -9,10 +16,15 @@ namespace Bach\IndexationBundle\Exception;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 /**
- * BadFileInputFormat
+ * Bach unknown driver parser Exception
  *
- * @author Anpahore PI Team
+ * @category Indexation
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
  */
-class UnknownDriverParserException extends \InvalidArgumentException implements ExceptionInterface
+class UnknownDriverParserException extends \InvalidArgumentException 
+    implements ExceptionInterface
 {
 }

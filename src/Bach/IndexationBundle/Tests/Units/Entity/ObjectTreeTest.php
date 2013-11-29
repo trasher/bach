@@ -90,5 +90,32 @@ class ObjectTree extends Units\Test
     }
 }
 
-class Foo{}
-class Bar{}
+/**
+ * Bach lambda foo class
+ *
+ * PHP version 5
+ *
+ * @category Tests
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+class Foo
+{
+}
+
+/**
+ * Bach lambda bar class
+ *
+ * PHP version 5
+ *
+ * @category Tests
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+class Bar
+{
+}

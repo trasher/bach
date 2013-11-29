@@ -32,11 +32,16 @@ use Bach\IndexationBundle\Entity\DataBag;
  */
 class PreProcessorFactory
 {
-    private $dataBagFactory;
-    
+    private $_dataBagFactory;
+
+    /**
+     * Constructor
+     *
+     * @param DataBagFactory $factory Data bag factory
+     */
     public function __construct(DataBagFactory $factory)
     {
-        $this->dataBagFactory = $factory;
+        $this->_dataBagFactory = $factory;
     }
 
     /**
@@ -54,13 +59,13 @@ class PreProcessorFactory
             switch($spl->getExtension())
             {
             case 'xsl':
-                $processor = new XSLTPreProcessor($this->dataBagFactory);
+                $processor = new XSLTPreProcessor($this->_dataBagFactory);
                 break;
             case 'java':
-                $processor = new JavaPreProcessor($this->dataBagFactory);
+                $processor = new JavaPreProcessor($this->_dataBagFactory);
                 break;
             case 'php':
-                $processor = new PHPPreProcessor($this->dataBagFactory);
+                $processor = new PHPPreProcessor($this->_dataBagFactory);
                 break;
             }
 
