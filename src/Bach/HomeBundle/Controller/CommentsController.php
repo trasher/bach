@@ -14,10 +14,8 @@
 namespace Bach\HomeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\SecurityContext;
 use Bach\HomeBundle\Entity\Comment;
 use Bach\HomeBundle\Form\Type\CommentType;
-use Bach\IndexationBundle\Entity\EADFileFormat;
 
 /**
  * Bach comments controller

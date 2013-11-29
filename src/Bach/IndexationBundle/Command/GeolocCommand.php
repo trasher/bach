@@ -14,12 +14,10 @@
 namespace Bach\IndexationBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bach\IndexationBundle\Entity\Geoloc;
-use Bach\IndexationBundle\Entity\EADIndexes;
 use Bach\IndexationBundle\Entity\Toponym;
 
 /**

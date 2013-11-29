@@ -440,7 +440,6 @@ class SolariumQueryFactory
 
             //prepare json
             if ( count($polygons) > 0 ) {
-                $i = 1;
                 $results = array();
                 foreach ( $polygons as $polygon ) {
                     $id = $polygon->getId();

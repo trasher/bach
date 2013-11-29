@@ -12,9 +12,6 @@
  */
 namespace Bach\IndexationBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * Bach toponym
  *
@@ -83,7 +80,6 @@ class Toponym
         //handle non standards rejected forms
         $rejects_regex = '#(.[^\(]+\s\((.[^\(]+)\))\s\(.+\)#';
         if ( preg_match($rejects_regex, $name, $rejects) ) {
-            //print_r($rejects);
             $_good_name = preg_replace(
                 '# \(.[^\(]+\)#',
                 '',
@@ -100,7 +96,6 @@ class Toponym
         }
 
         if ( preg_match($regex, $name, $matches) ) {
-            //print_r($matches);
             $this->_name = trim($matches[1]);
 
             if ( isset($matches[5]) && trim($matches[5] !== '') ) {

@@ -66,7 +66,7 @@ class BachSchemaConfigReader
      */
     public function getTagByName($name)
     {
-        $nodeList = $this->_doc->getElementsByTagName($tag);
+        $nodeList = $this->_doc->getElementsByTagName($name);
         if ($nodeList->length == 0) {
             return null;
         } else {

@@ -753,7 +753,6 @@ class SolrCoreAdmin
             $status = $this->getStatus();
             if ($status->isOk()) {
                 $cores = $status->getCoreNames();
-                $isExist = false;
                 foreach ($cores as $c) {
                     if ($c == $coreName) {
                         return true;
