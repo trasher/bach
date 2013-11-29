@@ -26,6 +26,7 @@ twig:
     globals:
         lang: '%locale%'
         openid: '%openid_enabled%'
+        expos: '%show_expos%'
 
 # Assetic Configuration
 assetic:
