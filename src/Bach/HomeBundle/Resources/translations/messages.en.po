@@ -164,3 +164,5 @@ msgstr "New comment"
 msgid "Context:"
 msgstr "Context:"
 
+msgid "Show more (%count% left)"
+msgstr "Show more (%count% left)"

@@ -163,3 +163,5 @@ msgstr "Nouveau commentaire"
 msgid "Context:"
 msgstr "Contexte :"
 
+msgid "Show more (%count% left)"
+msgstr "Afficher plus (%count% restants)"
