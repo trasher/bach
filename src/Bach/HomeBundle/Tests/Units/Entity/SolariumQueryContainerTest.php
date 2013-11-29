@@ -77,34 +77,6 @@ class SolariumQueryContainer extends Units\Test
     {
         $qc = new Container();
 
-        $filter_name = $this->faker->name;
-        $filter_value = $this->faker->name;
-
-        $filter2_name = $this->faker->name;
-        $filter2_value = $this->faker->name;
-        $filter3_name = $this->faker->name;
-        $filter3_value = $this->faker->name;
-
-        $qc->setFilter($filter3_name, $filter3_value);
-        $qc->setFilters(
-            array(
-                $filter_name    => $filter_value,
-                $filter2_name   => $filter2_value
-            )
-        );
-
-        $filter = $qc->getFilter($filter_name);
-        $this->string($filter)->isIdenticalTo($filter_value);
-
-        $filters = $qc->getFilters();
-
-        $attendee_filters = array(
-            $filter_name     => $filter_value,
-            $filter2_name    => $filter2_value
-        );
-
-        $this->array($filters)->isIdenticalTo($attendee_filters);
-
         $ordered = $qc->isOrdered();
         $this->boolean($ordered)->isFalse();
 

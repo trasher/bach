@@ -22,6 +22,7 @@ use Bach\HomeBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Bach\HomeBundle\Entity\Filters;
 
 /**
  * Bach home controller
@@ -67,11 +68,15 @@ class DefaultController extends Controller
         $session->set('view_params', $view_params);
 
         $filters = $session->get('filters');
-        if ( !is_array($filters) ) {
-            $filters = array();
+        if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
+            $filters = new Filters();
+            $session->set('filters', null);
         }
 
-        if ( ($request->get('filter_field') || count($filters) > 0)
+        $filters->bind($request);
+        $session->set('filters', $filters);
+
+        if ( ($request->get('filter_field') || $filters->count() > 0)
             && is_null($query_terms)
         ) {
             $query_terms = '*:*';
@@ -121,69 +126,9 @@ class DefaultController extends Controller
                 )
             );
 
-            if ( $request->get('clear_filters') ) {
-                $filters = array();
-                $session->set('filters', null);
-            }
-
-            if ( $request->get('rm_filter_field') ) {
-                $rm_filter_field = $request->get('rm_filter_field');
-                $rm_filter_value = $request->get('rm_filter_value');
-
-                switch ( $rm_filter_field ) {
-                case 'cDateBegin':
-                case 'cDateEnd':
-                    unset($filters[$rm_filter_field]);
-                    break;
-                default:
-                    if ( isset($filters[$rm_filter_field]) ) {
-                        $values = &$filters[$rm_filter_field];
-                        foreach ( $values as $k=>$v ) {
-                            if ( $v == $rm_filter_value ) {
-                                unset ($values[$k]);
-                            }
-                        }
-                        if ( count($values) == 0 ) {
-                            unset($filters[$rm_filter_field]);
-                        }
-                    }
-                }
-
-                $session->set('filters', $filters);
-            }
-
-            if ( $request->get('filter_field') ) {
-
-                $filter_fields = $request->get('filter_field');
-                $filter_values = $request->get('filter_value');
-
-                if ( !is_array($filter_fields) ) {
-                    $filter_fields = array($filter_fields);
-                }
-                if ( !is_array($filter_values) ) {
-                    $filter_values = array($filter_values);
-                }
-
-                if ( count($filter_fields) != count($filter_values) ) {
-                    throw new \RuntimeException(
-                        'Filter fieds and value does not match!'
-                    );
-                }
-
-                for ( $i = 0; $i < count($filter_fields); $i++ ) {
-                    $this->_addFilter(
-                        $filters,
-                        $filter_fields[$i],
-                        array($filter_values[$i])
-                    );
-                }
-
-                $session->set('filters', $filters);
-            }
-
             //Add filters to container
             $container->setFilters($filters);
-            if ( count($filters) > 0 ) {
+            if ( $filters->count() > 0 ) {
                 $templateVars['filters'] = $filters;
             }
 
@@ -239,8 +184,8 @@ class DefaultController extends Controller
 
                 $values = array();
                 foreach ( $field_facets as $item=>$count ) {
-                    if ( !isset($filters[$solr_field])
-                        || !in_array($item, $filters[$solr_field])
+                    if ( !$filters->offsetExists($solr_field)
+                        || !$filters->hasValue($solr_field, $item)
                     ) {
                         if ( $solr_field === 'cDate' ) {
                             $start = null;
@@ -322,12 +267,14 @@ class DefaultController extends Controller
                 $map_facets = $facetset->getFacet('cGeogname');
             }
 
-            if ( isset($filters['cDate']) ) {
+            if ( $filters->offsetExists('cDate') ) {
                 //set label for current date range filter
                 if ( !isset($facet_labels['cDate'])) {
                     $facet_labels['cDate'] = array();
                 }
-                list($start, $end) = explode('|', $filters['cDate'][0]);
+
+                $cdate = $filters->offsetGet('cDate');
+                list($start, $end) = explode('|', $cdate);
                 $bdate = new \DateTime($start);
                 $edate = new \DateTime($end);
 
@@ -335,9 +282,9 @@ class DefaultController extends Controller
                 $ye = $edate->format('Y');
 
                 if ( $ys != $ye ) {
-                    $facet_labels['cDate'][$filters['cDate'][0]] = $ys . '-' . $ye;
+                    $facet_labels['cDate'][$cdate] = $ys . '-' . $ye;
                 } else {
-                    $facet_labels['cDate'][$filters['cDate'][0]] = $ys;
+                    $facet_labels['cDate'][$cdate] = $ys;
                 }
             }
 
@@ -500,47 +447,6 @@ class DefaultController extends Controller
         $response = new Response($geojson);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
-    }
-
-    /**
-     * Add a filter
-     *
-     * @param array  &$filters Active filters
-     * @param string $field    Filter field
-     * @param string $value    Filter value
-     *
-     * @return void
-     */
-    private function _addFilter(&$filters, $field, $value)
-    {
-        switch ( $field ) {
-        case 'cDateBegin':
-        case 'cDateEnd':
-            $php_date = \DateTime::createFromFormat('Y', $value[0]);
-            if ( $field === 'cDateBegin' ) {
-                $value = array($php_date->format('Y-01-01'));
-            } else {
-                $value = array($php_date->format('Y-12-31'));
-            }
-            break;
-        case 'cDate':
-        case 'dao':
-            //nothing to to, but avoid to have mutliple date range filters
-            break;
-        default:
-            if ( isset($filters[$field])
-                && is_array($filters[$field])
-                && !in_array($value[0], $filters[$field])
-            ) {
-                $new_value = $value[0];
-                $value = $filters[$field];
-                array_push(
-                    $value,
-                    $new_value
-                );
-            }
-        }
-        $filters[$field] = $value;
     }
 
     /**

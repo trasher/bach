@@ -13,6 +13,8 @@
 
 namespace Bach\HomeBundle\Entity;
 
+use Bach\HomeBundle\Entity\Filters;
+
 /**
  * Bach Solarium query container
  *
@@ -27,7 +29,7 @@ namespace Bach\HomeBundle\Entity;
 class SolariumQueryContainer
 {
     private $_fields = array();
-    private $_filters = array();
+    private $_filters;
     private $_order = ViewParams::ORDER_RELEVANCE;
 
     /**
@@ -44,26 +46,13 @@ class SolariumQueryContainer
     }
 
     /**
-     * Set filter
-     *
-     * @param string $name  Field name
-     * @param string $value Field value
-     *
-     * @return void
-     */
-    public function setFilter($name, $value)
-    {
-        $this->_filters[$name] = $value;
-    }
-
-    /**
      * Set filters
      *
-     * @param array $filters Filters
+     * @param Filters $filters Filters
      *
      * @return void
      */
-    public function setFilters($filters)
+    public function setFilters(Filters $filters)
     {
         $this->_filters = $filters;
     }

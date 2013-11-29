@@ -117,43 +117,39 @@ class SolariumQueryFactory
         $spellcheck = $this->_query->getSpellcheck();
 
         foreach ( $container->getFilters() as $name=>$value ) {
-            $i = 0;
-            foreach ( $value as $v ) {
-                if ( $name === 'cDateBegin' ) {
-                    //no $i in name here since we only want ONE begin
-                    //and end date filter
-                    $this->_query->createFilterQuery($name)
-                        ->setQuery('+' . $name . ':[' . $v . 'T00:00:00Z TO *]');
-                } else if ( $name === 'cDateEnd' ) {
-                    //no $i in name here since we only want ONE begin
-                    //and end date filter
-                    $this->_query->createFilterQuery($name)
-                        ->setQuery('+' . $name . ':[* TO ' . $v . 'T00:00:00Z]');
-                } else if ( $name === 'dao' ) {
-                    $query = null;
-                    if ( $v === _('Yes') ) {
-                        $query = '+' . $name . ':*';
-                    } else {
-                        $query = '-' . $name . ':*';
-                    }
-                    $this->_query->createFilterQuery($name)
-                        ->setQuery($query);
-                } else if ( $name === 'cDate' ) {
-                    if ( strpos('|', $v === false) ) {
-                        throw new \RuntimeException('Invalid date range!');
-                    } else {
-                        list($start, $end) = explode('|', $v);
-                        $bdate = new \DateTime($start);
-                        $edate = new \DateTime($end);
-                        $this->_query->createFilterQuery($name)
-                            ->setQuery(
-                                '+cDateBegin:[' .
-                                $bdate->format('Y-m-d\TH:i:s\Z') .
-                                ' TO ' .
-                                $edate->format('Y-m-d\TH:i:s\Z')  . ']'
-                            );
-                    }
+            if ( $name === 'cDateBegin' ) {
+                $this->_query->createFilterQuery($name)
+                    ->setQuery('+' . $name . ':[' . $value . 'T00:00:00Z TO *]');
+            } else if ( $name === 'cDateEnd' ) {
+                $this->_query->createFilterQuery($name)
+                    ->setQuery('+' . $name . ':[* TO ' . $value . 'T00:00:00Z]');
+            } else if ( $name === 'dao' ) {
+                $query = null;
+                if ( $value === _('Yes') ) {
+                    $query = '+' . $name . ':*';
                 } else {
+                    $query = '-' . $name . ':*';
+                }
+                $this->_query->createFilterQuery($name)
+                    ->setQuery($query);
+            } else if ( $name === 'cDate' ) {
+                if ( strpos('|', $value === false) ) {
+                    throw new \RuntimeException('Invalid date range!');
+                } else {
+                    list($start, $end) = explode('|', $value);
+                    $bdate = new \DateTime($start);
+                    $edate = new \DateTime($end);
+                    $this->_query->createFilterQuery($name)
+                        ->setQuery(
+                            '+cDateBegin:[' .
+                            $bdate->format('Y-m-d\TH:i:s\Z') .
+                            ' TO ' .
+                            $edate->format('Y-m-d\TH:i:s\Z')  . ']'
+                        );
+                }
+            } else {
+                $i = 0;
+                foreach ( $value as $v ) {
                     $this->_query->createFilterQuery($name . $i)
                         ->setQuery('+' . $name . ':"' . $v . '"');
                 }
@@ -327,20 +323,20 @@ class SolariumQueryFactory
             $results['date_step'] = $step;
 
             $results['min_date'] = $php_min_date->format('Y');
-            if ( isset($filters['cDateBegin']) ) {
+            if ( $filters->offsetExists('cDateBegin') ) {
                 $dbegin = explode(
                     '-',
-                    $filters['cDateBegin'][0]
+                    $filters->offsetGet('cDateBegin')
                 );
                 $results['selected_min_date'] = $dbegin[0];
             } else {
                 $results['selected_min_date'] = $results['min_date'];
             }
             $results['max_date'] = $php_max_date->format('Y');
-            if ( isset($filters['cDateEnd']) ) {
+            if ( $filters->offsetExists('cDateEnd') ) {
                 $dend = explode(
                     '-',
-                    $filters['cDateEnd'][0]
+                    $filters->offsetGet('cDateEnd')
                 );
                 $results['selected_max_date'] = $dend[0];
             } else {
@@ -617,11 +613,11 @@ class SolariumQueryFactory
     private function _getDates($filters)
     {
         list($min_date, $max_date) = $this->_loadDatesFromStats(false, true);
-        if ( !isset($filters['cDate']) ) {
+        if ( !$filters->offsetExists('cDate') ) {
             $low = new \DateTime($min_date);
             $up = new \DateTime($max_date);
         } else {
-            list($start, $end) = explode('|', $filters['cDate'][0]);
+            list($start, $end) = explode('|', $filters->offsetGet('cDate'));
             $low = new \DateTime($start);
             $up = new \DateTime($end);
         }
