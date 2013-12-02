@@ -636,10 +636,16 @@ class DefaultController extends Controller
         $max_results = 20;
         $cquery = $client->createSelect();
         $pid = substr($docid, strlen($doc['headerId']) + 1);
-        if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
-            $pid = $doc['parents'] . '/' . $pid;
+
+        $query = '+headerId:"' . $doc['headerId'] . '" +parents: ';
+        if ( $pid === 'description' ) {
+            $query .= '""';
+        } else {
+            if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
+                $pid = $doc['parents'] . '/' . $pid;
+            }
+            $query .= $pid;
         }
-        $query = '+headerId:"' . $doc['headerId'] . '" +parents: ' . $pid;
         $cquery->setQuery($query);
         $cquery->setStart(($page - 1) * $max_results);
         $cquery->setRows($max_results);

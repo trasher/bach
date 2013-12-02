@@ -97,6 +97,12 @@ class EADFileFormat extends MappedFileFormat
     protected $fragmentid;
 
     /**
+     * @ORM\ManyToOne(targetEntity="EADFileFormat")
+     * @ORM\JoinColumn(name="archdesc_id", referencedColumnName="uniqid")
+     */
+    protected $archdesc;
+
+    /**
      * @ORM\OneToMany(targetEntity="\Bach\HomeBundle\Entity\Comment", mappedBy="eadfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $comments;

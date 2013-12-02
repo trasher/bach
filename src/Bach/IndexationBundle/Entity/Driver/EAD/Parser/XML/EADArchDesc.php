@@ -91,6 +91,7 @@ class EADArchDesc
 
             if ( $nodes->length > 0 ) {
                 $results['root'][$field] = array();
+
                 foreach ( $nodes as $key=>$node ) {
                     $results['root'][$field][] = array(
                         'value'         => $node->nodeValue,
@@ -99,6 +100,15 @@ class EADArchDesc
                 }
             }
         }
+
+        $frag = clone $archDescNode;
+        $dsc = $this->_xpath->query('dsc', $frag);
+        if ( count($dsc) > 0 ) {
+            foreach ( $dsc as $oldc ) {
+                $frag->removeChild($oldc);
+            }
+        }
+        $results['root']['fragment'] = $frag->ownerDocument->saveXML($frag);
 
         // Let's go parsing C node recursively
         $results['c'] = $this->_recursiveCNodeSearch(

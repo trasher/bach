@@ -240,6 +240,9 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Add comment':
             return _('Add comment');
             break;
+        case 'Repository':
+            return _('Repository:');
+            break;
         default:
             //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?

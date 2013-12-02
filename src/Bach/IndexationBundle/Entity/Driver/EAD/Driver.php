@@ -80,6 +80,14 @@ class Driver extends FileDriver
         $result['header'] = $tree->get('header')->getContent()->getValues();
         $result['archdesc'] = $tree->get('archdesc')->getContent()->getValues();
 
+        //take care of archdesc
+        $results[] = array(
+            'header'    => $result['header'],
+            'archdesc'  => $result['archdesc']['root'],
+            'id'        => 'description',
+            'c'         => $result['archdesc']['root']
+        );
+
         // On veut créer un fileformat pour chaque noeud C,
         // donc on reconstitue des documents pour chaque noeud C
         foreach ( $result['archdesc']['c'] as $id=>$CNode) {

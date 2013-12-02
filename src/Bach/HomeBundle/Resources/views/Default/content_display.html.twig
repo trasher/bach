@@ -3,7 +3,7 @@
             <ul class="breadcrumb">
                 {% if archdesc is defined %}
                     <li>
-                        <a href="#" property="dc:isPartOf">{{ archdesc }}</a>
+                        <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ archdesc }}</a>
                     </li>
                 {% endif %}
                 {% if ariane is defined %}

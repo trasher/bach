@@ -21,7 +21,7 @@ Displays an EAD fragment as HTML
     <xsl:param name="viewer_uri" select="''"/>
     <xsl:param name="docid"/>
 
-    <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
+    <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12|archdesc">
         <xsl:variable name="id">
             <xsl:choose>
                 <xsl:when test="@id">
@@ -287,7 +287,7 @@ Displays an EAD fragment as HTML
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="scopecontent|odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial|otherfindaid" mode="full">
+    <xsl:template match="scopecontent|odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial|otherfindaid|repository" mode="full">
         <section class="{local-name()}">
             <xsl:if test="not(head)">
                 <xsl:variable name="count" select="count(ancestor::*/head)"/>
@@ -320,6 +320,16 @@ Displays an EAD fragment as HTML
                             </xsl:when>
                             <xsl:when test="local-name() = 'otherfindaid'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Other finding aid:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'repository'">
+                                <xsl:choose>
+                                    <xsl:when test="@label">
+                                        <xsl:value-of select="@label"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Repository:')"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </xsl:when>
                         </xsl:choose>
                     </xsl:element>

@@ -123,11 +123,20 @@ class FileDriverManager
         }
 
         $output = array();
+        $description = null;
         foreach ($results as $result) {
-            $output[] = $this->_fileFormatFactory->build(
+            if ( $description !== null ) {
+                $result['archdesc'] = $description;
+            }
+            $out = $this->_fileFormatFactory->build(
                 $result,
                 $universalFileFormatClass
             );
+
+            if ( $result['fragmentid'] === $result['headerId'] . '_description' ) {
+                $description = $out;
+            }
+            $output[] = $out;
         }
         return $output;
     }
