@@ -153,8 +153,8 @@ class SolariumQueryFactory
                 foreach ( $value as $v ) {
                     $this->_query->createFilterQuery($name . $i)
                         ->setQuery('+' . $name . ':"' . $v . '"');
+                    $i++;
                 }
-                $i++;
             }
         }
 
