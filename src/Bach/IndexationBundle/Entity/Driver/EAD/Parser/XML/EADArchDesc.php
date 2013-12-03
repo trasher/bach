@@ -30,7 +30,7 @@ class EADArchDesc
 {
     private $_xpath;
     private $_values = array();
-    private $_cnodes = 'c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12';
+    private $_cnodes = 'c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12|dsc';
 
     /**
      * Constructor
@@ -82,33 +82,12 @@ class EADArchDesc
     private function _parse(\DOMNode $archDescNode, $fields)
     {
         $results = array();
-        $results['root'] = array();
 
-        $rootFields = $fields['root'];
-
-        foreach ( $rootFields as $field ) {
-            $nodes = $this->_xpath->query($field, $archDescNode);
-
-            if ( $nodes->length > 0 ) {
-                $results['root'][$field] = array();
-
-                foreach ( $nodes as $key=>$node ) {
-                    $results['root'][$field][] = array(
-                        'value'         => $node->nodeValue,
-                        'attributes'    => $this->_parseAttributes($node->attributes)
-                    );
-                }
-            }
-        }
-
-        $frag = clone $archDescNode;
-        $dsc = $this->_xpath->query('dsc', $frag);
-        if ( count($dsc) > 0 ) {
-            foreach ( $dsc as $oldc ) {
-                $frag->removeChild($oldc);
-            }
-        }
-        $results['root']['fragment'] = $frag->ownerDocument->saveXML($frag);
+        $results['root'] = $this->_parseNode(
+            $archDescNode,
+            array_merge($fields['root'], $fields['c'])
+        );
+        unset($results['root']['frag']);
 
         // Let's go parsing C node recursively
         $results['c'] = $this->_recursiveCNodeSearch(
@@ -140,42 +119,11 @@ class EADArchDesc
 
         foreach ( $cNodes as $cNode ) {
             $nodeid = $cNode->getAttribute('id');
-            $results[$nodeid] = array('parents' => $parents);
 
-            //keep original fragment, without children
-            $frag = clone $cNode;
-            $child = $this->_xpath->query($this->_cnodes, $frag);
-            if ( count($child) > 0 ) {
-                foreach ( $child as $oldc ) {
-                    $frag->removeChild($oldc);
-                }
-            }
-            //remove ordering field as well
-            $order = $this->_xpath->query('did/unitid[@type="ordre_c"]', $frag);
-            if ( $order->length > 0 ) {
-                $results[$nodeid]['order'] = $order->item(0)->nodeValue;
-                $did = $frag->getElementsByTagName('did')->item(0);
-                foreach ( $order as $oldorder ) {
-                    $did->removeChild($oldorder);
-                }
-            }
-            $results[$nodeid]['fragment'] = $frag->ownerDocument->saveXML($frag);
+            $results[$nodeid] = $this->_parseNode($cNode, $fields, $parents);
 
-            foreach ( $fields as $field ) {
-                $nodes = $this->_xpath->query($field, $frag);
-                $results[$nodeid][$field] = array();
-
-                if ( $nodes->length > 0 ) {
-                    foreach ( $nodes as $key=>$node ) {
-                        $results[$nodeid][$field][] = array(
-                            'value'         => $node->nodeValue,
-                            'attributes'    => $this->_parseAttributes(
-                                $node->attributes
-                            )
-                        );
-                    }
-                }
-            }
+            $frag = $results[$nodeid]['frag'];
+            unset($results[$nodeid]['frag']);
 
             if ( $this->_xpath->query($this->_cnodes, $cNode)->length > 0 ) {
                 $current_title = '';
@@ -199,6 +147,61 @@ class EADArchDesc
             }
         }
         return $results;
+    }
+
+    /**
+     * Parse a node
+     *
+     * @param DOMNode $cNode   DOM node
+     * @param array   $fields  Known fields
+     * @param array   $parents Node parents
+     *
+     * @return array
+     */
+    private function _parseNode(\DOMNode $cNode, $fields, $parents = null)
+    {
+        $result = array();
+
+        if ( $parents !== null ) {
+            $result['parents'] = $parents;
+        }
+
+        //keep original fragment, without children
+        $frag = clone $cNode;
+        $child = $this->_xpath->query($this->_cnodes, $frag);
+        if ( count($child) > 0 ) {
+            foreach ( $child as $oldc ) {
+                $frag->removeChild($oldc);
+            }
+        }
+        //remove ordering field as well
+        $order = $this->_xpath->query('did/unitid[@type="ordre_c"]', $frag);
+        if ( $order->length > 0 ) {
+            $result['order'] = $order->item(0)->nodeValue;
+            $did = $frag->getElementsByTagName('did')->item(0);
+            foreach ( $order as $oldorder ) {
+                $did->removeChild($oldorder);
+            }
+        }
+        $result['fragment'] = $frag->ownerDocument->saveXML($frag);
+        $result['frag'] = $frag;
+
+        foreach ( $fields as $field ) {
+            $nodes = $this->_xpath->query($field, $frag);
+
+            if ( $nodes->length > 0 ) {
+                $result[$field] = array();
+                foreach ( $nodes as $key=>$node ) {
+                    $result[$field][] = array(
+                        'value'         => $node->nodeValue,
+                        'attributes'    => $this->_parseAttributes(
+                            $node->attributes
+                        )
+                    );
+                }
+            }
+        }
+        return $result;
     }
 
     /**
