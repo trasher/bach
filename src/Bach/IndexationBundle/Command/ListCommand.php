@@ -90,40 +90,12 @@ EOF
         }
 
         $tf = $container->get('bach.indexation.typesfiles');
-        $files  = $tf->getExistingFiles($types);
 
-        $return = '';
-        foreach ( $files as $type=>$list ) {
-            $this->_parsePaths($list, $type, $return);
-        }
-
-        $output->writeln($return);
-    }
-
-    /**
-     * Parse paths
-     *
-     * @param array  $entry   Current entry
-     * @param string $type    Current type
-     * @param string &$return Command output string
-     *
-     * @return void
-     */
-    private function _parsePaths($entry, $type, &$return)
-    {
-        $it = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($entry));
-        $keys = array();
-        foreach ($it as $key => $value) {
-            // Build long key name based on parent keys
-            if ( is_array($value) ) {
-                for ($i = $it->getDepth() - 1; $i >= 0; $i--) {
-                    $skey = $it->getSubIterator($i)->key();
-                    $key = $skey . '/' . $value;
-                }
-            } else {
-                $key = $value;
-            }
-            $return .= "\n" . $type . '/' . $key;
+        foreach ( $types as $type ) {
+            $files  = $tf->getExistingFiles($type);
+            $output->writeln(
+                $type . '/' . implode("\n" .$type . '/', $files[$type])
+            );
         }
     }
 }

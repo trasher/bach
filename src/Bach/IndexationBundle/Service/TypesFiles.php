@@ -136,14 +136,19 @@ class TypesFiles
             if ( !$found->isDir() ) {
                 $parent = $found->getRelativePath();
                 $filename = $found->getFileName();
-                if ( $path !== null ) {
-                    $filename = $path . '/' . $filename;
-                }
+
                 if ( $parent !== '' ) {
-                    $existing_files[$parent][] = $filename;
-                } else if ( $found->getRealPath() !== false ) {
-                    $existing_files[] = $filename;
+                    $filename = $parent . '/' . $filename;
                 }
+
+                if ( $path !== null ) {
+                    if ( substr($path, -1) !== '/' ) {
+                        $path .= '/';
+                    }
+                    $filename = $path . $filename;
+                }
+
+                $existing_files[] = $filename;
             }
         }
         return $existing_files;
