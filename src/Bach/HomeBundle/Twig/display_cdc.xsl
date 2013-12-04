@@ -26,6 +26,18 @@ Displays an EAD fragment as HTML
     <xsl:template match="dsc">
         <ul class="cdc">
             <xsl:apply-templates select="./c|./c01|./c02|./c03|./c04|./c05|./c06|./c07|./c08|./c09|./c10|./c11|./c12" mode="lvl"/>
+            <xsl:if test="count(//not_matched/*) &gt; 0">
+                <li>
+                    <strong><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayCdc::i18nFromXsl', 'Not classified')"/></strong>
+                    <ul>
+                        <xsl:for-each select="//not_matched/*">
+                            <li>
+                                <a link="{concat('%%%', local-name(), '_description%%%')}"><xsl:value-of select="."/></a>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </li>
+            </xsl:if>
         </ul>
     </xsl:template>
 

@@ -76,7 +76,7 @@ class DisplayCdc extends \Twig_Extension
      *
      * @return string
      */
-    public function display($docs)
+    public function display(\SimpleXMLElement $docs)
     {
         $proc = new \XsltProcessor();
         $xsl = $proc->importStylesheet(
@@ -89,6 +89,9 @@ class DisplayCdc extends \Twig_Extension
         foreach ( $docs as $doc ) {
             $dadocs->addChild($doc->getName(), $doc);
         }
+
+        //find not published documents
+        $this->_setNotMatched($xml, $docs);
 
         $proc->registerPHPFunctions();
         $text = $proc->transformToXml($xml);
@@ -124,6 +127,61 @@ class DisplayCdc extends \Twig_Extension
         );
 
         return $text;
+    }
+
+    /**
+     * Set documents not matched in classification shceme
+     *
+     * @param SimpleXMLElement $xml  XML classification shceme
+     * @param SimpleXMLElement $docs Published documents
+     *
+     * @return void
+     */
+    private function _setNotMatched(\SimpleXMLElement $xml, \SimpleXMLElement $docs)
+    {
+        $alllinks = $xml->xpath('//*[@href]');
+        $docs = (array)$docs;
+        $docs_id = array_keys($docs);
+
+        foreach ( $alllinks as $link ) {
+            $href = preg_replace('/\\.[^.\\s]{3,4}$/', '', $link['href']);
+            if ( in_array($href, $docs_id) ) {
+                unset($docs[$href]);
+            }
+        }
+
+        if ( count($docs) > 0 ) {
+            $not_matched = $xml->addChild('not_matched');
+            foreach ( $docs as $doc_id=>$doc_name ) {
+                $not_matched->addChild($doc_id, $doc_name);
+            }
+        }
+    }
+
+    /**
+     * Get translations from XSL stylesheet.
+     * It would be possible to directly call _(),
+     * but those strings would not be found with
+     * standard gettext capabilities.
+     *
+     * @param string $ref String reference
+     *
+     * @return string
+     */
+    public static function i18nFromXsl($ref)
+    {
+        switch ( $ref ) {
+        case 'Not classified':
+            return _('Not classified');
+            break;
+        default:
+            //TODO: add an alert in logs, a translation may be missing!
+            //Should we really throw an exception here?
+            //return _($ref);
+            throw new \RuntimeException(
+                'Translation from XSL reference "' . $ref . '" is not known!'
+            );
+        }
     }
 
     /**
