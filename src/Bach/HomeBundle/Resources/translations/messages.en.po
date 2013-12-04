@@ -166,3 +166,19 @@ msgstr "Context:"
 
 msgid "Show more (%count% left)"
 msgstr "Show more (%count% left)"
+
+msgid "Classification scheme"
+msgstr "Classification scheme"
+
+msgid "Expand/Hide informations"
+msgstr "Expand/Hide informations"
+
+msgid "Informations"
+msgstr "Informations"
+
+msgid "Collapse all"
+msgstr "Collapse all"
+
+msgid "Expand all"
+msgstr "Expand all"
+
