@@ -20,7 +20,7 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="archdesc">
-        <xsl:apply-templates/>
+        <xsl:apply-templates select="dsc"/>
     </xsl:template>
 
     <xsl:template match="dsc">
