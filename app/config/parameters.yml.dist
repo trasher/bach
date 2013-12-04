@@ -30,6 +30,8 @@ parameters:
     upload_dir: '%kernel.root_dir%/../web/uploads/'
     show_map: true
     show_expos: false
+    has_cdc: false
+    cdc_path: '%kernel.root_dir%/../cdc.xml'
 
 bach_home:
     files:

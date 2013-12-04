@@ -27,6 +27,7 @@ twig:
         lang: '%locale%'
         openid: '%openid_enabled%'
         expos: '%show_expos%'
+        cdc: '%has_cdc%'
 
 # Assetic Configuration
 assetic:

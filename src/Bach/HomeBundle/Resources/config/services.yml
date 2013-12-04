@@ -20,6 +20,15 @@ services:
             - [setRequest, ['@?request=']]
         tags:
             - { name: twig.extension }
+
     bach.home.openid_user_manager:
         class: Bach\HomeBundle\Entity\OpenIdUserManager
         arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]
+
+    bach.home.display_cdc:
+        class: Bach\HomeBundle\Twig\DisplayCdc
+        arguments: [ @router, '%cdc_path%' ]
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: twig.extension }

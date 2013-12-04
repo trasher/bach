@@ -1115,6 +1115,19 @@ div.sonata-bc .pagination {
     margin-bottom: .2em;
 }
 
+/**
+ * ===== CDC =====
+ */
+.cdc .expand {
+    float: right;
+    background: url(../img/expand.png) 100% 50% no-repeat;
+    padding-right: 20px;
+}
+
+.cdc .expand.expanded {
+    background-image: url(../img/collapse.png);
+}
+
 /** Old design */
 #flash-warnings, #flash-errors, #flash-success {
     padding: .2em 1em .2em 80px;

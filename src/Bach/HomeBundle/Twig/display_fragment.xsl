@@ -133,7 +133,7 @@ Displays an EAD fragment as HTML
         </div>
     </xsl:template>
 
-    <xsl:template match="subject|geogname|persname|corpname|name|function" mode="full">
+    <xsl:template match="subject|geogname|persname|corpname|name|function|genreform" mode="full">
         <xsl:if test="not(parent::controlaccess)">
             <a>
                 <xsl:attribute name="link">
@@ -142,7 +142,7 @@ Displays an EAD fragment as HTML
                 </xsl:attribute>
                 <xsl:value-of select="."/>
             </a>
-            <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name or following-sibling::function">
+            <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name or following-sibling::function or following-sibling::genreform">
                 <xsl:text>, </xsl:text>
             </xsl:if>
         </xsl:if>
@@ -199,7 +199,7 @@ Displays an EAD fragment as HTML
         </div>
     </xsl:template>
 
-    <xsl:key name="indexing" match="subject|geogname|persname|corpname|name|function" use="concat(generate-id(..), '_', local-name())"/>
+    <xsl:key name="indexing" match="subject|geogname|persname|corpname|name|function|genreform" use="concat(generate-id(..), '_', local-name())"/>
     <xsl:template match="controlaccess" mode="full">
         <div class="contents">
             <xsl:if test="not(head)">

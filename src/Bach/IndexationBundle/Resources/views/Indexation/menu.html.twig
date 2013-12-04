@@ -8,4 +8,11 @@
         <li class="divider"></li>
         <li><a href="#help" role="button" id="show_help"><span class="icon-question-sign"></span>{% trans %}Help{% endtrans %}</a></li>
     </ul>
+    {% if cdc %}
+    <h2>{% trans %}Classification scheme{% endtrans %}</h2>
+    <ul>
+        <li><a href="#">{% trans %}Publish{% endtrans %}</a></li>
+        <li><a href="#">{% trans %}Remove{% endtrans %}</a></li>
+    </ul>
+    {% endif %}
 </aside>

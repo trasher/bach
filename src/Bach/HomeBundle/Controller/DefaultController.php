@@ -703,4 +703,37 @@ class DefaultController extends Controller
             $tplParams
         );
     }
+
+    /**
+     * Display classification scheme
+     *
+     * @return void
+     */
+    public function cdcAction()
+    {
+        $tplParams = array();
+
+        $client = $this->get("solarium.client");
+        $query = $client->createSelect();
+        $query->setQuery('fragmentid:*_description');
+        $query->setFields('cUnittitle, headerId, fragmentid');
+        $query->setStart(0)->setRows(1000);
+
+        $rs = $client->select($query);
+
+        $published = new \SimpleXMLElement(
+            '<docs></docs>'
+        );
+
+        foreach ( $rs as $doc ) {
+            $published->addChild($doc->headerId, $doc->cUnittitle);
+        }
+
+        $tplParams['docs'] = $published;
+
+        return $this->render(
+            'BachHomeBundle:Default:cdc.html.twig',
+            $tplParams
+        );
+    }
 }

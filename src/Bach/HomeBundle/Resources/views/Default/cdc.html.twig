@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block title_extend %} - {% trans %}Classification scheme{% endtrans %}{% endblock %}
+
+{% block css %}
+    <link href="{{ asset('css/jquery.treeview.css') }}" type="text/css" rel="stylesheet" media="screen" />
+{% endblock %}
+
+{% block js_calls %}
+    <script src="{{ asset('js/jquery.treeview.js')  }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+        $(function(){
+            $('.cdc').treeview({
+                collapsed: true,
+                control: "#cdccontrol"
+            });
+
+            $('.extended_informations').each(function(){
+                var _this = $(this);
+                _this.hide();
+                var _parent = _this.parent('li');
+                var _expand = $('<a class="expand" href="#' + _parent.attr('id') + '" title="{% trans %}Expand/Hide informations{% endtrans %}">{% trans %}Informations{% endtrans %}</a>');
+                _expand.on('click', function(){
+                    $(this).toggleClass('expanded').nextAll('.extended_informations').toggle();
+                    return false;
+                });
+                _parent.prepend(_expand);
+            });
+        });
+{% endblock %}
+
+{% block container %}
+    <h2>{% trans %}Classification scheme{% endtrans %}</h2>
+    {# Expand all works once, but no longer when collapse has been used :/ #}
+    <p id="cdccontrol">
+        <a href="#">{% trans %}Collapse all{% endtrans %}</a>
+        <a href="#">{% trans %}Expand all{% endtrans %}</a>
+    </p>
+    {{ displayCdc(docs)|raw }}
+{% endblock %}
+

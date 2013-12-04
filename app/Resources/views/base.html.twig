@@ -47,6 +47,11 @@
                     <li{% if current_route == 'bach_homepage' or current_route == 'bach_search' %} class="active"{% endif %}>
                         <a href="{{ path('bach_homepage') }}">{% trans %}Search{% endtrans %}</a>
                     </li>
+                    {% if cdc %}
+                     <li{% if current_route == 'bach_classification' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_classification') }}">{% trans %}Classification scheme{% endtrans %}</a>
+                    </li>
+                    {% endif %}
                     <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
                         <a href="{{ path('bach_browse') }}">{% trans %}Browse{% endtrans %}</a>
                     </li>
