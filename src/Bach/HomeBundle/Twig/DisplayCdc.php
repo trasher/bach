@@ -78,12 +78,34 @@ class DisplayCdc extends \Twig_Extension
      */
     public function display(\SimpleXMLElement $docs)
     {
+        $text = '';
+        $xml = simplexml_load_file($this->_cdc_uri);
+
+        //display archdesc informations
+        $archdesc = clone $xml->archdesc;
+        unset($archdesc->dsc);
+
+        $proc = new \XsltProcessor();
+        $xsl = $proc->importStylesheet(
+            simplexml_load_file(__DIR__ . '/display_fragment.xsl')
+        );
+
+        $proc->setParameter('', 'cdc', 'true');
+        $proc->registerPHPFunctions();
+
+        // trying to send $archdesc to transformation will in facts
+        // send the whole XML document!
+        $dom = new \DOMDocument();
+        $dom->loadXML($archdesc->asXML());
+        $text = '<div class="cdcarchdesc well">' . $proc->transformToXml($dom)
+            . '</div>';
+
+        //display classification scheme itself
         $proc = new \XsltProcessor();
         $xsl = $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_cdc.xsl')
         );
 
-        $xml = simplexml_load_file($this->_cdc_uri);
 
         $dadocs = $xml->addChild('dadocs');
         foreach ( $docs as $doc ) {
@@ -94,7 +116,7 @@ class DisplayCdc extends \Twig_Extension
         $this->_setNotMatched($xml, $docs);
 
         $proc->registerPHPFunctions();
-        $text = $proc->transformToXml($xml);
+        $text .= $proc->transformToXml($xml);
 
         $router = $this->_router;
         $request = $this->_request;
