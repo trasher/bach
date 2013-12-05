@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-28 09:47+0100\n"
+"POT-Creation-Date: 2013-12-05 08:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,7 +57,7 @@ msgstr ""
 msgid "Send your comment"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/CommentsController.php:72
+#: src/Bach/HomeBundle/Controller/CommentsController.php:70
 msgid "Your comment has been stored. Thank you!"
 msgstr ""
 
@@ -78,23 +78,23 @@ msgstr ""
 msgid "File %file does not exists."
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/CommentAdminController.php:63
+#: src/Bach/HomeBundle/Controller/CommentAdminController.php:64
 msgid "An error occured trying to publish comments :("
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/CommentAdminController.php:69
+#: src/Bach/HomeBundle/Controller/CommentAdminController.php:70
 msgid "Selected comments have been published"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:226
+#: src/Bach/HomeBundle/Controller/DefaultController.php:171
 msgid "Start date"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:227
+#: src/Bach/HomeBundle/Controller/DefaultController.php:172
 msgid "End date"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:691
+#: src/Bach/HomeBundle/Controller/DefaultController.php:598
 msgid "%count% results found, 1 expected."
 msgstr ""
 
@@ -197,76 +197,88 @@ msgid "Name:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:202
-msgid "Relative documents"
+msgid "Genre/Physical Characteristic:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:205
-msgid "Description:"
+msgid "Relative documents"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:208
-msgid "Conservation history:"
+msgid "Description:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:211
-msgid "Arrangement:"
+msgid "Conservation history:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:214
-msgid "Related material:"
+msgid "Arrangement:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:217
-msgid "Bibliography:"
+msgid "Related material:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:220
-msgid "Biography or history:"
+msgid "Bibliography:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:223
-msgid "Acquisition information:"
+msgid "Biography or history:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:226
-msgid "Separated material:"
+msgid "Acquisition information:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:229
-msgid "Untitled unit"
+msgid "Separated material:"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:232
-msgid "Content"
+msgid "Untitled unit"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:235
-msgid "Documents"
+msgid "Content"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:238
-msgid "Sub-units"
+msgid "Documents"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:241
+msgid "Sub-units"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:244
 msgid "Add comment"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:107
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:247
+msgid "Repository:"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayCdc.php:197
+msgid "Not classified"
+msgstr ""
+
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:72
 msgid "Bounding box"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:113
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:212
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:78
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:124
 msgid "Latitude"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:119
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:218
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:84
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:130
 msgid "Longitude"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:206
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:118
 msgid "Indexed name"
 msgstr ""
 
@@ -375,11 +387,11 @@ msgstr ""
 msgid "Rejected"
 msgstr ""
 
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:134
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:229
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:129
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:226
 msgid "Yes"
 msgstr ""
 
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:230
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:227
 msgid "No"
 msgstr ""

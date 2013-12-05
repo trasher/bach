@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-28 09:47+0100\n"
-"PO-Revision-Date: 2013-11-28 09:47+0100\n"
+"POT-Creation-Date: 2013-12-05 08:49+0100\n"
+"PO-Revision-Date: 2013-12-05 08:50+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: fr_FR.utf8\n"
@@ -57,7 +57,7 @@ msgstr "Message"
 msgid "Send your comment"
 msgstr "Soumettre votre commentaire"
 
-#: src/Bach/HomeBundle/Controller/CommentsController.php:72
+#: src/Bach/HomeBundle/Controller/CommentsController.php:70
 msgid "Your comment has been stored. Thank you!"
 msgstr "Votre commentaire a été enregistré. Merci !"
 
@@ -78,23 +78,23 @@ msgstr "Le chemin des fichiers divers n'est pas défini !"
 msgid "File %file does not exists."
 msgstr "Le fichier %file n'existe pas."
 
-#: src/Bach/HomeBundle/Controller/CommentAdminController.php:63
+#: src/Bach/HomeBundle/Controller/CommentAdminController.php:64
 msgid "An error occured trying to publish comments :("
 msgstr "Une erreur est survenue à la publication des commentaires :("
 
-#: src/Bach/HomeBundle/Controller/CommentAdminController.php:69
+#: src/Bach/HomeBundle/Controller/CommentAdminController.php:70
 msgid "Selected comments have been published"
 msgstr "Les commentaires sélectionnés ont été publiés"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:226
+#: src/Bach/HomeBundle/Controller/DefaultController.php:171
 msgid "Start date"
 msgstr "Date de début"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:227
+#: src/Bach/HomeBundle/Controller/DefaultController.php:172
 msgid "End date"
 msgstr "Date de fin"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:691
+#: src/Bach/HomeBundle/Controller/DefaultController.php:598
 msgid "%count% results found, 1 expected."
 msgstr "%count% résultats trouvés, 1 attendu."
 
@@ -199,76 +199,88 @@ msgid "Name:"
 msgstr "Nom :"
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:202
+msgid "Genre/Physical Characteristic:"
+msgstr "Caractéristiques de genre/physiques :"
+
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:205
 msgid "Relative documents"
 msgstr "Documents relatifs"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:205
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:208
 msgid "Description:"
 msgstr "Description :"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:208
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:211
 msgid "Conservation history:"
 msgstr "Historique de conservation :"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:211
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:214
 msgid "Arrangement:"
 msgstr "Disposition :"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:214
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:217
 msgid "Related material:"
 msgstr "Documents relatifs :"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:217
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:220
 msgid "Bibliography:"
 msgstr "Bibliographie :"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:220
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:223
 msgid "Biography or history:"
 msgstr "Biographie ou histoire :"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:223
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:226
 msgid "Acquisition information:"
 msgstr "Informations d'acquisition :"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:226
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:229
 msgid "Separated material:"
 msgstr "Documents externes :"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:229
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:232
 msgid "Untitled unit"
 msgstr "Unité sans intutilé"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:232
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:235
 msgid "Content"
 msgstr "Contenu"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:235
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:238
 msgid "Documents"
 msgstr "Documents"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:238
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:241
 msgid "Sub-units"
 msgstr "Sous-unités"
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:241
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:244
 msgid "Add comment"
 msgstr "Ajouter un commentaire"
 
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:107
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:247
+msgid "Repository:"
+msgstr "Dépôt :"
+
+#: src/Bach/HomeBundle/Twig/DisplayCdc.php:197
+msgid "Not classified"
+msgstr "Non classé"
+
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:72
 msgid "Bounding box"
 msgstr "Bounding box"
 
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:113
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:212
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:78
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:124
 msgid "Latitude"
 msgstr "Latitude"
 
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:119
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:218
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:84
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:130
 msgid "Longitude"
 msgstr "Longitude"
 
-#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:206
+#: src/Bach/HomeBundle/Admin/GeolocAdmin.php:118
 msgid "Indexed name"
 msgstr "Nom indexé"
 
@@ -377,12 +389,12 @@ msgstr "Publié"
 msgid "Rejected"
 msgstr "Rejeté"
 
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:134
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:229
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:129
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:226
 msgid "Yes"
 msgstr "Oui"
 
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:230
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:227
 msgid "No"
 msgstr "Non"
 
