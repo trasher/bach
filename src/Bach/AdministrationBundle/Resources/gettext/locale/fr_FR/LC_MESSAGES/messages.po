@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/AdministrationBundle@20131025144736\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-26 14:18+0100\n"
-"PO-Revision-Date: 2013-11-26 14:20+0100\n"
+"POT-Creation-Date: 2013-12-05 15:28+0100\n"
+"PO-Revision-Date: 2013-12-05 15:29+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr_FR\n"
@@ -85,8 +85,8 @@ msgid "Corporate name"
 msgstr "Nom d'organisme"
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:148
-msgid "Physical characteristic"
-msgstr "Caractéristiques physiques"
+msgid "Genre"
+msgstr "Type"
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:151
 msgid "Geographical name"
@@ -139,3 +139,6 @@ msgstr "Identifiant de la description du fichier"
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:190
 msgid "Archival description access restriction"
 msgstr "Restriction d'accès de la description du fichier"
+
+#~ msgid "Physical characteristic"
+#~ msgstr "Caractéristiques physiques"

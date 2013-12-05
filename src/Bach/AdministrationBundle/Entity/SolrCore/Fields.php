@@ -145,7 +145,7 @@ class Fields
             return _('Corporate name');
             break;
         case 'cGenreform':
-            return _('Physical characteristic');
+            return _('Genre');
             break;
         case 'cGeogname':
             return _('Geographical name');
