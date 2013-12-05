@@ -279,41 +279,15 @@ class DefaultController extends Controller
 
         $query = $qb->getQuery();
         $docs = $query->getResult();
-        foreach ($docs as $doc) {
-            $doc->setUploadDir($this->container->getParameter('upload_dir'));
-            $em->remove($doc);
-        }
 
         //remove solr indexed documents
         $client = $this->get("solarium.client");
         $update = $client->createUpdate();
 
-        //remove documents contents
-        foreach ( $extensions as $extension=>$ids ) {
-            $ent = '';
-            switch ( $extension ) {
-            case 'ead':
-                $ent = 'BachIndexationBundle:EADFileFormat';
-                break;
-            default:
-                throw new \RuntimeException('Unknown extension ' . $extension);
-                break;
-            }
-
-            $qb = $em->createQueryBuilder();
-            $qb->add('select', 'e')
-                ->add('from', $ent . ' e')
-                ->add('where', 'e.doc_id IN (:ids)')
-                ->setParameter('ids', $ids);
-
-            $query = $qb->getQuery();
-            $contents = $query->getResult();
-            foreach ($contents as $content) {
-                $em->remove($content);
-                //FIXME: it would be more efficient to remove all indexes based
-                //on document unique identifier
-                $update->addDeleteQuery('uniqid:' . $content->getUniqid());
-            }
+        foreach ($docs as $doc) {
+            $doc->setUploadDir($this->container->getParameter('upload_dir'));
+            $update->addDeleteQuery('headerId:' . $doc->getDocId());
+            $em->remove($doc);
         }
 
         $em->flush();
