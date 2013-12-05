@@ -93,6 +93,9 @@
         <nav id="active_filters">
             <strong>{% trans %}Active filters:{% endtrans %}</strong>
             {% for filter_name,values in filters %}
+                {% if values is not iterable %}
+                    {% set values = []|merge([values]) %}
+                {% endif %}
             <ul>
                 {% for value in values %}
                 <li>
