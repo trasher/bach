@@ -124,7 +124,9 @@ class Filters extends \ArrayObject
         case 'cDateEnd':
         case 'cDate':
         case 'dao':
-            $this->offsetUnset($field);
+            if ( $this->offsetExists($field) ) {
+                $this->offsetUnset($field);
+            }
             break;
         default:
             if ( $this->offsetExists($field)
