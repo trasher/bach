@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 08:49+0100\n"
-"PO-Revision-Date: 2013-12-05 08:50+0100\n"
+"POT-Creation-Date: 2013-12-05 15:14+0100\n"
+"PO-Revision-Date: 2013-12-05 15:15+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: fr_FR.utf8\n"
@@ -199,8 +199,8 @@ msgid "Name:"
 msgstr "Nom :"
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:202
-msgid "Genre/Physical Characteristic:"
-msgstr "Caractéristiques de genre/physiques :"
+msgid "Genre:"
+msgstr "Type :"
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:205
 msgid "Relative documents"
@@ -397,6 +397,9 @@ msgstr "Oui"
 #: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:227
 msgid "No"
 msgstr "Non"
+
+#~ msgid "Genre/Physical Characteristic:"
+#~ msgstr "Caractéristiques de genre/physiques :"
 
 #~ msgid "Suject"
 #~ msgstr "Sujet"

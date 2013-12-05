@@ -199,7 +199,7 @@ class DisplayEADFragment extends \Twig_Extension
             return _('Name:');
             break;
         case 'genreform:':
-            return _('Genre/Physical Characteristic:');
+            return _('Genre:');
             break;
         case 'Relative documents':
             return _('Relative documents');
