@@ -31,8 +31,8 @@ class FilesController extends Controller
     /**
      * Get a file
      *
-     * @param string  $type File type
-     * @param boolean $name File name
+     * @param string $type File type
+     * @param string $name File name
      *
      * @return void
      */
