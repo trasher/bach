@@ -71,7 +71,7 @@ class EADDaos
 
     /**
      * @ORM\ManyToOne(targetEntity="EADFileFormat", inversedBy="daos")
-     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid")
+     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid", onDelete="CASCADE")
      */
     protected $eadfile;
 

@@ -120,7 +120,7 @@ class EADIndexes
 
     /**
      * @ORM\ManyToOne(targetEntity="EADFileFormat", inversedBy="indexes")
-     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid")
+     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid", onDelete="CASCADE")
      */
     protected $eadfile;
 

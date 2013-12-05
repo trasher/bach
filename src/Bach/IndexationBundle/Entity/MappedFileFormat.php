@@ -139,7 +139,7 @@ class MappedFileFormat
 
     /**
      * @ORM\ManyToOne(targetEntity="Document")
-     * @ORM\JoinColumn(name="doc_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="doc_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $doc_id;
 

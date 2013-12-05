@@ -53,7 +53,7 @@ class ArchFileIntegrationTask
 
     /**
      * @ORM\OneToOne(targetEntity="Document", inversedBy="task")
-     * @ORM\JoinColumn(name="document_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $document;
 

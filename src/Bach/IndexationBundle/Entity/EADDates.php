@@ -92,7 +92,7 @@ class EADDates
 
     /**
      * @ORM\ManyToOne(targetEntity="EADFileFormat", inversedBy="dates")
-     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid")
+     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid", onDelete="CASCADE")
      */
     protected $eadfile;
 

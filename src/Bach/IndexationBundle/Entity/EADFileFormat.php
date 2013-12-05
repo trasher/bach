@@ -98,7 +98,7 @@ class EADFileFormat extends MappedFileFormat
 
     /**
      * @ORM\ManyToOne(targetEntity="EADFileFormat")
-     * @ORM\JoinColumn(name="archdesc_id", referencedColumnName="uniqid")
+     * @ORM\JoinColumn(name="archdesc_id", referencedColumnName="uniqid", onDelete="CASCADE")
      */
     protected $archdesc;
 
