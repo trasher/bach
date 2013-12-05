@@ -403,6 +403,8 @@ class DisplayDao extends \Twig_Extension
             $ret = '<a href="' . $href . '" title="' . $title  . '">';
             if ( $daotitle ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
+            } else {
+                $ret .= $dao;
             }
             $ret .= '</a>';
             break;
