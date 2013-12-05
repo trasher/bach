@@ -49,7 +49,7 @@ class EADParentTitle
 
     /**
      * @ORM\ManyToOne(targetEntity="EADFileFormat", inversedBy="parents_titles")
-     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid")
+     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid", onDelete="CASCADE")
      */
     protected $eadfile;
 
