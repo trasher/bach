@@ -125,7 +125,7 @@ class EADDriverMapper implements DriverMapperInterface
             'cUnitDate'    => './/unitdate',
             'cDate'        => './/date',
             'fragment'     => 'fragment',
-            'daolist'      => './/daoloc|.//dao'
+            'daolist'      => './/daoloc|.//dao|.//archref[not(contains(@href, \'http://\')) and contains(@href, \'.pdf\')]'
         );
 
         foreach ( $ead_mulitple_elements as $map=>$element ) {

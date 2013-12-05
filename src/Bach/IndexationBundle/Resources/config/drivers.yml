@@ -46,7 +46,7 @@ drivers:
                     - did/origination
                     - scopecontent
                     - controlacces
-                    - .//daoloc|.//dao
+                    - .//daoloc|.//dao|.//archref[not(contains(@href, 'http://')) and contains(@href, '.pdf')]
                     - .//corpname
                     - .//famname
                     - .//genreform
