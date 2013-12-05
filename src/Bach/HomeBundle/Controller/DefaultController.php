@@ -359,7 +359,7 @@ class DefaultController extends Controller
                 if ( count($values) < $tag_max ) {
                     $min = $values[count($values)-1];
                 } else {
-                    $min = $values[$tag_max];
+                    $min = $values[$tag_max-1];
                 }
 
                 //5 levels
