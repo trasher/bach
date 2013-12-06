@@ -72,10 +72,28 @@ class FacetsAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        //retrieve already used solr fields to exclude them
+        $qb = $this->modelManager
+            ->getEntityManager('Bach\HomeBundle\Entity\facets')
+            ->createQueryBuilder()
+            ->add('select', 'f.solr_field_name')
+            ->add('from', 'Bach\HomeBundle\Entity\Facets f');
+        $query = $qb->getQuery();
+        $results = $query->getResult();
+        $used = array_map(
+            function ($value) {
+                return $value['solr_field_name'];
+            },
+            $results
+        );
+
         $fields = new Fields($this->_reader);
         $facet_fields = $fields->getFacetFields(
             $this->_search_core,
-            EADFileFormat::$facet_excluded
+            array_merge(
+                EADFileFormat::$facet_excluded,
+                $used
+            )
         );
 
         $formMapper
