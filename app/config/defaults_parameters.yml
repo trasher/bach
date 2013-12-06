@@ -1,0 +1,41 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: bach
+    database_user: bach
+    database_password: A_PASSWORD
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: fcfe28f4f96b6167f7e541210b30616ac
+    database_path: null
+    ead_files_path: null
+    unimarc_files_path: null
+    solr_search_core: EADUniversalFileFormat
+    solr_ssl: false
+    solr_host: localhost
+    solr_port: 8080
+    solr_path: /solr
+    ead_corename: EADUniversalFileFormat
+    unimarc_corename: Unimarc
+    viewer_uri: http://viewer.localhost/
+    #supported gettext bundle languages
+    gettext.locale_shortcuts:
+        en: en_US
+        fr: fr_FR
+    openid_enabled: false
+    upload_dir: '%kernel.root_dir%/../web/uploads/'
+    covers_dir: '%kernel.root_dir%/../web/covers/'
+    show_map: true
+    show_expos: false
+    has_cdc: false
+    cdc_path: '%kernel.root_dir%/../cdc.xml'
+
+bach_home:
+    files:
+        videos: '%kernel.root_dir%/../web/videos/'
+        musics: '%kernel.root_dir%/../web/musics/'
+        misc: '%kernel.root_dir%/../web/files/'
