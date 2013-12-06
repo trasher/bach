@@ -60,7 +60,7 @@ Displays an EAD fragment as HTML
                             <!--<xsl:apply-templates select=".//dao|.//daoloc" mode="daos"/>-->
                             <xsl:variable name="daogrps" select=".//daogrp"/>
                             <xsl:variable name="daos" select=".//dao[not(parent::daogrp)]|.//daoloc[not(parent::daogrp)]"/>
-                            <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daogrps, $daos, $viewer_uri, 'medium', $ajax)"/>
+                            <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daogrps, $daos, $viewer_uri, 'medium', $ajax, $covers_dir)"/>
                         </figure>
                     </xsl:if>
                 </xsl:when>
@@ -532,7 +532,7 @@ Displays an EAD fragment as HTML
 
     <xsl:template match="dao|daoloc" mode="daos">
         <xsl:variable name="title" value="@title"/>
-        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), $title, $viewer_uri, 'medium')"/>
+        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), $title, $viewer_uri, 'medium', $covers_dir)"/>
         <!--<a href="{concat($viewer_uri, '/viewer/', @href)}">
             <img>
                 <xsl:attribute name="src">

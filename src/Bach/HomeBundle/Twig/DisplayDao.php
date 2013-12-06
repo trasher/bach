@@ -106,7 +106,8 @@ class DisplayDao extends \Twig_Extension
                 $format,
                 false,
                 true,
-                $this->_covers_dir
+                $this->_covers_dir,
+                false
             );
         } else {
             $res = '';
@@ -133,12 +134,12 @@ class DisplayDao extends \Twig_Extension
      * @param string  $viewer     Viewer URL
      * @param string  $format     Format to display, defaults to thumb
      * @param boolean $ajax       Is call came from ajax
-     * @param boolean $standalone Is document standalone? Defaults to true.
+     * @param string  $covers_dir Covers directory
      *
      * @return DOMElement
      */
     public static function displayDaos($daogrps, $daos, $viewer, $format = 'thumb',
-        $ajax = false, $standalone = true
+        $ajax = false, $covers_dir = null
     ) {
         //start root element
         $res = '<div>';
@@ -157,6 +158,16 @@ class DisplayDao extends \Twig_Extension
                     $gres['title'] = (string)$xml_dg['title'];
                 }
 
+                $results = array(
+                    self::IMAGE     => array(),
+                    self::SERIES    => array(),
+                    self::VIDEO     => array(),
+                    self::FLASH     => array(),
+                    self::SOUND     => array(),
+                    self::FLA_SOUND => array(),
+                    self::MISC     => array()
+                );
+
                 foreach ( $xml_dg->children() as $node_name => $xml_dao ) {
                     if ( $node_name === 'dao' || $node_name === 'daoloc' ) {
                         $dao = (string)$xml_dao['href'];
@@ -164,15 +175,19 @@ class DisplayDao extends \Twig_Extension
                         if ( $xml_dao['title'] ) {
                             $daotitle = $xml_dao['title'];
                         }
-                        $gres['content'][] = self::proceedDao(
+
+                        $results[self::_getType($dao)][] = self::proceedDao(
                             $dao,
                             $daotitle,
                             $viewer,
                             $format,
-                            $ajax
+                            $ajax,
+                            true,
+                            $covers_dir
                         );
                     }
                 }
+                $gres['content'] = $results;
                 $groups_results[] = $gres;
             }
 
@@ -182,11 +197,66 @@ class DisplayDao extends \Twig_Extension
                     $res .= '<header><h4>' . $group['title'] . '</h4></header>';
                 }
 
-                $res .= '<ul>';
-                foreach ( $group['content'] as $document ) {
-                    $res .= $document;
+                $results = $group['content'];
+
+                if ( count($results[self::IMAGE]) > 0 ) {
+                    $res .= '<div>';
+                    foreach ( $results[self::IMAGE] as $image ) {
+                        $res .= $image;
+                    }
+                    $res .= '</div>';
                 }
-                $res .= '</ul>';
+
+                if ( count($results[self::SERIES]) > 0 ) {
+                    $res .= '<div>';
+                    foreach ( $results[self::SERIES] as $series ) {
+                        $res .= $series;
+                    }
+                    $res .= '</div>';
+                }
+
+                if ( count($results[self::SOUND]) > 0 ) {
+                    $res .= '<div>';
+                    foreach ( $results[self::SOUND] as $sound ) {
+                        $res .= $sound;
+                    }
+                    $res .= '</div>';
+                }
+
+                if ( count($results[self::FLA_SOUND]) > 0 ) {
+                    $res .= '<div>';
+                    $res .= '<ul class="playlist">';
+                    foreach ( $results[self::FLA_SOUND] as $sound ) {
+                        $res .= $sound;
+                    }
+                    $res .= '</ul>';
+                    $res .= '</div>';
+                }
+
+                if ( count($results[self::VIDEO]) > 0 ) {
+                    $res .= '<div>';
+                    foreach ( $results[self::VIDEO] as $video ) {
+                        $res .= $video;
+                    }
+                    $res .= '</div>';
+                }
+
+                if ( count($results[self::FLASH]) > 0 ) {
+                    $res .= '<div>';
+                    foreach ( $results[self::FLASH] as $flash ) {
+                        $res .= $flash;
+                    }
+                    $res .= '</div>';
+                }
+
+                if ( count($results[self::MISC]) > 0 ) {
+                    $res .= '<div>';
+                    foreach ( $results[self::MISC] as $other ) {
+                        $res .= $other;
+                    }
+                    $res .= '</div>';
+                }
+
                 $res .= '</section>';
             }
         }
@@ -330,11 +400,12 @@ class DisplayDao extends \Twig_Extension
      * @param boolean $ajax       Does call came from ajax
      * @param boolean $standalone Is a standalone document, defaults to true
      * @param boolean $covers_dir Covers directory
+     * @param boolean $all        Proceed all daos
      *
      * @return string
      */
     public static function proceedDao($dao, $daotitle, $viewer, $format,
-        $ajax = false, $standalone = true, $covers_dir = null
+        $ajax = false, $standalone = true, $covers_dir = null, $all = true
     ) {
         $ret = null;
 
@@ -397,7 +468,39 @@ class DisplayDao extends \Twig_Extension
             $ret = '<a' . $class . ' href="' . $href . '" title="' .
                 $title  . '">';
             if ( $standalone === true ) {
-                $ret .= '<img src="/img/play_large.png" alt="' . $dao . '"/>';
+                if ( $covers_dir !== null ) {
+                    //check if a cover exists
+                    $name_wo_ext = str_replace(
+                        ltrim(strstr($dao, '.'), '.'),
+                        '',
+                        $dao
+                    );
+
+                    $cover_name = $name_wo_ext .= 'jpg';
+                    $src = '';
+                    $alt = '';
+
+                    if ( file_exists($covers_dir . '/' . $cover_name) ) {
+                        $src = '/file/covers/';
+                        if ( $format === 'thumbs' ) {
+                            $src = 'thumb/';
+                        }
+                        $src .= $cover_name;
+                    } else {
+                        $filetype = self::_guessFileType($dao);
+                        $src = '/img/' . $filetype . 'nocover.png';
+                    }
+
+                    if ( $daotitle ) {
+                        $alt = $daotitle;
+                    } else {
+                        $alt = $dao;
+                    }
+
+                    $ret .='<img src="' . $src . '" alt="' . $alt . '"/>';
+                } else {
+                    $ret .= '<img src="/img/play_large.png" alt="' . $dao . '"/>';
+                }
             }
             if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
@@ -406,6 +509,7 @@ class DisplayDao extends \Twig_Extension
             break;
         case self::FLA_SOUND;
             $class = '';
+            $ret = '';
             if ( $standalone === true ) {
                 $class = ' class="';
                 if ( $ajax !== false ) {
@@ -413,13 +517,54 @@ class DisplayDao extends \Twig_Extension
                 }
                 $class .= 'flashmusicplayer"';
             }
+            if ( $all === true ) {
+                $ret .= '<li>';
+            }
             $href = '/file/music/' . $dao;
-            $ret = '<li><a' . $class . ' href="' . $href . '" title="' .
+            $ret .= '<a' . $class . ' href="' . $href . '" title="' .
                 $title  . '">';
+            if ( $all === false ) {
+                if ( $covers_dir !== null ) {
+                    //check if a cover exists
+                    $name_wo_ext = str_replace(
+                        ltrim(strstr($dao, '.'), '.'),
+                        '',
+                        $dao
+                    );
+
+                    $cover_name = $name_wo_ext .= 'jpg';
+                    $src = '';
+                    $alt = '';
+
+                    if ( file_exists($covers_dir . '/' . $cover_name) ) {
+                        $src = '/file/covers/';
+                        if ( $format === 'thumbs' ) {
+                            $src = 'thumb/';
+                        }
+                        $src .= $cover_name;
+                    } else {
+                        $filetype = self::_guessFileType($dao);
+                        $src = '/img/' . $filetype . 'nocover.png';
+                    }
+
+                    if ( $daotitle ) {
+                        $alt = $daotitle;
+                    } else {
+                        $alt = $dao;
+                    }
+
+                    $ret .='<img src="' . $src . '" alt="' . $alt . '"/>';
+                } else {
+                    $ret .= '<img src="/img/sound_nocover.png" alt="' . $dao . '"/>';
+                }
+            }
             if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
             }
-            $ret .= '</a></li>';
+            $ret .= '</a>';
+            if ( $all === true ) {
+                $ret .= '</li>';
+            }
             break;
         case self::MISC:
             $title = str_replace(
@@ -515,7 +660,13 @@ class DisplayDao extends \Twig_Extension
             case 'flv':
             case 'avi':
             case 'mpg':
+            case 'ogv':
+            case 'mp4':
+            case 'mov':
                 return 'movie_';
+                break;
+            case 'mp3':
+                return 'sound_';
                 break;
             default:
                 return '';

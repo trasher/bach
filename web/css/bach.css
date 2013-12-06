@@ -429,12 +429,9 @@ p {
     width: auto;
 }
 
-[id=search_results] article figure a.flashplayer img {
-    margin-top: 33px;
-}
-
+[id=search_results] article figure a.flashplayer img,
 [id=search_results] article figure a.flashmusicplayer img {
-    margin-top: 70px;
+    margin-top: 0;
 }
 
 [id=search_results] a.flashmusicplayer h2 {
@@ -1222,9 +1219,21 @@ figure section {
 
 .content figure section ul{
     list-style-type:none;
+}
+.content figure section ul.playlist {
     height: 15em;
     overflow: auto;
 }
+.content figure section ul.playlist li {
+    padding: 0;
+    text-align: left;
+}
+
+.playlist a {
+    display: block;
+    padding: .3em .5em;
+}
+
 .content figure section li:nth-child(even){
     background-color: #d1c6c0;
 }
@@ -1236,7 +1245,6 @@ list-style-type: none;
 figure section a, figure section video {
     background-repeat: repeat-x;
     display: inline-block;
-    width: 600px;
     text-align: left;
     vertical-align: middle;
     position: relative;
@@ -1246,6 +1254,7 @@ figure section a.flashplayer span.title {
     position: absolute;
     bottom: 0;
     left: 0;
+    padding: .1em .5em;
 }
 
 #musicplayer {
@@ -1266,10 +1275,13 @@ figure section a.flashplayer, figure section video {
 
 figure section a.flashplayer {
     height: 300px;
+    width: 300px;
+    margin: .2em;
+    text-align: center;
 }
 
 a.flashplayer img {
-    margin-top: 108px;
+    margin-top: 48px;
 }
 
 a.flashplayer h2,
