@@ -12,8 +12,8 @@
             {{ form_errors(upload_form.file) }}
             {{ form_errors(upload_form.extension) }}
         {#<fieldset>
-            <legend>{% trans %}Existing files{'endtrans %}</legend>
-            <p>{% trans %}Select files or directories you want to publish{% endtran %}</p>
+            <legend>{% trans %}Existing files{%endtrans %}</legend>
+            <p>{% trans %}Select files or directories you want to publish{% endtrans %}</p>
             <div class="well">
             {% if existing_files is defined %}
                 {% for format,files in existing_files %}
