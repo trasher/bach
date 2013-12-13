@@ -11,13 +11,14 @@
 {% endblock %}
 
 {% block menu %}
-        {% if facets is defined and searchResults|length > 0 %}
         <ul class="interactions">
     {% if show_maps %}
             <li><a id="sh_map" href="?show_map={% if show_map == true %}off{% else %}on{% endif %}" title="{% trans %}Shows or hides map{% endtrans %}"><img src="{{ asset('img/map.png')  }}" alt="{% trans %}Show/Hide map{% endtrans %}"/></a></li>
     {% endif %}
             <li><a id="sh_daterange" href="?show_daterange={% if show_daterange == true %}off{% else %}on{% endif %}" title="{% trans %}Shows or hides date range graph{% endtrans %}"><img src="{{ asset('img/calendar.png') }}" alt="{% trans %}Show/Hide date range{% endtrans %}"/></a></li>
         </ul>
+
+        {% if facets is defined and searchResults|length > 0 %}
         <h2>
             {% trans %}Refine Query{% endtrans %}
             {% if filters is defined %}
