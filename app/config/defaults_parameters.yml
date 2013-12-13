@@ -33,6 +33,7 @@ parameters:
     show_expos: false
     has_cdc: false
     cdc_path: '%kernel.root_dir%/../cdc.xml'
+    show_tagcloud: true
 
 bach_home:
     files:

@@ -330,66 +330,79 @@ class DefaultController extends Controller
                 $templateVars['resultEnd'] = $resultEnd;
             }
         } else {
-            $tag_max = 20;
-
             $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
 
-            $query = $this->get("solarium.client")->createSelect();
-            $query->setQuery('*:*');
-            $query->setStart(0)->setRows(0);
+            $show_tagcloud = $this->container->getParameter('show_tagcloud');
+            if ( $show_tagcloud ) {
+                $tag_max = 20;
 
-            $facetSet = $query->getFacetSet();
-            $facetSet->setLimit($tag_max);
-            $facetSet->setMinCount(1);
-            $facetSet->createFacetField('subject')->setField('cSubject');
-            $facetSet->createFacetField('persname')->setField('cPersname');
-            $facetSet->createFacetField('geogname')->setField('cGeogname');
+                $query = $this->get("solarium.client")->createSelect();
+                $query->setQuery('*:*');
+                $query->setStart(0)->setRows(0);
 
-            $rs = $this->get('solarium.client')->select($query);
+                $facetSet = $query->getFacetSet();
+                $facetSet->setLimit($tag_max);
+                $facetSet->setMinCount(1);
+                $facetSet->createFacetField('subject')->setField('cSubject');
+                $facetSet->createFacetField('persname')->setField('cPersname');
+                $facetSet->createFacetField('geogname')->setField('cGeogname');
 
-            $tags = array();
-            $facet = $rs->getFacetSet()->getFacet('subject');
-            $tags = $facet->getValues();
+                $rs = $this->get('solarium.client')->select($query);
 
-            $facet = $rs->getFacetSet()->getFacet('persname');
-            $tags = array_merge($tags, $facet->getValues());
+                $tags = array();
+                $facet = $rs->getFacetSet()->getFacet('subject');
+                $tags = $facet->getValues();
 
-            $facet = $rs->getFacetSet()->getFacet('geogname');
-            $tags = array_merge($tags, $facet->getValues());
+                $facet = $rs->getFacetSet()->getFacet('persname');
+                $tags = array_merge($tags, $facet->getValues());
 
-            if ( $show_maps ) {
-                $map_facets = $facet;
-            }
+                $facet = $rs->getFacetSet()->getFacet('geogname');
+                $tags = array_merge($tags, $facet->getValues());
 
-            if ( count($tags) > 0 ) {
-                arsort($tags, SORT_NUMERIC);
+                if ( count($tags) > 0 ) {
+                    arsort($tags, SORT_NUMERIC);
 
-                $values = array_values($tags);
-                $max = $values[0];
-                $min = null;
-                if ( count($values) < $tag_max ) {
-                    $min = $values[count($values)-1];
-                } else {
-                    $min = $values[$tag_max-1];
-                }
-
-                //5 levels
-                $range = ($max - $min) / 5;
-
-                $tagcloud = array();
-                $i = 0;
-                //loop through returned result and normalize keyword hit counts
-                foreach ( $tags as $keyword=>$weight ) {
-                    if ( $i === $tag_max ) {
-                        break;
+                    $values = array_values($tags);
+                    $max = $values[0];
+                    $min = null;
+                    if ( count($values) < $tag_max ) {
+                        $min = $values[count($values)-1];
+                    } else {
+                        $min = $values[$tag_max-1];
                     }
 
-                    $tagcloud[$keyword] = floor($weight/$range);
-                    $i++;
-                }
+                    //5 levels
+                    $range = ($max - $min) / 5;
 
-                ksort($tagcloud, SORT_LOCALE_STRING);
-                $templateVars['tagcloud'] = $tagcloud;
+                    $tagcloud = array();
+                    $i = 0;
+                    //loop through returned result and normalize keyword hit counts
+                    foreach ( $tags as $keyword=>$weight ) {
+                        if ( $i === $tag_max ) {
+                            break;
+                        }
+
+                        $tagcloud[$keyword] = floor($weight/$range);
+                        $i++;
+                    }
+
+                    ksort($tagcloud, SORT_LOCALE_STRING);
+                    $templateVars['tagcloud'] = $tagcloud;
+                }
+            }
+
+            if ( $show_maps ) {
+                $query = $this->get("solarium.client")->createSelect();
+                $query->setQuery('*:*');
+                $query->setStart(0)->setRows(0);
+
+                $facetSet = $query->getFacetSet();
+                $facetSet->setLimit(-1);
+                $facetSet->setMinCount(1);
+                $facetSet->createFacetField('geogname')->setField('cGeogname');
+
+                $rs = $this->get('solarium.client')->select($query);
+                $map_facets = $rs->getFacetSet()->getFacet('geogname');
             }
         }
 
