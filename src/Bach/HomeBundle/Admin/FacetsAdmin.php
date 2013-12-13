@@ -78,6 +78,13 @@ class FacetsAdmin extends Admin
             ->createQueryBuilder()
             ->add('select', 'f.solr_field_name')
             ->add('from', 'Bach\HomeBundle\Entity\Facets f');
+
+        if ( $this->getSubject()->getId() !== null ) {
+            $qb
+                ->add('where', 'f.solr_field_name != :curfield')
+                ->setParameter('curfield', $this->getSubject()->getSolrFieldName());
+        }
+
         $query = $qb->getQuery();
         $results = $query->getResult();
         $used = array_map(
