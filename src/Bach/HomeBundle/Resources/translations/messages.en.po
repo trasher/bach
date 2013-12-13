@@ -182,3 +182,18 @@ msgstr "Collapse all"
 msgid "Expand all"
 msgstr "Expand all"
 
+msgid "Shows or hides map"
+msgstr "Shows or hides map"
+
+msgid "Show/Hide map"
+msgstr "Show/Hide map"
+
+msgid "Shows or hides date range graph"
+msgstr "Shows or hides date range graph"
+
+msgid "Show/Hide date range"
+msgstr "Show/Hide date range"
+
+msgid "Hover over a zone"
+msgstr "Hover over a zone"
+

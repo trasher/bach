@@ -181,3 +181,18 @@ msgstr "Plier tout"
 msgid "Expand all"
 msgstr "Déplier tout"
 
+msgid "Shows or hides map"
+msgstr "Affiche ou masque la carte"
+
+msgid "Show/Hide map"
+msgstr "Afficher/Masquersquer la carte"
+
+msgid "Shows or hides date range graph"
+msgstr "Affiche ou masque le graphique de sélection de date"
+
+msgid "Show/Hide date range"
+msgstr "Afficher/Masquer la sélection de date"
+
+msgid "Hover over a zone"
+msgstr "Survolez une zone"
+
