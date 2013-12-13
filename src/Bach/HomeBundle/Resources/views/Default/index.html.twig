@@ -12,7 +12,7 @@
 
 {% block menu %}
         <ul class="interactions">
-    {% if show_maps %}
+    {% if show_maps and geojson is defined and geojson != null %}
             <li><a id="sh_map" href="?show_map={% if show_map == true %}off{% else %}on{% endif %}" title="{% trans %}Shows or hides map{% endtrans %}"><img src="{{ asset('img/map.png')  }}" alt="{% trans %}Show/Hide map{% endtrans %}"/></a></li>
     {% endif %}
             <li><a id="sh_daterange" href="?show_daterange={% if show_daterange == true %}off{% else %}on{% endif %}" title="{% trans %}Shows or hides date range graph{% endtrans %}"><img src="{{ asset('img/calendar.png') }}" alt="{% trans %}Show/Hide date range{% endtrans %}"/></a></li>
@@ -490,6 +490,7 @@
                 return false;
             });
 {% if show_maps %}
+    {% if geojson is defined and geojson != null %}
             $('#sh_map').on('click', function(){
                 $('#map').toggleClass('hidden');
                 _view_params['map'] = !$('#map').hasClass('hidden');
@@ -503,11 +504,7 @@
             var map;
 
             var _initMap = function() {
-    {% if geojson is defined and geojson != null %}
                 map = L.map('map');
-    {% else %}
-                map = L.map('map').setView([47.010, 5.087], 5);
-    {% endif %}
 
                 var fullScreen = new L.Control.FullScreen();
                 map.addControl(fullScreen);
@@ -525,7 +522,6 @@
                     attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {% trans %}© Imagery{% endtrans %} <a href="http://cloudmade.com">CloudMade</a>'
                 }).addTo(map);
 
-    {% if geojson is defined and geojson != null %}
                 // control that shows location info on hover
                 var info = L.control();
 
@@ -705,8 +701,8 @@
             if ( _view_params['map'] == true ) {
                 $('#map').removeClass('hidden');
                 _initMap();
-    {% endif %}
             }
+    {% endif %}
 {% endif %}
             //handle viewer links
             //fullscreen does not work for the moment when binded into an iframe
