@@ -277,6 +277,10 @@ p {
  * ===== Search form =====
  */
 
+[id=search] {
+    margin-bottom: 1em;
+}
+
 [id=search] input[type=text],
 [id=search] button[type=submit] {
     border: none;
@@ -407,6 +411,20 @@ p {
     vertical-align: 40%;
     margin-right: .5em;
 }
+
+/**
+ * ===== Interactions menu =====
+ */
+
+.interactions {
+    text-align: center;
+}
+
+.interactions li, .interactions a {
+    display: inline-block;
+    text-align: center;
+}
+
 
 /** === Main display (old method) === */
 
@@ -680,8 +698,9 @@ h2.back a:hover {
     width: 100%;
 }
 
-#map {
+[id=map] {
     height: 300px;
+    margin-bottom: 1em;
 }
 
 div.sonata-bc #map {
@@ -689,7 +708,7 @@ div.sonata-bc #map {
     float: right;
 }
 
-#map .info {
+[id=map] .info {
     padding: 6px 8px;
     background: white;
     background: rgba(255,255,255,0.8);
@@ -697,18 +716,18 @@ div.sonata-bc #map {
     border-radius: 5px;
 }
 
-#map .info h4 {
+[id=map] .info h4 {
     margin: 0 0 5px;
     color: #777;
 }
 
-#map .legend {
+[id=map] .legend {
     text-align: left;
     line-height: 18px;
     color: #555;
 }
 
-#map .legend i {
+[id=map] .legend i {
     width: 18px;
     height: 18px;
     float: left;
