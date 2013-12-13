@@ -14,6 +14,7 @@
 namespace Bach\HomeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Bach files controller
@@ -71,10 +72,14 @@ class FilesController extends Controller
         $path .= '/' . $name;
 
         if ( !file_exists($path) ) {
-            throw new \RuntimeException(
+            $msg_file = $name;
+            if ( $this->container->get('kernel')->getEnvironment() === 'DEBUG' ) {
+                $msg_file = $path;
+            }
+            throw new NotFoundHttpException(
                 str_replace(
                     '%file',
-                    $path,
+                    $msg_file,
                     _('File %file does not exists.')
                 )
             );
