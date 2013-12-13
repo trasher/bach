@@ -533,7 +533,7 @@
                 info.update = function (props) {
                     this._div.innerHTML = (props ?
                         '<strong>' + props.name + '</strong> - ' + props.results
-                        : 'Hover over a zone');
+                        : '{% trans %}Hover over a zone{% endtrans %}');
                 };
 
                 info.addTo(map);
