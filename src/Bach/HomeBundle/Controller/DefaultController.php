@@ -62,8 +62,17 @@ class DefaultController extends Controller
         if ( !$view_params ) {
             $view_params = new ViewParams();
         }
+        //take care of user view params
+        $_cook = null;
+        if ( isset($_COOKIE['bach_view_params']) ) {
+            $_cook = json_decode($_COOKIE['bach_view_params']);
+            $view_params->setShowMap($_cook->map);
+            $view_params->setShowDaterange($_cook->daterange);
+        }
+
         //set current view parameters according to request
         $view_params->bind($request);
+
         //store new view parameters
         $session->set('view_params', $view_params);
 
@@ -83,16 +92,18 @@ class DefaultController extends Controller
         }
 
         $viewer_uri = $this->container->getParameter('viewer_uri');
-        $show_map = $this->container->getParameter('show_map');
+        $show_maps = $this->container->getParameter('show_maps');
 
         $templateVars = array(
             'q'             => urlencode($query_terms),
             'page'          => $page,
             'show_pics'     => $view_params->showPics(),
+            'show_map'      => $view_params->showMap(),
+            'show_daterange'=> $view_params->showDaterange(),
             'viewer_uri'    => $viewer_uri,
             'view'          => $view_params->getView(),
             'results_order' => $view_params->getOrder(),
-            'show_map'      => $show_map
+            'show_maps'     => $show_maps
         );
 
         if ( $facet_name !== null ) {
@@ -148,7 +159,7 @@ class DefaultController extends Controller
             $searchResults = $factory->performQuery(
                 $container,
                 $conf_facets,
-                $show_map
+                $show_maps
             );
 
             $hlSearchResults = $factory->getHighlighting();
@@ -178,7 +189,7 @@ class DefaultController extends Controller
                 $facet_names[$solr_field] = $facet->getFrLabel();
                 $field_facets = $facetset->getFacet($solr_field);
 
-                if ( $solr_field === 'cGeogname' && $show_map ) {
+                if ( $solr_field === 'cGeogname' && $show_maps ) {
                     $map_facets = $field_facets;
                 }
 
@@ -262,7 +273,7 @@ class DefaultController extends Controller
                 }
             }
 
-            if ( $show_map && !$map_facets ) {
+            if ( $show_maps && !$map_facets ) {
                 //map facets missing, add them!
                 $map_facets = $facetset->getFacet('cGeogname');
             }
@@ -346,7 +357,7 @@ class DefaultController extends Controller
             $facet = $rs->getFacetSet()->getFacet('geogname');
             $tags = array_merge($tags, $facet->getValues());
 
-            if ( $show_map ) {
+            if ( $show_maps ) {
                 $map_facets = $facet;
             }
 
@@ -402,7 +413,7 @@ class DefaultController extends Controller
                 $templateVars['suggestions'] = $suggestions;
             }
 
-            if ( $show_map ) {
+            if ( $show_maps ) {
                 $session->set('map_facets', $map_facets);
                 $geojson = $factory->getGeoJson(
                     $map_facets,

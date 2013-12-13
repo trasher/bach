@@ -41,6 +41,8 @@ class ViewParams
     private $_results_by_page = 10;
     private $_view = self::VIEW_LIST;
     private $_order = self::ORDER_RELEVANCE;
+    private $_show_map = true;
+    private $_show_daterange = true;
 
     private $_request;
 
@@ -57,13 +59,57 @@ class ViewParams
     /**
      * Set pictures display
      *
-     * @param boolean $show Display picturesctures or not
+     * @param boolean $show Display pictures or not
      *
      * @return void
      */
     public function setShowPics($show)
     {
         $this->_show_pics = $show;
+    }
+
+    /**
+     * Should map be displayed
+     *
+     * @return boolean
+     */
+    public function showMap()
+    {
+        return $this->_show_map;
+    }
+
+    /**
+     * Set map display
+     *
+     * @param boolean $show Display map or not
+     *
+     * @return void
+     */
+    public function setShowMap($show)
+    {
+        $this->_show_map = $show;
+    }
+
+    /**
+     * Should date range be displayed
+     *
+     * @return boolean
+     */
+    public function showDaterange()
+    {
+        return $this->_show_daterange;
+    }
+
+    /**
+     * Set date range display
+     *
+     * @param boolean $show Display date range or not
+     *
+     * @return void
+     */
+    public function setShowDaterange($show)
+    {
+        $this->_show_daterange = $show;
     }
 
     /**
@@ -186,6 +232,38 @@ class ViewParams
             || $request->get('results_order') === '0'
         ) {
             $this->setOrder((int)$request->get('results_order'));
+        }
+
+        $set_cookie = false;
+        if ( $request->get('show_map') ) {
+            $set_cookie = true;
+            switch( $request->get('show_map') ) {
+            case 'on':
+                $this->setShowMap(true);
+                break;
+            case 'off':
+                $this->setShowMap(false);
+                break;
+            }
+        }
+
+        if ( $request->get('show_daterange') ) {
+            $set_cookie = true;
+            switch( $request->get('show_daterange') ) {
+            case 'on':
+                $this->setShowDaterange(true);
+                break;
+            case 'off':
+                $this->setShowDaterange(false);
+                break;
+            }
+        }
+
+        if ( $set_cookie === true ) {
+            $_cook = new \stdClass();
+            $_cook->map = $this->showMap();
+            $_cook->daterange = $this->showDaterange();
+            setcookie('bach_view_params', json_encode($_cook));
         }
     }
 }
