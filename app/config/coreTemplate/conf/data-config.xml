@@ -7,6 +7,10 @@
         var _source = row.get("source");
         var _value = row.get("name");
 
+        if ( !_source ) {
+            _source = "none";
+        }
+
         var _key = "dyndescr_" + _type + "_" + _source;
         row.put(_key, _value);
 

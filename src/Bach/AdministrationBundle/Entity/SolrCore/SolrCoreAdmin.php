@@ -902,6 +902,17 @@ class SolrCoreAdmin
                 $newEntity->setAttribute('transformer', 'script:' . $func);
                 $elt->appendChild($newEntity);
             }
+
+            //descriptors with no dynamics
+            $newEntity = $doc->createElement('entity');
+            $newEntity->setAttribute('name', 'dyn_none');
+            $newEntity->setAttribute(
+                'query',
+                'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
+                '\'${SolrXMLFile.uniqid}\' AND source IS NULL AND role IS NULL AND type != \'cDate\''
+            );
+            $newEntity->setAttribute('transformer', 'script:makeSourcesDynamics');
+            $elt->appendChild($newEntity);
         }
 
         //take care of dates

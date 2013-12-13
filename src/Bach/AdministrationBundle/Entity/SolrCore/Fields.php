@@ -215,6 +215,9 @@ class Fields
         );
         $field_label = $this->getFieldLabel($exploded[0]);
         $dynamic_name = str_replace('dyndescr_' . $exploded[0] . '_', '', $name);
+        if ( $dynamic_name === 'none' ) {
+            $dynamic_name = _('without specific');
+        }
         return $field_label . ' (' . $dynamic_name . ')';
     }
 }
