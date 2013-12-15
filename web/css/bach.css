@@ -1088,6 +1088,36 @@ div.sonata-bc .pagination {
     padding: 0;
 }
 
+/**
+ * ===== Sonata sortable =====
+ */
+
+.movedown_link, .movebottom_link, .moveup_link, .movetop_link {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    text-indent: 20px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: top left;
+}
+
+.movedown_link {
+    background-image: url(../img/go-down.png);
+}
+
+.movebottom_link {
+    background-image: url(../img/go-bottom.png);
+}
+
+.moveup_link {
+    background-image: url(../img/go-up.png);
+}
+
+.movetop_link {
+    background-image: url(../img/go-top.png);
+}
+
 /*
  * ===== Leaflet overrides =====
  */
