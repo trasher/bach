@@ -61,3 +61,16 @@ bach_add_comment:
 bach_classification:
     pattern: /classification-scheme
     defaults: { _controller: BachHomeBundle:Default:cdc }
+
+bach_toponym_geoloc:
+    pattern: /geoloc/toponym/{name}
+    defaults: { _controller: BachHomeBundle:Geoloc:toponym }
+
+bach_raw_geoloc:
+    pattern: /geoloc/raw/{name}
+    defaults: { _controller: BachHomeBundle:Geoloc:raw }
+
+bach_store_geoloc:
+    pattern: /geoloc/store
+    defaults: { _controller: BachHomeBundle:Geoloc:store }
+

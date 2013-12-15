@@ -39,10 +39,11 @@ class Nominatim
      * Get results for a toponym
      *
      * @param Toponym $toponym Toponym
+     * @param boolean $one     True if we want only one result back
      *
      * @return string
      */
-    public function proceed(Toponym $toponym)
+    public function proceed(Toponym $toponym, $one = true)
     {
         $options = $this->_query_options;
 
@@ -101,17 +102,51 @@ class Nominatim
         }
 
         if ( count($places) > 1 ) {
-            echo 'More than one place find for ' . $toponym->__toString() .
-                ", ignoring.\n";
-            return false;
+            if ( $one === true ) {
+                echo 'More than one place find for ' . $toponym->__toString() .
+                    ", ignoring.\n";
+                return false;
+            } else {
+                return $places;
+            }
         } else if (count($places) == 0 ) {
-            echo 'No result found for ' . $toponym->__toString() . " :(\n";
+            if ( $one === true ) {
+                echo 'No result found for ' . $toponym->__toString() . " :(\n";
+            }
             return false;
         } else {
             return $places[0];
         }
 
     }
+
+    /**
+     * Get results for a name
+     *
+     * @param String $name Name to search on
+     *
+     * @return string
+     */
+    public function rawProceed($name)
+    {
+        $options = $this->_query_options;
+        $options['q'] = $name;
+
+        $result = $this->_send(
+            $this->_uri,
+            $options
+        );
+
+        $xml = new \SimpleXMLElement($result);
+        $places = $xml->xpath('//place');
+
+        if (count($places) == 0 ) {
+            return false;
+        } else {
+            return $places;
+        }
+    }
+
 
     /**
      * Sends an HTTP query (POST method) to Solr and returns

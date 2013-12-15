@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * Bach geolocalisation management
@@ -86,6 +87,18 @@ class GeolocAdmin extends Admin
             )->add(
                 'geojson'
             );
+    }
+
+    /**
+     * Configure routes
+     *
+     * @param RouteCollection $collection Collection
+     *
+     * @return void
+     */
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('geoloc_missing');
     }
 
     /**

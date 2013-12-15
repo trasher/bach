@@ -708,6 +708,12 @@ div.sonata-bc #map {
     float: right;
 }
 
+div.sonata-bc #map.big {
+    float: none;
+    width: auto;
+    margin-bottom: 0;
+}
+
 [id=map] .info {
     padding: 6px 8px;
     background: white;
@@ -733,6 +739,20 @@ div.sonata-bc #map {
     float: left;
     margin-right: 8px;
     opacity: 0.7;
+}
+
+[id=map] .leaflet-control-sidebarbtn a {
+    background-image: url(../img/showhide.png);
+    background-position: -15px; 50%;
+    background-repeat: no-repeat;
+}
+
+[id=map] .leaflet-control-sidebarbtn.show a {
+    background-position: 4px 50%;
+}
+
+[id=map] h3 {
+    font-size: 1.1em;
 }
 
 .well {
@@ -1014,8 +1034,21 @@ tr.task_warning td {
  * =====  Sonata overrides =====
  */
 
+div.sonata-bc input, div.sonata-bc button, div.sonata-bc select, div.sonata-bc textarea {
+    font-family: 'PT Sans Narrow', Verdana, Arial, sans-serif;
+}
+
+.leaflet-control input {
+    margin-bottom: 0!important;
+}
+
 div.sonata-bc {
     background: transparent;
+}
+
+div.sonata-bc h3 {
+    font-size: 1.3em;
+    line-height: 1.3em;
 }
 
 div.sonata-bc .navbar {
@@ -1039,6 +1072,10 @@ div.sonata-bc .table-striped tbody tr:nth-child(2n+1) td, div.sonata-bc .table-s
 
 div.sonata-bc a, div.sonata-bc .btn-link {
     color: #b73a34;
+}
+
+div.sonata-bc .leaflet-control a {
+    color: #000;
 }
 
 div.sonata-bc .well {

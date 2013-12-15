@@ -20,7 +20,7 @@ services:
         arguments:
             - ~
             - Bach\IndexationBundle\Entity\Geoloc
-            - ~
+            - BachHomeBundle:GeolocAdmin
         calls:
             - [ setTemplate, [edit, BachHomeBundle:Admin:edit_wmap.html.twig] ]
             - [ setTranslationDomain, [BachHomeBundle]]

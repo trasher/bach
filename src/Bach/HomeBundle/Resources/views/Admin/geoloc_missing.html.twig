@@ -1,0 +1,221 @@
+{#
+
+This file is part Bach.
+
+(c) Anaphore <info@anaphore.eu>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block css %}
+    {{ parent() }}
+    <link href="{{ asset('js/leaflet/leaflet.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <link href="{{ asset('js/leaflet/leaflet.sidebar/L.Control.Sidebar.css') }}" type="text/css" rel="stylesheet" media="screen" />
+{% endblock %}
+
+{% block js_calls %}
+    {{ parent() }}
+    <script src="{{ asset('js/leaflet/leaflet.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/leaflet/leaflet.sidebar/L.Control.Sidebar.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/leaflet/leaflet.sidebarcontrol/L.Control.SidebarBtn.js') }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div id="map" class="big"></div>
+    <div id="sidebar">
+        <div id="missing-list">
+            <h3>{% trans %}Not geolocalized places{% endtrans %} ({{ missing|length }})</h3>
+            <p>{% trans %}Click on a location to perform automatic search.{% endtrans %}</p>
+            <ul>
+            {% for origin, toponym in missing %}
+                <li>
+                    <a class="geoloc" href="#">{{ origin }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div id="proposal"class="hidden">
+            <h3>{% trans %}Proposals for: {% endtrans %}<br/><em class="placename"></em></h3>
+            <a class="back">{% trans %}Back{% endtrans %}</a>
+            <div class="list"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    var allpoints;
+    var current;
+    var selected;
+
+    /**
+     * Returns element height, including margins
+     */
+    function _eltRealSize(_elt) {
+        var _s = 0;
+        _s += _elt.outerHeight();
+        _s += parseFloat(_elt.css('margin-top').replace('px', ''));
+        _s += parseFloat(_elt.css('margin-bottom').replace('px', ''));
+        return _s;
+    }
+
+    function onEachFeature(feature, layer) {
+        popup = layer.bindPopup('Possible position for location: <em>' + current + '</em><br/><br/>Would you like to <a href="#" class="store">store that position?</a>');
+    }
+
+    var _layers;
+
+    $(function(){
+        $('.geoloc').on('click', function(){
+            var _this = $(this);
+            _this.closest('div').addClass('hidden');
+
+            current = _this.html();
+            var _proposal = $('#proposal');
+
+            _proposal.removeClass('hidden')
+                .find('.placename').html(current);
+
+            var _da_url = '{{ path('bach_toponym_geoloc', {name: 'NAME'}) }}';
+
+            $.ajax({
+                url: _da_url.replace('NAME', _this.html()),
+                success: function(data) {
+                    if ( data.length > 0 ) {
+                        var _ul = $('<ul></ul>');
+                        data.forEach(function(elt) {
+                            var _a = $('<a href="#" id="id_' + elt.osm_id  + '">' + elt.name + ' (' + elt.osm_id + ')'  + '</a>');
+
+                            _a.on('click', function(){
+                                if ( _layers ) {
+                                    _layers.clearLayers();
+                                }
+
+                                var _geojson = {
+                                    "type": "FeatureCollection",
+                                    "features": [JSON.parse(elt.geojson)]
+                                };
+
+                                allpoints = L.geoJson(_geojson, {
+                                    onEachFeature: onEachFeature
+                                });
+
+                                _layers = L.layerGroup([allpoints]).addTo(map);
+                                popup.openPopup();
+                                map.fitBounds(allpoints.getBounds(), {
+                                    padding: [50, 50],
+                                    maxZoom: 13
+                                });
+
+                                selected = elt;
+
+                                $('.store').on('click', function() {
+                                    $.ajax({
+                                        url: '{{ path('bach_store_geoloc') }}',
+                                        method: 'POST',
+                                        data: selected,
+                                        success: function(data) {
+                                            if ( data.success === true ) {
+                                                alert('{% trans %}Position has been successfully stored!{% endtrans %}');
+
+                                                $('#proposal').addClass('hidden');
+                                                $('#missing-list').removeClass('hidden');
+                                                current = null;
+                                                selected = null;
+                                                _layers.clearLayers();
+
+                                                $('#missing-list li').filter(
+                                                    function(){
+                                                        return $(this).find('a').text() === data.name
+                                                    }
+                                                ).remove();
+                                            } else {
+                                                alert('{% trans %}Something went wrong trying to store position :({% endtrans %}');
+                                            }
+                                        }
+                                    });
+                                    return false;
+                                });
+                            });
+
+                            var _li = $('<li></li>');
+                            _a.appendTo(_li);
+                            _li.appendTo(_ul);
+                        });
+
+                        _proposal.find('.list').html(_ul);
+                    } else {
+                        _proposal.find('.list').empty().html('{% trans %}No results found :/{% endtrans %}');
+                    }
+                }
+            });
+
+            return false;
+        });
+
+        $('.back').on('click', function(){
+            var _this = $(this);
+            _this.parent('div').addClass('hidden');
+            $('#missing-list').removeClass('hidden');
+            current = null;
+            selected = null;
+            if ( _layers ) {
+                _layers.clearLayers();
+            }
+        });
+
+        var wheight = $(window).height();
+        var _oSize = 0;
+
+        _oSize += _eltRealSize($('#navigation'));
+        _oSize += _eltRealSize($('.navbar'));
+        _oSize += parseFloat(
+            $('#container').css('padding-top').replace('px', '')
+        );
+        _oSize += parseFloat(
+            $('#container').css('padding-bottom').replace('px', '')
+        );
+
+        var newHeight = Math.floor(wheight - _oSize) + "px";
+        $("#map").css("height", newHeight);
+
+        var map;
+
+        map = L.map('map').setView([47.010, 5.087], 5);
+
+        var fullScreen = new L.Control.FullScreen();
+        map.addControl(fullScreen);
+
+        var sidebar = L.control.sidebar('sidebar', {
+            position: 'right'
+        });
+
+        sidebar.on('hide', function () {
+            $('.leaflet-control-sidebarbtn').toggleClass('show');
+        });
+        sidebar.on('show', function () {
+            $('.leaflet-control-sidebarbtn').toggleClass('show');
+        });
+
+        map.addControl(sidebar);
+        sidebar.show();
+
+        L.control.sidebarbtn({
+            strings: {
+                title: '{% trans %}Show/Hide sidebar{% endtrans %}'
+            },
+            sidebar: sidebar
+        }).addTo(map);
+
+        L.tileLayer('http://{s}.tile.cloudmade.com/852b7821064f43a59604e98d9536680b/997/256/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {% trans %}© Imagery{% endtrans %} <a href="http://cloudmade.com">CloudMade</a>'
+        }).addTo(map);
+
+    });
+{% endblock %}

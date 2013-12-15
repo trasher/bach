@@ -346,6 +346,26 @@ class Geoloc
     }
 
     /**
+     * Array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'indexed_name'  => $this->indexed_name,
+            'name'          => $this->name,
+            'place_id'      => $this->place_id,
+            'type'          => $this->type,
+            'osm_id'        => $this->osm_id,
+            'bbox'          => $this->bbox,
+            'geojson'       => $this->geojson,
+            'lat'           => $this->lat,
+            'lon'           => $this->lon
+        );
+    }
+
+    /**
      * String representation
      *
      * @return string
