@@ -45,6 +45,7 @@ class DisplayDao extends \Twig_Extension
     const FLA_SOUND = 4;
     const FLASH = 5;
     const MISC = 6;
+    const EXTERNAL = 7;
 
     /**
      * Main constructor
@@ -612,6 +613,21 @@ class DisplayDao extends \Twig_Extension
             }
             $ret .= '</a>';
             break;
+        case self::EXTERNAL:
+            $title = str_replace(
+                '%name%',
+                $dao,
+                _("Display '%name%'")
+            );
+
+            $ret = '<a href="' . $dao . '" title="' . $title  . '">';
+            if ( $daotitle ) {
+                $ret .= $daotitle;
+            } else {
+                $ret .= $dao;
+            }
+            $ret .= '</a>';
+            break;
         }
 
         return $ret;
@@ -686,6 +702,11 @@ class DisplayDao extends \Twig_Extension
      */
     private static function _getType($dao)
     {
+
+        if (strpos($dao, 'http://') === 0) {
+            return self::EXTERNAL;
+        }
+
         $all_reg = "/^(.+)\.(.+)$/i";
         $img_reg = "/^(.+)\.(" . implode('|', self::$_images_extensions) . ")$/i";
         $vid_reg = "/^(.+)\.(" . implode('|', self::$_videos_extensions) . ")$/i";
