@@ -546,7 +546,9 @@ class DefaultController extends Controller
             }
             if ( $show_all === 'show_all' ) {
                 if ( defined('SORT_FLAG_CASE') ) {
-                    ksort($current_values, SORT_FLAG_CASE | SORT_NATURAL);
+                    //FIXME: locale should not be hard-coded!
+                    setlocale(LC_COLLATE, 'fr_FR.utf8');
+                    ksort($current_values, SORT_LOCALE_STRING | SORT_FLAG_CASE);
                 } else {
                     //fallback for PHP < 5.4
                     ksort($current_values, SORT_LOCALE_STRING);
