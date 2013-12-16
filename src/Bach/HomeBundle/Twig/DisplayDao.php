@@ -284,7 +284,10 @@ class DisplayDao extends \Twig_Extension
                     $dao,
                     $daotitle,
                     $viewer,
-                    $format
+                    $format,
+                    $ajax,
+                    true,
+                    $covers_dir
                 );
             }
 
