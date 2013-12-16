@@ -146,7 +146,8 @@ class EADFileFormat extends MappedFileFormat
         'cDateNormal',
         'cDateBegin',
         'cDateEnd',
-        'dao'
+        'dao',
+        'cTitle'
     );
 
     /**
@@ -166,7 +167,8 @@ class EADFileFormat extends MappedFileFormat
         'cDateBegin',
         'cDateEnd',
         'subject_w_expanded',
-        'parents_titles'
+        'parents_titles',
+        'cTitle'
     );
 
     /**
@@ -204,7 +206,8 @@ class EADFileFormat extends MappedFileFormat
         'cGeogname',
         'cName',
         'cPersname',
-        'cSubject'
+        'cSubject',
+        'cTitle'
     );
 
     /**
@@ -217,7 +220,8 @@ class EADFileFormat extends MappedFileFormat
         'cGeogname',
         'cName',
         'cPersname',
-        'cSubject'
+        'cSubject',
+        'cTitle'
     );
 
     /**
