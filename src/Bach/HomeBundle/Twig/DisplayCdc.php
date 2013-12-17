@@ -128,7 +128,7 @@ class DisplayCdc extends \Twig_Extension
                     array(
                         'query_terms'   => $request->get('query_terms'),
                         'filter_field'  => 'c' . ucwords($matches[1]),
-                        'filter_value'  => $matches[3]
+                        'filter_value'  => $matches[2]
                     )
                 );
             } else {
@@ -143,7 +143,13 @@ class DisplayCdc extends \Twig_Extension
         };
 
         $text = preg_replace_callback(
-            '/link="%%%(.[^:]+)(::(.[^%]*))?%%%"/',
+            '/link="%%%(.[^:]+)::(.[^%]*)%%%"/',
+            $callback,
+            $text
+        );
+
+        $text = preg_replace_callback(
+            '/link="%%%(.[^%]+)%%%"/',
             $callback,
             $text
         );
