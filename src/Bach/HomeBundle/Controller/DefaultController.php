@@ -19,6 +19,7 @@ use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
+use Bach\HomeBundle\Entity\BrowseFields;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -186,7 +187,7 @@ class DefaultController extends Controller
 
             foreach ( $conf_facets as $facet ) {
                 $solr_field = $facet->getSolrFieldName();
-                $facet_names[$solr_field] = $facet->getFrLabel();
+                $facet_names[$solr_field] = $facet->getLabel($request->getLocale());
                 $field_facets = $facetset->getFacet($solr_field);
 
                 if ( $solr_field === 'cGeogname' && $show_maps ) {
