@@ -274,6 +274,19 @@ class DefaultController extends Controller
                 }
             }
 
+            $browse_fields = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:BrowseFields')
+                ->findBy(
+                    array('active' => true),
+                    array('position' => 'ASC')
+                );
+            foreach ( $browse_fields as $field ) {
+                if ( !isset($facet_names[$field->getSolrFieldName()]) ) {
+                    $facet_names[$field->getSolrFieldName()]
+                        = $field->getLabel($request->getLocale());
+                }
+            }
+
             if ( $show_maps && !$map_facets ) {
                 //map facets missing, add them!
                 $map_facets = $facetset->getFacet('cGeogname');
@@ -512,17 +525,35 @@ class DefaultController extends Controller
      *
      * @return void
      */
-    public function browseAction($part, $show_all = false, $ajax = false)
+    public function browseAction($part = '', $show_all = false, $ajax = false)
     {
+        $fields = $this->getDoctrine()
+            ->getRepository('BachHomeBundle:BrowseFields')
+            ->findBy(
+                array('active' => true),
+                array('position' => 'ASC')
+            );
+
+        $field = null;
+        if ( $part === '' && count($fields) >0 ) {
+            $field = $fields[0];
+            $part = $field->getSolrFieldName();
+        } else if ( count($fields) > 0 ) {
+            foreach ( $fields as $f ) {
+                if ( $f->getSolrFieldName() === $part ) {
+                    $field = $f;
+                    break;
+                }
+            }
+        }
+
         $templateVars = array(
+            'fields'        => $fields,
+            'current_field' => $field,
             'part'          => $part
         );
 
         $lists = array();
-
-        $client = $this->get("solarium.client");
-        // get a terms query instance
-        $query = $client->createTerms();
 
         $limit = 20;
         if ( $show_all === 'show_all' ) {
@@ -531,31 +562,40 @@ class DefaultController extends Controller
         } else {
             $templateVars['show_all'] = 'false';
         }
-        $query->setLimit($limit);
 
-        $query->setFields($part);
+        if ( $part !== '' ) {
+            $client = $this->get("solarium.client");
+            // get a terms query instance
+            $query = $client->createTerms();
 
-        $found_terms = $client->terms($query);
-        foreach ( $found_terms as $field=>$terms ) {
-            $lists[$field] = array();
-            $current_values = array();
-            foreach ( $terms as $term=>$count ) {
-                $current_values[$term] = array(
-                    'term'  => $term,
-                    'count' => $count
-                );
-            }
-            if ( $show_all === 'show_all' ) {
-                if ( defined('SORT_FLAG_CASE') ) {
-                    //FIXME: locale should not be hard-coded!
-                    setlocale(LC_COLLATE, 'fr_FR.utf8');
-                    ksort($current_values, SORT_LOCALE_STRING | SORT_FLAG_CASE);
-                } else {
-                    //fallback for PHP < 5.4
-                    ksort($current_values, SORT_LOCALE_STRING);
+            $query->setLimit($limit);
+
+            $query->setFields($part);
+
+            $found_terms = $client->terms($query);
+            foreach ( $found_terms as $field=>$terms ) {
+                $lists[$field] = array();
+                $current_values = array();
+                foreach ( $terms as $term=>$count ) {
+                    $current_values[$term] = array(
+                        'term'  => $term,
+                        'count' => $count
+                    );
                 }
+                if ( $show_all === 'show_all' ) {
+                    if ( defined('SORT_FLAG_CASE') ) {
+                        //TODO: find a better way!
+                        if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
+                            setlocale(LC_COLLATE, 'fr_FR.utf8');
+                        }
+                        ksort($current_values, SORT_LOCALE_STRING | SORT_FLAG_CASE);
+                    } else {
+                        //fallback for PHP < 5.4
+                        ksort($current_values, SORT_LOCALE_STRING);
+                    }
+                }
+                $lists[$field] = $current_values;
             }
-            $lists[$field] = $current_values;
         }
 
         $templateVars['lists'] = $lists;

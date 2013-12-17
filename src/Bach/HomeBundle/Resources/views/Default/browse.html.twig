@@ -1,14 +1,18 @@
 {% extends '::base.html.twig' %}
 
 {% block container %}
+{% if fields | length > 0 %}
 <div id="tabs">
     <ul>
-        <li{% if part == 'cSubject' %} class="active"{% endif %}><a href="{% if part == 'cSubject' %}#cSubject{% else %}{{ path('bach_browse', {part: 'cSubject', show_all: show_all}) }}{% endif %}">{% trans %}Subjects{% endtrans %}</a></li>
-        <li{% if part == 'cPersname' %} class="active"{% endif %}><a href="{% if part == 'cPersname' %}#cPersname{% else %}{{ path('bach_browse', {part: 'cPersname', show_all: show_all}) }}{% endif %}">{% trans %}Persons{% endtrans %}</a></li>
-        <li{% if part == 'cGeogname' %} class="active"{% endif %}><a href="{% if part == 'cGeogname' %}#cGeogname{% else %}{{ path('bach_browse', {part: 'cGeogname', show_all: show_all}) }}{% endif %}">{% trans %}Places{% endtrans %}</a></li>
+    {% for field in fields %}
+        <li{% if part == field.getSolrFieldName %} class="active"{% endif %}><a href="{% if part == field.getSolrFieldName %}#{{ field.getSolrFieldName }}{% else %}{{ path('bach_browse', {part: field.getSolrFieldName, show_all: show_all}) }}{% endif %}">{{ field.getLabel(lang) }}</a></li>
+    {% endfor %}
     </ul>
-    {% include 'BachHomeBundle:Default:browse_tab_contents.html.twig' with {'part': part, 'lists': lists, 'show_all': show_all} %}
+    {% include 'BachHomeBundle:Default:browse_tab_contents.html.twig' with {'part': part, 'current_field': current_field, 'lists': lists, 'show_all': show_all} %}
 </div>
+{% else %}
+    <p>{% trans %}There are no configured fields for browsing.{% endtrans %}</p>
+{% endif %}
 {% endblock %}
 
 {% block js_calls %}
