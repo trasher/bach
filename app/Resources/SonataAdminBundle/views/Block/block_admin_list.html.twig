@@ -69,7 +69,7 @@ file that was distributed with this source code.
                                 </div>
                             </td>
                         </tr>
-                    {% elseif admin.getCode == 'sonata.admin.tagcloud' and admin.isGranted('EDIT') %}
+                    {% elseif show_tagcloud and admin.getCode == 'sonata.admin.tagcloud' and admin.isGranted('EDIT') %}
                         <tr>
                             <td class="sonata-ba-list-label">
                                 {{ admin.label|trans({}, admin.translationdomain) }}

@@ -29,6 +29,7 @@ twig:
         openid: '%openid_enabled%'
         expos: '%show_expos%'
         cdc: '%has_cdc%'
+        show_tagcloud: '%show_tagcloud%'
 
 # Assetic Configuration
 assetic:
