@@ -63,6 +63,7 @@ file that was distributed with this source code.
                                     {% endif %}
                                     {% if admin.hasroute('geoloc_missing') and admin.isGranted('CREATE') %}
                                         <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_missing')}}">
+                                            <i class="icon-globe"></i>
                                             {% trans from 'BachHomeBundle' %}Missing locations{% endtrans %}
                                         </a>
                                     {% endif %}
@@ -76,6 +77,7 @@ file that was distributed with this source code.
                             </td>
                             <td>
                                 <a class="btn btn-link" href="{{ admin.generateUrl('edit', {id: 1})}}">
+                                    <i class="icon-wrench"></i>
                                     {% trans from 'BachHomeBundle' %}Manage{% endtrans %}
                                 </a>
                             </td>
