@@ -106,7 +106,7 @@
                 {% for value in values %}
                 <li>
                     <a href="{{ path('bach_search', {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
-                        {{ facet_names[filter_name] }} >
+                        {% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{% trans %}Unknown filter{% endtrans %}{% endif %} >
                         {% if facet_labels[filter_name] is defined %}
                             {{ facet_labels[filter_name][value] -}}
                         {% else %}
