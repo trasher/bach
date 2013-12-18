@@ -63,10 +63,21 @@ file that was distributed with this source code.
                                     {% endif %}
                                     {% if admin.hasroute('geoloc_missing') and admin.isGranted('CREATE') %}
                                         <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_missing')}}">
-                                            {% trans from 'BachHomeBundle' %}missing locations{% endtrans %}
+                                            {% trans from 'BachHomeBundle' %}Missing locations{% endtrans %}
                                         </a>
                                     {% endif %}
                                 </div>
+                            </td>
+                        </tr>
+                    {% elseif admin.getCode == 'sonata.admin.tagcloud' and admin.isGranted('EDIT') %}
+                        <tr>
+                            <td class="sonata-ba-list-label">
+                                {{ admin.label|trans({}, admin.translationdomain) }}
+                            </td>
+                            <td>
+                                <a class="btn btn-link" href="{{ admin.generateUrl('edit', {id: 1})}}">
+                                    {% trans from 'BachHomeBundle' %}Manage{% endtrans %}
+                                </a>
                             </td>
                         </tr>
                     {% endif %}

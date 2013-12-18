@@ -52,3 +52,16 @@ services:
         calls:
             - [ setTranslationDomain, [BachHomeBundle]]
 
+    sonata.admin.tagcloud:
+        class: Bach\HomeBundle\Admin\TagCloudAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Search", label: "Tag cloud" }
+        arguments:
+            - ~
+            - Bach\HomeBundle\Entity\TagCloud
+            - BachHomeBundle:TagCloudAdmin
+            - @bach.administration.configreader
+            - '%solr_search_core%'
+        calls:
+            - [ setTranslationDomain, [BachHomeBundle]]
+

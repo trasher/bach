@@ -24,6 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
+use Bach\HomeBundle\Entity\TagCloud;
 
 /**
  * Bach home controller
@@ -348,7 +349,12 @@ class DefaultController extends Controller
 
             $show_tagcloud = $this->container->getParameter('show_tagcloud');
             if ( $show_tagcloud ) {
-                $tag_max = 20;
+                $tagcloud = new TagCloud();
+                $tagcloud = $tagcloud->loadCloud(
+                    $this->getDoctrine()->getEntityManager()
+                );
+
+                $tag_max = $tagcloud->getNumber();
 
                 $query = $this->get("solarium.client")->createSelect();
                 $query->setQuery('*:*');
@@ -357,21 +363,18 @@ class DefaultController extends Controller
                 $facetSet = $query->getFacetSet();
                 $facetSet->setLimit($tag_max);
                 $facetSet->setMinCount(1);
-                $facetSet->createFacetField('subject')->setField('cSubject');
-                $facetSet->createFacetField('persname')->setField('cPersname');
-                $facetSet->createFacetField('geogname')->setField('cGeogname');
 
+                $fields = $tagcloud->getSolrFieldsNames();
+                foreach ( $fields as $field ) {
+                    $facetSet->createFacetField($field)->setField($field);
+                }
                 $rs = $this->get('solarium.client')->select($query);
 
                 $tags = array();
-                $facet = $rs->getFacetSet()->getFacet('subject');
-                $tags = $facet->getValues();
-
-                $facet = $rs->getFacetSet()->getFacet('persname');
-                $tags = array_merge($tags, $facet->getValues());
-
-                $facet = $rs->getFacetSet()->getFacet('geogname');
-                $tags = array_merge($tags, $facet->getValues());
+                foreach ( $fields as $field ) {
+                    $facet = $rs->getFacetSet()->getFacet($field);
+                    $tags = array_merge($tags, $facet->getValues());
+                }
 
                 if ( count($tags) > 0 ) {
                     arsort($tags, SORT_NUMERIC);
