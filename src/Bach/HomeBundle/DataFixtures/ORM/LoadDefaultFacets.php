@@ -42,23 +42,23 @@ class MainDecorator implements FixtureInterface
         $defaults = array(
             array(
                 'field'     => 'archDescUnitTitle',
-                'fr_label'  => _('Document'),
+                'fr_label'  => 'Document',
                 'en_label'  => 'Document'
             ),
             array(
                 'field'     => 'cSubject',
-                'fr_label'  => _('Subject'),
+                'fr_label'  => 'Sujet',
                 'en_label'  => 'Subject'
             ),
             array(
                 'field'     => 'cPersname',
-                'fr_label'  => _('Personal name'),
-                'en_label'  => 'Personal name'
+                'fr_label'  => 'Personne',
+                'en_label'  => 'People'
             ),
             array(
                 'field'     => 'cGeogname',
-                'fr_label'  => _('Geographical name'),
-                'en_label'  => 'Geographical name'
+                'fr_label'  => 'Lieux',
+                'en_label'  => 'Places'
             )
         );
 
