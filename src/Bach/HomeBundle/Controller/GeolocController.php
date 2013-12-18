@@ -156,4 +156,30 @@ class GeolocController extends Controller
         );
         return $response;
     }
+
+    /**
+     * Remove a geoloc from its indexed name
+     *
+     * @param string $name Name
+     *
+     * @return JsonResponse
+     */
+    public function removeAction($name)
+    {
+        $repo = $this->getDoctrine()->getRepository('BachIndexationBundle:Geoloc');
+        $geoloc =  $repo->findOneBy(array('indexed_name' => $name));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($geoloc);
+        $em->flush();
+
+        $response = new JsonResponse();
+        $response->setData(
+            array(
+                'success'   => true,
+                'name'      => $geoloc->getIndexedName()
+            )
+        );
+        return $response;
+    }
 }

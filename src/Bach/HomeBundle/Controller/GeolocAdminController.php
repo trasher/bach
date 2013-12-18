@@ -97,4 +97,39 @@ class GeolocAdminController extends Controller
             )
         );
     }
+
+    /**
+     * Visualize on map to edit or delete entries
+     *
+     * @return void
+     */
+    public function geolocVisualizeAction()
+    {
+        $query = $this->get("solarium.client")->createSelect();
+        $query->setQuery('*:*');
+        $query->setStart(0)->setRows(0);
+
+        $facetSet = $query->getFacetSet();
+        $facetSet->setLimit(-1);
+        $facetSet->setMinCount(1);
+        $facetSet->createFacetField('geogname')->setField('cGeogname');
+
+        $rs = $this->get('solarium.client')->select($query);
+        $map_facets = $rs->getFacetSet()->getFacet('geogname');
+
+        $parameters = array();
+        $result = null;
+
+        $factory = $this->get("bach.home.solarium_query_factory");
+        $geojson = $factory->getGeoJson(
+            $map_facets,
+            $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:Geoloc')
+        );
+
+        return $this->render(
+            'BachHomeBundle:Admin:geoloc_visualize.html.twig',
+            array('geojson' => $geojson)
+        );
+    }
 }

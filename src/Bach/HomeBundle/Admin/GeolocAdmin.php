@@ -99,6 +99,7 @@ class GeolocAdmin extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('geoloc_missing');
+        $collection->add('geoloc_visualize');
     }
 
     /**

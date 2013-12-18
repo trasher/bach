@@ -61,6 +61,12 @@ file that was distributed with this source code.
                                             {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
                                         </a>
                                     {% endif %}
+                                     {% if admin.hasroute('geoloc_visualize') and (admin.isGranted('EDIT') or admin.isGranted('DELETE')) %}
+                                        <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_visualize')}}">
+                                            <i class="icon-globe"></i>
+                                            {% trans from 'BachHomeBundle' %}Visualize{% endtrans %}
+                                        </a>
+                                    {% endif %}
                                     {% if admin.hasroute('geoloc_missing') and admin.isGranted('CREATE') %}
                                         <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_missing')}}">
                                             <i class="icon-globe"></i>
