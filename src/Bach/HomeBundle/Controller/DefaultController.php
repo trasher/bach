@@ -351,7 +351,7 @@ class DefaultController extends Controller
             if ( $show_tagcloud ) {
                 $tagcloud = new TagCloud();
                 $tagcloud = $tagcloud->loadCloud(
-                    $this->getDoctrine()->getEntityManager()
+                    $this->getDoctrine()->getManager()
                 );
 
                 $tag_max = $tagcloud->getNumber();

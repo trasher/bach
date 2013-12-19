@@ -45,7 +45,7 @@ class TagCloudAdminController extends Controller
     {
         $tagcloud = $this->admin->getNewInstance();
         $tagcloud = $tagcloud->loadCloud(
-            $this->getDoctrine()->getEntityManager()
+            $this->getDoctrine()->getManager()
         );
 
         $id = $tagcloud->getId();
