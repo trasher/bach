@@ -15,14 +15,28 @@
     <link href="{{ asset('css/reset.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link href="{{ asset('css/bach_print.css') }}" type="text/css" rel="stylesheet" media="print"/>
+    {% if client_code != '' %}
+        {% if asset_exists('/css/' ~ client_code ~ '.css') %}
+        <link href="{{ asset('/css/' ~ client_code ~ '.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endif %}
+        {% if asset_exists('/css/' ~ client_code ~ '_print.css') %}
+        <link href="{{ asset('css/' ~ client_code ~ '_print.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endif %}
+    {% endif %}
     <link href="{{ asset('css/jquery-ui/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     {% block css %}{% endblock %}
     <!--[if lt IE 9]>
         <script src="{{ asset('js/html5-ie.js') }}"></script>
         <link href="{{ asset('css/bach-ie.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        {% if client_code != '' and asset_exists('/css/' ~ client_code ~ '-ie.css') %}
+        <link href="{{ asset('css/' ~ client_code ~ '-ie.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endif %}
     <![endif]-->
     <!--[if lte IE 7]>
         <link href="{{ asset('css/bach-ie7.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        {% if client_code != '' and asset_exists('/css/' ~ client_code ~ '-ie7.css') %}
+        <link href="{{ asset('css/' ~ client_code ~ '-ie7.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endif %}
     <![endif]-->
     <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" />
 </head>

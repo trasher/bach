@@ -30,6 +30,7 @@ twig:
         expos: '%show_expos%'
         cdc: '%has_cdc%'
         show_tagcloud: '%show_tagcloud%'
+        client_code: '%client_code%'
 
 # Assetic Configuration
 assetic:
@@ -227,4 +228,11 @@ fm_elfinder:
         roots:
             uploads:
                 path: uploads/media
+
+services:
+    bach.twig.asset_exists:
+        class: Bach\HomeBundle\Twig\AssetExists
+        arguments: [ @kernel ]
+        tags:
+            - { name: twig.extension }
 
