@@ -1,7 +1,8 @@
+{% extends ['::' ~ client_code ~ '_layout.html.twig', '::layout.html.twig'] %}
+
 {% set current_route = app.request.attributes.get('_route') %}
-<!DOCTYPE html>
-<html lang="{{ lang }}">
-<head>
+
+{% block html_headers %}
     <meta charset="utf-8">
     <title>Bach{% block title_extend %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,22 +40,18 @@
         {% endif %}
     <![endif]-->
     <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" />
-</head>
-<body prefix="dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ gn: http://www.geonames.org/ontology#">
+{% endblock %}
+
+{% block header %}
     <aside id="menu" role="search">
         <header class="header">
             <h1><a href="{{ path('bach_homepage') }}"><img src="{{ asset('img/logo.png') }}" alt="Bach"/></a></h1>
         </header>
-        {% block menu %}{% endblock %}
+        {{ block('menu') }}
     </aside>
+{% endblock %}
 
-    {# Main content #}
-    <div id="wrapper">
-        <div id="container">
-            <!--[if lte IE 7]>
-                <div id="oldie"><strong>{% trans %}Your browser is quite old, some features may not work.{% endtrans %}</strong><br/>{% trans %}You may have a better experience with a more recent or an alternative one.{% endtrans %}</div>
-            <![endif]-->
-
+{% block navigation %}
             <nav role="navigation" id="navigation" class="nav-opened">
             {% spaceless %}
                 <ul>
@@ -94,7 +91,9 @@
                 </ul>
             {% endspaceless %}
             </nav>
+{% endblock %}
 
+{% block login %}
             <div id="user_login">
             {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a>
@@ -109,6 +108,9 @@
             {% endif %}
             </div>
 
+{% endblock %}
+
+{% block flash_messages %}
             {# Globally display errors #}
             {% if app.session.flashbag.has('errors') %}
             <div id="flash-errors" class="noscript">
@@ -142,11 +144,16 @@
                 {% endfor %}
             </div>
             {% endif %}
+{% endblock %}
 
-            {% block container %} {% endblock %}
-        </div>
-    </div> {# /#wrapper #}
+{% block content %}
+    {{ block('navigation') }}
+    {{ block('login') }}
+    {{ block('flash_messages') }}
+    {{ block('container') }}
+{% endblock %}
 
+{% block main_js %}
     {# Javascript that are required everywhere #}
     <script src="{{ asset('js/jquery-ui/jquery.ui.core.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.widget.min.js')  }}" type="text/javascript"></script>
@@ -222,5 +229,4 @@
 
         });
     </script>
-</body>
-</html>
+{% endblock %}
