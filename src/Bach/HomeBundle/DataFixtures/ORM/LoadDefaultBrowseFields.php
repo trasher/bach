@@ -60,12 +60,12 @@ class LoadDefaultBrowseFields implements FixtureInterface
         for ( $i = 0; $i < count($defaults); $i++ ) {
             $fields = new BrowseFields();
             $data = $defaults[$i];
-            $facet->setSolrFieldName($data['field']);
-            $facet->setFrLabel($data['fr_label']);
-            $facet->setEnLabel($data['en_label']);
-            $facet->setActive(true);
-            $facet->setPosition($i);
-            $manager->persist($facet);
+            $fields->setSolrFieldName($data['field']);
+            $fields->setFrLabel($data['fr_label']);
+            $fields->setEnLabel($data['en_label']);
+            $fields->setActive(true);
+            $fields->setPosition($i);
+            $manager->persist($fields);
         }
 
         $manager->flush();
