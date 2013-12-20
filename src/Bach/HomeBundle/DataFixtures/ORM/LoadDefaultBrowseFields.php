@@ -28,7 +28,7 @@ use Bach\HomeBundle\Entity\BrowseFields;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class MainDecorator implements FixtureInterface
+class LoadDefaultBrowseFields implements FixtureInterface
 {
     /**
      * Loads fixture

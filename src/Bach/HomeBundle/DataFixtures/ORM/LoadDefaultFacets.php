@@ -28,7 +28,7 @@ use Bach\HomeBundle\Entity\Facets;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class MainDecorator implements FixtureInterface
+class LoadDefaultFacets implements FixtureInterface
 {
     /**
      * Loads fixture
