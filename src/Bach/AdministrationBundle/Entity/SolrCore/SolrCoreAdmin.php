@@ -64,8 +64,7 @@ class SolrCoreAdmin
             array(
                 'command'   => 'full-import',
                 'clean'     => 'false',
-                'commit'    => 'true',
-                'optimize'  => 'true'
+                'commit'    => 'true'
             )
         );
     }
@@ -81,7 +80,10 @@ class SolrCoreAdmin
     {
         return $this->_send(
             $this->_reader->getCoresURL() . '/' . $coreName . '/dataimport',
-            array('command' => 'delta-import')
+            array(
+                'command'   => 'delta-import',
+                'commit'    => true
+            )
         );
     }
 
