@@ -171,8 +171,9 @@ file that was distributed with this source code.
                                 <div class="sonata-ba-show">{{ block('show')|raw }}</div>
                             {% endif %}
 
-                            {% if block('form') is not empty %}
-                                <div class="sonata-ba-form">{{ block('form')|raw }}</div>
+                            {% set _form = block('form') %}
+                            {% if _form is not empty %}
+                                <div class="sonata-ba-form">{{ _form|raw }}</div>
                             {% endif %}
 
                             {% if block('list_table') is not empty or block('list_filters') is not empty %}
