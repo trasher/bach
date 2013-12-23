@@ -11,6 +11,9 @@ file that was distributed with this source code.
 
 {% extends '::base.html.twig' %}
 
+    {# Empty block to prevent navigation duplicate #}
+    {% block content %}{% endblock %}
+
     {% block css %}
         <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="all"  />
         <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap-responsive.min.css') }}" type="text/css" media="all" />
