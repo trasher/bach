@@ -292,7 +292,7 @@ class DefaultController extends Controller
 
         $em->flush();
 
-        $update->addCommit();
+        $update->addCommit(null, null, true);
         $result = $client->update($update);
 
         return new RedirectResponse(
