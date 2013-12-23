@@ -4,18 +4,18 @@
     <section id="login">
         <header>
             <h2>
-            {% if current_route == 'fos_user_security_login' %}
+            {% if app.request.attributes.get('_route') == 'fos_user_security_login' %}
                 {% trans %}Please authenticate{% endtrans %}
-            {% elseif current_route == 'fos_user_registration_register' %}
+            {% elseif app.request.attributes.get('_route') == 'fos_user_registration_register' %}
                 {% trans %}Register a new account{% endtrans %}
-            {% elseif current_route == 'fos_user_registration_confirmed' %}
+            {% elseif app.request.attributes.get('_route') == 'fos_user_registration_confirmed' %}
                 {% trans %}Account registered{% endtrans %}
-            {% elseif current_route == 'fos_user_profile_show' %}
+            {% elseif app.request.attributes.get('_route') == 'fos_user_profile_show' %}
                 {% trans %}User profile:{% endtrans %} {{ user.username }}
-            {% elseif current_route == 'fos_user_profile_edit' %}
+            {% elseif app.request.attributes.get('_route') == 'fos_user_profile_edit' %}
                 {% trans with {'%username%': app.user.username} %}Edit %username% profile{% endtrans %}
             {% else %}
-                No title for route: {{ current_route }}
+                No title for route: {{ app.request.attributes.get('_route') }}
             {% endif %}
             </h2>
         </header>

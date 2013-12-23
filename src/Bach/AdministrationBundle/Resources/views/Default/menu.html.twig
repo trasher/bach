@@ -1,7 +1,7 @@
 <aside id="refine">
     <h2>{% trans %}Administration{% endtrans %}</h2>
     <ul>
-        <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_dashboard' %} class="active"{% endif %}>
             <a href="{{ url('administration_dashboard') }}">Dashboard</a>
         </li>
         <li>
@@ -21,36 +21,36 @@
 {% if (coreName != 'none' ) %}
     <h2>{% trans %}Schema{% endtrans %}</h2>
     <ul>
-        <li{% if current_route == 'administration_fields' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_fields' %} class="active"{% endif %}>
             <a href="{{ url('administration_fields') }}">{% trans %}Fields{% endtrans %}</a>
         </li>
-        <li{% if current_route == 'administration_dynamicfields' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_dynamicfields' %} class="active"{% endif %}>
             <a href="{{ url('administration_dynamicfields') }}">{% trans %}Dynamic Fields{% endtrans %}</a>
         </li>
-        <li{% if current_route == 'administration_copyfields' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_copyfields' %} class="active"{% endif %}>
             <a href="{{ url('administration_copyfields') }}">{% trans %}Copy fields{% endtrans %}</a>
         </li>
-        <li{% if current_route == 'administration_fieldstype' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_fieldstype' %} class="active"{% endif %}>
             <a href="{{ url('administration_fieldstype') }}">{% trans %}Fields Type{% endtrans %}</a>
         </li>
-        <li{% if current_route == 'administration_analyzers' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_analyzers' %} class="active"{% endif %}>
             <a href="{{ url('administration_analyzers') }}">{% trans %}Analyzers{% endtrans %}</a>
         </li>
-        <li{% if current_route == 'administration_uniquekey' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_uniquekey' %} class="active"{% endif %}>
             <a href="{{ url('administration_uniquekey') }}">{% trans %}Unique Key{% endtrans %}</a>
         </li>
     </ul>
 
     <h2>{% trans %}Administration{% endtrans %}</h2>
     <ul>
-        <li{% if current_route == 'administration_coreadmin' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_coreadmin' %} class="active"{% endif %}>
             <a href="{{ url('administration_coreadmin') }}">{% trans %}Core Admin{% endtrans %}</a>
         </li>
     </ul>
 
     <h2>{% trans %}Performance{% endtrans %}</h2>
     <ul>
-        <li{% if current_route == 'administration_performance' %} class="active"{% endif %}>
+        <li{% if app.request.attributes.get('_route') == 'administration_performance' %} class="active"{% endif %}>
             <a href="{{ url('administration_performance') }}">{% trans %}Performance Admin{% endtrans %}</a>
         </li>
     </ul>

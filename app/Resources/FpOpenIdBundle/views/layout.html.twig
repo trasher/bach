@@ -7,7 +7,7 @@
                 logged in via an openid provider:
                 <a href="{{ path('fp_openid_security_logout') }}">Logout</a>
             {% else %}
-                {% if current_route == 'fp_openid_security_login' %}
+                {% if app.request.attributes.get('_route') == 'fp_openid_security_login' %}
                     {% trans %}Login using OpenID{% endtrans %}
                 {% else %}
                     <a href="{{ path('fp_openid_security_login') }}">Login</a>
@@ -15,7 +15,7 @@
             {% endif %}
         </h2>
 
-        {% if current_route == 'fp_openid_security_login' %}
+        {% if app.request.attributes.get('_route') == 'fp_openid_security_login' %}
             <p>{% trans %}Be sure you've registered a Bach account.{% endtrans %}</p>
         {% endif %}
 

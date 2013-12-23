@@ -1,7 +1,5 @@
 {% extends ['::' ~ client_code ~ '_layout.html.twig', '::layout.html.twig'] %}
 
-{% set current_route = app.request.attributes.get('_route') %}
-
 {% block html_headers %}
     <meta charset="utf-8">
     <title>Bach{% block title_extend %}{% endblock %}</title>
@@ -25,7 +23,7 @@
         {% endif %}
     {% endif %}
     <link href="{{ asset('css/jquery-ui/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    {% block css %}{% endblock %}
+    {{ block('css') }}
     <!--[if lt IE 9]>
         <script src="{{ asset('js/html5-ie.js') }}"></script>
         <link href="{{ asset('css/bach-ie.css') }}" type="text/css" rel="stylesheet" media="screen" />
@@ -55,35 +53,35 @@
             <nav role="navigation" id="navigation" class="nav-opened">
             {% spaceless %}
                 <ul>
-                    <li{% if current_route == 'bach_homepage' or current_route == 'bach_search' %} class="active"{% endif %}>
+                    <li{% if app.request.attributes.get('_route') == 'bach_homepage' or app.request.attributes.get('_route') == 'bach_search' %} class="active"{% endif %}>
                         <a href="{{ path('bach_homepage') }}">{% trans %}Search{% endtrans %}</a>
                     </li>
                     {% if cdc %}
-                     <li{% if current_route == 'bach_classification' %} class="active"{% endif %}>
+                     <li{% if app.request.attributes.get('_route') == 'bach_classification' %} class="active"{% endif %}>
                         <a href="{{ path('bach_classification') }}">{% trans %}Classification scheme{% endtrans %}</a>
                     </li>
                     {% endif %}
-                    <li{% if current_route == 'bach_browse' %} class="active"{% endif %}>
+                    <li{% if app.request.attributes.get('_route') == 'bach_browse' %} class="active"{% endif %}>
                         <a href="{{ path('bach_browse') }}">{% trans %}Browse{% endtrans %}</a>
                     </li>
                     {% if expos %}
-                    <li{% if current_route == 'expos_homepage' %} class="active"{% endif %}>
+                    <li{% if app.request.attributes.get('_route') == 'expos_homepage' %} class="active"{% endif %}>
                         <a href="{{ path('expos_homepage') }}">{% trans %}Virtual expositions{% endtrans %}</a>
                     </li>
                     {% endif %}
                     {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         {% if is_granted('ROLE_ARCHIVIST') %}
-                    <li{% if current_route|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
+                    <li{% if app.request.attributes.get('_route')|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
                         <a href="{{ path('bach_indexation_homepage') }}">{% trans %}Publish{% endtrans %}</a>
                     </li>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CONTENT_ADMIN') %}
-                    <li{% if current_route == 'sonata_admin_dashboard' %} class="active"{% endif %}>
+                    <li{% if app.request.attributes.get('_route') == 'sonata_admin_dashboard' %} class="active"{% endif %}>
                         <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
                     </li>
                         {% endif %}
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <li{% if current_route == 'administration_dashboard' %} class="active"{% endif %}>
+                    <li{% if app.request.attributes.get('_route') == 'administration_dashboard' %} class="active"{% endif %}>
                         <a href="{{ url('administration_dashboard') }}">{% trans %}Manage Solr{% endtrans %}</a>
                     </li>
                         {% endif %}
@@ -165,7 +163,7 @@
     <script src="{{ asset('js/jquery-ui/jquery.ui.dialog.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.tooltip.min.js')  }}" type="text/javascript"></script>
     {# Additionnal page javascripts #}
-    {% block js_calls %}{% endblock %}
+    {{ block('js_calls') }}
     <script type="text/javascript">
         {% block javascripts %}{% endblock %}
         //TODO: remove
@@ -181,12 +179,12 @@
                 $('#navigation').on('click', function(){
                     $(this).find('ul').toggleClass('hidden');
                 });
-                {% block mobile_js_on %}{% endblock %}
+                {{ block ('mobile_js_on') }}
             } else {
                 //unbind elements and remove class when resizing
                 $('#navigation > ul').removeClass('hidden');
                 $('#navigation').unbind('click');
-                {% block mobile_js_off %}{% endblock %}
+                {{ block ('mobile_js_off') }}
             }
         };
         _mobile();

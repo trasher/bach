@@ -2,6 +2,8 @@
 <html lang="{{ lang }}">
 <head>
     {% block html_headers %}{% endblock %}
+    {% block css %}{% endblock %}
+    {% block js_calls %}{% endblock %}
 </head>
 <body prefix="dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ gn: http://www.geonames.org/ontology#">
     {% block header %}
@@ -14,11 +16,10 @@
             <!--[if lte IE 7]>
                 <div id="oldie"><strong>{% trans %}Your browser is quite old, some features may not work.{% endtrans %}</strong><br/>{% trans %}You may have a better experience with a more recent or an alternative one.{% endtrans %}</div>
             <![endif]-->
-            {% block content %}
-                {% block navigation %}{% endblock %}
-                {% block login %}{% endblock %}
-                {% block flash_messages %}{% endblock %}
-            {% endblock %}
+            {% block navigation %}{% endblock %}
+            {% block login %}{% endblock %}
+            {% block flash_messages %}{% endblock %}
+            {% block container %}{% endblock %}
         </div>
     </div> {# /#wrapper #}
 

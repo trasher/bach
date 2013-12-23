@@ -6,7 +6,7 @@
         <h3>{{ expo.getName }}</h3>
         <div>
             <ul>
-                {% if current_route != 'expos_show' or expo.getId != current_expo.getId %}
+                {% if app.request.attributes.get('_route') != 'expos_show' or expo.getId != current_expo.getId %}
                 <li>
                     <a href="{{ path('expos_show', {expo: expo.getUrl}) }}">{% trans %}Go to exposition{% endtrans %}</a>
                 </li>

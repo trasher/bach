@@ -2,9 +2,9 @@
 
 {% block menu %}
     <ul>
-        <li{% if current_route == 'sonata_user_profile_show' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a></li>
-        <li{% if current_route == 'sonata_user_profile_edit' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a></li>
-        <li{% if current_route == 'sonata_user_profile_edit_authentication' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit_authentication') }}">{% trans %}Edit authentication{% endtrans %}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'sonata_user_profile_show' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'sonata_user_profile_edit' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'sonata_user_profile_edit_authentication' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit_authentication') }}">{% trans %}Edit authentication{% endtrans %}</a></li>
     </ul>
 {% endblock %}
 
