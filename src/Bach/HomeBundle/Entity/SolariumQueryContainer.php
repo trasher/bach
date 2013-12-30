@@ -134,7 +134,7 @@ class SolariumQueryContainer
     {
         switch ( $this->_order ) {
         case ViewParams::ORDER_TITLE:
-            return 'cUnittitle';
+            return 'ocUnittitle';
             break;
         case ViewParams::ORDER_DOC_LOGIC:
             return array('archDescUnitTitle', 'elt_order');

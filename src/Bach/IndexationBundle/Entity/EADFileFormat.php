@@ -228,19 +228,13 @@ class EADFileFormat extends MappedFileFormat
      * Fields types, if not string
      */
     public static $types = array(
-        'cUnittitle'            => 'alphaOnlySort',
+        'cUnittitle'            => 'text',
+        'ocUnittitle'           => 'alphaOnlySort',
         'elt_order'             => 'int',
         'subject_w_expanded'    => 'skosLabel',
         'parents_titles'        => 'text',
         'cDateBegin'            => 'date',
         'cDateEnd'              => 'date'
-    );
-
-    /**
-     * String fields that must have a text version
-     */
-    public static $textMapped = array(
-        'cUnittitle' => 'tcUnittitle'
     );
 
     /**
@@ -274,7 +268,7 @@ class EADFileFormat extends MappedFileFormat
         'parents',
         'spell',
         'suggestions',
-        'tcUnittitle',
+        'ocUnittitle',
         'uniqid',
         'cScopcontent',
         'cDateNormal',
@@ -295,6 +289,14 @@ class EADFileFormat extends MappedFileFormat
             'multivalued'   => 'true',
             'indexed'       => 'true',
             'stored'        => 'true'
+        ),
+        array(
+            'source'        => 'cUnittitle',
+            'dest'          => 'ocUnittitle',
+            'type'          => 'alphaOnlySort',
+            'multivalued'   => 'false',
+            'indexed'       => 'true',
+            'stored'        => 'false'
         )
     );
 

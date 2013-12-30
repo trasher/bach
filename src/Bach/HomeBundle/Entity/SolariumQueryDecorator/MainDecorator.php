@@ -41,7 +41,7 @@ class MainDecorator extends SolariumQueryDecoratorAbstract
         if ( $data !== '*:*' ) {
             $dismax = $query->getDisMax();
             $dismax->setQueryFields(
-                'descriptors^2 tcUnittitle^1 parents_titles^1 fulltext^0.1'
+                'descriptors^2 cUnittitle^1 parents_titles^1 fulltext^0.1'
             );
         }
         $query->setQuery($data);
