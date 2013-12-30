@@ -94,7 +94,7 @@ class SolariumQueryContainer extends Units\Test
         $qc->setOrder(ViewParams::ORDER_TITLE);
         $order = $qc->getOrderField();
 
-        $this->string($order)->isIdenticalTo('cUnittitle');
+        $this->string($order)->isIdenticalTo('ocUnittitle');
 
         $qc->setOrder(ViewParams::ORDER_DOC_LOGIC);
         $attendee_orders = array(

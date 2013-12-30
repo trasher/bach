@@ -42,14 +42,28 @@ class BachCoreAdminConfigReader extends Units\Test
      */
     public function beforeTestMethod($testMethod)
     {
-        //load configuration
-        $config_file = 'app/config/parameters.yml';
         $yaml = new Parser();
+
+        //load main configuration
+        $config_file = 'app/config/defaults_parameters.yml';
         $this->conf = $yaml->parse(
             file_get_contents($config_file)
         );
 
+        //load local configuration
+        $config_file = 'app/config/parameters.yml';
+        $this->conf = array_replace_recursive(
+            $this->conf,
+            $yaml->parse(
+                file_get_contents($config_file)
+            )
+        );
+
         $this->params = $this->conf['parameters'];
+        if ( $this->params['solr_search_core'] === '%ead_corename%' ) {
+            $this->params['solr_search_core'] = $this->params['ead_corename'];
+        }
+
         $this->_bcacr = new ConfigReader(
             false, 
             $this->params['solr_host'],
