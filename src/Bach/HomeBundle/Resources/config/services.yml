@@ -11,7 +11,7 @@ services:
         calls:
             - [setRequest, ['@?request=']]
             - [setViewer, ['%viewer_uri%']]
-            - [setCOversDir, ['%covers_dir%']]
+            - [setCoversDir, ['%covers_dir%']]
         tags:
             - { name: twig.extension }
     bach.home.display_dao:
