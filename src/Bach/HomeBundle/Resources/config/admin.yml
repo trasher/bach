@@ -65,3 +65,16 @@ services:
         calls:
             - [ setTranslationDomain, [BachHomeBundle]]
 
+    sonata.admin.geolocfields:
+        class: Bach\HomeBundle\Admin\GeolocFieldsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Search", label: "Geolocalization fields" }
+        arguments:
+            - ~
+            - Bach\HomeBundle\Entity\GeolocFields
+            - BachHomeBundle:GeolocFieldsAdmin
+            - @bach.administration.configreader
+            - '%solr_search_core%'
+        calls:
+            - [ setTranslationDomain, [BachHomeBundle]]
+

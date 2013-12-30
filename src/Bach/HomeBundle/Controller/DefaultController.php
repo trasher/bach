@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\TagCloud;
+use Bach\HomeBundle\Entity\GeolocFields;
 
 /**
  * Bach home controller
@@ -78,6 +79,18 @@ class DefaultController extends Controller
         //store new view parameters
         $session->set('view_params', $view_params);
 
+        $viewer_uri = $this->container->getParameter('viewer_uri');
+        $show_maps = $this->container->getParameter('show_maps');
+
+        $geoloc = array();
+        if ( $show_maps ) {
+            $gf = new GeolocFields();
+            $gf = $gf->loadCloud(
+                $this->getDoctrine()->getManager()
+            );
+            $geoloc = $gf->getSolrFieldsNames();
+        }
+
         $filters = $session->get('filters');
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
             $filters = new Filters();
@@ -92,9 +105,6 @@ class DefaultController extends Controller
         ) {
             $query_terms = '*:*';
         }
-
-        $viewer_uri = $this->container->getParameter('viewer_uri');
-        $show_maps = $this->container->getParameter('show_maps');
 
         $templateVars = array(
             'q'             => urlencode($query_terms),
@@ -113,8 +123,9 @@ class DefaultController extends Controller
         }
 
         $factory = $this->get("bach.home.solarium_query_factory");
+        $factory->setGeolocFields($geoloc);
 
-        $map_facets = null;
+        $map_facets = array();
         if ( !is_null($query_terms) ) {
             // On effectue une recherche
             $form = $this->createForm(
@@ -161,7 +172,7 @@ class DefaultController extends Controller
             $searchResults = $factory->performQuery(
                 $container,
                 $conf_facets,
-                $show_maps
+                $geoloc
             );
 
             $hlSearchResults = $factory->getHighlighting();
@@ -181,6 +192,7 @@ class DefaultController extends Controller
             }
 
             $facet_names = array(
+                'geoloc'        => _('Map selection'),
                 'cDateBegin'    => _('Start date'),
                 'cDateEnd'      => _('End date')
             );
@@ -190,10 +202,6 @@ class DefaultController extends Controller
                 $solr_field = $facet->getSolrFieldName();
                 $facet_names[$solr_field] = $facet->getLabel($request->getLocale());
                 $field_facets = $facetset->getFacet($solr_field);
-
-                if ( $solr_field === 'cGeogname' && $show_maps ) {
-                    $map_facets = $field_facets;
-                }
 
                 $values = array();
                 foreach ( $field_facets as $item=>$count ) {
@@ -288,9 +296,10 @@ class DefaultController extends Controller
                 }
             }
 
-            if ( $show_maps && !$map_facets ) {
-                //map facets missing, add them!
-                $map_facets = $facetset->getFacet('cGeogname');
+            if ( $show_maps ) {
+                foreach ( $geoloc as $field ) {
+                    $map_facets[$field] = $facetset->getFacet($field);
+                }
             }
 
             if ( $filters->offsetExists('cDate') ) {
@@ -416,10 +425,15 @@ class DefaultController extends Controller
                 $facetSet = $query->getFacetSet();
                 $facetSet->setLimit(-1);
                 $facetSet->setMinCount(1);
-                $facetSet->createFacetField('geogname')->setField('cGeogname');
+                foreach ( $geoloc as $field ) {
+                    $facetSet->createFacetField($field)->setField($field);
+                }
 
                 $rs = $this->get('solarium.client')->select($query);
-                $map_facets = $rs->getFacetSet()->getFacet('geogname');
+
+                foreach ( $geoloc as $field ) {
+                    $map_facets[$field] = $rs->getFacetSet()->getFacet($field);
+                }
             }
         }
 

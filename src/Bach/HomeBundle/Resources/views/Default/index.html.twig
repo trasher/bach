@@ -588,7 +588,7 @@
                 }
 
                 function facetFeature(e) {
-                    var _da_url = '{{ path('bach_search', {query_terms: q, filter_field: 'cGeogname'}) }}';
+                    var _da_url = '{{ path('bach_search', {query_terms: q, filter_field: 'geoloc'}) }}';
                     window.location.href  = _da_url + '&filter_value=' + e.target.feature.properties.name;
                 }
 

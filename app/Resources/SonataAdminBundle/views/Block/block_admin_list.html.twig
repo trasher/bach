@@ -88,6 +88,18 @@ file that was distributed with this source code.
                                 </a>
                             </td>
                         </tr>
+                    {% elseif admin.getCode == 'sonata.admin.geolocfields' and admin.isGranted('EDIT') %}
+                        <tr>
+                            <td class="sonata-ba-list-label">
+                                {{ admin.label|trans({}, admin.translationdomain) }}
+                            </td>
+                            <td>
+                                <a class="btn btn-link" href="{{ admin.generateUrl('edit', {id: 1})}}">
+                                    <i class="icon-wrench"></i>
+                                    {% trans from 'BachHomeBundle' %}Manage{% endtrans %}
+                                </a>
+                            </td>
+                        </tr>
                     {% endif %}
                 {% endfor %}
 

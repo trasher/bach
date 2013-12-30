@@ -42,8 +42,7 @@ class SolariumQueryFactory
     private $_query;
     private $_qry_facets_fields = array(
         'dao',
-        'cDate',
-        'cGeogname'
+        'cDate'
     );
 
     private $_max_low_date;
@@ -52,6 +51,8 @@ class SolariumQueryFactory
     private $_low_date;
     private $_up_date;
     private $_date_gap;
+
+    private $_geoloc;
 
     /**
      * Factory constructor
@@ -81,11 +82,10 @@ class SolariumQueryFactory
      *
      * @param SolariumQueryContainer $container Solarium container
      * @param array                  $facets    Facets
-     * @param boolean                $show_map  Is map displayed?
      *
      * @return \Solarium\QueryType\Select\Result\Result
      */
-    public function performQuery(SolariumQueryContainer $container, $facets, $show_map)
+    public function performQuery(SolariumQueryContainer $container, $facets)
     {
         //create query
         if ( !$this->_query ) {
@@ -93,7 +93,7 @@ class SolariumQueryFactory
         }
 
         //dynamically create facets
-        $this->_addFacets($facets, $show_map);
+        $this->_addFacets($facets);
 
         $this->_request = $this->_client->createRequest($this->_query);
         $rs = $this->_client->select($this->_query);
@@ -118,13 +118,16 @@ class SolariumQueryFactory
         $spellcheck = $this->_query->getSpellcheck();
 
         foreach ( $container->getFilters() as $name=>$value ) {
-            if ( $name === 'cDateBegin' ) {
+            switch ( $name ) {
+            case 'cDateBegin':
                 $this->_query->createFilterQuery($name)
                     ->setQuery('+' . $name . ':[' . $value . 'T00:00:00Z TO *]');
-            } else if ( $name === 'cDateEnd' ) {
+                break;
+            case 'cDateEnd':
                 $this->_query->createFilterQuery($name)
                     ->setQuery('+' . $name . ':[* TO ' . $value . 'T00:00:00Z]');
-            } else if ( $name === 'dao' ) {
+                break;
+            case 'dao':
                 $query = null;
                 if ( $value === _('Yes') ) {
                     $query = '+' . $name . ':*';
@@ -133,7 +136,8 @@ class SolariumQueryFactory
                 }
                 $this->_query->createFilterQuery($name)
                     ->setQuery($query);
-            } else if ( $name === 'cDate' ) {
+                break;
+            case 'cDate':
                 if ( strpos('|', $value === false) ) {
                     throw new \RuntimeException('Invalid date range!');
                 } else {
@@ -148,13 +152,28 @@ class SolariumQueryFactory
                             $edate->format('Y-m-d\TH:i:s\Z')  . ']'
                         );
                 }
-            } else {
+                break;
+            case 'geoloc':
+                $query = '';
+                foreach ( $value as $v ) {
+                    $query .= '+(';
+                    foreach ( $this->_geoloc as $field ) {
+                        $query .= $field . ':"' . $v . '"';
+                    }
+                    $query .= ')';
+                }
+
+                $this->_query->createFilterQuery('geoloc')
+                    ->setQuery($query);
+                break;
+            default:
                 $i = 0;
                 foreach ( $value as $v ) {
                     $this->_query->createFilterQuery($name . $i)
                         ->setQuery('+' . $name . ':"' . $v . '"');
                     $i++;
                 }
+                break;
             }
         }
 
@@ -203,22 +222,30 @@ class SolariumQueryFactory
     /**
      * Dynamically add facets to query
      *
-     * @param array   $facets   Facets
-     * @param boolean $show_map Is map displayed?
+     * @param array $facets Facets
      *
      * @return void
      */
-    private function _addFacets($facets, $show_map)
+    private function _addFacets($facets)
     {
         $facetSet = $this->_query->getFacetSet();
         $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);
-        $map_facet = false;
+        $map_facet = array();
+
+        if ( count($this->_geoloc) > 0 ) {
+            foreach ( $this->_geoloc as $field ) {
+                $map_facet[$field] = false;
+            }
+        }
 
         foreach ( $facets as $facet ) {
             if ( !in_array($facet->getSolrFieldName(), $this->_qry_facets_fields) ) {
                 $facetSet->createFacetField($facet->getSolrFieldName())
                     ->setField($facet->getSolrFieldName());
+                if ( isset($map_facet[$facet->getSolrFieldName()]) ) {
+                    $map_facet[$facet->getSolrFieldName()] = true;
+                }
             } else {
                 switch($facet->getSolrFieldName()) {
                 case 'dao':
@@ -235,13 +262,6 @@ class SolariumQueryFactory
                         $fr->setEnd($this->_up_date);
                     }
                     break;
-                case 'cGeogname':
-                    $facetSet->createFacetField($facet->getSolrFieldName())
-                        ->setField($facet->getSolrFieldName());
-                    if ( $show_map ) {
-                        $map_facet = true;
-                    }
-                    break;
                 default:
                     throw new \RuntimeException('Unknown facet query field!');
                     break;
@@ -250,10 +270,14 @@ class SolariumQueryFactory
         }
 
         //check if map facet is present
-        if ( $show_map && !$map_facet ) {
-            //add relevant facet
-            $facetSet->createFacetField('cGeogname')
-                ->setField('cGeogname');
+        if ( count($map_facet) > 0 ) {
+            foreach ( $map_facet as $key=>$value ) {
+                if ( $value === false ) {
+                    //add missing geoloc facet
+                    $facetSet->createFacetField($key)
+                        ->setField($key);
+                }
+            }
         }
     }
 
@@ -395,22 +419,28 @@ class SolariumQueryFactory
     /**
      * Retrieve GeoJSON informations
      *
-     * @param Facet\Field      $map_facets Map facets
+     * @param array            $map_facets Map facets
      * @param EntityRepository $repo       Entity repository
      * @param boolean          $zones      Load zones when possible
      *
      * @return string
      */
     public function getGeoJson(
-        Field $map_facets, EntityRepository $repo, $zones = false
+        $map_facets, EntityRepository $repo, $zones = false
     ) {
         $result = null;
         $values = array();
         $parameters = array();
 
         if ( count($map_facets) > 0 ) {
-            foreach ( $map_facets as $item=>$count ) {
-                $values[$item] = $count;
+            foreach ( $map_facets as $facet ) {
+                foreach ( $facet as $item=>$count ) {
+                    if ( !isset($values[$item]) ) {
+                        $values[$item] = $count;
+                    } else {
+                        $values[$item] += $count;
+                    }
+                }
             }
 
             $qb = $repo->createQueryBuilder('g');
@@ -632,5 +662,17 @@ class SolariumQueryFactory
     public function getDateGap()
     {
         return $this->_date_gap;
+    }
+
+    /**
+     * Set geolocalization fields
+     *
+     * @param array $fields Geoloc fields
+     *
+     * @return void
+     */
+    public function setGeolocFields($fields)
+    {
+        $this->_geoloc = $fields;
     }
 }
