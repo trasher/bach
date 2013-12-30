@@ -87,19 +87,6 @@ class TagCloud
     }
 
     /**
-     * Set active
-     *
-     * @param boolean $active Active
-     *
-     * @return TagCloud
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-        return $this;
-    }
-
-    /**
      * Set number
      *
      * @param integer $number Number of occurences in cloud
