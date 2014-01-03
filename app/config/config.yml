@@ -31,6 +31,7 @@ twig:
         cdc: '%has_cdc%'
         show_tagcloud: '%show_tagcloud%'
         client_code: '%client_code%'
+        matricules: '%has_matricules%'
 
 # Assetic Configuration
 assetic:
@@ -91,6 +92,11 @@ nelmio_solarium:
             client_class: Solarium\Client
             adapter_class: Solarium\Core\Client\Adapter\Http
             endpoints: unimarc
+        matricules:
+            client_class: Solarium\Client
+            adapter_class: Solarium\Core\Client\Adapter\Http
+            endpoints: matricules
+
     endpoints:
         default:
             host: '%solr_host%'
@@ -110,13 +116,22 @@ nelmio_solarium:
             path: '%solr_path%'
             core: '%unimarc_corename%'
             timeout: 5
+        matricules:
+            host: '%solr_host%'
+            port: '%solr_port%'
+            path: '%solr_path%'
+            core: '%matricules_corename%'
+            timeout: 5
+
 bach_indexation:
     types:
         - ead
         - unimarc
+        - matricules
     paths:
         ead: '%ead_files_path%'
         unimarc: '%unimarc_files_path%'
+        matricules: '%matricules_files_path%'
 
 fos_user:
     db_driver: orm

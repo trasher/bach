@@ -451,9 +451,15 @@ class DefaultController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
         $factory = $this->get("bach.home.solarium_query_factory");
+        
+        $facets_name = $request->get('facets_name');
+
+        if ( !$facets_name ) {
+            $facets_name = 'map_facets';
+        }
 
         $geojson = $factory->getGeoJson(
-            $session->get('map_facets'),
+            $session->get($facets_name),
             $this->getDoctrine()
                 ->getRepository('BachIndexationBundle:Geoloc'),
             $bbox

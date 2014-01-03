@@ -55,6 +55,11 @@
                     <li{% if app.request.attributes.get('_route') == 'bach_homepage' or app.request.attributes.get('_route') == 'bach_search' %} class="active"{% endif %}>
                         <a href="{{ path('bach_homepage') }}">{% trans %}Search{% endtrans %}</a>
                     </li>
+                    {% if matricules %}
+                    <li{% if app.request.attributes.get('_route') == 'bach_matricules' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_matricules') }}">{% trans %}Matricules{% endtrans %}</a>
+                    </li>
+                    {% endif %}
                     {% if cdc %}
                      <li{% if app.request.attributes.get('_route') == 'bach_classification' %} class="active"{% endif %}>
                         <a href="{{ path('bach_classification') }}">{% trans %}Classification scheme{% endtrans %}</a>

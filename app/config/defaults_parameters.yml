@@ -21,6 +21,7 @@ parameters:
     solr_path: /solr
     ead_corename: EADUniversalFileFormat
     unimarc_corename: Unimarc
+    matricules_corename: Matricules
     viewer_uri: http://viewer.localhost/
     #supported gettext bundle languages
     gettext.locale_shortcuts:
@@ -35,6 +36,7 @@ parameters:
     cdc_path: '%kernel.root_dir%/../cdc.xml'
     show_tagcloud: true
     client_code: null
+    has_matricules: true
 
 bach_home:
     files:

@@ -133,7 +133,9 @@ class FileDriverManager
                 $universalFileFormatClass
             );
 
-            if ( $result['fragmentid'] === $result['headerId'] . '_description' ) {
+            if ( isset($result['fragmentid'])
+                && $result['fragmentid'] === $result['headerId'] . '_description'
+            ) {
                 $description = $out;
             }
             $output[] = $out;

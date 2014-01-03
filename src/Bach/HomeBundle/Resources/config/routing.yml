@@ -78,3 +78,7 @@ bach_remove_geoloc:
     pattern: /geoloc/remove/{name}
     defaults: { _controller: BachHomeBundle:Geoloc:remove }
 
+bach_matricules:
+    pattern: /matricules
+    defaults: { _controller: BachHomeBundle:Matricules:index }
+

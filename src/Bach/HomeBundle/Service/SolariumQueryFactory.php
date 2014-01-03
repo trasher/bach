@@ -55,6 +55,9 @@ class SolariumQueryFactory
 
     private $_geoloc;
 
+    private $_date_begin_field = 'cDateBegin';
+    private $_date_end_field = 'cDateEnd';
+
     /**
      * Factory constructor
      *
@@ -93,8 +96,10 @@ class SolariumQueryFactory
             $this->_buildQuery($container);
         }
 
-        //dynamically create facets
-        $this->_addFacets($facets);
+        if ( count($facets) > 0 ) {
+            //dynamically create facets
+            $this->_addFacets($facets);
+        }
 
         $this->_request = $this->_client->createRequest($this->_query);
         $rs = $this->_client->select($this->_query);
@@ -320,11 +325,21 @@ class SolariumQueryFactory
      * Get extreme dates from index stats
      *
      * @param array $filters Active filters
+     * @param array $fields  Fields names
      *
      * @return array
      */
-    public function getSliderDates(Filters $filters)
+    public function getSliderDates(Filters $filters, $fields = null)
     {
+        if ( $fields !== null ) {
+            $this->_date_begin_field = $fields['date_begin'];
+            if ( isset($fields['date_end']) ) {
+                $this->_date_end_field = $fields['date_end'];
+            } else {
+                $this->_date_end_field = null;
+            }
+        }
+
         list($min_date, $max_date) = $this->_loadDatesFromStats();
 
         $results = array(
@@ -352,20 +367,22 @@ class SolariumQueryFactory
             $results['date_step'] = $step;
 
             $results['min_date'] = (int)$php_min_date->format('Y');
-            if ( $filters->offsetExists('cDateBegin') ) {
+            if ( $filters->offsetExists($this->_date_begin_field) ) {
                 $dbegin = explode(
                     '-',
-                    $filters->offsetGet('cDateBegin')
+                    $filters->offsetGet($this->_date_begin_field)
                 );
                 $results['selected_min_date'] = (int)$dbegin[0];
             } else {
                 $results['selected_min_date'] = $results['min_date'];
             }
             $results['max_date'] = (int)$php_max_date->format('Y');
-            if ( $filters->offsetExists('cDateEnd') ) {
+            if ( $this->_date_end_field !== null
+                && $filters->offsetExists($this->_date_end_field)
+            ) {
                 $dend = explode(
                     '-',
-                    $filters->offsetGet('cDateEnd')
+                    $filters->offsetGet($this->_date_end_field)
                 );
                 $results['selected_max_date'] = (int)$dend[0];
             } else {
@@ -382,14 +399,21 @@ class SolariumQueryFactory
     /**
      * Get number of results per year, to draw plot
      *
+     * @param string $field Date field
+     *
      * @return array
      */
-    public function getResultsByYear()
+    public function getResultsByYear($field = null)
     {
+        if ( $field !== null ) {
+            $this->_date_begin_field = $field;
+            $this->_date_end_field = null;
+        }
+
         $query = $this->_client->createSelect();
         $query->setQuery('*:*');
         $query->setRows(0);
-        $query->setFields('cDateBegin');
+        $query->setFields($this->_date_begin_field);
 
         $facetSet = $query->getFacetSet();
         $facetSet->setLimit(-1);
@@ -398,8 +422,12 @@ class SolariumQueryFactory
         $low_date = new \DateTime($min_date);
         $up_date = new \DateTime($max_date);
 
+        if ( $up_date->diff($low_date)->y === 0 ) {
+            $up_date->add(new \DateInterval('P1Y'));
+        }
+
         $fr = $facetSet->createFacetRange('cDate');
-        $fr->setField('cDateBegin');
+        $fr->setField($this->_date_begin_field);
         $fr->setStart($low_date->format('Y-01-01\T00:00:00\Z'));
         $fr->setgap('+1YEARS');
         $fr->setEnd($up_date->format('Y-01-01\T00:00:00\Z'));
@@ -544,19 +572,21 @@ class SolariumQueryFactory
         $query->setRows(0);
         $stats = $query->getStats();
 
-        $stats->createField('cDateBegin');
-        $stats->createField('cDateEnd');
+        $stats->createField($this->_date_begin_field);
+        if ( $this->_date_end_field !== null ) {
+            $stats->createField($this->_date_end_field);
+        }
 
         $rs = $this->_client->select($query);
         $rsStats = $rs->getStats();
         $statsResults = $rsStats->getResults();
 
-        $min_date = $statsResults['cDateBegin']->getMin();
+        $min_date = $statsResults[$this->_date_begin_field]->getMin();
         $max_date = null;
-        if ( $begin === false ) {
-            $max_date = $statsResults['cDateEnd']->getMax();
+        if ( $begin === false || $this->_date_end_field === null ) {
+            $max_date = $statsResults[$this->_date_begin_field]->getMax();
         } else {
-            $max_date = $statsResults['cDateBegin']->getMax();
+            $max_date = $statsResults[$this->_date_end_field]->getMax();
         }
 
         return array($min_date, $max_date);

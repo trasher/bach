@@ -5,6 +5,11 @@ services:
     bach.home.solarium_query_factory:
         class: "%bach.home.solarium_query_factory.class%"
         arguments: [ @solarium.client.default ]
+
+    bach.matricules.solarium_query_factory:
+        class: "%bach.home.solarium_query_factory.class%"
+        arguments: [ @solarium.client.matricules ]
+
     bach.home.display_ead_fragment:
         class: Bach\HomeBundle\Twig\DisplayEADFragment
         arguments: [ @router ]

@@ -420,6 +420,18 @@ p {
 }
 
 /**
+ * ===== Matricules search results =====
+ */
+
+[id=search_results] .list {
+    width: 100%;
+}
+
+[id=search_results] .list td {
+    padding: .1em .5em;
+}
+
+/**
  * ===== Interactions menu =====
  */
 

@@ -1,4 +1,17 @@
 drivers:
+    matricules:
+        mapper: Bach\IndexationBundle\Entity\Mapper\MatriculesDriverMapper
+        universalfileformat: Bach\IndexationBundle\Entity\MatriculesFileFormat
+        fields:
+            - cote
+            - date_enregistrement
+            - lieu_enregistrement
+            - classe
+            - nom
+            - prenoms
+            - matricule
+            - annee_naissance
+            - lieu_naissance
     ead:
         mapper: Bach\IndexationBundle\Entity\Mapper\EADDriverMapper
         universalfileformat: Bach\IndexationBundle\Entity\EADFileFormat
