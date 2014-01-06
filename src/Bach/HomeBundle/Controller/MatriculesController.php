@@ -101,7 +101,11 @@ class MatriculesController extends Controller
         if ( count($data) > 0 ) {
             $container = new SolariumQueryContainer();
 
-            $container->setField('matricules', $data);
+            if ( $view_params->advancedSearch() ) {
+                $container->setField('adv_matricules', $data);
+            } else {
+                $container->setField('matricules', $data['query']);
+            }
             $container->setFilters(new Filters());
             $factory->prepareQuery($container);
 
@@ -165,6 +169,13 @@ class MatriculesController extends Controller
 
         $by_year = $factory->getResultsByYear('date_enregistrement');
         $tpl_vars['by_year'] = $by_year;
+
+        if ( $this->container->get('kernel')->getEnvironment() == 'dev'
+            && isset($factory) && $factory->getRequest() !== null
+        ) {
+            //let's pass Solr raw query to template
+            $tpl_vars['solr_qry'] = $factory->getRequest()->getUri();
+        }
 
         if ( $show_maps ) {
             $session->set('matricules_map_facets', $map_facets);

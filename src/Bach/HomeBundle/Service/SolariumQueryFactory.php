@@ -312,8 +312,13 @@ class SolariumQueryFactory
 
                 $expectedClass = 'Bach\HomeBundle\Entity' .
                     '\SolariumQueryDecoratorAbstract';
+
                 $class = $reflection->getParentClass()->getName();
-                if ( $expectedClass == $class ) {
+                $pclass = null;
+                if ( $reflection->getParentClass()->getParentClass() !== false ) {
+                    $pclass = $reflection->getParentClass()->getParentClass()->getName();
+                }
+                if ( $expectedClass == $class || $expectedClass == $pclass ) {
                     $this->_registerQueryDecorator($reflection->newInstance());
                 }
             } catch(\RuntimeException $e) {

@@ -26,25 +26,25 @@ use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
  */
 class MatriculesDecorator extends SolariumQueryDecoratorAbstract
 {
-    protected $targetField = "matricules";
+    protected $targetField = 'matricules';
 
     /**
      * Decorate Query
      *
-     * @param Query $query Solarium query object to decorate
-     * @param array $data  Query data
+     * @param Query  $query Solarium query object to decorate
+     * @param string $data  Query data
      *
      * @return void
      */
     public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data)
     {
-        $qry = '';
-        foreach ( $data as $key=>$value ) {
-            if ( $value !== null && trim($value !== '') ) {
-                $qry .= '+' . $key . ':' . $value;
-            }
+        if ( $data !== '*:*' ) {
+            $dismax = $query->getDisMax();
+            $dismax->setQueryFields(
+                'nom prenoms lieu_naissance lieu_enregistrement fulltext^0.1'
+            );
         }
-        $query->setQuery($qry);
+        $query->setQuery($data);
     }
 
     /**
