@@ -99,30 +99,113 @@
 
     {% if searchResults is defined %}
     <section id="search_results" role="main">
-    <table class="list">
-        <thead>
-            <tr>
-                <th>{% trans %}Name{% endtrans %}</th>
-                <th>{% trans %}Surnames{% endtrans %}</th>
-                <th>{% trans %}Birth year{% endtrans %}</th>
-                <th>{% trans %}Place of birth{% endtrans %}</th>
-                <th>{% trans %}Enr. date{% endtrans %}</th>
-                <th>{% trans %}Enr. place{% endtrans %}</th>
-            </tr>
-        </thead>
-    {% for document in searchResults %}
-        <tr>
-            <td>{{ document.nom }}</td>
-            <td>{{ document.prenoms }}</td>
-            <td>{{ document.annee_naissance }}</td>
-            <td>{{ document.lieu_naissance }}</td>
-            <td>{{ document.date_enregistrement }}</td>
-            <td>{{ document.lieu_enregistrement }}</td>
-        </tr>
-    {% endfor %}
-    </table>
+        {% if searchResults|length > 0 %}
+        <div class="results_count">
+            {% if resultCount == 1 %}
+                {% trans %}1 result{% endtrans %}
+            {% else %}
+                {% trans %}Results %resultStart% to %resultEnd% on %resultCount%{% endtrans %}
+            {% endif %}
+            {% spaceless %}
+            <nav id="change_view">
+                <label for="results_order">{% trans %}Order:{% endtrans %}</label>
+                <div class="select_container">
+                    <select name="results_order" id="results_order">
+                        <option value="0"{% if results_order == 0 %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
+                        <option value="1"{% if results_order == 1 %} selected="selected"{% endif %}>{% trans %}Alphabetic{% endtrans %}</option>
+                        <option value="2"{% if results_order == 2 %} selected="selected"{% endif %}>{% trans %}Document logic{% endtrans %}</option>
+                    </select>
+                </div>
+                <a href="{{ path('bach_matricules', {query_terms: '', view: 'list'}) }}" class="btn-list{% if view == 'list' %} selected{% endif %}" title="{% trans %}View search results as a list, with images{% endtrans %}">{% trans %}List{% endtrans %}</a>
+                <a href="{{ path('bach_matricules', {query_terms: '', view: 'txtlist'}) }}" class="btn-txtlist{% if view == 'txtlist' %} selected{% endif %}" title="{% trans %}View search results as a list, without images{% endtrans %}">{% trans %}Text only list{% endtrans %}</a>
+                <a href="{{ path('bach_matricules', {query_terms: '', view: 'thumbs'}) }}" class="btn-thumb{% if view == 'thumbs' %} selected{% endif %}" title="{% trans %}View search results as thumbnails{% endtrans %}">{% trans %}Thumnails{% endtrans %}</a>
+            </nav>
+            {% endspaceless %}
+        </div>
+            <table class="list">
+                <thead>
+                    <tr>
+                        <th>{% trans %}Name{% endtrans %}</th>
+                        <th>{% trans %}Surnames{% endtrans %}</th>
+                        <th>{% trans %}Year of birth{% endtrans %}</th>
+                        <th>{% trans %}Place of birth{% endtrans %}</th>
+                        <th>{% trans %}Year of recording{% endtrans %}</th>
+                        <th>{% trans %}Place of recording{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for document in searchResults %}
+                <tr>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('nom')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('nom')[0]|raw }}
+                        {%- else -%}
+                            {{ document.nom }}
+                        {%- endif -%}
+                    </td>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('prenoms')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('prenoms')[0]|raw }}
+                        {%- else -%}
+                            {{ document.prenoms }}
+                        {%- endif -%}
+                    </td>
+                    <td>{{ document.annee_naissance|date('Y') }}</td>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_naissance')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('lieu_naissance')[0]|raw }}
+                        {%- else -%}
+                            {{ document.lieu_naissance }}
+                        {%- endif -%}
+                    </td>
+                    <td>{{ document.date_enregistrement|date('Y') }}</td>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')[0]|raw }}
+                        {%- else -%}
+                            {{ document.lieu_enregistrement }}
+                        {%- endif -%}
+                    </td>
+                </tr>
+                {#<article id="result_{{ document.uniqid }}" role="document" about="{{ document.uniqid }}"{% if view == 'thumbs' %} class="thumbs"{% endif %}>
+                    {% if view == 'thumbs' %}
+                    <h3 property="dc:title">
+                        <a href="{{ path('bach_display_document', {docid: document.uniqid}) }}" class="display_doc">
+                            {{ document.nom }} {{ document.prenoms }}
+                        </a>
+                    </h3>
+                    {% endif %}
+
+                    {% if show_pics %}
+                    <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
+                        {% if document.dao is defined %}
+                            {{ displayDao(document.dao)|raw }}
+                        {% else %}
+                            <img src="{{ asset('img/blank.gif') }}" alt=""/>
+                        {% endif %}
+                    </figure>
+                    {% endif %}
+
+                    {% if view == 'list' or view == 'txtlist' %}
+                    <h3 property="dc:title">
+                        <a href="{{ path('bach_display_document', {docid: document.uniqid}) }}" class="display_doc">
+                            {{ document.nom }} {{ document.prenoms }}
+                        </a>
+                    </h3>
+                    <div>
+                        {{ document.annee_naissance }}
+                        {{ document.lieu_naissance }}
+                        {{ document.date_enregistrement }}
+                        {{ document.lieu_enregistrement }}
+                    </div>
+                    {% endif %}
+                </article>#}
+            {% endfor %}
+                </tbody>
+            </table>
     {% endif %}
     </section>
+    {% endif %}
 {% endblock %}
 
 {% block js_calls %}
@@ -192,6 +275,39 @@
             if ( _view_params['daterange'] == true ) {
                 $('#dates_range').removeClass('hidden');
             }
+            $('#dates_range').dateRangeSlider({
+                formatter:function(val){
+                    var year = val.getFullYear();
+                    return year;
+                },
+                arrows: false,
+                step: {
+                    {{ date_step_unit }}: {{ date_step }}
+                },
+                bounds:
+                {
+                    min: new Date({{ min_date }}, 0, 1),
+                    max: new Date({{ max_date }}, 11, 31)
+                },
+                defaultValues:
+                {
+                    min: new Date({{ selected_min_date }}, 0, 1),
+                    max: new Date({{ selected_max_date }}, 11, 31)
+                }
+            }).bind("valuesChanged", function(e, data){
+                if ( _is_first_load ) {
+                    //valuesChanged is always triggerd once, on page load...
+                    _is_first_load = false;
+                } else {
+                    var _min = data.values.min;
+                    var _max = data.values.max;
+
+                    filterOnDate(
+                        _min.getFullYear(),
+                        _max.getFullYear()
+                    );
+                }
+            });
 
             var plot_options = {
                 series: {

@@ -226,7 +226,10 @@ class MatriculesController extends Controller
                     'searchResults'     => $searchResults,
                     'show_maps'         => $show_maps,
                     'show_map'          => $view_params->showMap(),
-                    'show_daterange'    => $view_params->showDaterange()
+                    'show_daterange'    => $view_params->showDaterange(),
+                    'view'              => $view_params->getView(),
+                    'results_order'     => $view_params->getOrder(),
+                    'show_pics'         => $view_params->showPics()
                 ),
                 $tpl_vars
             )
