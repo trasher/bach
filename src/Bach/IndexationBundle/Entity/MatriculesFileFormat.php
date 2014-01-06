@@ -52,7 +52,7 @@ class MatriculesFileFormat
     protected $lieu_enregistrement;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=4)
+     * @ORM\Column(type="date")
      */
     protected $classe;
 
@@ -82,6 +82,22 @@ class MatriculesFileFormat
     protected $lieu_naissance;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length=500)
+     */
+    protected $start_dao;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=500)
+     */
+    protected $end_dao;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Document")
+     * @ORM\JoinColumn(name="doc_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $doc_id;
+
+    /**
      * The constructor
      *
      * @param array $data The input data
@@ -102,10 +118,10 @@ class MatriculesFileFormat
     {
         foreach ($data as $key=>$datum) {
             if (property_exists($this, $key)) {
-                if ( strlen($datum[0]['value'])
-                    && $key === 'date_enregistrement' || $key === 'annee_naissance'
+                if ( strlen($datum[0]['value']) == 4
+                    && ($key === 'date_enregistrement' || $key === 'annee_naissance' || $key === 'classe')
                 ) {
-                    $datum[0]['value'] = $datum[0]['value'] . '-01-01';
+                    $datum[0]['value'] = new \DateTime($datum[0]['value'] . '-01-01');
                 }
                 $this->$key = $datum[0]['value'];
             } else {
@@ -114,19 +130,6 @@ class MatriculesFileFormat
                 );
             }
         }
-    }
-
-    /**
-     * Set doc_id
-     *
-     * @param Document $docId Document id
-     *
-     * @return UniversalFileFormat
-     */
-    public function setDocId(Document $docId = null)
-    {
-        $this->doc_id = $docId;
-        return $this;
     }
 
     /**
@@ -344,5 +347,28 @@ class MatriculesFileFormat
     public function getLieuNaissance()
     {
         return $this->lieu_naissance;
+    }
+
+    /**
+     * Set doc_id
+     *
+     * @param Document $docId Document id
+     *
+     * @return MatriculesFileFormat
+     */
+    public function setDocId(Document $docId = null)
+    {
+        $this->doc_id = $docId;
+        return $this;
+    }
+
+    /**
+     * Get doc_id
+     *
+     * @return Document
+     */
+    public function getDocId()
+    {
+        return $this->doc_id;
     }
 }
