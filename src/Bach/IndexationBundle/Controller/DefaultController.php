@@ -280,20 +280,33 @@ class DefaultController extends Controller
         $query = $qb->getQuery();
         $docs = $query->getResult();
 
-        //remove solr indexed documents
-        $client = $this->get("solarium.client");
-        $update = $client->createUpdate();
+        //remove solr indexed documents per core
+        $updates = array();
+        $clients = array();
 
         foreach ($docs as $doc) {
+            if ( !isset($updates[$doc->getCorename()]) ) {
+                $client = $this->get('solarium.client.' . $doc->getExtension());
+                $clients[$doc->getCorename()] = $client;
+                $updates[$doc->getCorename()] = $client->createUpdate();
+            }
             $doc->setUploadDir($this->container->getParameter('upload_dir'));
-            $update->addDeleteQuery('headerId:' . $doc->getDocId());
+            $update = $updates[$doc->getCorename()];
+            if ( $doc->getExtension() === 'matricules' ) {
+                $update->addDeleteQuery('headerId:' . $doc->getId());
+            } else {
+                $update->addDeleteQuery('headerId:' . $doc->getDocId());
+            }
             $em->remove($doc);
         }
 
-        $em->flush();
+        foreach ( $updates as $key=>$update ) {
+            $client = $clients[$key];
+            $update->addCommit(null, null, true);
+            $result = $client->update($update);
+        }
 
-        $update->addCommit(null, null, true);
-        $result = $client->update($update);
+        $em->flush();
 
         return new RedirectResponse(
             $this->get("router")->generate("bach_indexation_homepage")
