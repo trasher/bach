@@ -44,7 +44,7 @@ class MatriculesType extends AbstractType
                 'nom',
                 null,
                 array(
-                    "label"     => _("Name"),
+                    'label'     => _('Name'),
                     'required'  => false
                 )
             )
@@ -52,7 +52,39 @@ class MatriculesType extends AbstractType
                 'prenoms',
                 null,
                 array(
-                    "label"     => _("Surname"),
+                    'label'     => _('Surname'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'annee_naissance',
+                null,
+                array(
+                    'label'     => ('Year of birth'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'lieu_naissance',
+                null,
+                array(
+                    'label'     => _('Place of birth'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'date_enregistrement',
+                null,
+                array(
+                    'label'     =>_('Place of recording'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'lieu_enregistrement',
+                null,
+                array(
+                    'label'     => _('Place of recording'),
                     'required'  => false
                 )
             )
@@ -72,6 +104,6 @@ class MatriculesType extends AbstractType
      */
     public function getName()
     {
-        return 'comment';
+        return 'matricules_search_form';
     }
 }

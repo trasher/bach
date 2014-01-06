@@ -317,6 +317,21 @@ p {
 }
 
 /**
+ * ===== Matricules search form =====
+ */
+
+[id=matricules_search_form] label {
+    width: 10em;
+    display: inline-block;
+}
+
+[id=adv_link] a {
+    display:block;
+    text-align:right;
+    font-size: .9em;
+}
+
+/**
  * ===== Search results =====
  */
 

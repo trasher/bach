@@ -20,6 +20,8 @@ use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\GeolocFields;
 use Bach\HomeBundle\Entity\Facets;
+use Bach\HomeBundle\Entity\SearchQueryFormType;
+use Bach\HomeBundle\Entity\SearchQuery;
 
 /**
  * Bach matricules controller
@@ -82,10 +84,17 @@ class MatriculesController extends Controller
 
         //$comment = new Comment();
 
-        $form = $this->createForm(
-            new MatriculesType(),
-            null
-        );
+        if ( $view_params->advancedSearch() ) {
+            $form = $this->createForm(
+                new MatriculesType(),
+                null
+            );
+        } else {
+            $form = $this->createForm(
+                new SearchQueryFormType(),
+                new SearchQuery()
+            );
+        }
 
         $form->handleRequest($request);
         $data = $form->getData();
@@ -99,14 +108,7 @@ class MatriculesController extends Controller
         if ( count($data) > 0 ) {
             $container = new SolariumQueryContainer();
 
-            $query = '';
-            foreach ( $data as $key=>$value ) {
-                if ( $value !== null && trim($value !== '') ) {
-                    $query .= '+' . $key . ':' . $value;
-                }
-            }
-
-            $container->setField('matricules', $query);
+            $container->setField('matricules', $data);
             $container->setFilters(new Filters());
             $factory->prepareQuery($container);
 
@@ -121,7 +123,12 @@ class MatriculesController extends Controller
                 $geoloc
             );
 
+            $hlSearchResults = $factory->getHighlighting();
+            $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
+
+            $tpl_vars['hlSearchResults'] = $hlSearchResults;
+            $tpl_vars['scSearchResults'] = $scSearchResults;
 
             $facets = array();
             $facetset = $searchResults->getFacetSet();
@@ -203,11 +210,16 @@ class MatriculesController extends Controller
             );
         }*/
 
+        if ( $view_params->advancedSearch() ) {
+            $tpl_vars['adv_form'] = $form->createView();
+        } else {
+            $tpl_vars['form'] = $form->createView();
+        }
+
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(
                 array(
-                    'form'              => $form->createView(),
                     'resultStart'       => 1,
                     'resultEnd'         => $resultCount,
                     'resultCount'       => $resultCount,

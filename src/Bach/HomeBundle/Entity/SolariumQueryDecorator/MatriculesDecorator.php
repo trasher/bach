@@ -31,20 +31,20 @@ class MatriculesDecorator extends SolariumQueryDecoratorAbstract
     /**
      * Decorate Query
      *
-     * @param Query  $query Solarium query object to decorate
-     * @param string $data  Query data
+     * @param Query $query Solarium query object to decorate
+     * @param array $data  Query data
      *
      * @return void
      */
     public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data)
     {
-        /*if ( $data !== '*:*' ) {
-            $dismax = $query->getDisMax();
-            $dismax->setQueryFields(
-                'descriptors^2 cUnittitle^1 parents_titles^1 fulltext^0.1'
-            );
-        }*/
-        $query->setQuery($data);
+        $qry = '';
+        foreach ( $data as $key=>$value ) {
+            if ( $value !== null && trim($value !== '') ) {
+                $qry .= '+' . $key . ':' . $value;
+            }
+        }
+        $query->setQuery($qry);
     }
 
     /**
@@ -54,6 +54,6 @@ class MatriculesDecorator extends SolariumQueryDecoratorAbstract
      */
     public function getHlFields()
     {
-        return 'cUnittitle';
+        return 'nom,prenoms,lieu_naissance,lieu_enregistrement';
     }
 }

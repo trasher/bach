@@ -70,17 +70,20 @@
 {% endblock %}
 
 {% block container %}
-    <h2>{% trans %}Search matricule{% endtrans %}</h2>
-    {{ form(form) }}
-
-    {% if searchResults|length > 0 %}
-    <div class="results_count">
-        {% if resultCount == 1 %}
-            {% trans %}1 result{% endtrans %}
-        {% else %}
-            {% trans %}Results %resultStart% to %resultEnd% on %resultCount%{% endtrans %}
-        {% endif %}
-    </div>
+    {% if form is defined %}
+    <form action="{{ path('bach_matricules') }}" method="post" {{ form_enctype(form) }} name="search" id="search">
+        <div>
+            {{ form_widget(form.query) }}
+            {{ form_widget(form._token) }}
+            {{ form_widget(form.perform_search) }}
+            <span id="adv_link"><a href="?adv_search=true" title="{% trans %}Switch to advanced search form{% endtrans %}">{% trans %}Advanced search{% endtrans %}</a></span>
+        </div>
+    </form>
+    {% endif %}
+    {% if adv_form is defined %}
+        {{ form(adv_form) }}
+        <span id="adv_link"><a href="?adv_search=false" title="{% trans %}Switch to simple search form{% endtrans %}">{% trans %}Simple search{% endtrans %}</a></span>
+    {% endif  %}
 
     <div id="dates_plot" class="hidden"></div>
     <div id="dates_range" class="hidden"></div>
@@ -88,6 +91,13 @@
     <div id="map" class="hidden"></div>
     {% endif %}
 
+    {% if solr_qry is defined %}
+    <div class="debug">
+        Raw query: <pre>{{ solr_qry }}</pre>
+    </div>
+    {% endif %}
+
+    {% if searchResults is defined %}
     <section id="search_results" role="main">
     <table class="list">
         <thead>
