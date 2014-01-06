@@ -75,14 +75,7 @@ class MatriculesController extends Controller
                 'lieu_naissance',
                 'lieu_enregistrement'
             );
-            /*$gf = new GeolocFields();
-            $gf = $gf->loadCloud(
-                $this->getDoctrine()->getManager()
-            );
-            $geoloc = $gf->getSolrFieldsNames();*/
         }
-
-        //$comment = new Comment();
 
         if ( $view_params->advancedSearch() ) {
             $form = $this->createForm(
@@ -92,7 +85,7 @@ class MatriculesController extends Controller
         } else {
             $form = $this->createForm(
                 new SearchQueryFormType(),
-                new SearchQuery()
+                null
             );
         }
 
