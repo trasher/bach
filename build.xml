@@ -126,7 +126,7 @@
     <!-- ============ -->
     <target name="qa" description="Quality Assurance tasks" depends="prepare">
         <phingcall target="pdepend" />
-        <!--<phingcall target="phpmd" />-->
+        <phingcall target="phpmd" />
         <phingcall target="phpcpd" />
         <phingcall target="phploc" />
         <phingcall target="phpcs" />
@@ -164,6 +164,11 @@
     <target name="phpmd" depends="prepare">
         <phpmd file="${project.basedir}/${source}">
             <formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
+        </phpmd>
+    </target>
+    <target name="hphpmd" depends="prepare">
+        <phpmd file="${project.basedir}/${source}">
+            <formatter type="html" outfile="${project.basedir}/build/phpmd.html" />
         </phpmd>
     </target>
 
