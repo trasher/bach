@@ -266,4 +266,19 @@ class ViewParams
             setcookie('bach_view_params', json_encode($_cook));
         }
     }
+
+    /**
+     * Bind cookie
+     *
+     * @param string $name Cookie name
+     *
+     * @return void
+     */
+    public function bindCookie($name)
+    {
+            $_cook = json_decode($_COOKIE[$name]);
+            $this->setShowMap($_cook->map);
+            $this->setShowDaterange($_cook->daterange);
+
+    }
 }
