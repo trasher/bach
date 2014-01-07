@@ -39,9 +39,11 @@ class MatriculesController extends Controller
     /**
      * Main page
      *
+     * @param int $page Page
+     *
      * @return void
      */
-    public function indexAction()
+    public function indexAction($page = 1)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -126,6 +128,9 @@ class MatriculesController extends Controller
 
             $tpl_vars['hlSearchResults'] = $hlSearchResults;
             $tpl_vars['scSearchResults'] = $scSearchResults;
+            $tpl_vars['totalPages'] = ceil(
+                $resultCount/$view_params->getResultsbyPage()
+            );
 
             $facets = array();
             $facetset = $searchResults->getFacetSet();
@@ -233,7 +238,9 @@ class MatriculesController extends Controller
                     'show_daterange'    => $view_params->showDaterange(),
                     'view'              => $view_params->getView(),
                     'results_order'     => $view_params->getOrder(),
-                    'show_pics'         => $view_params->showPics()
+                    'show_pics'         => $view_params->showPics(),
+                    'q'                 => '',
+                    'page'              => $page
                 ),
                 $tpl_vars
             )
