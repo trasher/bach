@@ -24,7 +24,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
-use Bach\HomeBundle\Entity\TagCloud;
 use Bach\HomeBundle\Entity\GeolocFields;
 
 /**
@@ -355,61 +354,9 @@ class DefaultController extends Controller
 
             $show_tagcloud = $this->container->getParameter('show_tagcloud');
             if ( $show_tagcloud ) {
-                $tagcloud = new TagCloud();
-                $tagcloud = $tagcloud->loadCloud(
-                    $this->getDoctrine()->getManager()
-                );
+                $tagcloud = $factory->getTagCloud($this->getDoctrine()->getManager());
 
-                $tag_max = $tagcloud->getNumber();
-
-                $query = $this->get("solarium.client")->createSelect();
-                $query->setQuery('*:*');
-                $query->setStart(0)->setRows(0);
-
-                $facetSet = $query->getFacetSet();
-                $facetSet->setLimit($tag_max);
-                $facetSet->setMinCount(1);
-
-                $fields = $tagcloud->getSolrFieldsNames();
-                foreach ( $fields as $field ) {
-                    $facetSet->createFacetField($field)->setField($field);
-                }
-                $rs = $this->get('solarium.client')->select($query);
-
-                $tags = array();
-                foreach ( $fields as $field ) {
-                    $facet = $rs->getFacetSet()->getFacet($field);
-                    $tags = array_merge($tags, $facet->getValues());
-                }
-
-                if ( count($tags) > 0 ) {
-                    arsort($tags, SORT_NUMERIC);
-
-                    $values = array_values($tags);
-                    $max = $values[0];
-                    $min = null;
-                    if ( count($values) < $tag_max ) {
-                        $min = $values[count($values)-1];
-                    } else {
-                        $min = $values[$tag_max-1];
-                    }
-
-                    //5 levels
-                    $range = ($max - $min) / 5;
-
-                    $tagcloud = array();
-                    $i = 0;
-                    //loop through returned result and normalize keyword hit counts
-                    foreach ( $tags as $keyword=>$weight ) {
-                        if ( $i === $tag_max ) {
-                            break;
-                        }
-
-                        $tagcloud[$keyword] = floor($weight/$range);
-                        $i++;
-                    }
-
-                    ksort($tagcloud, SORT_LOCALE_STRING);
+                if ( $tagcloud ) {
                     $templateVars['tagcloud'] = $tagcloud;
                 }
             }

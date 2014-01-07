@@ -20,6 +20,7 @@ use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 use Bach\HomeBundle\Entity\Filters;
 use Solarium\QueryType\Select\Result\Facet\Field;
 use Doctrine\ORM\EntityRepository;
+use Bach\HomeBundle\Entity\TagCloud;
 
 /**
  * Bach Solarium query factory
@@ -676,5 +677,72 @@ class SolariumQueryFactory
     public function setGeolocFields($fields)
     {
         $this->_geoloc = $fields;
+    }
+
+    /**
+     * Get tag cloud
+     *
+     * @param EntityManager $em Doctrine entity manager
+     *
+     * @return array
+     */
+    public function getTagCloud($em)
+    {
+        $tagcloud = new TagCloud();
+        $tagcloud = $tagcloud->loadCloud($em);
+
+        $tag_max = $tagcloud->getNumber();
+
+        $query = $this->_client->createSelect();
+        $query->setQuery('*:*');
+        $query->setStart(0)->setRows(0);
+
+        $facetSet = $query->getFacetSet();
+        $facetSet->setLimit($tag_max);
+        $facetSet->setMinCount(1);
+
+        $fields = $tagcloud->getSolrFieldsNames();
+        foreach ( $fields as $field ) {
+            $facetSet->createFacetField($field)->setField($field);
+        }
+        $rs = $this->_client->select($query);
+
+        $tags = array();
+        foreach ( $fields as $field ) {
+            $facet = $rs->getFacetSet()->getFacet($field);
+            $tags = array_merge($tags, $facet->getValues());
+        }
+
+        if ( count($tags) > 0 ) {
+            arsort($tags, SORT_NUMERIC);
+
+            $values = array_values($tags);
+            $max = $values[0];
+            $min = null;
+            if ( count($values) < $tag_max ) {
+                $min = $values[count($values)-1];
+            } else {
+                $min = $values[$tag_max-1];
+            }
+
+            //5 levels
+            $range = ($max - $min) / 5;
+
+            $cloud = array();
+            $i = 0;
+            //loop through returned result and normalize keyword hit counts
+            foreach ( $tags as $keyword=>$weight ) {
+                if ( $i === $tag_max ) {
+                    break;
+                }
+
+                $cloud[$keyword] = floor($weight/$range);
+                $i++;
+            }
+
+            ksort($cloud, SORT_LOCALE_STRING);
+            return $cloud;
+        }
+
     }
 }
