@@ -57,9 +57,7 @@ class MatriculesController extends Controller
         //take care of user view params
         $_cook = null;
         if ( isset($_COOKIE['bach_matricules_view_params']) ) {
-            $_cook = json_decode($_COOKIE['bach_matricules_view_params']);
-            $view_params->setShowMap($_cook->map);
-            $view_params->setShowDaterange($_cook->daterange);
+            $view_params->bindCookie('bach_matricules_view_params');
         }
 
         //set current view parameters according to request
