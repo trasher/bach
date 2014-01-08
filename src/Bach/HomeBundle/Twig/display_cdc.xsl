@@ -235,10 +235,14 @@ Displays an EAD fragment as HTML
                             <xsl:value-of select="@title"/>
                         </xsl:attribute>
                     </xsl:if>
-                    <xsl:if test="@title and . = ''">
-                        <xsl:value-of select="@title"/>
-                    </xsl:if>
-                    <xsl:value-of select="//dadocs/*[local-name() = $docid]"/>
+                    <xsl:choose>
+                        <xsl:when test="@title and . = ''">
+                            <xsl:value-of select="@title"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="//dadocs/*[local-name() = $docid]"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </a>
             </xsl:when>
         </xsl:choose>
