@@ -79,6 +79,12 @@ bach_remove_geoloc:
     defaults: { _controller: BachHomeBundle:Geoloc:remove }
 
 bach_matricules:
-    pattern: /matricules
-    defaults: { _controller: BachHomeBundle:Matricules:index }
+    pattern: /matricules/{query_terms}/{page}
+    defaults: { _controller: BachHomeBundle:Matricules:index, 'query_terms': null, 'page': 1 }
+    requirements:
+        page: \d+
+
+bach_matricules_do_search:
+    pattern:  /matricules-do-search
+    defaults: { _controller: BachHomeBundle:Matricules:doSearch }
 

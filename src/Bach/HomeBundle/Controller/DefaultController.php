@@ -37,7 +37,7 @@ use Bach\HomeBundle\Entity\GeolocFields;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class DefaultController extends Controller
+class DefaultController extends SearchController
 {
     /**
      * Serve default page
@@ -441,12 +441,12 @@ class DefaultController extends Controller
      *
      * @return json
      */
-    public function getZonesAction($bbox)
+    /*public function getZonesAction($bbox)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
         $factory = $this->get("bach.home.solarium_query_factory");
-        
+
         $facets_name = $request->get('facets_name');
 
         if ( !$facets_name ) {
@@ -463,7 +463,7 @@ class DefaultController extends Controller
         $response = new Response($geojson);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
-    }
+    }*/
 
     /**
      * POST search destination for main form.
@@ -595,7 +595,7 @@ class DefaultController extends Controller
      *
      * @return void
      */
-    public function doSuggestAction()
+    /*public function doSuggestAction()
     {
         $query = $this->get("solarium.client")->createSuggester();
         $query->setQuery(strtolower($this->getRequest()->get('q')));
@@ -614,7 +614,7 @@ class DefaultController extends Controller
         }
 
         return new JsonResponse($suggestions);
-    }
+    }*/
 
     /**
      * Document display

@@ -14,6 +14,7 @@
 namespace Bach\HomeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Bach\HomeBundle\Form\Type\MatriculesType;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\Filters;
@@ -34,20 +35,29 @@ use Bach\HomeBundle\Entity\SearchQuery;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class MatriculesController extends Controller
+class MatriculesController extends SearchController
 {
+
     /**
-     * Main page
+     * Serve default page
      *
-     * @param int $page Page
+     * @param string  $query_terms Term(s) we search for
+     * @param int     $page        Page
+     * @param string  $facet_name  Display more terms in suggests
+     * @param boolean $ajax        Fomr ajax call
      *
      * @return void
      */
-    public function indexAction($page = 1)
-    {
+    public function indexAction($query_terms = null, $page = 1,
+        $facet_name = null, $ajax = false
+    ) {
         $request = $this->getRequest();
         $session = $request->getSession();
         $tpl_vars = array();
+
+        if ( $query_terms !== null ) {
+            $query_terms = urldecode($query_terms);
+        }
 
         /** Manage view parameters */
         $view_params = $session->get('matricules_view_params');
@@ -82,11 +92,13 @@ class MatriculesController extends Controller
                 new MatriculesType(),
                 null
             );
+            $tpl_vars['search_path'] = 'bach_matricules';
         } else {
             $form = $this->createForm(
                 new SearchQueryFormType(),
                 null
             );
+            $tpl_vars['search_path'] = 'bach_matricules_do_search';
         }
 
         $form->handleRequest($request);
@@ -245,5 +257,34 @@ class MatriculesController extends Controller
                 $tpl_vars
             )
         );
+    }
+
+    /**
+     * POST search destination for main form.
+     *
+     * Will take care of search terms, and reroute with proper URI
+     *
+     * @return void
+     */
+    public function doSearchAction()
+    {
+        $query = new SearchQuery();
+        $form = $this->createForm(new SearchQueryFormType(), $query);
+        $redirectUrl = $this->get('router')->generate('bach_matricules');
+
+        if ($this->getRequest()->isMethod('POST')) {
+            $form->bind($this->getRequest());
+            if ($form->isValid()) {
+                $q = $query->getQuery();
+                $redirectUrl = $this->get('router')->generate(
+                    'bach_matricules',
+                    array('query_terms' => $q)
+                );
+
+                $session = $this->getRequest()->getSession();
+                $session->set('filters', null);
+            }
+        }
+        return new RedirectResponse($redirectUrl);
     }
 }
