@@ -56,7 +56,7 @@ Displays an EAD fragment as HTML
         <li id="{$id}">
             <xsl:apply-templates/>
             <!--<xsl:if test="bioghist|controlaccess|otherfindaid">-->
-            <xsl:if test="bioghist|controlaccess">
+            <xsl:if test="bioghist|controlaccess|dao">
                 <section class="extended_informations well">
                     <xsl:apply-templates mode="extends"/>
                 </section>
@@ -96,12 +96,16 @@ Displays an EAD fragment as HTML
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="otherfindaid" mode="extends">
+    <!--<xsl:template match="otherfindaid" mode="extends">
         <xsl:apply-templates mode="extends"/>
-    </xsl:template>
+    </xsl:template>-->
 
     <xsl:template match="head" mode="extends">
         <h5><xsl:value-of select="."/></h5>
+    </xsl:template>
+
+    <xsl:template match="dao" mode="extends">
+        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), string(@title), '')"/>
     </xsl:template>
 
     <xsl:template match="table|thead|tbody">
@@ -240,14 +244,14 @@ Displays an EAD fragment as HTML
                             <xsl:value-of select="@title"/>
                         </xsl:attribute>
                     </xsl:if>
-                    <xsl:choose>
+                    <!--<xsl:choose>
                         <xsl:when test="@title and . = ''">
                             <xsl:value-of select="@title"/>
                         </xsl:when>
-                        <xsl:otherwise>
+                        <xsl:otherwise>-->
                             <xsl:value-of select="//dadocs/*[local-name() = $docid]"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
+                            <!--</xsl:otherwise>
+                    </xsl:choose>-->
                 </a>
             </xsl:when>
         </xsl:choose>
