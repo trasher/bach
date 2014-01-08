@@ -124,6 +124,7 @@ class MatriculesController extends Controller
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
 
+            $tpl_vars['searchResults'] = $searchResults;
             $tpl_vars['hlSearchResults'] = $hlSearchResults;
             $tpl_vars['scSearchResults'] = $scSearchResults;
             $tpl_vars['totalPages'] = ceil(
@@ -138,6 +139,8 @@ class MatriculesController extends Controller
                     $map_facets[$field] = $facetset->getFacet($field);
                 }
             }
+
+            $suggestions = $factory->getSuggestions(implode(' ', $data));
         } else {
             if ( $show_maps ) {
                 $query = $this->get("solarium.client.matricules")->createSelect();
@@ -230,7 +233,6 @@ class MatriculesController extends Controller
                     'resultStart'       => 1,
                     'resultEnd'         => $resultCount,
                     'resultCount'       => $resultCount,
-                    'searchResults'     => $searchResults,
                     'show_maps'         => $show_maps,
                     'show_map'          => $view_params->showMap(),
                     'show_daterange'    => $view_params->showDaterange(),

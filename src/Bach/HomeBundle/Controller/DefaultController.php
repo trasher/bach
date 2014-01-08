@@ -341,12 +341,7 @@ class DefaultController extends Controller
             $templateVars['facet_names'] = $facet_names;
 
             if ( $ajax === false ) {
-                $query = $this->get("solarium.client")->createSuggester();
-                $query->setQuery(strtolower($query_terms));
-                $query->setDictionary('suggest');
-                $query->setOnlyMorePopular(true);
-                $query->setCount(10);
-                $suggestions = $this->get("solarium.client")->suggester($query);
+                $suggestions = $factory->getSuggestions($query_terms);
 
                 $templateVars['resultCount'] = $resultCount;
                 $templateVars['resultByPage'] = $view_params->getResultsbyPage();

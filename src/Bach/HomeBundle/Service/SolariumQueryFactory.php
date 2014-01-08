@@ -783,4 +783,22 @@ class SolariumQueryFactory
         }
 
     }
+
+    /**
+     * Get suggestions
+     *
+     * @param string $terms Query terms
+     *
+     * @return array
+     */
+    public function getSuggestions($terms)
+    {
+        $query = $this->_client->createSuggester();
+        $query->setQuery(strtolower($terms));
+        $query->setDictionary('suggest');
+        $query->setOnlyMorePopular(true);
+        $query->setCount(10);
+        $suggestions = $this->_client->suggester($query);
+        return $suggestions;
+    }
 }
