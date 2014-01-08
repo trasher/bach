@@ -55,7 +55,8 @@ Displays an EAD fragment as HTML
 
         <li id="{$id}">
             <xsl:apply-templates/>
-            <xsl:if test="bioghist|controlaccess|otherfindaid">
+            <!--<xsl:if test="bioghist|controlaccess|otherfindaid">-->
+            <xsl:if test="bioghist|controlaccess">
                 <section class="extended_informations well">
                     <xsl:apply-templates mode="extends"/>
                 </section>
@@ -89,6 +90,10 @@ Displays an EAD fragment as HTML
                 <xsl:value-of select="../unitdate"/>
             </span>
         </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="otherfindaid">
+        <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template match="otherfindaid" mode="extends">
