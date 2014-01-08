@@ -55,7 +55,7 @@ Displays an EAD fragment as HTML
 
         <li id="{$id}">
             <xsl:apply-templates/>
-            <xsl:if test="bioghist|controlaccess">
+            <xsl:if test="bioghist|controlaccess|otherfindaid">
                 <section class="extended_informations well">
                     <xsl:apply-templates mode="extends"/>
                 </section>
@@ -91,8 +91,12 @@ Displays an EAD fragment as HTML
         </xsl:if>
     </xsl:template>
 
-    <xsl:template match="otherfindaid">
-        <xsl:apply-templates/>
+    <xsl:template match="otherfindaid" mode="extends">
+        <xsl:apply-templates mode="extends"/>
+    </xsl:template>
+
+    <xsl:template match="head" mode="extends">
+        <h5><xsl:value-of select="."/></h5>
     </xsl:template>
 
     <xsl:template match="table|thead|tbody">
@@ -146,6 +150,12 @@ Displays an EAD fragment as HTML
                 <xsl:apply-templates/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="list" mode="extends">
+        <ul>
+            <xsl:apply-templates/>
+        </ul>
     </xsl:template>
 
     <xsl:template match="list">
@@ -214,7 +224,13 @@ Displays an EAD fragment as HTML
         <xsl:variable name="docid" select="substring-before(@href, '.xml')"/>
 
         <xsl:choose>
-            <xsl:when test="//dadocs/*[local-name() = $docid]">
+            <xsl:when test="$docid = ''">
+                <!-- Not an xml link -->
+                <a href="{@href}">
+                    <xsl:value-of select="@href"/>
+                </a>
+            </xsl:when>
+            <xsl:when test="//dadocs/*[local-name() = $docid] or not($docid = '')">
                 <a link="{concat('%%%', string($docid), '_description%%%')}">
                     <xsl:if test="@title and . != ''">
                         <xsl:attribute name="title">
