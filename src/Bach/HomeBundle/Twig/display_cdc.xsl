@@ -226,9 +226,7 @@ Displays an EAD fragment as HTML
         <xsl:choose>
             <xsl:when test="$docid = ''">
                 <!-- Not an xml link -->
-                <a href="{@href}">
-                    <xsl:value-of select="@href"/>
-                </a>
+                <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), string(@title), '')"/>
             </xsl:when>
             <xsl:when test="//dadocs/*[local-name() = $docid] or not($docid = '')">
                 <a link="{concat('%%%', string($docid), '_description%%%')}">
