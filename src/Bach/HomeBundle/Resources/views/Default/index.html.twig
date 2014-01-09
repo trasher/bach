@@ -362,7 +362,7 @@
                 var _new_loc = _loc.substring(0, n != -1 ? n : _loc.lenght);
 
                 if ( min_date == '{{ selected_min_date }}'
-                    && max_date != '{{ selected_max_date }}'
+                    && max_date == '{{ selected_max_date }}'
                 ) {
                     //nothing has changed!
                     return false;
