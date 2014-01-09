@@ -351,23 +351,23 @@ class SolariumQueryFactory
             $results['date_step_unit'] = $step_unit;
             $results['date_step'] = $step;
 
-            $results['min_date'] = $php_min_date->format('Y');
+            $results['min_date'] = (int)$php_min_date->format('Y');
             if ( $filters->offsetExists('cDateBegin') ) {
                 $dbegin = explode(
                     '-',
                     $filters->offsetGet('cDateBegin')
                 );
-                $results['selected_min_date'] = $dbegin[0];
+                $results['selected_min_date'] = (int)$dbegin[0];
             } else {
                 $results['selected_min_date'] = $results['min_date'];
             }
-            $results['max_date'] = $php_max_date->format('Y');
+            $results['max_date'] = (int)$php_max_date->format('Y');
             if ( $filters->offsetExists('cDateEnd') ) {
                 $dend = explode(
                     '-',
                     $filters->offsetGet('cDateEnd')
                 );
-                $results['selected_max_date'] = $dend[0];
+                $results['selected_max_date'] = (int)$dend[0];
             } else {
                 $results['selected_max_date'] = $results['max_date'];
             }
