@@ -168,13 +168,15 @@ class EADDates
                 if ( count($matches) == 2 ) {
                     $this->begin = \DateTime::createFromFormat('Y', $bdate);
                 }
-                if ( count($matches) <= 3 ) {
-                    //day is not provided. set to 1st.
-                    $this->begin->modify('first day of this month');
-                }
-                if ( count($matches) == 2 ) {
-                    //month is not provided. set to 1st.
-                    $this->begin->modify('january');
+                if ( $this->begin !== null ) {
+                    if ( count($matches) <= 3 ) {
+                        //day is not provided. set to 1st.
+                        $this->begin->modify('first day of this month');
+                    }
+                    if ( count($matches) == 2 ) {
+                        //month is not provided. set to 1st.
+                        $this->begin->modify('january');
+                    }
                 }
             }
             //if date is in the future, we remove it
@@ -197,13 +199,15 @@ class EADDates
                 if ( count($matches) == 2 ) {
                     $this->end = \DateTime::createFromFormat('Y', $edate);
                 }
-                if ( count($matches) <= 3 ) {
-                    //day is not provided. set to last.
-                    $this->end->modify('last day of this month');
-                }
-                if ( count($matches) == 2 ) {
-                    //month is not provided. set to 1st.
-                    $this->end->modify('december');
+                if ( $this->end !== null ) {
+                    if ( count($matches) <= 3 ) {
+                        //day is not provided. set to last.
+                        $this->end->modify('last day of this month');
+                    }
+                    if ( count($matches) == 2 ) {
+                        //month is not provided. set to 1st.
+                        $this->end->modify('december');
+                    }
                 }
             }
             //if date is in the future, we remove it
