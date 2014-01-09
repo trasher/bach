@@ -154,11 +154,15 @@ class EADDates
         $now = new \DateTime();
 
         //regexp to check if date is Y-M-D, Y-M, Y (or the same without dashes)
-        $reg = '/^(\d{4})-?(\d{2})?-?(\d{2})?$/';
+        $reg = '/^(\d{3,4})-?(\d{2})?-?(\d{2})?$/';
 
         //try to set begin date
         try  {
-            $this->begin = new \DateTime($bdate);
+            try {
+                $this->begin = new \DateTime($bdate);
+            } catch (\Exception $e) {
+                //not well formatted date... Don't care, try to use the regexp.
+            }
             if ( preg_match($reg, $bdate, $matches) ) {
                 //DateTime initialized with year only will give current year...
                 if ( count($matches) == 2 ) {
@@ -183,7 +187,12 @@ class EADDates
 
         //try to set end date
         try {
-            $this->end = new \DateTime($edate);
+            try {
+                $this->end = new \DateTime($edate);
+            } catch (\Exception $e) {
+                //not well formatted date... Don't care, try to use the regexp.
+            }
+
             if ( preg_match($reg, $edate, $matches) ) {
                 if ( count($matches) == 2 ) {
                     $this->end = \DateTime::createFromFormat('Y', $edate);
