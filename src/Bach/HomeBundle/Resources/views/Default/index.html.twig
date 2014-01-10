@@ -91,7 +91,7 @@
             url: $(this).attr('href') + '/ajax',
             beforeSend: function() {
                 var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
-                $('#map').append(_img);
+                $('body').append(_img);
             },
             complete: function() {
                 $('#loading').remove();
