@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\TagCloud;
 use Bach\HomeBundle\Entity\GeolocFields;
+use Bach\HomeBundle\Service\SolariumQueryFactory;
 
 /**
  * Bach search controller
@@ -54,6 +55,128 @@ abstract class SearchController extends Controller
     abstract public function indexAction($query_terms = null, $page = 1,
         $facet_name = null, $ajax = false
     );
+
+    /**
+     * Get common template variables
+     *
+     * @param ViewParams $view_params View parameters
+     * @param int        $page        Current requested page
+     *
+     * @return array
+     */
+    protected function searchTemplateVariables($view_params, $page = 1)
+    {
+        $common_vars = $this->commonTemplateVariables();
+
+        $tpl_vars = array(
+            'page'              => $page,
+            'show_pics'         => $view_params->showPics(),
+            'show_map'          => $view_params->showMap(),
+            'show_daterange'    => $view_params->showDaterange(),
+            'view'              => $view_params->getView(),
+            'results_order'     => $view_params->getOrder(),
+            'map_facets_name'   => $this->mapFacetsName(),
+            'q'                 => ''
+        );
+
+        return array_merge($common_vars, $tpl_vars);
+    }
+
+    /**
+     * Get common template variables
+     *
+     * @return array
+     */
+    protected function commonTemplateVariables()
+    {
+        $show_maps = $this->container->getParameter('show_maps');
+        $viewer_uri = $this->container->getParameter('viewer_uri');
+        $covers_dir = $this->container->getParameter('covers_dir');
+
+        $tpl_vars = array(
+            'viewer_uri'    => $viewer_uri,
+            'show_maps'     => $show_maps,
+            'covers_dir'    => $covers_dir
+        );
+
+        return $tpl_vars;
+    }
+
+    /**
+     * Handle geolocalization
+     *
+     * @param SolariumQueryFactory $factory   Query factory
+     * @param array                &$tpl_vars Template variables
+     * @param array                $fields    Fields list
+     *
+     * @return void
+     */
+    protected function handleGeoloc(SolariumQueryFactory $factory, &$tpl_vars,
+        $fields = null
+    ) {
+        $show_maps = $this->container->getParameter('show_maps');
+        if ( $show_maps ) {
+            $request = $this->getRequest();
+            $session = $request->getSession();
+
+            if ( $fields === null ) {
+                $gf = new GeolocFields();
+                $gf = $gf->loadCloud(
+                    $this->getDoctrine()->getManager()
+                );
+                $fields = $gf->getSolrFieldsNames();
+            }
+
+            $query = $factory->getQuery();
+            $rs = null;
+
+            if ( $query === null ) {
+                $query = $this->get($this->entryPoint())->createSelect();
+                $query->setQuery('*:*');
+                $query->setStart(0)->setRows(0);
+
+                $facetSet = $query->getFacetSet();
+                $facetSet->setLimit(-1);
+                $facetSet->setMinCount(1);
+                foreach ( $fields as $field ) {
+                    $facetSet->createFacetField($field)->setField($field);
+                }
+
+                $rs = $this->get($this->entryPoint())->select($query);
+            } else {
+                $rs = $factory->getResultset();
+            }
+
+            foreach ( $fields as $field ) {
+                $map_facets[$field] = $rs->getFacetSet()->getFacet($field);
+            }
+
+            $session->set(
+                $this->mapFacetsName(),
+                $map_facets
+            );
+            $geojson = $factory->getGeoJson(
+                $map_facets,
+                $this->getDoctrine()
+                    ->getRepository('BachIndexationBundle:Geoloc')
+            );
+            $tpl_vars['geojson'] = $geojson;
+        }
+    }
+
+    /**
+     * Get map facets session name
+     *
+     * @return string
+     */
+    abstract protected function mapFacetsName();
+
+    /**
+     * Get Solarium EntryPoint
+     *
+     * @return string
+     */
+    abstract protected function entryPoint();
 
     /**
      * Get geographical zones

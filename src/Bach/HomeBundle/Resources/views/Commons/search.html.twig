@@ -1,7 +1,6 @@
 {% extends '::base.html.twig' %}
 
 {% block search_path %}bach_search{%endblock %}
-{% block map_facets_name %}map_facets{% endblock %}
 {% block do_search_path %}bach_do_search{% endblock %}
 
 {% block css %}
@@ -132,11 +131,11 @@
         </nav>
     {% endif %}
 
-    <div id="dates_plot" class="hidden"></div>
-    <div id="dates_range" class="hidden"></div>
-    {% if show_maps %}
-    <div id="map" class="hidden"></div>
-    {% endif %}
+        <div id="dates_plot" class="hidden"></div>
+        <div id="dates_range" class="hidden"></div>
+        {% if show_maps -%}
+        <div id="map" class="hidden"></div>
+        {%- endif %}
 
     {% if solr_qry is defined %}
     <div class="debug">
@@ -229,12 +228,14 @@
                 var n = _loc.indexOf('?');
                 var _new_loc = _loc.substring(0, n != -1 ? n : _loc.lenght);
 
+    {% if selected_min_date is defined and selected_max_date is defined %}
                 if ( min_date == '{{ selected_min_date }}'
                     && max_date == '{{ selected_max_date }}'
                 ) {
                     //nothing has changed!
                     return false;
                 }
+    {% endif %}
 
                 _new_loc += '?filter_field[]=cDateBegin&filter_value[]=' + min_date +
                     '&filter_field[]=cDateEnd&filter_value[]=' + max_date;
@@ -515,7 +516,7 @@
                     if ( zoom >= 9 ) {
                         //if we've just zoomed, or if we drag map, reload zones
                         _zones_loaded = true;
-                        var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX', facets_name: block('map_facets_name')}) }}';
+                        var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX', facets_name: map_facets_name}) }}';
 
                         $.ajax({
                             url: _da_url.replace('BBOX', map.getBounds().toBBoxString()),

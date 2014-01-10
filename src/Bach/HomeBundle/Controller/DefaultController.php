@@ -55,6 +55,82 @@ class DefaultController extends SearchController
         $request = $this->getRequest();
         $session = $request->getSession();
 
+        /** Manage view parameters */
+        $view_params = $session->get('view_params');
+        if ( !$view_params ) {
+            $view_params = new ViewParams();
+        }
+        //take care of user view params
+        if ( isset($_COOKIE['bach_view_params']) ) {
+            $view_params->bindCookie('bach_view_params');
+        }
+
+        //set current view parameters according to request
+        $view_params->bind($request);
+
+        $tpl_vars = $this->searchTemplateVariables($view_params);
+
+        $form = $this->createForm(
+            new SearchQueryFormType(),
+            new SearchQuery()
+        );
+        $tpl_vars['form'] = $form->createView();
+
+        $factory = $this->get("bach.home.solarium_query_factory");
+
+        $show_tagcloud = $this->container->getParameter('show_tagcloud');
+        if ( $show_tagcloud ) {
+            $tagcloud = $factory->getTagCloud($this->getDoctrine()->getManager());
+
+            if ( $tagcloud ) {
+                $templateVars['tagcloud'] = $tagcloud;
+            }
+        }
+
+        $this->handleGeoloc($factory, $tpl_vars);
+
+        return $this->render(
+            'BachHomeBundle:Default:index.html.twig',
+            $tpl_vars
+        );
+    }
+
+    /**
+     * Get Solarium EntryPoint
+     *
+     * @return string
+     */
+    protected function entryPoint()
+    {
+        return 'solarium.client';
+    }
+
+    /**
+     * Get map facets session name
+     *
+     * @return string
+     */
+    protected function mapFacetsName()
+    {
+        return 'map_facets';
+    }
+
+    /**
+     * Serve default page
+     *
+     * @param string  $query_terms Term(s) we search for
+     * @param int     $page        Page
+     * @param string  $facet_name  Display more terms in suggests
+     * @param boolean $ajax        Fomr ajax call
+     *
+     * @return void
+     */
+    public function searchAction($query_terms = null, $page = 1,
+        $facet_name = null, $ajax = false
+    ) {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
         if ( $query_terms !== null ) {
             $query_terms = urldecode($query_terms);
         }
@@ -75,7 +151,6 @@ class DefaultController extends SearchController
         //store new view parameters
         $session->set('view_params', $view_params);
 
-        $viewer_uri = $this->container->getParameter('viewer_uri');
         $show_maps = $this->container->getParameter('show_maps');
 
         $geoloc = array();
@@ -100,18 +175,22 @@ class DefaultController extends SearchController
             && is_null($query_terms)
         ) {
             $query_terms = '*:*';
+        } else if ( $query_terms === null && $filters->count() == 0 ) {
+            $redirectUrl = $this->get('router')->generate('bach_homepage');
+            return new RedirectResponse($redirectUrl);
         }
 
-        $templateVars = array(
-            'q'             => urlencode($query_terms),
-            'page'          => $page,
-            'show_pics'     => $view_params->showPics(),
-            'show_map'      => $view_params->showMap(),
-            'show_daterange'=> $view_params->showDaterange(),
-            'viewer_uri'    => $viewer_uri,
-            'view'          => $view_params->getView(),
-            'results_order' => $view_params->getOrder(),
-            'show_maps'     => $show_maps
+        $templateVars = $this->searchTemplateVariables($view_params, $page);
+        $templateVars = array_merge(
+            $templateVars,
+            array(
+                'q'             => urlencode($query_terms),
+                'show_pics'     => $view_params->showPics(),
+                'show_map'      => $view_params->showMap(),
+                'show_daterange'=> $view_params->showDaterange(),
+                'view'          => $view_params->getView(),
+                'results_order' => $view_params->getOrder()
+            )
         );
 
         if ( $facet_name !== null ) {
@@ -122,7 +201,7 @@ class DefaultController extends SearchController
         $factory->setGeolocFields($geoloc);
 
         $map_facets = array();
-        if ( !is_null($query_terms) ) {
+        //if ( !is_null($query_terms) ) {
             // On effectue une recherche
             $form = $this->createForm(
                 new SearchQueryFormType($query_terms),
@@ -360,37 +439,7 @@ class DefaultController extends SearchController
                 }
                 $templateVars['resultEnd'] = $resultEnd;
             }
-        } else {
-            $form = $this->createForm(new SearchQueryFormType(), new SearchQuery());
-
-            $show_tagcloud = $this->container->getParameter('show_tagcloud');
-            if ( $show_tagcloud ) {
-                $tagcloud = $factory->getTagCloud($this->getDoctrine()->getManager());
-
-                if ( $tagcloud ) {
-                    $templateVars['tagcloud'] = $tagcloud;
-                }
-            }
-
-            if ( $show_maps ) {
-                $query = $this->get("solarium.client")->createSelect();
-                $query->setQuery('*:*');
-                $query->setStart(0)->setRows(0);
-
-                $facetSet = $query->getFacetSet();
-                $facetSet->setLimit(-1);
-                $facetSet->setMinCount(1);
-                foreach ( $geoloc as $field ) {
-                    $facetSet->createFacetField($field)->setField($field);
-                }
-
-                $rs = $this->get('solarium.client')->select($query);
-
-                foreach ( $geoloc as $field ) {
-                    $map_facets[$field] = $rs->getFacetSet()->getFacet($field);
-                }
-            }
-        }
+        //}
 
         if ( $ajax === false ) {
             $slider_dates = $factory->getSliderDates($filters);
@@ -433,37 +482,6 @@ class DefaultController extends SearchController
             );
         }
     }
-
-    /**
-     * Get geographical zones
-     *
-     * @param stirng $bbox Bounding box
-     *
-     * @return json
-     */
-    /*public function getZonesAction($bbox)
-    {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-        $factory = $this->get("bach.home.solarium_query_factory");
-
-        $facets_name = $request->get('facets_name');
-
-        if ( !$facets_name ) {
-            $facets_name = 'map_facets';
-        }
-
-        $geojson = $factory->getGeoJson(
-            $session->get($facets_name),
-            $this->getDoctrine()
-                ->getRepository('BachIndexationBundle:Geoloc'),
-            $bbox
-        );
-
-        $response = new Response($geojson);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }*/
 
     /**
      * POST search destination for main form.
@@ -591,32 +609,6 @@ class DefaultController extends SearchController
     }
 
     /**
-     * Suggests
-     *
-     * @return void
-     */
-    /*public function doSuggestAction()
-    {
-        $query = $this->get("solarium.client")->createSuggester();
-        $query->setQuery(strtolower($this->getRequest()->get('q')));
-        $query->setDictionary('suggest');
-        $query->setOnlyMorePopular(true);
-        $query->setCount(10);
-        //$query->setCollate(true);
-        $terms = $this->get("solarium.client")->suggester($query)->getResults();
-
-        $suggestions = array();
-        foreach ( $terms as $term ) {
-            $suggestions = array_merge(
-                $suggestions,
-                $term->getSuggestions()
-            );
-        }
-
-        return new JsonResponse($suggestions);
-    }*/
-
-    /**
      * Document display
      *
      * @param int     $docid Document unique identifier
@@ -645,19 +637,19 @@ class DefaultController extends SearchController
             );
         }
 
-        $viewer_uri = $this->container->getParameter('viewer_uri');
-        $covers_dir = $this->container->getParameter('covers_dir');
-
         $docs  = $rs->getDocuments();
         $doc = $docs[0];
 
         $tpl = '';
 
-        $tplParams = array(
-            'docid'         => $docid,
-            'document'      => $doc,
-            'viewer_uri'    => $viewer_uri,
-            'archdesc'      => $doc['archDescUnitTitle']
+        $tplParams = $this->commonTemplateVariables();
+        $tplParams = array_merge(
+            $tplParams,
+            array(
+                'docid'         => $docid,
+                'document'      => $doc,
+                'archdesc'      => $doc['archDescUnitTitle']
+            )
         );
 
         $parents = explode('/', $doc['parents']);

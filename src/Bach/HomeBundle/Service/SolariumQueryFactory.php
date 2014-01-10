@@ -41,6 +41,7 @@ class SolariumQueryFactory
     private $_highlitght;
     private $_spellcheck;
     private $_query;
+    private $_rs;
     private $_qry_facets_fields = array(
         'dao',
         'cDate'
@@ -105,7 +106,8 @@ class SolariumQueryFactory
         $rs = $this->_client->select($this->_query);
         $this->_highlitght = $rs->getHighlighting();
         $this->_spellcheck = $rs->getSpellcheck();
-        return $rs;
+        $this->_rs = $rs;
+        return $this->_rs;
     }
 
     /**
@@ -648,6 +650,16 @@ class SolariumQueryFactory
     public function getQuery()
     {
         return $this->_query;
+    }
+
+    /**
+     * Get resultset
+     *
+     * @return 
+     */
+    public function getResultset()
+    {
+        return $this->_rs;
     }
 
     /**

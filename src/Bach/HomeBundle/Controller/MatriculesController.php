@@ -53,7 +53,6 @@ class MatriculesController extends SearchController
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
-        $tpl_vars = array();
 
         if ( $query_terms !== null ) {
             $query_terms = urldecode($query_terms);
@@ -76,7 +75,8 @@ class MatriculesController extends SearchController
         //store new view parameters
         $session->set('matricules_view_params', $view_params);
 
-        $viewer_uri = $this->container->getParameter('viewer_uri');
+        $tpl_vars = $this->searchTemplateVariables($view_params, $page);
+
         $show_maps = $this->container->getParameter('show_maps');
 
         $geoloc = array();
@@ -110,13 +110,15 @@ class MatriculesController extends SearchController
         $factory = $this->get("bach.matricules.solarium_query_factory");
         $factory->setGeolocFields($geoloc);
 
-        if ( count($data) > 0 ) {
+        if ( $view_params->advancedSearch() && count($data) > 0
+            || !$view_params->advancedSearch() && $query_terms !== null
+        ) {
             $container = new SolariumQueryContainer();
 
             if ( $view_params->advancedSearch() ) {
                 $container->setField('adv_matricules', $data);
             } else {
-                $container->setField('matricules', $data['query']);
+                $container->setField('matricules', $query_terms);
             }
             $container->setFilters(new Filters());
             $factory->prepareQuery($container);
@@ -146,31 +148,11 @@ class MatriculesController extends SearchController
             $facets = array();
             $facetset = $searchResults->getFacetSet();
 
-            if ( $show_maps ) {
-                foreach ( $geoloc as $field ) {
-                    $map_facets[$field] = $facetset->getFacet($field);
-                }
-            }
-
-            $suggestions = $factory->getSuggestions(implode(' ', $data));
-        } else {
-            if ( $show_maps ) {
-                $query = $this->get("solarium.client.matricules")->createSelect();
-                $query->setQuery('*:*');
-                $query->setStart(0)->setRows(0);
-
-                $facetSet = $query->getFacetSet();
-                $facetSet->setLimit(-1);
-                $facetSet->setMinCount(1);
-                foreach ( $geoloc as $field ) {
-                    $facetSet->createFacetField($field)->setField($field);
-                }
-
-                $rs = $this->get('solarium.client.matricules')->select($query);
-
-                foreach ( $geoloc as $field ) {
-                    $map_facets[$field] = $rs->getFacetSet()->getFacet($field);
-                }
+            $suggestions = null;
+            if ( $view_params->advancedSearch() ) {
+                $suggestions = $factory->getSuggestions(implode(' ', $data));
+            } else {
+                $suggestions = $factory->getSuggestions($query_terms);
             }
         }
 
@@ -195,7 +177,16 @@ class MatriculesController extends SearchController
             $tpl_vars['solr_qry'] = $factory->getRequest()->getUri();
         }
 
-        if ( $show_maps ) {
+        $this->handleGeoloc(
+            $factory,
+            $tpl_vars,
+            array(
+                'lieu_naissance',
+                'lieu_enregistrement'
+            )
+        );
+
+        /*if ( $show_maps ) {
             $session->set('matricules_map_facets', $map_facets);
             $geojson = $factory->getGeoJson(
                 $map_facets,
@@ -203,33 +194,6 @@ class MatriculesController extends SearchController
                     ->getRepository('BachIndexationBundle:Geoloc')
             );
             $tpl_vars['geojson'] = $geojson;
-        }
-
-        /*if ( $form->isValid() ) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                _('Your comment has been stored. Thank you!')
-            );
-            return $this->redirect(
-                $this->generateUrl(
-                    'bach_display_document',
-                    array(
-                        'docid' => $docid
-                    )
-                )
-            );
-        } else {
-            return $this->render(
-                'BachHomeBundle:Comment:add.html.twig',
-                array(
-                    'docid'     => $docid,
-                    'form'      => $form->createView(),
-                    'eadfile'   => $eadfile
-                )
-            );
         }*/
 
         if ( $view_params->advancedSearch() ) {
@@ -245,18 +209,31 @@ class MatriculesController extends SearchController
                     'resultStart'       => 1,
                     'resultEnd'         => $resultCount,
                     'resultCount'       => $resultCount,
-                    'show_maps'         => $show_maps,
-                    'show_map'          => $view_params->showMap(),
-                    'show_daterange'    => $view_params->showDaterange(),
-                    'view'              => $view_params->getView(),
-                    'results_order'     => $view_params->getOrder(),
-                    'show_pics'         => $view_params->showPics(),
                     'q'                 => '',
-                    'page'              => $page
                 ),
                 $tpl_vars
             )
         );
+    }
+
+    /**
+     * Get Solarium EntryPoint
+     *
+     * @return string
+     */
+    protected function entryPoint()
+    {
+        return 'solarium.client.matricules';
+    }
+
+    /**
+     * Get map facets session name
+     *
+     * @return string
+     */
+    protected function mapFacetsName()
+    {
+        return 'matricules_map_facets';
     }
 
     /**

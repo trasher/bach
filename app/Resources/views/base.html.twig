@@ -53,7 +53,7 @@
             {% spaceless %}
                 <ul>
                     <li{% if app.request.attributes.get('_route') == 'bach_homepage' or app.request.attributes.get('_route') == 'bach_search' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_homepage') }}">{% trans %}Search{% endtrans %}</a>
+                        <a href="{{ path('bach_search') }}">{% trans %}Search{% endtrans %}</a>
                     </li>
                     {% if matricules %}
                     <li{% if app.request.attributes.get('_route') == 'bach_matricules' %} class="active"{% endif %}>
