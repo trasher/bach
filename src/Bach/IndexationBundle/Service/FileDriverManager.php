@@ -88,9 +88,7 @@ class FileDriverManager
                     if ( array_key_exists('universalfileformat', $this->_conf['drivers'][$format]) ) {
                         try {
                             $reflection = new \ReflectionClass($this->_conf['drivers'][$format]['universalfileformat']);
-                            if ($reflection->getParentClass()->getName() == 'Bach\IndexationBundle\Entity\MappedFileFormat') {
-                                $universalFileFormatClass = $this->_conf['drivers'][$format]['universalfileformat'];
-                            }
+                            $universalFileFormatClass = $this->_conf['drivers'][$format]['universalfileformat'];
                         }
                         catch (\RuntimeException $e) {
                             throw $e;
