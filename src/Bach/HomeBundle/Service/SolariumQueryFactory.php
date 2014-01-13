@@ -217,7 +217,7 @@ class SolariumQueryFactory
 
         $hl->setFields($hl_fields);
         /** TODO: find a better way to do */
-        if ( strpos($hl_fields, 'cUnittitle') ) {
+        if ( strpos($hl_fields, 'cUnittitle') !== false ) {
             //on highlithed unititles, we always want the full string
             $hl->getField('cUnittitle')->setFragSize(0);
         }
