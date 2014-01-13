@@ -260,6 +260,9 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Repository':
             return _('Repository:');
             break;
+        case 'Language:':
+            return _('Language:');
+            break;
         default:
             //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?

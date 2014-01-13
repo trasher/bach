@@ -168,7 +168,7 @@ Displays an EAD fragment as HTML
         </section>
     </xsl:template>
 
-    <xsl:template match="genreform|extent|physfacet|dimensions" mode="full">
+    <xsl:template match="genreform|extent|physfacet|dimensions|langmaterial" mode="full">
         <div>
             <strong>
                 <xsl:choose>
@@ -188,6 +188,9 @@ Displays an EAD fragment as HTML
                             </xsl:when>
                             <xsl:when test="local-name() = 'dimensions'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Dimensions:')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'langmaterial'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Language:')"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 UNKNONWN ELEMENT
@@ -563,7 +566,7 @@ Displays an EAD fragment as HTML
                         </xsl:if>
                         <xsl:value-of select="unitid"/>
                     </span>
-                    <xsl:if test="unitdate">
+                    <xsl:if test="unitdate|langmaterial">
                         <xsl:text> - </xsl:text>
                     </xsl:if>
                 </xsl:if>
@@ -580,6 +583,16 @@ Displays an EAD fragment as HTML
                         </xsl:if>
                         <xsl:value-of select="unitdate"/>
                     </span>
+                    <xsl:if test="langmaterial">
+                        <xsl:text> - </xsl:text>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="langmaterial">
+                    <xsl:if test="langmaterial/@label">
+                        <xsl:value-of select="langmaterial/@label"/>
+                        <xsl:text> </xsl:text>
+                    </xsl:if>
+                    <xsl:value-of select="langmaterial"/>
                 </xsl:if>
             </header>
         </xsl:if>
