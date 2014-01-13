@@ -202,6 +202,8 @@ class MatriculesController extends SearchController
             $tpl_vars['form'] = $form->createView();
         }
 
+        $tpl_vars['has_advanced'] = true;
+
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(

@@ -81,7 +81,9 @@
             {{ form_widget(form.query) }}
             {{ form_widget(form._token) }}
             {{ form_widget(form.perform_search) }}
+            {% if has_advanced is defined %}
             <span id="adv_link"><a href="?adv_search=true" title="{% trans %}Switch to advanced search form{% endtrans %}">{% trans %}Advanced search{% endtrans %}</a></span>
+            {% endif %}
         </div>
     </form>
     {% endif %}
