@@ -473,7 +473,7 @@ p {
 [id=search_results] article {
     border-top: 1px solid #b2a0a0;
     margin-top: .2em;
-    padding: .5em 0;
+    padding: 0 0 .5em;
     clear: left;
 }
 
@@ -486,9 +486,9 @@ p {
     padding: 0;
 }
 
-[id=search_results] article:first-of-type {
+/*[id=search_results] article:first-of-type {
     border-top: none;
-}
+}*/
 
 [id=search_results] article > div {
     margin-left: 155px;
@@ -632,9 +632,13 @@ h2.back a:hover {
 
 .breadcrumb {
     background: #d1c6c0;
-    margin: 0 .2em;
     padding: 0.5em 1.5em 0.5em 0.5em;
     list-style-type: none;
+}
+
+[id=search_results] .breadcrumb {
+    padding: .1em .5em;
+    margin-bottom: .2em;
 }
 
 .breadcrumb li {
@@ -644,7 +648,7 @@ h2.back a:hover {
 .breadcrumb li a {
     color: #4a4041;
     display: inline-block;
-    padding: .1em .3em .1em 0;
+    padding: .1em 0;
 }
 
 .breadcrumb li a:before {

@@ -169,6 +169,9 @@
                         {%- else -%}
                             {% trans %}Untitled unit{% endtrans %}
                         {%- endif -%}
+                        {%- if document.cDate is defined -%}
+                            • {{ document.cDate }}
+                        {%- endif -%}
                         </a>
                     </h3>
                     {% endif %}
@@ -185,6 +188,26 @@
 
                     {% if view == 'list' or view == 'txtlist' %}
                     <div{% if not show_pics %} class="nopic"{% endif %}>
+                    {%- if document.parents_titles is defined or document.archDescUnitTitle is defined -%}
+                        <ul class="breadcrumb">
+                        {%- if document.archDescUnitTitle is defined -%}
+                            <li>
+                                <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ document.archDescUnitTitle }}</a>
+                            </li>
+                        {%- endif -%}
+                        {%- if document.parents_titles is defined -%}
+                            {% set parents_ids = document.parents|split('/') %}
+                            {% for ptitle in document.parents_titles %}
+                                <li>
+                                    <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ parents_ids[loop.index0]}) }}" property="dc:isPartOf">
+                                        {{ ptitle }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {%- endif -%}
+                        </ul>
+                    {%- endif -%}
+
                     <h3 property="dc:title">
                         <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
                         {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
@@ -194,20 +217,11 @@
                         {%- else -%}
                             {% trans %}Untitled unit{% endtrans %}
                         {%- endif -%}
+                        {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
+                            <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
+                        {%- endif -%}
                         </a>
                     </h3>
-                    {%- if document.parents_titles is defined -%}
-                        {% set parents_ids = document.parents|split('/') %}
-                        <p>
-                            {% for ptitle in document.parents_titles %}
-                                <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ parents_ids[loop.index0]}) }}" property="dc:isPartOf">
-                                    {{ ptitle }}
-                                </a>
-                                {% if not loop.last %}, {% endif %}
-                            {% endfor %}
-                        </p>
-                    {%- endif -%}
-
                     {{ displayFragment(document.fragment, document.fragmentid)|raw }}
                     </div>
                     {% endif %}

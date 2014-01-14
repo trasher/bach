@@ -556,42 +556,18 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="did" mode="resume">
-        <xsl:if test="unitid or unitdate">
+        <xsl:if test="unitid or langmaterial">
             <!-- Title is already displayed, show other items -->
             <header class="did">
                 <xsl:if test="unitid">
                     <span class="unitid" property="dc:identifier">
-                        <xsl:if test="unitid/@label">
-                            <xsl:value-of select="concat(unitid/@label, ' ')"/>
-                        </xsl:if>
                         <xsl:value-of select="unitid"/>
-                    </span>
-                    <xsl:if test="unitdate|langmaterial">
-                        <xsl:text> - </xsl:text>
-                    </xsl:if>
-                </xsl:if>
-                <xsl:if test="unitdate">
-                    <span class="date" property="dc:date">
-                        <xsl:if test="unitdate/@normal">
-                            <xsl:attribute name="content">
-                                <xsl:value-of select="unitdate/@normal"/>
-                            </xsl:attribute>
-                        </xsl:if>
-                        <xsl:if test="unitdate/@label">
-                            <xsl:value-of select="unitdate/@label"/>
-                            <xsl:text> </xsl:text>
-                        </xsl:if>
-                        <xsl:value-of select="unitdate"/>
                     </span>
                     <xsl:if test="langmaterial">
                         <xsl:text> - </xsl:text>
                     </xsl:if>
                 </xsl:if>
                 <xsl:if test="langmaterial">
-                    <xsl:if test="langmaterial/@label">
-                        <xsl:value-of select="langmaterial/@label"/>
-                        <xsl:text> </xsl:text>
-                    </xsl:if>
                     <xsl:value-of select="langmaterial"/>
                 </xsl:if>
             </header>
