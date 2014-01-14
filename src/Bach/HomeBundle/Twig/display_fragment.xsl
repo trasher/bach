@@ -84,27 +84,26 @@ Displays an EAD fragment as HTML
 
     <xsl:template match="unittitle" mode="full">
         <header>
-            <h2 property="dc:title"><xsl:apply-templates mode="full"/></h2>
+            <h2 property="dc:title">
+                <xsl:apply-templates mode="full"/>
+                <xsl:if test="../unitdate">
+                    <xsl:if test="../unitid"> - </xsl:if>
+                    <span class="date" property="dc:date">
+                        <xsl:if test="../unitdate/@normal">
+                            <xsl:attribute name="content">
+                                <xsl:value-of select="../unitdate/@normal"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:value-of select="concat(' • ', ../unitdate)"/>
+                    </span>
+                </xsl:if>
+            </h2>
             <xsl:if test="../unitid">
                 <span class="unitid" property="dc:identifier">
                     <xsl:if test="../unitid/@label">
                         <xsl:value-of select="concat(../unitid/@label, ' ')"/>
                     </xsl:if>
                     <xsl:value-of select="../unitid"/>
-                </span>
-            </xsl:if>
-            <xsl:if test="../unitdate">
-                <xsl:if test="../unitid"> - </xsl:if>
-                <span class="date" property="dc:date">
-                    <xsl:if test="../unitdate/@normal">
-                        <xsl:attribute name="content">
-                            <xsl:value-of select="../unitdate/@normal"/>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:if test="../unitdate/@label">
-                        <xsl:value-of select="concat(../uinitdate/@label, ' ')"/>
-                    </xsl:if>
-                    <xsl:value-of select="../unitdate"/>
                 </span>
             </xsl:if>
         </header>
