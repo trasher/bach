@@ -86,8 +86,7 @@ Displays an EAD fragment as HTML
         <header>
             <h2 property="dc:title">
                 <xsl:apply-templates mode="full"/>
-                <xsl:if test="../unitdate">
-                    <xsl:if test="../unitid"> - </xsl:if>
+                <xsl:if test="../unitdate and not(../unitdate = '')">
                     <span class="date" property="dc:date">
                         <xsl:if test="../unitdate/@normal">
                             <xsl:attribute name="content">
