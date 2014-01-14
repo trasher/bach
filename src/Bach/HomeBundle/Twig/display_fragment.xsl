@@ -204,6 +204,40 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:key name="indexing" match="subject|geogname|persname|corpname|name|function" use="concat(generate-id(..), '_', local-name())"/>
+    <xsl:template name="show_descriptors">
+        <xsl:for-each select="*[generate-id() = generate-id(key('indexing', concat(generate-id(..), '_', local-name()))[1])]">
+            <xsl:sort select="local-name()" data-type="text"/>
+            <xsl:variable name="elt" select="local-name()"/>
+            <div>
+                <strong>
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', concat($elt, ':'))"/>
+                    <xsl:text> </xsl:text>
+                </strong>
+                <xsl:for-each select="../*[local-name() = $elt]">
+                    <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
+                    <a link="{concat('%%%', $elt, '::', string(.), '%%%')}" about="{$docid}">
+                        <xsl:if test="not(local-name() = 'function')">
+                            <xsl:attribute name="property">
+                                <xsl:choose>
+                                    <xsl:when test="local-name() = 'subject'">dc:subject</xsl:when>
+                                    <xsl:when test="local-name() = 'geogname'">gn:name</xsl:when>
+                                    <xsl:otherwise>foaf:name</xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:attribute>
+                            <xsl:attribute name="content">
+                                <xsl:value-of select="."/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:value-of select="."/>
+                    </a>
+                    <xsl:if test="following-sibling::*[local-name() = $elt]">
+                        <xsl:text>, </xsl:text>
+                    </xsl:if>
+                </xsl:for-each>
+            </div>
+        </xsl:for-each>
+    </xsl:template>
+
     <xsl:template match="controlaccess" mode="full">
         <div class="contents">
             <xsl:if test="not(head)">
@@ -213,38 +247,7 @@ Displays an EAD fragment as HTML
             </xsl:if>
 
             <xsl:apply-templates mode="full"/>
-            <xsl:for-each select="*[generate-id() = generate-id(key('indexing', concat(generate-id(..), '_', local-name()))[1])]">
-                <xsl:sort select="local-name()" data-type="text"/>
-                <xsl:variable name="elt" select="local-name()"/>
-                <div>
-                    <strong>
-                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', concat($elt, ':'))"/>
-                        <xsl:text> </xsl:text>
-                    </strong>
-                    <xsl:for-each select="../*[local-name() = $elt]">
-                        <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
-                        <a link="{concat('%%%', $elt, '::', string(.), '%%%')}" about="{$docid}">
-                            <xsl:if test="not(local-name() = 'function')">
-                                <xsl:attribute name="property">
-                                    <xsl:choose>
-                                        <xsl:when test="local-name() = 'subject'">dc:subject</xsl:when>
-                                        <xsl:when test="local-name() = 'geogname'">gn:name</xsl:when>
-                                        <xsl:otherwise>foaf:name</xsl:otherwise>
-                                    </xsl:choose>
-                                </xsl:attribute>
-                                <xsl:attribute name="content">
-                                    <xsl:value-of select="."/>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="."/>
-                        </a>
-                        <xsl:if test="following-sibling::*[local-name() = $elt]">
-                            <xsl:text>, </xsl:text>
-                        </xsl:if>
-                    </xsl:for-each>
-                </div>
-            </xsl:for-each>
-
+            <xsl:call-template name="show_descriptors"/>
         </div>
     </xsl:template>
 
@@ -592,32 +595,8 @@ Displays an EAD fragment as HTML
         </aside>
     </xsl:template>
 
-    <xsl:template match="subject|geogname|persname|corpname|name|function|genreform" mode="resume">
-        <a>
-            <xsl:attribute name="link">
-                <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
-                <xsl:value-of select="concat('%%%', local-name(), '::', string(.), '%%%')"/>
-            </xsl:attribute>
-            <xsl:if test="not(local-name() = 'function')">
-                <xsl:attribute name="property">
-                    <xsl:choose>
-                        <xsl:when test="local-name() = 'subject'">dc:subject</xsl:when>
-                        <xsl:when test="local-name() = 'geogname'">gn:name</xsl:when>
-                        <xsl:otherwise>foaf:name</xsl:otherwise>
-                    </xsl:choose>
-                </xsl:attribute>
-                <xsl:attribute name="content">
-                    <xsl:value-of select="."/>
-                </xsl:attribute>
-            </xsl:if>
-            <xsl:attribute name="about">
-                <xsl:value-of select="$docid"/>
-            </xsl:attribute>
-            <xsl:value-of select="."/>
-        </a>
-        <xsl:if test="following-sibling::subject or following-sibling::geogname or following-sibling::persname or following-sibling::corpname or following-sibling::name or following-sibling::function or following-sibling::genreform">
-            <xsl:text>, </xsl:text>
-        </xsl:if>
+    <xsl:template match="controlaccess" mode="resume">
+        <xsl:call-template name="show_descriptors"/>
     </xsl:template>
 
     <!-- Per default, display nothing -->
