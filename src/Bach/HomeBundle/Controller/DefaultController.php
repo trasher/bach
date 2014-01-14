@@ -263,9 +263,16 @@ class DefaultController extends Controller
                         }
                     }
 
-                    if ( $facet->getSolrFieldName() !== 'dao'
-                        || $facet->getSolrFieldName() === 'dao' && count($values) > 1
-                    ) {
+                    $do = true;
+                    if ( $facet->getSolrFieldName() === 'dao' ) {
+                        foreach ( $values as $v ) {
+                            if ( $v == 0 ) {
+                                $do = false;
+                            }
+                        }
+                    }
+
+                    if ( $do ) {
                         //get original URL if any
                         $templateVars['orig_href'] = $request->get('orig_href');
                         $templateVars['facet_order'] = $request->get('facet_order');
