@@ -536,23 +536,6 @@ Displays an EAD fragment as HTML
     <xsl:template match="dao|daoloc" mode="daos">
         <xsl:variable name="title" value="@title"/>
         <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), $title, $viewer_uri, 'medium', $covers_dir)"/>
-        <!--<a href="{concat($viewer_uri, '/viewer/', @href)}">
-            <img>
-                <xsl:attribute name="src">
-                    <xsl:value-of select="concat($viewer_uri, '/ajax/img/', @href, '/format/medium')"/>
-                </xsl:attribute>
-                <xsl:attribute name="alt">
-                    <xsl:choose>
-                        <xsl:when test="@title">
-                            <xsl:value-of select="@title"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="@href"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:attribute>
-            </img>
-        </a>-->
     </xsl:template>
 
     <xsl:template match="did" mode="resume">
