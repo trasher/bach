@@ -505,7 +505,7 @@ p {
 [id=search_results] article h3 {
     font-size: 1.2em;
     font-weight: bold;
-    margin: 0 0 .2em 0;
+    margin: .5em 0 .3em 0;
 }
 
 [id=search_results] article.thumbs h3 {
