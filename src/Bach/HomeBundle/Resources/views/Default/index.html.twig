@@ -169,8 +169,8 @@
                         {%- else -%}
                             {% trans %}Untitled unit{% endtrans %}
                         {%- endif -%}
-                        {%- if document.cDate is defined -%}
-                            • {{ document.cDate }}
+                        {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
+                            <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
                         {%- endif -%}
                         </a>
                     </h3>
