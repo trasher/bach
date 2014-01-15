@@ -18,8 +18,17 @@
 }
 
 html, input, select {
-    font-family: 'PT Sans Narrow', Verdana, Arial, sans-serif;
+    font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;
+    font-size: 0.8em;
+}
+
+input, select {
     font-size: 1em;
+}
+
+h1, h2, h3, h4, h5, h6,
+[id=navigation] {
+    font-family: 'PT Sans Narrow', Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;
 }
 
 .ui-widget {
@@ -32,6 +41,7 @@ body {
     color: #4a4041;
     min-height: 100%;
     min-width: 1000px;
+    line-height: 1.3em;
 }
 
 html, body {
@@ -60,28 +70,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h2 {
-    font-size: 1.4em;
-    margin: .4em 0 .2em;
+    font-size: 1.8em;
+    margin: .8em 0 .4em;
 }
 
 h3 {
-    font-size: 1.3em;
-    margin: .3em 0 .2em;
+    font-size: 1.6em;
+    margin: .8em 0 .4em;
 }
 
 h4 {
-    font-size: 1.2em;
-    margin: .3em 0 .2em;
+    font-size: 1.4em;
+    margin: .8em 0 .4em;
 }
 
 h5 {
-    font-size: 1.1em;
-    margin: .2em 0 .1em;
+    font-size: 1.2em;
+    margin: .8em 0 .4em;
 }
 
 h6 {
-    font-size: 1em;
-    margin: .2em 0 .1em;
+    font-size: 1.1em;
+    margin: .8em 0 .4em;
 }
 
 strong {
@@ -109,7 +119,7 @@ p {
  */
 
 [id=wrapper] {
-    margin-left: 20em;
+    margin-left: 22em;
     overflow: auto;
     height: 100%;
     padding: 0 0 0 5%;
@@ -118,7 +128,7 @@ p {
 [id=container] {
     padding: 4em 2em .5em 3%;
     position: relative;
-    max-width: 1120px;
+    max-width: 1024px;
 }
 
 /**
@@ -126,7 +136,7 @@ p {
  */
 
 [id=welcome] {
-    font-size: 1.8em;
+    font-size: 2.3em;
     font-weight: bold;
     text-align: center;
     margin: 1.5em 0 1em;
@@ -159,7 +169,7 @@ p {
 
 [id=navigation] {
     text-align: center;
-    font-size: 1.1em;
+    font-size: 1.4em;
     margin-bottom: 1em;
     border-bottom: 1px solid #b2a0a0;
 }
@@ -184,14 +194,14 @@ p {
  */
 
 [id=menu] {
-    width: 15em;
+    width: 19em;
     height: 100%;
-    margin-right: .5em;
-    margin-left: 3.7em;
+    margin-right: 1em;
+    margin-left: 4.7em;
     position: absolute;
     background-color: #332928;
     color: white;
-    padding: 0 .5em;
+    padding: 0 1em;
     overflow: auto;
     top:0;
     left: 0;
@@ -204,8 +214,8 @@ p {
 [id=menu] h2 {
     background: url(../img/menu_sep.png) top left repeat-x;
     color: #bb4a46;
-    font-size: 1.1em;
-    padding-top: 1em;
+    font-size: 1.4em;
+    padding-top: 1.5em;
 }
 
 [id=menu] a {
@@ -244,7 +254,7 @@ p {
     color: white;
     font-weight: bold;
     border: none;
-    font-size: 1.1em;
+    font-size: 1.4em;
 }
 
 [id=menu] h3.ui-accordion-header  {
@@ -344,7 +354,7 @@ p {
 }
 
 [id=change_view] .select_container {
-    line-height: 1em;
+    line-height: 22px;
     margin-top: 3px;
 }
 
@@ -352,16 +362,12 @@ p {
     vertical-align: 70%;
 }
 
-[id=change_view] select {
-    vertical-align: top;
-}
-
 .select_container {
     display: inline-block;
     background: transparent url(../img/select_arrow.png) 100% 50% no-repeat;
     border: 1px solid #d1c6c0;
     overflow: hidden;
-    width: 12em;
+    width: 14em;
     margin: 0 .1em;
     line-height: auto;
 }
@@ -369,7 +375,7 @@ p {
 .select_container select {
     background: none;
     border: none;
-    width: 14em;
+    width: 16em;
     display: inline-block;
     color: #fff;
     -webkit-appearance: none;
@@ -431,6 +437,10 @@ p {
 
 [id=search_results] {
     margin-top: .5em;
+}
+
+[id=search_results] .content > div {
+    margin: .2em 0;
 }
 
 [id=search_results] article figure {
@@ -504,9 +514,9 @@ p {
 }
 
 [id=search_results] article h3 {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin: .5em 0 .3em 0;
+    font-size: 1.3em;
+    font-weight: normal;
+    font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;
 }
 
 [id=search_results] article.thumbs h3 {
@@ -578,8 +588,9 @@ p {
     position: relative;
     background: #a3968d;
     color: white;
-    padding: .5em;
+    padding: .8em;
     font-size: .9em;
+    line-height: 1;
 }
 
 /**
@@ -891,6 +902,7 @@ form > footer {
     border-radius: 0!important;
     background: #b73a34!important;
     bottom: 35px!important;
+    font-size: 1em!important;
 }
 
 .ui-rangeSlider-noArrow .ui-rangeSlider-container {
@@ -1055,7 +1067,7 @@ tr.task_warning td {
  */
 
 div.sonata-bc input, div.sonata-bc button, div.sonata-bc select, div.sonata-bc textarea {
-    font-family: 'PT Sans Narrow', Verdana, Arial, sans-serif;
+    font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;
 }
 
 .leaflet-control input {
@@ -1221,6 +1233,11 @@ div.sonata-bc .pagination {
 /**
  * ===== CDC =====
  */
+
+.cdcarchdesc {
+    margin-bottom: 1em;
+}
+
 .cdc .expand {
     float: right;
     background: url(../img/expand.png) 100% 50% no-repeat;

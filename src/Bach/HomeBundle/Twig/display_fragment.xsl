@@ -59,10 +59,17 @@ Displays an EAD fragment as HTML
                     <xsl:apply-templates mode="full"/>
 
                     <xsl:if test="did/unitid">
+                        <xsl:if test="did/unitid/@label">
+                            <xsl:choose>
+                                <xsl:when test="/archdesc">
+                                    <h3><xsl:value-of select="concat(did/unitid/@label, ' ')"/></h3>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <strong><xsl:value-of select="concat(did/unitid/@label, ' ')"/></strong>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:if>
                         <span class="unitid" property="dc:identifier">
-                            <xsl:if test="did/unitid/@label">
-                                <xsl:value-of select="concat(did/unitid/@label, ' ')"/>
-                            </xsl:if>
                             <xsl:value-of select="did/unitid"/>
                         </span>
                     </xsl:if>
@@ -470,13 +477,15 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="head" mode="full">
-        <!-- Count direct parent that have a head child. That will include current node -->
-        <xsl:variable name="count" select="count(ancestor::*/head)"/>
-        <header>
-            <xsl:element name="h{$count + 2}">
-                <xsl:value-of select="."/>
-            </xsl:element>
-        </header>
+        <xsl:if test="text() != ''">
+            <!-- Count direct parent that have a head child. That will include current node -->
+            <xsl:variable name="count" select="count(ancestor::*/head)"/>
+            <header>
+                <xsl:element name="h{$count + 2}">
+                    <xsl:value-of select="."/>
+                </xsl:element>
+            </header>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="bibref" mode="full">
