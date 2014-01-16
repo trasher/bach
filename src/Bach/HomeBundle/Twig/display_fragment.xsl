@@ -160,7 +160,7 @@ Displays an EAD fragment as HTML
     <xsl:template match="genreform|extent|physfacet|dimensions|langmaterial" mode="full">
         <xsl:variable name="elt_name">
             <xsl:choose>
-                <xsl:when test="preceding-sibling::lb">span</xsl:when>
+                <xsl:when test="preceding-sibling::lb or following-sibling::lb">span</xsl:when>
                 <xsl:otherwise>div</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -581,11 +581,15 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="lb" mode="full">
-        <br/>
+        <xsl:if test="not(preceding-sibling::lb)">
+            <br/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="lb" mode="resume">
-        <br/>
+        <xsl:if test="not(preceding-sibling::lb)">
+            <br/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="controlaccess" mode="resume">
