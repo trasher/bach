@@ -574,30 +574,12 @@ Displays an EAD fragment as HTML
         </section>
     </xsl:template>
 
-    <!--<xsl:template match="genreform|extent" mode="resume">
-        <xsl:if test="@label">
-            <strong><xsl:value-of select="concat(@label, ' ')"/></strong>
-        </xsl:if>
-        <xsl:value-of select="."/>
-    </xsl:template>-->
-
     <xsl:template match="lb" mode="full">
         <br/>
     </xsl:template>
 
     <xsl:template match="lb" mode="resume">
         <br/>
-    </xsl:template>
-
-    <xsl:template match="controlaccess" mode="resume">
-        <aside class="controlaccess">
-            <xsl:if test="head">
-                <header><xsl:value-of select="head"/></header>
-            </xsl:if>
-            <div>
-                <xsl:apply-templates mode="resume" />
-            </div>
-        </aside>
     </xsl:template>
 
     <xsl:template match="controlaccess" mode="resume">
