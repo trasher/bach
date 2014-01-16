@@ -22,15 +22,6 @@ msgstr "Effacer"
 msgid "Sub units"
 msgstr "Sous unités"
 
-msgid "Subjects"
-msgstr "Sujets"
-
-msgid "Persons"
-msgstr "Personnes"
-
-msgid "Places"
-msgstr "Lieux"
-
 msgid "Active filters:"
 msgstr "Filtres actifs :"
 
@@ -106,17 +97,8 @@ msgstr "Voir les résultats de recherche en miniatures"
 msgid "Thumnails"
 msgstr "Miniatures"
 
-msgid "Show all subjects (this my take some time)"
-msgstr "Afficher tous les sujets (cela peut prendre un certain temps)"
-
 msgid "Show all"
 msgstr "Afficher tous"
-
-msgid "Show all persons (this my take some time)"
-msgstr "Afficher toutes les personnes (cela peut prendre un certain temps)"
-
-msgid "Show all places (this my take some time)"
-msgstr "Afficher tous les lieux (cela peut prendre un certain temps)"
 
 msgid "Back to search results"
 msgstr "Retour aux résultats de recherche"
@@ -195,4 +177,49 @@ msgstr "Afficher/Masquer la sélection de date"
 
 msgid "Hover over a zone"
 msgstr "Survolez une zone"
+
+msgid "There are no configured fields for browsing."
+msgstr "Il n'y a pas de champs configurés pour la navigation."
+
+msgid "Unknown filter"
+msgstr "Filtre inconnu"
+
+msgid "Show all entries (this my take some time)"
+msgstr "Afficher toutes les entrées (cela peut prendre un certain temps)"
+
+msgid "result(s)"
+msgstr "résultat(s)"
+
+msgid "remove"
+msgstr "Supprimer"
+
+msgid "edit"
+msgstr "modifier"
+
+msgid "NAME has been removed"
+msgstr "NAME a été supprimé"
+
+msgid "Not geolocalized places"
+msgstr "Pas d'emplacement géolocalisé"
+
+msgid "Click on a location to perform automatic search."
+msgstr "Cliquez sur un emplacmeent pour effectuer une recherche automatique"
+
+msgid "Proposals for:"
+msgstr "Propositions pour :"
+
+msgid "Back"
+msgstr "Retour"
+
+msgid "Position has been successfully stored!"
+msgstr "La position a été enregistrée !"
+
+msgid "Something went wrong trying to store position :("
+msgstr "Quelque chose s'est mal passé lors d el'enregistrement de la position :("
+
+msgid "No results found :/"
+msgstr "Aucun résultat trouvé :/"
+
+msgid "Show/Hide sidebar"
+msgstr "Afficher/Masquer la barre de côté"
 
