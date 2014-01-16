@@ -132,12 +132,14 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="imprint" mode="full">
-        <div class="imprint">
-            <header>
-                <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Publication informations')"/></h3>
+        <xsl:choose>
+            <xsl:when test="parent::unittitle">
                 <xsl:apply-templates mode="full"/>
-            </header>
-        </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="section_content"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="subject|geogname|persname|corpname|name|function" mode="full">
@@ -153,24 +155,6 @@ Displays an EAD fragment as HTML
                 <xsl:text>, </xsl:text>
             </xsl:if>
         </xsl:if>
-    </xsl:template>
-
-    <xsl:template match="physdesc" mode="full">
-        <section class="physdesc">
-            <header>
-                <h3>
-                    <xsl:choose>
-                        <xsl:when test="@label">
-                            <xsl:value-of select="@label"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </h3>
-            </header>
-            <xsl:apply-templates mode="full"/>
-        </section>
     </xsl:template>
 
     <xsl:template match="genreform|extent|physfacet|dimensions|langmaterial" mode="full">
@@ -250,19 +234,6 @@ Displays an EAD fragment as HTML
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:template match="controlaccess" mode="full">
-        <div class="contents">
-            <xsl:if test="not(head)">
-                <header>
-                    <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Descriptors')"/></h3>
-                </header>
-            </xsl:if>
-
-            <xsl:apply-templates mode="full"/>
-            <xsl:call-template name="show_descriptors"/>
-        </div>
-    </xsl:template>
-
     <xsl:template match="title" mode="full">
         <xsl:choose>
             <xsl:when test="not(parent::bibref)">
@@ -306,9 +277,11 @@ Displays an EAD fragment as HTML
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="scopecontent|odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial|otherfindaid|repository" mode="full">
+    <xsl:template name="section_content">
+        <xsl:param name="title" select="'false'"/>
+
         <section class="{local-name()}">
-            <xsl:if test="not(head)">
+            <xsl:if test="not(head) and $title = 'true'">
                 <xsl:variable name="count" select="count(ancestor::*/head)"/>
                 <header>
                     <xsl:element name="h{$count + 3}">
@@ -337,6 +310,15 @@ Displays an EAD fragment as HTML
                             <xsl:when test="local-name() = 'otherfindaid'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Other finding aid:')"/>
                             </xsl:when>
+                            <xsl:when test="local-name() = 'physdesc'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'controlaccess'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Descriptors')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'imprint'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Publication informations')"/>
+                            </xsl:when>
                             <xsl:when test="local-name() = 'repository'">
                                 <xsl:choose>
                                     <xsl:when test="@label">
@@ -352,12 +334,26 @@ Displays an EAD fragment as HTML
                 </header>
             </xsl:if>
             <xsl:apply-templates mode="full"/>
+            <xsl:if test="local-name() = 'controlaccess'">
+                <xsl:call-template name="show_descriptors"/>
+            </xsl:if>
         </section>
     </xsl:template>
 
     <xsl:template match="scopecontent" mode="specific">
         <xsl:call-template name="section_content">
             <xsl:with-param name="title" select="'false'"/>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess" mode="full">
+        <xsl:call-template name="section_content">
+            <xsl:with-param name="title">
+                <xsl:choose>
+                    <xsl:when test ="/archdesc">true</xsl:when>
+                    <xsl:otherwise>false</xsl:otherwise>
+                </xsl:choose>
+            </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
 
