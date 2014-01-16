@@ -66,22 +66,22 @@ h2 {
 
 h3 {
     font-size: 1.3em;
-    margin: .3em .1em .2em;
+    margin: .3em 0 .2em;
 }
 
 h4 {
     font-size: 1.2em;
-    margin: .3em .2em .2em;
+    margin: .3em 0 .2em;
 }
 
 h5 {
     font-size: 1.1em;
-    margin: .2em .3em .1em;
+    margin: .2em 0 .1em;
 }
 
 h6 {
     font-size: 1em;
-    margin: .2em .4em .1em;
+    margin: .2em 0 .1em;
 }
 
 strong {
@@ -522,7 +522,6 @@ p {
 
 .content p {
     text-align: justify;
-    text-indent: .5em;
     line-height: 1.1em;
 }
 
@@ -556,6 +555,22 @@ p {
 
 .content tbody tr:nth-child(even) {
     background-color: #d1c6c0;
+}
+
+.content section {
+    color: #968C82;
+    margin: .3em 0;
+}
+
+.content section.container {
+    padding: 0;
+}
+
+.content section.scopecontent,
+.content section#images,
+.content.archdesc section {
+    color: inherit;
+    margin-top: 0;
 }
 
 .results_count {

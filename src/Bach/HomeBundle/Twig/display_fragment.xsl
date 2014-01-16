@@ -34,7 +34,13 @@ Displays an EAD fragment as HTML
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <div class="content" id="{$id}">
+        <div id="{$id}">
+            <xsl:attribute name="class">
+                <xsl:text>content</xsl:text>
+                <xsl:if test="/archdesc">
+                    <xsl:text> archdesc</xsl:text>
+                </xsl:if>
+            </xsl:attribute>
             <xsl:choose>
                 <xsl:when test="$full = 1">
                     <xsl:if test="$cdc = 'false'">
