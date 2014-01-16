@@ -87,14 +87,13 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="did" mode="full">
-        <section class="did">
-            <xsl:if test="not(unittitle)">
-                <header>
-                    <h2 property="dc:title"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Untitled unit')"/></h2>
-                </header>
-            </xsl:if>
-            <xsl:apply-templates mode="full"/>
-        </section>
+        <xsl:if test="not(unittitle)">
+            <header>
+                <h2 property="dc:title"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Untitled unit')"/></h2>
+            </header>
+            <xsl:apply-templates mode="specific" select="scopecontent"/>
+        </xsl:if>
+        <xsl:apply-templates mode="full"/>
     </xsl:template>
 
     <xsl:template match="unittitle" mode="full">
@@ -113,6 +112,7 @@ Displays an EAD fragment as HTML
                 </xsl:if>
             </h2>
         </header>
+        <xsl:apply-templates mode="specific" select="../../scopecontent"/>
     </xsl:template>
 
     <xsl:template match="unitdate" mode="full">
@@ -313,9 +313,6 @@ Displays an EAD fragment as HTML
                 <header>
                     <xsl:element name="h{$count + 3}">
                         <xsl:choose>
-                            <xsl:when test="local-name() = 'scopecontent'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Description:')"/>
-                            </xsl:when>
                             <xsl:when test="local-name() = 'custodhist'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Conservation history:')"/>
                             </xsl:when>
@@ -356,6 +353,12 @@ Displays an EAD fragment as HTML
             </xsl:if>
             <xsl:apply-templates mode="full"/>
         </section>
+    </xsl:template>
+
+    <xsl:template match="scopecontent" mode="specific">
+        <xsl:call-template name="section_content">
+            <xsl:with-param name="title" select="'false'"/>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template match="table|thead|tbody" mode="full">
