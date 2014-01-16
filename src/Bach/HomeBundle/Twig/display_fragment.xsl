@@ -58,6 +58,15 @@ Displays an EAD fragment as HTML
 
                     <xsl:apply-templates mode="full"/>
 
+                    <xsl:if test="did/unitid">
+                        <span class="unitid" property="dc:identifier">
+                            <xsl:if test="did/unitid/@label">
+                                <xsl:value-of select="concat(did/unitid/@label, ' ')"/>
+                            </xsl:if>
+                            <xsl:value-of select="did/unitid"/>
+                        </span>
+                    </xsl:if>
+
                     <xsl:if test=".//dao|.//daoloc">
                         <figure id="relative_documents">
                             <header>
@@ -103,14 +112,6 @@ Displays an EAD fragment as HTML
                     </span>
                 </xsl:if>
             </h2>
-            <xsl:if test="../unitid">
-                <span class="unitid" property="dc:identifier">
-                    <xsl:if test="../unitid/@label">
-                        <xsl:value-of select="concat(../unitid/@label, ' ')"/>
-                    </xsl:if>
-                    <xsl:value-of select="../unitid"/>
-                </span>
-            </xsl:if>
         </header>
     </xsl:template>
 
