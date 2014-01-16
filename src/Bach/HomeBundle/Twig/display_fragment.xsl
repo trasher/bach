@@ -167,7 +167,13 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="genreform|extent|physfacet|dimensions|langmaterial" mode="full">
-        <div>
+        <xsl:variable name="elt_name">
+            <xsl:choose>
+                <xsl:when test="preceding-sibling::lb">span</xsl:when>
+                <xsl:otherwise>div</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:element name="{$elt_name}">
             <strong>
                 <xsl:choose>
                     <xsl:when test="@label">
@@ -199,7 +205,7 @@ Displays an EAD fragment as HTML
             </strong>
             <xsl:text> </xsl:text>
             <xsl:value-of select="."/>
-        </div>
+        </xsl:element>
     </xsl:template>
 
     <xsl:key name="indexing" match="subject|geogname|persname|corpname|name|function" use="concat(generate-id(..), '_', local-name())"/>
