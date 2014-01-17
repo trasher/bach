@@ -187,10 +187,6 @@ class DefaultController extends SearchController
             )
         );
 
-        if ( $facet_name !== null ) {
-            $templateVars['facet_name'] = $facet_name;
-        }
-
         $factory = $this->get("bach.home.solarium_query_factory");
         $factory->setGeolocFields($geoloc);
 
@@ -426,6 +422,14 @@ class DefaultController extends SearchController
             $templateVars['scSearchResults'] = $scSearchResults;
         }
         $templateVars['facets'] = $facets;
+
+        if ( $facet_name !== null ) {
+            $templateVars['facet_name'] = $facet_name;
+            $active = array_search($facet_name, array_keys($facets));
+            if ( false !== $active ) {
+                $templateVars['active_facet'] = $active;
+            }
+        }
 
         if ( $ajax === false ) {
             $templateVars['resultStart'] = ($page - 1)

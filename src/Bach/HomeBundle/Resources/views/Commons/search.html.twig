@@ -256,6 +256,9 @@
                     activeHeader: 'ui-icon-circle-minus'
                 },
                 heightStyle: 'content',
+                {% if active_facet is defined -%}
+                active: {{ active_facet }},
+                {%- endif %}
                 collapsible: true
             });
 
