@@ -368,6 +368,8 @@ class SolariumQueryFactory
             $diff = $php_min_date->diff($php_max_date);
             if ( $diff->y > 100 ) {
                 $step = $diff->y / 100;
+            } else if ( $diff->y === 0 ) {
+                return;
             }
 
             $results['date_step_unit'] = $step_unit;
@@ -430,6 +432,8 @@ class SolariumQueryFactory
         $up_date = new \DateTime($max_date);
 
         if ( $up_date->diff($low_date)->y === 0 ) {
+            return;
+        } else {
             $up_date->add(new \DateInterval('P1Y'));
         }
 

@@ -11,12 +11,16 @@
 {% endblock %}
 
 {% block menu %}
+    {% if min_date is defined and max_date is defined or show_maps and geojson is defined and geojson != null %}
         <ul class="interactions">
-    {% if show_maps and geojson is defined and geojson != null %}
+        {% if show_maps and geojson is defined and geojson != null -%}
             <li><a id="sh_map" href="?show_map={% if show_map == true %}off{% else %}on{% endif %}" title="{% trans %}Shows or hides map{% endtrans %}"><img src="{{ asset('img/map.png')  }}" alt="{% trans %}Show/Hide map{% endtrans %}"/></a></li>
-    {% endif %}
+        {%- endif %}
+        {% if min_date is defined and max_date is defined -%}
             <li><a id="sh_daterange" href="?show_daterange={% if show_daterange == true %}off{% else %}on{% endif %}" title="{% trans %}Shows or hides date range graph{% endtrans %}"><img src="{{ asset('img/calendar.png') }}" alt="{% trans %}Show/Hide date range{% endtrans %}"/></a></li>
+        {%- endif %}
         </ul>
+    {% endif %}
 
         {% if facets is defined and searchResults|length > 0 %}
         <h2>
@@ -133,8 +137,10 @@
         </nav>
     {% endif %}
 
+        {% if min_date is defined and max_date is defined -%}
         <div id="dates_plot" class="hidden"></div>
         <div id="dates_range" class="hidden"></div>
+        {%- endif %}
         {% if show_maps -%}
         <div id="map" class="hidden"></div>
         {%- endif %}
