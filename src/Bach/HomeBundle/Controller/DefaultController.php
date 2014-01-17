@@ -560,7 +560,7 @@ class DefaultController extends SearchController
         }
 
         if ( $part !== '' ) {
-            $client = $this->get("solarium.client");
+            $client = $this->get($this->entryPoint());
             // get a terms query instance
             $query = $client->createTerms();
 
@@ -619,7 +619,7 @@ class DefaultController extends SearchController
      */
     public function displayDocumentAction($docid, $page = 1, $ajax = false)
     {
-        $client = $this->get("solarium.client");
+        $client = $this->get($this->entryPoint());
         $query = $client->createSelect();
         $query->setQuery('fragmentid:"' . $docid . '"');
         $query->setFields('headerId, fragment, parents, archDescUnitTitle');
@@ -751,7 +751,7 @@ class DefaultController extends SearchController
     {
         $tplParams = array();
 
-        $client = $this->get("solarium.client");
+        $client = $this->get($this->entryPoint());
         $query = $client->createSelect();
         $query->setQuery('fragmentid:*_description');
         $query->setFields('cUnittitle, headerId, fragmentid');

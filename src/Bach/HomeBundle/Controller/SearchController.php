@@ -225,13 +225,13 @@ abstract class SearchController extends Controller
      */
     public function doSuggestAction()
     {
-        $query = $this->get("solarium.client")->createSuggester();
+        $query = $this->get($this->entryPoint())->createSuggester();
         $query->setQuery(strtolower($this->getRequest()->get('q')));
         $query->setDictionary('suggest');
         $query->setOnlyMorePopular(true);
         $query->setCount(10);
         //$query->setCollate(true);
-        $terms = $this->get("solarium.client")->suggester($query)->getResults();
+        $terms = $this->get($this->entryPoint())->suggester($query)->getResults();
 
         $suggestions = array();
         foreach ( $terms as $term ) {
