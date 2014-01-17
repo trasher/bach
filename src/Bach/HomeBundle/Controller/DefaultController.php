@@ -83,7 +83,7 @@ class DefaultController extends SearchController
             $tagcloud = $factory->getTagCloud($this->getDoctrine()->getManager());
 
             if ( $tagcloud ) {
-                $templateVars['tagcloud'] = $tagcloud;
+                $tpl_vars['tagcloud'] = $tagcloud;
             }
         }
 
