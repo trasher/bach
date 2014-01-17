@@ -40,18 +40,12 @@ use Bach\HomeBundle\Entity\GeolocFields;
 class DefaultController extends SearchController
 {
     /**
-     * Serve default page
-     *
-     * @param string  $query_terms Term(s) we search for
-     * @param int     $page        Page
-     * @param string  $facet_name  Display more terms in suggests
-     * @param boolean $ajax        Fomr ajax call
+     * Default page
      *
      * @return void
      */
-    public function indexAction($query_terms = null, $page = 1,
-        $facet_name = null, $ajax = false
-    ) {
+    public function indexAction()
+    {
         $request = $this->getRequest();
         $session = $request->getSession();
 
@@ -116,12 +110,12 @@ class DefaultController extends SearchController
     }
 
     /**
-     * Serve default page
+     * Search page
      *
      * @param string  $query_terms Term(s) we search for
      * @param int     $page        Page
      * @param string  $facet_name  Display more terms in suggests
-     * @param boolean $ajax        Fomr ajax call
+     * @param boolean $ajax        Form ajax call
      *
      * @return void
      */

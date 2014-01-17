@@ -43,16 +43,23 @@ abstract class SearchController extends Controller
 {
 
     /**
-     * Serve default page
+     * Default page
+     *
+     * @return void
+     */
+    abstract public function indexAction();
+
+    /**
+     * Search page
      *
      * @param string  $query_terms Term(s) we search for
      * @param int     $page        Page
      * @param string  $facet_name  Display more terms in suggests
-     * @param boolean $ajax        Fomr ajax call
+     * @param boolean $ajax        Form ajax call
      *
      * @return void
      */
-    abstract public function indexAction($query_terms = null, $page = 1,
+    abstract public function searchAction($query_terms = null, $page = 1,
         $facet_name = null, $ajax = false
     );
 

@@ -39,16 +39,27 @@ class MatriculesController extends SearchController
 {
 
     /**
+     * Default page
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+        $redirectUrl = $this->get('router')->generate('bach_matricules_search');
+        return new RedirectResponse($redirectUrl);
+    }
+
+    /**
      * Serve default page
      *
      * @param string  $query_terms Term(s) we search for
      * @param int     $page        Page
      * @param string  $facet_name  Display more terms in suggests
-     * @param boolean $ajax        Fomr ajax call
+     * @param boolean $ajax        Form ajax call
      *
      * @return void
      */
-    public function indexAction($query_terms = null, $page = 1,
+    public function searchAction($query_terms = null, $page = 1,
         $facet_name = null, $ajax = false
     ) {
         $request = $this->getRequest();
