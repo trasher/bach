@@ -52,15 +52,14 @@ abstract class SearchController extends Controller
     /**
      * Search page
      *
-     * @param string  $query_terms Term(s) we search for
-     * @param int     $page        Page
-     * @param string  $facet_name  Display more terms in suggests
-     * @param boolean $ajax        Form ajax call
+     * @param string $query_terms Term(s) we search for
+     * @param int    $page        Page
+     * @param string $facet_name  Display more terms in suggests
      *
      * @return void
      */
     abstract public function searchAction($query_terms = null, $page = 1,
-        $facet_name = null, $ajax = false
+        $facet_name = null
     );
 
     /**
@@ -249,5 +248,101 @@ abstract class SearchController extends Controller
         }
 
         return new JsonResponse($suggestions);
+    }
+
+    /**
+     * List all entries for a specific facet
+     *
+     * @param string $query_terms Term(s) we search for
+     * @param string $name        Facet name
+     *
+     * @return void
+     */
+    public function fullFacetAction($query_terms, $name)
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        $query_terms = urldecode($query_terms);
+        //required? used?
+        $view_params = $session->get('view_params');
+        $view_params->bind($request);
+
+        $factory = $this->get("bach.home.solarium_query_factory");
+
+        $filters = $session->get('filters');
+        if ( !$filters instanceof Filters ) {
+            $filters = new Filters();
+        }
+
+        $conf_facets = $this->getDoctrine()
+            ->getRepository('BachHomeBundle:Facets')
+            ->findBy(
+                array('active' => true),
+                array('position' => 'ASC')
+            );
+
+        $container = new SolariumQueryContainer();
+        $container->setOrder($view_params->getOrder());
+        $container->setField('main', $query_terms);
+
+        //Add filters to container
+        $container->setFilters($filters);
+        $factory->prepareQuery($container);
+
+        $conf_facets = $this->getDoctrine()
+            ->getRepository('BachHomeBundle:Facets')
+            ->findBy(
+                array(
+                    'active'            => true,
+                    'solr_field_name'   => $name
+                )
+            );
+
+        $searchResults = $factory->performQuery(
+            $container,
+            $conf_facets
+        );
+
+        $facets = array();
+        $facetset = $searchResults->getFacetSet();
+        $current_facet = $facetset->getFacet($name);
+        $facet = $conf_facets[0];
+        $values = $current_facet->getValues();
+
+        //facet order
+        $facet_order = $request->get('facet_order');
+        if ( !$facet_order || $facet_order == 0 ) {
+            arsort($values);
+        } else {
+            if ( defined('SORT_FLAG_CASE') ) {
+                ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
+            } else {
+                //fallback for PHP < 5.4
+                ksort($values, SORT_LOCALE_STRING);
+            }
+        }
+
+        $facets[$facet->getSolrFieldName()] = array(
+            'label'         => $facet->getFrLabel(),
+            'content'       => $values,
+            'index_name'    => $facet->getSolrFieldName()
+        );
+
+                    //get original URL if any
+                    $templateVars['orig_href'] = $request->get('orig_href');
+                    $templateVars['facet_order'] = $request->get('facet_order');
+
+        $tpl_vars = array(
+            'q'             => $query_terms,
+            'facets'        => $facets,
+            'orig_href'     => $request->get('orig_href'),
+            'facet_order'   => $request->get('facet_order')
+        );
+
+        return $this->render(
+            'BachHomeBundle:Default:facet.html.twig',
+            $tpl_vars
+        );
     }
 }

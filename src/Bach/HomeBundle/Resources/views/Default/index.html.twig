@@ -77,6 +77,8 @@
 
 {# Binded when not in mobile mode #}
 {% block mobile_js_off %}
+    {{ parent() }}
+
     $('.display_doc').click(function(event){
         event.stopImmediatePropagation();
         event.preventDefault();
@@ -115,48 +117,6 @@
 
         return false;
     });
-
-    $('.show_more a').click(function() {
-        var _this = $(this);
-        var _facet_name = $(_this.parents('div')[0]).prev('h3').text();
-
-        var _elt = $('<div id="display_facets" title="' + _facet_name + '"></div>');
-        _elt.appendTo('body');
-
-        var _width = $(window).width() * 0.8;
-        var _height = $(window).height() * 0.8;
-
-        $.ajax({
-            url: _this.attr('href') + '/ajax',
-            data: {
-                orig_href: _this.attr('href') + '/ajax'
-            },
-            type: 'POST',
-            beforeSend: function() {
-                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
-                $('body').append(_img);
-            },
-            complete: function() {
-                $('#loading').remove();
-            },
-            success: function(data) {
-                _elt.append(data);
-                _elt.dialog({
-                    height: _height,
-                    width: _width,
-                    modal: true,
-                    close: function(event, ui){
-                        _elt.remove();
-                    }
-                });
-            },
-            error: function(){
-                alert('{% trans %}An error occured loading terms :({% endtrans %}');
-            }
-        });
-
-        return false;
-    })
 {% endblock %}
 
 {# Binded when in mobile mode #}

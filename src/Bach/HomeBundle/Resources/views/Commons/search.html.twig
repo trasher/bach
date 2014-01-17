@@ -54,7 +54,7 @@
                         </li>
                     {% endfor %}
                     {% if facet.content|length > 10 and not (facet_name is defined and facet_name == index_name) %}
-                        <li class="show_more"><a href="{{ path('bach_fullfacet', {query_terms: q, facet_name: index_name}) }}">{% trans with {'%count%': facet.content|length -10} %}Show more (%count% left){% endtrans %}</a></li>
+                        <li class="show_more"><a href="{{ path('bach_fullfacet', {query_terms: q, name: index_name}) }}">{% trans with {'%count%': facet.content|length -10} %}Show more (%count% left){% endtrans %}</a></li>
                     {% endif %}
                     </ol>
                 </div>
@@ -217,6 +217,50 @@
 {% endif %}
     <!--[if lte IE 8]><script src="{{ asset('js/jqplot/excanvas.min.js') }}" type="text/javascript"></script><![endif]-->
     <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block mobile_js_off %}
+    $('.show_more a').click(function() {
+        var _this = $(this);
+        var _facet_name = $(_this.parents('div')[0]).prev('h3').text();
+
+        var _elt = $('<div id="display_facets" title="' + _facet_name + '"></div>');
+        _elt.appendTo('body');
+
+        var _width = $(window).width() * 0.8;
+        var _height = $(window).height() * 0.8;
+
+        $.ajax({
+            url: _this.attr('href'),
+            data: {
+                orig_href: _this.attr('href')
+            },
+            type: 'POST',
+            beforeSend: function() {
+                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                $('body').append(_img);
+            },
+            complete: function() {
+                $('#loading').remove();
+            },
+            success: function(data) {
+                _elt.append(data);
+                _elt.dialog({
+                    height: _height,
+                    width: _width,
+                    modal: true,
+                    close: function(event, ui){
+                        _elt.remove();
+                    }
+                });
+            },
+            error: function(){
+                alert('{% trans %}An error occured loading terms :({% endtrans %}');
+            }
+        });
+
+        return false;
+    });
 {% endblock %}
 
 {% block javascripts %}

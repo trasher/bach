@@ -112,15 +112,14 @@ class DefaultController extends SearchController
     /**
      * Search page
      *
-     * @param string  $query_terms Term(s) we search for
-     * @param int     $page        Page
-     * @param string  $facet_name  Display more terms in suggests
-     * @param boolean $ajax        Form ajax call
+     * @param string $query_terms Term(s) we search for
+     * @param int    $page        Page
+     * @param string $facet_name  Display more terms in suggests
      *
      * @return void
      */
     public function searchAction($query_terms = null, $page = 1,
-        $facet_name = null, $ajax = false
+        $facet_name = null
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -230,9 +229,7 @@ class DefaultController extends SearchController
                 array('position' => 'ASC')
             );
 
-        if ( $ajax === false ) {
-            $factory->setDatesBounds($filters);
-        }
+        $factory->setDatesBounds($filters);
 
         $searchResults = $factory->performQuery(
             $container,
@@ -246,15 +243,6 @@ class DefaultController extends SearchController
 
         $facets = array();
         $facetset = $searchResults->getFacetSet();
-
-        if ( $ajax !== false && $facet_name !== false ) {
-            foreach ( $conf_facets as $facet ) {
-                if ( $facet->getSolrFieldName() === $facet_name ) {
-                    $conf_facets = array($facet);
-                    break;
-                }
-            }
-        }
 
         $facet_names = array(
             'geoloc'        => _('Map selection'),
@@ -409,18 +397,16 @@ class DefaultController extends SearchController
         }
         $templateVars['facet_names'] = $facet_names;
 
-        if ( $ajax === false ) {
-            $suggestions = $factory->getSuggestions($query_terms);
+        $suggestions = $factory->getSuggestions($query_terms);
 
-            $templateVars['resultCount'] = $resultCount;
-            $templateVars['resultByPage'] = $view_params->getResultsbyPage();
-            $templateVars['totalPages'] = ceil(
-                $resultCount/$view_params->getResultsbyPage()
-            );
-            $templateVars['searchResults'] = $searchResults;
-            $templateVars['hlSearchResults'] = $hlSearchResults;
-            $templateVars['scSearchResults'] = $scSearchResults;
-        }
+        $templateVars['resultCount'] = $resultCount;
+        $templateVars['resultByPage'] = $view_params->getResultsbyPage();
+        $templateVars['totalPages'] = ceil(
+            $resultCount/$view_params->getResultsbyPage()
+        );
+        $templateVars['searchResults'] = $searchResults;
+        $templateVars['hlSearchResults'] = $hlSearchResults;
+        $templateVars['scSearchResults'] = $scSearchResults;
         $templateVars['facets'] = $facets;
 
         if ( $facet_name !== null ) {
@@ -431,57 +417,48 @@ class DefaultController extends SearchController
             }
         }
 
-        if ( $ajax === false ) {
-            $templateVars['resultStart'] = ($page - 1)
-                * $view_params->getResultsbyPage() + 1;
-            $resultEnd = ($page - 1) * $view_params->getResultsbyPage()
-                + $view_params->getResultsbyPage();
-            if ( $resultEnd > $resultCount ) {
-                $resultEnd = $resultCount;
-            }
-            $templateVars['resultEnd'] = $resultEnd;
+        $templateVars['resultStart'] = ($page - 1)
+            * $view_params->getResultsbyPage() + 1;
+        $resultEnd = ($page - 1) * $view_params->getResultsbyPage()
+            + $view_params->getResultsbyPage();
+        if ( $resultEnd > $resultCount ) {
+            $resultEnd = $resultCount;
+        }
+        $templateVars['resultEnd'] = $resultEnd;
+
+        $slider_dates = $factory->getSliderDates($filters);
+        if ( is_array($slider_dates) ) {
+            $templateVars = array_merge($templateVars, $slider_dates);
+        }
+        $by_year = $factory->getResultsByYear();
+        $templateVars['by_year'] = $by_year;
+
+        $templateVars['form'] = $form->createView();
+        if ( $this->container->get('kernel')->getEnvironment() == 'dev'
+            && isset($factory) && $factory->getRequest() !== null
+        ) {
+            //let's pass Solr raw query to template
+            $templateVars['solr_qry'] = $factory->getRequest()->getUri();
         }
 
-        if ( $ajax === false ) {
-            $slider_dates = $factory->getSliderDates($filters);
-            if ( is_array($slider_dates) ) {
-                $templateVars = array_merge($templateVars, $slider_dates);
-            }
-            $by_year = $factory->getResultsByYear();
-            $templateVars['by_year'] = $by_year;
-
-            $templateVars['form'] = $form->createView();
-            if ( $this->container->get('kernel')->getEnvironment() == 'dev'
-                && isset($factory) && $factory->getRequest() !== null
-            ) {
-                //let's pass Solr raw query to template
-                $templateVars['solr_qry'] = $factory->getRequest()->getUri();
-            }
-
-            if ( isset($suggestions) && $suggestions->count() > 0 ) {
-                $templateVars['suggestions'] = $suggestions;
-            }
-
-            if ( $show_maps ) {
-                $session->set('map_facets', $map_facets);
-                $geojson = $factory->getGeoJson(
-                    $map_facets,
-                    $this->getDoctrine()
-                        ->getRepository('BachIndexationBundle:Geoloc')
-                );
-                $templateVars['geojson'] = $geojson;
-            }
-
-            return $this->render(
-                'BachHomeBundle:Default:index.html.twig',
-                $templateVars
-            );
-        } else {
-            return $this->render(
-                'BachHomeBundle:Default:facet.html.twig',
-                $templateVars
-            );
+        if ( isset($suggestions) && $suggestions->count() > 0 ) {
+            $templateVars['suggestions'] = $suggestions;
         }
+
+        if ( $show_maps ) {
+            $session->set('map_facets', $map_facets);
+            $geojson = $factory->getGeoJson(
+                $map_facets,
+                $this->getDoctrine()
+                    ->getRepository('BachIndexationBundle:Geoloc')
+            );
+            $templateVars['geojson'] = $geojson;
+        }
+
+        return $this->render(
+            'BachHomeBundle:Default:index.html.twig',
+            $templateVars
+        );
     }
 
     /**
