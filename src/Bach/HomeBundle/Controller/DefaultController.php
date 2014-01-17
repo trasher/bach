@@ -351,14 +351,14 @@ class DefaultController extends SearchController
                     }
                 }
 
-                    if ( $facet->getSolrFieldName() === 'cDate' ) {
-                        if ( count($values) == 1
-                            && (in_array(1, $values)
-                            || strpos('|', array_keys($values)[0]) === false)
-                        ) {
-                            $do = false;
-                        }
+                if ( $facet->getSolrFieldName() === 'cDate' ) {
+                    if ( count($values) == 1
+                        && (in_array(1, $values)
+                        || strpos('|', array_keys($values)[0]) === false)
+                    ) {
+                        $do = false;
                     }
+                }
 
                 if ( $do ) {
                     //get original URL if any
