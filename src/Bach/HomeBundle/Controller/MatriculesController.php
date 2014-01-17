@@ -197,16 +197,6 @@ class MatriculesController extends SearchController
             )
         );
 
-        /*if ( $show_maps ) {
-            $session->set('matricules_map_facets', $map_facets);
-            $geojson = $factory->getGeoJson(
-                $map_facets,
-                $this->getDoctrine()
-                    ->getRepository('BachIndexationBundle:Geoloc')
-            );
-            $tpl_vars['geojson'] = $geojson;
-        }*/
-
         if ( $view_params->advancedSearch() ) {
             $tpl_vars['adv_form'] = $form->createView();
         } else {
