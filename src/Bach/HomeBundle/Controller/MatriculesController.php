@@ -102,7 +102,7 @@ class MatriculesController extends SearchController
                 new MatriculesType(),
                 null
             );
-            $tpl_vars['search_path'] = 'bach_matricules';
+            $tpl_vars['search_path'] = 'bach_matricules_search';
         } else {
             $form = $this->createForm(
                 new SearchQueryFormType(),
@@ -256,7 +256,7 @@ class MatriculesController extends SearchController
             if ($form->isValid()) {
                 $q = $query->getQuery();
                 $redirectUrl = $this->get('router')->generate(
-                    'bach_matricules',
+                    'bach_matricules_search',
                     array('query_terms' => $q)
                 );
 
