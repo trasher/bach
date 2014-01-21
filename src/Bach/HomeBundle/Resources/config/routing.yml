@@ -47,7 +47,7 @@ bach_get_file:
         name: '.+'
 
 bach_fullfacet:
-    pattern: /test/fullfacet/{query_terms}/{name}
+    pattern: /fullfacet/{query_terms}/{name}
     defaults: { _controller: BachHomeBundle:Default:fullFacet }
 
 bach_geozones:

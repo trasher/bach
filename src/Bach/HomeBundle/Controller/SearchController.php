@@ -462,11 +462,17 @@ abstract class SearchController extends Controller
         $session = $request->getSession();
 
         $query_terms = urldecode($query_terms);
-        //required? used?
+
         $view_params = $session->get('view_params');
+        if ( !$view_params ) {
+            $view_params = new ViewParams();
+        }
         $view_params->bind($request);
 
+        $geoloc = $this->getGeolocFields();
+
         $factory = $this->get("bach.home.solarium_query_factory");
+        $factory->setGeolocFields($geoloc);
 
         $filters = $session->get('filters');
         if ( !$filters instanceof Filters ) {
