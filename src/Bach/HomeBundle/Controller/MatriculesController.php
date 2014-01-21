@@ -50,7 +50,7 @@ class MatriculesController extends SearchController
     }
 
     /**
-     * Serve default page
+     * Search page
      *
      * @param string $query_terms Term(s) we search for
      * @param int    $page        Page
@@ -87,6 +87,15 @@ class MatriculesController extends SearchController
 
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
 
+        $filters = $session->get('matricules_filters');
+        if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
+            $filters = new Filters();
+            $session->set('matricules_filters', null);
+        }
+
+        $filters->bind($request);
+        $session->set('matricules_filters', $filters);
+
         $show_maps = $this->container->getParameter('show_maps');
 
         $geoloc = array();
@@ -120,6 +129,10 @@ class MatriculesController extends SearchController
         $factory = $this->get("bach.matricules.solarium_query_factory");
         $factory->setGeolocFields($geoloc);
 
+        if ( $filters->count() > 0 ) {
+            $tpl_vars['filters'] = $filters;
+        }
+
         if ( $view_params->advancedSearch() && count($data) > 0
             || !$view_params->advancedSearch() && $query_terms !== null
         ) {
@@ -130,17 +143,29 @@ class MatriculesController extends SearchController
             } else {
                 $container->setField('matricules', $query_terms);
             }
-            $container->setFilters(new Filters());
+            $container->setFilters($filters);
             $factory->prepareQuery($container);
 
-            $classeFacet = new Facets();
-            $classeFacet->setSolrFieldName('classe');
+            $conf_facets = array();
+            $fields = array(
+                'lieu_enregistrement'   => 'Lieu d\'enregistrement',
+                'nom'                   => 'Nom',
+                'prenoms'               => 'Prénom',
+                /*'classe'                => 'Classe',*/
+                'lieu_naissance'        => 'Lieu de naissance'
+            );
+            foreach ( $fields as $field_name=>$trad ) {
+                $facet = new Facets();
+                $facet->setSolrFieldName($field_name);
+                $facet->setFrLabel($trad);
+                $conf_facets[] = $facet;
+            }
+
+            //$factory->setDatesBounds($filters);
 
             $searchResults = $factory->performQuery(
                 $container,
-                array(
-                    $classeFacet
-                ),
+                $conf_facets,
                 $geoloc
             );
 
@@ -157,6 +182,16 @@ class MatriculesController extends SearchController
 
             $facets = array();
             $facetset = $searchResults->getFacetSet();
+
+            $this->handleFacets(
+                $factory,
+                $conf_facets,
+                $geoloc,
+                $searchResults,
+                $filters,
+                $facet_name,
+                $tpl_vars
+            );
 
             $suggestions = null;
             if ( $view_params->advancedSearch() ) {
@@ -207,13 +242,13 @@ class MatriculesController extends SearchController
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(
+                $tpl_vars,
                 array(
                     'resultStart'       => 1,
                     'resultEnd'         => $resultCount,
                     'resultCount'       => $resultCount,
-                    'q'                 => '',
-                ),
-                $tpl_vars
+                    'q'             => urlencode($query_terms),
+                )
             )
         );
     }
@@ -236,6 +271,20 @@ class MatriculesController extends SearchController
     protected function mapFacetsName()
     {
         return 'matricules_map_facets';
+    }
+
+    /**
+     * Get date fields
+     *
+     * @return array
+     */
+    protected function getDateFields()
+    {
+        return array(
+            'date_enregistrement',
+            'annee_naissance',
+            'classe'
+        );
     }
 
     /**

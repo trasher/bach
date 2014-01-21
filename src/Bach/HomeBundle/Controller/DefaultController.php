@@ -110,6 +110,17 @@ class DefaultController extends SearchController
     }
 
     /**
+     * Get date fields
+     *
+     * @return array
+     */
+    protected function getDateFields()
+    {
+        return array('cDate');
+    }
+
+
+    /**
      * Search page
      *
      * @param string $query_terms Term(s) we search for
@@ -241,162 +252,7 @@ class DefaultController extends SearchController
         $scSearchResults = $factory->getSpellcheck();
         $resultCount = $searchResults->getNumFound();
 
-        $facets = array();
-        $facetset = $searchResults->getFacetSet();
-
-        $facet_names = array(
-            'geoloc'        => _('Map selection'),
-            'cDateBegin'    => _('Start date'),
-            'cDateEnd'      => _('End date')
-        );
-        $facet_labels = array();
-
-        foreach ( $conf_facets as $facet ) {
-            $solr_field = $facet->getSolrFieldName();
-            $facet_names[$solr_field] = $facet->getLabel($request->getLocale());
-            $field_facets = $facetset->getFacet($solr_field);
-
-            $values = array();
-            foreach ( $field_facets as $item=>$count ) {
-                if ( !$filters->offsetExists($solr_field)
-                    || !$filters->hasValue($solr_field, $item)
-                ) {
-                    if ( $solr_field === 'cDate' ) {
-                        $start = null;
-                        $end = null;
-
-                        if ( strpos('|', $item) !== false ) {
-                            list($start, $end) = explode('|', $item);
-                        } else {
-                            $start = $item;
-                        }
-                        $bdate = new \DateTime($start);
-
-                        $edate = null;
-                        if ( !$end ) {
-                            $edate = new \DateTime($start);
-                            $edate->add(
-                                new \DateInterval(
-                                    'P' . $factory->getDateGap()  . 'Y'
-                                )
-                            );
-                            $edate->sub(new \DateInterval('PT1S'));
-                        } else {
-                            $edate = new \DateTime($end);
-                        }
-                        if ( !isset($facet_labels[$solr_field]) ) {
-                            $facet_labels[$solr_field] = array();
-                        }
-
-                        $item = $bdate->format('Y-m-d\TH:i:s\Z') . '|' .
-                            $edate->format('Y-m-d\TH:i:s\Z');
-
-                        $ys = $bdate->format('Y');
-                        $ye = $edate->format('Y');
-
-                        if ( $ys != $ye ) {
-                            $facet_labels[$solr_field][$item] = $ys . '-' . $ye;
-                        } else {
-                            $facet_labels[$solr_field][$item] = $ys;
-                        }
-                    }
-                    $values[$item] = $count;
-                }
-            }
-
-            if ( count($values) > 0 ) {
-                if ( $facet->getSolrFieldName() !== 'dao' ) {
-                    //facet order
-                    $facet_order = $request->get('facet_order');
-                    if ( !$facet_order || $facet_order == 0 ) {
-                        arsort($values);
-                    } else {
-                        if ( defined('SORT_FLAG_CASE') ) {
-                            ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
-                        } else {
-                            //fallback for PHP < 5.4
-                            ksort($values, SORT_LOCALE_STRING);
-                        }
-                    }
-                }
-
-                $do = true;
-                if ( $facet->getSolrFieldName() === 'dao' ) {
-                    foreach ( $values as $v ) {
-                        if ( $v == 0 ) {
-                            $do = false;
-                        }
-                    }
-                }
-
-                if ( $facet->getSolrFieldName() === 'cDate' ) {
-                    if ( count($values) == 1
-                        && (in_array(1, $values)
-                        || strpos('|', array_keys($values)[0]) === false)
-                    ) {
-                        $do = false;
-                    }
-                }
-
-                if ( $do ) {
-                    //get original URL if any
-                    $templateVars['orig_href'] = $request->get('orig_href');
-                    $templateVars['facet_order'] = $request->get('facet_order');
-
-                    $facets[$facet->getSolrFieldName()] = array(
-                        'label'         => $facet->getFrLabel(),
-                        'content'       => $values,
-                        'index_name'    => $facet->getSolrFieldName()
-                    );
-                }
-            }
-        }
-
-        $browse_fields = $this->getDoctrine()
-            ->getRepository('BachHomeBundle:BrowseFields')
-            ->findBy(
-                array('active' => true),
-                array('position' => 'ASC')
-            );
-        foreach ( $browse_fields as $field ) {
-            if ( !isset($facet_names[$field->getSolrFieldName()]) ) {
-                $facet_names[$field->getSolrFieldName()]
-                    = $field->getLabel($request->getLocale());
-            }
-        }
-
-        if ( $show_maps ) {
-            foreach ( $geoloc as $field ) {
-                $map_facets[$field] = $facetset->getFacet($field);
-            }
-        }
-
-        if ( $filters->offsetExists('cDate') ) {
-            //set label for current date range filter
-            if ( !isset($facet_labels['cDate'])) {
-                $facet_labels['cDate'] = array();
-            }
-
-            $cdate = $filters->offsetGet('cDate');
-            list($start, $end) = explode('|', $cdate);
-            $bdate = new \DateTime($start);
-            $edate = new \DateTime($end);
-
-            $ys = $bdate->format('Y');
-            $ye = $edate->format('Y');
-
-            if ( $ys != $ye ) {
-                $facet_labels['cDate'][$cdate] = $ys . '-' . $ye;
-            } else {
-                $facet_labels['cDate'][$cdate] = $ys;
-            }
-        }
-
-        if ( count($facet_labels) > 0 ) {
-            $templateVars['facet_labels'] = $facet_labels;
-        }
-        $templateVars['facet_names'] = $facet_names;
-
+        $this->handleFacets($factory, $conf_facets, $geoloc, $searchResults, $filters, $facet_name, $templateVars);
         $suggestions = $factory->getSuggestions($query_terms);
 
         $templateVars['resultCount'] = $resultCount;
@@ -407,16 +263,6 @@ class DefaultController extends SearchController
         $templateVars['searchResults'] = $searchResults;
         $templateVars['hlSearchResults'] = $hlSearchResults;
         $templateVars['scSearchResults'] = $scSearchResults;
-        $templateVars['facets'] = $facets;
-
-        if ( $facet_name !== null ) {
-            $templateVars['facet_name'] = $facet_name;
-            $active = array_search($facet_name, array_keys($facets));
-            if ( false !== $active ) {
-                $templateVars['active_facet'] = $active;
-            }
-        }
-
         $templateVars['resultStart'] = ($page - 1)
             * $view_params->getResultsbyPage() + 1;
         $resultEnd = ($page - 1) * $view_params->getResultsbyPage()
@@ -443,16 +289,6 @@ class DefaultController extends SearchController
 
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $templateVars['suggestions'] = $suggestions;
-        }
-
-        if ( $show_maps ) {
-            $session->set('map_facets', $map_facets);
-            $geojson = $factory->getGeoJson(
-                $map_facets,
-                $this->getDoctrine()
-                    ->getRepository('BachIndexationBundle:Geoloc')
-            );
-            $templateVars['geojson'] = $geojson;
         }
 
         return $this->render(

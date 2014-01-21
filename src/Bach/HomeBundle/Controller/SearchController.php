@@ -171,11 +171,213 @@ abstract class SearchController extends Controller
     }
 
     /**
+     * Handle facets
+     *
+     * @param SolariumQueryFactory $factory   Query factory
+     * @param array                &$tpl_vars Template variables
+     * @param array                $fields    Fields list
+     *
+     * @return void
+     */
+    protected function handleFacets(SolariumQueryFactory $factory, $conf_facets, $geoloc, $searchResults, $filters, $facet_name, &$tpl_vars,
+        $fields = null
+    ) {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        $show_maps = $this->container->getParameter('show_maps');
+        $facets = array();
+        $facetset = $searchResults->getFacetSet();
+
+        $facet_names = array(
+            'geoloc'        => _('Map selection'),
+            'cDateBegin'    => _('Start date'),
+            'cDateEnd'      => _('End date')
+        );
+        $facet_labels = array();
+
+        foreach ( $conf_facets as $facet ) {
+            $solr_field = $facet->getSolrFieldName();
+            $facet_names[$solr_field] = $facet->getLabel($request->getLocale());
+            $field_facets = $facetset->getFacet($solr_field);
+
+            $values = array();
+            foreach ( $field_facets as $item=>$count ) {
+                if ( !$filters->offsetExists($solr_field)
+                    || !$filters->hasValue($solr_field, $item)
+                ) {
+                    if ( in_array($solr_field, $this->getDateFields()) ) {
+                        $start = null;
+                        $end = null;
+
+                        if ( strpos('|', $item) !== false ) {
+                            list($start, $end) = explode('|', $item);
+                        } else {
+                            $start = $item;
+                        }
+                        $bdate = new \DateTime($start);
+
+                        $edate = null;
+                        if ( !$end ) {
+                            $edate = new \DateTime($start);
+                            $edate->add(
+                                new \DateInterval(
+                                    'P' . $factory->getDateGap()  . 'Y'
+                                )
+                            );
+                            $edate->sub(new \DateInterval('PT1S'));
+                        } else {
+                            $edate = new \DateTime($end);
+                        }
+                        if ( !isset($facet_labels[$solr_field]) ) {
+                            $facet_labels[$solr_field] = array();
+                        }
+
+                        $item = $bdate->format('Y-m-d\TH:i:s\Z') . '|' .
+                            $edate->format('Y-m-d\TH:i:s\Z');
+
+                        $ys = $bdate->format('Y');
+                        $ye = $edate->format('Y');
+
+                        if ( $ys != $ye ) {
+                            $facet_labels[$solr_field][$item] = $ys . '-' . $ye;
+                        } else {
+                            $facet_labels[$solr_field][$item] = $ys;
+                        }
+                    }
+                    $values[$item] = $count;
+                }
+            }
+
+            if ( count($values) > 0 ) {
+                if ( $facet->getSolrFieldName() !== 'dao' ) {
+                    //facet order
+                    $facet_order = $request->get('facet_order');
+                    if ( !$facet_order || $facet_order == 0 ) {
+                        arsort($values);
+                    } else {
+                        if ( defined('SORT_FLAG_CASE') ) {
+                            ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
+                        } else {
+                            //fallback for PHP < 5.4
+                            ksort($values, SORT_LOCALE_STRING);
+                        }
+                    }
+                }
+
+                $do = true;
+                if ( $facet->getSolrFieldName() === 'dao' ) {
+                    foreach ( $values as $v ) {
+                        if ( $v == 0 ) {
+                            $do = false;
+                        }
+                    }
+                }
+
+                if ( in_array($facet->getSolrFieldName(), $this->getDateFields()) ) {
+                    if ( count($values) == 1
+                        && (in_array(1, $values)
+                        || strpos('|', array_keys($values)[0]) === false)
+                    ) {
+                        $do = false;
+                    }
+                }
+
+                if ( $do ) {
+                    //get original URL if any
+                    $tpl_vars['orig_href'] = $request->get('orig_href');
+                    $tpl_vars['facet_order'] = $request->get('facet_order');
+
+                    $facets[$facet->getSolrFieldName()] = array(
+                        'label'         => $facet->getFrLabel(),
+                        'content'       => $values,
+                        'index_name'    => $facet->getSolrFieldName()
+                    );
+                }
+            }
+        }
+
+        $browse_fields = $this->getDoctrine()
+            ->getRepository('BachHomeBundle:BrowseFields')
+            ->findBy(
+                array('active' => true),
+                array('position' => 'ASC')
+            );
+        foreach ( $browse_fields as $field ) {
+            if ( !isset($facet_names[$field->getSolrFieldName()]) ) {
+                $facet_names[$field->getSolrFieldName()]
+                    = $field->getLabel($request->getLocale());
+            }
+        }
+
+        if ( $show_maps ) {
+            foreach ( $geoloc as $field ) {
+                $map_facets[$field] = $facetset->getFacet($field);
+            }
+        }
+
+        foreach ( $this->getDateFields() as $date_field ) {
+            if ( $filters->offsetExists($date_field) ) {
+                //set label for current date range filter
+                if ( !isset($facet_labels[$date_field])) {
+                    $facet_labels[$date_field] = array();
+                }
+
+                $cdate = $filters->offsetGet($date_field);
+                list($start, $end) = explode('|', $cdate);
+                $bdate = new \DateTime($start);
+                $edate = new \DateTime($end);
+
+                $ys = $bdate->format('Y');
+                $ye = $edate->format('Y');
+
+                if ( $ys != $ye ) {
+                    $facet_labels[$date_field][$cdate] = $ys . '-' . $ye;
+                } else {
+                    $facet_labels[$date_field][$cdate] = $ys;
+                }
+            }
+        }
+
+        if ( count($facet_labels) > 0 ) {
+            $tpl_vars['facet_labels'] = $facet_labels;
+        }
+        $tpl_vars['facet_names'] = $facet_names;
+
+        $tpl_vars['facets'] = $facets;
+
+        if ( $facet_name !== null ) {
+            $tpl_vars['facet_name'] = $facet_name;
+            $active = array_search($facet_name, array_keys($facets));
+            if ( false !== $active ) {
+                $tpl_vars['active_facet'] = $active;
+            }
+        }
+
+        if ( $show_maps ) {
+            $session->set('map_facets', $map_facets);
+            $geojson = $factory->getGeoJson(
+                $map_facets,
+                $this->getDoctrine()
+                    ->getRepository('BachIndexationBundle:Geoloc')
+            );
+            $tpl_vars['geojson'] = $geojson;
+        }
+    }
+
+    /**
      * Get map facets session name
      *
      * @return string
      */
     abstract protected function mapFacetsName();
+
+    /**
+     * Get date fields
+     *
+     * @return array
+     */
+    abstract protected function getDateFields();
 
     /**
      * Get Solarium EntryPoint
@@ -328,10 +530,6 @@ abstract class SearchController extends Controller
             'content'       => $values,
             'index_name'    => $facet->getSolrFieldName()
         );
-
-                    //get original URL if any
-                    $templateVars['orig_href'] = $request->get('orig_href');
-                    $templateVars['facet_order'] = $request->get('facet_order');
 
         $tpl_vars = array(
             'q'             => $query_terms,
