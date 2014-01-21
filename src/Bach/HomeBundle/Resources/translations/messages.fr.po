@@ -223,3 +223,23 @@ msgstr "Aucun résultat trouvé :/"
 msgid "Show/Hide sidebar"
 msgstr "Afficher/Masquer la barre de côté"
 
+#Admin translations
+msgid "Facets"
+msgstr "Facettes"
+
+msgid "Browse fields"
+msgstr "Champs de navigation"
+
+msgid "Geolocalization"
+msgstr "Géolocalisation"
+
+msgid "Comments"
+msgstr "Commentaires"
+
+msgid "Tag cloud"
+msgstr "Nuage de tags"
+
+msgid "Geolocalization fields"
+msgstr "Champs de géolocalisation"
+
+#/Admin translations

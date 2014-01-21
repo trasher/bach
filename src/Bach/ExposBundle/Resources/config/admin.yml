@@ -8,7 +8,6 @@ services:
             - Bach\ExposBundle\Entity\Exposition
             - 'PixSortableBehaviorBundle:SortableAdmin'
         calls:
-            - [ setTranslationDomain, [BachExposBundle]]
             - [ setContainer, [@service_container] ]
             - [ setPositionService, [@pix_sortable_behavior.position] ]
 
@@ -21,7 +20,6 @@ services:
             - Bach\ExposBundle\Entity\Room
             - 'PixSortableBehaviorBundle:SortableAdmin'
         calls:
-            - [ setTranslationDomain, [BachExposBundle]]
             - [ setContainer, [@service_container] ]
             - [ setPositionService, [@pix_sortable_behavior.position] ]
 
@@ -34,7 +32,6 @@ services:
             - Bach\ExposBundle\Entity\Panel
             - 'PixSortableBehaviorBundle:SortableAdmin'
         calls:
-            - [ setTranslationDomain, [BachExposBundle]]
             - [ setContainer, [@service_container] ]
             - [ setPositionService, [@pix_sortable_behavior.position] ]
 
@@ -47,7 +44,6 @@ services:
             - Bach\ExposBundle\Entity\Document
             - 'PixSortableBehaviorBundle:SortableAdmin'
         calls:
-            - [ setTranslationDomain, [BachExposBundle]]
             - [ setContainer, [@service_container] ]
             - [ setPositionService, [@pix_sortable_behavior.position] ]
 

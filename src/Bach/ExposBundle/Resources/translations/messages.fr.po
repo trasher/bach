@@ -28,3 +28,18 @@ msgstr ""
 
 msgid "Virtual expositions"
 msgstr "Expositions virtuelles"
+
+#Admin translations
+msgid "Expositions"
+msgstr "Expositions"
+
+msgid "Rooms"
+msgstr "Salles"
+
+msgid "Panels"
+msgstr "Panneaux"
+
+msgid "Documents"
+msgstr "Documents"
+
+#/Admin translations

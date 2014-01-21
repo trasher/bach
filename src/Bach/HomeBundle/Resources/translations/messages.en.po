@@ -224,3 +224,20 @@ msgstr "No results found :/"
 msgid "Show/Hide sidebar"
 msgstr "Show/Hide sidebar"
 
+#Admin translations
+msgid "Facets"
+msgstr "Facets"
+
+msgid "Browse fields"
+msgstr "Browse fields"
+
+msgid "Geolocalization"
+msgstr "Geolocalization"
+
+msgid "Comments"
+msgstr "Comments"
+
+msgid "Geolocalization fields"
+msgstr "Geolocalization fields"
+
+#/Admin translations

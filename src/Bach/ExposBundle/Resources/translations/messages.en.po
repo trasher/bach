@@ -24,3 +24,19 @@ msgid ""
 "No virtual expositions are available for now. Please come back again later."
 msgstr ""
 "No virtual expositions are available for now. Please come back again later."
+
+#Admin translations
+msgid "Expositions"
+msgstr "Expositions"
+
+
+msgid "Rooms"
+msgstr "Rooms"
+
+msgid "Panels"
+msgstr "Panels"
+
+msgid "Documents"
+msgstr "Documents"
+
+#/Admin translations

@@ -10,7 +10,6 @@ services:
             - @bach.administration.configreader
             - '%solr_search_core%'
         calls:
-            - [ setTranslationDomain, [BachHomeBundle]]
             - [ setContainer, [@service_container] ]
             - [ setPositionService, [@pix_sortable_behavior.position] ]
 
@@ -25,7 +24,6 @@ services:
             - @bach.administration.configreader
             - '%solr_search_core%'
         calls:
-            - [ setTranslationDomain, [BachHomeBundle]]
             - [ setContainer, [@service_container] ]
             - [ setPositionService, [@pix_sortable_behavior.position] ]
 
@@ -39,7 +37,6 @@ services:
             - BachHomeBundle:GeolocAdmin
         calls:
             - [ setTemplate, [edit, BachHomeBundle:Admin:edit_wmap.html.twig] ]
-            - [ setTranslationDomain, [BachHomeBundle]]
 
     sonata.admin.comment:
         class: Bach\HomeBundle\Admin\CommentAdmin
@@ -49,8 +46,6 @@ services:
             - ~
             - Bach\HomeBundle\Entity\Comment
             - BachHomeBundle:CommentAdmin
-        calls:
-            - [ setTranslationDomain, [BachHomeBundle]]
 
     sonata.admin.tagcloud:
         class: Bach\HomeBundle\Admin\TagCloudAdmin
@@ -62,8 +57,6 @@ services:
             - BachHomeBundle:TagCloudAdmin
             - @bach.administration.configreader
             - '%solr_search_core%'
-        calls:
-            - [ setTranslationDomain, [BachHomeBundle]]
 
     sonata.admin.geolocfields:
         class: Bach\HomeBundle\Admin\GeolocFieldsAdmin
@@ -75,6 +68,4 @@ services:
             - BachHomeBundle:GeolocFieldsAdmin
             - @bach.administration.configreader
             - '%solr_search_core%'
-        calls:
-            - [ setTranslationDomain, [BachHomeBundle]]
 
