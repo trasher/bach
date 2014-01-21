@@ -14,6 +14,7 @@ parameters:
     database_path: null
     ead_files_path: null
     unimarc_files_path: null
+    matricules_files_path: null
     solr_search_core: EADUniversalFileFormat
     solr_ssl: false
     solr_host: localhost
