@@ -37,7 +37,7 @@ class DefaultController extends ControllerTest
         $this->request()->GET('/search/')
             ->hasStatus(404);
 
-        $this->request()->GET('/search')
+        $this->request()->GET('/')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
@@ -53,7 +53,8 @@ class DefaultController extends ControllerTest
             ->hasChild('article');
 
         //a not successfull request, with one spelling suggestion
-        //FIXME: the french text will fail if app is in english... We should find a fix for that.
+        //FIXME: the french text will fail if app is in english...
+        //We should find a fix for that.
         $this->request->GET('/search/cyenne')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
@@ -67,7 +68,9 @@ class DefaultController extends ControllerTest
             ->withContent('cayenne');
 
         //a successfull request, with filtering only
-        $this->request->GET('/search?filter_field=cSubject&filter_value=enjeux+internationaux')
+        $this->request->GET(
+            '/search?filter_field=cSubject&filter_value=enjeux+internationaux'
+        )
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler

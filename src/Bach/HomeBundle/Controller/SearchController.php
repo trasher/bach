@@ -169,14 +169,19 @@ abstract class SearchController extends Controller
     /**
      * Handle facets
      *
-     * @param SolariumQueryFactory $factory   Query factory
-     * @param array                &$tpl_vars Template variables
-     * @param array                $fields    Fields list
+     * @param SolariumQueryFactory $factory       Query factory
+     * @param array                $conf_facets   Configured facets
+     * @param array                $geoloc        Geolocalization fields
+     * @param array                $searchResults Search results
+     * @param Filters              $filters       Active filters
+     * @param string               $facet_name    Facet name
+     * @param array                &$tpl_vars     Template variables
+     * @param array                $fields        Fields list
      *
      * @return void
      */
-    protected function handleFacets(SolariumQueryFactory $factory, $conf_facets, $geoloc, $searchResults, $filters, $facet_name, &$tpl_vars,
-        $fields = null
+    protected function handleFacets(SolariumQueryFactory $factory, $conf_facets,
+        $geoloc, $searchResults, $filters, $facet_name, &$tpl_vars, $fields = null
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
