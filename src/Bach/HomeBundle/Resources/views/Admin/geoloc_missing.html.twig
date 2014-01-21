@@ -121,7 +121,7 @@ file that was distributed with this source code.
                                         data: selected,
                                         success: function(data) {
                                             if ( data.success === true ) {
-                                                alert('{% trans %}Position has been successfully stored!{% endtrans %}');
+                                                alert('{{ 'Position has been successfully stored!'|trans|escape('js') }}');
 
                                                 $('#proposal').addClass('hidden');
                                                 $('#missing-list').removeClass('hidden');
@@ -135,7 +135,7 @@ file that was distributed with this source code.
                                                     }
                                                 ).remove();
                                             } else {
-                                                alert('{% trans %}Something went wrong trying to store position :({% endtrans %}');
+                                                alert('{{ 'Something went wrong trying to store position :('|trans|escape('js') }}');
                                             }
                                         }
                                     });
@@ -150,7 +150,7 @@ file that was distributed with this source code.
 
                         _proposal.find('.list').html(_ul);
                     } else {
-                        _proposal.find('.list').empty().html('{% trans %}No results found :/{% endtrans %}');
+                        _proposal.find('.list').empty().html('{{ 'No results found :/'|trans|escape('js') }}');
                     }
                 }
             });
@@ -207,14 +207,14 @@ file that was distributed with this source code.
 
         L.control.sidebarbtn({
             strings: {
-                title: '{% trans %}Show/Hide sidebar{% endtrans %}'
+                title: '{{ 'Show/Hide sidebar'|trans|escape('js') }}'
             },
             sidebar: sidebar
         }).addTo(map);
 
         L.tileLayer('http://{s}.tile.cloudmade.com/852b7821064f43a59604e98d9536680b/997/256/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {% trans %}© Imagery{% endtrans %} <a href="http://cloudmade.com">CloudMade</a>'
+            attribution: '{{ '© Cartographic data'|trans|escape('js') }} <a href="http://openstreetmap.org">{{ 'OpenStreetMap contributors'|trans|escape('js') }}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {{ '© Imagery'|trans|escape('js') }} <a href="http://cloudmade.com">CloudMade</a>'
         }).addTo(map);
 
     });
