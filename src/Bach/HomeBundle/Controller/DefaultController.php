@@ -157,14 +157,7 @@ class DefaultController extends SearchController
 
         $show_maps = $this->container->getParameter('show_maps');
 
-        $geoloc = array();
-        if ( $show_maps ) {
-            $gf = new GeolocFields();
-            $gf = $gf->loadCloud(
-                $this->getDoctrine()->getManager()
-            );
-            $geoloc = $gf->getSolrFieldsNames();
-        }
+        $geoloc = $this->getGeolocFields();
 
         $filters = $session->get('filters');
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {

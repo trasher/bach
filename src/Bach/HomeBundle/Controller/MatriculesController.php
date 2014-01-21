@@ -98,6 +98,7 @@ class MatriculesController extends SearchController
 
         $show_maps = $this->container->getParameter('show_maps');
 
+        //TODO: should use SearchController::getGeolocFields()
         $geoloc = array();
         if ( $show_maps ) {
             $geoloc = array(

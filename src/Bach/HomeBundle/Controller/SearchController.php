@@ -126,11 +126,7 @@ abstract class SearchController extends Controller
             $session = $request->getSession();
 
             if ( $fields === null ) {
-                $gf = new GeolocFields();
-                $gf = $gf->loadCloud(
-                    $this->getDoctrine()->getManager()
-                );
-                $fields = $gf->getSolrFieldsNames();
+                $fields = $this->getGeolocFields();
             }
 
             $query = $factory->getQuery();
@@ -542,5 +538,24 @@ abstract class SearchController extends Controller
             'BachHomeBundle:Default:facet.html.twig',
             $tpl_vars
         );
+    }
+
+    /**
+     * Get configured geolocalization fields
+     *
+     * @return array
+     */
+    protected function getGeolocFields()
+    {
+        $show_maps = $this->container->getParameter('show_maps');
+        $geoloc = array();
+        if ( $show_maps ) {
+            $gf = new GeolocFields();
+            $gf = $gf->loadCloud(
+                $this->getDoctrine()->getManager()
+            );
+            $geoloc = $gf->getSolrFieldsNames();
+        }
+        return $geoloc;
     }
 }
