@@ -1190,6 +1190,10 @@ div.sonata-bc .pagination {
     padding: 0;
 }
 
+div.sonata-bc .row-fluid .span6 {
+    width: 100%;
+}
+
 /**
  * ===== Sonata sortable =====
  */
