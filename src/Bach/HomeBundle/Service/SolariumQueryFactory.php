@@ -457,31 +457,38 @@ class SolariumQueryFactory
      * @param array            $map_facets Map facets
      * @param EntityRepository $repo       Entity repository
      * @param boolean          $zones      Load zones when possible
+     * @param boolean          $merged     Return merged results
      *
-     * @return string
+     * @return array
      */
     public function getGeoJson(
-        $map_facets, EntityRepository $repo, $zones = false
+        $map_facets, EntityRepository $repo, $zones = false, $merged = false
     ) {
-        $result = null;
+        $result = array();
         $values = array();
+        $all_values = array();
         $parameters = array();
 
         if ( count($map_facets) > 0 ) {
-            foreach ( $map_facets as $facet ) {
+            foreach ( $map_facets as $field=>$facet ) {
+                $values[$field] = null;
                 foreach ( $facet as $item=>$count ) {
-                    if ( !isset($values[$item]) ) {
-                        $values[$item] = $count;
+                    if ( !isset($values[$field][$item]) ) {
+                        $values[$field][$item] = $count;
                     } else {
-                        $values[$item] += $count;
+                        $values[$field][$item] += $count;
                     }
                 }
             }
 
-            if ( count($values) > 0 ) {
+            foreach ( array_keys($values) as $key ) {
+                $all_values = array_merge($all_values, $values[$key]);
+            }
+
+            if ( count($all_values) > 0 ) {
                 $qb = $repo->createQueryBuilder('g');
                 $qb->where('g.indexed_name IN (:names)');
-                $parameters['names'] = array_keys($values);
+                $parameters['names'] = array_keys($all_values);
 
                 if ( $zones != false ) {
                     list($swest_lon, $swest_lat, $neast_lon, $neast_lat)
@@ -508,50 +515,68 @@ class SolariumQueryFactory
 
                 //prepare json
                 if ( count($polygons) > 0 ) {
-                    $results = array();
-                    foreach ( $polygons as $polygon ) {
-                        $id = $polygon->getId();
-                        $name = $polygon->getIndexedName();
+                    foreach ( $values as $field=>$value ) {
+                        $results = array();
 
-                        if ( !isset($values[$name]) ) {
-                            //for MySQL, Vénéjan is the same as Venejan...
-                            continue;
+                        foreach ( $polygons as $polygon ) {
+                            $id = $polygon->getId();
+                            $name = $polygon->getIndexedName();
+
+                            if ( isset($value[$name]) ) {
+                                if ( !isset($value[$name]) ) {
+                                    //for MySQL, Vénéjan is the same as Venejan...
+                                    continue;
+                                }
+
+                                $json = $polygon->getGeojson();
+
+                                $geometry = null;
+                                if ( $zones !== false
+                                    && strlen($json) < 50000
+                                ) {
+                                    $geometry = $json;
+                                } else {
+                                    //polygon are too heavy,
+                                    //lets display a point instead
+                                    $lon = $polygon->getLon();
+                                    $lat = $polygon->getLat();
+                                    $geometry = str_replace(
+                                        array('%lon', '%lat'),
+                                        array($lon, $lat),
+                                        '{"type":"Point","coordinates":[%lon,%lat]}'
+                                    );
+                                }
+
+                                $count = $value[$name];
+                                $results[] = str_replace(
+                                    '%geometry',
+                                    $geometry,
+                                    "\n" . '{"type": "Feature", "id":"' . $id .
+                                    '", "properties":{"name": "' . $name  . 
+                                    '", "results": ' . $count .
+                                    '}, "geometry": %geometry}'
+                                );
+                            }
                         }
-
-                        $count = $values[$name];
-                        $json = $polygon->getGeojson();
-
-                        $geometry = null;
-                        if ( $zones !== false
-                            && strlen($json) < 50000
-                        ) {
-                            $geometry = $json;
-                        } else {
-                            //polygon are too heavy, lets display a point instead
-                            $lon = $polygon->getLon();
-                            $lat = $polygon->getLat();
-                            $geometry = str_replace(
-                                array('%lon', '%lat'),
-                                array($lon, $lat),
-                                '{"type":"Point","coordinates":[%lon,%lat]}'
-                            );
+                        if ( count($results) > 0 ) {
+                            if ( $merged === true ) {
+                                $result = array_merge($result, $results);
+                            } else {
+                                $result[$field]
+                                    = '{"type": "FeatureCollection", "features":[' .
+                                    implode(',', $results) .
+                                    ']}';
+                            }
                         }
-
-                        $results[] = str_replace(
-                            '%geometry',
-                            $geometry,
-                            "\n" . '{"type": "Feature", "id":"' . $id .
-                            '", "properties":{"name": "' . $name  .
-                            '", "results": ' . $count . '}, "geometry": %geometry}'
-                        );
-                    }
-                    if ( count($results) > 0 ) {
-                        $result = '{"type": "FeatureCollection", "features":[';
-                        $result .= implode(',', $results);
-                        $result .= ']}';
                     }
                 }
             }
+        }
+
+        if ( $merged === true ) {
+            $result = '{"type": "FeatureCollection", "features":[' .
+                implode(',', $result) .
+                ']}';
         }
 
         return $result;

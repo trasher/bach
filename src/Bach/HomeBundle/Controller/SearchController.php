@@ -409,7 +409,8 @@ abstract class SearchController extends Controller
             $session->get($facets_name),
             $this->getDoctrine()
                 ->getRepository('BachIndexationBundle:Geoloc'),
-            $bbox
+            $bbox,
+            true
         );
 
         $response = new Response($geojson);

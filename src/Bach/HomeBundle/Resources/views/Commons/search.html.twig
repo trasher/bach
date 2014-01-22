@@ -570,7 +570,9 @@
                 var allpoints;
 
                 function resetHighlight(e) {
-                    allpoints.resetStyle(e.target);
+                    {% for field in geojson|keys -%}
+                    {{ field }}_points.resetStyle(e.target);
+                    {% endfor %}
                     info.update();
                 }
 
@@ -587,12 +589,39 @@
                     });
                 }
 
-                allpoints = L.geoJson({{ geojson|raw  }}, {
+                {% for field, geo in geojson -%}
+                    var {{ field }}_points = L.geoJson({{ geo|raw }}, {
+                        style: style,
+                        onEachFeature: onEachFeature
+                    });
+                    var {{ field }}_layer = L.layerGroup([{{ field }}_points]);
+                {% endfor %}
+
+                var overlays = {
+                {% for field in geojson|keys -%}
+                    '{{ field }}': {{ field }}_layer{% if not loop.last %},{% endif %}
+                {% endfor %}
+                };
+                L.control.layers({}, overlays).addTo(map);
+
+                {#allpoints = L.geoJson({{ geojson|raw  }}, {
                     style: style,
                     onEachFeature: onEachFeature
-                })
+                })#}
 
-                var _layers = L.layerGroup([allpoints]).addTo(map);
+                var _layers = L.layerGroup([
+                 {% for field in geojson|keys -%}
+                    {{ field }}_layer{% if not loop.last %},{% endif %}
+                {% endfor %}
+                ]).addTo(map);
+
+
+                var allpoints = L.featureGroup([
+                 {%- for field in geojson|keys -%}
+                    {{ field }}_points{% if not loop.last %},{% endif %}
+                {%- endfor -%}
+                ]);
+
                 map.fitBounds(allpoints.getBounds(), {
                     padding: [50, 50],
                     maxZoom: 13
