@@ -16,7 +16,6 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Bach\HomeBundle\Entity\GeolocFields;
 use Bach\IndexationBundle\Entity\EADFileFormat;
 use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -36,6 +35,7 @@ class GeolocFieldsAdmin extends Admin
     private $_reader;
     private $_container;
     private $_search_core;
+    private $_data_class;
 
     /**
      * Constructor
@@ -45,12 +45,14 @@ class GeolocFieldsAdmin extends Admin
      * @param string                    $baseControllerName ?
      * @param BachCoreAdminConfigReader $reader             Config reader.
      * @param string                    $search_core        Search core name
+     * @param string                    $data_class         Data class name
      */
     public function __construct($code, $class, $baseControllerName, $reader,
-        $search_core
+        $search_core, $data_class
     ) {
         $this->_reader = $reader;
         $this->_search_core = $search_core;
+        $this->_data_class = $data_class;
         parent::__construct($code, $class, $baseControllerName);
     }
 
@@ -63,22 +65,42 @@ class GeolocFieldsAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $fields = new Fields($this->_reader);
-        $solr_fields = $fields->getFacetFields(
-            $this->_search_core,
-            EADFileFormat::$facet_excluded
-        );
-
         $formMapper
             ->add(
                 'solr_fields_names',
                 'choice',
                 array(
-                    'choices'   => $solr_fields,
+                    'choices'   => $this->getFields(),
                     'label'     => _('Fields'),
                     'multiple'  => true
                 )
             );
+    }
+
+    /**
+     * Return fields list
+     *
+     * @return array
+     */
+    protected function getFields()
+    {
+        $fields = new Fields($this->_reader);
+        $solr_fields = $fields->getFacetFields(
+            $this->_search_core,
+            $this->getExcludedFields()
+        );
+        return $solr_fields;
+    }
+
+    /**
+     * Get excluded fields
+     *
+     * @return array
+     */
+    protected function getExcludedFields()
+    {
+        $class = $this->_data_class;
+        return $class::$facet_excluded;
     }
 
     /**

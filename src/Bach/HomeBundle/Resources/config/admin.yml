@@ -64,8 +64,21 @@ services:
             - { name: sonata.admin, manager_type: orm, group: "Search", label: "Geolocalization fields" }
         arguments:
             - ~
-            - Bach\HomeBundle\Entity\GeolocFields
+            - Bach\HomeBundle\Entity\GeolocMainFields
             - BachHomeBundle:GeolocFieldsAdmin
             - @bach.administration.configreader
             - '%solr_search_core%'
+            - Bach\IndexationBundle\Entity\EADFileFormat
+
+    sonata.admin.matricules.geolocfields:
+        class: Bach\HomeBundle\Admin\GeolocFieldsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Search", label: "Geolocalization fields (matricules)" }
+        arguments:
+            - ~
+            - Bach\HomeBundle\Entity\GeolocMatriculesFields
+            - BachHomeBundle:GeolocFieldsAdmin
+            - @bach.administration.configreader
+            - '%matricules_corename%'
+            - Bach\IndexationBundle\Entity\MatriculesFileFormat
 

@@ -98,6 +98,11 @@ class MatriculesFileFormat
     protected $doc_id;
 
     /**
+     * Fields that should not be used for facetting
+     */
+    public static $facet_excluded = array();
+
+    /**
      * The constructor
      *
      * @param array $data The input data

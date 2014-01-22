@@ -13,7 +13,6 @@
 
 namespace Bach\HomeBundle\Controller;
 
-use Bach\HomeBundle\Entity\GeolocFields;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 

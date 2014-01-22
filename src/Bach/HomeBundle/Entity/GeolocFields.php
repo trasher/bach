@@ -20,6 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  * @ORM\Table(name="geoloc_fields")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="core", type="string")
  *
  * @category Search
  * @package  Bach
@@ -27,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class GeolocFields
+abstract class GeolocFields
 {
 
     /**
@@ -61,7 +63,7 @@ class GeolocFields
      *
      * @param array $fields Fields names
      *
-     * @return TagCloud
+     * @return GeolocFields
      */
     public function setSolrFieldsNames($fields)
     {
@@ -88,10 +90,7 @@ class GeolocFields
      */
     public function loadCloud($em)
     {
-        $qb = $em->createQueryBuilder()
-            ->add('select', 'gf')
-            ->add('from', 'Bach\HomeBundle\Entity\GeolocFields gf');
-
+        $qb = $this->getQueryBuilder($em);
         $query = $qb->getQuery();
         $results = $query->getResult();
 
@@ -99,12 +98,29 @@ class GeolocFields
         if ( count($results) > 0 ) {
             return $results[0];
         } else {
-            $this->setSolrFieldsNames(array('cGeogname'));
+            //$this->setSolrFieldsNames(array('cGeogname'));
+            $this->setSolrFieldsNames($this->getDefaultFields());
             $em->persist($this);
             $em->flush();
             return $this;
         }
     }
+
+    /**
+     * Get query builder
+     *
+     * @param EntityManager $em Entity manager
+     *
+     * @return QueryBuilder
+     */
+    abstract protected function getQueryBuilder($em);
+
+    /**
+     * Get default fields
+     *
+     * @return array
+     */
+    abstract protected function getDefaultFields();
 
     /**
      * String representation
