@@ -561,12 +561,20 @@ abstract class SearchController extends Controller
         $show_maps = $this->container->getParameter('show_maps');
         $geoloc = array();
         if ( $show_maps ) {
-            $gf = new GeolocFields();
-            $gf = $gf->loadCloud(
+            $class = $this->getGeolocClass();
+            $gf = new $class;
+            $gf = $gf->loadDefaults(
                 $this->getDoctrine()->getManager()
             );
             $geoloc = $gf->getSolrFieldsNames();
         }
         return $geoloc;
     }
+
+    /**
+     * Get golocalization fields class name
+     *
+     * @return string
+     */
+    abstract protected function getGeolocClass();
 }

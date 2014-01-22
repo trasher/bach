@@ -43,7 +43,7 @@ class GeolocFieldsAdminController extends Controller
     public function editAction($id = null)
     {
         $geolocfields = $this->admin->getNewInstance();
-        $geolocfields = $geolocfields->loadCloud(
+        $geolocfields = $geolocfields->loadDefaults(
             $this->getDoctrine()->getManager()
         );
 

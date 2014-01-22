@@ -289,6 +289,16 @@ class MatriculesController extends SearchController
     }
 
     /**
+     * Get golocalization fields class name
+     *
+     * @return string
+     */
+    protected function getGeolocClass()
+    {
+        return 'Bach\HomeBundle\Entity\GeolocMatriculesFields';
+    }
+
+    /**
      * POST search destination for main form.
      *
      * Will take care of search terms, and reroute with proper URI

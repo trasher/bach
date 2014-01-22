@@ -88,17 +88,15 @@ abstract class GeolocFields
      *
      * @return GeolocFields
      */
-    public function loadCloud($em)
+    public function loadDefaults($em)
     {
         $qb = $this->getQueryBuilder($em);
         $query = $qb->getQuery();
         $results = $query->getResult();
 
-        $tagcloud = null;
         if ( count($results) > 0 ) {
             return $results[0];
         } else {
-            //$this->setSolrFieldsNames(array('cGeogname'));
             $this->setSolrFieldsNames($this->getDefaultFields());
             $em->persist($this);
             $em->flush();

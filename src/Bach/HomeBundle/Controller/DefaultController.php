@@ -119,6 +119,15 @@ class DefaultController extends SearchController
         return array('cDate');
     }
 
+    /**
+     * Get golocalization fields class name
+     *
+     * @return string
+     */
+    protected function getGeolocClass()
+    {
+        return 'Bach\HomeBundle\Entity\GeolocMainFields';
+    }
 
     /**
      * Search page
