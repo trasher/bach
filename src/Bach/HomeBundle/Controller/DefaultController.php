@@ -166,8 +166,6 @@ class DefaultController extends SearchController
 
         $show_maps = $this->container->getParameter('show_maps');
 
-        $geoloc = $this->getGeolocFields();
-
         $filters = $session->get('filters');
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
             $filters = new Filters();
@@ -200,7 +198,7 @@ class DefaultController extends SearchController
         );
 
         $factory = $this->get("bach.home.solarium_query_factory");
-        $factory->setGeolocFields($geoloc);
+        $factory->setGeolocFields($this->getGeolocFields());
 
         $map_facets = array();
 
@@ -246,15 +244,21 @@ class DefaultController extends SearchController
 
         $searchResults = $factory->performQuery(
             $container,
-            $conf_facets,
-            $geoloc
+            $conf_facets
         );
 
         $hlSearchResults = $factory->getHighlighting();
         $scSearchResults = $factory->getSpellcheck();
         $resultCount = $searchResults->getNumFound();
 
-        $this->handleFacets($factory, $conf_facets, $geoloc, $searchResults, $filters, $facet_name, $templateVars);
+        $this->handleFacets(
+            $factory,
+            $conf_facets,
+            $searchResults,
+            $filters,
+            $facet_name,
+            $templateVars
+        );
         $suggestions = $factory->getSuggestions($query_terms);
 
         $templateVars['resultCount'] = $resultCount;

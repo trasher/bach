@@ -41,6 +41,7 @@ use Bach\HomeBundle\Service\SolariumQueryFactory;
  */
 abstract class SearchController extends Controller
 {
+    private $_geoloc;
 
     /**
      * Default page
@@ -113,21 +114,16 @@ abstract class SearchController extends Controller
      *
      * @param SolariumQueryFactory $factory   Query factory
      * @param array                &$tpl_vars Template variables
-     * @param array                $fields    Fields list
      *
      * @return void
      */
-    protected function handleGeoloc(SolariumQueryFactory $factory, &$tpl_vars,
-        $fields = null
-    ) {
+    protected function handleGeoloc(SolariumQueryFactory $factory, &$tpl_vars)
+    {
         $show_maps = $this->container->getParameter('show_maps');
         if ( $show_maps ) {
             $request = $this->getRequest();
             $session = $request->getSession();
-
-            if ( $fields === null ) {
-                $fields = $this->getGeolocFields();
-            }
+            $fields = $this->getGeolocFields();
 
             $query = $factory->getQuery();
             $rs = null;
@@ -171,7 +167,6 @@ abstract class SearchController extends Controller
      *
      * @param SolariumQueryFactory $factory       Query factory
      * @param array                $conf_facets   Configured facets
-     * @param array                $geoloc        Geolocalization fields
      * @param array                $searchResults Search results
      * @param Filters              $filters       Active filters
      * @param string               $facet_name    Facet name
@@ -181,7 +176,7 @@ abstract class SearchController extends Controller
      * @return void
      */
     protected function handleFacets(SolariumQueryFactory $factory, $conf_facets,
-        $geoloc, $searchResults, $filters, $facet_name, &$tpl_vars, $fields = null
+        $searchResults, $filters, $facet_name, &$tpl_vars, $fields = null
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -312,7 +307,7 @@ abstract class SearchController extends Controller
         }
 
         if ( $show_maps ) {
-            foreach ( $geoloc as $field ) {
+            foreach ( $geoloc = $this->getGeolocFields() as $field ) {
                 $map_facets[$field] = $facetset->getFacet($field);
             }
         }
@@ -559,16 +554,15 @@ abstract class SearchController extends Controller
     protected function getGeolocFields()
     {
         $show_maps = $this->container->getParameter('show_maps');
-        $geoloc = array();
-        if ( $show_maps ) {
+        if ( $show_maps && !isset($this->_geoloc) ) {
             $class = $this->getGeolocClass();
             $gf = new $class;
             $gf = $gf->loadDefaults(
                 $this->getDoctrine()->getManager()
             );
-            $geoloc = $gf->getSolrFieldsNames();
+            $this->_geoloc = $gf->getSolrFieldsNames();
         }
-        return $geoloc;
+        return $this->_geoloc;
     }
 
     /**

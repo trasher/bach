@@ -98,15 +98,6 @@ class MatriculesController extends SearchController
 
         $show_maps = $this->container->getParameter('show_maps');
 
-        //TODO: should use SearchController::getGeolocFields()
-        $geoloc = array();
-        if ( $show_maps ) {
-            $geoloc = array(
-                'lieu_naissance',
-                'lieu_enregistrement'
-            );
-        }
-
         if ( $view_params->advancedSearch() ) {
             $form = $this->createForm(
                 new MatriculesType(),
@@ -128,7 +119,7 @@ class MatriculesController extends SearchController
         $searchResults = null;
 
         $factory = $this->get("bach.matricules.solarium_query_factory");
-        $factory->setGeolocFields($geoloc);
+        $factory->setGeolocFields($this->getGeolocFields());
 
         if ( $filters->count() > 0 ) {
             $tpl_vars['filters'] = $filters;
@@ -166,8 +157,7 @@ class MatriculesController extends SearchController
 
             $searchResults = $factory->performQuery(
                 $container,
-                $conf_facets,
-                $geoloc
+                $conf_facets
             );
 
             $hlSearchResults = $factory->getHighlighting();
@@ -187,7 +177,6 @@ class MatriculesController extends SearchController
             $this->handleFacets(
                 $factory,
                 $conf_facets,
-                $geoloc,
                 $searchResults,
                 $filters,
                 $facet_name,
@@ -225,11 +214,7 @@ class MatriculesController extends SearchController
 
         $this->handleGeoloc(
             $factory,
-            $tpl_vars,
-            array(
-                'lieu_naissance',
-                'lieu_enregistrement'
-            )
+            $tpl_vars
         );
 
         if ( $view_params->advancedSearch() ) {
