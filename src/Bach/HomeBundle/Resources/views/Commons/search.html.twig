@@ -54,7 +54,7 @@
                         </li>
                     {% endfor %}
                     {% if facet.content|length > 10 and not (facet_name is defined and facet_name == index_name) %}
-                        <li class="show_more"><a href="{{ path('bach_fullfacet', {query_terms: q, name: index_name}) }}">{% trans with {'%count%': facet.content|length -10} %}Show more (%count% left){% endtrans %}</a></li>
+                        <li class="show_more"><a href="{{ path('bach_search', {query_terms: q, page: page, facet_name: index_name}) }}">{% trans with {'%count%': facet.content|length -10} %}Show more (%count% left){% endtrans %}</a></li>
                     {% endif %}
                     </ol>
                 </div>
@@ -230,10 +230,13 @@
         var _width = $(window).width() * 0.8;
         var _height = $(window).height() * 0.8;
 
+        var _index = _this.attr('href').replace('{{ path('bach_search', {query_terms: q, page: page}) }}/', '');
+        var _url = '{{ path('bach_fullfacet', {query_terms: q, name: 'THENAME'}) }}'.replace('THENAME', _index);
+
         $.ajax({
-            url: _this.attr('href'),
+            url: _url,
             data: {
-                orig_href: _this.attr('href')
+                orig_href: _url
             },
             type: 'POST',
             beforeSend: function() {
