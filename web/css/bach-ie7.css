@@ -18,9 +18,10 @@
 [id=active_filters] ul,
 [id=active_filters] li,
 figure section a, figure section video,
-.htmlplayer.standalone
+.htmlplayer.standalone,
+.interactions li, .interactions a
 {
-    zoom: 1; /*offre le layout à un élément (*)*/
+    zoom: 1; /*give element layout*/
     display: inline;
 }
 
@@ -31,6 +32,6 @@ figure section a, figure section video,
 
 /** IE7 does not understand 'inherit' here. */
 .ui-widget {
-    font-family: 'PT Sans Narrow', Verdana, Arial, sans-serif;
+    font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;
     font-size: 1em;
 }
