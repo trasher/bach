@@ -73,6 +73,13 @@ class Fields
             }
         }
 
+        if ( defined('SORT_FLAG_CASE') ) {
+            sort($facet_fields, SORT_FLAG_CASE | SORT_NATURAL);
+        } else {
+            //fallback for PHP < 5.4
+            sort($facet_fields, SORT_LOCALE_STRING);
+        }
+
         return $facet_fields;
     }
 
