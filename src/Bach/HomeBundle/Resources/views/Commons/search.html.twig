@@ -220,6 +220,7 @@
 {% endblock %}
 
 {% block mobile_js_off %}
+    {% if searchResults is defined and searchResults|length > 0 %}
     $('.show_more a').click(function() {
         var _this = $(this);
         var _facet_name = $(_this.parents('div')[0]).prev('h3').text();
@@ -264,6 +265,7 @@
 
         return false;
     });
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
