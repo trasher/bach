@@ -253,7 +253,11 @@ abstract class SearchController extends Controller
                         arsort($values);
                     } else {
                         if ( defined('SORT_FLAG_CASE') ) {
-                            ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
+                            //TODO: find a better way!
+                            if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
+                                setlocale(LC_COLLATE, 'fr_FR.utf8');
+                            }
+                            ksort($values, SORT_LOCALE_STRING | SORT_FLAG_CASE);
                         } else {
                             //fallback for PHP < 5.4
                             ksort($values, SORT_LOCALE_STRING);
