@@ -12,3 +12,15 @@
   src: url(../img/PTSans-NarrowBold.eot);
   src: local('PT Sans Narrow Bold'), local('PTSans-NarrowBold'), url(../img/PTSans-NarrowBold.eot) format('embedded-opentype'), url(../img/PTSans-NarrowBold.woff) format('woff');
 }
+
+#loading {
+    filter: alpha(opacity=50);
+    background-color: #000;
+
+}
+
+#loading p {
+    filter: alpha(opacity=80);
+    background-color: #fff;
+    padding: 1em;
+}
