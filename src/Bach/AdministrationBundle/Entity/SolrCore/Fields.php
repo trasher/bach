@@ -74,10 +74,14 @@ class Fields
         }
 
         if ( defined('SORT_FLAG_CASE') ) {
-            sort($facet_fields, SORT_FLAG_CASE | SORT_NATURAL);
+            //TODO: find a better way!
+            //if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
+            setlocale(LC_COLLATE, 'fr_FR.utf8');
+            //}
+            asort($facet_fields, SORT_LOCALE_STRING | SORT_FLAG_CASE);
         } else {
             //fallback for PHP < 5.4
-            sort($facet_fields, SORT_LOCALE_STRING);
+            asort($facet_fields, SORT_LOCALE_STRING);
         }
 
         return $facet_fields;
