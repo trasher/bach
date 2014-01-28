@@ -187,8 +187,8 @@ abstract class SearchController extends Controller
 
         $facet_names = array(
             'geoloc'        => _('Map selection'),
-            'cDateBegin'    => _('Start date'),
-            'cDateEnd'      => _('End date')
+            'date_begin'    => _('Start date'),
+            'date_end'      => _('End date')
         );
         $facet_labels = array();
 
@@ -575,4 +575,24 @@ abstract class SearchController extends Controller
      * @return string
      */
     abstract protected function getGeolocClass();
+
+    /**
+     * Handle yearly results
+     *
+     * @param SolariumQueryFactory $factory   Factory instance
+     * @param array                &$tpl_vars Template variables
+     *
+     * @return void
+     */
+    protected function handleYearlyResults($factory, &$tpl_vars)
+    {
+        $by_year = $factory->getResultsByYear();
+        if ( count($by_year) > 0 ) {
+            $tpl_vars['by_year'] = $by_year;
+            $date_min = new \DateTime($by_year[0][0] . '-01-01');
+            $date_max = new \DateTime($by_year[count($by_year)-1][0] . '-01-01');
+            $tpl_vars['by_year_min'] = (int)$date_min->format('Y');
+            $tpl_vars['by_year_max'] = (int)$date_max->format('Y');
+        }
+    }
 }

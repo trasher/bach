@@ -199,6 +199,7 @@ class DefaultController extends SearchController
 
         $factory = $this->get("bach.home.solarium_query_factory");
         $factory->setGeolocFields($this->getGeolocFields());
+        $factory->setDateField('cDateBegin');
 
         $map_facets = array();
 
@@ -240,8 +241,6 @@ class DefaultController extends SearchController
                 array('position' => 'ASC')
             );
 
-        $factory->setDatesBounds($filters);
-
         $searchResults = $factory->performQuery(
             $container,
             $conf_facets
@@ -282,8 +281,8 @@ class DefaultController extends SearchController
         if ( is_array($slider_dates) ) {
             $templateVars = array_merge($templateVars, $slider_dates);
         }
-        $by_year = $factory->getResultsByYear();
-        $templateVars['by_year'] = $by_year;
+
+        $this->handleYearlyResults($factory, $templateVars);
 
         $templateVars['form'] = $form->createView();
 

@@ -49,6 +49,8 @@ class SolariumQueryFactory
 
     private $_max_low_date;
     private $_max_up_date;
+    private $_qry_low_date;
+    private $_qry_up_date;
 
     private $_low_date;
     private $_up_date;
@@ -56,8 +58,7 @@ class SolariumQueryFactory
 
     private $_geoloc;
 
-    private $_date_begin_field = 'cDateBegin';
-    private $_date_end_field = 'cDateEnd';
+    private $_date_field;
 
     /**
      * Factory constructor
@@ -97,13 +98,38 @@ class SolariumQueryFactory
             $this->_buildQuery($container);
         }
 
+        $this->setDatesBounds($container->getFilters());
         if ( count($facets) > 0 ) {
             //dynamically create facets
             $this->_addFacets($facets);
         }
 
+        $facetSet = $this->_query->getFacetSet();
+        if ( isset($this->_low_date) && isset($this->_up_date) ) {
+            $fr = $facetSet->createFacetRange(
+                'years' .
+                ' f.' . $this->_date_field . '.facet.range.start=' .
+                $this->_low_date .
+                ' f.' . $this->_date_field . '.facet.range.end=' . $this->_up_date .
+                ' f.' . $this->_date_field . '.facet.range.gap=+1YEARS'
+            );
+            $fr->setField($this->_date_field);
+        }
+
+        $stats = $this->_query->getStats();
+        $stats->createField($this->_date_field);
+
         $this->_request = $this->_client->createRequest($this->_query);
         $rs = $this->_client->select($this->_query);
+
+        $rsStats = $rs->getStats();
+        $stats = $rsStats->getResults();
+
+        if ( isset($stats[$this->_date_field]) ) {
+            $this->_qry_low_date = $stats[$this->_date_field]->getMin();
+            $this->_qry_up_date = $stats[$this->_date_field]->getMax();
+        }
+
         $this->_highlitght = $rs->getHighlighting();
         $this->_spellcheck = $rs->getSpellcheck();
         $this->_rs = $rs;
@@ -127,13 +153,26 @@ class SolariumQueryFactory
 
         foreach ( $container->getFilters() as $name=>$value ) {
             switch ( $name ) {
-            case 'cDateBegin':
+            case 'date_begin':
+                $end = '*';
+                if ( $container->getFilters()->offsetExists('date_end') ) {
+                    $end = $container->getFilters()->offsetGet('date_end') .
+                        'T23:59:59Z';
+                }
                 $this->_query->createFilterQuery($name)
-                    ->setQuery('+' . $name . ':[' . $value . 'T00:00:00Z TO *]');
+                    ->setQuery(
+                        '+' . $this->_date_field . ':[' . $value . 'T00:00:00Z TO ' .
+                        $end . ']'
+                    );
                 break;
-            case 'cDateEnd':
-                $this->_query->createFilterQuery($name)
-                    ->setQuery('+' . $name . ':[* TO ' . $value . 'T00:00:00Z]');
+            case 'date_end':
+                if ( !$container->getFilters()->offsetExists('date_begin') ) {
+                    $this->_query->createFilterQuery($name)
+                        ->setQuery(
+                            '+' . $this->_date_field . ':[* TO ' . $value .
+                            'T23:59:59Z]'
+                        );
+                }
                 break;
             case 'dao':
                 $query = null;
@@ -154,7 +193,7 @@ class SolariumQueryFactory
                     $edate = new \DateTime($end);
                     $this->_query->createFilterQuery($name)
                         ->setQuery(
-                            '+cDateBegin:[' .
+                            '+' . $this->_date_field . ':[' .
                             $bdate->format('Y-m-d\TH:i:s\Z') .
                             ' TO ' .
                             $edate->format('Y-m-d\TH:i:s\Z')  . ']'
@@ -266,10 +305,17 @@ class SolariumQueryFactory
                     break;
                 case 'cDate':
                     if ( isset($this->_low_date) && isset($this->_up_date) ) {
-                        $fr = $facetSet->createFacetRange('cDate');
-                        $fr->setField('cDateBegin');
+                        $fr = $facetSet->createFacetRange(
+                            $facet->getSolrFieldName()
+                        );
+                        $fr->setField($this->_date_field);
                         $fr->setStart($this->_low_date);
-                        $fr->setgap('+' . $this->_date_gap . 'YEARS');
+                        //$fr->setgap('+' . $this->_date_gap . 'YEARS');
+                        $gap = $this->_getGap(
+                            new \DateTime($this->_low_date),
+                            new \DateTime($this->_up_date)
+                        );
+                        $fr->setgap('+' . $gap . 'YEARS');
                         $fr->setEnd($this->_up_date);
                     }
                     break;
@@ -318,7 +364,8 @@ class SolariumQueryFactory
                 $class = $reflection->getParentClass()->getName();
                 $pclass = null;
                 if ( $reflection->getParentClass()->getParentClass() !== false ) {
-                    $pclass = $reflection->getParentClass()->getParentClass()->getName();
+                    $pclass = $reflection->getParentClass()
+                        ->getParentClass()->getName();
                 }
                 if ( $expectedClass == $class || $expectedClass == $pclass ) {
                     $this->_registerQueryDecorator($reflection->newInstance());
@@ -331,20 +378,15 @@ class SolariumQueryFactory
     /**
      * Get extreme dates from index stats
      *
-     * @param array $filters Active filters
-     * @param array $fields  Fields names
+     * @param array  $filters Active filters
+     * @param string $field   Date field name
      *
      * @return array
      */
-    public function getSliderDates(Filters $filters, $fields = null)
+    public function getSliderDates(Filters $filters, $field = null)
     {
-        if ( $fields !== null ) {
-            $this->_date_begin_field = $fields['date_begin'];
-            if ( isset($fields['date_end']) ) {
-                $this->_date_end_field = $fields['date_end'];
-            } else {
-                $this->_date_end_field = null;
-            }
+        if ( $field !== null ) {
+            $this->_date_field = $field;
         }
 
         list($min_date, $max_date) = $this->_loadDatesFromStats();
@@ -376,22 +418,20 @@ class SolariumQueryFactory
             $results['date_step'] = $step;
 
             $results['min_date'] = (int)$php_min_date->format('Y');
-            if ( $filters->offsetExists($this->_date_begin_field) ) {
+            if ( $filters->offsetExists('date_begin') ) {
                 $dbegin = explode(
                     '-',
-                    $filters->offsetGet($this->_date_begin_field)
+                    $filters->offsetGet('date_begin')
                 );
                 $results['selected_min_date'] = (int)$dbegin[0];
             } else {
                 $results['selected_min_date'] = $results['min_date'];
             }
             $results['max_date'] = (int)$php_max_date->format('Y');
-            if ( $this->_date_end_field !== null
-                && $filters->offsetExists($this->_date_end_field)
-            ) {
+            if ( $filters->offsetExists('date_end') ) {
                 $dend = explode(
                     '-',
-                    $filters->offsetGet($this->_date_end_field)
+                    $filters->offsetGet('date_end')
                 );
                 $results['selected_max_date'] = (int)$dend[0];
             } else {
@@ -414,38 +454,8 @@ class SolariumQueryFactory
      */
     public function getResultsByYear($field = null)
     {
-        if ( $field !== null ) {
-            $this->_date_begin_field = $field;
-            $this->_date_end_field = null;
-        }
-
-        $query = $this->_client->createSelect();
-        $query->setQuery('*:*');
-        $query->setRows(0);
-        $query->setFields($this->_date_begin_field);
-
-        $facetSet = $query->getFacetSet();
-        $facetSet->setLimit(-1);
-
-        list($min_date, $max_date) = $this->_loadDatesFromStats(true, true);
-        $low_date = new \DateTime($min_date);
-        $up_date = new \DateTime($max_date);
-
-        if ( $up_date->diff($low_date)->y === 0 ) {
-            return;
-        } else {
-            $up_date->add(new \DateInterval('P1Y'));
-        }
-
-        $fr = $facetSet->createFacetRange('cDate');
-        $fr->setField($this->_date_begin_field);
-        $fr->setStart($low_date->format('Y-01-01\T00:00:00\Z'));
-        $fr->setgap('+1YEARS');
-        $fr->setEnd($up_date->format('Y-01-01\T00:00:00\Z'));
-
-        $rs = $this->_client->select($query);
-        $facetSet = $rs->getFacetSet();
-        $dates = $facetSet->getFacet('cDate');
+        $facetSet = $this->_rs->getFacetSet();
+        $dates = $facetSet->getFacet('years');
 
         $results = array();
         foreach ( $dates as $d=>$count ) {
@@ -492,7 +502,8 @@ class SolariumQueryFactory
                 $parameters['names'] = array_keys($values);
 
                 if ( $zones != false ) {
-                    list($swest_lon, $swest_lat, $neast_lon, $neast_lat) = explode(',', $zones);
+                    list($swest_lon, $swest_lat, $neast_lon, $neast_lat)
+                        = explode(',', $zones);
                     $qb
                         ->andWhere('g.lon BETWEEN :west_lon AND :east_lon')
                         ->andWhere('g.lat BETWEEN :north_lat AND :south_lat');
@@ -548,8 +559,8 @@ class SolariumQueryFactory
                             '%geometry',
                             $geometry,
                             "\n" . '{"type": "Feature", "id":"' . $id .
-                            '", "properties":{"name": "' . $name  . '", "results": ' .
-                            $count . '}, "geometry": %geometry}'
+                            '", "properties":{"name": "' . $name  .
+                            '", "results": ' . $count . '}, "geometry": %geometry}'
                         );
                     }
                     if ( count($results) > 0 ) {
@@ -583,21 +594,17 @@ class SolariumQueryFactory
         $query->setRows(0);
         $stats = $query->getStats();
 
-        $stats->createField($this->_date_begin_field);
-        if ( $this->_date_end_field !== null ) {
-            $stats->createField($this->_date_end_field);
-        }
+        $stats->createField($this->_date_field);
 
         $rs = $this->_client->select($query);
         $rsStats = $rs->getStats();
         $statsResults = $rsStats->getResults();
 
-        $min_date = $statsResults[$this->_date_begin_field]->getMin();
+        $min_date = null;
         $max_date = null;
-        if ( $begin === false || $this->_date_end_field === null ) {
-            $max_date = $statsResults[$this->_date_begin_field]->getMax();
-        } else {
-            $max_date = $statsResults[$this->_date_end_field]->getMax();
+        if ( isset($statsResults[$this->_date_field]) ) {
+            $min_date = $statsResults[$this->_date_field]->getMin();
+            $max_date = $statsResults[$this->_date_field]->getMax();
         }
 
         return array($min_date, $max_date);
@@ -659,7 +666,7 @@ class SolariumQueryFactory
     /**
      * Get resultset
      *
-     * @return 
+     * @return ResultSet
      */
     public function getResultset()
     {
@@ -680,14 +687,27 @@ class SolariumQueryFactory
         if ( !isset($this->_date_gap) ) {
             $this->_low_date = $low->format('Y-01-01') . 'T00:00:00Z';
             $this->_up_date = $up->format('Y-12-31') . 'T23:59:59Z';
-
-            $diff = $low->diff($up);
-            $gap = 1;
-            if ( $diff->y > 10 ) {
-                $gap = ceil($diff->y / 10);
-            }
-            $this->_date_gap = $gap;
+            $this->_date_gap = $this->_getGap($low, $up);
         }
+    }
+
+    /**
+     * Calculate date gap
+     *
+     * @param DateTime $start   Start date
+     * @param DateTime $end     End date
+     * @param int      $maxdiff Maxium diff years
+     *
+     * @return int
+     */
+    private function _getGap($start, $end, $maxdiff = 10)
+    {
+        $diff = $start->diff($end);
+        $gap = 1;
+        if ( $diff->y > $maxdiff ) {
+            $gap = ceil($diff->y / $maxdiff);
+        }
+        return $gap;
     }
 
     /**
@@ -731,6 +751,18 @@ class SolariumQueryFactory
     public function setGeolocFields($fields)
     {
         $this->_geoloc = $fields;
+    }
+
+    /**
+     * Set date field
+     *
+     * @param string $field Field name
+     *
+     * @return void
+     */
+    public function setDateField($field)
+    {
+        $this->_date_field = $field;
     }
 
     /**

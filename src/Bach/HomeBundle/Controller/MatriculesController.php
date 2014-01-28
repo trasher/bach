@@ -120,6 +120,7 @@ class MatriculesController extends SearchController
 
         $factory = $this->get("bach.matricules.solarium_query_factory");
         $factory->setGeolocFields($this->getGeolocFields());
+        $factory->setDateField('date_enregistrement');
 
         if ( $filters->count() > 0 ) {
             $tpl_vars['filters'] = $filters;
@@ -152,8 +153,6 @@ class MatriculesController extends SearchController
                 $facet->setFrLabel($trad);
                 $conf_facets[] = $facet;
             }
-
-            //$factory->setDatesBounds($filters);
 
             $searchResults = $factory->performQuery(
                 $container,
@@ -189,21 +188,16 @@ class MatriculesController extends SearchController
             } else {
                 $suggestions = $factory->getSuggestions($query_terms);
             }
+
+            $this->handleYearlyResults($factory, $tpl_vars);
         }
 
-        $slider_dates = $factory->getSliderDates(
-            new Filters(),
-            array(
-                'date_begin' => 'date_enregistrement'
-            )
-        );
+        $slider_dates = $factory->getSliderDates(new Filters());
 
         if ( is_array($slider_dates) ) {
             $tpl_vars = array_merge($tpl_vars, $slider_dates);
         }
 
-        $by_year = $factory->getResultsByYear('date_enregistrement');
-        $tpl_vars['by_year'] = $by_year;
 
         $this->handleGeoloc(
             $factory,

@@ -34,7 +34,6 @@
                 <h3>{{ facet.label }}</h3>
                 <div>
                     <ol>
-                    {#% set index_name = 'c' ~ facet_field|capitalize %#}
                     {% set index_name = facet.index_name %}
 
                     {% if facet_name is defined and facet_name == index_name %}
@@ -138,8 +137,10 @@
     {% endif %}
 
         {% if min_date is defined and max_date is defined -%}
-        <div id="dates_plot" class="hidden"></div>
         <div id="dates_range" class="hidden"></div>
+        {% if by_year is defined %}
+        <div id="dates_plot" class="hidden"></div>
+        {% endif %}
         {%- endif %}
         {% if show_maps -%}
         <div id="map" class="hidden"></div>
@@ -288,8 +289,8 @@
                 }
     {% endif %}
 
-                _new_loc += '?filter_field[]=cDateBegin&filter_value[]=' + min_date +
-                    '&filter_field[]=cDateEnd&filter_value[]=' + max_date;
+                _new_loc += '?filter_field[]=date_begin&filter_value[]=' + min_date +
+                    '&filter_field[]=date_end&filter_value[]=' + max_date;
                 document.location = _new_loc;
             }
 
@@ -349,6 +350,7 @@
                 }
             });
 
+                {% if by_year is defined -%}
             var plot_options = {
                 series: {
                     bars: {
@@ -378,8 +380,8 @@
 
                 plot.setSelection({
                     xaxis: {
-                        from: {{selected_min_date}},
-                        to: {{selected_max_date}}
+                        from: {{by_year_min}},
+                        to: {{by_year_max}}
                     }
                 });
 
@@ -395,6 +397,7 @@
                 _dates_plot.removeClass('hidden');
                 _initPlot();
             }
+                {% endif %}
             {% endif %}
 
             _setCookie = function() {

@@ -79,11 +79,11 @@ class Filters extends \ArrayObject
     public function addFilter($field, $value)
     {
         switch ( $field ) {
-        case 'cDateBegin':
-        case 'cDateEnd':
+        case 'date_begin':
+        case 'date_end':
             //only one start and end date allowed
             $php_date = \DateTime::createFromFormat('Y', $value);
-            if ( $field === 'cDateBegin' ) {
+            if ( $field === 'date_begin' ) {
                 $value = $php_date->format('Y-01-01');
             } else {
                 $value = $php_date->format('Y-12-31');
@@ -120,8 +120,8 @@ class Filters extends \ArrayObject
     public function removeFilter($field, $value)
     {
         switch ( $field ) {
-        case 'cDateBegin':
-        case 'cDateEnd':
+        case 'date_begin':
+        case 'date_end':
         case 'cDate':
         case 'dao':
             if ( $this->offsetExists($field) ) {
