@@ -188,7 +188,7 @@
         {% if min_date is defined and max_date is defined -%}
         <div id="dates_range" class="hidden"></div>
         {% if by_year is defined %}
-        <div id="dates_plot" class="hidden"></div>
+        <div id="dates_plot" class="hidden" title="{% trans %}Click and drag to select dates period{% endtrans %}"></div>
         {% endif %}
         {%- endif %}
         {% if show_maps -%}
@@ -253,6 +253,7 @@
     <script src="{{ asset('js/jQDateRangeSlider-min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/flot/jquery.flot.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/flot/jquery.flot.selection.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/flot/jquery.flot.resize.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery.cookie.js') }}" type="text/javascript"></script>
 {% if show_maps %}
     <script src="{{ asset('js/leaflet/leaflet.js') }}" type="text/javascript"></script>
@@ -418,7 +419,7 @@
                 colors: ["rgba(163,150,141,0)"],
                 legend: { noColumns: 2 },
                 xaxis: { tickDecimals: 0 },
-                yaxis: { min: 0, ticks: [] },
+                //yaxis: { min: 0, ticks: [] },
                 selection: {mode: "x"},
                 grid: {
                     backgroundColor: null,
@@ -445,6 +446,11 @@
                         Math.floor(ranges.xaxis.from),
                         Math.ceil(ranges.xaxis.to)
                     );
+                }).tooltip({
+                    position: {
+                        my: 'left bottom',
+                        at: 'left top'
+                    }
                 });
             }
 
