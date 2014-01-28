@@ -71,6 +71,7 @@ class DefaultController extends SearchController
         $tpl_vars['form'] = $form->createView();
 
         $factory = $this->get("bach.home.solarium_query_factory");
+        $factory->setDateField('cDateBegin');
 
         $show_tagcloud = $this->container->getParameter('show_tagcloud');
         if ( $show_tagcloud ) {
@@ -82,6 +83,12 @@ class DefaultController extends SearchController
         }
 
         $this->handleGeoloc($factory, $tpl_vars);
+
+        $slider_dates = $factory->getSliderDates(new Filters());
+        if ( is_array($slider_dates) ) {
+            $tpl_vars = array_merge($tpl_vars, $slider_dates);
+        }
+        $this->handleYearlyResults($factory, $tpl_vars);
 
         return $this->render(
             'BachHomeBundle:Default:index.html.twig',

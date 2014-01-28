@@ -276,9 +276,14 @@
             }
 
             function filterOnDate(min_date, max_date) {
+                {% if q is defined and q != '' -%}
                 var _loc = document.location.href;
                 var n = _loc.indexOf('?');
                 var _new_loc = _loc.substring(0, n != -1 ? n : _loc.lenght);
+                {% else -%}
+                var _new_loc = '{{ path('bach_search') }}';
+                {% endif %}
+
 
     {% if selected_min_date is defined and selected_max_date is defined %}
                 if ( min_date == '{{ selected_min_date }}'

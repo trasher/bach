@@ -454,6 +454,12 @@ class SolariumQueryFactory
      */
     public function getResultsByYear($field = null)
     {
+        if ( !isset($this->_rs) ) {
+            $container = new SolariumQueryContainer();
+            $container->setFilters(new Filters());
+            $this->performQuery($container, array());
+        }
+
         $facetSet = $this->_rs->getFacetSet();
         $dates = $facetSet->getFacet('years');
 
