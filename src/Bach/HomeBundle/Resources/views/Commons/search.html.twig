@@ -145,12 +145,6 @@
         <div id="map" class="hidden"></div>
         {%- endif %}
 
-    {% if solr_qry is defined %}
-    <div class="debug">
-        Raw query: <pre>{{ solr_qry }}</pre>
-    </div>
-    {% endif %}
-
     {% if searchResults is defined %}
     <section id="search_results" role="main">
         {% if searchResults|length > 0 %}

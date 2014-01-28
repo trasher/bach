@@ -286,12 +286,6 @@ class DefaultController extends SearchController
         $templateVars['by_year'] = $by_year;
 
         $templateVars['form'] = $form->createView();
-        if ( $this->container->get('kernel')->getEnvironment() == 'dev'
-            && isset($factory) && $factory->getRequest() !== null
-        ) {
-            //let's pass Solr raw query to template
-            $templateVars['solr_qry'] = $factory->getRequest()->getUri();
-        }
 
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $templateVars['suggestions'] = $suggestions;

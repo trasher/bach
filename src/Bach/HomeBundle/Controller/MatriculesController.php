@@ -205,13 +205,6 @@ class MatriculesController extends SearchController
         $by_year = $factory->getResultsByYear('date_enregistrement');
         $tpl_vars['by_year'] = $by_year;
 
-        if ( $this->container->get('kernel')->getEnvironment() == 'dev'
-            && isset($factory) && $factory->getRequest() !== null
-        ) {
-            //let's pass Solr raw query to template
-            $tpl_vars['solr_qry'] = $factory->getRequest()->getUri();
-        }
-
         $this->handleGeoloc(
             $factory,
             $tpl_vars
