@@ -376,8 +376,6 @@ class SolariumQueryFactory
         list($min_date, $max_date) = $this->_loadDatesFromStats();
 
         $results = array(
-            'date_step_unit'    => null,
-            'date_step'         => null,
             'min_date'          => null,
             'selected_min_date' => null,
             'max_date'          => null,
@@ -385,9 +383,6 @@ class SolariumQueryFactory
         );
 
         if ( $min_date && $max_date ) {
-            $step_unit = 'years';
-            $step = 1;
-
             $php_min_date = new \DateTime($min_date);
             $php_max_date = new \DateTime($max_date);
 
@@ -397,9 +392,6 @@ class SolariumQueryFactory
             } else if ( $diff->y === 0 ) {
                 return;
             }
-
-            $results['date_step_unit'] = $step_unit;
-            $results['date_step'] = $step;
 
             $results['min_date'] = (int)$php_min_date->format('Y');
             if ( $filters->offsetExists('date_begin') ) {
