@@ -42,7 +42,6 @@ class Filters extends \ArrayObject
         }
 
         if ( $request->get('filter_field') ) {
-
             $filter_fields = $request->get('filter_field');
             $filter_values = $request->get('filter_value');
 
@@ -65,6 +64,19 @@ class Filters extends \ArrayObject
                     $filter_values[$i]
                 );
             }
+        }
+
+        if ( $request->get('range_date_min') ) {
+            $this->addFilter(
+                'date_begin',
+                $request->get('range_date_min')
+            );
+        }
+        if ( $request->get('range_date_max') ) {
+            $this->addFilter(
+                'date_end',
+                $request->get('range_date_max')
+            );
         }
     }
 
@@ -91,6 +103,24 @@ class Filters extends \ArrayObject
             $this->offsetSet($field, $value);
             break;
         case 'cDate':
+            if ( strpos('|', $value === false) ) {
+                throw new \RuntimeException('Invalid date range!');
+            } else {
+                list($start, $end) = explode('|', $value);
+                $bdate = new \DateTime($start);
+                $edate = new \DateTime($end);
+
+                $this->offsetSet(
+                    'date_begin',
+                    $bdate->format('Y-01-01')
+                );
+
+                $this->offsetSet(
+                    'date_end',
+                    $edate->format('Y-12-31')
+                );
+            }
+            break;
         case 'dao':
             //avoid mutliple values
             $this->offsetSet($field, $value);

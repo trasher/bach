@@ -244,6 +244,13 @@ p {
     border: none;
 }
 
+[id=menu] div.ui-accordion-content.range_date {
+    padding: 0;
+}
+[id=menu] div.ui-accordion-content.range_date ol {
+    margin-left: 2.7em;
+}
+
 [id=menu] li.show_more {
     list-style-type: none;
 }
@@ -321,6 +328,10 @@ p {
     overflow: hidden;
     cursor: pointer;
     vertical-align: bottom;
+}
+
+[id=range_date_min], [id=range_date_max] {
+    width: 2.3em;
 }
 
 /**

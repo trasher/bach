@@ -32,7 +32,56 @@
         <div id="facets">
             {% for facet_field,facet in facets %}
                 <h3>{{ facet.label }}</h3>
-                <div>
+                <div{% if facet_field == 'cDate' %} class="range_date"{% endif %}>
+                {% if facet_field == 'cDate' %}
+                    <form id="cDate_change">
+                        <ul>
+                            <li>
+                                <label for="range_date_min">{% trans %}From:{% endtrans %}</label>
+                                <input type="text" name="range_date_min" id="range_date_min" value="{{ by_year_min }}"/>
+                                <label for="range_date_max"> {% trans %}To:{% endtrans %}</label>
+                                <input type="text" name="range_date_max" id="range_date_max" value="{{ by_year_max }}"/>
+                                <input type="submit" id="range_date_set" value="{% trans %}Go{% endtrans %}"/>
+                            </li>
+                        </ul>
+                    </form>
+                    <script type="text/javascript">
+                        $(function(){
+                            $('#range_date_min,#range_date_max').spinner({
+                                min: {{ by_year_min }},
+                                max: {{ by_year_max }},
+                                page: 100,
+                                value: $(this).val()
+                            });
+                            $('#range_date_set').button();
+                            $('#cDate_change').on('submit', function(){
+                                //check for date input validity
+                                var _min = $('#range_date_min').val();
+                                var _max = $('#range_date_max').val();
+
+                                var _valid = true;
+
+                                if ( isNaN(_min) || _min % 1 != 0 ) {
+                                    alert('{% trans %}Please enter an integer as start date!{% endtrans %}');
+                                    _valid = false;
+                                } else if (_min < {{by_year_min }})  {
+                                    alert('{% trans %}Start date must be greater than %date{% endtrans %}'.replace('%date', {{ by_year_min }}));
+                                    _valid = false;
+                                }
+
+                                if ( isNaN(_max) || _max % 1 != 0 ) {
+                                    alert('{% trans %}Please enter an integer as end date!{% endtrans %}');
+                                    _valid = false;
+                                } else if (_max > {{by_year_max }})  {
+                                    alert('{% trans %}End date must be earlier than %date{% endtrans %}'.replace('%date', {{ by_year_max }}));
+                                    _valid = false;
+                                }
+
+                                return _valid;
+                            });
+                        });
+                    </script>
+                {% endif %}
                     <ol>
                     {% set index_name = facet.index_name %}
 
@@ -200,6 +249,7 @@
     <script src="{{ asset('js/jquery-ui/jquery.ui.accordion.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.menu.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery-ui/jquery.ui.autocomplete.min.js')  }}" type="text/javascript"></script>
+    <script src="{{ asset('js/jquery-ui/jquery.ui.spinner.min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/jQDateRangeSlider-min.js')  }}" type="text/javascript"></script>
     <script src="{{ asset('js/flot/jquery.flot.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/flot/jquery.flot.selection.min.js') }}" type="text/javascript"></script>

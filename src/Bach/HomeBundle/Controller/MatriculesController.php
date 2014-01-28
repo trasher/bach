@@ -251,7 +251,7 @@ class MatriculesController extends SearchController
      *
      * @return array
      */
-    protected function getDateFields()
+    protected function getFacetsDateFields()
     {
         return array(
             'date_enregistrement',

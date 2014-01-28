@@ -184,22 +184,6 @@ class SolariumQueryFactory
                 $this->_query->createFilterQuery($name)
                     ->setQuery($query);
                 break;
-            case 'cDate':
-                if ( strpos('|', $value === false) ) {
-                    throw new \RuntimeException('Invalid date range!');
-                } else {
-                    list($start, $end) = explode('|', $value);
-                    $bdate = new \DateTime($start);
-                    $edate = new \DateTime($end);
-                    $this->_query->createFilterQuery($name)
-                        ->setQuery(
-                            '+' . $this->_date_field . ':[' .
-                            $bdate->format('Y-m-d\TH:i:s\Z') .
-                            ' TO ' .
-                            $edate->format('Y-m-d\TH:i:s\Z')  . ']'
-                        );
-                }
-                break;
             case 'geoloc':
                 $query = '';
                 foreach ( $value as $v ) {
@@ -726,14 +710,8 @@ class SolariumQueryFactory
     private function _getDates(Filters $filters)
     {
         list($min_date, $max_date) = $this->_loadDatesFromStats(false, true);
-        if ( !$filters->offsetExists('cDate') ) {
-            $low = new \DateTime($min_date);
-            $up = new \DateTime($max_date);
-        } else {
-            list($start, $end) = explode('|', $filters->offsetGet('cDate'));
-            $low = new \DateTime($start);
-            $up = new \DateTime($end);
-        }
+        $low = new \DateTime($min_date);
+        $up = new \DateTime($max_date);
         return array($low, $up);
     }
 

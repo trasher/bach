@@ -202,7 +202,7 @@ abstract class SearchController extends Controller
                 if ( !$filters->offsetExists($solr_field)
                     || !$filters->hasValue($solr_field, $item)
                 ) {
-                    if ( in_array($solr_field, $this->getDateFields()) ) {
+                    if ( in_array($solr_field, $this->getFacetsDateFields()) ) {
                         $start = null;
                         $end = null;
 
@@ -274,7 +274,7 @@ abstract class SearchController extends Controller
                     }
                 }
 
-                if ( in_array($facet->getSolrFieldName(), $this->getDateFields()) ) {
+                if ( in_array($facet->getSolrFieldName(), $this->getFacetsDateFields()) ) {
                     if ( count($values) == 1
                         && (in_array(1, $values)
                         || strpos('|', array_keys($values)[0]) === false)
@@ -316,7 +316,7 @@ abstract class SearchController extends Controller
             }
         }
 
-        foreach ( $this->getDateFields() as $date_field ) {
+        foreach ( $this->getFacetsDateFields() as $date_field ) {
             if ( $filters->offsetExists($date_field) ) {
                 //set label for current date range filter
                 if ( !isset($facet_labels[$date_field])) {
@@ -377,7 +377,7 @@ abstract class SearchController extends Controller
      *
      * @return array
      */
-    abstract protected function getDateFields();
+    abstract protected function getFacetsDateFields();
 
     /**
      * Get Solarium EntryPoint

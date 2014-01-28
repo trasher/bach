@@ -121,7 +121,7 @@ class DefaultController extends SearchController
      *
      * @return array
      */
-    protected function getDateFields()
+    protected function getFacetsDateFields()
     {
         return array('cDate');
     }
