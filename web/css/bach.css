@@ -389,7 +389,7 @@ p {
     background: transparent url(../img/select_arrow.png) 100% 50% no-repeat;
     border: 1px solid #d1c6c0;
     overflow: hidden;
-    width: 14em;
+    width: 15em;
     margin: 0 .1em;
     line-height: auto;
 }
@@ -397,7 +397,7 @@ p {
 .select_container select {
     background: none;
     border: none;
-    width: 16em;
+    width: 16.5em;
     display: inline-block;
     color: #fff;
     -webkit-appearance: none;
