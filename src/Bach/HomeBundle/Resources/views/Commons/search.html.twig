@@ -693,6 +693,7 @@
                                         onEachFeature: onEachFeature
                                     });
                                     _layers.addLayer(_zones_layer);
+                                    _groups.addOverlay(_zones_layer, 'zones');
                                     _state_changed = true;
 
                                 } else {
@@ -716,7 +717,7 @@
                     }
 
                     if ( zoom >= 9 ) {
-                        if ( !_zones_overlay ) {
+                        if ( !_zones_overlay && _zones_layer ) {
                             _groups.addOverlay(_zones_layer, 'zones');
                         }
                     }
