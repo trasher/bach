@@ -420,12 +420,16 @@
                 legend: { noColumns: 2 },
                 xaxis: { tickDecimals: 0 },
                 yaxis: { tickDecimals: 0 },
-                selection: {mode: "x"},
+                selection: {
+                    mode: "x",
+                    color: 'rgb(209,198,192)'
+                },
                 grid: {
                     backgroundColor: null,
                     borderWidth: 1,
                     borderColor: "rgb(163,150,141)"
-                }
+                },
+                shadowSize: 0
             };
 
             var _dates_plot = $('#dates_plot');
