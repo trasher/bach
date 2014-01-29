@@ -491,8 +491,7 @@ p {
 [id=search_results] article figure {
     float:left;
     width: 150px;
-    height: 150px;
-    margin: 0 0 .5em 0;
+    margin: .5em 0;
     text-align: center;
     overflow: hidden;
 }
