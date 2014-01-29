@@ -571,7 +571,7 @@
 
                 function resetHighlight(e) {
                     {% for field in geojson|keys -%}
-                    {{ field }}_points.resetStyle(e.target);
+                    {{ field|replace({'-': '_'}) }}_points.resetStyle(e.target);
                     {% endfor %}
                     info.update();
                 }
@@ -590,16 +590,16 @@
                 }
 
                 {% for field, geo in geojson -%}
-                    var {{ field }}_points = L.geoJson({{ geo|raw }}, {
+                    var {{ field|replace({'-': '_'}) }}_points = L.geoJson({{ geo|raw }}, {
                         style: style,
                         onEachFeature: onEachFeature
                     });
-                    var {{ field }}_layer = L.layerGroup([{{ field }}_points]);
+                    var {{ field|replace({'-': '_'}) }}_layer = L.layerGroup([{{ field|replace({'-': '_'}) }}_points]);
                 {% endfor %}
 
                 var overlays = {
                 {% for field in geojson|keys -%}
-                    '{{ field }}': {{ field }}_layer{% if not loop.last %},{% endif %}
+                    '{{ field|replace({'-': '_'}) }}': {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
                 {% endfor %}
                 };
                 var _groups = L.control.layers({}, overlays).addTo(map);
@@ -611,7 +611,7 @@
 
                 var _layers = L.layerGroup([
                  {% for field in geojson|keys -%}
-                    {{ field }}_layer{% if not loop.last %},{% endif %}
+                    {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
                 {% endfor %}
                 ]).addTo(map);
 
@@ -629,7 +629,7 @@
 
                 var allpoints = L.featureGroup([
                  {%- for field in geojson|keys -%}
-                    {{ field }}_points{% if not loop.last %},{% endif %}
+                    {{ field|replace({'-': '_'}) }}_points{% if not loop.last %},{% endif %}
                 {%- endfor -%}
                 ]);
 
