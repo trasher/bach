@@ -599,7 +599,7 @@
 
                 var overlays = {
                 {% for field in geojson|keys -%}
-                    '{{ field|replace({'-': '_'}) }}': {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
+                    '{{ solr_fields.getFieldLabel(field) }}': {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
                 {% endfor %}
                 };
                 var _groups = L.control.layers({}, overlays).addTo(map);

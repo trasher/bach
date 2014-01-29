@@ -27,6 +27,7 @@ use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\TagCloud;
 use Bach\HomeBundle\Entity\GeolocFields;
 use Bach\HomeBundle\Service\SolariumQueryFactory;
+use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 
 /**
  * Bach search controller
@@ -363,6 +364,9 @@ abstract class SearchController extends Controller
             );
             $tpl_vars['geojson'] = $geojson;
         }
+
+        $solr_fields = new Fields();
+        $tpl_vars['solr_fields'] = $solr_fields;
     }
 
     /**
