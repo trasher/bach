@@ -75,6 +75,7 @@ abstract class SearchController extends Controller
     protected function searchTemplateVariables($view_params, $page = 1)
     {
         $common_vars = $this->commonTemplateVariables();
+        $solr_fields = new Fields();
 
         $tpl_vars = array(
             'page'              => $page,
@@ -84,7 +85,8 @@ abstract class SearchController extends Controller
             'view'              => $view_params->getView(),
             'results_order'     => $view_params->getOrder(),
             'map_facets_name'   => $this->mapFacetsName(),
-            'q'                 => ''
+            'q'                 => '',
+            'solr_fields'       => $solr_fields
         );
 
         return array_merge($common_vars, $tpl_vars);
@@ -364,9 +366,6 @@ abstract class SearchController extends Controller
             );
             $tpl_vars['geojson'] = $geojson;
         }
-
-        $solr_fields = new Fields();
-        $tpl_vars['solr_fields'] = $solr_fields;
     }
 
     /**
