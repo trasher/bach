@@ -189,7 +189,7 @@ class SolariumQueryFactory
                 foreach ( $value as $v ) {
                     $query .= '+(';
                     foreach ( $this->_geoloc as $field ) {
-                        $query .= $field . ':"' . $v . '"';
+                        $query .= ' ' . $field . ':"' . $v . '"';
                     }
                     $query .= ')';
                 }
@@ -482,7 +482,9 @@ class SolariumQueryFactory
             }
 
             foreach ( array_keys($values) as $key ) {
-                $all_values = array_merge($all_values, $values[$key]);
+                if ( is_array($values[$key]) ) {
+                    $all_values = array_merge($all_values, $values[$key]);
+                }
             }
 
             if ( count($all_values) > 0 ) {
