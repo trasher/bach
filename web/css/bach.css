@@ -327,10 +327,6 @@ p {
  * ===== Search form =====
  */
 
-[id=search] {
-    margin-bottom: 1em;
-}
-
 [id=search] input[type=text],
 [id=search] button[type=submit] {
     border: none;
@@ -382,6 +378,12 @@ p {
 /**
  * ===== Search results =====
  */
+
+#suggestions {
+    background: #f5f1ee;
+    padding: 1em;
+    margin-bottom: 1em;
+}
 
 /** View switcher */
 [id=change_view] {

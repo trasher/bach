@@ -148,7 +148,7 @@
 
     {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
     <aside id="suggestions">
-        {% trans %}Additionnal search suggestions:{% endtrans %}
+        <strong>{% trans %}Additionnal search suggestions:{% endtrans %}</strong><br/>
         {% for term,termResult in suggestions %}
             {% if termResult|length > 0 %}
                 {% for suggest in termResult %}
