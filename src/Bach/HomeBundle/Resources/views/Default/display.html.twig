@@ -12,9 +12,39 @@
 
 {% block js_calls %}
     {{ parent() }}
+    <script src="{{ asset('js/jquery-ui/jquery.ui.tabs.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block javascripts %}
+        $(function() {
+            $('article > ul a').each(function(){
+                var _this = $(this);
+                var _href = _this.attr('href') + '/ajax';
+                if ( !_href.match(/^#.*/) ) {
+                    _this.attr('href', _href);
+                }
+            });
+
+            $('article').tabs({
+                //active: $('#tabs li.active').index(),
+                beforeLoad: function( event, ui ) {
+                    if ( ui.tab.data( "loaded" ) ) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                    $('body').append(_img);
+ 
+                    ui.jqXHR.success(function() {
+                        ui.tab.data( "loaded", true );
+                    });
+                },
+                load: function(event, ui){
+                    $('#loading').remove();
+                }
+            });
+        });
         {% include 'BachHomeBundle:Default:flowplayer.js.twig' %}
 {% endblock %}

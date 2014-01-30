@@ -99,12 +99,14 @@ class DisplayEADFragment extends \Twig_Extension
      * @param string  $docid       Document unique identifier
      * @param boolean $full        Displays full fragment, default to false
      * @param boolean $hasChildren Document has children
+     * @param boolean $hasComments Document has comments
      * @param boolean $ajax        Called from ajax
      *
      * @return string
      */
-    public function display($fragment, $docid, $full = false, $hasChildren = false, $ajax = false)
-    {
+    public function display($fragment, $docid, $full = false, $hasChildren = false,
+        $hasComments = false, $ajax = false
+    ) {
         $proc = new \XsltProcessor();
         $xsl = $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_fragment.xsl')
@@ -131,6 +133,9 @@ class DisplayEADFragment extends \Twig_Extension
         $proc->setParameter('', 'covers_dir', $this->_covers_dir);
         if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
+        }
+        if ( $hasComments === true ) {
+            $proc->setParameter('', 'comments', 'true');
         }
         if ( $ajax === true ) {
             $proc->setParameter('', 'ajax', 'true');
@@ -262,6 +267,9 @@ class DisplayEADFragment extends \Twig_Extension
             break;
         case 'Language:':
             return _('Language:');
+            break;
+        case 'Comments':
+            return _('Comments');
             break;
         default:
             //TODO: add an alert in logs, a translation may be missing!

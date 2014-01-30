@@ -55,8 +55,8 @@ bach_geozones:
     defaults: {_controller: BachHomeBundle:Default:getZones}
 
 bach_add_comment:
-    pattern: /comment/{docid}/add
-    defaults: { _controller: BachHomeBundle:Comments:add }
+    pattern: /comment/{docid}/add/{ajax}
+    defaults: { _controller: BachHomeBundle:Comments:add, ajax: false }
 
 bach_classification:
     pattern: /classification-scheme

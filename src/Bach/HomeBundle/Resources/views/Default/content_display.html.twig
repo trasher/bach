@@ -1,32 +1,50 @@
+    {% if ariane is defined or archdesc is defined %}
+        <ul class="breadcrumb">
+            {% if archdesc is defined %}
+                <li>
+                    <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ archdesc }}</a>
+                </li>
+            {% endif %}
+            {% if ariane is defined %}
+                {% for fil in ariane %}
+                <li>
+                    <a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">
+                    {%- if fil.cUnittitle is defined -%}
+                        {{ fil.cUnittitle }}
+                    {%- else -%}
+                        {% trans %}Untitled unit{% endtrans %}
+                    {%- endif -%}
+                    </a>
+                </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    {% endif %}
+
     <article about="{{ docid }}">
-        {% if ariane is defined or archdesc is defined %}
-            <ul class="breadcrumb">
-                {% if archdesc is defined %}
-                    <li>
-                        <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ archdesc }}</a>
-                    </li>
-                {% endif %}
-                {% if ariane is defined %}
-                    {% for fil in ariane %}
-                    <li>
-                        <a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">
-                        {%- if fil.cUnittitle is defined -%}
-                            {{ fil.cUnittitle }}
-                        {%- else -%}
-                            {% trans %}Untitled unit{% endtrans %}
-                        {%- endif -%}
-                        </a>
-                    </li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-        {% endif %}
+        <header>
+            <h3 property="dc:title">
+                {%- if document.cUnittitle is defined -%}
+                    {{ document.cUnittitle }}
+                {%- else -%}
+                    {% trans %}Untitled unit{% endtrans %}
+                {%- endif -%}
+                {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
+                    <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
+                {%- endif -%}
+            </h3>
+        </header>
         {% if children == false %}
             {% set hasChildren = false %}
         {% else %}
             {% set hasChildren = true %}
         {% endif %}
-        {{ displayFragment(document.fragment, docid, true, hasChildren, ajax)|raw }}
+        {% if comments is defined %}
+            {% set hasComments = true %}
+        {% else %}
+            {% set hasComments = false %}
+        {% endif %}
+        {{ displayFragment(document.fragment, docid, true, hasChildren, hasComments, ajax)|raw }}
         {% if not children == false %}
             <section id="children_documents">
                 <header>
@@ -62,7 +80,7 @@
                     <h3>{% trans %}User comments{% endtrans %}</h3>
                 </header>
                 {% for comment in comments %}
-                    <article>
+                    <div>
                         <header>
                             <h4>
                                 {{ comment.subject }},
@@ -80,7 +98,7 @@
                         <div>
                             {{ comment.message|raw }}
                         </div>
-                    </article>
+                    </div>
                 {% endfor %}
             </section>
         {% endif %}

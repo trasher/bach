@@ -5,7 +5,7 @@
         {% if lists[field_name] is defined %}
             <ul>
             {% for field in lists[field_name] %}
-                <li><a href="{{ path('bach_search', {filter_field: field_name, filter_value: field.term}) }}">{{ field.term }} ({{ field.count }})</a></li>
+                <li><a href="{{ path('bach_search', {filter_field: field_name, filter_value: field.term}) }}">{{ field.term }}</a> ({{ field.count }})</li>
             {% endfor %}
             </ul>
         {% endif %}

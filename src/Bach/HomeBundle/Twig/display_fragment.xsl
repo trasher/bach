@@ -18,6 +18,7 @@ Displays an EAD fragment as HTML
     <xsl:param name="full" select="1"/>
     <xsl:param name="ajax" select="''"/>
     <xsl:param name="children" select="''"/>
+    <xsl:param name="comments" select="''"/>
     <xsl:param name="viewer_uri" select="''"/>
     <xsl:param name="covers_dir" select="''"/>
     <xsl:param name="cdc" select="'false'"/>
@@ -34,17 +35,11 @@ Displays an EAD fragment as HTML
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <div id="{$id}">
-            <xsl:attribute name="class">
-                <xsl:text>content</xsl:text>
-                <xsl:if test="/archdesc">
-                    <xsl:text> archdesc</xsl:text>
-                </xsl:if>
-            </xsl:attribute>
+
             <xsl:choose>
                 <xsl:when test="$full = 1">
                     <xsl:if test="$cdc = 'false'">
-                        <ul class="access">
+                        <ul>
                             <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Content')"/></a></li>
                             <xsl:if test=".//dao|.//daoloc">
                                 <li><a href="#relative_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Documents')"/></a></li>
@@ -52,27 +47,39 @@ Displays an EAD fragment as HTML
                             <xsl:if test="not($children = '')">
                                 <li><a href="#children_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Sub-units')"/></a></li>
                             </xsl:if>
+                            <xsl:if test="not($comments = '')">
+                                <li><a href="#comments"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Comments')"/></a></li>
+                            </xsl:if>
                             <li><a href="__path_add_comment__"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Add comment')"/></a></li>
                         </ul>
                     </xsl:if>
 
-                    <xsl:apply-templates mode="full"/>
+                    <div id="{$id}">
+                        <xsl:attribute name="class">
+                            <xsl:text>content</xsl:text>
+                            <xsl:if test="/archdesc">
+                                <xsl:text> archdesc</xsl:text>
+                            </xsl:if>
+                        </xsl:attribute>
 
-                    <xsl:if test="did/unitid">
-                        <xsl:if test="did/unitid/@label">
-                            <xsl:choose>
-                                <xsl:when test="/archdesc">
-                                    <h3><xsl:value-of select="concat(did/unitid/@label, ' ')"/></h3>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <strong><xsl:value-of select="concat(did/unitid/@label, ' ')"/></strong>
-                                </xsl:otherwise>
-                            </xsl:choose>
+                        <xsl:apply-templates mode="full"/>
+
+                        <xsl:if test="did/unitid">
+                            <xsl:if test="did/unitid/@label">
+                                <xsl:choose>
+                                    <xsl:when test="/archdesc">
+                                        <h3><xsl:value-of select="concat(did/unitid/@label, ' ')"/></h3>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <strong><xsl:value-of select="concat(did/unitid/@label, ' ')"/></strong>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:if>
+                            <span class="unitid" property="dc:identifier">
+                                <xsl:value-of select="did/unitid"/>
+                            </span>
                         </xsl:if>
-                        <span class="unitid" property="dc:identifier">
-                            <xsl:value-of select="did/unitid"/>
-                        </span>
-                    </xsl:if>
+                    </div>
 
                     <xsl:if test=".//dao|.//daoloc">
                         <figure id="relative_documents">
@@ -87,10 +94,17 @@ Displays an EAD fragment as HTML
                     </xsl:if>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:apply-templates mode="resume"/>
+                    <div id="{$id}">
+                        <xsl:attribute name="class">
+                            <xsl:text>content</xsl:text>
+                            <xsl:if test="/archdesc">
+                                <xsl:text> archdesc</xsl:text>
+                            </xsl:if>
+                        </xsl:attribute>
+                        <xsl:apply-templates mode="resume"/>
+                    </div>
                 </xsl:otherwise>
             </xsl:choose>
-        </div>
     </xsl:template>
 
     <xsl:template match="did" mode="full">
@@ -104,7 +118,7 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="unittitle" mode="full">
-        <header>
+        <!--header>
             <h2 property="dc:title">
                 <xsl:apply-templates mode="full"/>
                 <xsl:if test="../unitdate and not(../unitdate = '')">
@@ -118,7 +132,7 @@ Displays an EAD fragment as HTML
                     </span>
                 </xsl:if>
             </h2>
-        </header>
+        </header-->
         <xsl:apply-templates mode="specific" select="../../scopecontent"/>
     </xsl:template>
 

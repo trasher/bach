@@ -57,6 +57,32 @@ a {
     color: #b73a34!important;
 }
 
+.ui-widget-content > section > header {
+    display: none;
+}
+
+#container .ui-tabs .ui-tabs-nav li {
+    margin-top: .5em;
+}
+
+#container .ui-tabs .ui-tabs-nav li a {
+    padding: .2em 1em;
+}
+
+#container .ui-tabs-nav.ui-widget-header {
+    border: none;
+}
+
+#container .ui-tabs .ui-tabs-panel {
+    padding: 1em 0 0;
+}
+
+article.ui-widget-content {
+    margin-top: .5em;
+    border: none;
+    padding: 0;
+}
+
 a:hover {
     text-decoration: underline;
 }
@@ -1250,15 +1276,6 @@ div.sonata-bc .row-fluid .span6 {
 /*
  * ====== Comments ======
  */
-#comments {
-    background-color: #d1c6c0;
-    padding: .5em;
-    border-radius: 6px;
-}
-
-#comments h3 {
-    border-bottom: 1px dashed;
-}
 
 #comments header .author {
     font-size: .85em;

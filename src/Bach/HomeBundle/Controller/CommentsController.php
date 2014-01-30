@@ -33,11 +33,12 @@ class CommentsController extends Controller
     /**
      * Add a comment
      *
-     * @param string $docid Document id
+     * @param string  $docid Document id
+     * @param boolean $ajax  Ajax render
      *
      * @return void
      */
-    public function addAction($docid)
+    public function addAction($docid, $ajax = false)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -57,7 +58,13 @@ class CommentsController extends Controller
 
         $form = $this->createForm(
             new CommentType(),
-            $comment
+            $comment,
+            array(
+                'action' => $this->generateUrl(
+                    'bach_add_comment',
+                    array('docid' => $docid)
+                )
+            )
         );
 
         $form->handleRequest($request);
@@ -78,8 +85,13 @@ class CommentsController extends Controller
                 )
             );
         } else {
+            $template = 'add.html.twig';
+            if ( $ajax === 'ajax' ) {
+                $template = 'add_form.html.twig';
+            } else {
+            }
             return $this->render(
-                'BachHomeBundle:Comment:add.html.twig',
+                'BachHomeBundle:Comment:' . $template,
                 array(
                     'docid'     => $docid,
                     'form'      => $form->createView(),
