@@ -340,21 +340,24 @@ p {
 
 [id=search] > div {
     white-space: nowrap;
+    position: relative;
 }
 
 [id=search] input[type=text] {
-    width: 96%;
-    padding: 0 .5em;
+    width: 95%;
+    padding: 0 1%;
 }
 
 [id=search] button[type=submit] {
     width: 32px;
     background: #b73a34 url(../img/sprite.png) -8px -8px no-repeat;
-    margin-left: -.3em;
     text-indent: 5em;
     overflow: hidden;
     cursor: pointer;
     vertical-align: bottom;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 [id=range_date_min], [id=range_date_max] {
