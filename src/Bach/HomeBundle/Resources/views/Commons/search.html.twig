@@ -494,7 +494,9 @@
             var map;
 
             var _initMap = function() {
-                map = L.map('map');
+                map = L.map('map', {
+                    minZoom: 1
+                });
 
                 var fullScreen = new L.Control.FullScreen();
                 map.addControl(fullScreen);
