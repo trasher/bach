@@ -1289,6 +1289,9 @@ div.sonata-bc .row-fluid .span6 {
 
 .cdcarchdesc {
     margin-bottom: 1em;
+    background-color: #f5f1ee;
+    border-radius: 6px;
+    padding: .5em 1.5em
 }
 
 .cdc .expand {
