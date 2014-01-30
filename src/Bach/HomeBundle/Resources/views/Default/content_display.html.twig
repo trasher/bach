@@ -23,7 +23,7 @@
 
     <article about="{{ docid }}">
         <header>
-            <h3 property="dc:title">
+            <h2 property="dc:title">
                 {%- if document.cUnittitle is defined -%}
                     {{ document.cUnittitle }}
                 {%- else -%}
@@ -32,7 +32,7 @@
                 {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
                     <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
                 {%- endif -%}
-            </h3>
+            </h2>
         </header>
         {% if children == false %}
             {% set hasChildren = false %}
