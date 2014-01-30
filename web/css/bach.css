@@ -571,6 +571,7 @@ p {
     text-align: center;
     border: none;
     padding: 0;
+    vertical-align: top;
 }
 
 /*[id=search_results] article:first-of-type {

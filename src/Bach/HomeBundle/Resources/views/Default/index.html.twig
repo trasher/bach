@@ -5,23 +5,6 @@
 {% block show_results %}
             {% for document in searchResults %}
                 <article id="result_{{ document.uniqid }}" role="document" about="{{ document.fragmentid }}"{% if view == 'thumbs' %} class="thumbs"{% endif %}>
-                    {% if view == 'thumbs' %}
-                    <h3 property="dc:title">
-                        <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
-                        {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
-                        {%- elseif document.cUnittitle is defined -%}
-                            {{ document.cUnittitle }}
-                        {%- else -%}
-                            {% trans %}Untitled unit{% endtrans %}
-                        {%- endif -%}
-                        {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
-                            <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
-                        {%- endif -%}
-                        </a>
-                    </h3>
-                    {% endif %}
-
                     {% if show_pics %}
                     <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
                         {% if document.dao is defined %}
@@ -32,9 +15,8 @@
                     </figure>
                     {% endif %}
 
-                    {% if view == 'list' or view == 'txtlist' %}
                     <div{% if not show_pics %} class="nopic"{% endif %}>
-                    {%- if document.parents_titles is defined or document.archDescUnitTitle is defined -%}
+                    {%- if (view == 'list' or view == 'txtlist') and (document.parents_titles is defined or document.archDescUnitTitle is defined) -%}
                         <ul class="breadcrumb">
                         {%- if document.archDescUnitTitle is defined -%}
                             <li>
@@ -68,9 +50,10 @@
                         {%- endif -%}
                         </a>
                     </h3>
+                    {% if view == 'list' or view == 'txtlist' %}
                     {{ displayFragment(document.fragment, document.fragmentid)|raw }}
-                    </div>
                     {% endif %}
+                    </div>
                 </article>
             {% endfor %}
 {% endblock %}
