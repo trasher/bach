@@ -57,7 +57,8 @@ a {
     color: #b73a34!important;
 }
 
-.ui-widget-content > section > header {
+#children_documents > header,
+#comments > header {
     display: none;
 }
 
