@@ -340,7 +340,7 @@ p {
 }
 
 [id=search] input[type=text] {
-    width: 95%;
+    width: 98%;
     padding: 0 1%;
 }
 
@@ -354,6 +354,23 @@ p {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.ui-autocomplete.ui-widget-content {
+    background: #332928;
+    color: white;
+}
+
+.ui-autocomplete.ui-widget-content a {
+    color: white;
+    cursor: pointer;
+}
+
+.ui-autocomplete.ui-widget-content a .ui-state-highlight {
+    background: #b73a34;
+    border: none;
+    color: white;
+    padding: .2em 0 .2em .2em;
 }
 
 [id=range_date_min], [id=range_date_max] {
