@@ -24,11 +24,14 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="dsc">
-        <ul class="cdc">
+        <ul>
             <xsl:apply-templates select="./c|./c01|./c02|./c03|./c04|./c05|./c06|./c07|./c08|./c09|./c10|./c11|./c12" mode="lvl"/>
             <xsl:if test="count(//not_matched/*) &gt; 0">
                 <li>
-                    <strong><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayCdc::i18nFromXsl', 'Not classified')"/></strong>
+                    <input type="checkbox" id="item-nc"/>
+                    <label for="item-nc">
+                        <strong><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayCdc::i18nFromXsl', 'Not classified')"/></strong>
+                    </label>
                     <ul>
                         <xsl:for-each select="//not_matched/*">
                             <li>
@@ -52,9 +55,20 @@ Displays an EAD fragment as HTML
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+        <xsl:variable name="hasDocs" select="php:function('Bach\HomeBundle\Twig\DisplayCdc::hasPublished', ., //dadocs)"/>
 
         <li id="{$id}">
-            <xsl:apply-templates/>
+            <xsl:choose>
+                <xsl:when test="count(child::c) &gt; 0 or $hasDocs">
+                    <input type="checkbox" id="item-{$id}"/>
+                    <label for="item-{$id}"><xsl:apply-templates select="did"/></label>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="class">standalone</xsl:attribute>
+                    <xsl:apply-templates select="did"/>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:apply-templates select="*[not(local-name() = 'did')]"/>
             <xsl:if test="bioghist|controlaccess">
                 <section class="extended_informations well">
                     <xsl:apply-templates mode="extends"/>
@@ -209,7 +223,7 @@ Displays an EAD fragment as HTML
         <xsl:variable name="parent-name" select="local-name(parent::node())"/>
         <xsl:choose>
             <xsl:when test="$parent-name = 'list'">
-                <li>
+                <li class="standalone">
                     <xsl:apply-templates/>
                 </li>
             </xsl:when>
@@ -314,7 +328,7 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="text()">
-        <xsl:copy-of select="."/>
+        <xsl:copy-of select="normalize-space(.)"/>
     </xsl:template>
 
     <xsl:template match="lb">

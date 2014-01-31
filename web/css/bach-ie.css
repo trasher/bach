@@ -24,3 +24,11 @@
     background-color: #fff;
     padding: 1em;
 }
+
+.css-treeview input ~ ul {
+    display: block!important;
+}
+
+.css-treeview label {
+    background-position: 0 -16px!important;
+}

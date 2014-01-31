@@ -106,7 +106,6 @@ class DisplayCdc extends \Twig_Extension
             simplexml_load_file(__DIR__ . '/display_cdc.xsl')
         );
 
-
         $dadocs = $xml->addChild('dadocs');
         foreach ( $docs as $doc ) {
             $dadocs->addChild($doc->getName(), $doc);
@@ -116,7 +115,7 @@ class DisplayCdc extends \Twig_Extension
         $this->_setNotMatched($xml, $docs);
 
         $proc->registerPHPFunctions();
-        $text .= $proc->transformToXml($xml);
+        $text .= '<div class="css-treeview">' . $proc->transformToXml($xml) . '</div>';
 
         $router = $this->_router;
         $request = $this->_request;
