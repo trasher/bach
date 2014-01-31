@@ -74,4 +74,11 @@ msgid "Facets"
 msgstr "Facets"
 
 msgid "Solr field name"
+msgstr "Solr field name"
+
+msgid "Your browser is quite old, some features may not work."
+msgstr "Your browser is quite old, some features may not work."
+
+msgid "You may have a better experience with a more recent or an alternative one."
+msgstr "You may have a better experience with a more recent or an alternative one."
 

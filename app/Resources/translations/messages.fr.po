@@ -67,3 +67,9 @@ msgstr "Mon profil"
 msgid "Manage Solr"
 msgstr "Gérer Solr"
 
+msgid "Your browser is quite old, some features may not work."
+msgstr "Votre navigateur est plutôt ancien, certaines choses pourraient ne pas fonctionner."
+
+msgid "You may have a better experience with a more recent or an alternative one."
+msgstr "Vous seriez davantage satifsait avec une version plus récente ou un navigateur alternatif."
+
