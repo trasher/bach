@@ -21,7 +21,7 @@
         </ul>
     {% endif %}
 
-    <article about="{{ docid }}">
+    <article about="{{ docid }}" class="show_fragment">
         <header>
             <h2 property="dc:title">
                 {%- if document.cUnittitle is defined -%}
@@ -103,3 +103,35 @@
             </section>
         {% endif %}
     </article>
+
+    <script type="text/javascript">
+        $(function() {
+            $('article.show_fragment > ul a').each(function(){
+                var _this = $(this);
+                var _href = _this.attr('href') + '/ajax';
+                if ( !_href.match(/^#.*/) ) {
+                    _this.attr('href', _href);
+                }
+            });
+
+            $('article.show_fragment').tabs({
+                //active: $('#tabs li.active').index(),
+                beforeLoad: function( event, ui ) {
+                    if ( ui.tab.data( "loaded" ) ) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                    $('body').append(_img);
+ 
+                    ui.jqXHR.success(function() {
+                        ui.tab.data( "loaded", true );
+                    });
+                },
+                load: function(event, ui){
+                    $('#loading').remove();
+                }
+            });
+        });
+    </script>
