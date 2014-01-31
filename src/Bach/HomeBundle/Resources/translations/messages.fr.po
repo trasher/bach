@@ -22,8 +22,8 @@ msgstr "Effacer"
 msgid "Sub units"
 msgstr "Sous unités"
 
-msgid "Active filters:"
-msgstr "Filtres actifs :"
+msgid "Active filters"
+msgstr "Filtres actifs"
 
 msgid "Remove filter on '%value%'"
 msgstr "Supprimer le filtre sur « %value% »"
@@ -222,6 +222,69 @@ msgstr "Aucun résultat trouvé :/"
 
 msgid "Show/Hide sidebar"
 msgstr "Afficher/Masquer la barre de côté"
+
+msgid "Matricules search"
+msgstr "Recherche de matricules"
+
+msgid "Search in matricules"
+msgstr "Chercher dans les matricules"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Surnames"
+msgstr "Prénoms"
+
+msgid "Year of birth"
+msgstr "Année de naissance"
+
+msgid "Place of birth"
+msgstr "Lieu de naissance"
+
+msgid "Year of recording"
+msgstr "Année d'enregistrement"
+
+msgid "Place of recording"
+msgstr "Lieu d'enregistrement"
+
+msgid "From:"
+msgstr "De :"
+
+msgid "To:"
+msgstr "À :"
+
+msgid "Go"
+msgstr "Go"
+
+msgid "Please enter an integer as start date!"
+msgstr "Veuillez entrer un entier comme date de début !"
+
+msgid "Start date must be greater than %date"
+msgstr "La date de début doit être supérieure à %date"
+
+msgid "Please enter an integer as end date!"
+msgstr "Veuillez entrer un entier comme date de fin !"
+
+msgid "End date must be earlier than %date"
+msgstr "La date de fin doit être antérieure à %date"
+
+msgid "Switch to advanced search form"
+msgstr "Aller au formulaire de recherche avancée"
+
+msgid "Advanced search"
+msgstr "Recherche avancée"
+
+msgid "Switch to simple search form"
+msgstr "Aller au formulaire de recherche simple"
+
+msgid "Simple search"
+msgstr "Recherche simple"
+
+msgid "Click and drag to select dates period"
+msgstr "Cliquez et glissez pour sélectionner une période de dates"
+
+msgid "Zones"
+msgstr "Zones"
 
 #Admin translations
 msgid "Facets"

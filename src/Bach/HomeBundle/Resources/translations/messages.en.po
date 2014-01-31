@@ -23,8 +23,8 @@ msgstr "Clear"
 msgid "Sub units"
 msgstr "Sub units"
 
-msgid "Active filters:"
-msgstr "Active filters:"
+msgid "Active filters"
+msgstr "Active filters"
 
 msgid "Remove filter on '%value%'"
 msgstr "Remove filter on '%value%'"
@@ -223,6 +223,69 @@ msgstr "No results found :/"
 
 msgid "Show/Hide sidebar"
 msgstr "Show/Hide sidebar"
+
+msgid "Matricules search"
+msgstr "Matricules search"
+
+msgid "Search in matricules"
+msgstr "Search in matricules"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Surnames"
+msgstr "Surnames"
+
+msgid "Year of birth"
+msgstr "Year of birth"
+
+msgid "Place of birth"
+msgstr "Place of birth"
+
+msgid "Year of recording"
+msgstr "Year of recording"
+
+msgid "Place of recording"
+msgstr "Place of recording"
+
+msgid "From:"
+msgstr "From:"
+
+msgid "To:"
+msgstr "To:"
+
+msgid "Go"
+msgstr "Go"
+
+msgid "Please enter an integer as start date!"
+msgstr "Please enter an integer as start date!"
+
+msgid "Start date must be greater than %date"
+msgstr "Start date must be greater than %date"
+
+msgid "Please enter an integer as end date!"
+msgstr "Please enter an integer as end date!"
+
+msgid "End date must be earlier than %date"
+msgstr "End date must be earlier than %date"
+
+msgid "Switch to advanced search form"
+msgstr "Switch to advanced search form"
+
+msgid "Advanced search"
+msgstr "Advanced search"
+
+msgid "Switch to simple search form"
+msgstr "Switch to simple search form"
+
+msgid "Simple search"
+msgstr "Simple search"
+
+msgid "Click and drag to select dates period"
+msgstr "Click and drag to select dates period"
+
+msgid "Zones"
+msgstr "Zones"
 
 #Admin translations
 msgid "Facets"
