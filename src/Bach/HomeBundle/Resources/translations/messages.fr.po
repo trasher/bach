@@ -79,6 +79,9 @@ msgstr "En cours de chargement..."
 msgid "An error occured loading terms :("
 msgstr "Une erreur est survenue au chargement des termes"
 
+msgid "An error occured loading document :("
+msgstr "Une erreur est survenue au chargement du document :("
+
 msgid "View search results as a list, with images"
 msgstr "Voir les résultats de recherche en liste, avec images"
 

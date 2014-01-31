@@ -80,6 +80,9 @@ msgstr "Currently loading..."
 msgid "An error occured loading terms :("
 msgstr "An error occured loading terms :("
 
+msgid "An error occured loading document :("
+msgstr "An error occured loading document :("
+
 msgid "View search results as a list, with images"
 msgstr "View search results as a list, with images"
 
