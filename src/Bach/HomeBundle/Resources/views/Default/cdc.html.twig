@@ -20,16 +20,28 @@
                 });
                 _parent.prepend(_expand);
             });
+
+            $('#cdccontrol').removeClass('hidden');
+            $('#cdccontrol a').on('click', function(){
+                var _this = $(this);
+                if ( _this.attr('id') == 'cdccollapse' ) {
+                    $('input[type=checkbox]').prop('checked', false);
+                }
+                if ( _this.attr('id') == 'cdcexpand' ) {
+                    $('input[type=checkbox]').prop('checked', true);
+                }
+                return false;
+            });
         });
 {% endblock %}
 
 {% block container %}
     <h2>{% trans %}Classification scheme{% endtrans %}</h2>
     {# Expand all works once, but no longer when collapse has been used :/ #}
-    {#<p id="cdccontrol">
-        <a href="#">{% trans %}Collapse all{% endtrans %}</a>
-        <a href="#">{% trans %}Expand all{% endtrans %}</a>
-    </p>#}
+    <p id="cdccontrol" class="hidden">
+        <a href="#" id="cdccollapse">{% trans %}Collapse all{% endtrans %}</a>
+        <a href="#" id="cdcexpand">{% trans %}Expand all{% endtrans %}</a>
+    </p>
     {{ displayCdc(docs)|raw }}
 {% endblock %}
 

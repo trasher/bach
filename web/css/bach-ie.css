@@ -32,3 +32,7 @@
 .css-treeview label {
     background-position: 0 -16px!important;
 }
+
+#cdccontrol {
+    display: none;
+}
