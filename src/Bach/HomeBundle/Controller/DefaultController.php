@@ -514,8 +514,8 @@ class DefaultController extends SearchController
         $children  = $rs->getDocuments();
         $count_children = $rs->getNumFound();
 
+        $tplParams['count_children'] = $count_children;
         if ( count($children) > 0 ) {
-            $tplParams['count_children'] = $count_children;
             $tplParams['children'] = $children;
             if ( count($children) < $count_children ) {
                 $tplParams['totalPages'] = ceil($count_children/$max_results);
