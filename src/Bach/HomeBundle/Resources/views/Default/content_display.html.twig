@@ -44,7 +44,7 @@
         {% else %}
             {% set hasComments = false %}
         {% endif %}
-        {{ displayFragment(document.fragment, docid, true, hasChildren, hasComments, ajax)|raw }}
+        {{ displayFragment(document.fragment, docid, true, hasChildren, hasComments, count_children, ajax)|raw }}
         {% if not children == false %}
             <section id="children_documents">
                 <header>

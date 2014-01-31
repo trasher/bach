@@ -21,6 +21,7 @@ Displays an EAD fragment as HTML
     <xsl:param name="comments" select="''"/>
     <xsl:param name="viewer_uri" select="''"/>
     <xsl:param name="covers_dir" select="''"/>
+    <xsl:param name="count_subs" select="''"/>
     <xsl:param name="cdc" select="'false'"/>
     <xsl:param name="docid"/>
 
@@ -45,7 +46,7 @@ Displays an EAD fragment as HTML
                                 <li><a href="#relative_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Documents')"/></a></li>
                             </xsl:if>
                             <xsl:if test="not($children = '')">
-                                <li><a href="#children_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Sub-units')"/></a></li>
+                                <li><a href="#children_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Sub-units')"/> (<xsl:value-of select="$count_subs"/>)</a></li>
                             </xsl:if>
                             <xsl:if test="not($comments = '')">
                                 <li><a href="#comments"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Comments')"/></a></li>

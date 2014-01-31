@@ -100,12 +100,13 @@ class DisplayEADFragment extends \Twig_Extension
      * @param boolean $full        Displays full fragment, default to false
      * @param boolean $hasChildren Document has children
      * @param boolean $hasComments Document has comments
+     * @param int     $countSub    Sub units count
      * @param boolean $ajax        Called from ajax
      *
      * @return string
      */
     public function display($fragment, $docid, $full = false, $hasChildren = false,
-        $hasComments = false, $ajax = false
+        $hasComments = false, $countSub = 0, $ajax = false
     ) {
         $proc = new \XsltProcessor();
         $xsl = $proc->importStylesheet(
@@ -136,6 +137,9 @@ class DisplayEADFragment extends \Twig_Extension
         }
         if ( $hasComments === true ) {
             $proc->setParameter('', 'comments', 'true');
+        }
+        if ( $countSub > 0 ) {
+            $proc->setParameter('', 'count_subs', $countSub);
         }
         if ( $ajax === true ) {
             $proc->setParameter('', 'ajax', 'true');
