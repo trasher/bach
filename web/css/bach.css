@@ -1335,13 +1335,13 @@ div.sonata-bc .row-fluid .span6 {
     padding: .5em 1.5em
 }
 
-.cdc .expand {
+.css-treeview .expand {
     float: right;
     background: url(../img/expand.png) 100% 50% no-repeat;
     padding-right: 20px;
 }
 
-.cdc .expand.expanded {
+.css-treeview .expand.expanded {
     background-image: url(../img/collapse.png);
 }
 
