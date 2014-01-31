@@ -804,9 +804,9 @@ body .ui-tooltip {
 	background: #e4dfdb url(images/ui-bg_flat_100_e4dfdb_40x100.png) 50% 50% repeat-x;
 	color: #1e1b1d;
 }
-.ui-widget-content a {
+/*.ui-widget-content a {
 	color: #1e1b1d;
-}
+}*/
 .ui-widget-header {
 	border: 1px solid #e4dfdb;
 	background: #a3968e url(images/ui-bg_flat_25_a3968e_40x100.png) 50% 50% repeat-x;
