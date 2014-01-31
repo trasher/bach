@@ -22,12 +22,35 @@
         </ul>
     {% endif %}
 
+    {% if filters is defined %}
+        <h2>{% trans %}Active filters{% endtrans %} <a href="{{ path(block('search_path'), {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{% trans %}Clear refined query{% endtrans %}">{% trans %}Clear{% endtrans %}</a></h2>
+        <div id="active_filters">
+            {% for filter_name,values in filters %}
+                {% if values is not iterable %}
+                    {% set values = []|merge([values]) %}
+                {% endif %}
+            <h3>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{% trans %}Unknown filter{% endtrans %}{% endif %}</h3>
+            <ul>
+                {% for value in values %}
+                <li>
+                    <a href="{{ path(block('search_path'), {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
+                        {% if facet_labels[filter_name] is defined %}
+                            {{ facet_labels[filter_name][value] -}}
+                        {% else %}
+                            {{ value -}}
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
         {% if facets is defined and searchResults|length > 0 %}
         <h2>
             {% trans %}Refine Query{% endtrans %}
-            {% if filters is defined %}
-            <a href="{{ path(block('search_path'), {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{% trans %}Clear refined query{% endtrans %}">{% trans %}Clear{% endtrans %}</a>
-            {% endif %}
         </h2>
         <div id="facets">
             {% for facet_field,facet in facets %}
@@ -157,32 +180,6 @@
             {% endif %}
         {% endfor %}
     </aside>
-    {% endif %}
-
-    {% if filters is defined %}
-        {% set coma = ', ' %}
-        <nav id="active_filters">
-            <strong>{% trans %}Active filters:{% endtrans %}</strong>
-            {% for filter_name,values in filters %}
-                {% if values is not iterable %}
-                    {% set values = []|merge([values]) %}
-                {% endif %}
-            <ul>
-                {% for value in values %}
-                <li>
-                    <a href="{{ path(block('search_path'), {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
-                        {% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{% trans %}Unknown filter{% endtrans %}{% endif %} >
-                        {% if facet_labels[filter_name] is defined %}
-                            {{ facet_labels[filter_name][value] -}}
-                        {% else %}
-                            {{ value -}}
-                        {% endif %}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-            {% endfor %}
-        </nav>
     {% endif %}
 
         {% if min_date is defined and max_date is defined -%}

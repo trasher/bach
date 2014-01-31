@@ -1031,30 +1031,9 @@ form > footer {
  * ===== Filters =====
  */
 
-[id=active_filters] {
-    margin: 1em 0 0;
-}
-
-[id=active_filters] ul {
-    display: inline-block;
-    list-style-type: none;
-    margin: 0 .3em 0 0;
-}
-
-[id=active_filters] li {
-    display: inline-block;
-    background: #d1c6c0;
-}
-
-[id=active_filters] a {
-    color: #4a4041;
-    display: inline-block;
-    padding: .5em 1.5em .5em .5em;
-    background: url(../img/rm_filter.png) 99% 52% no-repeat;
-}
-
-[id=active_filters] a:hover {
-    text-decoration: none;
+[id=active_filters] ul a {
+    background: url(../img/rm_filter.png) 0 52% no-repeat;
+    padding-left: 1.5em;
 }
 
 /**
