@@ -1345,6 +1345,11 @@ div.sonata-bc .row-fluid .span6 {
     background-image: url(../img/collapse.png);
 }
 
+#cdccontrol {
+    float: right;
+    margin-right: .5em;
+}
+
 /** Old design */
 #flash-warnings, #flash-errors, #flash-success {
     padding: .2em 1em .2em 80px;

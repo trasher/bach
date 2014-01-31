@@ -39,8 +39,7 @@
     <h2>{% trans %}Classification scheme{% endtrans %}</h2>
     {# Expand all works once, but no longer when collapse has been used :/ #}
     <p id="cdccontrol" class="hidden">
-        <a href="#" id="cdccollapse">{% trans %}Collapse all{% endtrans %}</a>
-        <a href="#" id="cdcexpand">{% trans %}Expand all{% endtrans %}</a>
+        <a href="#" id="cdccollapse">{% trans %}Collapse all{% endtrans %}</a> | <a href="#" id="cdcexpand">{% trans %}Expand all{% endtrans %}</a>
     </p>
     {{ displayCdc(docs)|raw }}
 {% endblock %}
