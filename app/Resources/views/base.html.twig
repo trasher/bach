@@ -157,13 +157,18 @@
 
 {% block main_js %}
     {# Javascript that are required everywhere #}
-    <script src="{{ asset('js/jquery-ui/jquery.ui.core.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.widget.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.mouse.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.position.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.button.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.dialog.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.tooltip.min.js')  }}" type="text/javascript"></script>
+    {% javascripts
+        'js/jquery-ui/jquery.ui.core.min.js'
+        'js/jquery-ui/jquery.ui.widget.min.js'
+        'js/jquery-ui/jquery.ui.mouse.min.js'
+        'js/jquery-ui/jquery.ui.position.min.js'
+        'js/jquery-ui/jquery.ui.button.min.js'
+        'js/jquery-ui/jquery.ui.dialog.min.js'
+        'js/jquery-ui/jquery.ui.tooltip.min.js'
+        output='js/compiled/jquery-ui.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
     {# Additionnal page javascripts #}
     {{ block('js_calls') }}
     <script type="text/javascript">

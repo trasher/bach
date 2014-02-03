@@ -4,10 +4,20 @@
 {% block do_search_path %}bach_do_search{% endblock %}
 
 {% block css %}
+    {% if min_date is defined and max_date is defined -%}
     <link href="{{ asset('css/jqrangeslider/iThing-min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('js/leaflet/leaflet.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('js/leaflet/leaflet.geosearch/l.geosearch.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endif %}
+    {% if show_maps -%}
+    {% stylesheets
+        'js/leaflet/leaflet.css'
+        'js/leaflet/leaflet.fullscreen/Control.FullScreen.css'
+        'js/leaflet/leaflet.geosearch/l.geosearch.css'
+        output='css/compiled/leaflet_plugins.css'
+        filter='cssrewrite'
+    %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+    {% endif %}
 {% endblock %}
 
 {% block menu %}
@@ -243,22 +253,39 @@
 
 {% block js_calls %}
     {{ parent() }}
-    <script src="{{ asset('js/jquery-ui/jquery.ui.accordion.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.menu.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.autocomplete.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.spinner.min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery-ui/jquery.ui.tabs.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jQDateRangeSlider-min.js')  }}" type="text/javascript"></script>
-    <script src="{{ asset('js/flot/jquery.flot.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/flot/jquery.flot.selection.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/flot/jquery.flot.resize.min.js') }}" type="text/javascript"></script>
+    {% javascripts
+        'js/jquery-ui/jquery.ui.accordion.min.js'
+        'js/jquery-ui/jquery.ui.menu.min.js'
+        'js/jquery-ui/jquery.ui.autocomplete.min.js'
+        'js/jquery-ui/jquery.ui.spinner.min.js'
+        'js/jquery-ui/jquery.ui.tabs.min.js'
+        output='js/compiled/search_jquery-ui.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    {% if min_date is defined and max_date is defined -%}
+    {% javascripts
+        'js/jQDateRangeSlider-min.js'
+        'js/flot/jquery.flot.min.js'
+        'js/flot/jquery.flot.selection.min.js'
+        'js/flot/jquery.flot.resize.min.js'
+        output='js/compiled/search_dates.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    {% endif %}
     <script src="{{ asset('js/jquery.cookie.js') }}" type="text/javascript"></script>
-{% if show_maps %}
+    {% if show_maps %}
     <script src="{{ asset('js/leaflet/leaflet.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/leaflet/leaflet.geosearch/l.control.geosearch.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/leaflet/leaflet.geosearch/l.geosearch.provider.openstreetmap.js') }}" type="text/javascript"></script>
-{% endif %}
+    {% javascripts
+        'js/leaflet/leaflet.fullscreen/Control.FullScreen.js'
+        'js/leaflet/leaflet.geosearch/l.control.geosearch.js'
+        'js/leaflet/leaflet.geosearch/l.geosearch.provider.openstreetmap.js'
+        output='js/compiled/leaflet_plugins.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    {% endif %}
     <!--[if lte IE 8]><script src="{{ asset('js/jqplot/excanvas.min.js') }}" type="text/javascript"></script><![endif]-->
     <script src="{{ asset('js/flowplayer-3.2.12.min.js') }}" type="text/javascript"></script>
 {% endblock %}
