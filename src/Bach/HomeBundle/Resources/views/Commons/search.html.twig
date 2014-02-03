@@ -340,7 +340,6 @@
 {% endblock %}
 
 {% block javascripts %}
-            var _menu_visible = true;
             $.cookie.json = true;
             var _view_params = $.cookie('bach_view_params');
 
@@ -635,11 +634,6 @@
                 };
                 var _groups = L.control.layers({}, overlays).addTo(map);
 
-                {#allpoints = L.geoJson({{ geojson|raw  }}, {
-                    style: style,
-                    onEachFeature: onEachFeature
-                })#}
-
                 var _layers = L.layerGroup([
                  {% for field in geojson|keys -%}
                     {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
@@ -775,18 +769,6 @@
             }
     {% endif %}
 {% endif %}
-            //handle viewer links
-            //fullscreen does not work for the moment when binded into an iframe
-            /*$('.result_pic > a').on('click', function(){
-                var _this = $(this);
-                if ( _this.find('img').length > 0 ) {
-                    var _viewer = $('<iframe src="' + _this.attr('href')  + '"/>');
-                    $('div.content, #refine').hide();
-                    _viewer.appendTo('body');
-                    return false;
-                }
-            });*/
-
             function preg_quote( str ) {
                 // http://kevin.vanzonneveld.net
                 // +   original by: booeyOH
