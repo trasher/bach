@@ -170,11 +170,6 @@
     {{ block('js_calls') }}
     <script type="text/javascript">
         {% block javascripts %}{% endblock %}
-        //TODO: remove
-        function closeDialog () {
-            $('#coreTitleDialog').modal('hide');
-            $('#renamdialog').bind('hide');
-        };
 
         _mobile = function(){
             if ( window.innerWidth < 768 ) {
