@@ -12,7 +12,7 @@
         'js/leaflet/leaflet.css'
         'js/leaflet/leaflet.fullscreen/Control.FullScreen.css'
         'js/leaflet/leaflet.geosearch/l.geosearch.css'
-        output='css/compiled/leaflet_plugins.css'
+        output='assetic/css/compiled/leaflet_plugins.css'
         filter='cssrewrite'
     %}
     <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
@@ -259,20 +259,20 @@
         'js/jquery-ui/jquery.ui.autocomplete.min.js'
         'js/jquery-ui/jquery.ui.spinner.min.js'
         'js/jquery-ui/jquery.ui.tabs.min.js'
-        output='js/compiled/search_jquery-ui.js'
+        output='assetic/js/compiled/search_jquery-ui.js'
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
     {% if min_date is defined and max_date is defined -%}
     {% javascripts
-        'js/jQDateRangeSlider-min.js'
         'js/flot/jquery.flot.min.js'
         'js/flot/jquery.flot.selection.min.js'
         'js/flot/jquery.flot.resize.min.js'
-        output='js/compiled/search_dates.js'
+        output='assetic/js/compiled/search_dates.js'
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
+    <script src="{{ asset('js/jQDateRangeSlider-min.js') }}" type="text/javascript"></script>
     {% endif %}
     <script src="{{ asset('js/jquery.cookie.js') }}" type="text/javascript"></script>
     {% if show_maps %}
@@ -281,7 +281,7 @@
         'js/leaflet/leaflet.fullscreen/Control.FullScreen.js'
         'js/leaflet/leaflet.geosearch/l.control.geosearch.js'
         'js/leaflet/leaflet.geosearch/l.geosearch.provider.openstreetmap.js'
-        output='js/compiled/leaflet_plugins.js'
+        output='assetic/js/compiled/leaflet_plugins.js'
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
