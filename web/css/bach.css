@@ -314,13 +314,21 @@ p {
 
 [id=menu] ul a {
     display: block;
-    padding: .1em 0;
 }
 
 [id=menu] a:hover,
 [id=menu] div.ui-accordion-content a:hover {
     color: white;
     text-decoration: none;
+}
+
+#range_date_set {
+    border: none;
+    padding: .3em 1em;
+}
+
+#cDate_change ul {
+    margin-bottom: .3em;
 }
 
 /**
