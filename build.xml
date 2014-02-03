@@ -47,7 +47,7 @@
                     <exclude name="covers/**"/>
                 </patternset>
             </fileset>
-        </copy>        
+        </copy>
         <phingcall target="clean-vendors" />
     </target>
 

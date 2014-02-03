@@ -752,6 +752,7 @@
                         var _actives = _zones_actives;
                         _layers.removeLayer(_zones_layer);
                         _groups.removeLayer(_zones_layer);
+                        map.removeControl(_legend);
                         _zones_actives = _actives;
                         _legend = null;
                     }
