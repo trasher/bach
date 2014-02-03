@@ -54,12 +54,20 @@ Finally, enable apache rewrite module and put the following lines in
 your virtual host configuration (or in `bach/web/.htaccess`)::
 
     RewriteEngine On
-    RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ app.php [QSA,L]
-    RewriteRule ^/bachdev/(.*) /$1 [PT]
 
 You're now ready to go :)
 
 Just put your browser to the location you've installed
 Bach, and enjoy!
+
+From Git
+--------
+
+If you're installing from Gti repository, you'll have to run some extra commands:
+
+* generate compiled language files, running :
+  $ php app/console gettext:combine en_US,fr_FR
+* write asset files:
+  $ php app/console assetic:dump --env=prod --no-debug
