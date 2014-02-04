@@ -105,7 +105,10 @@ class SolariumQueryFactory
         }
 
         $facetSet = $this->_query->getFacetSet();
-        if ( isset($this->_low_date) && isset($this->_up_date) ) {
+        if ( isset($this->_low_date)
+            && isset($this->_up_date)
+            && isset($this->_date_field)
+        ) {
             $fr = $facetSet->createFacetRange(
                 'years' .
                 ' f.' . $this->_date_field . '.facet.range.start=' .
