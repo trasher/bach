@@ -83,10 +83,14 @@ bach_matricules:
     defaults: { _controller: BachHomeBundle:Matricules:index }
 
 bach_matricules_search:
-    pattern: /matricules/search/{query_terms}/{page}
-    defaults: { _controller: BachHomeBundle:Matricules:search, 'query_terms': null, 'page': 1 }
+    pattern: /matricules/search/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:Matricules:search, 'query_terms': null, 'page': 1, 'facet_name': null }
     requirements:
         page: \d+
+
+bach_matricules_fullfacet:
+    pattern: /matricules/fullfacet/{query_terms}/{name}
+    defaults: { _controller: BachHomeBundle:Matricules:fullFacet }
 
 bach_matricules_do_search:
     pattern:  /matricules-do-search
