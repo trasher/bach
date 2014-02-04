@@ -150,11 +150,11 @@ class MatriculesController extends SearchController
 
             $conf_facets = array();
             $fields = array(
-                'lieu_enregistrement'   => 'Lieu d\'enregistrement',
                 'nom'                   => 'Nom',
                 'prenoms'               => 'Prénom',
                 /*'classe'                => 'Classe',*/
-                'lieu_naissance'        => 'Lieu de naissance'
+                'lieu_naissance'        => 'Lieu de naissance',
+                'lieu_enregistrement'   => 'Lieu d\'enregistrement'
             );
             foreach ( $fields as $field_name=>$trad ) {
                 $facet = new Facets();
