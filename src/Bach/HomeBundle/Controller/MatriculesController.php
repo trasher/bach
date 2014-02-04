@@ -73,6 +73,8 @@ class MatriculesController extends SearchController
         if ( !$view_params ) {
             $view_params = new ViewParams();
         }
+        $view_params->setResultsByPage(20);
+
         //take care of user view params
         $_cook = null;
         if ( isset($_COOKIE['bach_matricules_view_params']) ) {
