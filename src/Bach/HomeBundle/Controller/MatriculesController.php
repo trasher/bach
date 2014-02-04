@@ -136,6 +136,15 @@ class MatriculesController extends SearchController
             } else {
                 $container->setField('matricules', $query_terms);
             }
+
+            $container->setField(
+                "pager",
+                array(
+                    "start"     => ($page - 1) * $view_params->getResultsbyPage(),
+                    "offset"    => $view_params->getResultsbyPage()
+                )
+            );
+
             $container->setFilters($filters);
             $factory->prepareQuery($container);
 
@@ -212,13 +221,20 @@ class MatriculesController extends SearchController
 
         $tpl_vars['has_advanced'] = true;
 
+        $tpl_vars['resultStart'] = ($page - 1)
+            * $view_params->getResultsbyPage() + 1;
+        $resultEnd = ($page - 1) * $view_params->getResultsbyPage()
+            + $view_params->getResultsbyPage();
+        if ( $resultEnd > $resultCount ) {
+            $resultEnd = $resultCount;
+        }
+        $tpl_vars['resultEnd'] = $resultEnd;
+
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(
                 $tpl_vars,
                 array(
-                    'resultStart'       => 1,
-                    'resultEnd'         => $resultCount,
                     'resultCount'       => $resultCount,
                     'q'             => urlencode($query_terms),
                 )
