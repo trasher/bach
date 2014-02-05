@@ -203,7 +203,6 @@ class MatriculesController extends SearchController
             $tpl_vars = array_merge($tpl_vars, $slider_dates);
         }
 
-
         $this->handleGeoloc(
             $factory,
             $tpl_vars

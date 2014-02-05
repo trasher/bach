@@ -344,6 +344,7 @@
                 collapsible: true
             });
 
+            {% if searchResults is defined and searchResults|length > 0 %}
             $('.show_more a').click(function() {
                 var _this = $(this);
                 var _facet_name = $(_this.parents('div')[0]).prev('h3').text();
@@ -389,7 +390,7 @@
 
                 return false;
             });
-
+            {% endif %}
 
             $('#results_order').change(function(){
                 var _da_url = '{{ path(block('search_path'), {query_terms: q, results_order: 'ORDER'}) }}';
