@@ -171,11 +171,19 @@ class BachCoreAdminConfigReader
     /**
      * Get core template. This template is used for create a new core.
      *
+     * @param string $type Core type
+     *
      * @return string
      */
-    public function getCoreTemplatePath()
+    public function getCoreTemplatePath($type)
     {
-        return $this->_root_dir . '/config/coreTemplate';
+        $path = $this->_root_dir . '/config/templates/cores/';
+        switch ( $type ) {
+        default:
+            $path .= 'archives';
+            break;
+        }
+        return $path;
     }
 
     /**

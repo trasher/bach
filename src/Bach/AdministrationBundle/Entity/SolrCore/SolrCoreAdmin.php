@@ -113,10 +113,10 @@ class SolrCoreAdmin
      *
      * @return boolean|SolrCoreResponse
      */
-    public function create($coreType, $coreName, $tableName, 
+    public function create($coreType, $coreName, $tableName,
         $orm_name, $em, $db_params
     ) {
-        $coreInstanceDir =  preg_replace('/[^a-zA-Z0-9-_]/', '', $coreName); 
+        $coreInstanceDir =  preg_replace('/[^a-zA-Z0-9-_]/', '', $coreName);
         $coreInstanceDirPath = null;
         $this->_em = $em;
 
@@ -156,6 +156,7 @@ class SolrCoreAdmin
             return false;
         } else {
             $created = $this->_createCoreDir(
+                $coreType,
                 $coreInstanceDirPath,
                 $coreName,
                 $tableName,
@@ -418,6 +419,7 @@ class SolrCoreAdmin
      * Create core directory with the same name as core name (sanitize).
      * If directory already exist, returns false.
      *
+     * @param string $coreType            Solr core type
      * @param string $coreInstanceDirPath Core instance path
      * @param string $coreName            Core anme
      * @param string $tableName           Database table name
@@ -426,11 +428,11 @@ class SolrCoreAdmin
      *
      * @return boolean
      */
-    private function _createCoreDir($coreInstanceDirPath, $coreName,
+    private function _createCoreDir($coreType, $coreInstanceDirPath, $coreName,
         $tableName, $orm_name, $db_params
     ) {
         if (!is_dir($coreInstanceDirPath)) {
-            $template  = $this->_reader->getCoreTemplatePath();
+            $template  = $this->_reader->getCoreTemplatePath($coreType);
             $cmd = 'cp -r "' . $template . '" "' . $coreInstanceDirPath .
                 '" 2>&1';
             exec(
