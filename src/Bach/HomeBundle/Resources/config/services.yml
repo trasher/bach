@@ -38,3 +38,15 @@ services:
             - [setRequest, ['@?request=']]
         tags:
             - { name: twig.extension }
+
+    bach.socialBarHelper:
+        class : Bach\HomeBundle\Templating\Helper\SocialBarHelper
+        tags : 
+        - {name : 'templating.helper', alias : 'social-buttons'}
+        arguments : [ @templating ]
+
+    twig.extension.bach_social_bar:
+        class: Bach\HomeBundle\Twig\BachSocialBar
+        tags:
+            - { name: 'twig.extension' }
+        arguments : [ @service_container ]

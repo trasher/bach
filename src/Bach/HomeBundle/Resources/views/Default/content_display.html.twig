@@ -33,6 +33,7 @@
                     <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
                 {%- endif -%}
             </h2>
+            {{ socialButtons() }}
         </header>
         {% if children == false %}
             {% set hasChildren = false %}
