@@ -41,7 +41,7 @@ class MatriculesDecorator extends SolariumQueryDecoratorAbstract
         if ( $data !== '*:*' ) {
             $dismax = $query->getDisMax();
             $dismax->setQueryFields(
-                'nom^2 prenoms lieu_naissance lieu_enregistrement fulltext^0.1'
+                'txt_nom^2 txt_prenoms lieu_naissance lieu_enregistrement fulltext^0.1'
             );
         }
         $query->setQuery($data);
@@ -54,6 +54,6 @@ class MatriculesDecorator extends SolariumQueryDecoratorAbstract
      */
     public function getHlFields()
     {
-        return 'nom,prenoms,lieu_naissance,lieu_enregistrement';
+        return 'txt_nom,txt_prenoms,lieu_naissance,lieu_enregistrement';
     }
 }

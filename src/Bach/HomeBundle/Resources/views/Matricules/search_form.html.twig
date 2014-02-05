@@ -22,15 +22,15 @@
             {% for document in searchResults %}
                 <tr>
                     <td>
-                        {%- if hlSearchResults.getResult(document.uniqid).getField('nom')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.uniqid).getField('nom')[0]|raw }}
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('txt_nom')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('txt_nom')[0]|raw }}
                         {%- else -%}
                             {{ document.nom }}
                         {%- endif -%}
                     </td>
                     <td>
-                        {%- if hlSearchResults.getResult(document.uniqid).getField('prenoms')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.uniqid).getField('prenoms')[0]|raw }}
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')[0]|raw }}
                         {%- else -%}
                             {{ document.prenoms }}
                         {%- endif -%}
