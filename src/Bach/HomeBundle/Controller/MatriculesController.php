@@ -105,7 +105,7 @@ class MatriculesController extends SearchController
             $tpl_vars['search_path'] = 'bach_matricules_search';
         } else {
             $form = $this->createForm(
-                new SearchQueryFormType(),
+                new SearchQueryFormType($query_terms),
                 null
             );
             $tpl_vars['search_path'] = 'bach_matricules_do_search';
@@ -230,7 +230,7 @@ class MatriculesController extends SearchController
             array_merge(
                 $tpl_vars,
                 array(
-                    'resultCount'       => $resultCount,
+                    'resultCount'   => $resultCount,
                     'q'             => urlencode($query_terms),
                 )
             )
