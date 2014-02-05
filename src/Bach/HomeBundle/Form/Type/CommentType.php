@@ -62,9 +62,8 @@ class CommentType extends AbstractType
             )
             ->add(
                 'message',
-                'ckeditor',
+                null,
                 array(
-                    'config_name'   => 'bach_comment_edit',
                     'label' => _('Message')
                 )
             )
