@@ -1523,7 +1523,7 @@
                  default="true"
                  class="solr.highlight.HtmlFormatter">
         <lst name="defaults">
-          <str name="hl.simple.pre"><![CDATA[<em>]]></str>
+          <str name="hl.simple.pre"><![CDATA[<em class="hl">]]></str>
           <str name="hl.simple.post"><![CDATA[</em>]]></str>
         </lst>
       </formatter>
