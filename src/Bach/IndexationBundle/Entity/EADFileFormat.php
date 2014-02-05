@@ -281,6 +281,9 @@ class EADFileFormat extends MappedFileFormat
         'archDescScopeContent'
     );
 
+    /**
+     * Expanded fields mappings
+     */
     public static $expanded_mappings = array(
         array(
             'source'        => 'cSubject',

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<dataConfig>
+  <dataSource type="" driver="" url="" user="" password=""/>
+  <document>
+    <entity name="SolrXMLFile" query="">
+    </entity>
+  </document>
+</dataConfig>

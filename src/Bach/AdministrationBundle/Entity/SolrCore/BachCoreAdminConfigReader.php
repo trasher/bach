@@ -179,6 +179,9 @@ class BachCoreAdminConfigReader
     {
         $path = $this->_root_dir . '/config/templates/cores/';
         switch ( $type ) {
+        case 'MatriculesFileFormat':
+            $path .= 'matricules';
+            break;
         default:
             $path .= 'archives';
             break;

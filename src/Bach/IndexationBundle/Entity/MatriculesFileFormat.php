@@ -98,11 +98,6 @@ class MatriculesFileFormat
     protected $doc_id;
 
     /**
-     * Fields that should not be used for facetting
-     */
-    public static $facet_excluded = array();
-
-    /**
      * The constructor
      *
      * @param array $data The input data
@@ -111,6 +106,63 @@ class MatriculesFileFormat
     {
         $this->parseData($data);
     }
+
+    /**
+     * Fields that will be excluded from fulltext field
+     */
+    public static $nonfulltext = array(
+        'uniqid',
+        'cote',
+        'date_enregistrement',
+        'classe',
+        'matricule',
+        'annee_naissance',
+        'start_dao',
+        'end_dao'
+    );
+
+    /**
+     * Fields types, if not string
+     */
+    public static $types = array(
+        'date_enregistrement'   => 'date',
+        'annee_naissance'       => 'date',
+        'classe'                => 'date',
+        'matricule'             => 'int'
+    );
+
+    /**
+     * Fields that should not be used for facetting
+     */
+    public static $facet_excluded = array(
+        '_version_',
+        'txt_nom',
+        'txt_prenoms',
+        'fulltext',
+        'suggestions'
+    );
+
+    /**
+     * Expanded fields mappings
+     */
+    public static $expanded_mappings = array(
+        array(
+            'source'        => 'nom',
+            'dest'          => 'txt_nom',
+            'type'          => 'text_names',
+            'multivalued'   => 'false',
+            'indexed'       => 'true',
+            'stored'        => 'true'
+        ),
+        array(
+            'source'        => 'prenoms',
+            'dest'          => 'txt_prenoms',
+            'type'          => 'text_names',
+            'multivalued'   => 'true',
+            'indexed'       => 'true',
+            'stored'        => 'true'
+        )
+    );
 
     /**
      * Proceed data parsing
@@ -124,9 +176,13 @@ class MatriculesFileFormat
         foreach ($data as $key=>$datum) {
             if (property_exists($this, $key)) {
                 if ( strlen($datum[0]['value']) == 4
-                    && ($key === 'date_enregistrement' || $key === 'annee_naissance' || $key === 'classe')
+                    && ($key === 'date_enregistrement'
+                    || $key === 'annee_naissance'
+                    || $key === 'classe')
                 ) {
-                    $datum[0]['value'] = new \DateTime($datum[0]['value'] . '-01-01');
+                    $datum[0]['value'] = new \DateTime(
+                        $datum[0]['value'] . '-01-01'
+                    );
                 }
                 $this->$key = $datum[0]['value'];
             } else {

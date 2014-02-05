@@ -87,6 +87,9 @@ EOF
         case 'EADUniversalFileFormat':
             $orm_name .= '\EADFileFormat';
             break;
+        case 'MatriculesFileFormat':
+            $orm_name .= '\MatriculesFileFormat';
+            break;
         default:
             $orm_name .= '\UniversalFileFormat';
             break;
@@ -102,7 +105,7 @@ EOF
         );
 
         $result = $sca->create(
-            $core_name,
+            $type,
             $core_name,
             $type,
             $orm_name,
