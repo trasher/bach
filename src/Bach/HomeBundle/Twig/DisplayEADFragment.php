@@ -109,7 +109,7 @@ class DisplayEADFragment extends \Twig_Extension
         $hasComments = false, $countSub = 0, $ajax = false
     ) {
         $proc = new \XsltProcessor();
-        $xsl = $proc->importStylesheet(
+        $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_fragment.xsl')
         );
 

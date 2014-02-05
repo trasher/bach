@@ -76,7 +76,6 @@ class MatriculesController extends SearchController
         $view_params->setResultsByPage(20);
 
         //take care of user view params
-        $_cook = null;
         if ( isset($_COOKIE['bach_matricules_view_params']) ) {
             $view_params->bindCookie('bach_matricules_view_params');
         }
@@ -97,8 +96,6 @@ class MatriculesController extends SearchController
 
         $filters->bind($request);
         $session->set('matricules_filters', $filters);
-
-        $show_maps = $this->container->getParameter('show_maps');
 
         if ( $view_params->advancedSearch() ) {
             $form = $this->createForm(
@@ -180,9 +177,6 @@ class MatriculesController extends SearchController
             $tpl_vars['totalPages'] = ceil(
                 $resultCount/$view_params->getResultsbyPage()
             );
-
-            $facets = array();
-            $facetset = $searchResults->getFacetSet();
 
             $this->handleFacets(
                 $factory,

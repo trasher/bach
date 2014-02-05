@@ -174,12 +174,11 @@ abstract class SearchController extends Controller
      * @param Filters              $filters       Active filters
      * @param string               $facet_name    Facet name
      * @param array                &$tpl_vars     Template variables
-     * @param array                $fields        Fields list
      *
      * @return void
      */
     protected function handleFacets(SolariumQueryFactory $factory, $conf_facets,
-        $searchResults, $filters, $facet_name, &$tpl_vars, $fields = null
+        $searchResults, $filters, $facet_name, &$tpl_vars
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -277,7 +276,10 @@ abstract class SearchController extends Controller
                     }
                 }
 
-                if ( in_array($facet->getSolrFieldName(), $this->getFacetsDateFields()) ) {
+                if ( in_array(
+                    $facet->getSolrFieldName(),
+                    $this->getFacetsDateFields()
+                ) ) {
                     if ( count($values) == 1
                         && (in_array(1, $values)
                         || strpos('|', array_keys($values)[0]) === false)
@@ -314,7 +316,8 @@ abstract class SearchController extends Controller
         }
 
         if ( $show_maps ) {
-            foreach ( $geoloc = $this->getGeolocFields() as $field ) {
+            $geoloc = $this->getGeolocFields();
+            foreach ( $geoloc as $field ) {
                 $map_facets[$field] = $facetset->getFacet($field);
             }
         }

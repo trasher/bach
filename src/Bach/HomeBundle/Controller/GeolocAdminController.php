@@ -39,7 +39,6 @@ class GeolocAdminController extends Controller
     {
 
         $doctrine = $this->container->get('doctrine');
-        $em = $doctrine->getManager();
 
         $repo = $doctrine->getRepository('BachIndexationBundle:EADIndexes');
         $qb = $repo->createQueryBuilder('a')
@@ -116,9 +115,6 @@ class GeolocAdminController extends Controller
 
         $rs = $this->get('solarium.client')->select($query);
         $map_facets = $rs->getFacetSet()->getFacet('geogname');
-
-        $parameters = array();
-        $result = null;
 
         $factory = $this->get("bach.home.solarium_query_factory");
         $geojson = $factory->getGeoJson(

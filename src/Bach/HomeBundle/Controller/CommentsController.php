@@ -41,7 +41,6 @@ class CommentsController extends Controller
     public function addAction($docid, $ajax = false)
     {
         $request = $this->getRequest();
-        $session = $request->getSession();
 
         $comment = new Comment();
 

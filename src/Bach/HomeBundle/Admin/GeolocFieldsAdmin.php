@@ -33,7 +33,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class GeolocFieldsAdmin extends Admin
 {
     private $_reader;
-    private $_container;
     private $_search_core;
     private $_data_class;
 

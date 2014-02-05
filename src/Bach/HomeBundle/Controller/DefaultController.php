@@ -171,8 +171,6 @@ class DefaultController extends SearchController
         //store new view parameters
         $session->set('view_params', $view_params);
 
-        $show_maps = $this->container->getParameter('show_maps');
-
         $filters = $session->get('filters');
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
             $filters = new Filters();
@@ -207,8 +205,6 @@ class DefaultController extends SearchController
         $factory = $this->get("bach.home.solarium_query_factory");
         $factory->setGeolocFields($this->getGeolocFields());
         $factory->setDateField('cDateBegin');
-
-        $map_facets = array();
 
         // On effectue une recherche
         $form = $this->createForm(

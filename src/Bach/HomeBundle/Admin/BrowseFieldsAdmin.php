@@ -35,8 +35,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class BrowseFieldsAdmin extends Admin
 {
     private $_reader;
-    private $_container;
-    private $_positionService;
     private $_search_core;
 
     protected $datagridValues = array(

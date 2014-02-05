@@ -98,7 +98,7 @@ class SolariumQueryFactory
             $this->_buildQuery($container);
         }
 
-        $this->setDatesBounds($container->getFilters());
+        $this->setDatesBounds();
         if ( count($facets) > 0 ) {
             //dynamically create facets
             $this->_addFacets($facets);
@@ -390,9 +390,8 @@ class SolariumQueryFactory
             $php_max_date = new \DateTime($max_date);
 
             $diff = $php_min_date->diff($php_max_date);
-            if ( $diff->y > 100 ) {
-                $step = $diff->y / 100;
-            } else if ( $diff->y === 0 ) {
+
+            if ( $diff->y === 0 ) {
                 return;
             }
 
@@ -427,11 +426,9 @@ class SolariumQueryFactory
     /**
      * Get number of results per year, to draw plot
      *
-     * @param string $field Date field
-     *
      * @return array
      */
-    public function getResultsByYear($field = null)
+    public function getResultsByYear()
     {
         if ( !isset($this->_rs) ) {
             $container = new SolariumQueryContainer();
@@ -590,12 +587,11 @@ class SolariumQueryFactory
     /**
      * Load dates bounds from index stats
      *
-     * @param boolean $all   Use *:* as a query if true, use current query if false
-     * @param boolean $begin Work only on begin date
+     * @param boolean $all Use *:* as a query if true, use current query if false
      *
      * @return array
      */
-    private function _loadDatesFromStats($all = true, $begin = false)
+    private function _loadDatesFromStats($all = true)
     {
         $query = $this->_client->createSelect();
         if ( $all === true ) {
@@ -688,13 +684,11 @@ class SolariumQueryFactory
     /**
      * Set dates bounds
      *
-     * @param array $filters Active filters
-     *
      * @return void
      */
-    public function setDatesBounds(Filters $filters)
+    public function setDatesBounds()
     {
-        list($low,$up) = $this->_getDates($filters);
+        list($low,$up) = $this->_getDates();
 
         if ( !isset($this->_date_gap) ) {
             $this->_low_date = $low->format('Y-01-01') . 'T00:00:00Z';
@@ -725,13 +719,11 @@ class SolariumQueryFactory
     /**
      * Get dates bounds within query
      *
-     * @param array $filters Active filters
-     *
      * @return array
      */
-    private function _getDates(Filters $filters)
+    private function _getDates()
     {
-        list($min_date, $max_date) = $this->_loadDatesFromStats(false, true);
+        list($min_date, $max_date) = $this->_loadDatesFromStats(false);
         $low = new \DateTime($min_date);
         $up = new \DateTime($max_date);
         return array($low, $up);

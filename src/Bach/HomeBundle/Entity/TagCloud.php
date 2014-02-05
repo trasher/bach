@@ -125,7 +125,6 @@ class TagCloud
         $query = $qb->getQuery();
         $results = $query->getResult();
 
-        $tagcloud = null;
         if ( count($results) > 0 ) {
             return $results[0];
         } else {
