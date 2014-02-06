@@ -77,6 +77,11 @@ EOF
                 null,
                 InputOption::VALUE_NONE,
                 _('Verbose mode')
+            )->addOption(
+                'database',
+                null,
+                InputOption::VALUE_REQUIRED,
+                _('Limit queries to specified database')
             );
     }
 
@@ -119,110 +124,155 @@ EOF
             );
         }
 
+        $database = $input->getOption('database');
+        $know_databases = array(
+            'ead'               => _('EAD indexes'),
+            'matricules_born'   => _('Matricules places of birth'),
+            'matricules_rec'    => _('Matricules places of recording')
+        );
+        if ( $database && !isset($know_databases[$database]) ) {
+            $know_str = '';
+            foreach ( $know_databases as $name=>$info ) {
+                $know_str .= "\n\t- " . $name . ' (' . _('for') . ' ' . $info . ')';
+            }
+            $output->writeln(
+                "\n" . '<fg=red;options=bold>' . _('Unknown database!') .
+                '</fg=red;options=bold>' .
+                "\n" . '<fg=red>' . _('Please enter either:') . $know_str .
+                '</fg=red>'
+            );
+            throw new \RuntimeException(_('Unknown database!'));
+        }
+        $bdd_places = array();
+
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
 
-        $repo = $doctrine->getRepository('BachIndexationBundle:EADIndexes');
-        $qb = $repo->createQueryBuilder('a')
-            ->select('DISTINCT a.name')
-            ->leftJoin(
-                'BachIndexationBundle:Geoloc',
-                'g',
-                'WITH',
-                'a.name = g.indexed_name'
-            )
-            ->where('a.type = :type')
-            ->andWhere('g.indexed_name IS NULL')
-            ->setParameter('type', 'cGeogname');
-
         $limit = $input->getOption('limit');
-        if ( $limit ) {
-            if ( !$quiet ) {
-                $output->writeln(
-                    '<fg=green;options=bold>' .
-                    str_replace(
-                        '%i',
-                        $limit,
-                        _('Set limit to %i entries.')
-                    ) .
-                    '</fg=green;options=bold>'
-                );
-            }
-            $qb->setMaxResults($limit);
-        }
-
-        $find = $input->getOption('find');
-        if ( $find ) {
-            if ( !$quiet ) {
-                $output->writeln(
-                    '<fg=green;options=bold>' .
-                    str_replace(
-                        '%search',
-                        $find,
-                        _('Search on: %search')
-                    ) .
-                    '</fg=green;options=bold>'
-                );
-            }
-            $qb->andWhere('a.name LIKE :name')
-                ->setParameter('name', $find);
-        }
-
-        $query = $qb->getQuery();
-
-        if ( $verbose ) {
+        if ( $limit && !$quiet ) {
             $output->writeln(
-                _('Query:') . "\n" . $query->getSQL()
+                '<fg=green;options=bold>' .
+                str_replace(
+                    '%i',
+                    $limit,
+                    _('Set limit to %i entries.')
+                ) .
+                '</fg=green;options=bold>'
             );
         }
 
-        $bdd_places = $query->getResult();
-
-        $repo = $doctrine->getRepository('BachIndexationBundle:MatriculesFileFormat');
-        $qb = $repo->createQueryBuilder('a')
-            ->select('DISTINCT a.lieu_naissance AS name')
-            ->leftJoin(
-                'BachIndexationBundle:Geoloc',
-                'g',
-                'WITH',
-                'a.lieu_naissance = g.indexed_name'
-            )->where('g.indexed_name IS NULL');
-
-        if ( $limit ) {
-            $qb->setMaxResults($limit);
-        }
-
         $find = $input->getOption('find');
-        if ( $find ) {
-            $qb->andWhere('a.name LIKE :name')
-                ->setParameter('name', $find);
+        if ( $find && !$quiet ) {
+            $output->writeln(
+                '<fg=green;options=bold>' .
+                str_replace(
+                    '%search',
+                    $find,
+                    _('Search on: %search')
+                ) .
+                '</fg=green;options=bold>'
+            );
         }
 
-        $query = $qb->getQuery();
-        $bdd_places = array_merge($bdd_places, $query->getResult());
+        if ( !$database || $database === 'ead' ) {
+            $repo = $doctrine->getRepository('BachIndexationBundle:EADIndexes');
+            $qb = $repo->createQueryBuilder('a')
+                ->select('DISTINCT a.name')
+                ->leftJoin(
+                    'BachIndexationBundle:Geoloc',
+                    'g',
+                    'WITH',
+                    'a.name = g.indexed_name'
+                )
+                ->where('a.type = :type')
+                ->andWhere('g.indexed_name IS NULL')
+                ->setParameter('type', 'cGeogname');
 
-        $repo = $doctrine->getRepository('BachIndexationBundle:MatriculesFileFormat');
-        $qb = $repo->createQueryBuilder('a')
-            ->select('DISTINCT a.lieu_enregistrement as name')
-            ->leftJoin(
-                'BachIndexationBundle:Geoloc',
-                'g',
-                'WITH',
-                'a.lieu_enregistrement = g.indexed_name'
-            )->where('g.indexed_name IS NULL');
+            if ( $limit ) {
+                $qb->setMaxResults($limit);
+            }
 
-        if ( $limit ) {
-            $qb->setMaxResults($limit);
+            if ( $find ) {
+                $qb->andWhere('a.name LIKE :name')
+                    ->setParameter('name', $find);
+            }
+
+            $query = $qb->getQuery();
+
+            if ( $verbose ) {
+                $output->writeln(
+                    _('Query ead:') . "\n" . $query->getSQL()
+                );
+            }
+
+            $bdd_places = array_merge($bdd_places, $query->getResult());
         }
 
-        $find = $input->getOption('find');
-        if ( $find ) {
-            $qb->andWhere('a.name LIKE :name')
-                ->setParameter('name', $find);
+        if ( !$database || $database === 'matricules_born' ) {
+            $repo = $doctrine->getRepository(
+                'BachIndexationBundle:MatriculesFileFormat'
+            );
+            $qb = $repo->createQueryBuilder('a')
+                ->select('DISTINCT a.lieu_naissance AS name')
+                ->leftJoin(
+                    'BachIndexationBundle:Geoloc',
+                    'g',
+                    'WITH',
+                    'a.lieu_naissance = g.indexed_name'
+                )->where('g.indexed_name IS NULL');
+
+            if ( $limit ) {
+                $qb->setMaxResults($limit);
+            }
+
+            if ( $find ) {
+                $qb->andWhere('a.name LIKE :name')
+                    ->setParameter('name', $find);
+            }
+
+            $query = $qb->getQuery();
+
+            if ( $verbose ) {
+                $output->writeln(
+                    _('Query matricules born:') . "\n" . $query->getSQL()
+                );
+            }
+
+            $bdd_places = array_merge($bdd_places, $query->getResult());
         }
 
-        $query = $qb->getQuery();
-        $bdd_places = array_merge($bdd_places, $query->getResult());
+        if ( !$database || $database === 'matricules_rec' ) {
+            $repo = $doctrine->getRepository(
+                'BachIndexationBundle:MatriculesFileFormat'
+            );
+            $qb = $repo->createQueryBuilder('a')
+                ->select('DISTINCT a.lieu_enregistrement as name')
+                ->leftJoin(
+                    'BachIndexationBundle:Geoloc',
+                    'g',
+                    'WITH',
+                    'a.lieu_enregistrement = g.indexed_name'
+                )->where('g.indexed_name IS NULL');
+
+            if ( $limit ) {
+                $qb->setMaxResults($limit);
+            }
+
+            if ( $find ) {
+                $qb->andWhere('a.name LIKE :name')
+                    ->setParameter('name', $find);
+            }
+
+            $query = $qb->getQuery();
+
+            if ( $verbose ) {
+                $output->writeln(
+                    _('Query matricules recording:') . "\n" . $query->getSQL()
+                );
+            }
+
+            $bdd_places = array_merge($bdd_places, $query->getResult());
+        }
 
         $places = array();
         foreach ( $bdd_places as $p ) {
