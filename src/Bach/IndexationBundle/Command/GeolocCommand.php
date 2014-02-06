@@ -136,16 +136,18 @@ EOF
             ->setParameter('type', 'cGeogname');
 
         $limit = $input->getOption('limit');
-        if ( $limit && !$quiet ) {
-            $output->writeln(
-                '<fg=green;options=bold>' .
-                str_replace(
-                    '%i',
-                    $limit,
-                    _('Set limit to %i entries.')
-                ) .
-                '</fg=green;options=bold>'
-            );
+        if ( $limit ) {
+            if ( !$quiet ) {
+                $output->writeln(
+                    '<fg=green;options=bold>' .
+                    str_replace(
+                        '%i',
+                        $limit,
+                        _('Set limit to %i entries.')
+                    ) .
+                    '</fg=green;options=bold>'
+                );
+            }
             $qb->setMaxResults($limit);
         }
 
@@ -175,6 +177,52 @@ EOF
         }
 
         $bdd_places = $query->getResult();
+
+        $repo = $doctrine->getRepository('BachIndexationBundle:MatriculesFileFormat');
+        $qb = $repo->createQueryBuilder('a')
+            ->select('DISTINCT a.lieu_naissance AS name')
+            ->leftJoin(
+                'BachIndexationBundle:Geoloc',
+                'g',
+                'WITH',
+                'a.lieu_naissance = g.indexed_name'
+            );
+
+        if ( $limit ) {
+            $qb->setMaxResults($limit);
+        }
+
+        $find = $input->getOption('find');
+        if ( $find ) {
+            $qb->andWhere('a.name LIKE :name')
+                ->setParameter('name', $find);
+        }
+
+        $query = $qb->getQuery();
+        $bdd_places = array_merge($bdd_places, $query->getResult());
+
+        $repo = $doctrine->getRepository('BachIndexationBundle:MatriculesFileFormat');
+        $qb = $repo->createQueryBuilder('a')
+            ->select('DISTINCT a.lieu_enregistrement as name')
+            ->leftJoin(
+                'BachIndexationBundle:Geoloc',
+                'g',
+                'WITH',
+                'a.lieu_enregistrement = g.indexed_name'
+            );
+
+        if ( $limit ) {
+            $qb->setMaxResults($limit);
+        }
+
+        $find = $input->getOption('find');
+        if ( $find ) {
+            $qb->andWhere('a.name LIKE :name')
+                ->setParameter('name', $find);
+        }
+
+        $query = $qb->getQuery();
+        $bdd_places = array_merge($bdd_places, $query->getResult());
 
         $places = array();
         foreach ( $bdd_places as $p ) {
@@ -262,6 +310,10 @@ EOF
                     ) .
                     '</fg=red;>'
                 );
+            }
+
+            if ( !$dry && ($fail + $found) % 100 === 0 ) {
+                $em->flush();
             }
         }
         if ( !$dry ) {

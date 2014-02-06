@@ -56,6 +56,32 @@ class GeolocAdminController extends Controller
         $query = $qb->getQuery();
         $bdd_places = $query->getResult();
 
+        $repo = $doctrine->getRepository('BachIndexationBundle:MatriculesFileFormat');
+        $qb = $repo->createQueryBuilder('a')
+            ->select('DISTINCT a.lieu_naissance AS name')
+            ->leftJoin(
+                'BachIndexationBundle:Geoloc',
+                'g',
+                'WITH',
+                'a.lieu_naissance = g.indexed_name'
+            );
+
+        $query = $qb->getQuery();
+        $bdd_places = array_merge($bdd_places, $query->getResult());
+
+        $repo = $doctrine->getRepository('BachIndexationBundle:MatriculesFileFormat');
+        $qb = $repo->createQueryBuilder('a')
+            ->select('DISTINCT a.lieu_enregistrement as name')
+            ->leftJoin(
+                'BachIndexationBundle:Geoloc',
+                'g',
+                'WITH',
+                'a.lieu_enregistrement = g.indexed_name'
+            );
+
+        $query = $qb->getQuery();
+        $bdd_places = array_merge($bdd_places, $query->getResult());
+
         $places = array();
         foreach ( $bdd_places as $p ) {
             //create toponyms & dedup
