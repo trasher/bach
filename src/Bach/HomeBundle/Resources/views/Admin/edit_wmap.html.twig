@@ -37,9 +37,9 @@ file that was distributed with this source code.
     var fullScreen = new L.Control.FullScreen();
     map.addControl(fullScreen);
 
-    L.tileLayer('http://{s}.tile.cloudmade.com/852b7821064f43a59604e98d9536680b/997/256/{z}/{x}/{y}.png', {
+    L.tileLayer('{{ tiles_url }}', {
         maxZoom: 18,
-        attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {% trans %}© Imagery{% endtrans %} <a href="http://cloudmade.com">CloudMade</a>'
+        attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {% trans %}© Imagery{% endtrans %} {{ tiles_attribution|raw }}'
     }).addTo(map);
 
     {% if object.getId() != null %}

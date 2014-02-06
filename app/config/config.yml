@@ -33,6 +33,8 @@ twig:
         client_code: '%client_code%'
         matricules: '%has_matricules%'
         enable_social: '%enable_social%'
+        tiles_url: '%tiles_url%'
+        tiles_attribution: '%tiles_attribution%'
 
 # Assetic Configuration
 assetic:
