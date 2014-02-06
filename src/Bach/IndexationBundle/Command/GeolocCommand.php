@@ -186,7 +186,7 @@ EOF
                 'g',
                 'WITH',
                 'a.lieu_naissance = g.indexed_name'
-            );
+            )->where('g.indexed_name IS NULL');
 
         if ( $limit ) {
             $qb->setMaxResults($limit);
@@ -209,7 +209,7 @@ EOF
                 'g',
                 'WITH',
                 'a.lieu_enregistrement = g.indexed_name'
-            );
+            )->where('g.indexed_name IS NULL');
 
         if ( $limit ) {
             $qb->setMaxResults($limit);
