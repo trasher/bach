@@ -214,7 +214,7 @@ class MatriculesController extends SearchController
             $tpl_vars['form'] = $form->createView();
         }
 
-        $tpl_vars['has_advanced'] = true;
+        //$tpl_vars['has_advanced'] = true;
 
         $tpl_vars['resultStart'] = ($page - 1)
             * $view_params->getResultsbyPage() + 1;
