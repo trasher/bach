@@ -186,7 +186,9 @@ file that was distributed with this source code.
 
         var map;
 
-        map = L.map('map').setView([47.010, 5.087], 5);
+        map = L.map('map', {
+            minZoom: 1
+        }).setView([47.010, 5.087], 5);
 
         var fullScreen = new L.Control.FullScreen();
         map.addControl(fullScreen);

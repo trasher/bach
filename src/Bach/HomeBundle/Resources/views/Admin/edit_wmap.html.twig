@@ -29,9 +29,13 @@ file that was distributed with this source code.
     _elt.prependTo('.tab-pane.active');
 
     {% if object.getId() != null %}
-    var map = L.map('map');
+    var map = L.map('map', {
+        minZoom: 1
+    });
     {% else %}
-    var map = L.map('map').setView([47.010, 5.087], 5);
+    var map = L.map('map', {
+        minZoom: 1
+    }).setView([47.010, 5.087], 5);
     {% endif %}
 
     var fullScreen = new L.Control.FullScreen();

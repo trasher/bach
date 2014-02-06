@@ -76,7 +76,9 @@ file that was distributed with this source code.
             var map;
             var _layers;
 
-            map = L.map('map').on('popupopen', function(e){
+            map = L.map('map', {
+                minZoom: 1
+            }).on('popupopen', function(e){
                 var _popup = e.popup;
                 var _container = $(_popup._container);
                 var _feature = _popup._source.feature;
