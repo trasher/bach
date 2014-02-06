@@ -2,7 +2,7 @@
 <dataConfig>
   <dataSource type="" driver="" url="" user="" password=""/>
   <document>
-    <entity name="SolrXMLFile" query="">
+    <entity name="SolrXMLFile" query="" transformer="RegexTransformer">
     </entity>
   </document>
 </dataConfig>
