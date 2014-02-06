@@ -32,6 +32,7 @@ twig:
         show_tagcloud: '%show_tagcloud%'
         client_code: '%client_code%'
         matricules: '%has_matricules%'
+        enable_social: '%enable_social%'
 
 # Assetic Configuration
 assetic:

@@ -1,19 +1,19 @@
     <div id="social">
-  {% if facebook is not sameas(false) %}
-    <div class="button facebookButton">
-      {{ facebookButton(facebook) }}
-    </div>
-  {% endif %}
+{% if facebook is not sameas(false) %}
+        <div class="button facebookButton">
+            {{ facebookButton(facebook) }}
+        </div>
+{% endif %}
 
-  {% if twitter is not sameas(false) %}
-    <div class="button twitterButton">
-      {{ twitterButton(twitter) }}
-    </div>
-  {% endif %}
+{% if twitter is not sameas(false) %}
+        <div class="button twitterButton">
+            {{ twitterButton(twitter) }}
+        </div>
+{% endif %}
 
-  {% if googleplus is not sameas(false) %}
-    <div class="button googleplus">
-      {{ googlePlusButton(googleplus) }}
-    </div>
-  {% endif %}
+{% if googleplus is not sameas(false) %}
+        <div class="button googleplus">
+            {{ googlePlusButton(googleplus) }}
+        </div>
+{% endif %}
     </div>

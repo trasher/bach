@@ -38,6 +38,7 @@ parameters:
     show_tagcloud: true
     client_code: null
     has_matricules: true
+    enable_social: false
 
 bach_home:
     files:
