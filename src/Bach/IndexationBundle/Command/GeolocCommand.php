@@ -82,6 +82,11 @@ EOF
                 null,
                 InputOption::VALUE_REQUIRED,
                 _('Limit queries to specified database')
+            )->addOption(
+                'with-notfound',
+                null,
+                InputOption::VALUE_NONE,
+                _('Include results marked as not found')
             );
     }
 
@@ -174,6 +179,15 @@ EOF
             );
         }
 
+        $with_notfound = $input->getOption('with-notfound');
+        if ( $with_notfound && !$quiet ) {
+            $output->writeln(
+                '<fg=green;options=bold>' .
+                _('Include results marked as not found') .
+                '</fg=green;options=bold>'
+            );
+        }
+
         if ( !$database || $database === 'ead' ) {
             $repo = $doctrine->getRepository('BachIndexationBundle:EADIndexes');
             $qb = $repo->createQueryBuilder('a')
@@ -187,6 +201,10 @@ EOF
                 ->where('a.type = :type')
                 ->andWhere('g.indexed_name IS NULL')
                 ->setParameter('type', 'cGeogname');
+
+            if ( $with_notfound ) {
+                $qb->orWhere('g.found = false');
+            }
 
             if ( $limit ) {
                 $qb->setMaxResults($limit);
@@ -221,6 +239,10 @@ EOF
                     'a.lieu_naissance = g.indexed_name'
                 )->where('g.indexed_name IS NULL');
 
+            if ( $with_notfound ) {
+                $qb->orWhere('g.found = false');
+            }
+
             if ( $limit ) {
                 $qb->setMaxResults($limit);
             }
@@ -253,6 +275,10 @@ EOF
                     'WITH',
                     'a.lieu_enregistrement = g.indexed_name'
                 )->where('g.indexed_name IS NULL');
+
+            if ( $with_notfound ) {
+                $qb->orWhere('g.found = false');
+            }
 
             if ( $limit ) {
                 $qb->setMaxResults($limit);
