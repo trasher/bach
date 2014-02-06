@@ -329,8 +329,8 @@ EOF
 
                 $result = $nominatim->proceed($toponym);
 
+                $ent = new Geoloc();
                 if ( $result !== false ) {
-                    $ent = new Geoloc();
                     $ent->hydrate($toponym, $result);
                     $output->writeln(
                         '<fg=green;>     ' .
@@ -341,13 +341,14 @@ EOF
                         ) .
                         '</fg=green;>'
                     );
-
-                    if ( !$dry) {
-                        $em->persist($ent);
-                    }
                     $found++;
                 } else {
+                    $ent->setNotFound($toponym);
                     $fail++;
+                }
+
+                if ( !$dry) {
+                    $em->persist($ent);
                 }
             } else {
                 $fail++;

@@ -51,12 +51,15 @@ class GeolocAdminController extends Controller
             )
             ->where('a.type = :type')
             ->andWhere('g.indexed_name IS NULL')
+            ->orWhere('g.found = false')
             ->setParameter('type', 'cGeogname');
 
         $query = $qb->getQuery();
         $bdd_places = $query->getResult();
 
-        $repo = $doctrine->getRepository('BachIndexationBundle:MatriculesFileFormat');
+        $repo = $doctrine->getRepository(
+            'BachIndexationBundle:MatriculesFileFormat'
+        );
         $qb = $repo->createQueryBuilder('a')
             ->select('DISTINCT a.lieu_naissance AS name')
             ->leftJoin(
@@ -64,12 +67,16 @@ class GeolocAdminController extends Controller
                 'g',
                 'WITH',
                 'a.lieu_naissance = g.indexed_name'
-            );
+            )
+            ->where('g.indexed_name IS NULL')
+            ->orWhere('g.found = false');
 
         $query = $qb->getQuery();
         $bdd_places = array_merge($bdd_places, $query->getResult());
 
-        $repo = $doctrine->getRepository('BachIndexationBundle:MatriculesFileFormat');
+        $repo = $doctrine->getRepository(
+            'BachIndexationBundle:MatriculesFileFormat'
+        );
         $qb = $repo->createQueryBuilder('a')
             ->select('DISTINCT a.lieu_enregistrement as name')
             ->leftJoin(
@@ -77,7 +84,9 @@ class GeolocAdminController extends Controller
                 'g',
                 'WITH',
                 'a.lieu_enregistrement = g.indexed_name'
-            );
+            )
+            ->where('g.indexed_name IS NULL')
+            ->orWhere('g.found = false');
 
         $query = $qb->getQuery();
         $bdd_places = array_merge($bdd_places, $query->getResult());

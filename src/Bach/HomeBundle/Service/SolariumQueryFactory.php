@@ -489,7 +489,8 @@ class SolariumQueryFactory
 
             if ( count($all_values) > 0 ) {
                 $qb = $repo->createQueryBuilder('g');
-                $qb->where('g.indexed_name IN (:names)');
+                $qb->where('g.indexed_name IN (:names)')
+                    ->andWhere('g.found = true');
                 $parameters['names'] = array_keys($all_values);
 
                 if ( $zones != false ) {
@@ -827,7 +828,6 @@ class SolariumQueryFactory
             ksort($cloud, SORT_LOCALE_STRING);
             return $cloud;
         }
-
     }
 
     /**

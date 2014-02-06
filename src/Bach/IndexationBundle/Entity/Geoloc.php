@@ -41,28 +41,28 @@ class Geoloc
     /**
      * @var integer
      *
-     * @ORM\Column(name="place_id", type="integer")
+     * @ORM\Column(name="place_id", type="integer", nullable=true)
      */
     protected $place_id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=50)
+     * @ORM\Column(name="type", type="string", length=50, nullable=true)
      */
     protected $type;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="osm_id", type="integer")
+     * @ORM\Column(name="osm_id", type="integer", nullable=true)
      */
     protected $osm_id;
 
     /**
      * @var text
      *
-     * @ORM\Column(name="bbox", type="text")
+     * @ORM\Column(name="bbox", type="text", nullable=true)
      */
     protected $bbox;
 
@@ -83,28 +83,35 @@ class Geoloc
     /**
      * @var text
      *
-     * @ORM\Column(name="geojson", type="text")
+     * @ORM\Column(name="geojson", type="text", nullable=true)
      */
     protected $geojson;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lat", type="decimal", scale=12, precision=18)
+     * @ORM\Column(name="lat", type="decimal", scale=12, precision=18, nullable=true)
      */
     protected $lat;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lon", type="decimal", scale=12, precision=18)
+     * @ORM\Column(name="lon", type="decimal", scale=12, precision=18, nullable=true)
      */
     protected $lon;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="found", type="boolean")
+     */
+    protected $found;
+
+    /**
      * Hydrate entity from toponym
      *
-     * @param string           $toponym Toponym
+     * @param Toponym          $toponym Toponym
      * @param SimpleXMLElement $data    Result from Nominatim
      *
      * @return Geoloc
@@ -124,7 +131,27 @@ class Geoloc
         $this->geojson = (string)$data['geojson'];
         $this->lat = (string)$data['lat'];
         $this->lon = (string)$data['lon'];
+        $this->found = true;
 
+        return $this;
+    }
+
+    /**
+     * Set toponym as not found
+     *
+     * @param Toponym $toponym Toponym
+     *
+     * @return Geoloc
+     */
+    public function setNotFound(Toponym $toponym)
+    {
+        $this->indexed_name = $toponym->getOriginal();
+        if ( $toponym->getName() !== null ) {
+            $this->name = $toponym->getName();
+        } else {
+            $this->name = $toponym->getSpecificName();
+        }
+        $this->found = false;
         return $this;
     }
 
