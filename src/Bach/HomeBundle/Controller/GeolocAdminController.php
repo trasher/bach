@@ -104,6 +104,12 @@ class GeolocAdminController extends Controller
      */
     public function geolocVisualizeAction()
     {
+        $gf = new \Bach\HomeBundle\Entity\GeolocMainFields;
+        $gf = $gf->loadDefaults(
+            $this->getDoctrine()->getManager()
+        );
+        $geoloc = $gf->getSolrFieldsNames();
+
         $query = $this->get("solarium.client")->createSelect();
         $query->setQuery('*:*');
         $query->setStart(0)->setRows(0);
@@ -111,10 +117,18 @@ class GeolocAdminController extends Controller
         $facetSet = $query->getFacetSet();
         $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);
-        $facetSet->createFacetField('geogname')->setField('cGeogname');
+
+        foreach ( $geoloc as $field ) {
+            $facetSet->createFacetField($field)
+                ->setField($field);
+        }
 
         $rs = $this->get('solarium.client')->select($query);
-        $map_facets = $rs->getFacetSet()->getFacet('geogname');
+
+        $facetset = $rs->getFacetSet();
+        foreach ( $geoloc as $field ) {
+            $map_facets[$field] = $facetset->getFacet($field);
+        }
 
         $factory = $this->get("bach.home.solarium_query_factory");
         $geojson = $factory->getGeoJson(
