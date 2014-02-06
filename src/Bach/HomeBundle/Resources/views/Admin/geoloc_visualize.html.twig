@@ -216,13 +216,7 @@ file that was distributed with this source code.
                         var _href = $(this).attr('href');
                         $.ajax({
                             url: _href,
-                            beforeSend: function() {
-                                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
-                                $('body').append(_img);
-                            },
-                            complete: function() {
-                                $('#loading').remove();
-                            },
+                            {% include '::loader.js.twig' with {'silent_error': true} %}
                             success: function(data) {
                                 var _name = _feature.properties.name;
                                 allpoints.removeLayer(allpoints.getLayer(_popup._source._leaflet_id));

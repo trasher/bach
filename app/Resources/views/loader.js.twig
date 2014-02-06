@@ -1,0 +1,16 @@
+            beforeSend: function() {
+                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                $('{% if parent_elt is defined %}{{ parent_elt }}{% else %}body{% endif %}').append(_img);
+            },
+            complete: function() {
+                $('#loading').remove();
+            },
+    {% if silent_error is not defined %}
+            error: function(){
+                {% if error_message is defined -%}
+                alert('{{ error_message }}');
+                {% else -%}
+                alert('{% trans %}An error occured loading document :({% endtrans %}');
+                {%- endif %}
+            },
+    {% endif %}

@@ -28,13 +28,7 @@
                 $.ajax({
                     url: _da_url,
                     type: 'POST',
-                    beforeSend: function() {
-                        var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
-                        $('body').append(_img);
-                    },
-                    complete: function() {
-                        $('#loading').remove();
-                    },
+                    {% include '::loader.js.twig' with {'error_message': 'An error occured loading terms :('|trans} %}
                     success: function(data) {
                         var _elt = $('#' + part);
                         var _dest;
@@ -46,9 +40,6 @@
                             _elt.remove();
                         }
                         _dest.append(data);
-                    },
-                    error: function(){
-                        alert('{% trans %}An error occured loading terms :({% endtrans %}');
                     }
                 });
 
@@ -76,8 +67,12 @@
                     var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
                     $('body').append(_img);
  
-                    ui.jqXHR.success(function() {
+                    ui.jqXHR.done(function() {
                         ui.tab.data( "loaded", true );
+                    });
+                    ui.jqXHR.fail(function(){
+                        alert('{% trans %}An error occured loading tab :({% endtrans %}');
+                        $('#loading').remove();
                     });
                 },
                 load: function(event, ui){

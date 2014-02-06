@@ -365,13 +365,7 @@
                         orig_href: _url
                     },
                     type: 'POST',
-                    beforeSend: function() {
-                        var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
-                        $('body').append(_img);
-                    },
-                    complete: function() {
-                        $('#loading').remove();
-                    },
+                    {% include '::loader.js.twig' with {'error_message': 'An error occured loading terms :('|trans} %}
                     success: function(data) {
                         _elt.append(data);
                         _elt.dialog({
@@ -382,9 +376,6 @@
                                 _elt.remove();
                             }
                         });
-                    },
-                    error: function(){
-                        alert('{% trans %}An error occured loading terms :({% endtrans %}');
                     }
                 });
 
@@ -710,13 +701,7 @@
 
                         $.ajax({
                             url: _da_url.replace('BBOX', map.getBounds().toBBoxString()),
-                            beforeSend: function() {
-                                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
-                                $('#map').append(_img);
-                            },
-                            complete: function() {
-                                $('#loading').remove();
-                            },
+                            {% include '::loader.js.twig' with {'parent_elt': '#map', 'silent_error': true} %}
                             success: function(data) {
                                 if ( !_zones_layer ) {
                                     _zones_layer = L.geoJson(data, {
