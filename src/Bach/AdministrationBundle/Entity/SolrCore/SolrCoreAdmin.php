@@ -855,10 +855,23 @@ class SolrCoreAdmin
         //main fields from entity
         $fields = $meta->getFieldNames();
 
+        //fields specific attributes
+        if ( property_exists($orm_name, 'dataconfig_attrs') ) {
+            $attrs = $orm_name::$dataconfig_attrs;
+        }
+
         foreach ($fields as $f ) {
             $newField = $doc->createElement('field');
             $newField->setAttribute('column', $f);
             $newField->setAttribute('name', $f);
+
+            //other specific mappings
+            if ( isset($attrs) && isset($attrs[$f]) ) {
+                $field_attrs = $attrs[$f];
+                foreach ( $field_attrs as $name=>$value ) {
+                    $newField->setAttribute($name, $value);
+                }
+            }
             $elt->appendChild($newField);
         }
 

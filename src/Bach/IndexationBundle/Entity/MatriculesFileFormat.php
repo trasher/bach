@@ -164,6 +164,12 @@ class MatriculesFileFormat
         )
     );
 
+    public static $dataconfig_attrs = array(
+        'prenoms' => array(
+            'splitBy' => ', '
+        )
+    );
+
     /**
      * Proceed data parsing
      *
