@@ -218,7 +218,7 @@ msgid "Position has been successfully stored!"
 msgstr "La position a été enregistrée !"
 
 msgid "Something went wrong trying to store position :("
-msgstr "Quelque chose s'est mal passé lors d el'enregistrement de la position :("
+msgstr "Quelque chose s'est mal passé lors de l'enregistrement de la position :("
 
 msgid "No results found :/"
 msgstr "Aucun résultat trouvé :/"
