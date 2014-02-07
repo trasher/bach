@@ -97,6 +97,12 @@ class MatriculesController extends SearchController
         $filters->bind($request);
         $session->set('matricules_filters', $filters);
 
+        if ( ($request->get('filter_field') || $filters->count() > 0)
+            && is_null($query_terms)
+        ) {
+            $query_terms = '*:*';
+        }
+
         if ( $view_params->advancedSearch() ) {
             $form = $this->createForm(
                 new MatriculesType(),
