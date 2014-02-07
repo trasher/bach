@@ -624,7 +624,7 @@ class DefaultController extends SearchController
                 'title' => _('View search results as a list, without images')
             ),
             'thumbs'    => array(
-                'text'  => _('Thumnails'),
+                'text'  => _('Thumbnails'),
                 'title' => _('View search results as thumbnails')
             )
         );

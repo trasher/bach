@@ -340,7 +340,7 @@ class MatriculesController extends SearchController
                 'title' => _('View search results as a list')
             ),
             'thumbs'    => array(
-                'text'  => _('Thumnails'),
+                'text'  => _('Thumbnails'),
                 'title' => _('View search results as thumbnails')
             )
         );
