@@ -534,6 +534,10 @@ p {
     text-align: center;
 }
 
+.interactions a.disabled img {
+    opacity: 0.4;
+}
+
 
 /** === Main display (old method) === */
 
