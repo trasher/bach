@@ -357,4 +357,30 @@ class MatriculesController extends SearchController
         return $views;
     }
 
+    /**
+     * Get unique conf facet
+     *
+     * @param string $name Facet name
+     *
+     * @return array
+     */
+    protected function getUniqueFacet($name)
+    {
+        $conf_facets = array();
+
+        $fields = array(
+            'nom'                   => 'Nom',
+            'prenoms'               => 'Prénom',
+            'classe'                => 'Classe',
+            'lieu_naissance'        => 'Lieu de naissance',
+            'lieu_enregistrement'   => 'Lieu d\'enregistrement'
+        );
+
+        $facet = new Facets();
+        $facet->setSolrFieldName($name);
+        $facet->setFrLabel($fields[$name]);
+        $conf_facets[] = $facet;
+
+        return $conf_facets;
+    }
 }

@@ -641,4 +641,22 @@ class DefaultController extends SearchController
         return $views;
     }
 
+    /**
+     * Get unique conf facet
+     *
+     * @param string $name Facet name
+     *
+     * @return array
+     */
+    protected function getUniqueFacet($name)
+    {
+        return $this->getDoctrine()
+            ->getRepository('BachHomeBundle:Facets')
+            ->findBy(
+                array(
+                    'active'            => true,
+                    'solr_field_name'   => $name
+                )
+            );
+    }
 }

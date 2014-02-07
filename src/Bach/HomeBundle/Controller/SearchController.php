@@ -513,12 +513,7 @@ abstract class SearchController extends Controller
             $filters = new Filters();
         }
 
-        $conf_facets = $this->getDoctrine()
-            ->getRepository('BachHomeBundle:Facets')
-            ->findBy(
-                array('active' => true),
-                array('position' => 'ASC')
-            );
+        $conf_facets = $this->getUniqueFacet($name);
 
         $container = new SolariumQueryContainer();
         $container->setOrder($view_params->getOrder());
@@ -527,15 +522,6 @@ abstract class SearchController extends Controller
         //Add filters to container
         $container->setFilters($filters);
         $factory->prepareQuery($container);
-
-        $conf_facets = $this->getDoctrine()
-            ->getRepository('BachHomeBundle:Facets')
-            ->findBy(
-                array(
-                    'active'            => true,
-                    'solr_field_name'   => $name
-                )
-            );
 
         $searchResults = $factory->performQuery(
             $container,
@@ -579,6 +565,15 @@ abstract class SearchController extends Controller
             $tpl_vars
         );
     }
+
+    /**
+     * Get unique conf facet
+     *
+     * @param string $name Facet name
+     *
+     * @return array
+     */
+    abstract protected function getUniqueFacet($name);
 
     /**
      * Get configured geolocalization fields
