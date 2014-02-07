@@ -66,7 +66,7 @@
         event.stopImmediatePropagation();
         event.preventDefault();
 
-        var _elt = $('<div id="display_doc" title="{% trans %}Consult document{% endtrans %}"></div>');
+        var _elt = $('<div id="display_doc" title="{{ 'Consult document'|trans|escape('js') }}"></div>');
         _elt.appendTo('body');
 
         var _width = $(window).width() * 0.8;
@@ -74,7 +74,7 @@
 
         $.ajax({
             url: $(this).attr('href') + '/ajax',
-            {% include '::loader.js.twig' with {'error_message': 'An error occured loading document :('|trans} %}
+            {% include '::loader.js.twig' with {'error_message': 'An error occured loading document :('|trans|escape('js')} %}
             success: function(data) {
                 _elt.append(data);
                 _initflow(true);

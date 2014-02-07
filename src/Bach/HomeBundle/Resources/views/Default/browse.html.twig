@@ -28,7 +28,7 @@
                 $.ajax({
                     url: _da_url,
                     type: 'POST',
-                    {% include '::loader.js.twig' with {'error_message': 'An error occured loading terms :('|trans} %}
+                    {% include '::loader.js.twig' with {'error_message': 'An error occured loading terms :('|trans|escape('js')} %}
                     success: function(data) {
                         var _elt = $('#' + part);
                         var _dest;
@@ -71,7 +71,7 @@
                         ui.tab.data( "loaded", true );
                     });
                     ui.jqXHR.fail(function(){
-                        alert('{% trans %}An error occured loading tab :({% endtrans %}');
+                        alert('{{ 'An error occured loading tab :('|trans|escape('js') }}');
                         $('#loading').remove();
                     });
                 },

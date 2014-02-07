@@ -53,7 +53,7 @@
 
         // Update the count
         var numberItems = count;
-        $("#filter-count").text('{% trans %}%count filtered results{% endtrans %}'.replace('%count', count));
+        $("#filter-count").text('{{ '%count filtered results'|trans|escape('js') }}'.replace('%count', count));
     });
 
     $('#facet_order').change(function(){
