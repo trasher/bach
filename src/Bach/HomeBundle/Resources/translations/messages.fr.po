@@ -82,32 +82,14 @@ msgstr "Une erreur est survenue au chargement des termes"
 msgid "An error occured loading document :("
 msgstr "Une erreur est survenue au chargement du document :("
 
-msgid "View search results as a list, with images"
-msgstr "Voir les résultats de recherche en liste, avec images"
-
-msgid "List"
-msgstr "Liste"
-
-msgid "View search results as a list, without images"
-msgstr "Voir les résultats de recherche en liste, sans images"
-
-msgid "Text only list"
-msgstr "Liste texte"
-
-msgid "View search results as thumbnails"
-msgstr "Voir les résultats de recherche en miniatures"
-
-msgid "Thumnails"
-msgstr "Miniatures"
+msgid "An error occured loading tab :("
+msgstr "Une erreur est survenue au chargement de l'onglet :("
 
 msgid "Show all"
 msgstr "Afficher tous"
 
 msgid "Back to search results"
 msgstr "Retour aux résultats de recherche"
-
-msgid "Document logic"
-msgstr "Logique du document"
 
 msgid "© Cartographic data"
 msgstr "© Données cartopgraphiques"
@@ -144,9 +126,6 @@ msgstr "Ajouter un commentaire"
 
 msgid "New comment"
 msgstr "Nouveau commentaire"
-
-msgid "Context:"
-msgstr "Contexte :"
 
 msgid "Show more (%count% left)"
 msgstr "Afficher plus (%count% restants)"

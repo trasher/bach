@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-31 15:19+0100\n"
+"POT-Creation-Date: 2014-02-07 11:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,17 +68,36 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/Bach/HomeBundle/Form/Type/CommentType.php:68
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:67
 #: src/Bach/HomeBundle/Admin/CommentAdmin.php:63
 #: src/Bach/HomeBundle/Admin/CommentAdmin.php:81
 msgid "Message"
 msgstr ""
 
-#: src/Bach/HomeBundle/Form/Type/CommentType.php:75
+#: src/Bach/HomeBundle/Form/Type/CommentType.php:74
 msgid "Send your comment"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/CommentsController.php:77
+#: src/Bach/HomeBundle/Controller/MatriculesController.php:339
+#: src/Bach/HomeBundle/Controller/DefaultController.php:619
+msgid "List"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/MatriculesController.php:340
+msgid "View search results as a list"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/MatriculesController.php:343
+#: src/Bach/HomeBundle/Controller/DefaultController.php:627
+msgid "Thumbnails"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/MatriculesController.php:344
+#: src/Bach/HomeBundle/Controller/DefaultController.php:628
+msgid "View search results as thumbnails"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/CommentsController.php:76
 msgid "Your comment has been stored. Thank you!"
 msgstr ""
 
@@ -100,15 +119,15 @@ msgstr ""
 msgid "File %file does not exists."
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/SearchController.php:192
+#: src/Bach/HomeBundle/Controller/SearchController.php:193
 msgid "Map selection"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/SearchController.php:193
+#: src/Bach/HomeBundle/Controller/SearchController.php:194
 msgid "Start date"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/SearchController.php:194
+#: src/Bach/HomeBundle/Controller/SearchController.php:195
 msgid "End date"
 msgstr ""
 
@@ -120,8 +139,28 @@ msgstr ""
 msgid "Selected comments have been published"
 msgstr ""
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:457
+#: src/Bach/HomeBundle/Controller/DefaultController.php:453
 msgid "%count% results found, 1 expected."
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:604
+msgid "Alphabetic"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:605
+msgid "Document logic"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:620
+msgid "View search results as a list, with images"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:623
+msgid "Text only list"
+msgstr ""
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:624
+msgid "View search results as a list, without images"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayDao.php:296
@@ -167,131 +206,131 @@ msgstr ""
 msgid "Display '%name%'"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:179
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:183
 msgid "Publication informations"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:182
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:186
 msgid "Physical description"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:185
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:189
 msgid "Descriptors"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:188
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:192
 msgid "Gender:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:191
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:195
 msgid "Extent:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:194
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:198
 msgid "Dimensions:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:197
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:201
 msgid "Appearance:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:200
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:204
 msgid "Title:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:203
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:207
 msgid "Corporate name:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:206
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:210
 msgid "Geographical name:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:209
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:213
 msgid "Subject:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:212
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:216
 msgid "Personal name:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:215
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:219
 msgid "Function:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:218
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:222
 msgid "Name:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:221
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:225
 msgid "Genre:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:224
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:228
 msgid "Relative documents"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:227
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:231
 msgid "Description:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:230
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:234
 msgid "Conservation history:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:233
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:237
 msgid "Arrangement:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:236
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:240
 msgid "Related material:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:239
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:243
 msgid "Bibliography:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:242
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:246
 msgid "Biography or history:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:245
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:249
 msgid "Acquisition information:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:248
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:252
 msgid "Separated material:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:251
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:255
 msgid "Untitled unit"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:254
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:258
 msgid "Content"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:257
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:261
 msgid "Documents"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:260
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:264
 msgid "Sub-units"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:263
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:267
 msgid "Add comment"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:266
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:270
 msgid "Repository:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:269
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:273
 msgid "Language:"
 msgstr ""
 
-#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:272
+#: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:276
 msgid "Comments"
 msgstr ""
 
@@ -317,52 +356,52 @@ msgstr ""
 msgid "Indexed name"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:113
-#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:184
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:112
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:183
+#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:111
+#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:182
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:110
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:181
 msgid "Solr field name"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:120
+#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:118
 msgid "Activate field"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:126
-#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:197
+#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:124
+#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:195
 msgid "French label"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:132
-#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:203
+#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:130
+#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:201
 msgid "English label"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:191
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:190
+#: src/Bach/HomeBundle/Admin/BrowseFieldsAdmin.php:189
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:188
 msgid "Active"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/GeolocFieldsAdmin.php:74
-#: src/Bach/HomeBundle/Admin/TagCloudAdmin.php:78
+#: src/Bach/HomeBundle/Admin/GeolocFieldsAdmin.php:73
+#: src/Bach/HomeBundle/Admin/TagCloudAdmin.php:77
 msgid "Fields"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:119
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:117
 msgid "Activate facet"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:125
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:196
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:123
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:194
 msgid "French text"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:131
-#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:202
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:129
+#: src/Bach/HomeBundle/Admin/FacetsAdmin.php:200
 msgid "English text"
 msgstr ""
 
-#: src/Bach/HomeBundle/Admin/TagCloudAdmin.php:85
+#: src/Bach/HomeBundle/Admin/TagCloudAdmin.php:84
 msgid "Number of occurences"
 msgstr ""
 
@@ -411,7 +450,7 @@ msgstr ""
 msgid "Geolocalization fields for matricules"
 msgstr ""
 
-#: src/Bach/HomeBundle/Entity/TagCloud.php:147
+#: src/Bach/HomeBundle/Entity/TagCloud.php:146
 msgid "Tag cloud"
 msgstr ""
 
@@ -449,11 +488,11 @@ msgstr ""
 msgid "Rejected"
 msgstr ""
 
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:179
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:287
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:182
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:290
 msgid "Yes"
 msgstr ""
 
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:288
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:291
 msgid "No"
 msgstr ""

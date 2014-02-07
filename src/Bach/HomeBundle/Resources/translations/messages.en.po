@@ -83,32 +83,14 @@ msgstr "An error occured loading terms :("
 msgid "An error occured loading document :("
 msgstr "An error occured loading document :("
 
-msgid "View search results as a list, with images"
-msgstr "View search results as a list, with images"
-
-msgid "List"
-msgstr "List"
-
-msgid "View search results as a list, without images"
-msgstr "View search results as a list, without images"
-
-msgid "Text only list"
-msgstr "Text only list"
-
-msgid "View search results as thumbnails"
-msgstr "View search results as thumbnails"
-
-msgid "Thumnails"
-msgstr "Thumnails"
+msgid "An error occured loading tab :("
+msgstr "An error occured loading tab :("
 
 msgid "Show all"
 msgstr "Show all"
 
 msgid "Back to search results"
 msgstr "Back to search results"
-
-msgid "Document logic"
-msgstr "Document logic"
 
 msgid "© Cartographic data"
 msgstr "© Cartographic data"
@@ -145,9 +127,6 @@ msgstr "Add a comment"
 
 msgid "New comment"
 msgstr "New comment"
-
-msgid "Context:"
-msgstr "Context:"
 
 msgid "Show more (%count% left)"
 msgstr "Show more (%count% left)"
@@ -302,6 +281,9 @@ msgstr "Geolocalization"
 
 msgid "Comments"
 msgstr "Comments"
+
+msgid "Tag cloud"
+msgstr "Tag cloud"
 
 msgid "Geolocalization fields"
 msgstr "Geolocalization fields"
