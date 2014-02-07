@@ -122,6 +122,26 @@ class MatriculesFileFormat
     );
 
     /**
+     * Fields included in spell field
+     */
+    public static $spellers = array(
+        'nom',
+        'prenoms',
+        'lieu_enregistrement',
+        'lieu_naissance'
+    );
+
+    /**
+     * Fields included in suggestions field
+     */
+    public static $suggesters = array(
+        'nom',
+        'prenoms',
+        'lieu_enregistrement',
+        'lieu_naissance'
+    );
+
+    /**
      * Fields types, if not string
      */
     public static $types = array(

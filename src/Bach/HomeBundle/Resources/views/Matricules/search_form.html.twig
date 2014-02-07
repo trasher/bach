@@ -98,3 +98,24 @@
     {% endif %}
 {% endblock %}
 
+{% block autocomplete %}
+    $('#searchQuery_query').autocomplete({
+        source: function(request, response) {
+            $.getJSON(
+                '{{ path('bach_matricules_suggest') }}', {
+                    q: request.term
+                }, response
+            );
+        }
+    }).data('uiAutocomplete')._renderItem = function( ul, item ) {
+        var newText = String(item.value).replace(
+            new RegExp(preg_quote(this.term), "gi"),
+            "<span class='ui-state-highlight'>$&</span>"
+        );
+
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a>" + newText + "</a>")
+            .appendTo(ul);
+    };
+{% endblock %}

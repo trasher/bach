@@ -20,6 +20,10 @@ bach_suggest:
     pattern: /suggest
     defaults: { _controller: BachHomeBundle:Default:doSuggest }
 
+bach_matricules_suggest:
+    pattern: /matricules/suggest
+    defaults: { _controller: BachHomeBundle:Matricules:doSuggest }
+
 bach_display_document_paginate:
     pattern: /show/{docid}/{page}/{ajax}
     defaults: { _controller BachHomeBundle:Default:displayDocument, page: 1, ajax: false }
