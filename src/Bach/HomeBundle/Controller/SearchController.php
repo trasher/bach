@@ -395,6 +395,13 @@ abstract class SearchController extends Controller
     abstract protected function entryPoint();
 
     /**
+     * Get factory name
+     *
+     * @return string
+     */
+    abstract protected function factoryName();
+
+    /**
      * Get available ordering options
      *
      * @return array
@@ -419,7 +426,7 @@ abstract class SearchController extends Controller
     {
         $request = $this->getRequest();
         $session = $request->getSession();
-        $factory = $this->get("bach.home.solarium_query_factory");
+        $factory = $this->get($this->factoryName());
 
         $facets_name = $request->get('facets_name');
 
@@ -498,7 +505,7 @@ abstract class SearchController extends Controller
 
         $geoloc = $this->getGeolocFields();
 
-        $factory = $this->get("bach.home.solarium_query_factory");
+        $factory = $this->get($this->factoryName());
         $factory->setGeolocFields($geoloc);
 
         $filters = $session->get('filters');

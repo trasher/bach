@@ -70,7 +70,7 @@ class DefaultController extends SearchController
         );
         $tpl_vars['form'] = $form->createView();
 
-        $factory = $this->get("bach.home.solarium_query_factory");
+        $factory = $this->get($this->factoryName());
         $factory->setDateField('cDateBegin');
 
         $show_tagcloud = $this->container->getParameter('show_tagcloud');
@@ -104,6 +104,16 @@ class DefaultController extends SearchController
     protected function entryPoint()
     {
         return 'solarium.client';
+    }
+
+    /**
+     * Get factory name
+     *
+     * @return string
+     */
+    protected function factoryName()
+    {
+        return 'bach.home.solarium_query_factory';
     }
 
     /**
@@ -202,7 +212,7 @@ class DefaultController extends SearchController
             )
         );
 
-        $factory = $this->get("bach.home.solarium_query_factory");
+        $factory = $this->get($this->factoryName());
         $factory->setGeolocFields($this->getGeolocFields());
         $factory->setDateField('cDateBegin');
 

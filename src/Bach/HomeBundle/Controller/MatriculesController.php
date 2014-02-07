@@ -123,7 +123,7 @@ class MatriculesController extends SearchController
         $resultCount = null;
         $searchResults = null;
 
-        $factory = $this->get("bach.matricules.solarium_query_factory");
+        $factory = $this->get($this->factoryName());
         $factory->setGeolocFields($this->getGeolocFields());
         $factory->setDateField('date_enregistrement');
 
@@ -251,6 +251,16 @@ class MatriculesController extends SearchController
     protected function entryPoint()
     {
         return 'solarium.client.matricules';
+    }
+
+    /**
+     * Get factory name
+     *
+     * @return string
+     */
+    protected function factoryName()
+    {
+        return 'bach.matricules.solarium_query_factory';
     }
 
     /**
