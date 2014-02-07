@@ -84,6 +84,8 @@ abstract class SearchController extends Controller
             'show_daterange'    => $view_params->showDaterange(),
             'view'              => $view_params->getView(),
             'results_order'     => $view_params->getOrder(),
+            'available_orders'  => $this->getOrders(),
+            'available_views'   => $this->getViews(),
             'map_facets_name'   => $this->mapFacetsName(),
             'q'                 => '',
             'solr_fields'       => $solr_fields
@@ -391,6 +393,20 @@ abstract class SearchController extends Controller
      * @return string
      */
     abstract protected function entryPoint();
+
+    /**
+     * Get available ordering options
+     *
+     * @return array
+     */
+    abstract protected function getOrders();
+
+    /**
+     * Get available views
+     *
+     * @return array
+     */
+    abstract protected function getViews();
 
     /**
      * Get geographical zones

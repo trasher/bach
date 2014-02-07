@@ -592,4 +592,43 @@ class DefaultController extends SearchController
             $tplParams
         );
     }
+
+    /**
+     * Get available ordering options
+     *
+     * @return array
+     */
+    protected function getOrders()
+    {
+        $orders = array(
+            _('Alphabetic'),
+            _('Document logic')
+        );
+        return $orders;
+    }
+
+    /**
+     * Get available views
+     *
+     * @return array
+     */
+    protected function getViews()
+    {
+        $views = array(
+            'list'      => array(
+                'text'  => _('List'),
+                'title' => _('View search results as a list, with images')
+            ),
+            'txtlist'   => array(
+                'text'  => _('Text only list'),
+                'title' => _('View search results as a list, without images')
+            ),
+            'thumbs'    => array(
+                'text'  => _('Thumnails'),
+                'title' => _('View search results as thumbnails')
+            )
+        );
+        return $views;
+    }
+
 }

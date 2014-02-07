@@ -309,4 +309,36 @@ class MatriculesController extends SearchController
         }
         return new RedirectResponse($redirectUrl);
     }
+
+    /**
+     * Get available ordering options
+     *
+     * @return array
+     */
+    protected function getOrders()
+    {
+        $orders = array();
+        return $orders;
+    }
+
+    /**
+     * Get available views
+     *
+     * @return array
+     */
+    protected function getViews()
+    {
+        $views = array(
+            'list'      => array(
+                'text'  => _('List'),
+                'title' => _('View search results as a list')
+            ),
+            'thumbs'    => array(
+                'text'  => _('Thumnails'),
+                'title' => _('View search results as thumbnails')
+            )
+        );
+        return $views;
+    }
+
 }

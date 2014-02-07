@@ -472,7 +472,7 @@ p {
     margin: 0;
 }
 
-.btn-list, .btn-thumb, .btn-txtlist {
+.btn-list, .btn-thumbs, .btn-txtlist {
     background: transparent url(../img/sprite.png) 0 0 no-repeat;
     display: inline-block;
     width: 29px;
@@ -494,13 +494,13 @@ p {
 }
 
 
-.btn-thumb {
+.btn-thumbs {
     background-position: -11px -109px;
 }
 
 .btn-list.selected, .btn-list:hover,
 .btn-txtlist.selected, .btn-txtlist:hover,
-.btn-thumb.selected, .btn-thumb:hover {
+.btn-thumbs.selected, .btn-thumbs:hover {
     background-color: #d1c6c0;
 }
 
