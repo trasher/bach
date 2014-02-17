@@ -237,7 +237,8 @@ EOF
                     'g',
                     'WITH',
                     'a.lieu_naissance = g.indexed_name'
-                )->where('g.indexed_name IS NULL');
+                )->where('g.indexed_name IS NULL')
+                ->andWhere('a.lieu_naissance != \'\'');
 
             if ( $with_notfound ) {
                 $qb->orWhere('g.found = false');
@@ -274,7 +275,8 @@ EOF
                     'g',
                     'WITH',
                     'a.lieu_enregistrement = g.indexed_name'
-                )->where('g.indexed_name IS NULL');
+                )->where('g.indexed_name IS NULL')
+                ->andWhere('a.lieu_enregistrement != \'\'');
 
             if ( $with_notfound ) {
                 $qb->orWhere('g.found = false');
