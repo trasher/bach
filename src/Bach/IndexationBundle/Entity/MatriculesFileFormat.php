@@ -206,16 +206,18 @@ class MatriculesFileFormat
     {
         foreach ($data as $key=>$datum) {
             if (property_exists($this, $key)) {
-                if ( strlen($datum[0]['value']) == 4
-                    && ($key === 'date_enregistrement'
-                    || $key === 'annee_naissance'
-                    || $key === 'classe')
-                ) {
-                    $datum[0]['value'] = new \DateTime(
-                        $datum[0]['value'] . '-01-01'
-                    );
+                if ( isset($datum[0]) ) {
+                    if ( strlen($datum[0]['value']) == 4
+                        && ($key === 'date_enregistrement'
+                        || $key === 'annee_naissance'
+                        || $key === 'classe')
+                    ) {
+                        $datum[0]['value'] = new \DateTime(
+                            $datum[0]['value'] . '-01-01'
+                        );
+                    }
+                    $this->$key = $datum[0]['value'];
                 }
-                $this->$key = $datum[0]['value'];
             } else {
                 throw new \RuntimeException(
                     __CLASS__ . ' - Key ' . $key . ' is not known!'
