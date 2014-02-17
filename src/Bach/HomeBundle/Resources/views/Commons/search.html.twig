@@ -648,18 +648,6 @@
                 {% endfor %}
                 ]).addTo(map);
 
-                map.on('overlayadd overlayremove', function(e) {
-                    if ( e.type == 'overlayremove' && e.name == 'zones' ) {
-                        _zones_actives = false;
-                        map.removeControl(_legend);
-                    }
-                    if ( e.type == 'overlayadd' && e.name == 'zones' ) {
-                        _zones_actives = true;
-                        checkZones();
-                        _loadLegend();
-                    }
-                });
-
                 var allpoints = L.featureGroup([
                  {%- for field in geojson|keys -%}
                     {{ field|replace({'-': '_'}) }}_points{% if not loop.last %},{% endif %}
@@ -720,7 +708,7 @@
                                         onEachFeature: onEachFeature
                                     });
                                     _layers.addLayer(_zones_layer);
-                                    _groups.addOverlay(_zones_layer, 'zones');
+                                    _groups.addOverlay(_zones_layer, '{% trans %}Zones{% endtrans %}');
                                     _state_changed = true;
 
                                 } else {
@@ -764,6 +752,25 @@
                 map.on('dragend', checkZones);
                 map.on('resize', checkZones);
                 checkZones();
+
+                map.on('overlayadd overlayremove', function(e) {
+                    console.log(e.name);
+                    if ( e.type == 'overlayremove' && e.name == '{% trans %}Zones{% endtrans %}' ) {
+                        _zones_actives = false;
+                        map.off('zoomend', checkZones);
+                        map.off('dragend', checkZones);
+                        map.off('resize', checkZones);
+                        map.removeControl(_legend);
+                    }
+                    if ( e.type == 'overlayadd' && e.name == '{% trans %}Zones{% endtrans %}' ) {
+                        _zones_actives = true;
+                        map.on('zoomend', checkZones);
+                        map.on('dragend', checkZones);
+                        map.on('resize', checkZones);
+                        checkZones();
+                        _loadLegend();
+                    }
+                });
             }
 
             if ( _view_params['map'] == true ) {
