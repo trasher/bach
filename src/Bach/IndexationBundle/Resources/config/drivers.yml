@@ -3,6 +3,7 @@ drivers:
         mapper: Bach\IndexationBundle\Entity\Mapper\MatriculesDriverMapper
         universalfileformat: Bach\IndexationBundle\Entity\MatriculesFileFormat
         fields:
+            - id
             - cote
             - date_enregistrement
             - lieu_enregistrement
@@ -12,6 +13,8 @@ drivers:
             - matricule
             - annee_naissance
             - lieu_naissance
+            - start_dao
+            - end_dao
     ead:
         mapper: Bach\IndexationBundle\Entity\Mapper\EADDriverMapper
         universalfileformat: Bach\IndexationBundle\Entity\EADFileFormat

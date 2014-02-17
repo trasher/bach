@@ -37,6 +37,11 @@ class MatriculesFileFormat
     protected $uniqid;
 
     /**
+     * @ORM\Column(type="string", unique=true)
+     */
+    protected $id;
+
+    /**
      * @ORM\Column(type="string", nullable=true, length=100)
      */
     protected $cote;
