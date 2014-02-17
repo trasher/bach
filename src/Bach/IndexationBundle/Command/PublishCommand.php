@@ -179,9 +179,8 @@ EOF
                 $integrationService = $this->getContainer()
                     ->get('bach.indexation.process.arch_file_integration');
 
+                $docs = array();
                 foreach ( $files_to_publish[$type] as $ftp ) {
-                    $progress->advance();
-
                     $document = new Document();
 
                     $document->setUploadDir(
@@ -196,20 +195,44 @@ EOF
                         )
                     );
 
+                    if ( $type !== 'matricules' ) {
+                        $progress->advance();
+                        if ( $dry === false ) {
+                            $em->persist($document);
+                            $em->flush();
+                        }
+
+                        //create a new task
+                        $task = new ArchFileIntegrationTask($document);
+
+                        if ( $dry === false ) {
+                            $res = $integrationService->integrate($task);
+                        }
+
+                        unset($task);
+                    } else {
+                        $docs[] = $document;
+                    }
+                    unset($document);
+                }
+            }
+
+            if ( $type === 'matricules' && count($docs) > 0 ) {
+                $tasks = array();
+                $count = 0;
+                foreach ( $docs as $document ) {
+                    $count++;
                     if ( $dry === false ) {
                         $em->persist($document);
-                        $em->flush();
+                        if ( $count % 20000 === 0 ) {
+                            $em->flush();
+                        }
                     }
-
-                    //create a new task
                     $task = new ArchFileIntegrationTask($document);
-
-                    if ( $dry === false ) {
-                        $res = $integrationService->integrate($task);
-                    }
-
-                    unset($task, $document);
+                    $tasks[] = $task;
                 }
+                $em->flush();
+                $integrationService->integrateAll($tasks, $progress);
             }
 
             $this->_solrFullImport($type, $progress, $dry);

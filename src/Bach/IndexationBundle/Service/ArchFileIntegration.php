@@ -77,11 +77,12 @@ class ArchFileIntegration
     /**
      * Proceed task database integration
      *
-     * @param ArchFileIntegrationTask $task Task to proceed
+     * @param ArchFileIntegrationTask $task  Task to proceed
+     * @param boolean                 $flush Wether to flush
      *
      * @return void
      */
-    public function integrate(ArchFileIntegrationTask $task)
+    public function integrate(ArchFileIntegrationTask $task, $flush = true)
     {
         $spl = new \SplFileInfo($task->getPath());
         $doc = $task->getDocument();
@@ -105,7 +106,43 @@ class ArchFileIntegration
 
             $count++;
 
-            if ( $count % 100 === 0 ) {
+            if ( $count % 100 === 0 && $flush ) {
+                $this->_entityManager->flush();
+            }
+        }
+
+        if ( $flush ) {
+            $this->_entityManager->flush();
+            $this->_entityManager->clear();
+
+            if ( function_exists('memprof_enable') ) {
+                memprof_dump_callgrind(
+                    fopen(
+                        '/var/www/bach/app/cache/integrate.callgrind.out',
+                        'w'
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Integrate multiple tasks at once
+     *
+     * @param array       $tasks    Tasks to integrate
+     * @param progressbar $progress Progress bar
+     *
+     * @return void
+     */
+    public function integrateAll($tasks, $progress)
+    {
+        $count = 0;
+        foreach ( $tasks as $task) {
+            $progress->advance();
+            $this->integrate($task, false);
+            $count++;
+
+            if ( $count % 20000 === 0 ) {
                 $this->_entityManager->flush();
             }
         }
@@ -113,13 +150,5 @@ class ArchFileIntegration
         $this->_entityManager->flush();
         $this->_entityManager->clear();
 
-        if ( function_exists('memprof_enable') ) {
-            memprof_dump_callgrind(
-                fopen(
-                    '/var/www/bach/app/cache/integrate.callgrind.out',
-                    'w'
-                )
-            );
-        }
     }
 }
