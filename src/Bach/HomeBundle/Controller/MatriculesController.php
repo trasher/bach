@@ -88,14 +88,14 @@ class MatriculesController extends SearchController
 
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
 
-        $filters = $session->get('matricules_filters');
+        $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
             $filters = new Filters();
-            $session->set('matricules_filters', null);
+            $session->set($this->getFiltersName(), null);
         }
 
         $filters->bind($request);
-        $session->set('matricules_filters', $filters);
+        $session->set($this->getFiltersName(), $filters);
 
         if ( ($request->get('filter_field') || $filters->count() > 0)
             && is_null($query_terms)
@@ -137,9 +137,9 @@ class MatriculesController extends SearchController
             $container = new SolariumQueryContainer();
 
             if ( $view_params->advancedSearch() ) {
-                $container->setField('adv_matricules', $data);
+                $container->setField($this->getContainerFieldName(), $data);
             } else {
-                $container->setField('matricules', $query_terms);
+                $container->setField($this->getContainerFieldName(), $query_terms);
             }
 
             $container->setField(
@@ -382,5 +382,43 @@ class MatriculesController extends SearchController
         $conf_facets[] = $facet;
 
         return $conf_facets;
+    }
+
+    /**
+     * Get container field name
+     *
+     * @return string
+     */
+    protected function getContainerFieldName()
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        $view_params = $session->get('matricules_view_params');
+
+        if ( $view_params->advancedSearch() ) {
+            return 'adv_matricules';
+        } else {
+            return 'matricules';
+        }
+    }
+
+    /**
+     * Get filters session name
+     *
+     * @return string
+     */
+    protected function getFiltersName()
+    {
+        return 'matricules_filters';
+    }
+
+    /**
+     * Get search URI
+     *
+     * @return string
+     */
+    protected function getSearchUri()
+    {
+        return 'bach_matricules_search';
     }
 }

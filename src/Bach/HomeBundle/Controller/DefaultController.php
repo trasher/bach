@@ -181,14 +181,14 @@ class DefaultController extends SearchController
         //store new view parameters
         $session->set('view_params', $view_params);
 
-        $filters = $session->get('filters');
+        $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
             $filters = new Filters();
-            $session->set('filters', null);
+            $session->set($this->getFiltersName(), null);
         }
 
         $filters->bind($request);
-        $session->set('filters', $filters);
+        $session->set($this->getFiltersName(), $filters);
 
         if ( ($request->get('filter_field') || $filters->count() > 0)
             && is_null($query_terms)
@@ -229,7 +229,7 @@ class DefaultController extends SearchController
             'show_pics',
             $view_params->showPics()
         );
-        $container->setField("main", $query_terms);
+        $container->setField($this->getContainerFieldName(), $query_terms);
 
         $container->setField(
             "pager",
@@ -332,7 +332,7 @@ class DefaultController extends SearchController
                 );
 
                 $session = $this->getRequest()->getSession();
-                $session->set('filters', null);
+                $session->set($this->getFilter(), null);
             }
         }
         return new RedirectResponse($redirectUrl);
@@ -658,5 +658,36 @@ class DefaultController extends SearchController
                     'solr_field_name'   => $name
                 )
             );
+    }
+
+    /**
+     * Get container field name
+     *
+     * @return string
+     */
+    protected function getContainerFieldName()
+    {
+        return 'main';
+    }
+
+    /**
+     * Get filters session name
+     *
+     * @return string
+     */
+    protected function getFiltersName()
+    {
+        return 'filters';
+    }
+
+
+    /**
+     * Get search URI
+     *
+     * @return string
+     */
+    protected function getSearchUri()
+    {
+        return 'bach_search';
     }
 }

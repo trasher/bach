@@ -508,7 +508,7 @@ abstract class SearchController extends Controller
         $factory = $this->get($this->factoryName());
         $factory->setGeolocFields($geoloc);
 
-        $filters = $session->get('filters');
+        $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters ) {
             $filters = new Filters();
         }
@@ -517,7 +517,7 @@ abstract class SearchController extends Controller
 
         $container = new SolariumQueryContainer();
         $container->setOrder($view_params->getOrder());
-        $container->setField('main', $query_terms);
+        $container->setField($this->getContainerFieldName(), $query_terms);
 
         //Add filters to container
         $container->setFilters($filters);
@@ -557,7 +557,8 @@ abstract class SearchController extends Controller
             'q'             => $query_terms,
             'facets'        => $facets,
             'orig_href'     => $request->get('orig_href'),
-            'facet_order'   => $request->get('facet_order')
+            'facet_order'   => $request->get('facet_order'),
+            'search_uri'    => $this->getSearchUri()
         );
 
         return $this->render(
@@ -574,6 +575,27 @@ abstract class SearchController extends Controller
      * @return array
      */
     abstract protected function getUniqueFacet($name);
+
+    /**
+     * Get container field name
+     *
+     * @return string
+     */
+    abstract protected function getContainerFieldName();
+
+    /**
+     * Get filters session name
+     *
+     * @return string
+     */
+    abstract protected function getFiltersName();
+
+    /**
+     * Get search URI
+     *
+     * @return string
+     */
+    abstract protected function getSearchUri();
 
     /**
      * Get configured geolocalization fields

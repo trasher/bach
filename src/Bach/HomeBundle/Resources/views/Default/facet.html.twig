@@ -24,7 +24,7 @@
 
     {% for facet,count in facet_content %}
         <li>
-            <a href="{{ path('bach_search', {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
+            <a href="{{ path(search_uri, {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
         </li>
     {% endfor %}
     </ol>
