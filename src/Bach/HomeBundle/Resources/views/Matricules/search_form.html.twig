@@ -34,7 +34,8 @@
                     {%- endif -%}
                     {% endset %}
                     {% set birth_date = document.annee_naissance|date('Y') %}
-                    {{ name ~ ' ' ~ surname ~ ', ' ~ birth_date }}
+                    {% set full = name ~ ' ' ~ surname ~ ', ' ~ birth_date %}
+                    {{ full |raw }}
                 </a>
             </h3>
         </article>
