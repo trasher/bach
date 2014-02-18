@@ -543,7 +543,7 @@
 
                 L.tileLayer('{{ tiles_url }}', {
                     maxZoom: 18,
-                    attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {% trans %}© Imagery{% endtrans %} {{ tiles_attribution|raw }}'
+                    attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, {% trans %}© Imagery{% endtrans %} {{ tiles_attribution|raw }}'
                 }).addTo(map);
 
                 // control that shows location info on hover
