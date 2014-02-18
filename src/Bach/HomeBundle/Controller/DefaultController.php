@@ -332,7 +332,7 @@ class DefaultController extends SearchController
                 );
 
                 $session = $this->getRequest()->getSession();
-                $session->set($this->getFilter(), null);
+                $session->set($this->getFiltersName(), null);
             }
         }
         return new RedirectResponse($redirectUrl);
