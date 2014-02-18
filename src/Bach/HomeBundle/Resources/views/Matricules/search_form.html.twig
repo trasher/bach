@@ -57,10 +57,19 @@
             {% for document in searchResults %}
                 <tr>
                     <td>
-                        {#% if document.dao is defined %#}
-                            {#{ displayDao(document.dao)|raw }#}
-                            <img src="{{ asset('img/img_link.png') }}" alt=""/>
-                        {#% endif %#}
+                        {% if document.start_dao is defined %}
+                            {% set images_link %}
+                                {%- if viewer_uri[-1:1] != '/' -%}/{%- endif -%}
+                                {%- if document.end_dao is defined and document.start_dao != document.end_dao -%}
+                                    series/matricules1R1189?s={{ document.start_dao }}&e={{ document.end_dao }}
+                                {%- else -%}
+                                    viewer/matricules1R1189/{{ document.start_dao }}
+                                {%- endif -%}
+                            {% endset %}
+                            <a href="{{ viewer_uri ~ images_link }}">
+                                <img src="{{ asset('img/img_link.png') }}" alt="{% trans %}Show related image{% endtrans %}"/>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>
                         {%- if hlSearchResults.getResult(document.uniqid).getField('txt_nom')|length > 0 -%}
