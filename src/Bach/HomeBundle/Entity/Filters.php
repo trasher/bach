@@ -103,6 +103,9 @@ class Filters extends \ArrayObject
             $this->offsetSet($field, $value);
             break;
         case 'cDate':
+        case 'classe':
+        case 'date_enregistrement':
+        case 'annee_naissance':
             if ( strpos('|', $value === false) ) {
                 throw new \RuntimeException('Invalid date range!');
             } else {

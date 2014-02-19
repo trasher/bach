@@ -157,7 +157,7 @@ class MatriculesController extends SearchController
             $fields = array(
                 'nom'                   => 'Nom',
                 'prenoms'               => 'Prénom',
-                /*'classe'                => 'Classe',*/
+                'classe'                => 'Classe',
                 'lieu_naissance'        => 'Lieu de naissance',
                 'lieu_enregistrement'   => 'Lieu d\'enregistrement'
             );
