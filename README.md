@@ -31,6 +31,13 @@ Ask composer to download and install all dependencies::
 
     $ php -d date.timezone=UTC composer.phar install
 
+/!\ Solarium bug /!\
+As for now, a "bug" has been spotted in solarium regarding to date range
+facetting. A patch has been provided and should be included in a later
+release, but while it is not, we have to apply patch manually after having
+installed dependencies via composer. Patch is available at:
+https://github.com/basdenooijer/solarium/issues/240
+
 Create database if it doe not exists yet::
 
     $ php app/console doctrine:database:create
