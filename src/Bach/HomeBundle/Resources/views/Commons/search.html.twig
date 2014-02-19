@@ -3,6 +3,7 @@
 {% block search_path %}bach_search{%endblock %}
 {% block fullfacet_path %}bach_fullfacet{%endblock %}
 {% block do_search_path %}bach_do_search{% endblock %}
+{% block cookie_param_name %}bach_view_params{% endblock %}
 
 {% block css %}
     {% if min_date is defined and max_date is defined -%}
@@ -306,7 +307,7 @@
 
 {% block javascripts %}
             $.cookie.json = true;
-            var _view_params = $.cookie('bach_view_params');
+            var _view_params = $.cookie('{{ block('cookie_param_name') }}');
 
             if ( !_view_params ) {
                 _view_params = {
@@ -496,7 +497,7 @@
             {% endif %}
 
             _setCookie = function() {
-                $.cookie('bach_view_params', _view_params, { expires: 365 });
+                $.cookie('{{ block('cookie_param_name') }}', _view_params, { expires: 365 });
             }
 
             $('#sh_daterange').on('click', function(){
