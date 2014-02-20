@@ -113,17 +113,33 @@ class MatriculesFileFormat
     }
 
     /**
+     * Extra fields not in database
+     */
+    public static $extra_fields = array(
+        'txt_prenoms' => 'prenoms_full'
+    );
+
+    /**
+     * Fields that are mutlivalued
+     */
+    public static $multivalued = array(
+        'prenoms'
+    );
+
+    /**
      * Fields that will be excluded from fulltext field
      */
     public static $nonfulltext = array(
         'uniqid',
+        'id',
         'cote',
         'date_enregistrement',
         'classe',
         'matricule',
         'annee_naissance',
         'start_dao',
-        'end_dao'
+        'end_dao',
+        'txt_prenoms'
     );
 
     /**
@@ -153,7 +169,8 @@ class MatriculesFileFormat
         'date_enregistrement'   => 'date',
         'annee_naissance'       => 'date',
         'classe'                => 'date',
-        'matricule'             => 'int'
+        'matricule'             => 'int',
+        'txt_prenoms'           => 'text_names'
     );
 
     /**
@@ -178,21 +195,20 @@ class MatriculesFileFormat
             'multivalued'   => 'false',
             'indexed'       => 'true',
             'stored'        => 'true'
-        ),
-        array(
-            'source'        => 'prenoms',
-            'dest'          => 'txt_prenoms',
-            'type'          => 'text_names',
-            'multivalued'   => 'true',
-            'indexed'       => 'true',
-            'stored'        => 'true'
         )
     );
 
     public static $dataconfig_attrs = array(
         'prenoms' => array(
-            'splitBy' => ', '
+            'splitBy' => ' '
+        ),
+        'txt_prenoms' => array(
+            'source' => 'prenoms_full'
         )
+    );
+
+    public static $qry_fields = array(
+        'prenoms_full' => 'prenoms'
     );
 
     /**

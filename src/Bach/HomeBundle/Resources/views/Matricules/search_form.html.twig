@@ -31,7 +31,9 @@
                     {%- if hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')|length > 0 -%}
                         {{ hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')[0]|raw }}
                     {%- else -%}
-                        {{ document.prenoms }}
+                        {% for prenom in document.prenoms %}
+                        {{ prenom }}
+                        {% endfor %}
                     {%- endif -%}
                     {% endset %}
                     {% set birth_date = document.annee_naissance|date('Y') %}
@@ -90,7 +92,9 @@
                         {%- if hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')[0]|raw }}
                         {%- else -%}
-                            {{ document.prenoms }}
+                            {% for prenom in document.prenoms %}
+                                {{ prenom }}
+                            {% endfor %}
                         {%- endif -%}
                     </td>
                     <td>{{ document.annee_naissance|date('Y') }}</td>

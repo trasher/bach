@@ -125,11 +125,9 @@ class EADFileFormat extends MappedFileFormat
     /**
      * Extra fields not in database
      */
-    public static $extra_fields = array(
+    public static $extra_entities = array(
         'parents_titles' => 'unittitle'
     );
-
-    public static $mapped_extra_db = array();
 
     /**
      * Additional fields not directly managed by the entity

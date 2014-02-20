@@ -501,6 +501,12 @@ class SolrCoreAdmin
             $fields = array_merge($fields, array_keys($ex_fields));
         }
 
+        if ( property_exists($orm_name, 'extra_entities') ) {
+            //retrieve and add additional fields from entity
+            $ex_fields = $orm_name::$extra_entities;
+            $fields = array_merge($fields, array_keys($ex_fields));
+        }
+
         //retrieve multivalued fields
         $multivalued_fields = array();
         if ( property_exists($orm_name, 'multivalued') ) {
@@ -847,7 +853,16 @@ class SolrCoreAdmin
         $elt->setAttribute('password', $db_params['password']);
 
         $elt = $doc->getElementsByTagName('entity')->item(0);
-        $query = 'SELECT * FROM ' . $tableName;
+        $query = 'SELECT *';
+        //query specific additionnal fields
+        if ( property_exists($orm_name, 'qry_fields') ) {
+            $qry_fields = $orm_name::$qry_fields;
+            foreach ( $qry_fields as $k=>$v ) {
+                $query .= ', ' . $v . ' AS ' . $k;
+            }
+        }
+        $query .= ' FROM ' . $tableName;
+
         $elt->setAttribute('query', $query);
 
         $meta = $this->_em->getClassMetadata($orm_name);
@@ -996,8 +1011,19 @@ class SolrCoreAdmin
 
         //take care of extra fields
         if ( property_exists($orm_name, 'extra_fields') ) {
-            //retrieve and add additional fields from entity
             $ex_fields = $orm_name::$extra_fields;
+            foreach ( $ex_fields as $fname=>$fdb ) {
+                $newField = $doc->createElement('field');
+                $newField->setAttribute('column', $fdb);
+                $newField->setAttribute('name', $fname);
+                $elt->appendChild($newField);
+            }
+        }
+
+        //take care of extra entities
+        if ( property_exists($orm_name, 'extra_entities') ) {
+            //retrieve and add additional fields from entity
+            $ex_fields = $orm_name::$extra_entities;
             foreach ( $ex_fields as $fname=>$fdb ) {
                 if ( $meta->hasAssociation($fname) ) {
                     $mapping = $meta->getAssociationMapping($fname);

@@ -322,7 +322,7 @@
 
     <fieldType name="text_names" class="solr.TextField">
       <analyzer>
-        <tokenizer class="solr.PatternTokenizerFactory" pattern=",\s*" />
+        <tokenizer class="solr.WhitespaceTokenizerFactory" />
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
     </fieldType>
