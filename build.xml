@@ -29,6 +29,7 @@
                 <patternset>
                     <exclude name="cache/**"/>
                     <exclude name="logs/**"/>
+                    <exclude name="web/assets/**"/>
                 </patternset>
             </fileset>
         </copy>
@@ -56,7 +57,7 @@
     <!-- ============== -->
     <target name="proceed-assets">
         <SymfonyConsole console="php app/console" command="assetic:dump">
-            <arg name="env" value="prod" />
+            <arg name="no-debug"/>
         </SymfonyConsole>
     </target>
 
