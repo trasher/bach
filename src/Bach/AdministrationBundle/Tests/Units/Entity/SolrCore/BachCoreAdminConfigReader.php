@@ -161,7 +161,7 @@ class BachCoreAdminConfigReader extends Units\Test
     public function testGetCoreTemplatePath()
     {
         $actual = $this->_bcacr->getCoreTemplatePath();
-        $expected = 'app/config/coreTemplate';
+        $expected = 'app/config/templates/cores/archives';
 
         $this->string($actual)->isIdenticalTo($expected);
     }

@@ -175,7 +175,7 @@ class BachCoreAdminConfigReader
      *
      * @return string
      */
-    public function getCoreTemplatePath($type)
+    public function getCoreTemplatePath($type = '')
     {
         $path = $this->_root_dir . '/config/templates/cores/';
         switch ( $type ) {
