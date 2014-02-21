@@ -106,6 +106,18 @@
         <echo msg="Files copied and compressed in build directory OK!" />
     </target>
 
+    <target name="quickdist" depends="clean,build">
+        <echo msg="Creating archive..." />
+
+        <tar destfile="./build/bach.tar.gz" compression="gzip">
+            <fileset dir="./build/bach">
+                <include name="*" />
+            </fileset>
+        </tar>
+
+        <echo msg="Files copied and compressed in build directory OK!" />
+    </target>
+
     <!-- ================================= -->
     <!-- Install dependencies via composer -->
     <!-- ================================= -->
