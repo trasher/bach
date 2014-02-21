@@ -99,10 +99,8 @@ class SolariumQueryFactory
         }
 
         $this->setDatesBounds();
-        if ( count($facets) > 0 ) {
-            //dynamically create facets
-            $this->_addFacets($facets);
-        }
+        //dynamically create facets
+        $this->_addFacets($facets);
 
         $facetSet = $this->_query->getFacetSet();
         if ( isset($this->_low_date)

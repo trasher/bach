@@ -60,7 +60,7 @@
     {% endif %}
 
 
-        {% if facets is defined and searchResults|length > 0 %}
+        {% if facets is defined and facets|length > 0 and searchResults|length > 0 %}
         <h2>
             {% trans %}Refine Query{% endtrans %}
         </h2>
