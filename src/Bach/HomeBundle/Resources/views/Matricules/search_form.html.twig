@@ -52,7 +52,7 @@
                         <th>{% trans %}Surnames{% endtrans %}</th>
                         <th>{% trans %}Year of birth{% endtrans %}</th>
                         <th>{% trans %}Place of birth{% endtrans %}</th>
-                        <th>{% trans %}Year of recording{% endtrans %}</th>
+                        <th>{% trans %}Class{% endtrans %}</th>
                         <th>{% trans %}Place of recording{% endtrans %}</th>
                     </tr>
                 </thead>
@@ -105,7 +105,7 @@
                             {{ document.lieu_naissance }}
                         {%- endif -%}
                     </td>
-                    <td>{{ document.date_enregistrement|date('Y') }}</td>
+                    <td>{{ document.classe|date('Y') }}</td>
                     <td>
                         {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')[0]|raw }}
