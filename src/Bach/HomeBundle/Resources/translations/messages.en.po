@@ -224,8 +224,8 @@ msgstr "Year of birth"
 msgid "Place of birth"
 msgstr "Place of birth"
 
-msgid "Year of recording"
-msgstr "Year of recording"
+msgid "Class"
+msgstr "Classe"
 
 msgid "Place of recording"
 msgstr "Place of recording"

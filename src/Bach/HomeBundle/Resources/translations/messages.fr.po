@@ -223,8 +223,8 @@ msgstr "Année de naissance"
 msgid "Place of birth"
 msgstr "Lieu de naissance"
 
-msgid "Year of recording"
-msgstr "Année d'enregistrement"
+msgid "Class"
+msgstr "Classe"
 
 msgid "Place of recording"
 msgstr "Lieu d'enregistrement"
