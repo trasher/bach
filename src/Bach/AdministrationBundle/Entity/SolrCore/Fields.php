@@ -159,7 +159,7 @@ class Fields
             return _('Genre');
             break;
         case 'cGeogname':
-            return _('Geographical name');
+            return _('Geographic name');
             break;
         case 'cPersname':
             return _('Personal name');

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/AdministrationBundle@20131025144736\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 15:28+0100\n"
-"PO-Revision-Date: 2013-12-05 15:29+0100\n"
+"POT-Creation-Date: 2014-02-24 11:44+0100\n"
+"PO-Revision-Date: 2014-02-24 11:45+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr_FR\n"
@@ -25,7 +25,7 @@ msgstr "Nom du noyau"
 msgid "Core type"
 msgstr "Type du noyau"
 
-#: src/Bach/AdministrationBundle/Command/CreatecoreCommand.php:133
+#: src/Bach/AdministrationBundle/Command/CreatecoreCommand.php:136
 #, php-format
 msgid "Core %corename has been created and loaded :)"
 msgstr "Le noyau %corename a été créé et chargé :)"
@@ -34,22 +34,22 @@ msgstr "Le noyau %corename a été créé et chargé :)"
 msgid "(none)"
 msgstr "(aucun)"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:142
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:144
 #, php-format
 msgid "A core named %corename already exists!"
 msgstr "Un noyau nommé %corename existe déjà !"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:143
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:153
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:145
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:155
 msgid "Core has not been created."
 msgstr "Le noyau n'a pas été créé."
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:152
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:154
 #, php-format
 msgid "A directory %dir already exists!"
 msgstr "Un dossier %dir existe déjà !"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:196
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:199
 msgid ""
 "A temporary core has been created in %tempdir. You have to put it the right "
 "place.\n"
@@ -63,82 +63,86 @@ msgstr ""
 "Une fois cela fait, lancer l'URL suivante dans votre instance Solr :\n"
 "%solr_url"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:365
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:368
 #, php-format
 msgid "Unable to unload %corename, therefore it should not be removed."
 msgstr "Impossible de décharger %corename, il ne pourra donc être supprimé."
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:136
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:147
 msgid "Document repository"
 msgstr "Dépôt du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:139
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:150
 msgid "Document date"
 msgstr "Date du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:142
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:153
 msgid "Document title"
 msgstr "Titre du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:145
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:156
 msgid "Corporate name"
 msgstr "Nom d'organisme"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:148
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:159
 msgid "Genre"
 msgstr "Type"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:151
-msgid "Geographical name"
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:162
+msgid "Geographic name"
 msgstr "Nom géographique"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:154
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:165
 msgid "Personal name"
 msgstr "Nom de personne"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:157
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:168
 msgid "Subject"
 msgstr "Sujet"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:160
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:171
 msgid "Unit ID"
 msgstr "ID de l'unité"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:163
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:174
 msgid "Unit title"
 msgstr "Titre de l'unité"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:169
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:180
 msgid "File description author"
 msgstr "Auteur de la description du fichier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:172
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:183
 msgid "Document identifier"
 msgstr "Identifiant du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:175
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:186
 msgid "Document publisher"
 msgstr "Éditeur du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:178
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:189
 msgid "Document language"
 msgstr "Langue du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:181
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:192
 msgid "Digital substitute"
 msgstr "Substitut numérique"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:184
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:195
 msgid "Dates periods"
 msgstr "Périodes de dates"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:187
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:198
 msgid "Archival description identifier"
 msgstr "Identifiant de la description du fichier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:190
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:201
 msgid "Archival description access restriction"
 msgstr "Restriction d'accès de la description du fichier"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:230
+msgid "without specific"
+msgstr "sans spécifiques"
 
 #~ msgid "Physical characteristic"
 #~ msgstr "Caractéristiques physiques"
