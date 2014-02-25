@@ -13,15 +13,15 @@
                 $(_omusicplay.parents("ul")[0]).before(_player);
                 _playlist = _buildPlaylist(_musicselector);
 
-                flowplayer(_selector, "{{ asset('/img/flowplayer-3.2.16.swf') }}");
+                flowplayer(_selector, "{{ asset('/img/flowplayer-3.2.18.swf') }}");
                 if ($('#musicplayer').length > 0){
-                    flowplayer('musicplayer', "{{ asset('/img/flowplayer-3.2.16.swf') }}", {
+                    flowplayer('musicplayer', "{{ asset('/img/flowplayer-3.2.18.swf') }}", {
                         plugins: {
                             audio: {
-                                url: "{{ asset('/img/flowplayer.audio-3.2.10.swf') }}"
+                                url: "{{ asset('/img/flowplayer.audio-3.2.11.swf') }}"
                             },
                             controls: {
-                                url: '{{ asset('/img/flowplayer.controls-3.2.15.swf') }}',
+                                url: '{{ asset('/img/flowplayer.controls-3.2.16.swf') }}',
                                 fullscreen: false,
                                 height: 30,
                                 autoHide: false
