@@ -1468,19 +1468,27 @@ figure section {
 .content figure section ul{
     list-style-type:none;
 }
-.content figure section ul.playlist {
-    height: 15em;
+figure section ul.playlist {
+    height: 21.3em;
     overflow: auto;
 }
-.content figure section ul.playlist li {
+figure section ul.playlist li {
     padding: 0;
     text-align: left;
+    border-bottom: 1px solid #d1c6c0;
 }
 
 .playlist a {
     display: block;
-    padding: .3em .5em;
+    padding: .5em .5em;
+    background-color: #f5f1ee;
 }
+
+.playlist a:hover {
+    background-color: #d1c6c0;
+    text-decoration: none;
+}
+
 
 .content figure section li:nth-child(even){
     background-color: #d1c6c0;
