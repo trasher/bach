@@ -57,8 +57,9 @@ a {
     color: #b73a34!important;
 }
 
-#children_documents > header,
-#comments > header {
+.ui-widget-content #children_documents > header,
+.ui-widget-content #comments > header,
+.ui-widget-content #relative_documents > header {
     display: none;
 }
 
@@ -707,7 +708,7 @@ p {
 .pagination {
     clear: both;
     text-align: center;
-    border-top: 1px solid #B2A0A0;
+    border-top: 1px solid #b2a0a0;
     padding: 1em 0;
 }
 
@@ -1304,8 +1305,14 @@ div.sonata-bc .row-fluid .span6 {
  * ====== Comments ======
  */
 
+#comments h4 {
+    border-bottom: 1px solid #d1c6c0;
+}
+
 #comments header .author {
-    font-size: .85em;
+    font-size: .8em;
+    font-weight: normal;
+    color: #a3968d;
 }
 
 /*
@@ -1344,7 +1351,7 @@ div.sonata-bc .row-fluid .span6 {
  * ===== CDC =====
  */
 
-.cdcarchdesc {
+.cdcarchdesc, #comments > div {
     margin-bottom: 1em;
     background-color: #f5f1ee;
     border-radius: 6px;

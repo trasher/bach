@@ -84,8 +84,8 @@
                     <div>
                         <header>
                             <h4>
-                                {{ comment.subject }},
-                                <span class="author">
+                                {{ comment.subject }}
+                                <span class="author"> /
                                 {% if comment.getOpenedBy %}
                                     {% set uname = comment.getOpenedBy %}
                                 {% else %}
