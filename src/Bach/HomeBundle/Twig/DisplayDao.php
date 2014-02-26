@@ -469,7 +469,8 @@ class DisplayDao extends \Twig_Extension
                 }
                 $class .= 'flashplayer"';
             }
-            $ret = '<a' . $class . ' href="' . $href . '" title="' .
+            $ret = '<div' . $class . ' id ="' .  self::_getRandomId() . '">';
+            $ret .= '<a href="' . $href . '" title="' .
                 $title  . '">';
             if ( $standalone === true ) {
                 if ( $covers_dir !== null ) {
@@ -506,10 +507,11 @@ class DisplayDao extends \Twig_Extension
                     $ret .= '<img src="/img/play_large.png" alt="' . $dao . '"/>';
                 }
             }
+            $ret .= '</a>';
             if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
             }
-            $ret .= '</a>';
+            $ret .= '</div>';
             break;
         case self::FLA_SOUND;
             $class = '';
@@ -634,6 +636,23 @@ class DisplayDao extends \Twig_Extension
         }
 
         return $ret;
+    }
+
+    /**
+     * Generate a ramdon html id
+     *
+     * @param int $length Id lenght
+     *
+     * @return string
+     */
+    private static function _getRandomId($length = 15)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $randomString;
     }
 
     /**

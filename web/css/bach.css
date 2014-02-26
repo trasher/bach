@@ -565,7 +565,7 @@ p {
     width: auto;
 }
 
-[id=search_results] article figure a.flashplayer img,
+[id=search_results] article figure .flashplayer a img,
 [id=search_results] article figure a.flashmusicplayer img {
     margin-top: 0;
 }
@@ -574,7 +574,7 @@ p {
     display: block;
 }
 
-[id=search_results] a.flashplayer h2,
+[id=search_results] .flashplayer h2,
 [id=search_results] a.flashmusicplayer h2 {
     margin: 0;
     padding-top: 102px;
@@ -582,7 +582,7 @@ p {
     line-height: .85em;
 }
 
-[id=search_results] a.flashplayer h3,
+[id=search_results] .flashplayer h3,
 [id=search_results] a.flashmusicplayer h3 {
     font-size: .85em;
     line-height: .85em;
@@ -1504,7 +1504,7 @@ figure.result_pic li{
 list-style-type: none;
 }
 
-figure section a, figure section video {
+figure section .flashplayer, figure section video {
     background-repeat: repeat-x;
     display: inline-block;
     text-align: left;
@@ -1512,7 +1512,7 @@ figure section a, figure section video {
     position: relative;
 }
 
-figure section a.flashplayer span.title {
+figure section .flashplayer span.title {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -1529,51 +1529,21 @@ figure  span.title {
     display: block;
 }
 
-figure section a.flashplayer, figure section video {
+figure section .flashplayer, figure section video {
     color: black;
     border:1px black solid;
     border-radius: 6px;
 }
 
-figure section a.flashplayer {
+figure section .flashplayer {
     height: 300px;
     width: 300px;
     margin: .2em;
     text-align: center;
 }
 
-a.flashplayer img {
+.flashplayer a img {
     margin-top: 48px;
-}
-
-a.flashplayer h2,
-a.flashmusicplayer h2 {
-    background: url(../img/flash.jpg) 50% 0 no-repeat;
-    padding-top: 110px;
-    font-size: 1.2em;
-    line-height: 1.2em;
-    margin: 50px 0 .5em;
-}
-
-a.flashplayer h3,
-a.flashmusicplayer h3 {
-    font-size: 1em;
-    line-height: 1em;
-    margin: 0;
-}
-
-a.flashplayer p {
-    font-size: 0.85em;
-}
-
-a.flashmusicplayer h3 {
-    font-size: 1em;
-    margin: 0;
-    line-height: 30px;
-}
-
-a.flashmusicplayer p, a.flashmusicplayer h2 {
-    display: none;
 }
 
 .htmlplayer.standalone {

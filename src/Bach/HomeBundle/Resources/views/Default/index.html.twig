@@ -77,7 +77,8 @@
             {% include '::loader.js.twig' with {'error_message': 'An error occured loading document :('|trans|escape('js')} %}
             success: function(data) {
                 _elt.append(data);
-                _initflow(true);
+                _initAudio(true);
+                _initVideo(true);
                 _elt.dialog({
                     height: _height,
                     width: _width,
@@ -121,5 +122,17 @@
 {% endblock %}
 
 {% block player %}
-    {% include 'BachHomeBundle:Default:flowplayer.js.twig' %}
+    {% if searchResults is defined and searchResults|length > 0 %}
+    {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
+
+    $('.flashmusicplayer').on('click', function(){
+        _initAudioUnique(this);
+        return false;
+    });
+
+    $('.flashplayer').on('click', function() {
+        _initVideoUnique(this);
+        return false;
+    });
+    {% endif %}
 {% endblock %}
