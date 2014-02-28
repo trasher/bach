@@ -38,31 +38,31 @@ Class PMBFileFormat
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
     protected $titre_propre;
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $titrepropre_auteur_different;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $titre_parallele;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $titre_complement;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
     protected $codage_unimarc;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $part_of;
 
@@ -72,22 +72,22 @@ Class PMBFileFormat
     protected $part_num;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
     protected $editeur;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $collection;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $num_collection;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $sous_collection;
     /**
@@ -96,17 +96,17 @@ Class PMBFileFormat
     protected $year;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $mention_edition;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $autre_editeur;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $isbn;
 
@@ -116,17 +116,17 @@ Class PMBFileFormat
     protected $importance_materielle;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $autres_carac_materielle;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $fomrat;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $prix;
 
@@ -151,7 +151,7 @@ Class PMBFileFormat
     protected $extract;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $indexation_decimale;
 
@@ -161,12 +161,12 @@ Class PMBFileFormat
     protected $key_word;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $link_ressource_electronque;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $format_elect_ressource;
 
@@ -181,7 +181,7 @@ Class PMBFileFormat
     protected $comment;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $url_vignette;
 
