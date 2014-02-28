@@ -38,85 +38,75 @@ Class PMBFileFormat
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     */
-    protected $idpmb;
-
-    /**
-     * @ORM\Column(type="string", unique=true, nullable=false, length=100)
-     */
-    protected $idnotice;
-
-    /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", length=255)
      */
     protected $titre_propre;
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $titrepropre_auteur_different;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $titre_parallele;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $titre_complement;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", length=255)
      */
     protected $codage_unimarc;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $part_of;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=50)
      */
     protected $part_num;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", length=255)
      */
     protected $editeur;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $collection;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $num_collection;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $sous_collection;
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $year;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $mention_edition;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $autre_editeur;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $isbn;
 
@@ -126,17 +116,17 @@ Class PMBFileFormat
     protected $importance_materielle;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $autres_carac_materielle;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $fomrat;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $prix;
 
@@ -146,42 +136,37 @@ Class PMBFileFormat
     protected $materiel_accompagnement;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="text", nullable=true, length=1000)
      */
-    protected $note_general;
+    protected $note_generale;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="text", nullable=true, length=1000)
      */
     protected $note_content;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="text", nullable=true, length=1000)
      */
     protected $extract;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $indexation_decimale;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="text", nullable=true, length=1000)
      */
     protected $key_word;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
-     */
-    protected $langue_publication;    
-
-    /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $link_ressource_electronque;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $format_elect_ressource;
 
@@ -191,14 +176,38 @@ Class PMBFileFormat
     protected $statut_notice;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="text", nullable=true, length=1000)
      */
-    protected $commentaire;
+    protected $comment;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $url_vignette;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PMBTitle", mappedBy="titleassoc", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $title;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PMBAutors", mappedBy="autorsassoc", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $autors;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PMBCategory", mappedBy="categoryassoc", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $category;
+    /**
+     * @ORM\OneToMany(targetEntity="PMBNoticeLink", mappedBy="noticeassoc", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $notice;
+    /**
+     * @ORM\OneToMany(targetEntity="PMBLanguage", mappedBy="languageassoc", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $language;
+
     /**
      * The constructor
      *
@@ -209,13 +218,14 @@ Class PMBFileFormat
         $this-> autors = new ArrayCollection();
         $this-> category = new ArrayCollection();
         $this-> notice = new ArrayCollection();
-        $this-> originlanguage = new ArrayCollection();
-        $this-> _title = new ArrayCollection();
+        $this-> language = new ArrayCollection();
+        $this-> title = new ArrayCollection();
         //$this-> comments = new ArrayCollection();
         parent::__construct($data);
 
 
     }
+
     protected function parseData($data)
     {
         foreach ($data as $key=>$datum) {
@@ -233,52 +243,6 @@ Class PMBFileFormat
     public function getUniqid()
     {
         return $this->uniqid;
-    }
-
-    /**
-     * Set idpmb
-     *
-     * @param string $idpmb
-     * @return PMBFileFormat
-     */
-    public function setIdpmb($idpmb)
-    {
-        $this->idpmb = $idpmb;
-    
-        return $this;
-    }
-
-    /**
-     * Get idpmb
-     *
-     * @return string 
-     */
-    public function getIdpmb()
-    {
-        return $this->idpmb;
-    }
-
-    /**
-     * Set idnotice
-     *
-     * @param string $idnotice
-     * @return PMBFileFormat
-     */
-    public function setIdnotice($idnotice)
-    {
-        $this->idnotice = $idnotice;
-    
-        return $this;
-    }
-
-    /**
-     * Get idnotice
-     *
-     * @return string 
-     */
-    public function getIdnotice()
-    {
-        return $this->idnotice;
     }
 
     /**
@@ -537,7 +501,7 @@ Class PMBFileFormat
     /**
      * Set year
      *
-     * @param string $year
+     * @param \DateTime $year
      * @return PMBFileFormat
      */
     public function setYear($year)
@@ -550,7 +514,7 @@ Class PMBFileFormat
     /**
      * Get year
      *
-     * @return string 
+     * @return \DateTime 
      */
     public function getYear()
     {
@@ -742,26 +706,26 @@ Class PMBFileFormat
     }
 
     /**
-     * Set note_general
+     * Set note_generale
      *
-     * @param string $noteGeneral
+     * @param string $noteGenerale
      * @return PMBFileFormat
      */
-    public function setNoteGeneral($noteGeneral)
+    public function setNoteGenerale($noteGenerale)
     {
-        $this->note_general = $noteGeneral;
+        $this->note_generale = $noteGenerale;
     
         return $this;
     }
 
     /**
-     * Get note_general
+     * Get note_generale
      *
      * @return string 
      */
-    public function getNoteGeneral()
+    public function getNoteGenerale()
     {
-        return $this->note_general;
+        return $this->note_generale;
     }
 
     /**
@@ -857,29 +821,6 @@ Class PMBFileFormat
     }
 
     /**
-     * Set langue_publication
-     *
-     * @param string $languePublication
-     * @return PMBFileFormat
-     */
-    public function setLanguePublication($languePublication)
-    {
-        $this->langue_publication = $languePublication;
-    
-        return $this;
-    }
-
-    /**
-     * Get langue_publication
-     *
-     * @return string 
-     */
-    public function getLanguePublication()
-    {
-        return $this->langue_publication;
-    }
-
-    /**
      * Set link_ressource_electronque
      *
      * @param string $linkRessourceElectronque
@@ -949,26 +890,26 @@ Class PMBFileFormat
     }
 
     /**
-     * Set commentaire
+     * Set comment
      *
-     * @param string $commentaire
+     * @param string $comment
      * @return PMBFileFormat
      */
-    public function setCommentaire($commentaire)
+    public function setComment($comment)
     {
-        $this->commentaire = $commentaire;
+        $this->comment = $comment;
     
         return $this;
     }
 
     /**
-     * Get commentaire
+     * Get comment
      *
      * @return string 
      */
-    public function getCommentaire()
+    public function getComment()
     {
-        return $this->commentaire;
+        return $this->comment;
     }
 
     /**
@@ -992,5 +933,170 @@ Class PMBFileFormat
     public function getUrlVignette()
     {
         return $this->url_vignette;
+    }
+
+    /**
+     * Add title
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBTitle $title
+     * @return PMBFileFormat
+     */
+    public function addTitle(\Bach\IndexationBundle\Entity\PMBTitle $title)
+    {
+        $this->title[] = $title;
+    
+        return $this;
+    }
+
+    /**
+     * Remove title
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBTitle $title
+     */
+    public function removeTitle(\Bach\IndexationBundle\Entity\PMBTitle $title)
+    {
+        $this->title->removeElement($title);
+    }
+
+    /**
+     * Get title
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Add autors
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBAutors $autors
+     * @return PMBFileFormat
+     */
+    public function addAutor(\Bach\IndexationBundle\Entity\PMBAutors $autors)
+    {
+        $this->autors[] = $autors;
+    
+        return $this;
+    }
+
+    /**
+     * Remove autors
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBAutors $autors
+     */
+    public function removeAutor(\Bach\IndexationBundle\Entity\PMBAutors $autors)
+    {
+        $this->autors->removeElement($autors);
+    }
+
+    /**
+     * Get autors
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAutors()
+    {
+        return $this->autors;
+    }
+
+    /**
+     * Add category
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBCategory $category
+     * @return PMBFileFormat
+     */
+    public function addCategory(\Bach\IndexationBundle\Entity\PMBCategory $category)
+    {
+        $this->category[] = $category;
+    
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBCategory $category
+     */
+    public function removeCategory(\Bach\IndexationBundle\Entity\PMBCategory $category)
+    {
+        $this->category->removeElement($category);
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Add notice
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBNoticeLink $notice
+     * @return PMBFileFormat
+     */
+    public function addNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
+    {
+        $this->notice[] = $notice;
+    
+        return $this;
+    }
+
+    /**
+     * Remove notice
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBNoticeLink $notice
+     */
+    public function removeNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
+    {
+        $this->notice->removeElement($notice);
+    }
+
+    /**
+     * Get notice
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotice()
+    {
+        return $this->notice;
+    }
+
+    /**
+     * Add language
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
+     * @return PMBFileFormat
+     */
+    public function addLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
+    {
+        $this->language[] = $language;
+    
+        return $this;
+    }
+
+    /**
+     * Remove language
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
+     */
+    public function removeLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
+    {
+        $this->language->removeElement($language);
+    }
+
+    /**
+     * Get language
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
 }

@@ -37,30 +37,33 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer", length=10)
      */
-    protected $idpmb;
+    protected $idpmbnotice;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $type;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $notice;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="notice")
+     * @ORM\JoinColumn(name="idpmbnotice", referencedColumnName="uniqid") 
      */
-    protected $comment;
+    protected $noticeassoc;
+
+
 
     public function __construct($data)
     {
 
     }
-
+ 
     /**
      * Get uniqid
      *
@@ -72,26 +75,26 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set idpmb
+     * Set idpmbnotice
      *
-     * @param string $idpmb
+     * @param integer $idpmbnotice
      * @return PMBNoticeLink
      */
-    public function setIdpmb($idpmb)
+    public function setIdpmbnotice($idpmbnotice)
     {
-        $this->idpmb = $idpmb;
+        $this->idpmbnotice = $idpmbnotice;
     
         return $this;
     }
 
     /**
-     * Get idpmb
+     * Get idpmbnotice
      *
-     * @return string 
+     * @return integer 
      */
-    public function getIdpmb()
+    public function getIdpmbnotice()
     {
-        return $this->idpmb;
+        return $this->idpmbnotice;
     }
 
     /**
@@ -141,25 +144,25 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set comment
+     * Set noticeassoc
      *
-     * @param string $comment
+     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $noticeassoc
      * @return PMBNoticeLink
      */
-    public function setComment($comment)
+    public function setNoticeassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $noticeassoc = null)
     {
-        $this->comment = $comment;
+        $this->noticeassoc = $noticeassoc;
     
         return $this;
     }
 
     /**
-     * Get comment
+     * Get noticeassoc
      *
-     * @return string 
+     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
      */
-    public function getComment()
+    public function getNoticeassoc()
     {
-        return $this->comment;
+        return $this->noticeassoc;
     }
 }

@@ -37,19 +37,20 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer", length=10)
      */
-    protected $idpmb;
+    protected $idpmbcategory;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", length=255)
      */
     protected $category;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="category")
+     * @ORM\JoinColumn(name="idpmbcategory", referencedColumnName="uniqid") 
      */
-    protected $comment;
+    protected $categoryassoc;
 
     public function __construct($data)
     {
@@ -68,26 +69,26 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set idpmb
+     * Set idpmbcategory
      *
-     * @param string $idpmb
+     * @param integer $idpmbcategory
      * @return PMBCategory
      */
-    public function setIdpmb($idpmb)
+    public function setIdpmbcategory($idpmbcategory)
     {
-        $this->idpmb = $idpmb;
+        $this->idpmbcategory = $idpmbcategory;
     
         return $this;
     }
 
     /**
-     * Get idpmb
+     * Get idpmbcategory
      *
-     * @return string 
+     * @return integer 
      */
-    public function getIdpmb()
+    public function getIdpmbcategory()
     {
-        return $this->idpmb;
+        return $this->idpmbcategory;
     }
 
     /**
@@ -114,25 +115,25 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set comment
+     * Set categoryassoc
      *
-     * @param string $comment
+     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $categoryassoc
      * @return PMBCategory
      */
-    public function setComment($comment)
+    public function setCategoryassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $categoryassoc = null)
     {
-        $this->comment = $comment;
+        $this->categoryassoc = $categoryassoc;
     
         return $this;
     }
 
     /**
-     * Get comment
+     * Get categoryassoc
      *
-     * @return string 
+     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
      */
-    public function getComment()
+    public function getCategoryassoc()
     {
-        return $this->comment;
+        return $this->categoryassoc;
     }
 }

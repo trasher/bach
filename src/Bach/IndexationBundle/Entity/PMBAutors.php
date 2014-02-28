@@ -37,29 +37,35 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer", length=10)
      */
-    protected $idpmb;
+    protected $idpmbautors;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string",  length=50)
      */
     protected $_type;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", length=100)
      */
     protected $lastname;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", length=100)
      */
     protected $firstname;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", length=100)
      */
     protected $codefonction;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="autors")
+     * @ORM\JoinColumn(name="idpmbautors", referencedColumnName="uniqid") 
+     */
+    protected $autorsassoc;
 
     public function __construct($data)
     {
@@ -78,26 +84,26 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set idpmb
+     * Set idpmbautors
      *
-     * @param string $idpmb
+     * @param integer $idpmbautors
      * @return PMBAutors
      */
-    public function setIdpmb($idpmb)
+    public function setIdpmbautors($idpmbautors)
     {
-        $this->idpmb = $idpmb;
+        $this->idpmbautors = $idpmbautors;
     
         return $this;
     }
 
     /**
-     * Get idpmb
+     * Get idpmbautors
      *
-     * @return string 
+     * @return integer 
      */
-    public function getIdpmb()
+    public function getIdpmbautors()
     {
-        return $this->idpmb;
+        return $this->idpmbautors;
     }
 
     /**
@@ -190,5 +196,28 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function getCodefonction()
     {
         return $this->codefonction;
+    }
+
+    /**
+     * Set autorsassoc
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $autorsassoc
+     * @return PMBAutors
+     */
+    public function setAutorsassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $autorsassoc = null)
+    {
+        $this->autorsassoc = $autorsassoc;
+    
+        return $this;
+    }
+
+    /**
+     * Get autorsassoc
+     *
+     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
+     */
+    public function getAutorsassoc()
+    {
+        return $this->autorsassoc;
     }
 }

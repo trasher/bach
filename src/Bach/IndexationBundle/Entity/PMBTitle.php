@@ -37,50 +37,57 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer", length=10 )
      */
-    protected $idpmb;
+    protected $idpmbtitle;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", length=100)
+
      */
     protected $title_section_part;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="date", nullable=true, length=255)
      */
-    protected $date_publication;
+     protected $date_publication;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $sous_vedette_forme;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $langue;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $version;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
-    protected $mention_arrangiment;
+    protected $mention_arrangement;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $comment;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="title")
+     * @ORM\JoinColumn(name="idpmbtitle", referencedColumnName="uniqid") 
+     */
+    protected $titleassoc;
 
     public function __construct($data)
     {
 
     }
-
+ 
     /**
      * Get uniqid
      *
@@ -92,26 +99,26 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set idpmb
+     * Set idpmbtitle
      *
-     * @param string $idpmb
+     * @param integer $idpmbtitle
      * @return PMBTitle
      */
-    public function setIdpmb($idpmb)
+    public function setIdpmbtitle($idpmbtitle)
     {
-        $this->idpmb = $idpmb;
+        $this->idpmbtitle = $idpmbtitle;
     
         return $this;
     }
 
     /**
-     * Get idpmb
+     * Get idpmbtitle
      *
-     * @return string 
+     * @return integer 
      */
-    public function getIdpmb()
+    public function getIdpmbtitle()
     {
-        return $this->idpmb;
+        return $this->idpmbtitle;
     }
 
     /**
@@ -140,7 +147,7 @@ use Doctrine\Common\Collections\ArrayCollection;
     /**
      * Set date_publication
      *
-     * @param string $datePublication
+     * @param \DateTime $datePublication
      * @return PMBTitle
      */
     public function setDatePublication($datePublication)
@@ -153,7 +160,7 @@ use Doctrine\Common\Collections\ArrayCollection;
     /**
      * Get date_publication
      *
-     * @return string 
+     * @return \DateTime 
      */
     public function getDatePublication()
     {
@@ -230,26 +237,26 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set mention_arrangiment
+     * Set mention_arrangement
      *
-     * @param string $mentionArrangiment
+     * @param string $mentionArrangement
      * @return PMBTitle
      */
-    public function setMentionArrangiment($mentionArrangiment)
+    public function setMentionArrangement($mentionArrangement)
     {
-        $this->mention_arrangiment = $mentionArrangiment;
+        $this->mention_arrangement = $mentionArrangement;
     
         return $this;
     }
 
     /**
-     * Get mention_arrangiment
+     * Get mention_arrangement
      *
      * @return string 
      */
-    public function getMentionArrangiment()
+    public function getMentionArrangement()
     {
-        return $this->mention_arrangiment;
+        return $this->mention_arrangement;
     }
 
     /**
@@ -273,5 +280,28 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function getComment()
     {
         return $this->comment;
+    }
+
+    /**
+     * Set titleassoc
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $titleassoc
+     * @return PMBTitle
+     */
+    public function setTitleassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $titleassoc = null)
+    {
+        $this->titleassoc = $titleassoc;
+    
+        return $this;
+    }
+
+    /**
+     * Get titleassoc
+     *
+     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
+     */
+    public function getTitleassoc()
+    {
+        return $this->titleassoc;
     }
 }
