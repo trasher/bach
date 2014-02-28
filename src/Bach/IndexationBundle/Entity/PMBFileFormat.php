@@ -191,9 +191,9 @@ Class PMBFileFormat
     protected $title;
 
     /**
-     * @ORM\OneToMany(targetEntity="PMBAutors", mappedBy="autorsassoc", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="PMBAuthor", mappedBy="pmbfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
-    protected $autors;
+    protected $authors;
 
     /**
      * @ORM\OneToMany(targetEntity="PMBCategory", mappedBy="categoryassoc", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
@@ -215,7 +215,7 @@ Class PMBFileFormat
      */
     public function __construct($data)
     {
-        $this-> autors = new ArrayCollection();
+        $this-> authors = new ArrayCollection();
         $this-> category = new ArrayCollection();
         $this-> notice = new ArrayCollection();
         $this-> language = new ArrayCollection();
@@ -969,36 +969,35 @@ Class PMBFileFormat
     }
 
     /**
-     * Add autors
+     * Add author
      *
-     * @param \Bach\IndexationBundle\Entity\PMBAutors $autors
+     * @param PMBAuthor $author
      * @return PMBFileFormat
      */
-    public function addAutor(\Bach\IndexationBundle\Entity\PMBAutors $autors)
+    public function addAuthor(PMBAuthor $author)
     {
-        $this->autors[] = $autors;
-    
+        $this->authors[] = $author;
         return $this;
     }
 
     /**
-     * Remove autors
+     * Remove author
      *
-     * @param \Bach\IndexationBundle\Entity\PMBAutors $autors
+     * @param PMBAuthor $author
      */
-    public function removeAutor(\Bach\IndexationBundle\Entity\PMBAutors $autors)
+    public function removeAutor(PMBAuthor $author)
     {
-        $this->autors->removeElement($autors);
+        $this->authors->removeElement($author);
     }
 
     /**
-     * Get autors
+     * Get authors
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAutors()
+    public function getAuthors()
     {
-        return $this->autors;
+        return $this->authors;
     }
 
     /**

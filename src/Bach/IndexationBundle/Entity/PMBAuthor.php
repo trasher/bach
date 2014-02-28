@@ -1,6 +1,6 @@
 <?php
 /**
- * Bach PMB Autors entity
+ * Bach PMB Author entity
  *
  * PHP version 5
  *
@@ -15,7 +15,7 @@ namespace Bach\IndexationBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 /**
- * Bach PMB Autors entity
+ * Bach PMB Author entity
  *
  * @category Indexation
  * @package  Bach
@@ -24,27 +24,21 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
- * @ORM\Table(name="PMBAutors")
- *
+ * @ORM\Table(name="pmb_authors")
  */
- Class PMBAutors
- {
+class PMBAuthor
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $uniqid;
-
-    /**
-     * @ORM\Column(type="integer", length=10)
-     */
-    protected $idpmbautors;
+    protected $id;
 
     /**
      * @ORM\Column(type="string",  length=50)
      */
-    protected $_type;
+    protected $type_auth;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -62,11 +56,16 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $codefonction;
 
     /**
-     * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="autors")
-     * @ORM\JoinColumn(name="idpmbautors", referencedColumnName="uniqid") 
+     * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="authors")
+     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid")
      */
-    protected $autorsassoc;
+    protected $pmbfile;
 
+    /**
+     * Main constructor
+     *
+     * @param array $data Entity data
+     */
     public function __construct($data)
     {
 
@@ -76,7 +75,7 @@ use Doctrine\Common\Collections\ArrayCollection;
     /**
      * Get uniqid
      *
-     * @return integer 
+     * @return integer
      */
     public function getUniqid()
     {
@@ -84,68 +83,45 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set idpmbautors
+     * Set author type
      *
-     * @param integer $idpmbautors
-     * @return PMBAutors
+     * @param string $type_auth Author type
+     *
+     * @return PMBAutor
      */
-    public function setIdpmbautors($idpmbautors)
+    public function setTypeAuth($type_auth)
     {
-        $this->idpmbautors = $idpmbautors;
-    
+        $this->type_auth = $type_auth;
         return $this;
     }
 
     /**
-     * Get idpmbautors
+     * Get author type
      *
-     * @return integer 
+     * @return string
      */
-    public function getIdpmbautors()
+    public function getTypeAuth()
     {
-        return $this->idpmbautors;
-    }
-
-    /**
-     * Set _type
-     *
-     * @param string $type
-     * @return PMBAutors
-     */
-    public function setType($type)
-    {
-        $this->_type = $type;
-    
-        return $this;
-    }
-
-    /**
-     * Get _type
-     *
-     * @return string 
-     */
-    public function getType()
-    {
-        return $this->_type;
+        return $this->type_auth;
     }
 
     /**
      * Set lastname
      *
-     * @param string $lastname
-     * @return PMBAutors
+     * @param string $lastname Last name
+     *
+     * @return PMBAuthor
      */
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-    
         return $this;
     }
 
     /**
      * Get lastname
      *
-     * @return string 
+     * @return string
      */
     public function getLastname()
     {
@@ -155,20 +131,20 @@ use Doctrine\Common\Collections\ArrayCollection;
     /**
      * Set firstname
      *
-     * @param string $firstname
-     * @return PMBAutors
+     * @param string $firstname First name
+     *
+     * @return PMBAuthor
      */
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
-    
         return $this;
     }
 
     /**
      * Get firstname
      *
-     * @return string 
+     * @return string
      */
     public function getFirstname()
     {
@@ -178,20 +154,20 @@ use Doctrine\Common\Collections\ArrayCollection;
     /**
      * Set codefonction
      *
-     * @param string $codefonction
-     * @return PMBAutors
+     * @param string $codefonction Function code
+     *
+     * @return PMBAuthor
      */
     public function setCodefonction($codefonction)
     {
         $this->codefonction = $codefonction;
-    
         return $this;
     }
 
     /**
      * Get codefonction
      *
-     * @return string 
+     * @return string
      */
     public function getCodefonction()
     {
@@ -199,25 +175,25 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set autorsassoc
+     * Set PMB file
      *
-     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $autorsassoc
-     * @return PMBAutors
+     * @param PMBFileFormat $pmbfile PMB file
+     *
+     * @return PMBAuthor
      */
-    public function setAutorsassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $autorsassoc = null)
+    public function setPmbfile(PMBFileFormat $pmbfile)
     {
-        $this->autorsassoc = $autorsassoc;
-    
+        $this->pmbfile = $pmbfile;
         return $this;
     }
 
     /**
-     * Get autorsassoc
+     * Get PMB file
      *
-     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
+     * @return PMBFileFormat
      */
-    public function getAutorsassoc()
+    public function getPmbfile()
     {
-        return $this->autorsassoc;
+        return $this->pmbfile;
     }
 }
