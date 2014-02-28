@@ -6,7 +6,7 @@
  *
  * @category Indexation
  * @package  Bach
- * @author   Vincent Fleurette <vincent.fleurettes@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -24,11 +24,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
- * @ORM\Table(name="PMBCategory")
+ * @ORM\Table(name="pmbcategory")
  *
  */
- Class PMBCategory
- {
+class PMBCategory
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
@@ -37,31 +37,30 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="integer", length=10)
-     */
-    protected $idpmbcategory;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     protected $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="category")
-     * @ORM\JoinColumn(name="idpmbcategory", referencedColumnName="uniqid") 
+     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid")
      */
-    protected $categoryassoc;
+    protected $pmbfile;
+
+     /**
+     * Main constructor
+     *
+     * @param array $data Entity data
+     */
 
     public function __construct($data)
     {
-
-
     }
 
     /**
      * Get uniqid
      *
-     * @return integer 
+     * @return integer
      */
     public function getUniqid()
     {
@@ -77,14 +76,13 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setIdpmbcategory($idpmbcategory)
     {
         $this->idpmbcategory = $idpmbcategory;
-    
         return $this;
     }
 
     /**
      * Get idpmbcategory
      *
-     * @return integer 
+     * @return integer
      */
     public function getIdpmbcategory()
     {
@@ -95,19 +93,19 @@ use Doctrine\Common\Collections\ArrayCollection;
      * Set category
      *
      * @param string $category
+     *
      * @return PMBCategory
      */
     public function setCategory($category)
     {
         $this->category = $category;
-    
         return $this;
     }
 
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -117,23 +115,23 @@ use Doctrine\Common\Collections\ArrayCollection;
     /**
      * Set categoryassoc
      *
-     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $categoryassoc
+     * @param PMBFileFormat $categoryassoc
+     *
      * @return PMBCategory
      */
-    public function setCategoryassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $categoryassoc = null)
+    public function setCategoryassoc(PMBFileFormat $categoryassoc = null)
     {
         $this->categoryassoc = $categoryassoc;
-    
         return $this;
     }
 
     /**
      * Get categoryassoc
      *
-     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
+     * @return PMBFileFormat
      */
     public function getCategoryassoc()
     {
         return $this->categoryassoc;
     }
-}
+ }

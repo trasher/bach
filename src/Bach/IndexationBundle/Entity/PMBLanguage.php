@@ -6,7 +6,7 @@
  *
  * @category Indexation
  * @package  Bach
- * @author   Vincent Fleurette <vincent.fleurettes@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -27,8 +27,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="PMBLanguage")
  *
  */
- Class PMBLanguage
- {
+class PMBLanguage
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
@@ -52,12 +52,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="language")
-     * @ORM\JoinColumn(name="idpmblanguage", referencedColumnName="uniqid") 
+     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid") 
      */
-    protected $languageassoc;
+    protected $pmbfile;
 
 
-
+    /**
+     * Main constructor
+     *
+     * @param array $data Entity data
+     */
     public function __construct($data)
     {
 
@@ -82,7 +86,6 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setIdpmblanguage($idpmblanguage)
     {
         $this->idpmblanguage = $idpmblanguage;
-    
         return $this;
     }
 
@@ -105,7 +108,6 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setType($type)
     {
         $this->type = $type;
-    
         return $this;
     }
 
@@ -128,7 +130,6 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setContent($content)
     {
         $this->content = $content;
-    
         return $this;
     }
 
@@ -151,7 +152,6 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setLanguageassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $languageassoc = null)
     {
         $this->languageassoc = $languageassoc;
-    
         return $this;
     }
 

@@ -6,7 +6,7 @@
  *
  * @category Indexation
  * @package  Bach
- * @author   Vincent Fleurette <vincent.fleurettes@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -27,19 +27,14 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="PMBTitle")
  *
  */
- Class PMBTitle
- {
+class PMBTitle
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $uniqid;
-
-    /**
-     * @ORM\Column(type="integer", length=10 )
-     */
-    protected $idpmbtitle;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -79,15 +74,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="title")
-     * @ORM\JoinColumn(name="idpmbtitle", referencedColumnName="uniqid") 
+     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid") 
      */
-    protected $titleassoc;
-
+    protected $pmbfile;
+    /**
+     * Main constructor
+     *
+     * @param array $data Entity data
+     */
     public function __construct($data)
     {
 
     }
- 
     /**
      * Get uniqid
      *
@@ -99,38 +97,15 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set idpmbtitle
-     *
-     * @param integer $idpmbtitle
-     * @return PMBTitle
-     */
-    public function setIdpmbtitle($idpmbtitle)
-    {
-        $this->idpmbtitle = $idpmbtitle;
-    
-        return $this;
-    }
-
-    /**
-     * Get idpmbtitle
-     *
-     * @return integer 
-     */
-    public function getIdpmbtitle()
-    {
-        return $this->idpmbtitle;
-    }
-
-    /**
      * Set title_section_part
      *
-     * @param string $titleSectionPart
+     * @param string $titleSectionParut
+     *
      * @return PMBTitle
      */
     public function setTitleSectionPart($titleSectionPart)
     {
         $this->title_section_part = $titleSectionPart;
-    
         return $this;
     }
 
@@ -153,7 +128,6 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setDatePublication($datePublication)
     {
         $this->date_publication = $datePublication;
-    
         return $this;
     }
 
@@ -176,7 +150,6 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setSousVedetteForme($sousVedetteForme)
     {
         $this->sous_vedette_forme = $sousVedetteForme;
-    
         return $this;
     }
 
@@ -199,7 +172,6 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setLangue($langue)
     {
         $this->langue = $langue;
-    
         return $this;
     }
 
@@ -268,7 +240,6 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setComment($comment)
     {
         $this->comment = $comment;
-    
         return $this;
     }
 
@@ -285,18 +256,17 @@ use Doctrine\Common\Collections\ArrayCollection;
     /**
      * Set titleassoc
      *
-     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $titleassoc
+     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $pmbfile pmbfile assoc
+     *
      * @return PMBTitle
      */
-    public function setTitleassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $titleassoc = null)
+    public function setTitleassoc(PMBFileFormat $pmbfile)
     {
         $this->titleassoc = $titleassoc;
-    
-        return $this;
     }
 
     /**
-     * Get titleassoc
+     * Get pmbfile
      *
      * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
      */

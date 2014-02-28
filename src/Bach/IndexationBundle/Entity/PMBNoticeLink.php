@@ -6,7 +6,7 @@
  *
  * @category Indexation
  * @package  Bach
- * @author   Vincent Fleurette <vincent.fleurettes@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -24,11 +24,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
- * @ORM\Table(name="PMBNoticeLink")
+ * @ORM\Table(name="pmbnoticelink")
  *
  */
- Class PMBNoticeLink
- {
+class PMBNoticeLink
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", length=10)
@@ -37,14 +37,9 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="integer", length=10)
-     */
-    protected $idpmbnotice;
-
-    /**
      * @ORM\Column(type="string", nullable=true, length=255)
      */
-    protected $type;
+    protected $type_notice_link;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=255)
@@ -53,21 +48,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="notice")
-     * @ORM\JoinColumn(name="idpmbnotice", referencedColumnName="uniqid") 
+     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid") 
      */
-    protected $noticeassoc;
+    protected $pmbfile;
 
 
 
+    /**
+     * Main constructor
+     *
+     * @param array $data Entity data
+     */
     public function __construct($data)
     {
 
     }
- 
+
     /**
      * Get uniqid
      *
-     * @return integer 
+     * @return integer
      */
     public function getUniqid()
     {
@@ -75,38 +75,15 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set idpmbnotice
-     *
-     * @param integer $idpmbnotice
-     * @return PMBNoticeLink
-     */
-    public function setIdpmbnotice($idpmbnotice)
-    {
-        $this->idpmbnotice = $idpmbnotice;
-    
-        return $this;
-    }
-
-    /**
-     * Get idpmbnotice
-     *
-     * @return integer 
-     */
-    public function getIdpmbnotice()
-    {
-        return $this->idpmbnotice;
-    }
-
-    /**
      * Set type
      *
-     * @param string $type
+     * @param string $type type of notice
+     *
      * @return PMBNoticeLink
      */
     public function setType($type)
     {
         $this->type = $type;
-    
         return $this;
     }
 
@@ -123,13 +100,13 @@ use Doctrine\Common\Collections\ArrayCollection;
     /**
      * Set notice
      *
-     * @param string $notice
+     * @param string $notice link for notice
+     *
      * @return PMBNoticeLink
      */
     public function setNotice($notice)
     {
         $this->notice = $notice;
-    
         return $this;
     }
 
@@ -144,25 +121,25 @@ use Doctrine\Common\Collections\ArrayCollection;
     }
 
     /**
-     * Set noticeassoc
+     * Set pmbfile
      *
-     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $noticeassoc
+     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $pmbfile
+     *
      * @return PMBNoticeLink
      */
-    public function setNoticeassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $noticeassoc = null)
+    public function setNoticeassoc(PMBFileFormat $pmbfile)
     {
-        $this->noticeassoc = $noticeassoc;
-    
+        $this->pmbfile = $pmbfile;
         return $this;
     }
 
     /**
      * Get noticeassoc
      *
-     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
+     * @return PMBFileFormat
      */
-    public function getNoticeassoc()
+    public function getpmbfile()
     {
-        return $this->noticeassoc;
+        return $this->pmbfile;
     }
 }
