@@ -140,7 +140,18 @@ class GeolocController extends Controller
 
         $toponym = new Toponym($indexed_name);
 
-        $ent = new Geoloc();
+        $repo = $this->getDoctrine()
+            ->getRepository('BachIndexationBundle:Geoloc');
+        $ent = $repo->findOneBy(
+            array(
+                'indexed_name' => $indexed_name
+            )
+        );
+
+        if ( $ent === null ) {
+            $ent = new Geoloc();
+        }
+
         $ent->hydrate($toponym, $data);
 
         $em = $this->getDoctrine()->getManager();
