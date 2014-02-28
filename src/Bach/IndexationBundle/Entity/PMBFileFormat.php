@@ -226,6 +226,13 @@ Class PMBFileFormat
 
     }
 
+    /**
+     * Proceed data parsing
+     *
+     * @param array $data Data
+     *
+     * @return void
+     */
     protected function parseData($data)
     {
         foreach ($data as $key=>$datum) {
@@ -238,7 +245,7 @@ Class PMBFileFormat
     /**
      * Get uniqid
      *
-     * @return integer 
+     * @return integer
      */
     public function getUniqid()
     {
@@ -249,12 +256,12 @@ Class PMBFileFormat
      * Set titre_propre
      *
      * @param string $titrePropre
+     *
      * @return PMBFileFormat
      */
     public function setTitrePropre($titrePropre)
     {
         $this->titre_propre = $titrePropre;
-    
         return $this;
     }
 
@@ -277,7 +284,6 @@ Class PMBFileFormat
     public function setTitrepropreAuteurDifferent($titrepropreAuteurDifferent)
     {
         $this->titrepropre_auteur_different = $titrepropreAuteurDifferent;
-    
         return $this;
     }
 
@@ -300,7 +306,6 @@ Class PMBFileFormat
     public function setTitreParallele($titreParallele)
     {
         $this->titre_parallele = $titreParallele;
-    
         return $this;
     }
 
@@ -323,7 +328,6 @@ Class PMBFileFormat
     public function setTitreComplement($titreComplement)
     {
         $this->titre_complement = $titreComplement;
-    
         return $this;
     }
 
@@ -346,7 +350,6 @@ Class PMBFileFormat
     public function setCodageUnimarc($codageUnimarc)
     {
         $this->codage_unimarc = $codageUnimarc;
-    
         return $this;
     }
 
@@ -369,7 +372,6 @@ Class PMBFileFormat
     public function setPartOf($partOf)
     {
         $this->part_of = $partOf;
-    
         return $this;
     }
 
@@ -392,7 +394,6 @@ Class PMBFileFormat
     public function setPartNum($partNum)
     {
         $this->part_num = $partNum;
-    
         return $this;
     }
 
@@ -415,7 +416,6 @@ Class PMBFileFormat
     public function setEditeur($editeur)
     {
         $this->editeur = $editeur;
-    
         return $this;
     }
 
@@ -438,7 +438,6 @@ Class PMBFileFormat
     public function setCollection($collection)
     {
         $this->collection = $collection;
-    
         return $this;
     }
 
@@ -461,7 +460,6 @@ Class PMBFileFormat
     public function setNumCollection($numCollection)
     {
         $this->num_collection = $numCollection;
-    
         return $this;
     }
 
@@ -484,7 +482,6 @@ Class PMBFileFormat
     public function setSousCollection($sousCollection)
     {
         $this->sous_collection = $sousCollection;
-    
         return $this;
     }
 
@@ -507,7 +504,6 @@ Class PMBFileFormat
     public function setYear($year)
     {
         $this->year = $year;
-    
         return $this;
     }
 
@@ -530,7 +526,6 @@ Class PMBFileFormat
     public function setMentionEdition($mentionEdition)
     {
         $this->mention_edition = $mentionEdition;
-    
         return $this;
     }
 
@@ -553,7 +548,6 @@ Class PMBFileFormat
     public function setAutreEditeur($autreEditeur)
     {
         $this->autre_editeur = $autreEditeur;
-    
         return $this;
     }
 
@@ -576,7 +570,6 @@ Class PMBFileFormat
     public function setIsbn($isbn)
     {
         $this->isbn = $isbn;
-    
         return $this;
     }
 
@@ -599,7 +592,6 @@ Class PMBFileFormat
     public function setImportanceMaterielle($importanceMaterielle)
     {
         $this->importance_materielle = $importanceMaterielle;
-    
         return $this;
     }
 
@@ -622,7 +614,6 @@ Class PMBFileFormat
     public function setAutresCaracMaterielle($autresCaracMaterielle)
     {
         $this->autres_carac_materielle = $autresCaracMaterielle;
-    
         return $this;
     }
 
@@ -645,7 +636,6 @@ Class PMBFileFormat
     public function setFomrat($fomrat)
     {
         $this->fomrat = $fomrat;
-    
         return $this;
     }
 
@@ -668,7 +658,6 @@ Class PMBFileFormat
     public function setPrix($prix)
     {
         $this->prix = $prix;
-    
         return $this;
     }
 
@@ -691,7 +680,6 @@ Class PMBFileFormat
     public function setMaterielAccompagnement($materielAccompagnement)
     {
         $this->materiel_accompagnement = $materielAccompagnement;
-    
         return $this;
     }
 
@@ -714,7 +702,6 @@ Class PMBFileFormat
     public function setNoteGenerale($noteGenerale)
     {
         $this->note_generale = $noteGenerale;
-    
         return $this;
     }
 
@@ -737,7 +724,6 @@ Class PMBFileFormat
     public function setNoteContent($noteContent)
     {
         $this->note_content = $noteContent;
-    
         return $this;
     }
 
@@ -760,7 +746,6 @@ Class PMBFileFormat
     public function setExtract($extract)
     {
         $this->extract = $extract;
-    
         return $this;
     }
 
@@ -783,7 +768,6 @@ Class PMBFileFormat
     public function setIndexationDecimale($indexationDecimale)
     {
         $this->indexation_decimale = $indexationDecimale;
-    
         return $this;
     }
 
@@ -806,7 +790,6 @@ Class PMBFileFormat
     public function setKeyWord($keyWord)
     {
         $this->key_word = $keyWord;
-    
         return $this;
     }
 
@@ -829,7 +812,6 @@ Class PMBFileFormat
     public function setLinkRessourceElectronque($linkRessourceElectronque)
     {
         $this->link_ressource_electronque = $linkRessourceElectronque;
-    
         return $this;
     }
 
@@ -852,7 +834,6 @@ Class PMBFileFormat
     public function setFormatElectRessource($formatElectRessource)
     {
         $this->format_elect_ressource = $formatElectRessource;
-    
         return $this;
     }
 
@@ -875,7 +856,6 @@ Class PMBFileFormat
     public function setStatutNotice($statutNotice)
     {
         $this->statut_notice = $statutNotice;
-    
         return $this;
     }
 
@@ -898,7 +878,6 @@ Class PMBFileFormat
     public function setComment($comment)
     {
         $this->comment = $comment;
-    
         return $this;
     }
 
@@ -921,7 +900,6 @@ Class PMBFileFormat
     public function setUrlVignette($urlVignette)
     {
         $this->url_vignette = $urlVignette;
-    
         return $this;
     }
 
@@ -944,7 +922,6 @@ Class PMBFileFormat
     public function addTitle(\Bach\IndexationBundle\Entity\PMBTitle $title)
     {
         $this->title[] = $title;
-    
         return $this;
     }
 
@@ -961,7 +938,7 @@ Class PMBFileFormat
     /**
      * Get title
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTitle()
     {
@@ -1009,7 +986,6 @@ Class PMBFileFormat
     public function addCategory(\Bach\IndexationBundle\Entity\PMBCategory $category)
     {
         $this->category[] = $category;
-    
         return $this;
     }
 
@@ -1042,7 +1018,6 @@ Class PMBFileFormat
     public function addNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
     {
         $this->notice[] = $notice;
-    
         return $this;
     }
 
@@ -1075,16 +1050,15 @@ Class PMBFileFormat
     public function addLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
     {
         $this->language[] = $language;
-    
         return $this;
     }
 
     /**
      * Remove language
      *
-     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
+     * @param PMBLanguage $language
      */
-    public function removeLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
+    public function removeLanguage(PMBLanguage $language)
     {
         $this->language->removeElement($language);
     }
@@ -1092,7 +1066,7 @@ Class PMBFileFormat
     /**
      * Get language
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getLanguage()
     {
