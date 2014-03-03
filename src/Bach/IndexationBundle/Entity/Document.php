@@ -82,6 +82,16 @@ class Document
     protected $uploaded = false;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
+    /**
      * Constructor
      *
      * @param boolean $uploaded Is document uploaded from web interface?
@@ -332,6 +342,15 @@ class Document
             $xml = simplexml_load_file($this->file->getPathName());
             $this->docid = (string)$xml->eadheader->eadid;
         }
+
+        if ( $this->created === null ) {
+            $this->created = new \DateTime();
+        }
+
+        if ( $this->updated === null ) {
+            $this->updated = new \DateTime();
+        }
+
         return $this;
     }
 
@@ -366,6 +385,53 @@ class Document
     public function setNotUploaded()
     {
         $this->uploaded = false;
+    }
+
+    /**
+     * Set creation date
+     *
+     * @param DateTime $created Creation date
+     *
+     * @return Document
+     */
+
+    public function setCreated(DateTime $created)
+    {
+        $this->created = $created;
+        return $this;
+    }
+
+    /**
+     * Get creation date
+     *
+     * @return DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set modification date
+     *
+     * @param DateTime $updated Modification date
+     *
+     * @return Document
+     */
+    public function setUpdated(DateTime $updated)
+    {
+        $this->updated = $updated;
+        return $this;
+    }
+
+    /**
+     * Get modification date
+     *
+     * @return DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 
     /**
