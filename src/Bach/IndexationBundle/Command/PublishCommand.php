@@ -187,13 +187,6 @@ EOF
                     $document->setStoreDir(
                         $this->getContainer()->getParameter('bach.typespaths')[$type]
                     );
-                    /*$document->setPath(
-                        str_replace(
-                            $this->getContainer()->getParameter('bach.typespaths')[$type],
-                            '',
-                            $ftp
-                        )
-                    );*/
                     $document->setExtension($type);
                     $document->setCorename(
                         $this->getContainer()->getParameter(
