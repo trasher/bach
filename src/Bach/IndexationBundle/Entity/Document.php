@@ -395,7 +395,7 @@ class Document
      * @return Document
      */
 
-    public function setCreated(DateTime $created)
+    public function setCreated(\DateTime $created)
     {
         $this->created = $created;
         return $this;
@@ -418,7 +418,7 @@ class Document
      *
      * @return Document
      */
-    public function setUpdated(DateTime $updated)
+    public function setUpdated(\DateTime $updated)
     {
         $this->updated = $updated;
         return $this;
