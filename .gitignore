@@ -44,6 +44,7 @@ tests-results/
 
 #files to publish
 files/
+files
 
 #generated i18n
 app/Resources/gettext/
