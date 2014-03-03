@@ -88,6 +88,9 @@ class TypesFiles
             } else {
                 $found_files = array();
                 foreach ( $paths as $p ) {
+                    if ( strpos($p, '/') === 0 ) {
+                        $p = ltrim($p, '/');
+                    }
                     if ( file_exists($path . $p) ) {
                         if ( is_dir($path . $p) ) {
                             $files = $this->_parseExistingFiles(
