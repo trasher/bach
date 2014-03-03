@@ -45,8 +45,16 @@ class BachIndexationExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('bach.types', $config['types']);
-        $container->setParameter('bach.typespaths', $config['paths']);
+        $types = $config['types'];
+        $types_paths = $config['paths'];
+
+        if ( $config['has_matricules'] === false ) {
+            unset($types[array_search('matricules', $types)]);
+            unset($types_paths['matricules']);
+        }
+
+        $container->setParameter('bach.types', $types);
+        $container->setParameter('bach.typespaths', $types_paths);
 
         $loader = new Loader\YamlFileLoader(
             $container,

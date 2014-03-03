@@ -43,6 +43,9 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('bach_indexation');
 
         $rootNode->children()
+            ->booleanNode('has_matricules')
+            ->defaultFalse()
+            ->end()
             ->arrayNode('types')
             ->isRequired()
             ->requiresAtLeastOneElement()
