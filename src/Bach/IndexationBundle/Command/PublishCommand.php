@@ -183,15 +183,21 @@ EOF
                 foreach ( $files_to_publish[$type] as $ftp ) {
                     $document = new Document();
 
-                    $document->setUploadDir(
-                        $this->getContainer()->getParameter('upload_dir')
-                    );
                     $document->setFile(new File($ftp));
-                    $document->setNotUploaded();
+                    $document->setStoreDir(
+                        $this->getContainer()->getParameter('bach.typespaths')[$type]
+                    );
+                    /*$document->setPath(
+                        str_replace(
+                            $this->getContainer()->getParameter('bach.typespaths')[$type],
+                            '',
+                            $ftp
+                        )
+                    );*/
                     $document->setExtension($type);
                     $document->setCorename(
                         $this->getContainer()->getParameter(
-                            $document->getExtension() . '_corename'
+                            $type . '_corename'
                         )
                     );
 

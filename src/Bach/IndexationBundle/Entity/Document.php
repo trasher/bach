@@ -76,7 +76,20 @@ class Document
      */
     protected $task;
 
-    protected $uploaded = true;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $uploaded = false;
+
+    /**
+     * Constructor
+     *
+     * @param boolean $uploaded Is document uploaded from web interface?
+     */
+    public function __construct($uploaded = false)
+    {
+        $this->uploaded = $uploaded;
+    }
 
     /**
      * Get absolute path to document
@@ -86,8 +99,10 @@ class Document
     public function getAbsolutePath()
     {
         $path = null;
-        if ( $this->path !== null ) {
+        if ( $this->uploaded && $this->path !== null ) {
             $path = $this->_upload_dir . '/' . $this->path;
+        } else if ( !$this->uploaded && $this->path !== null ) {
+            $path = $this->_store_dir . '/' . $this->path;
         }
         return $path;
     }
@@ -128,13 +143,19 @@ class Document
     public function preUpload()
     {
         if (null !== $this->file) {
-            $this->path = sha1(uniqid(mt_rand(), true)) . '.' .
-                $this->file->guessExtension();
             if ( $this->uploaded ) {
+                $this->path = $this->file->getClientOriginalName();
                 $this->name = $this->file->getClientOriginalName();
             } else {
+                $this->path = str_replace(
+                    $this->_store_dir,
+                    '',
+                    $this->file->getPathName()
+                );
                 $this->name = $this->file->getFileName();
             }
+        } else {
+            throw new \RuntimeException('No file specified. Cannot continue.');
         }
     }
 
@@ -154,11 +175,6 @@ class Document
 
         if ( $this->uploaded ) {
             $this->file->move($this->_upload_dir, $this->path);
-        } else {
-            copy(
-                $this->file,
-                $this->_upload_dir . '/' . $this->path
-            );
         }
 
         unset($this->file);
@@ -173,7 +189,7 @@ class Document
      */
     public function removeUpload()
     {
-        if ( $file = $this->getAbsolutePath()) {
+        if ( $this->uploaded && $file = $this->getAbsolutePath()) {
             unlink($file);
         }
     }
@@ -198,7 +214,6 @@ class Document
     public function setName($name)
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -222,7 +237,6 @@ class Document
     public function setPath($path)
     {
         $this->path = $path;
-
         return $this;
     }
 
@@ -251,11 +265,12 @@ class Document
      *
      * @param SplFile $file File
      *
-     * @return void
+     * @return Document
      */
     public function setFile($file)
     {
         $this->file = $file;
+        return $this;
     }
 
     /**
@@ -278,7 +293,6 @@ class Document
     public function setExtension($extension)
     {
         $this->extension = $extension;
-
         return $this;
     }
 
@@ -352,5 +366,18 @@ class Document
     public function setNotUploaded()
     {
         $this->uploaded = false;
+    }
+
+    /**
+     * Set storage directory for current document type
+     *
+     * @param string $dir Directory
+     *
+     * @return Document
+     */
+    public function setStoreDir($dir)
+    {
+        $this->_store_dir = $dir;
+        return $this;
     }
 }

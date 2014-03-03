@@ -59,7 +59,7 @@ class DefaultController extends Controller
      */
     public function addAction()
     {
-        $document = new Document();
+        $document = new Document(true);
         $document->setUploadDir(
             $this->container->getParameter('upload_dir')
         );
