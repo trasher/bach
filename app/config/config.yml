@@ -35,6 +35,7 @@ twig:
         enable_social: '%enable_social%'
         tiles_url: '%tiles_url%'
         tiles_attribution: '%tiles_attribution%'
+        tiles_subdomains: '%tiles_subdomains%'
 
 # Assetic Configuration
 assetic:

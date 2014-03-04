@@ -39,8 +39,13 @@ parameters:
     client_code: null
     has_matricules: false
     enable_social: false
-    tiles_url: 'http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg'
+    tiles_url: 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg'
     tiles_attribution: '<a href="http://www.mapquest.com/">MapQuest</a>'
+    tiles_subdomains:
+        - otile1
+        - otile2
+        - otile3
+        - otile4
 
 bach_home:
     files:

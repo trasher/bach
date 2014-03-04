@@ -543,6 +543,9 @@
                 }).addTo(map);
 
                 L.tileLayer('{{ tiles_url }}', {
+                    {% if tiles_subdomains is iterable -%}
+                    subdomains: [{% for subdomain in tiles_subdomains %}'{{ subdomain }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+                    {% endif -%}
                     maxZoom: 18,
                     attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, {% trans %}© Imagery{% endtrans %} {{ tiles_attribution|raw }}'
                 }).addTo(map);
