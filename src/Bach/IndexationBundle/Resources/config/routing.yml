@@ -1,6 +1,6 @@
 bach_indexation_homepage:
-    pattern:  /
-    defaults: { _controller: BachIndexationBundle:Default:index }
+    pattern:  /{page}
+    defaults: { _controller: BachIndexationBundle:Default:index, page: 1 }
 
 bach_indexation_queue:
     pattern:  /queue

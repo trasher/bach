@@ -40,13 +40,20 @@
                 <th>{% trans %}Identifier{% endtrans %}</th>
                 <th>{% trans %}Type{% endtrans %}</th>
                 <th>{% trans %}File{% endtrans %}</th>
-                <th>{% trans %}Title{% endtrans %}</th>
+                <th>{% trans %}Creation{% endtrans %}</th>
+                <th>{% trans %}Modification{% endtrans %}</th>
                 <th></th>
             </thead>
             <tfoot>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <button type="submit" id="delete_documents" class="btn btn-delete" title="{% trans %}Remove selected documents{% endtrans %}">{% trans %}Remove selected{% endtrans %}</button>
+                        {% include 'pagination.html.twig' with {
+                            currentFilters: { },
+                            currentPage: currentPage,
+                            paginationPath: 'bach_indexation_homepage',
+                            lastPage: lastPage
+                        } only %}
                     </td>
                 </tr>
             </tfoot>
@@ -60,8 +67,9 @@
                     <td>{{ document.getDocId }}</td>
                     <td>{{ document.getExtension }}</td>
                     <td>{{ document.getName }}</td>
-                    <td></td>
-                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}"><img src="" alt="{% trans %}Validate against EAD DTD{% endtrans %}"/></a>{% endif %}</td>
+                    <td>{{ document.getCreated|date(_('Y-m-d h:i:s A')) }}</td>
+                    <td>{{ document.getUpdated|date(_('Y-m-d h:i:s A')) }}</td>
+                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}" title="{% trans %}Validate against EAD DTD{% endtrans %}"><img src="{{ asset('img/validate.png') }}" alt="{% trans %}Validate against EAD DTD{% endtrans %}"/></a>{% endif %}</td>
                 </tr>
                 {% endfor %}
             </tbody>

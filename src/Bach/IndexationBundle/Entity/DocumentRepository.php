@@ -15,6 +15,7 @@
 namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Document repository
@@ -32,13 +33,21 @@ class DocumentRepository extends EntityRepository
     /**
      * Retrieve published document list
      *
+     * @param int $page Requested page
+     * @param int $show Rows to display
+     *
      * @return array
      */
-    public function getPublishedDocuments()
+    public function getPublishedDocuments($page = 1, $show = 30)
     {
-        $query = 'SELECT d from BachIndexationBundle:Document d '.
-            'LEFT JOIN d.task t WHERE t.taskId IS NULL or t.status=1';
-        $results = $this->getEntityManager()->createQuery($query)->getResult();
-        return $results;
+        $sql = 'SELECT d from BachIndexationBundle:Document d '.
+            'LEFT JOIN d.task t WHERE t.taskId IS NULL or t.status=1 ' .
+            'ORDER BY d.extension, d.id';
+        $query = $this->getEntityManager()->createQuery($sql)
+            ->setFirstResult(($page - 1) * $show)
+            ->setMaxResults($show);
+
+        $paginator = new Paginator($query, $fetchJoinCollection = false);
+        return $paginator;
     }
 }

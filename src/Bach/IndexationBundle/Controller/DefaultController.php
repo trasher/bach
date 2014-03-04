@@ -37,17 +37,22 @@ class DefaultController extends Controller
     /**
      * Displays current indexed documents
      *
+     * @param int $page Current page
+     *
      * @return void
      */
-    public function indexAction()
+    public function indexAction($page = 1)
     {
+        $show = 30;
         $repo = $this->getDoctrine()->getRepository('BachIndexationBundle:Document');
-        $documents = $repo->getPublishedDocuments();
+        $documents = $repo->getPublishedDocuments($page, $show);
 
         return $this->render(
             'BachIndexationBundle:Indexation:index.html.twig',
             array(
-                'documents'     => $documents
+                'documents'     => $documents,
+                'currentPage'   => $page,
+                'lastPage'      => ceil(count($documents) / $show)
             )
         );
     }
