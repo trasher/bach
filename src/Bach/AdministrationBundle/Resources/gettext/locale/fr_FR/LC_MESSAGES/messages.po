@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/AdministrationBundle@20131025144736\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-24 11:44+0100\n"
-"PO-Revision-Date: 2014-02-24 11:45+0100\n"
+"POT-Creation-Date: 2014-03-04 16:09+0100\n"
+"PO-Revision-Date: 2014-03-04 16:11+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr_FR\n"
@@ -16,6 +16,313 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:43
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1681
+msgid "Copy fields"
+msgstr "Champs copiés"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:48
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:182
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1220
+msgid "Select all"
+msgstr "Sélectionner tout"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:52
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:186
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1224
+msgid "Unselect all"
+msgstr "Désélectionner tout"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:56
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:190
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1228
+msgid "Add"
+msgstr "Ajouter"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:60
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:194
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1232
+msgid "Delete"
+msgstr "Supprimer"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:76
+msgid "Source:"
+msgstr "Source :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:82
+msgid "Destination:"
+msgstr "Destination :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:88
+msgid "Max Chars:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:105
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:279
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1008
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1152
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1296
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1370
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1862
+msgid "Validate"
+msgstr "Valider"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:169
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1668
+msgid "Dynamic fields"
+msgstr "Champs dynamiques"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:213
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:677
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1089
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1247
+msgid "Name"
+msgstr "Nom"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:219
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:669
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1095
+msgid "Type"
+msgstr "Type"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:225
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1101
+msgid "Default"
+msgstr "Défaut"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:234
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1110
+msgid "Indexed"
+msgstr "Indexé"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:249
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1121
+msgid "Stored"
+msgstr "Stocké"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:256
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1128
+msgid "Multivalued"
+msgstr "Multi-valué"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:263
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1135
+msgid "Required"
+msgstr "Requis"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:350
+msgid "Solr server informations"
+msgstr "Informations du serveur Solr"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:355
+msgid "Solr version:"
+msgstr "Version de Solr :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:361
+msgid "JVM:"
+msgstr "JVM :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:367
+msgid "System:"
+msgstr "Système :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:373
+msgid "Load average:"
+msgstr "Charge :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:381
+msgid "System memory"
+msgstr "Mémoire système"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:388
+msgid "Swap"
+msgstr "Swap"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:395
+msgid "JVM memory"
+msgstr "Mémoire JVM"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:403
+msgid "Active Solr cores"
+msgstr "Noyaux Solr actifs"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:441
+msgid "Documents count:"
+msgstr "Nombre de  documents :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:447
+msgid "Index size (Kb)"
+msgstr "Taille de l'index (Kb)"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:468
+msgid "Temporary Solr cores"
+msgstr "Noyaux Solr temporaires"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:472
+msgid ""
+"Above list should be a list of temporary created Solr cores, that has not "
+"been copied because of a lack of permissions. A warning message should have "
+"been displayed at core creation about this issue."
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:663
+msgid "Add a new Solr core"
+msgstr "Ajouter un nouveau noyau Solr"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:694
+msgid "Create core"
+msgstr "Créer le noyau"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:754
+msgid "Core"
+msgstr "Noyau"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:758
+msgid "Reload"
+msgstr "Recharger"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:762
+msgid "Remove"
+msgstr "Supprimer"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:768
+msgid "Up since:"
+msgstr "Démarré depuis :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:774
+msgid "Core directory:"
+msgstr "Dossier du noyau :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:780
+msgid "Data directory:"
+msgstr "Dossier des données :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:789
+msgid "Index"
+msgstr "Index"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:794
+msgid "Indexed documents:"
+msgstr "Documents indexés :"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:911
+msgid "Cache"
+msgstr "Cache"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:918
+msgid "Query result windows size:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:928
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:938
+msgid "Document cache size:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:948
+msgid "Document cache initial size:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:959
+msgid "Query result max docs cached:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:969
+msgid "Query result cache size:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:979
+msgid "Query result initial cache size:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:989
+msgid "Query result class size:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:999
+msgid "Query result Autowarm count:"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1076
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1655
+msgid "Fields"
+msgstr "Champs"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1215
+msgid "Fields types"
+msgstr "Types de champs"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1253
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1846
+msgid "Class"
+msgstr "Classe"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1259
+msgid "Increment Gap"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1269
+msgid "Sort Missing Last"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1275
+msgid "Sort Missing First"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1281
+msgid "Autogenerate phrase queries"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1359
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1720
+msgid "Unique key"
+msgstr "Clé unique"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1578
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1727
+msgid "Administration"
+msgstr "Administration"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1591
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1602
+msgid "Select a core"
+msgstr "Choisissez un noyau"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1633
+msgid "Add new core"
+msgstr "Ajouter un nouveau noyau"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1642
+msgid "Schema"
+msgstr "Schéma"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1694
+msgid "Fields type"
+msgstr "Types de champs"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1707
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1827
+msgid "Analyzers"
+msgstr "Analyseurs"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1740
+msgid "Core admin"
+msgstr "Administration des noyaux"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1747
+msgid "Performance"
+msgstr "Performances"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1760
+msgid "Performance admin"
+msgstr "Administration des performances"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1840
+msgid "Field type name"
+msgstr "Nom du type de champ"
 
 #: src/Bach/AdministrationBundle/Command/CreatecoreCommand.php:53
 msgid "Core name"

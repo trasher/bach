@@ -1,14 +1,14 @@
 {% extends 'AdministrationBundle:Default:main.html.twig' %}
 
 {% block container %}
-        <form action="{{ path('administration_uniquekey') }}" method="POST"   {{ form_enctype(form) }}>
+        <form action="{{ path('administration_uniquekey') }}" method="POST" {{ form_enctype(form) }}>
             <fieldset>
-                <legend>{% trans %}Unique key{% endtrans %}</legend>
+                <legend>{{ _('Unique key') }}</legend>
 
                 <div class="well">
                     {# iterate over each existing tag and render its only field: name #}
                     {{ form_row(form.uniqueKey) }}
-                    <button name="submit" type="submit" class="jbtn">Valider</button>
+                    <button name="submit" type="submit" class="jbtn">{{ _('Validate') }}</button>
                     {{ form_widget(form._token) }}
                 </div>
             </fieldset>

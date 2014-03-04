@@ -1,13 +1,13 @@
 <aside id="refine">
-    <h2>{% trans %}Administration{% endtrans %}</h2>
+    <h2>{{ _('Administration') }}</h2>
     <ul>
         <li{% if app.request.attributes.get('_route') == 'administration_dashboard' %} class="active"{% endif %}>
-            <a href="{{ url('administration_dashboard') }}">Dashboard</a>
+            <a href="{{ url('administration_dashboard') }}">{{ _('Dashboard') }}</a>
         </li>
         <li>
         <form action="{{ path('administration_dashboard') }}" method="POST">
             <select name="selectedCore" onchange="this.form.submit();">
-                <option value="none">{% trans %}Select a core{% endtrans %}</option>
+                <option value="none">{{ _('Select a core') }}</option>
                 {% for core in coreNames %}
                 <option value="{{ core }}" {% if (coreName == core) %} selected="selected" {% endif %}>{{ core }}</option>
                 {% endfor %}
@@ -15,43 +15,43 @@
         </form>
         </li>
         <li>
-            <a href="{{ path('administration_newcore') }}" class="jbtn">{% trans %}Add new core{% endtrans %}</a>
+            <a href="{{ path('administration_newcore') }}" class="jbtn">{{ _('Add new core') }}}</a>
         </li>
     </ul>
 {% if (coreName != 'none' ) %}
-    <h2>{% trans %}Schema{% endtrans %}</h2>
+    <h2>{{ _('Schema') }}</h2>
     <ul>
         <li{% if app.request.attributes.get('_route') == 'administration_fields' %} class="active"{% endif %}>
-            <a href="{{ url('administration_fields') }}">{% trans %}Fields{% endtrans %}</a>
+            <a href="{{ url('administration_fields') }}">{{ _('Fields') }}</a>
         </li>
         <li{% if app.request.attributes.get('_route') == 'administration_dynamicfields' %} class="active"{% endif %}>
-            <a href="{{ url('administration_dynamicfields') }}">{% trans %}Dynamic Fields{% endtrans %}</a>
+            <a href="{{ url('administration_dynamicfields') }}">{{ _('Dynamic fields') }}</a>
         </li>
         <li{% if app.request.attributes.get('_route') == 'administration_copyfields' %} class="active"{% endif %}>
-            <a href="{{ url('administration_copyfields') }}">{% trans %}Copy fields{% endtrans %}</a>
+            <a href="{{ url('administration_copyfields') }}">{{ _('Copy fields') }}</a>
         </li>
         <li{% if app.request.attributes.get('_route') == 'administration_fieldstype' %} class="active"{% endif %}>
-            <a href="{{ url('administration_fieldstype') }}">{% trans %}Fields Type{% endtrans %}</a>
+            <a href="{{ url('administration_fieldstype') }}">{{ _('Fields type') }}</a>
         </li>
         <li{% if app.request.attributes.get('_route') == 'administration_analyzers' %} class="active"{% endif %}>
-            <a href="{{ url('administration_analyzers') }}">{% trans %}Analyzers{% endtrans %}</a>
+            <a href="{{ url('administration_analyzers') }}">{{ _('Analyzers') }}</a>
         </li>
         <li{% if app.request.attributes.get('_route') == 'administration_uniquekey' %} class="active"{% endif %}>
-            <a href="{{ url('administration_uniquekey') }}">{% trans %}Unique Key{% endtrans %}</a>
+            <a href="{{ url('administration_uniquekey') }}">{{ _('Unique key') }}</a>
         </li>
     </ul>
 
-    <h2>{% trans %}Administration{% endtrans %}</h2>
+    <h2>{{ _('Administration') }}</h2>
     <ul>
         <li{% if app.request.attributes.get('_route') == 'administration_coreadmin' %} class="active"{% endif %}>
-            <a href="{{ url('administration_coreadmin') }}">{% trans %}Core Admin{% endtrans %}</a>
+            <a href="{{ url('administration_coreadmin') }}">{{ _('Core admin') }}</a>
         </li>
     </ul>
 
-    <h2>{% trans %}Performance{% endtrans %}</h2>
+    <h2>{{ _('Performance') }}</h2>
     <ul>
         <li{% if app.request.attributes.get('_route') == 'administration_performance' %} class="active"{% endif %}>
-            <a href="{{ url('administration_performance') }}">{% trans %}Performance Admin{% endtrans %}</a>
+            <a href="{{ url('administration_performance') }}">{{ _('Performance admin') }}</a>
         </li>
     </ul>
 {% endif %}

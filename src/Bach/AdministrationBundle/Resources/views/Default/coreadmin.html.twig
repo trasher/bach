@@ -2,20 +2,20 @@
 
 {% block container %}
         <fieldset>
-            <legend>Core</legend>
-            <a href="#" class="jbtn">{% trans %}Reload{% endtrans %}</a>
-            <a href="#" class="btn btn-delete">{% trans %}Remove{% endtrans %}</a>
+            <legend>{{ _('Core') }}</legend>
+            <a href="#" class="jbtn">{{ _('Reload') }}</a>
+            <a href="#" class="btn btn-delete">{{ _('Remove') }}</a>
 
             <div class="well">
-                <strong>{% trans %}Up since:{% endtrans %}</strong> {{ coreStatus.startTime }}<br/>
-                <strong>{% trans %}Core directory:{% endtrans %}</strong> {{ coreStatus.coreDir }}<br/>
-                <strong>{% trans %}Data directory:{% endtrans %}</strong> {{ coreStatus.dataDir }}
+                <strong>{{ _('Up since:') }}</strong> {{ coreStatus.startTime }}<br/>
+                <strong>{{ _('Core directory:') }}</strong> {{ coreStatus.coreDir }}<br/>
+                <strong>{{ _('Data directory:') }}</strong> {{ coreStatus.dataDir }}
             </div>
         </fieldset>
         <fieldset>
-            <legend>Index</legend>
+            <legend>{{ _('Index') }}</legend>
             <div class="well">
-                <strong>{% trans %}Indexed documents:{% endtrans %}</strong> {{ coreStatus.numDocs }}
+                <strong>{{ _('Indexed documents:') }}</strong> {{ coreStatus.numDocs }}
             </div>
         </fieldset>
 {% endblock %}

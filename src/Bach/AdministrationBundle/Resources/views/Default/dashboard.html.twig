@@ -5,28 +5,28 @@
 {% endblock %}
 
 {% block container %}
-    <h2>{% trans %}Solr server informations{% endtrans %}</h2>
+    <h2>{{ _('Solr server informations') }}</h2>
     <ul class="well">
-        <li><strong>{% trans %}Solr version:{% endtrans %}</strong> {{ solr_version }}</li>
-        <li><strong>{% trans %}JVM:{% endtrans %}</strong> {{ jvm_version }}</li>
-        <li><strong>{% trans %}System:{% endtrans %}</strong> {{ system_version }}</li>
-        <li><strong>{% trans %}Load average:{% endtrans %}</strong> {{ load_average }}</li>
+        <li><strong>{{ _('Solr version:') }}</strong> {{ solr_version }}</li>
+        <li><strong>{{ _('JVM:') }}</strong> {{ jvm_version }}</li>
+        <li><strong>{{ _('System:') }}</strong> {{ system_version }}</li>
+        <li><strong>{{ _('Load average:') }}</strong> {{ load_average }}</li>
     </ul>
     <section id="ram_usage">
-        <h4>{% trans %}System memory{% endtrans %}</h4>
+        <h4>{{ _('System memory') }}</h4>
         <div id="memory"></div>
     </section>
     <section id="swap_usage">
-        <h4>{% trans %}Swap{% endtrans %}</h4>
+        <h4>{{ _('Swap') }}</h4>
         <div id="swap"></div>
     </section>
     <section id="jvm_usage">
-        <h4>{% trans %}JVM memory{% endtrans %}</h4>
+        <h4>{{ _('JVM memory') }}</h4>
         <div id="jvm"></div>
     </section>
 
     <section id="cores">
-        <h4>Les noyaux Solr actifs</h4>
+        <h4>{{ _('Active Solr cores') }}</h4>
         <div id="cores_accordion">
             <ul>
         {% for core in coreNames %}
@@ -39,8 +39,8 @@
         {% for core in coreNames %}
             <div id="core_{{ core }}">
                 <div class="accordion-inner">
-                    <strong>Nombre de document</strong> : {{ coresInfo[core].numDocs }}<br/>
-                    <strong>Taille de l'index en KB</strong> : {{ coresInfo[core].size }}
+                    <strong>{{ _('Documents count:') }}</strong> {{ coresInfo[core].numDocs }}<br/>
+                    <strong>{{ _('Index size (Kb)') }}</strong> {{ coresInfo[core].size }}
                 </div>
             </div>
         {% endfor %}
@@ -48,8 +48,8 @@
 
     {% if tmpCoresNames|length > 0 %}
     <section id="cores">
-        <h4 class="breadcrumb clear">{% trans %}Temporary Solr cores{% endtrans %}</h4>
-        <p>{% trans %}Above list should be a list of temporary created Solr cores, that has not been copied because of a lack of permissions. A warning message should have been displayed at core creation about this issue.{% endtrans %}</p>
+        <h4 class="breadcrumb clear">{{ _('Temporary Solr cores') }}</h4>
+        <p>{{ _('Above list should be a list of temporary created Solr cores, that has not been copied because of a lack of permissions. A warning message should have been displayed at core creation about this issue.') }}</p>
         <ul>
         {% for core in tmpCoresNames %}
             <li>{{ core.getFileName() }}</li>

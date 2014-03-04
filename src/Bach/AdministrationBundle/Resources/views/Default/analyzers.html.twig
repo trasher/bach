@@ -3,18 +3,18 @@
 {% block container %}
         <form class="form-inline" action="{{ path('administration_analyzers') }}" method="POST" {{ form_enctype(form) }}>
             <fieldset>
-                <legend>{% trans %}Analyzers{% endtrans %}</legend>
+                <legend>{{ _('Analyzers') }}</legend>
 
                 {% for field in form.analyzers %}
                 <div class="well">
                     <div class="row-fluid show-grid">
-                        <div class="span6">Field type name&nbsp;:&nbsp;{{ form_widget(field.name) }}</div>
-                        <div class="span6">Class&nbsp;:&nbsp;{{ form_widget(field.class) }}</div>
+                        <div class="span6">{{ _('Field type name') }} {{ form_widget(field.name) }}</div>
+                        <div class="span6">{{ _('Class') }}{{ form_widget(field.class) }}</div>
                     </div>
                 </div>
                 {% endfor %}
                 {{ form_widget(form._token) }}
-                <button name="submit" type="submit" class="jbtn">Valider</button>
+                <button name="submit" type="submit" class="jbtn">{{ _('Validate') }}</button>
             </fieldset>
         </form>
 {% endblock %}
