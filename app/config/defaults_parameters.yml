@@ -39,8 +39,8 @@ parameters:
     client_code: null
     has_matricules: false
     enable_social: false
-    tiles_url: 'http://{s}.tile.cloudmade.com/852b7821064f43a59604e98d9536680b/997/256/{z}/{x}/{y}.png'
-    tiles_attribution: '<a href="http://cloudmade.com">CloudMade</a>'
+    tiles_url: 'http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg'
+    tiles_attribution: '<a href="http://www.mapquest.com/">MapQuest</a>'
 
 bach_home:
     files:
