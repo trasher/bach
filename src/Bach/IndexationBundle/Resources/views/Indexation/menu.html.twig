@@ -1,18 +1,18 @@
 <aside id="index">
-    <h2>{% trans %}Manage publishing{% endtrans %}</h2>
+    <h2>{{ _('Manage publishing') }}</h2>
     <ul>
-        <li{% if app.request.attributes.get('_route') == 'bach_indexation_homepage' %} class="active"{% endif %}><a href="{{ path('bach_indexation_homepage') }}">{% trans %}Published documents{% endtrans %}</a></li>
-        <li{% if app.request.attributes.get('_route') == 'bach_indexation_queue' %} class="active"{% endif %}><a href="{{ path('bach_indexation_queue')  }}"><span class="icon-tasks"></span>{% trans %}Publication queue{% endtrans %}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'bach_indexation_homepage' %} class="active"{% endif %}><a href="{{ path('bach_indexation_homepage') }}">{{ _('Published documents') }}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'bach_indexation_queue' %} class="active"{% endif %}><a href="{{ path('bach_indexation_queue')  }}"><span class="icon-tasks"></span>{{ _('Publication queue') }}</a></li>
         <li class="divider"></li>
-        <li{% if app.request.attributes.get('_route') == 'bach_indexation_add' %} class="active"{% endif %}><a href="{{ path('bach_indexation_add') }}"><span class="icon-download-alt"></span>{% trans %}Publish new file{% endtrans %}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'bach_indexation_add' %} class="active"{% endif %}><a href="{{ path('bach_indexation_add') }}"><span class="icon-download-alt"></span>{{ _('Publish new file') }}</a></li>
         <li class="divider"></li>
-        <li><a href="#help" role="button" id="show_help"><span class="icon-question-sign"></span>{% trans %}Help{% endtrans %}</a></li>
+        <li><a href="#help" role="button" id="show_help"><span class="icon-question-sign"></span>{{ _('Help') }}</a></li>
     </ul>
     {% if cdc %}
-    <h2>{% trans %}Classification scheme{% endtrans %}</h2>
+    <h2>{{ _('Classification scheme') }}</h2>
     <ul>
-        <li><a href="#">{% trans %}Publish{% endtrans %}</a></li>
-        <li><a href="#">{% trans %}Remove{% endtrans %}</a></li>
+        <li><a href="#">{{ _('Publish') }}</a></li>
+        <li><a href="#">{{ _('Remove') }}</a></li>
     </ul>
     {% endif %}
 </aside>

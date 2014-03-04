@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/IndexationBundle@20131025143701\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-26 14:10+0100\n"
-"PO-Revision-Date: 2013-11-26 14:11+0100\n"
+"POT-Creation-Date: 2014-03-04 15:10+0100\n"
+"PO-Revision-Date: 2014-03-04 15:11+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_US\n"
@@ -30,17 +30,18 @@ msgid "Add to queue"
 msgstr "Add to queue"
 
 #: src/Bach/IndexationBundle/Form/Type/DocumentType.php:82
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:851
 msgid "Publish"
 msgstr "Publish"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:415
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:407
 msgid "Could not validate non EAD documents (for now)."
 msgstr "Could not validate non EAD documents (for now)."
 
 #: src/Bach/IndexationBundle/Controller/DefaultController.php:428
 #, php-format
-msgid "Corresponding file for %docid% document no longer exists on disk."
-msgstr "Corresponding file for %docid% document no longer exists on disk."
+msgid "Corresponding file for %docid document no longer exists on disk."
+msgstr "Corresponding file for %docid document no longer exists on disk."
 
 #: src/Bach/IndexationBundle/Controller/DefaultController.php:456
 msgid "Document %docid% is valid and DTD compliant!"
@@ -50,79 +51,299 @@ msgstr "Document %docid% is valid and DTD compliant!"
 msgid "%type% document %docid% is not valid!"
 msgstr "%type% document %docid% is not valid!"
 
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:116
+msgid "Publication tasks"
+msgstr "Publication tasks"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:123
+msgid "Remove all finished tasks"
+msgstr "Remove all finished tasks"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:125
+msgid "Remove finished"
+msgstr "Remove finished"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:129
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:532
+msgid "Refresh"
+msgstr "Refresh"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:139
+msgid "File name"
+msgstr "File name"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:143
+msgid "Format"
+msgstr "Format"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:147
+msgid "Size"
+msgstr "Size"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:189
+msgid "No publication in queue"
+msgstr "No publication in queue"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:202
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:822
+msgid "Publication queue"
+msgstr "Publication queue"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:207
+msgid ""
+"Publication queue list all documents that are waiting to be published. "
+"Publication happens depending on server parameters. Line color will inform "
+"you about publication success or failure."
+msgstr ""
+"Publication queue list all documents that are waiting to be published. "
+"Publication happens depending on server parameters. Line color will inform "
+"you about publication success or failure."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:316
+msgid "Send a new file"
+msgstr "Send a new file"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:360
+msgid "Publication help"
+msgstr "Publication help"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:365
+msgid ""
+"Publication process will extract all useful informations from a file. Select "
+"file you want to publish, its format (EAD, UNIMARC, etc.).<br/>Then you will "
+"choose either to proceed publication, or to add the job to the queue for a "
+"further publication (used for bg files)."
+msgstr ""
+"Publication process will extract all useful informations from a file. Select "
+"file you want to publish, its format (EAD, UNIMARC, etc.).<br/>Then you will "
+"choose either to proceed publication, or to add the job to the queue for a "
+"further publication (used for bg files)."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:455
+msgid "Validation results"
+msgstr "Validation results"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:479
+msgid "Show/hide errors"
+msgstr "Show/hide errors"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:515
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:812
+msgid "Published documents"
+msgstr "Published documents"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:522
+msgid "Remove all published documents"
+msgstr "Remove all published documents"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:524
+msgid "Remove all"
+msgstr "Remove all"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:530
+msgid "Refresh list"
+msgstr "Refresh list"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:546
+msgid "Identifier"
+msgstr "Identifier"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:550
+msgid "Type"
+msgstr "Type"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:554
+msgid "File"
+msgstr "File"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:558
+msgid "Creation"
+msgstr "Creation"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:562
+msgid "Modification"
+msgstr "Modification"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:571
+msgid "Remove selected documents"
+msgstr "Remove selected documents"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:573
+msgid "Remove selected"
+msgstr "Remove selected"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:620
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:624
+msgid "Y-m-d h:i:s A"
+msgstr "Y-m-d h:i:s A"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:632
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:636
+msgid "Validate against EAD DTD"
+msgstr "Validate against EAD DTD"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:653
+msgid "No documents published yet."
+msgstr "No documents published yet."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:674
+msgid ""
+"Do you really want to remove all published document?\n"
+"\n"
+"This can not be undone!"
+msgstr ""
+"Do you really want to remove all published document?\n"
+"\n"
+"This can not be undone!"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:685
+msgid "Please select at least one document."
+msgstr "Please select at least one document."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:692
+msgid "Do you want to remove selected document?"
+msgstr "Do you want to remove selected document?"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:697
+#, php-format
+msgid "Do you want to remove all %count selected documents?"
+msgstr "Do you want to remove all %count selected documents?"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:801
+msgid "Manage publishing"
+msgstr "Manage publishing"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:833
+msgid "Publish new file"
+msgstr "Publish new file"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:838
+msgid "Help"
+msgstr "Help"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:846
+msgid "Classification scheme"
+msgstr "Classification scheme"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:855
+msgid "Remove"
+msgstr "Remove"
+
 #: src/Bach/IndexationBundle/Command/ListCommand.php:78
 #: src/Bach/IndexationBundle/Command/PublishCommand.php:114
 msgid "Unknown type! Please choose one of:"
 msgstr "Unknown type! Please choose one of:"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:56
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:54
 msgid "Use specified value for localizations to find (may use % joker)"
 msgstr "Use specified value for localizations to find (may use % joker)"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:61
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:59
 msgid "Limit number of results."
 msgstr "Limit number of results."
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:66
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:64
 msgid "Do not store anything, just query nominatim."
 msgstr "Do not store anything, just query nominatim."
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:71
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:69
 msgid "Just give a try with parameted occurences, do not store anything."
 msgstr "Just give a try with parameted occurences, do not store anything."
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:76
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:74
 msgid "Quiet mode"
 msgstr "Quiet mode"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:81
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:79
 msgid "Verbose mode"
 msgstr "Verbose mode"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:101
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:84
+msgid "Limit queries to specified database"
+msgstr "Limit queries to specified database"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:89
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:186
+msgid "Include results marked as not found"
+msgstr "Include results marked as not found"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:109
 msgid "You may not use \"quiet\" and \"verbose\" together."
 msgstr "You may not use \"quiet\" and \"verbose\" together."
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:110
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:118
 #: src/Bach/IndexationBundle/Command/PublishCommand.php:101
 msgid "Running in dry mode"
 msgstr "Running in dry mode"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:119
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:127
 msgid "Running in test mode"
 msgstr "Running in test mode"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:147
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:134
+msgid "EAD indexes"
+msgstr "EAD indexes"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:135
+msgid "Matricules places of birth"
+msgstr "Matricules places of birth"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:136
+msgid "Matricules places of recording"
+msgstr "Matricules places of recording"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:141
+msgid "for"
+msgstr "for"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:144
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:149
+msgid "Unknown database!"
+msgstr "Unknown database!"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:146
+msgid "Please enter either:"
+msgstr "Please enter either:"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:163
 msgid "Set limit to %i entries."
 msgstr "Set limit to %i entries."
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:162
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:176
 #, php-format
 msgid "Search on: %search"
 msgstr "Search on: %search"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:175
-msgid "Query:"
-msgstr "Query:"
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:222
+msgid "Query ead:"
+msgstr "Query ead:"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:198
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:260
+msgid "Query matricules born:"
+msgstr "Query matricules born:"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:298
+msgid "Query matricules recording:"
+msgstr "Query matricules recording:"
+
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:322
 #, php-format
 msgid "Found %count places in the database."
 msgstr "Found %count places in the database."
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:229
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:353
 msgid "Localizing %t..."
 msgstr "Localizing %t..."
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:244
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:368
 msgid "Found %name (%type)"
 msgstr "Found %name (%type)"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:263
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:388
 msgid "Toponym %t cannot be localized."
 msgstr "Toponym %t cannot be localized."
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:299
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:428
 msgid "Localization finished: %found% found, %fail% fail on %total entries"
 msgstr "Localization finished: %found% found, %fail% fail on %total entries"
 
@@ -170,19 +391,19 @@ msgstr "Are you ok (y/n)?"
 msgid "Publication begins..."
 msgstr "Publication begins..."
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:221
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:243
 msgid "Command canceled by user."
 msgstr "Command canceled by user."
 
-#: src/Bach/IndexationBundle/Entity/Document.php:112
+#: src/Bach/IndexationBundle/Entity/Document.php:137
 #, php-format
 msgid "Cannot create upload directory %dir"
 msgstr "Cannot create upload directory %dir"
 
-#: src/Bach/IndexationBundle/Entity/Geoloc.php:359
+#: src/Bach/IndexationBundle/Entity/Geoloc.php:405
 msgid "New geoloc entry"
 msgstr "New geoloc entry"
 
-#: src/Bach/IndexationBundle/Service/TypesFiles.php:112
+#: src/Bach/IndexationBundle/Service/TypesFiles.php:115
 msgid "File or directory %path does not exists!"
 msgstr "File or directory %path does not exists!"

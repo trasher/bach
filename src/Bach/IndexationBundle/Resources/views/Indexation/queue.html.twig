@@ -3,19 +3,19 @@
 {% block container %}
     <fieldset class="list">
         <legend>
-            {% trans %}Publication tasks{% endtrans %}
+            {{ _('Publication tasks') }}
             <span class="btn-groups pull-right">
-                <a href="{{ path("bach_indexation_purge") }}" class="btn btn-delete" title="Supprimer les tâches traitées">{% trans %}Remove finished tasks{% endtrans %}</a>
-                <a id="refresh" class="btn btn-refresh">{% trans %}Refresh{% endtrans %}</a>
+                <a href="{{ path("bach_indexation_purge") }}" class="btn btn-delete" title="{{ _('Remove all finished tasks') }}">{{ _('Remove finished') }}</a>
+                <a id="refresh" class="btn btn-refresh">{{ _('Refresh') }}</a>
             </span>
         </legend>
 
         <table>
             <thead>
                 <tr>
-                    <th>{% trans %}File name{% endtrans %}</th>
-                    <th>{% trans %}Format{% endtrans %}</th>
-                    <th>{% trans %}Size{% endtrans%}</th>
+                    <th>{{ _('File name') }}</th>
+                    <th>{{ _('Format') }}</th>
+                    <th>{{ _('Size') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +29,7 @@
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="3">{% trans%}No publication in queue{% endtrans %}</td>
+                    <td colspan="3">{{ _('No publication in queue') }}</td>
                 </tr>
                 {% endif %}
             </tbody>
@@ -37,9 +37,9 @@
     </fieldset>
 
     <div id="help_window">
-        <h3>{% trans %}Publication queue{% endtrans %}</h3>
+        <h3>{{ _('Publication queue') }}</h3>
         <div>
-            <p>{% trans %}Publication queue list all documents that are waiting to be published. Publication happens depending on server parameters. Line color will inform you about publication success or failure.{% endtrans %}</p>
+            <p>{{ _('Publication queue list all documents that are waiting to be published. Publication happens depending on server parameters. Line color will inform you about publication success or failure.') }}</p>
         </div>
     </div>
 {% endblock %}

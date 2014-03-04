@@ -12,8 +12,8 @@
             {{ form_errors(upload_form.file) }}
             {{ form_errors(upload_form.extension) }}
         {#<fieldset>
-            <legend>{% trans %}Existing files{%endtrans %}</legend>
-            <p>{% trans %}Select files or directories you want to publish{% endtrans %}</p>
+            <legend>{{ _('Existing files') }</legend>
+            <p>{{ _('Select files or directories you want to publish') }}</p>
             <div class="well">
             {% if existing_files is defined %}
                 {% for format,files in existing_files %}
@@ -40,13 +40,13 @@
                 </ul>
                 {% endfor %}
             {% else %}
-                <p>{% trans %}No files on server.{% endtrans %}</p>
+                <p>{{ _('No files on server.') }}</p>
             {% endif %}
             </div>
         </fieldset>#}
 
         <fieldset>
-            <legend>{% trans %}Send a new file{% endtrans%}</legend>
+            <legend>{{ _('Send a new file') }}</legend>
             <div class="well">
                 {{ form_label(upload_form.file) }}
                 {{ form_widget(upload_form.file) }}<br/>
@@ -63,9 +63,9 @@
     {{ form_end(upload_form) }}
 
     <div id="help_window">
-        <h3>{% trans %}Publication help{% endtrans %}</h3>
+        <h3>{{ _('Publication help') }}</h3>
         <div>
-            <p>{% trans %}Publication process will extract all useful informations from a file. Select file you want to publish, its format (EAD, UNIMARC, etc.).<br/>Then you will choose either to proceed publication, or to add the job to the queue for a further publication (used for bg files).{% endtrans %}</p>
+            <p>{{ _('Publication process will extract all useful informations from a file. Select file you want to publish, its format (EAD, UNIMARC, etc.).<br/>Then you will choose either to proceed publication, or to add the job to the queue for a further publication (used for bg files).') }}</p>
         </div>
     </div>
 {% endblock %}

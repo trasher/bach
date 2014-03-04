@@ -5,14 +5,14 @@
     {# Validation results #}
     {% if app.session.flashbag.has('documentvalidation') %}
     <div id="flash-warnings" class="noscript">
-        <h3>{% trans %}Validation results{% endtrans %}</h3>
+        <h3>{{ _('Validation results') }}</h3>
         {% for flashMessage in app.session.flashbag.get('documentvalidation') %}
         <div class="flash-message">
             {{ flashMessage | raw }}
         </div>
         {% endfor %}
         {% if app.session.flashbag.has('documentvalidation_errors') %}
-            <p><a href="#" id="toggleerrors">{% trans %}Show/hide errors{% endtrans %}</a></p>
+            <p><a href="#" id="toggleerrors">{{ _('Show/hide errors') }}</a></p>
             <div class="flash-errors hidden">
             {% for flashMessage in app.session.flashbag.get('documentvalidation_errors') %}
                 <p>{{ flashMessage | raw }}</p>
@@ -26,10 +26,10 @@
     <form id="published_documents" class="list" action="{{ path("bach_indexation_deletedocuments") }}" method="POST">
     <fieldset>
         <legend>
-            {% trans %}Published documents{% endtrans %}
+            {{ _('Published documents') }}
             <span>
-                <a id="empty" href="{{ path("bach_indexation_empty") }}" class="btn btn-delete" title="{% trans %}Remove all published documents{% endtrans %}">{% trans %}Remove all{% endtrans %}</a>
-                <a href="{{ path('bach_indexation_homepage') }}" id="refresh" class="btn btn-refresh" title="{% trans %}Refresh list{% endtrans %}">{% trans %}Refresh{% endtrans %}</a>
+                <a id="empty" href="{{ path("bach_indexation_empty") }}" class="btn btn-delete" title="{{ _('Remove all published documents') }}">{{ _('Remove all') }}</a>
+                <a href="{{ path('bach_indexation_homepage') }}" id="refresh" class="btn btn-refresh" title="{{ _('Refresh list') }}">{{ _('Refresh') }}</a>
             </span>
         </legend>
 
@@ -37,17 +37,17 @@
         <table>
             <thead>
                 <th>#</th>
-                <th>{% trans %}Identifier{% endtrans %}</th>
-                <th>{% trans %}Type{% endtrans %}</th>
-                <th>{% trans %}File{% endtrans %}</th>
-                <th>{% trans %}Creation{% endtrans %}</th>
-                <th>{% trans %}Modification{% endtrans %}</th>
+                <th>{{ _('Identifier') }}</th>
+                <th>{{ _('Type') }}</th>
+                <th>{{ _('File') }}</th>
+                <th>{{ _('Creation') }}</th>
+                <th>{{ _('Modification') }}</th>
                 <th></th>
             </thead>
             <tfoot>
                 <tr>
                     <td colspan="7">
-                        <button type="submit" id="delete_documents" class="btn btn-delete" title="{% trans %}Remove selected documents{% endtrans %}">{% trans %}Remove selected{% endtrans %}</button>
+                        <button type="submit" id="delete_documents" class="btn btn-delete" title="{{ _('Remove selected documents') }}">{{ _('Remove selected') }}</button>
                         {% include 'pagination.html.twig' with {
                             currentFilters: { },
                             currentPage: currentPage,
@@ -69,13 +69,13 @@
                     <td>{{ document.getName }}</td>
                     <td>{{ document.getCreated|date(_('Y-m-d h:i:s A')) }}</td>
                     <td>{{ document.getUpdated|date(_('Y-m-d h:i:s A')) }}</td>
-                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}" title="{% trans %}Validate against EAD DTD{% endtrans %}"><img src="{{ asset('img/validate.png') }}" alt="{% trans %}Validate against EAD DTD{% endtrans %}"/></a>{% endif %}</td>
+                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}" title="{{ _('Validate against EAD DTD') }}"><img src="{{ asset('img/validate.png') }}" alt="{{ _('Validate against EAD DTD') }}"/></a>{% endif %}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         {% else %}
-            <p>{% trans %}No documents published yet.{% endtrans %}</p>
+            <p>{{ _('No documents published yet.') }}</p>
         {% endif %}
     </fieldset>
     </form>
@@ -85,19 +85,19 @@
     {{ parent() }}
     $(document).ready(function(){
         $('#empty').click(function(){
-            return confirm('{% trans %}Do you really want to remove all published document?\n\nThis can not be undone!{% endtrans %}');
+            return confirm('{{ _('Do you really want to remove all published document?\n\nThis can not be undone!') }}');
         });
 
         $('#delete_documents').click(function(){
             var _count = $('#published_documents :checked').length;
             if ( _count == 0 ) {
-                alert('{% trans %}Please select at least one document.{% endtrans %}');
+                alert('{{ _('Please select at least one document.') }}');
                 return false;
             } else {
                 if ( _count == 1 ) {
-                    return confirm('{% trans%}Do you want to remove selected document?{%endtrans%}');
+                    return confirm('{{ _('Do you want to remove selected document?') }}');
                 } else {
-                    return confirm('{% trans %}Do you want to remove all %count selected documents?{% endtrans %}'.replace(/%count/, _count));
+                    return confirm('{{ _('Do you want to remove all %count selected documents?') }}'.replace(/%count/, _count));
                 }
             }
         });

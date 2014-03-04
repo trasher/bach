@@ -423,9 +423,9 @@ class DefaultController extends Controller
 
             if ( !file_exists($xml_file) ) {
                 $msg = str_replace(
-                    '%docid%',
+                    '%docid',
                     $docid,
-                    _('Corresponding file for %docid% document no longer exists on disk.')
+                    _('Corresponding file for %docid document no longer exists on disk.')
                 );
             } else {
                 $oxml_document = new \DOMDocument();
