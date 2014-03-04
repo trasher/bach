@@ -1,6 +1,9 @@
 bach_indexation_homepage:
     pattern:  /{page}
     defaults: { _controller: BachIndexationBundle:Default:index, page: 1 }
+    requirements:
+        _method: GET
+        page: \d+
 
 bach_indexation_queue:
     pattern:  /queue

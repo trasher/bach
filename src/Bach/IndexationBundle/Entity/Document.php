@@ -378,16 +378,6 @@ class Document
     }
 
     /**
-     * Set document as not uploaded
-     *
-     * @return void
-     */
-    public function setNotUploaded()
-    {
-        $this->uploaded = false;
-    }
-
-    /**
      * Set creation date
      *
      * @param DateTime $created Creation date
@@ -445,5 +435,15 @@ class Document
     {
         $this->_store_dir = $dir;
         return $this;
+    }
+
+    /**
+     * Has document been uploaded?
+     *
+     * @return boolean
+     */
+    public function isUploaded()
+    {
+        return $this->uploaded;
     }
 }

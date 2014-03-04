@@ -410,7 +410,15 @@ class DefaultController extends Controller
                 ->getRepository('BachIndexationBundle:Document');
             $document = $repo->findOneByDocid($docid);
 
-            $document->setUploadDir($this->container->getParameter('upload_dir'));
+            if ( $document->isUploaded() ) {
+                $document->setUploadDir(
+                    $this->container->getParameter('upload_dir')
+                );
+            } else {
+                $document->setStoreDir(
+                    $this->container->getParameter('bach.typespaths')[$type]
+                );
+            }
             $xml_file = $document->getAbsolutePath();
 
             if ( !file_exists($xml_file) ) {
