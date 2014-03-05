@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title_extend %}{% trans %} - Page not found :({% endtrans %}{% endblock %}
+{% block title_extend %}{{ _(' - Page not found :(') }}{% endblock %}
 
 {% block container %}
     <div class="page_error">
@@ -10,7 +10,7 @@
         {% if errmsg[:8] != 'No route' %}
             {{ errmsg|format_file_from_text }}
         {% else %}
-            {% trans %}The page you requested does not exist, or has been removed.{% endtrans %}
+            {{ _('The page you requested does not exist, or has been removed.') }}
         {% endif %}
         </h2>
     </div>

@@ -13,7 +13,7 @@
     <div id="wrapper">
         <div id="container">
             <!--[if lte IE 7]>
-                <div id="oldie"><strong>{% trans %}Your browser is quite old, some features may not work.{% endtrans %}</strong><br/>{% trans %}You may have a better experience with a more recent or an alternative one.{% endtrans %}</div>
+                <div id="oldie"><strong>{{ _('Your browser is quite old, some features may not work.') }}</strong><br/>{{ _('You may have a better experience with a more recent or an alternative one.') }}</div>
             <![endif]-->
             {% block navigation %}{% endblock %}
             {% block login %}{% endblock %}

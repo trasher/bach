@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Bach{% block title_extend %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="{% trans %}Bach archival search tool{% endtrans %}">
+    <meta name="generator" content="{{ _('Bach archival search tool') }}">
     {% block page_metadata %}
-    <meta name="description" content="{% trans %}Bach archival search tool{% endtrans %}">
+    <meta name="description" content="{{ _('Bach archival search tool') }}">
     <meta name="author" content="Anaphore">
     {% endblock %}
     {# Scripts should be at the bottom of the page... But SonataAdmin is *not* happy with that -_- #}
@@ -59,40 +59,40 @@
             {% spaceless %}
                 <ul>
                     <li{% if app.request.attributes.get('_route') == 'bach_homepage' or app.request.attributes.get('_route') == 'bach_search' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_search') }}">{% trans %}Search{% endtrans %}</a>
+                        <a href="{{ path('bach_search') }}">{{ _('Search') }}</a>
                     </li>
                     {% if matricules %}
                     <li{% if app.request.attributes.get('_route') == 'bach_matricules' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_matricules') }}">{% trans %}Matricules{% endtrans %}</a>
+                        <a href="{{ path('bach_matricules') }}">{{ _('Matricules') }}</a>
                     </li>
                     {% endif %}
                     {% if cdc %}
                      <li{% if app.request.attributes.get('_route') == 'bach_classification' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_classification') }}">{% trans %}Classification scheme{% endtrans %}</a>
+                        <a href="{{ path('bach_classification') }}">{{ _('Classification scheme') }}</a>
                     </li>
                     {% endif %}
                     <li{% if app.request.attributes.get('_route') == 'bach_browse' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_browse') }}">{% trans %}Browse{% endtrans %}</a>
+                        <a href="{{ path('bach_browse') }}">{{ _('Browse') }}</a>
                     </li>
                     {% if expos %}
                     <li{% if app.request.attributes.get('_route') == 'expos_homepage' %} class="active"{% endif %}>
-                        <a href="{{ path('expos_homepage') }}">{% trans %}Virtual expositions{% endtrans %}</a>
+                        <a href="{{ path('expos_homepage') }}">{{ _('Virtual expositions') }}</a>
                     </li>
                     {% endif %}
                     {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         {% if is_granted('ROLE_ARCHIVIST') %}
                     <li{% if app.request.attributes.get('_route')|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_indexation_homepage') }}">{% trans %}Publish{% endtrans %}</a>
+                        <a href="{{ path('bach_indexation_homepage') }}">{{ _('Publish') }}</a>
                     </li>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CONTENT_ADMIN') %}
                     <li{% if app.request.attributes.get('_route') == 'sonata_admin_dashboard' %} class="active"{% endif %}>
-                        <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Manage{% endtrans %}</a>
+                        <a href="{{ url('sonata_admin_dashboard') }}">{{ _('Manage') }}</a>
                     </li>
                         {% endif %}
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <li{% if app.request.attributes.get('_route') == 'administration_dashboard' %} class="active"{% endif %}>
-                        <a href="{{ url('administration_dashboard') }}">{% trans %}Manage Solr{% endtrans %}</a>
+                        <a href="{{ url('administration_dashboard') }}">{{ _('Manage Solr') }}</a>
                     </li>
                         {% endif %}
                     {% endif %}
@@ -104,14 +104,14 @@
 {% block login %}
             <div id="user_login">
             {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a>
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('sonata_user_profile_show') }}">{{ _('My profile') }}</a>
                 <a class="logout" href="{% if is_granted('ROLE_PREVIOUS_ADMIN') %}?_switch_user=_exit{% else %}{{ path('fos_user_security_logout') }}{% endif %}">
                     {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                 </a>
             {% else %}
                 <a class="login" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
                 {% if openid %}
-                <a class="openid" href="{{ path('fp_openid_security_login') }}" title="{% trans %}Login with OpenID{% endtrans %}"><img src="{{ asset('img/openid-16x16.gif') }}" alt="OpenID"/></a>
+                <a class="openid" href="{{ path('fp_openid_security_login') }}" title="{{ _('Login with OpenID') }}"><img src="{{ asset('img/openid-16x16.gif') }}" alt="OpenID"/></a>
                 {% endif %}
             {% endif %}
             </div>
@@ -122,7 +122,7 @@
             {# Globally display errors #}
             {% if app.session.flashbag.has('errors') %}
             <div id="flash-errors" class="noscript">
-                <h3>{% trans %}Error{% endtrans %}</h3>
+                <h3>{{ _('Error') }}</h3>
                 {% for flashMessage in app.session.flashbag.get('errors') %}
                 <div class="flash-message">
                     {{ flashMessage | raw }}
@@ -133,7 +133,7 @@
             {# Globally display warnings #}
             {% if app.session.flashbag.has('warnings') %}
             <div id="flash-warnings" class="noscript">
-                <h3>{% trans %}Warning{% endtrans %}</h3>
+                <h3>{{ _('Warning') }}</h3>
                 {% for flashMessage in app.session.flashbag.get('warnings') %}
                 <div class="flash-message">
                     {{ flashMessage | raw }}
@@ -144,7 +144,7 @@
             {# Globally display success #}
             {% if app.session.flashbag.has('success') %}
             <div id="flash-success" class="noscript">
-                <h3>{% trans %}Done{% endtrans %}</h3>
+                <h3>{{ _('Done') }}</h3>
                 {% for flashMessage in app.session.flashbag.get('success') %}
                 <div class="flash-message">
                     {{ flashMessage | raw }}
@@ -216,7 +216,7 @@
             var _help = $('#help_window');
 
             if ( _help.length == 0 ) {
-                var _help = $('<div id="help_window"><h3>{% trans %}Help not available{% endtrans %}</h3>{% trans %}No help is available for this section.{% endtrans %}</div>');
+                var _help = $('<div id="help_window"><h3>{{ _('Help not available') }}</h3>{{ _('No help is available for this section.') }}</div>');
                 _help.appendTo('body');
             }
 

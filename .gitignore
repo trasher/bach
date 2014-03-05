@@ -47,4 +47,5 @@ files/
 files
 
 #generated i18n
-app/Resources/gettext/
+app/Resources/gettext/combined
+app/Resources/gettext/version
