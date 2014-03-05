@@ -64,13 +64,13 @@ file that was distributed with this source code.
                                      {% if admin.hasroute('geoloc_visualize') and (admin.isGranted('EDIT') or admin.isGranted('DELETE')) %}
                                         <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_visualize')}}">
                                             <i class="icon-globe"></i>
-                                            {% trans from 'BachHomeBundle' %}Visualize{% endtrans %}
+                                            {{ _('Visualize') }}
                                         </a>
                                     {% endif %}
                                     {% if admin.hasroute('geoloc_missing') and admin.isGranted('CREATE') %}
                                         <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_missing')}}">
                                             <i class="icon-globe"></i>
-                                            {% trans from 'BachHomeBundle' %}Missing locations{% endtrans %}
+                                            {{ _('Missing locations') }}
                                         </a>
                                     {% endif %}
                                 </div>
@@ -84,7 +84,7 @@ file that was distributed with this source code.
                             <td>
                                 <a class="btn btn-link" href="{{ admin.generateUrl('edit', {id: 1})}}">
                                     <i class="icon-wrench"></i>
-                                    {% trans from 'BachHomeBundle' %}Manage{% endtrans %}
+                                    {{ _('Manage') }}
                                 </a>
                             </td>
                         </tr>
@@ -96,7 +96,7 @@ file that was distributed with this source code.
                             <td>
                                 <a class="btn btn-link" href="{{ admin.generateUrl('edit', {id: 1})}}">
                                     <i class="icon-wrench"></i>
-                                    {% trans from 'BachHomeBundle' %}Manage{% endtrans %}
+                                    {{ _('Manage') }}
                                 </a>
                             </td>
                         </tr>

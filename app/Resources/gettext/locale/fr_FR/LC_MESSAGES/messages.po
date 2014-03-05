@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app@20140305100944\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-05 10:53+0100\n"
-"PO-Revision-Date: 2014-03-05 10:56+0100\n"
+"POT-Creation-Date: 2014-03-05 12:50+0100\n"
+"PO-Revision-Date: 2014-03-05 12:51+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr_FR\n"
@@ -72,6 +72,8 @@ msgid "Publish"
 msgstr "Publier"
 
 #: app/Resources/gettext/twig.cache.php:1348
+#: app/Resources/gettext/twig.cache.php:2727
+#: app/Resources/gettext/twig.cache.php:2750
 msgid "Manage"
 msgstr "Administrer"
 
@@ -130,3 +132,11 @@ msgstr " - Page non trouvée :("
 #: app/Resources/gettext/twig.cache.php:1864
 msgid "The page you requested does not exist, or has been removed."
 msgstr "La page que vous demandez n'existe pas, ou a été supprimée."
+
+#: app/Resources/gettext/twig.cache.php:2685
+msgid "Visualize"
+msgstr "Visualiser"
+
+#: app/Resources/gettext/twig.cache.php:2700
+msgid "Missing locations"
+msgstr "Lieux manquants"
