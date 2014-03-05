@@ -100,7 +100,7 @@ class ArchFileIntegration
         $this->_entityManager->getConnection()->getConfiguration()
             ->setSQLLogger(null);
         foreach ($universalFileFormats as $universalFileFormat) {
-            $universalFileFormat->setDocId($doc);
+            $universalFileFormat->setDocument($doc);
             $this->_entityManager->persist($universalFileFormat);
             unset($universalFileFormat);
 

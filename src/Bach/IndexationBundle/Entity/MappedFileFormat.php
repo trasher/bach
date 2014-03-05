@@ -26,7 +26,7 @@ use Bach\IndexationBundle\Entity\Document;
  *
  * @ORM\MappedSuperclass
  */
-class MappedFileFormat
+class MappedFileFormat extends FileFormat
 {
     /**
     * @ORM\Column(type="string", nullable=true, length=100)
@@ -136,38 +136,6 @@ class MappedFileFormat
      * @ORM\Column(type="text", nullable=true)
      */
     protected $archDescLegalStatus;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Document")
-     * @ORM\JoinColumn(name="doc_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    protected $doc_id;
-
-    /**
-      * The constructor
-      *
-      * @param array $data The input data
-      */
-    public function __construct($data)
-    {
-        $this->parseData($data);
-    }
-
-    /**
-     * Proceed data parsing
-     *
-     * @param array $data Data to parse
-     *
-     * @return void
-     */
-    protected function parseData($data)
-    {
-        foreach ($data as $key=>$datum) {
-            if (property_exists($this, $key)) {
-                $this->$key = $datum;
-            }
-        }
-    }
 
     /**
      * Set headerId
@@ -639,28 +607,5 @@ class MappedFileFormat
     public function getArchDescLegalStatus()
     {
         return $this->archDescLegalStatus;
-    }
-
-    /**
-     * Set doc_id
-     *
-     * @param Document $docId Document id
-     *
-     * @return UniversalFileFormat
-     */
-    public function setDocId(Document $docId = null)
-    {
-        $this->doc_id = $docId;
-        return $this;
-    }
-
-    /**
-     * Get doc_id
-     *
-     * @return Document
-     */
-    public function getDocId()
-    {
-        return $this->doc_id;
     }
 }

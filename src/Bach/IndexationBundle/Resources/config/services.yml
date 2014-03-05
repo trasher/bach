@@ -12,16 +12,21 @@ services:
     bach.indexation.file_driver_manager:
         class: "%bach_indexation_file_driver_manager.class%"
         arguments: [ @bach.indexation.universal_file_format_factory, @bach.indexation.pre_processor_factory ]
+
     bach.indexation.data_bag_factory:
         class: "%bach_indexation_data_bag_factory.class%"
+
     bach.indexation.universal_file_format_factory:
-        class: "%bach_indexation_universal_file_format_factory.class%" 
+        class: "%bach_indexation_universal_file_format_factory.class%"
+
     bach.indexation.pre_processor_factory:
         class: "%bach_indexation_pre_processor_factory.class%"
         arguments: [ @bach.indexation.data_bag_factory ]
+
     bach.indexation.process.arch_file_integration:
         class: "%bach_indexation_process_arch_file_integration.class%"
         arguments: [ @bach.indexation.file_driver_manager, @bach.indexation.data_bag_factory, @doctrine.orm.entity_manager ]
+
     bach.indexation.typesfiles:
         class: '%bach_indexation_typesfiles.class%'
         arguments: [ '%bach.types%', '%bach.typespaths%' ]

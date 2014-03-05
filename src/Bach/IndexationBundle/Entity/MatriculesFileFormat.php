@@ -27,7 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="MatriculesFileFormat")
  */
-class MatriculesFileFormat
+class MatriculesFileFormat extends FileFormat
 {
     /**
      * @ORM\Id
@@ -95,22 +95,6 @@ class MatriculesFileFormat
      * @ORM\Column(type="string", nullable=true, length=500)
      */
     protected $end_dao;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Document")
-     * @ORM\JoinColumn(name="doc_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    protected $doc_id;
-
-    /**
-     * The constructor
-     *
-     * @param array $data The input data
-     */
-    public function __construct($data)
-    {
-        $this->parseData($data);
-    }
 
     /**
      * Extra fields not in database
@@ -459,26 +443,4 @@ class MatriculesFileFormat
         return $this->lieu_naissance;
     }
 
-    /**
-     * Set doc_id
-     *
-     * @param Document $docId Document id
-     *
-     * @return MatriculesFileFormat
-     */
-    public function setDocId(Document $docId = null)
-    {
-        $this->doc_id = $docId;
-        return $this;
-    }
-
-    /**
-     * Get doc_id
-     *
-     * @return Document
-     */
-    public function getDocId()
-    {
-        return $this->doc_id;
-    }
 }
