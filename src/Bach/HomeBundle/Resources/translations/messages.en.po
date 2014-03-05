@@ -29,4 +29,7 @@ msgstr "Tag cloud"
 msgid "Geolocalization fields"
 msgstr "Geolocalization fields"
 
+msgid "Geolocalization fields (matricules)"
+msgstr "Geolocalization fields (matricules)"
+
 #/Admin translations

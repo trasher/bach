@@ -29,4 +29,7 @@ msgstr "Nuage de tags"
 msgid "Geolocalization fields"
 msgstr "Champs de géolocalisation"
 
+msgid "Geolocalization fields (matricules)"
+msgstr "Champs de géolocalisation (matricules)"
+
 #/Admin translations
