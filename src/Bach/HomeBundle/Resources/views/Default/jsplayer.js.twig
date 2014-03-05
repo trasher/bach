@@ -4,7 +4,7 @@
                     $(e.id).tooltip();
                 } else if ( !_alerted ) {
                     _alerted = true;
-                    $('#relative_documents').prepend($('<div id="flash-warnings"><h3>{{ 'Flash missing'|trans|escape('js') }}</h3><p>{{ 'You need flash to use embed player!'|trans|escape('js') }}<br/>{{ 'You can still click on the links to read them on your own side.' }}</p></div>'));
+                    $('#relative_documents').prepend($('<div id="flash-warnings"><h3>{{ _('Flash missing')|escape('js') }}</h3><p>{{ _('You need flash to use embed player!')|escape('js') }}<br/>{{ _('You can still click on the links to read them on your own side.')|escape('js') }}</p></div>'));
                 }
             }
 

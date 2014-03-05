@@ -12,7 +12,7 @@
                     {%- if fil.cUnittitle is defined -%}
                         {{ fil.cUnittitle }}
                     {%- else -%}
-                        {% trans %}Untitled unit{% endtrans %}
+                        {{ _('Untitled unit') }}
                     {%- endif -%}
                     </a>
                 </li>
@@ -27,7 +27,7 @@
                 {%- if document.cUnittitle is defined -%}
                     {{ document.cUnittitle }}
                 {%- else -%}
-                    {% trans %}Untitled unit{% endtrans %}
+                    {{ _('Untitled unit') }}
                 {%- endif -%}
                 {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
                     <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
@@ -49,7 +49,7 @@
         {% if not children == false %}
             <section id="children_documents">
                 <header>
-                    <h3>{% trans %}Sub units{% endtrans %} ({{ count_children }})</h3>
+                    <h3>{{ _('Sub units') }} ({{ count_children }})</h3>
                 </header>
                 <ul>
                 {% for child in children %}
@@ -58,7 +58,7 @@
                         {%- if child.cUnittitle is defined -%}
                             {{ child.cUnittitle }}
                         {%- else -%}
-                            {% trans %}Untitled unit{% endtrans %}
+                            {{ _('Untitled unit') }}
                         {%- endif -%}
                         </a>
                     </li>
@@ -78,7 +78,7 @@
         {% if comments is defined %}
             <section id="comments">
                 <header>
-                    <h3>{% trans %}User comments{% endtrans %}</h3>
+                    <h3>{{ _('User comments') }}</h3>
                 </header>
                 {% for comment in comments %}
                     <div>
@@ -89,10 +89,10 @@
                                 {% if comment.getOpenedBy %}
                                     {% set uname = comment.getOpenedBy %}
                                 {% else %}
-                                    {% set uname = 'Anonymous'|trans %}
+                                    {% set uname = _('Anonymous') %}
                                 {% endif %}
-                                {% trans with {'%user%': uname} %}By %user%{% endtrans %}
-                                {% trans with {'%date%': comment.getLocalizedCreationDate} %}on %date%{% endtrans %}
+                                {{ _('By %user%')|replace({'%user%': uname}) }}
+                                {{ _('on %date%')|replace({'%date%': comment.getLocalizedCreationDate}) }}
                                 </span>
                             </h4>
                         </header>
@@ -123,14 +123,14 @@
                         return;
                     }
 
-                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{{ _('Loading...') }}"/><br/>{{ _('Currently loading...') }}</p></figure>');
                     $('body').append(_img);
  
                     ui.jqXHR.done(function() {
                         ui.tab.data( "loaded", true );
                     });
                     ui.jqXHR.fail(function(){
-                        alert('{{ 'An error occured loading tab :('|trans|escape('js') }}');
+                        alert('{{ _('An error occured loading tab :(')|escape('js') }}');
                         $('#loading').remove();
                     });
                 },

@@ -11,7 +11,7 @@
     {% include 'BachHomeBundle:Default:browse_tab_contents.html.twig' with {'part': part, 'current_field': current_field, 'lists': lists, 'show_all': show_all} %}
 </div>
 {% else %}
-    <p>{% trans %}There are no configured fields for browsing.{% endtrans %}</p>
+    <p>{{ _('There are no configured fields for browsing.') }}</p>
 {% endif %}
 {% endblock %}
 
@@ -28,7 +28,7 @@
                 $.ajax({
                     url: _da_url,
                     type: 'POST',
-                    {% include '::loader.js.twig' with {'error_message': 'An error occured loading terms :('|trans|escape('js')} %}
+                    {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')|escape('js')} %}
                     success: function(data) {
                         var _elt = $('#' + part);
                         var _dest;
@@ -64,14 +64,14 @@
                         return;
                     }
 
-                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{% trans %}Loading...{% endtrans %}"/><br/>{% trans %}Currently loading...{% endtrans %}</p></figure>');
+                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{{ _('Loading...') }}"/><br/>{{ _('Currently loading...') }}</p></figure>');
                     $('body').append(_img);
  
                     ui.jqXHR.done(function() {
                         ui.tab.data( "loaded", true );
                     });
                     ui.jqXHR.fail(function(){
-                        alert('{{ 'An error occured loading tab :('|trans|escape('js') }}');
+                        alert('{{ _('An error occured loading tab :(')|escape('js') }}');
                         $('#loading').remove();
                     });
                 },

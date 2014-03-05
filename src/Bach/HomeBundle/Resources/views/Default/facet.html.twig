@@ -2,14 +2,14 @@
 <div>
     <form id="live-search" action="" method="post">
         <fieldset>
-            <label for="filter">{% trans %}Enter a text to filter:{% endtrans %}</label>
+            <label for="filter">{{ _('Enter a text to filter:') }}</label>
             <input type="text" class="text-input" id="filter" value="" />
             <span id="filter-count"></span>
             <span class="fright">
-                <label for="facet_order">{% trans %}Order:{% endtrans %}</label>
+                <label for="facet_order">{{ _('Order:') }}</label>
                 <select name="facet_order" id="facet_order">
-                    <option value="0"{% if facet_order is not defined or facet_order != '1' %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
-                    <option value="1"{% if facet_order is defined and facet_order == 1 %} selected="selected"{% endif %}>{% trans %}Alphabetic{% endtrans %}</option>
+                    <option value="0"{% if facet_order is not defined or facet_order != '1' %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
+                    <option value="1"{% if facet_order is defined and facet_order == 1 %} selected="selected"{% endif %}>{{ _('Alphabetic') }}</option>
                 </select>
             </span>
         </fieldset>
@@ -33,7 +33,7 @@
 
 <script type="text/javascript">
     $("#filter").keyup(function(){
-        $('#filter-count').text('{% trans %}Searching ...{% endtrans %}');
+        $('#filter-count').text('{{ _('Searching...') }}');
 
         // Retrieve the input field text and reset the count to zero
         var filter = $(this).val(), count = 0;
@@ -53,7 +53,7 @@
 
         // Update the count
         var numberItems = count;
-        $("#filter-count").text('{{ '%count filtered results'|trans|escape('js') }}'.replace('%count', count));
+        $("#filter-count").text('{{ _('%count filtered results')|escape('js') }}'.replace('%count', count));
     });
 
     $('#facet_order').change(function(){
@@ -64,7 +64,7 @@
                 orig_href: $('#orig_href').val()
             },
             type: 'POST',
-            {% include '::loader.js.twig' with {'error_message': 'An error occured loading terms :('|trans} %}
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')|escape('js')} %}
             success: function(data) {
                 var _elt = $('#display_facets');
                 _elt.empty();

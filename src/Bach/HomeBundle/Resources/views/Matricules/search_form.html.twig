@@ -1,7 +1,7 @@
 {% extends 'BachHomeBundle:Commons:search.html.twig' %}
 
-{% block title_extend %} - {% trans %}Matricules search{% endtrans %}{% endblock %}
-{% block subtitle %}{% trans %}Search in matricules{% endtrans %}{% endblock %}
+{% block title_extend %} - {{ _('Matricules search') }}{% endblock %}
+{% block subtitle %}{{ _('Search in matricules') }}{% endblock %}
 {% block search_path %}bach_matricules_search{% endblock %}
 {% block fullfacet_path %}bach_matricules_fullfacet{% endblock %}
 {% block do_search_path %}{{ search_path }}{% endblock %}
@@ -48,12 +48,12 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>{% trans %}Name{% endtrans %}</th>
-                        <th>{% trans %}Surnames{% endtrans %}</th>
-                        <th>{% trans %}Year of birth{% endtrans %}</th>
-                        <th>{% trans %}Place of birth{% endtrans %}</th>
-                        <th>{% trans %}Class{% endtrans %}</th>
-                        <th>{% trans %}Place of recording{% endtrans %}</th>
+                        <th>{{ _('Name') }}</th>
+                        <th>{{ _('Surnames') }}</th>
+                        <th>{{ _('Year of birth') }}</th>
+                        <th>{{ _('Place of birth') }}</th>
+                        <th>{{ _('Class') }}</th>
+                        <th>{{ _('Place of recording') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,7 +77,7 @@
                                 {%- endif -%}
                             {% endset %}
                             <a href="{{ viewer_uri ~ images_link }}">
-                                <img src="{{ asset('img/img_link.png') }}" alt="{% trans %}Show related image{% endtrans %}"/>
+                                <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Show related image') }}"/>
                             </a>
                         {% endif %}
                     </td>

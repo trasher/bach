@@ -1,6 +1,6 @@
     {% set field_name = current_field.getSolrFieldName %}
     <div id="{{ field_name }}">
-        <h4>{{ current_field.getLabel(lang) }}{% if lists[field_name] is defined %} ({{ lists[field_name] | length }}{% if show_all is sameas('false') %} - <a class="show_all" title="{% trans %}Show all entries (this my take some time){% endtrans %}" href="{{ path('bach_browse', {part: field_name, show_all: 'show_all'}) }}">{% trans %}Show all{% endtrans %}</a>{% endif %}){% endif %}</h4>
+        <h4>{{ current_field.getLabel(lang) }}{% if lists[field_name] is defined %} ({{ lists[field_name] | length }}{% if show_all is sameas('false') %} - <a class="show_all" title="{{ _('Show all entries (this my take some time)') }}" href="{{ path('bach_browse', {part: field_name, show_all: 'show_all'}) }}">{{ _('Show all') }}</a>{% endif %}){% endif %}</h4>
         <section id="list_{{ field_name }}">
         {% if lists[field_name] is defined %}
             <ul>

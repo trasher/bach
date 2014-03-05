@@ -26,26 +26,26 @@
     {% if min_date is defined and max_date is defined or show_maps and geojson is defined and geojson != null %}
         <ul class="interactions">
         {% if show_maps and geojson is defined and geojson != null -%}
-            <li><a id="sh_map" href="?show_map={% if show_map == true %}off{% else %}on{% endif %}" title="{% trans %}Shows or hides map{% endtrans %}"{% if show_map == false %} class="disabled"{% endif %}><img src="{{ asset('img/map.png')  }}" alt="{% trans %}Show/Hide map{% endtrans %}"/></a></li>
+            <li><a id="sh_map" href="?show_map={% if show_map == true %}off{% else %}on{% endif %}" title="{{ _('Shows or hides map') }}"{% if show_map == false %} class="disabled"{% endif %}><img src="{{ asset('img/map.png')  }}" alt="{{ _('Show/Hide map') }}"/></a></li>
         {%- endif %}
         {% if min_date is defined and max_date is defined -%}
-            <li><a id="sh_daterange" href="?show_daterange={% if show_daterange == true %}off{% else %}on{% endif %}" title="{% trans %}Shows or hides date range graph{% endtrans %}"{% if show_daterange == false %} class="disabled"{% endif %}><img src="{{ asset('img/calendar.png') }}" alt="{% trans %}Show/Hide date range{% endtrans %}"/></a></li>
+            <li><a id="sh_daterange" href="?show_daterange={% if show_daterange == true %}off{% else %}on{% endif %}" title="{{ _('Shows or hides date range graph') }}"{% if show_daterange == false %} class="disabled"{% endif %}><img src="{{ asset('img/calendar.png') }}" alt="{{ _('Show/Hide date range') }}"/></a></li>
         {%- endif %}
         </ul>
     {% endif %}
 
     {% if filters is defined %}
-        <h2>{% trans %}Active filters{% endtrans %} <a href="{{ path(block('search_path'), {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{% trans %}Clear refined query{% endtrans %}">{% trans %}Clear{% endtrans %}</a></h2>
+        <h2>{{ _('Active filters') }} <a href="{{ path(block('search_path'), {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{{ _('Clear refined query') }}">{{ _('Clear') }}</a></h2>
         <div id="active_filters">
             {% for filter_name,values in filters %}
                 {% if values is not iterable %}
                     {% set values = []|merge([values]) %}
                 {% endif %}
-            <h3>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{% trans %}Unknown filter{% endtrans %}{% endif %}</h3>
+            <h3>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{{ _('Unknown filter') }}{% endif %}</h3>
             <ul>
                 {% for value in values %}
                 <li>
-                    <a href="{{ path(block('search_path'), {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{% trans %}Remove filter on '%value%'{% endtrans %}">
+                    <a href="{{ path(block('search_path'), {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{{ _('Remove filter on \'%value%\'')|replace({'%value%': value}) }}">
                         {% if facet_labels[filter_name] is defined %}
                             {{ facet_labels[filter_name][value] -}}
                         {% else %}
@@ -61,9 +61,7 @@
 
 
         {% if facets is defined and facets|length > 0 and searchResults|length > 0 %}
-        <h2>
-            {% trans %}Refine Query{% endtrans %}
-        </h2>
+        <h2>{{ _('Refine Query') }}</h2>
         <div id="facets">
             {% for facet_field,facet in facets %}
                 <h3>{{ facet.label }}</h3>
@@ -72,11 +70,11 @@
                     <form id="cDate_change">
                         <ul>
                             <li>
-                                <label for="range_date_min">{% trans %}From:{% endtrans %}</label>
+                                <label for="range_date_min">{{ _('From:') }}</label>
                                 <input type="text" name="range_date_min" id="range_date_min" value="{{ by_year_min }}"/>
-                                <label for="range_date_max"> {% trans %}To:{% endtrans %}</label>
+                                <label for="range_date_max"> {{ _('to:') }}</label>
                                 <input type="text" name="range_date_max" id="range_date_max" value="{{ by_year_max }}"/>
-                                <input type="submit" id="range_date_set" value="{% trans %}Go{% endtrans %}"/>
+                                <input type="submit" id="range_date_set" value="{{ _('Go') }}"/>
                             </li>
                         </ul>
                     </form>
@@ -97,18 +95,18 @@
                                 var _valid = true;
 
                                 if ( isNaN(_min) || _min % 1 != 0 ) {
-                                    alert('{% trans %}Please enter an integer as start date!{% endtrans %}');
+                                    alert('{{ _('Please enter an integer as start date!')|escape('js') }}');
                                     _valid = false;
                                 } else if (_min < {{by_year_min }})  {
-                                    alert('{% trans %}Start date must be greater than %date{% endtrans %}'.replace('%date', {{ by_year_min }}));
+                                    alert('{{ _('Start date must be greater than %date')|escape('js') }}'.replace('%date', {{ by_year_min }}));
                                     _valid = false;
                                 }
 
                                 if ( isNaN(_max) || _max % 1 != 0 ) {
-                                    alert('{% trans %}Please enter an integer as end date!{% endtrans %}');
+                                    alert('{{ _('Please enter an integer as end date!')|escape('js') }}');
                                     _valid = false;
                                 } else if (_max > {{by_year_max }})  {
-                                    alert('{% trans %}End date must be earlier than %date{% endtrans %}'.replace('%date', {{ by_year_max }}));
+                                    alert('{{ _('End date must be earlier than %date')|escape('js') }}'.replace('%date', {{ by_year_max }}));
                                     _valid = false;
                                 }
 
@@ -137,7 +135,7 @@
                         </li>
                     {% endfor %}
                     {% if facet.content|length > 10 and not (facet_name is defined and facet_name == index_name) %}
-                        <li class="show_more"><a href="{{ path(block('search_path'), {query_terms: q, page: page, facet_name: index_name}) }}">{% trans with {'%count%': facet.content|length -10} %}Show more (%count% left){% endtrans %}</a></li>
+                        <li class="show_more"><a href="{{ path(block('search_path'), {query_terms: q, page: page, facet_name: index_name}) }}">{{ _('Show more (%count left)')|replace({'%count': facet.content|length-10}) }}</a></li>
                     {% endif %}
                     </ol>
                 </div>
@@ -169,7 +167,7 @@
             {{ form_widget(form._token) }}
             {{ form_widget(form.perform_search) }}
             {% if has_advanced is defined %}
-            <span id="adv_link"><a href="?adv_search=true" title="{% trans %}Switch to advanced search form{% endtrans %}">{% trans %}Advanced search{% endtrans %}</a></span>
+            <span id="adv_link"><a href="?adv_search=true" title="{{ _('Switch to advanced search form') }}">{{ _('Advanced search') }}</a></span>
             {% endif %}
         </div>
     </form>
@@ -177,13 +175,13 @@
 
     {% if adv_form is defined %}
         {{ form(adv_form) }}
-        <span id="adv_link"><a href="?adv_search=false" title="{% trans %}Switch to simple search form{% endtrans %}">{% trans %}Simple search{% endtrans %}</a></span>
+        <span id="adv_link"><a href="?adv_search=false" title="{{ _('Switch to simple search form') }}">{{ _('Simple search') }}</a></span>
     {% endif  %}
 
 
     {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
     <aside id="suggestions">
-        <strong>{% trans %}Additionnal search suggestions:{% endtrans %}</strong><br/>
+        <strong>{{ _('Additionnal search suggestions:') }}</strong><br/>
         {% for term,termResult in suggestions %}
             {% if termResult|length > 0 %}
                 {% for suggest in termResult %}
@@ -197,7 +195,7 @@
         {% if min_date is defined and max_date is defined -%}
         <div id="dates_range" class="hidden"></div>
         {% if by_year is defined %}
-        <div id="dates_plot" class="hidden" title="{% trans %}Click and drag to select dates period{% endtrans %}"></div>
+        <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select dates period') }}"></div>
         {% endif %}
         {%- endif %}
         {% if show_maps -%}
@@ -209,18 +207,18 @@
         {% if searchResults|length > 0 %}
         <div class="results_count">
             {% if resultCount == 1 %}
-                {% trans %}1 result{% endtrans %}
+                {{ _('1 result') }}
             {% else %}
-                {% trans %}Results %resultStart% to %resultEnd% on %resultCount%{% endtrans %}
+                {{ _('Results %resultStart% to %resultEnd% on %resultCount%')|replace({'%resultStart%': resultStart, '%resultEnd%': resultEnd, '%resultCount%': resultCount}) }}
             {% endif %}
             {% if available_orders|length > 0 or available_views|length > 0 %}
             {% spaceless %}
             <nav id="change_view">
                 {% if available_orders|length > 0 %}
-                <label for="results_order">{% trans %}Order:{% endtrans %}</label>
+                <label for="results_order">{{ _('Order:') }}</label>
                 <div class="select_container">
                     <select name="results_order" id="results_order">
-                        <option value="0"{% if results_order == 0 %} selected="selected"{% endif %}>{% trans %}Relevance (default){% endtrans %}</option>
+                        <option value="0"{% if results_order == 0 %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
                         {% for order in available_orders %}
                         <option value="{{ loop.index }}"{% if results_order == loop.index %} selected="selected"{% endif %}>{{ order }}</option>
                         {% endfor %}
@@ -244,10 +242,10 @@
                 lastPage: totalPages
             } only %}
         {% else %}
-            <p>{% trans %}No result found.{% endtrans %}</p>
+            <p>{{ _('No result found.') }}</p>
             {% if scSearchResults is not null %}
             <aside id="suggestions">
-                {% trans %}Spelling suggestions:{% endtrans %}
+                {{ _('Spelling suggestions:') }}
                 {% for suggestion in scSearchResults %}
                     {% for word in suggestion.getWords() %}
                         <a href="{{ path(block('search_path'), {query_terms: word.word}) }}">{{ word.word }}</a>
@@ -373,7 +371,7 @@
                         orig_href: _url
                     },
                     type: 'POST',
-                    {% include '::loader.js.twig' with {'error_message': 'An error occured loading terms :('|trans} %}
+                    {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')|escape('js')} %}
                     success: function(data) {
                         _elt.append(data);
                         _elt.dialog({
@@ -537,8 +535,8 @@
                 new L.Control.GeoSearch({
                     provider: new L.GeoSearch.Provider.OpenStreetMap(),
                     showMarker: false,
-                    searchLabel: '{{ 'Enter your search...'|trans|escape('js') }}',
-                    notFoundMessage: '{{ 'Sorry, that place cannot be found.'|trans|escape('js') }}',
+                    searchLabel: '{{ _('Enter your search...')|escape('js') }}',
+                    notFoundMessage: '{{ _('Sorry, that place cannot be found.')|escape('js') }}',
                     zoomLevel: 10
                 }).addTo(map);
 
@@ -547,7 +545,7 @@
                     subdomains: [{% for subdomain in tiles_subdomains %}'{{ subdomain }}'{% if not loop.last %}, {% endif %}{% endfor %}],
                     {% endif -%}
                     maxZoom: 18,
-                    attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, {% trans %}© Imagery{% endtrans %} {{ tiles_attribution|raw }}'
+                    attribution: '{{ _('© Cartographic data')|escape('js') }} <a href="http://openstreetmap.org">{{ _('OpenStreetMap contributors')|escape('js') }}</a>, {{ _('© Imagery')|escape('js') }} {{ tiles_attribution|raw }}'
                 }).addTo(map);
 
                 // control that shows location info on hover
@@ -562,7 +560,7 @@
                 info.update = function (props) {
                     this._div.innerHTML = (props ?
                         '<strong>' + props.name + '</strong> - ' + props.results
-                        : '{% trans %}Hover over a zone{% endtrans %}');
+                        : '{{ _('Hover over a zone') }}');
                 };
 
                 info.addTo(map);
@@ -712,7 +710,7 @@
                                         onEachFeature: onEachFeature
                                     });
                                     _layers.addLayer(_zones_layer);
-                                    _groups.addOverlay(_zones_layer, '{% trans %}Zones{% endtrans %}');
+                                    _groups.addOverlay(_zones_layer, '{{ _('Zones') }}');
                                     _state_changed = true;
 
                                 } else {
@@ -737,7 +735,7 @@
 
                     if ( zoom >= 9 ) {
                         if ( !_zones_overlay && _zones_layer ) {
-                            _groups.addOverlay(_zones_layer, '{% trans %}Zones{% endtrans %}');
+                            _groups.addOverlay(_zones_layer, '{{ _('Zones') }}');
                         }
                     }
 
@@ -759,14 +757,14 @@
 
                 map.on('overlayadd overlayremove', function(e) {
                     console.log(e.name);
-                    if ( e.type == 'overlayremove' && e.name == '{% trans %}Zones{% endtrans %}' ) {
+                    if ( e.type == 'overlayremove' && e.name == '{{ _('Zones') }}' ) {
                         _zones_actives = false;
                         map.off('zoomend', checkZones);
                         map.off('dragend', checkZones);
                         map.off('resize', checkZones);
                         map.removeControl(_legend);
                     }
-                    if ( e.type == 'overlayadd' && e.name == '{% trans %}Zones{% endtrans %}' ) {
+                    if ( e.type == 'overlayadd' && e.name == '{{ _('Zones') }}' ) {
                         _zones_actives = true;
                         map.on('zoomend', checkZones);
                         map.on('dragend', checkZones);

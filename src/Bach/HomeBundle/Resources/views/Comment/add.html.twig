@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title_extend %} - {% trans %}Add a comment{% endtrans %}{% endblock %}
+{% block title_extend %} - {{ _('Add a comment') }}{% endblock %}
 
 {% block container %}
     <h2 property="dc:title">
@@ -9,10 +9,10 @@
         {% endfor %}
         {{ eadfile.getCUnittitle  }}
     </h2>
-    <h3>{% trans %}New comment{% endtrans %}</h3>
+    <h3>{{ _('New comment') }}</h3>
     {% include 'BachHomeBundle:Comment:add_form.html.twig' with {'docid': docid, 'form': form} %}
 {% endblock %}
 
 {% block menu %}
-    <h2 class="back"><a href="{{ path('bach_display_document', {docid: docid}) }}">{% trans %}Back to document{% endtrans %}</a></h2>
+    <h2 class="back"><a href="{{ path('bach_display_document', {docid: docid}) }}">{{ _('Back to document') }}</a></h2>
 {% endblock %}

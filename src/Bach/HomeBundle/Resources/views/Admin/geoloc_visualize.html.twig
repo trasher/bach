@@ -51,7 +51,7 @@ file that was distributed with this source code.
             var _name = feature.properties.name;
             popup = layer.bindPopup(
                 '<strong>' + _name + '</strong> (' +
-                feature.properties.results + ' {% trans %}result(s){% endtrans %})'
+                feature.properties.results + ' {{ _('result(s)') }})'
             );
         }
 
@@ -87,8 +87,8 @@ file that was distributed with this source code.
                 if ( _content.find('a.remove').length == 0 ) {
                     _content = _content.html();
                     _content += '<ul>';
-                    _content += '<li><a class="remove" href="' + remove_href.replace('NAME', _feature.properties.name)  + '">{% trans %}remove{% endtrans%}</a></li>';
-                    _content += '<li><a class="edit" href="' + edit_href.replace('NAME', _feature.properties.name)  + '">{% trans %}edit{% endtrans%}</a></li>';
+                    _content += '<li><a class="remove" href="' + remove_href.replace('NAME', _feature.properties.name)  + '">{{ _('remove') }}</a></li>';
+                    _content += '<li><a class="edit" href="' + edit_href.replace('NAME', _feature.properties.name)  + '">{{ _('edit') }}</a></li>';
                     _content += '</ul>';
 
                     _popup.setContent(_content);
@@ -102,7 +102,7 @@ file that was distributed with this source code.
                             success: function(data) {
                                 var _name = _feature.properties.name;
                                 allpoints.removeLayer(allpoints.getLayer(_popup._source._leaflet_id));
-                                alert('{% trans %}NAME has been removed{% endtrans %}'.replace('NAME', _name));
+                                alert('{{ _('NAME has been removed') }}'.replace('NAME', _name));
                             }
                         });
                         return false;
@@ -152,7 +152,7 @@ file that was distributed with this source code.
 
             L.tileLayer('{{ tiles_url }}', {
                 maxZoom: 18,
-                attribution: '{% trans %}© Cartographic data{% endtrans %} <a href="http://openstreetmap.org">{% trans%}OpenStreetMap contributors{% endtrans %}</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, {% trans %}© Imagery{% endtrans %} {{ tiles_attribution|raw }}'
+                attribution: '{{ _('© Cartographic data')|escape('js') }} <a href="http://openstreetmap.org">{{ _('OpenStreetMap contributors')|escape('js') }}</a>, {{ _('© Imagery')|escape('js') }} {{ tiles_attribution|raw }}'
             }).addTo(map);
 
         });

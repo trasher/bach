@@ -1,6 +1,6 @@
 {% extends 'BachHomeBundle:Commons:search.html.twig' %}
 
-{% block subtitle %}{% trans %}Welcome to Bach's!{% endtrans %}{% endblock %}
+{% block subtitle %}{{ _('Welcome to Bach\'s!') }}{% endblock %}
 
 {% block show_results %}
             {% for document in searchResults %}
@@ -43,7 +43,7 @@
                         {%- elseif document.cUnittitle is defined -%}
                             {{ document.cUnittitle }}
                         {%- else -%}
-                            {% trans %}Untitled unit{% endtrans %}
+                            {{ _('Untitled unit') }}
                         {%- endif -%}
                         {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
                             <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
@@ -66,7 +66,7 @@
         event.stopImmediatePropagation();
         event.preventDefault();
 
-        var _elt = $('<div id="display_doc" title="{{ 'Consult document'|trans|escape('js') }}"></div>');
+        var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
         _elt.appendTo('body');
 
         var _width = $(window).width() * 0.8;
@@ -74,7 +74,7 @@
 
         $.ajax({
             url: $(this).attr('href') + '/ajax',
-            {% include '::loader.js.twig' with {'error_message': 'An error occured loading document :('|trans|escape('js')} %}
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')|escape('js')} %}
             success: function(data) {
                 _elt.append(data);
                 _initAudio(true);

@@ -6,7 +6,7 @@
 
 {% block menu %}
     {% if referer is defined %}
-        <h2 class="back"><a href="{{ referer }}">{% trans %}Back to search results{% endtrans %}</a></h2>
+        <h2 class="back"><a href="{{ referer }}">{{ _('Back to search results') }}</a></h2>
     {% endif %}
 {% endblock %}
 

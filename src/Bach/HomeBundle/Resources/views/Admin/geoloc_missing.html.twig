@@ -44,8 +44,8 @@ file that was distributed with this source code.
     <div id="map" class="big"></div>
     <div id="sidebar">
         <div id="missing-list">
-            <h3>{% trans %}Not geolocalized places{% endtrans %} ({{ missing|length }})</h3>
-            <p>{% trans %}Click on a location to perform automatic search.{% endtrans %}</p>
+            <h3>{{ _('Not geolocalized places') }} ({{ missing|length }})</h3>
+            <p>{{ _('Click on a location to perform automatic search.') }}</p>
             <ul>
             {% for origin, toponym in missing %}
                 <li>
@@ -55,8 +55,8 @@ file that was distributed with this source code.
             </ul>
         </div>
         <div id="proposal"class="hidden">
-            <h3>{% trans %}Proposals for: {% endtrans %}<br/><em class="placename"></em></h3>
-            <a class="back">{% trans %}Back{% endtrans %}</a>
+            <h3>{{ _('Proposals for:') }}<br/><em class="placename"></em></h3>
+            <a class="back">{{ _('Back') }}</a>
             <div class="list"></div>
         </div>
     </div>
@@ -80,15 +80,15 @@ file that was distributed with this source code.
 
     var _features_stored = [];
     function onEachFeature(feature, layer) {
-        var _content = '{{ 'Possible position for location:'|trans|escape('js') }}';
+        var _content = '{{ _('Possible position for location:')|escape('js') }}';
         _content += '<ul>';
-        _content += '<li>{{ 'Original:'|trans|escape('js') }} <em>' + current + '</em></em></li>';
-        _content += '<li>{{ 'Found:'|trans|escape('js') }} ' + feature.properties.name  + ' ({{ 'OSM id:'|trans|escape('js') }} ' + feature.properties.osm_id + ')</li>';
-        _content += '<li>{{ 'Coordinates:'|trans|escape('js') }} ' + feature.properties.lat + '/' + feature.properties.lon  + '</li>';
+        _content += '<li>{{ _('Original:')|escape('js') }} <em>' + current + '</em></em></li>';
+        _content += '<li>{{ _('Found:')|escape('js') }} ' + feature.properties.name  + ' ({{ _('OSM id:')|escape('js') }} ' + feature.properties.osm_id + ')</li>';
+        _content += '<li>{{ _('Coordinates:')|escape('js') }} ' + feature.properties.lat + '/' + feature.properties.lon  + '</li>';
         _content += '</ul>';
         var _count = _features_stored.length;
         _features_stored[_count] = feature.properties.elt;
-        _content += '<a href="#' + _count  + '" class="store">{{ 'Store that position?'|trans|escape('js') }}</a>';
+        _content += '<a href="#' + _count  + '" class="store">{{ _('Store that position?')|escape('js') }}</a>';
         popup = layer.bindPopup(_content);
     }
 
@@ -111,7 +111,7 @@ file that was distributed with this source code.
             _list.empty();
             $.ajax({
                 url: _da_url.replace('NAME', _this.html()),
-                {% include '::loader.js.twig' with {'parent_elt': '#sidebar', 'error_message': 'Unable to propose positions :('|trans} %}
+                {% include '::loader.js.twig' with {'parent_elt': '#sidebar', 'error_message': _('Unable to propose positions :(')|escape('js')} %}
                 success: function(data) {
                     if ( data.length > 0 ) {
                         var _ul = $('<ul></ul>');
@@ -182,10 +182,10 @@ file that was distributed with this source code.
                                     url: '{{ path('bach_store_geoloc') }}',
                                     method: 'POST',
                                     data: _features_stored[_count],
-                                    {% include '::loader.js.twig' with {'parent_elt': '#map', 'error_message': 'Unable to store that location :('|trans} %}
+                                    {% include '::loader.js.twig' with {'parent_elt': '#map', 'error_message': _('Unable to store that location :(')|escape('js')} %}
                                     success: function(data) {
                                         if ( data.success === true ) {
-                                            alert('{{ 'Position has been successfully stored!'|trans|escape('js') }}');
+                                            alert('{{ _('Position has been successfully stored!')|escape('js') }}');
 
                                             $('#proposal').addClass('hidden');
                                             $('#missing-list').removeClass('hidden');
@@ -197,7 +197,7 @@ file that was distributed with this source code.
                                                 }
                                             ).remove();
                                         } else {
-                                            alert('{{ 'Something went wrong trying to store position :('|trans|escape('js') }}');
+                                            alert('{{ _('Something went wrong trying to store position :(')|escape('js') }}');
                                         }
                                     }
                                 });
@@ -206,10 +206,10 @@ file that was distributed with this source code.
                         });
                         _list.append(_ul);
                     } else {
-                        _list.append('<p>{{ 'No results found :/'|trans|escape('js') }}</p>');
+                        _list.append('<p>{{ _('No results found :/')|escape('js') }}</p>');
                     }
 
-                    var _free_search = $('<p>{{ 'No satisfying matches? Enter you own search:'|trans|escape('js') }}</p><input type="text" id="free_search" value="'+ _this.html() +'"/>');
+                    var _free_search = $('<p>{{ _('No satisfying matches? Enter you own search:')|escape('js') }}</p><input type="text" id="free_search" value="'+ _this.html() +'"/>');
                     _list.append(_free_search);
                 }
             });
@@ -265,14 +265,14 @@ file that was distributed with this source code.
 
         L.control.sidebarbtn({
             strings: {
-                title: '{{ 'Show/Hide sidebar'|trans|escape('js') }}'
+                title: '{{ _('Show/Hide sidebar')|escape('js') }}'
             },
             sidebar: sidebar
         }).addTo(map);
 
         L.tileLayer('{{ tiles_url }}', {
             maxZoom: 18,
-            attribution: '{{ '© Cartographic data'|trans|escape('js') }} <a href="http://openstreetmap.org">{{ 'OpenStreetMap contributors'|trans|escape('js') }}</a>, {{ '© Imagery'|trans|escape('js') }} {{ tiles_attribution|raw }}'
+            attribution: '{{ _('© Cartographic data')|escape('js') }} <a href="http://openstreetmap.org">{{ _('OpenStreetMap contributors')|escape('js') }}</a>, {{ _('© Imagery')|escape('js') }} {{ tiles_attribution|raw }}'
         }).addTo(map);
 
     });
