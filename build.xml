@@ -20,7 +20,7 @@
     <!-- ======================= -->
     <!-- Copy app for deployment -->
     <!-- ======================= -->
-    <target name="build" depends="prepare,install-deps,proceed-assets,proceed-translations,build-classmap">
+    <target name="build" depends="prepare,patch-vendors,proceed-assets,proceed-translations,build-classmap">
         <echo msg="Bach is building..." />
 
         <copy file="LICENSE" tofile="${project.basedir}/build/bach/LICENSE" overwrite="true"/>
@@ -75,6 +75,14 @@
     <!-- ================= -->
     <target name="atoum">
         <SymfonyConsole console="php app/console" command="atoum"/>
+    </target>
+
+    <!-- ======================= -->
+    <!-- Patch vendors libraries -->
+    <!-- ======================= -->
+    <target name="patch-vendors" depends="install-deps">
+        <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Solarium-complex-range.patch" escape="false" />
+        <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/GettextBundle-overrided-bundles.patch" escape="false" />
     </target>
 
     <!-- ================================ -->
