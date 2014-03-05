@@ -1,0 +1,20 @@
+diff -up vendor/solarium/solarium/library/Solarium/QueryType/Select/ResponseParser/Component/FacetSet.php.patch vendor/solarium/solarium/library/Solarium/QueryType/Select/ResponseParser/Component/FacetSet.php
+--- vendor/solarium/solarium/library/Solarium/QueryType/Select/ResponseParser/Component/FacetSet.php.patch	2014-01-27 09:32:11.400457599 +0100
++++ vendor/solarium/solarium/library/Solarium/QueryType/Select/ResponseParser/Component/FacetSet.php	2014-01-27 09:15:28.819825528 +0100
+@@ -99,6 +99,7 @@ class FacetSet extends ResponseParserAbs
+ 
+         $facets = array();
+         foreach ($facetSet->getFacets() as $key => $facet) {
++            $key = current(explode(' ', $key));
+             switch ($facet->getType()) {
+                 case QueryFacetSet::FACET_FIELD:
+                     $result = $this->facetField($query, $facet, $data);
+@@ -210,7 +211,7 @@ class FacetSet extends ResponseParserAbs
+      */
+     protected function facetRange($query, $facet, $data)
+     {
+-        $key = $facet->getKey();
++        $key = current(explode(' ', $facet->getKey()));
+         if (isset($data['facet_counts']['facet_ranges'][$key])) {
+ 
+             $data = $data['facet_counts']['facet_ranges'][$key];
