@@ -182,17 +182,30 @@ EOF
                 $docs = array();
                 foreach ( $files_to_publish[$type] as $ftp ) {
                     $document = new Document();
-
                     $document->setFile(new File($ftp));
-                    $document->setStoreDir(
-                        $this->getContainer()->getParameter('bach.typespaths')[$type]
-                    );
                     $document->setExtension($type);
-                    $document->setCorename(
-                        $this->getContainer()->getParameter(
-                            $type . '_corename'
-                        )
-                    );
+                    $document->generateDocId();
+
+                    //check if doc exists
+                    $repo = $em->getRepository('BachIndexationBundle:Document');
+                    $exists = $repo->findOneByDocid($document->getDocId());
+                    if ( $exists ) {
+                        $document = $exists;
+                        $exists->setFile(new File($ftp));
+                        $exists->setUpdated(new \DateTime());
+                        $exists->setStoreDir(
+                            $this->getContainer()->getParameter('bach.typespaths')[$type]
+                        );
+                    } else {
+                        $document->setCorename(
+                            $this->getContainer()->getParameter(
+                                $type . '_corename'
+                            )
+                        );
+                        $document->setStoreDir(
+                            $this->getContainer()->getParameter('bach.typespaths')[$type]
+                        );
+                    }
 
                     if ( $type !== 'matricules' ) {
                         $progress->advance();
@@ -212,7 +225,7 @@ EOF
                     } else {
                         $docs[] = $document;
                     }
-                    unset($document);
+                    unset($document, $exists);
                 }
             }
 
