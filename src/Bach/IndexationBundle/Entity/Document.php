@@ -40,7 +40,7 @@ class Document
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     protected $docid;
 
@@ -99,6 +99,8 @@ class Document
     public function __construct($uploaded = false)
     {
         $this->uploaded = $uploaded;
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
     }
 
     /**
@@ -338,17 +340,18 @@ class Document
      */
     public function generateDocId()
     {
-        if ( $this->extension === 'ead' ) {
+        switch ( $this->extension ) {
+        case 'ead':
             $xml = simplexml_load_file($this->file->getPathName());
             $this->docid = (string)$xml->eadheader->eadid;
-        }
-
-        if ( $this->created === null ) {
-            $this->created = new \DateTime();
-        }
-
-        if ( $this->updated === null ) {
-            $this->updated = new \DateTime();
+            break;
+        case 'matricules':
+            $xml = simplexml_load_file($this->file->getPathName());
+            $this->docid = (string)$xml->id;
+            break;
+        default:
+            throw new \RuntimeException('Document ID is mandatory!');
+            break;
         }
 
         return $this;
