@@ -465,16 +465,32 @@ class EADFileFormat extends MappedFileFormat
      */
     public function addIndex($type, $index)
     {
-        $idx = new EADIndexes($this, $type, $index);
         //dedupe
         $unique = true;
+        var_dump($index);
+
+        $source = null;
+        if ( isset($index['attributes']['source']) ) {
+            $source = $index['attributes']['source'];
+        }
+
+        $role = null;
+        if ( isset($index['attributes']['role']) ) {
+            $source = $index['attributes']['role'];
+        }
+
         foreach ( $this->indexes as $i ) {
-            if ( $i->getType() == $type and $i->getName() == $index['value'] ) {
+            if ( $i->getType() == $type
+                && $i->getName() == $index['value']
+                && $i->getRole() == $role
+                && $i->getSource() == $source
+            ) {
                 $unique = false;
                 break;
             }
         }
         if ( $unique === true ) {
+            $idx = new EADIndexes($this, $type, $index);
             $this->indexes[] = $idx;
         }
         return $this;
