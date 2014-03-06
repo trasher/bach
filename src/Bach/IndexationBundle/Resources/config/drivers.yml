@@ -2,6 +2,7 @@ drivers:
     matricules:
         mapper: Bach\IndexationBundle\Entity\Mapper\MatriculesDriverMapper
         universalfileformat: Bach\IndexationBundle\Entity\MatriculesFileFormat
+        doctrine: BachIndexationBundle:MatriculesFileFormat
         fields:
             - id
             - cote
@@ -18,6 +19,7 @@ drivers:
     ead:
         mapper: Bach\IndexationBundle\Entity\Mapper\EADDriverMapper
         universalfileformat: Bach\IndexationBundle\Entity\EADFileFormat
+        doctrine: BachIndexationBundle:EADFileFormat
         preprocessor:
         fields:
             eadheader:
@@ -75,4 +77,5 @@ drivers:
                     - .//title
     unimarc:
         mapper: Bach\IndexationBundle\Entity\Mapper\UNIMARCDriverMapper
+        doctrine: BachIndexationBundle:UNIMARCFileFormat
         #universalfileformat: Bach\IndexationBundle\Entity\UniversalFileFormat\UNIMARCFileFormat

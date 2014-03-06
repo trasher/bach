@@ -320,7 +320,10 @@ class EADFileFormat extends MappedFileFormat
                     $this->addParentTitle($d);
                 }
             } elseif (property_exists($this, $key)) {
-                $this->$key = $datum;
+                if ( $this->$key !== $datum ) {
+                    $this->onPropertyChanged($key, $this->$key, $datum);
+                    $this->$key = $datum;
+                }
             } elseif ($key === 'cUnitDate' || $key === 'cDate') {
                 foreach ( $datum as $date ) {
                     $this->addDate($date);

@@ -13,6 +13,8 @@
 namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\NotifyPropertyChanged;
+use Doctrine\Common\PropertyChangedListener;
 use Bach\IndexationBundle\Entity\Document;
 
 /**
@@ -25,9 +27,12 @@ use Bach\IndexationBundle\Entity\Document;
  * @link     http://anaphore.eu
  *
  * @ORM\MappedSuperclass
+ * @ChangeTrackingPolicy("NOTIFY")
  */
-abstract class FileFormat
+abstract class FileFormat implements NotifyPropertyChanged
 {
+    private $_listeners = array();
+
     /**
      * @ORM\ManyToOne(targetEntity="Document")
      * @ORM\JoinColumn(name="doc_id", referencedColumnName="id", onDelete="CASCADE")
@@ -57,6 +62,18 @@ abstract class FileFormat
     }
 
     /**
+     * Adds a listener that wants to be notified about property changes.
+     *
+     * @param PropertyChangedListener $listener Listener
+     *
+     * @return void
+     */
+    public function addPropertyChangedListener(PropertyChangedListener $listener)
+    {
+        $this->_listeners[] = $listener;
+    }
+
+    /**
      * Proceed data parsing
      *
      * @param array $data Data to parse
@@ -70,6 +87,25 @@ abstract class FileFormat
                 $this->$key = $datum;
             }
         }
+    }
+
+    /**
+     * Notifies a property change
+     *
+     * @param string $propName Property name
+     * @param string $oldValue Old value of property
+     * @param string $newValue New value of property
+     *
+     * @return void
+     */
+    protected function onPropertyChanged($propName, $oldValue, $newValue)
+    {
+        if ( $this->_listeners) {
+            foreach ( $this->_listeners as $listener ) {
+                $listener->propertyChanged($this, $propName, $oldValue, $newValue);
+            }
+        }
+        $this->updated = new \DateTime();
     }
 
     /**

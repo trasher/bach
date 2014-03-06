@@ -17,6 +17,7 @@ namespace Bach\IndexationBundle\Service;
 use Bach\IndexationBundle\Entity\FileDriver;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\ORM\EntityManager;
 use Bach\IndexationBundle\Entity\UniversalFileFormat;
 use Bach\IndexationBundle\Entity\DataBag;
 
@@ -38,6 +39,7 @@ class FileDriverManager
     private $_conf = array();
     private $_fileFormatFactory;
     private $_preProcessorFactory;
+    private $_entityManager;
 
     /**
      * Constructor
@@ -45,14 +47,16 @@ class FileDriverManager
      * @param UniversalFileFormatFactory $fileFormatFactory   Universal file
      *                                                          format Factory
      * @param PreProcessorFactory        $preProcessorFactory Pre processor factory
+     * @param EntityManager              $entityManager       The entity manager
      */
     public function __construct(UniversalFileFormatFactory $fileFormatFactory,
-        PreProcessorFactory $preProcessorFactory
+        PreProcessorFactory $preProcessorFactory, EntityManager $entityManager
     ) {
         $this->_importConfiguration();
         $this->_searchDrivers();
         $this->_fileFormatFactory = $fileFormatFactory;
         $this->_preProcessorFactory = $preProcessorFactory;
+        $this->_entityManager = $entityManager;
     }
 
     /**
@@ -71,6 +75,8 @@ class FileDriverManager
         } else {
             $mapper = null;
             $universalFileFormatClass = null;
+            $doctrine_entity = null;
+
             //Importation configuration du driver
             if (array_key_exists('drivers', $this->_conf)) {
                 if (array_key_exists($format, $this->_conf['drivers'])) {
@@ -89,6 +95,7 @@ class FileDriverManager
                         try {
                             $reflection = new \ReflectionClass($this->_conf['drivers'][$format]['universalfileformat']);
                             $universalFileFormatClass = $this->_conf['drivers'][$format]['universalfileformat'];
+                            $doctrine_entity = $this->_conf['drivers'][$format]['doctrine'];
                         }
                         catch (\RuntimeException $e) {
                             throw $e;
@@ -126,9 +133,20 @@ class FileDriverManager
             if ( $description !== null ) {
                 $result['archdesc'] = $description;
             }
+
+            $repo = $this->_entityManager->getRepository($doctrine_entity);
+
+            $exists = null;
+            if ( isset($result['fragmentid']) ) {
+                $exists = $repo->findOneByFragmentid($result['fragmentid']);
+            } else {
+                $exists = $repo->findOneById($result['id'][0]['value']);
+            }
+
             $out = $this->_fileFormatFactory->build(
                 $result,
-                $universalFileFormatClass
+                $universalFileFormatClass,
+                $exists
             );
 
             if ( isset($result['fragmentid'])

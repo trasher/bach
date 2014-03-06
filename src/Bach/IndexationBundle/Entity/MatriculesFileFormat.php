@@ -205,18 +205,27 @@ class MatriculesFileFormat extends FileFormat
     protected function parseData($data)
     {
         foreach ($data as $key=>$datum) {
+            $has_changed = false;
             if (property_exists($this, $key)) {
                 if ( isset($datum[0]) ) {
-                    if ( strlen($datum[0]['value']) == 4
+                    $value = $datum[0]['value'];
+                    if ( strlen($value) == 4
                         && ($key === 'date_enregistrement'
                         || $key === 'annee_naissance'
                         || $key === 'classe')
                     ) {
-                        $datum[0]['value'] = new \DateTime(
-                            $datum[0]['value'] . '-01-01'
+                        $value = new \DateTime(
+                            $value . '-01-01'
                         );
+                        $has_changed = $this->$key->format('Y-m-d')
+                            !== $value->format('Y-m-d');
+                    } else {
+                        $has_changed = ($this->$key !== $value);
                     }
-                    $this->$key = $datum[0]['value'];
+                    if ( $has_changed ) {
+                        $this->onPropertyChanged($key, $this->$key, $value);
+                        $this->$key = $value;
+                    }
                 }
             } else {
                 throw new \RuntimeException(
@@ -245,7 +254,10 @@ class MatriculesFileFormat extends FileFormat
      */
     public function setCote($cote)
     {
-        $this->cote = $cote;
+        if ( $this->cote !== $cote ) {
+            $this->onPropertyChanged('cote', $this->cote, $cote);
+            $this->cote = $cote;
+        }
         return $this;
     }
 
@@ -262,20 +274,32 @@ class MatriculesFileFormat extends FileFormat
     /**
      * Set date_enregistrement
      *
-     * @param string $dateEnregistrement Date
+     * @param DateTime $dateEnregistrement Recording date
      *
      * @return MatriculesFileFormat
      */
-    public function setDateEnregistrement($dateEnregistrement)
+    public function setDateEnregistrement(\DateTime $dateEnregistrement)
     {
-        $this->date_enregistrement = $dateEnregistrement;
+        $old = null;
+        if ( $this->date_enregistrement !== null ) {
+            $old = $this->date_enregistrement->format('Y-m-d');
+        }
+        $new = $dateEnregistrement->format('Y-m-d');
+        if ( $old !== $new ) {
+            $this->onPropertyChanged(
+                'date_enregistrement',
+                $this->date_enregistrement,
+                $dateEnregistrement
+            );
+            $this->date_enregistrement = $dateEnregistrement;
+        }
         return $this;
     }
 
     /**
      * Get date_enregistrement
      *
-     * @return string
+     * @return DateTime
      */
     public function getDateEnregistrement()
     {
@@ -291,7 +315,14 @@ class MatriculesFileFormat extends FileFormat
      */
     public function setLieuEnregistrement($lieuEnregistrement)
     {
-        $this->lieu_enregistrement = $lieuEnregistrement;
+        if ( $this->lieu_enregistrement !== $lieuEnregistrement ) {
+            $this->onPropertyChanged(
+                'lieu_enregistrement',
+                $this->lieu_enregistrement,
+                $lieuEnregistrement
+            );
+            $this->lieu_enregistrement = $lieuEnregistrement;
+        }
         return $this;
     }
 
@@ -308,13 +339,25 @@ class MatriculesFileFormat extends FileFormat
     /**
      * Set classe
      *
-     * @param string $classe Classe
+     * @param DateTime $classe Classe
      *
      * @return MatriculesFileFormat
      */
-    public function setClasse($classe)
+    public function setClasse(\DateTime $classe)
     {
-        $this->classe = $classe;
+        $old = null;
+        if ( $this->classe !== null ) {
+            $old = $this->classe->format('Y-m-d');
+        }
+        $new = $classe->format('Y-m-d');
+        if ( $old !== $new ) {
+            $this->onPropertyChanged(
+                'classe',
+                $this->classe,
+                $classe
+            );
+            $this->classe = $classe;
+        }
         return $this;
     }
 
@@ -337,7 +380,14 @@ class MatriculesFileFormat extends FileFormat
      */
     public function setNom($nom)
     {
-        $this->nom = $nom;
+        if ( $this->nom !== $nom ) {
+            $this->onPropertyChanged(
+                'nom',
+                $this->nom,
+                $nom
+            );
+            $this->nom = $nom;
+        }
         return $this;
     }
 
@@ -360,7 +410,14 @@ class MatriculesFileFormat extends FileFormat
      */
     public function setPrenoms($prenoms)
     {
-        $this->prenoms = $prenoms;
+        if ( $this->prenoms !== $prenoms ) {
+            $this->onPropertyChanged(
+                'prenoms',
+                $this->prenoms,
+                $prenoms
+            );
+            $this->prenoms = $prenoms;
+        }
         return $this;
     }
 
@@ -383,7 +440,14 @@ class MatriculesFileFormat extends FileFormat
      */
     public function setMatricule($matricule)
     {
-        $this->matricule = $matricule;
+        if ( $this->matricule !== $matricule ) {
+            $this->onPropertyChanged(
+                'matricule',
+                $this->matricule,
+                $matricule
+            );
+            $this->matricule = $matricule;
+        }
         return $this;
     }
 
@@ -400,20 +464,32 @@ class MatriculesFileFormat extends FileFormat
     /**
      * Set annee_naissance
      *
-     * @param string $anneeNaissance Year of birth
+     * @param DateTime $anneeNaissance Year of birth
      *
      * @return MatriculesFileFormat
      */
-    public function setAnneeNaissance($anneeNaissance)
+    public function setAnneeNaissance(\DateTime $anneeNaissance)
     {
-        $this->annee_naissance = $anneeNaissance;
+        $old = null;
+        if ( $this->annee_naissance !== null ) {
+            $old = $this->annee_naissance->format('Y-m-d');
+        }
+        $new = $anneeNaissance->format('Y-m-d');
+        if ( $old !== $new ) {
+            $this->onPropertyChanged(
+                'annee_naissance',
+                $this->annee_naissance,
+                $anneeNaissance
+            );
+            $this->annee_naissance = $anneeNaissance;
+        }
         return $this;
     }
 
     /**
      * Get annee_naissance
      *
-     * @return string
+     * @return DateTime
      */
     public function getAnneeNaissance()
     {
@@ -429,7 +505,14 @@ class MatriculesFileFormat extends FileFormat
      */
     public function setLieuNaissance($lieuNaissance)
     {
-        $this->lieu_naissance = $lieuNaissance;
+        if ( $this->lieu_naissance !== $lieuNaissance ) {
+            $this->onPropertyChanged(
+                'lieu_naissance',
+                $this->lieu_naissance,
+                $lieuNaissance
+            );
+            $this->lieu_naissance = $lieuNaissance;
+        }
         return $this;
     }
 

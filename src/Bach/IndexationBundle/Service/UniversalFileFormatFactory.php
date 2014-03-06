@@ -31,17 +31,23 @@ class UniversalFileFormatFactory
     /**
      * Builds
      *
-     * @param array  $data  Data
-     * @param string $class Class name
+     * @param array  $data   Data
+     * @param string $class  Class name
+     * @param object $exists Existing object, if any
      *
      * @return UniversalFileFormat
      */
-    public function build($data, $class)
+    public function build($data, $class, $exists)
     {
-        if (class_exists($class)) {
-            $universal = new $class($data);
+        if ( !$exists ) {
+            if (class_exists($class)) {
+                $universal = new $class($data);
+            } else {
+                $universal = new UniversalFileFormat($data);
+            }
         } else {
-            $universal = new UniversalFileFormat($data);
+            $universal = $exists;
+            $universal->hydrate($data);
         }
 
         return $universal;
