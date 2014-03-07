@@ -72,12 +72,11 @@ class UniqueKeyController extends Controller
     /**
      * Submit
      *
-     * @param Request    $request Request
-     * @param XMLProcess $xmlP    XMLProcess
+     * @param Request $request Request
      *
      * @return void
      */
-    public function submitAction(Request $request, XMLProcess $xmlP)
+    public function submitAction(Request $request)
     {
         $session = $request->getSession();
         $xmlp = $session->get('xmlP');

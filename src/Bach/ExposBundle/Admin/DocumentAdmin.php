@@ -31,9 +31,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
  */
 class DocumentAdmin extends Admin
 {
-    private $_container;
-    private $_positionService;
-
     protected $datagridValues = array(
         '_page'         => 1,
         '_sort_order'   => 'ASC',

@@ -31,8 +31,6 @@ class BachCoreAdminConfigReader
 {
     const CONFIG_FILE_NAME = "BachSolrCoreConfig.xml";
 
-    private $_filepath;
-
     private $_xml_status = null;
 
     private $_ssl;
@@ -106,8 +104,7 @@ class BachCoreAdminConfigReader
             '_ssl',
             '_host',
             '_port',
-            '_path',
-            '_filepath'
+            '_path'
         );
     }
 

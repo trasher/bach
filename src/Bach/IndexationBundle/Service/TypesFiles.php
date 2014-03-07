@@ -30,7 +30,6 @@ class TypesFiles
 {
     private $_formats;
     private $_paths;
-    private $_dirs;
 
     /**
      * Main constructor

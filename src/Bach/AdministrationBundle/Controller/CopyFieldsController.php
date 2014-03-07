@@ -87,7 +87,7 @@ class CopyFieldsController extends Controller
             if ($form->isValid()) {
                 // If the data is valid, we save the new copy field into the
                 // schema.xml file of corresponding core
-                $CopyField->addField($xmlp);
+                $copyField->addField($xmlp);
                 $xmlp->saveXML();
                 return $this->redirect(
                     $this->generateUrl('administration_copyfields')
@@ -99,12 +99,11 @@ class CopyFieldsController extends Controller
     /**
      * Submit
      *
-     * @param Request    $request Request
-     * @param XMLProcess $xmlP    XMLProcess
+     * @param Request $request Request
      *
      * @return void
      */
-    public function submitAction(Request $request, XMLProcess $xmlP)
+    public function submitAction(Request $request)
     {
         $session = $request->getSession();
         $xmlp = $session->get('xmlP');

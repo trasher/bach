@@ -31,11 +31,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
  */
 class ExpositionAdmin extends Admin
 {
-    private $_reader;
-    private $_container;
-    private $_positionService;
-    private $_search_core;
-
     protected $datagridValues = array(
         '_page'         => 1,
         '_sort_order'   => 'ASC',
