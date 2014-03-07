@@ -27,7 +27,7 @@ use Bach\IndexationBundle\Entity\Document;
  * @link     http://anaphore.eu
  *
  * @ORM\MappedSuperclass
- * @ChangeTrackingPolicy("NOTIFY")
+ * @ORM\ChangeTrackingPolicy("NOTIFY")
  */
 abstract class FileFormat implements NotifyPropertyChanged
 {
