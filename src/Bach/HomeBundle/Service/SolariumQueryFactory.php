@@ -150,6 +150,7 @@ class SolariumQueryFactory
 
         $hl = $this->_query->getHighlighting();
         $hl_fields = '';
+        $this->_query->getSpellcheck();
 
         foreach ( $container->getFilters() as $name=>$value ) {
             switch ( $name ) {
