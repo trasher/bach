@@ -61,7 +61,7 @@ class DefaultController extends ControllerTest
             ->crawler
             ->hasElement('#search_results')
             ->hasChild('p')
-            ->withContent('Aucun résultat trouvé.')
+            ->withContent('No result found.')
             ->end()
             ->hasChild('#suggestions')
             ->hasChild('a')
