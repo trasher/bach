@@ -174,8 +174,8 @@ class Filters extends Units\WebTestCase
             '/placebo',
             array(
                 'filter_field' => array(
-                    'cDateBegin',
-                    'cDateEnd',
+                    'date_begin',
+                    'date_end',
                     'dao'
                 ),
                 'filter_value' => array(
@@ -188,8 +188,8 @@ class Filters extends Units\WebTestCase
         $req = $client->getRequest();
         $filters->bind($req);
 
-        $bdate = $filters->offsetGet('cDateBegin');
-        $edate = $filters->offsetGet('cDateEnd');
+        $bdate = $filters->offsetGet('date_begin');
+        $edate = $filters->offsetGet('date_end');
         $dao = $filters->offsetGet('dao');
         $bexpected = '2013-01-01';
         $eexpected = '2013-12-31';
