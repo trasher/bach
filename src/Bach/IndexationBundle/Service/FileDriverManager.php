@@ -149,6 +149,13 @@ class FileDriverManager
                 $exists
             );
 
+            $removed = $out->getRemoved();
+            if ( count($removed) > 0 ) {
+                foreach ( $removed as $r ) {
+                    $this->_entityManager->remove($r);
+                }
+            }
+
             if ( isset($result['fragmentid'])
                 && $result['fragmentid'] === $result['headerId'] . '_description'
             ) {

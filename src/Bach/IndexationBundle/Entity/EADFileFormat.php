@@ -107,6 +107,8 @@ class EADFileFormat extends MappedFileFormat
      */
     protected $comments;
 
+    protected $removed;
+
     /**
      * The constructor
      *
@@ -329,15 +331,23 @@ class EADFileFormat extends MappedFileFormat
                     $this->addDate($date);
                 }
             } elseif ( $key == 'daolist' ) {
-                foreach ( $datum as $dao ) {
-                    $this->addDao($dao);
-                }
+                $this->parseDaos($datum);
             } else {
                 throw new \RuntimeException(
                     __CLASS__ . ' - Key ' . $key . ' is not known!'
                 );
             }
         }
+    }
+
+    /**
+     * Get removed associated entities
+     *
+     * @return ArrayCollection
+     */
+    public function getRemoved()
+    {
+        return $this->removed;
     }
 
     /**
@@ -467,7 +477,6 @@ class EADFileFormat extends MappedFileFormat
     {
         //dedupe
         $unique = true;
-        var_dump($index);
 
         $source = null;
         if ( isset($index['attributes']['source']) ) {
@@ -554,15 +563,80 @@ class EADFileFormat extends MappedFileFormat
     }
 
     /**
-     * Add dao
+     * Parse daos objects from bag
      *
-     * @param array $dao dao
+     * @param array $data Dao data
+     *
+     * @return void
+     */
+    protected function parseDaos($data)
+    {
+        $daos = clone $this->daos;
+        $has_changed = false;
+
+        //check for removal
+        foreach ( $this->daos as $dao ) {
+            $found = false;
+            $href = $dao->getHref();
+            foreach ( $data as $new_dao ) {
+                if ( $href === $new_dao['attributes']['href'] ) {
+                    $found = true;
+                    break;
+                }
+            }
+            if ( !$found ) {
+                $this->removeDao($dao);
+                $this->removed[] = $dao;
+                $has_changed = true;
+            }
+        }
+
+        //check for new
+        foreach ( $data as $dao ) {
+            $unique = true;
+
+            foreach ( $this->daos as $i ) {
+                if ( $i->getHref() == $dao['attributes']['href'] ) {
+                    $unique = false;
+                    break;
+                }
+            }
+
+            if ( $unique === true ) {
+                $this->addDao(new EADDaos($this, $dao));
+                $has_changed = true;
+            }
+        }
+
+        //notify if something has changed
+        if ( $has_changed ) {
+            $this->onPropertyChanged('daos', $daos, $this->daos);
+        }
+    }
+
+    /**
+     * Set daos
+     *
+     * @param Collection $daos Daos collection
      *
      * @return EADFileFormat
      */
-    public function addDao($dao)
+    public function setDaos($daos)
     {
-        $this->daos[] = new EADDaos($this, $dao);
+        $this->daos = $daos;
+        return $this;
+    }
+
+    /**
+     * Add dao
+     *
+     * @param EADDaos $dao dao
+     *
+     * @return EADFileFormat
+     */
+    public function addDao(EADDaos $dao)
+    {
+        $this->daos[] = $dao;
         return $this;
     }
 
