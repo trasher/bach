@@ -103,6 +103,9 @@ class Toponym
                 if ( $this->_nomination === 'département' ) {
                     $this->_type = self::TYPE_STATE;
                     $this->_name = trim($matches[1]);
+                } else if ( $this->_nomination === 'commune') {
+                    $this->_type = self::TYPE_TOWN;
+                    $this->_name = trim($matches[1]);
                 } else {
                     $this->_type = self::TYPE_NOMINATED;
                     $this->_specific_name = trim($matches[1]);
@@ -270,6 +273,7 @@ class Toponym
 
         if ( $this->_nomination !== null
             && $this->_nomination !== 'département'
+            && $this->_nomination !== 'commune'
             && $can === true
         ) {
             $can = false;

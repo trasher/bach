@@ -370,5 +370,26 @@ class Toponym extends Units\Test
         $this->string($nomination)->isIdenticalTo('département');
         $this->variable($subdivision)->isNull();
         $this->boolean($localizable)->isTrue();
+
+        $test = new Entity();
+        $test->parse('Nîmes (Gard, France ; commune)');
+
+        $type = $test->getType();
+        $name = $test->getName();
+        $specific = $test->getSpecificName();
+        $country = $test->getCountry();
+        $county = $test->getCounty();
+        $nomination = $test->getNomination();
+        $subdivision = $test->getSubdivision();
+        $localizable = $test->canBeLocalized();
+
+        $this->variable($type)->isIdenticalTo($test::TYPE_TOWN);
+        $this->string($name)->isIdenticalTo('Nîmes');
+        $this->variable($specific)->isNull();
+        $this->string($country)->isIdenticalTo('France');
+        $this->string($county)->isIdenticalTo('Gard');
+        $this->variable($nomination)->isIdenticalTo('commune');
+        $this->variable($subdivision)->isNull();
+        $this->boolean($localizable)->isTrue();
     }
 }
