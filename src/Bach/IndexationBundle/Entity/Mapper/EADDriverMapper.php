@@ -14,6 +14,7 @@
 namespace Bach\IndexationBundle\Entity\Mapper;
 
 use Bach\IndexationBundle\DriverMapperInterface;
+use Bach\IndexationBundle\Entity\EADFileFormat;
 
 /**
  * Mapper for EAD data
@@ -128,12 +129,17 @@ class EADDriverMapper implements DriverMapperInterface
             'daolist'      => './/daoloc|.//dao|.//archref[not(contains(@href, \'http://\')) and contains(@href, \'.pdf\')]',
             'cTitle'       => './/title'
         );
+        $descriptors = EADFileFormat::$descriptors;
 
         foreach ( $ead_mulitple_elements as $map=>$element ) {
             if ( array_key_exists($element, $data['c'])
                 && count($data['c'][$element])
             ) {
-                $mappedData[$map] = $data['c'][$element];
+                if (in_array($map, $descriptors) ) {
+                    $mappedData['descriptors'][$map] = $data['c'][$element];
+                } else {
+                    $mappedData[$map] = $data['c'][$element];
+                }
             }
         }
 

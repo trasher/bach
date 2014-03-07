@@ -312,26 +312,21 @@ class EADFileFormat extends MappedFileFormat
      */
     protected function parseData($data)
     {
-        foreach ($data as $key=>$datum) {
-            if ( in_array($key, self::$known_indexes) ) {
-                foreach ( $datum as $index ) {
-                    $this->addIndex($key, $index);
-                }
+        foreach ($data as $key=>$value) {
+            /*if ( in_array($key, self::$known_indexes) ) {*/
+            if ( $key === 'descriptors' ) {
+                $this->parseIndexes($value);
             } else if ( $key === 'parents_titles' ) {
-                foreach ( $datum as $d ) {
-                    $this->addParentTitle($d);
-                }
+                $this->parseParentsTitles($value);
             } elseif (property_exists($this, $key)) {
-                if ( $this->$key !== $datum ) {
-                    $this->onPropertyChanged($key, $this->$key, $datum);
-                    $this->$key = $datum;
+                if ( $this->$key !== $value ) {
+                    $this->onPropertyChanged($key, $this->$key, $value);
+                    $this->$key = $value;
                 }
             } elseif ($key === 'cUnitDate' || $key === 'cDate') {
-                foreach ( $datum as $date ) {
-                    $this->addDate($date);
-                }
+                $this->parseDates($value);
             } elseif ( $key == 'daolist' ) {
-                $this->parseDaos($datum);
+                $this->parseDaos($value);
             } else {
                 throw new \RuntimeException(
                     __CLASS__ . ' - Key ' . $key . ' is not known!'
@@ -466,42 +461,99 @@ class EADFileFormat extends MappedFileFormat
     }
 
     /**
+     * Parse indexes objects from bag
+     *
+     * @param array $data Indexes data
+     *
+     * @return void
+     */
+    protected function parseIndexes($data)
+    {
+        $indexes = clone $this->indexes;
+        $has_changed = false;
+
+        //check for removal
+        foreach ( $this->indexes as $index ) {
+            $found = false;
+            //$href = $dao->getHref();
+            foreach ( $data as $type => $values ) {
+                foreach ( $values as $new_index ) {
+                    $source = null;
+                    if ( isset($new_index['attributes']['source']) ) {
+                        $source = $new_index['attributes']['source'];
+                    }
+
+                    $role = null;
+                    if ( isset($new_index['attributes']['role']) ) {
+                        $source = $new_index['attributes']['role'];
+                    }
+
+                    if ( $index->getType() == $type
+                        && $index->getName() == $new_index['value']
+                        && $index->getRole() == $role
+                        && $index->getSource() == $source
+                    ) {
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+            if ( !$found ) {
+                $this->removeIndex($index);
+                $this->removed[] = $index;
+                $has_changed = true;
+            }
+        }
+
+        //check for new
+        foreach ( $data as $type => $values ) {
+            foreach ( $values as $index ) {
+                $unique = true;
+
+                foreach ( $this->indexes as $i ) {
+                    $source = null;
+                    if ( isset($index['attributes']['source']) ) {
+                        $source = $index['attributes']['source'];
+                    }
+
+                    $role = null;
+                    if ( isset($index['attributes']['role']) ) {
+                        $source = $index['attributes']['role'];
+                    }
+
+                    if ( $i->getType() == $type
+                        && $i->getName() == $index['value']
+                        && $i->getRole() == $role
+                        && $i->getSource() == $source
+                    ) {
+                        $unique = false;
+                        break;
+                    }
+                }
+
+                if ( $unique === true ) {
+                    $this->addIndex(new EADIndexes($this, $type, $index));
+                    $has_changed = true;
+                }
+            }
+        }
+
+        //notify if something has changed
+        if ( $has_changed ) {
+            $this->onPropertyChanged('indexes', $indexes, $this->indexes);
+        }
+    }
+
+    /**
      * Add index
      *
-     * @param string $type  Index type
-     * @param string $index Index data
+     * @param EADIndexes $index Index data
      *
      * @return EADFileFormat
      */
-    public function addIndex($type, $index)
+    public function addIndex(EADIndexes $index)
     {
-        //dedupe
-        $unique = true;
-
-        $source = null;
-        if ( isset($index['attributes']['source']) ) {
-            $source = $index['attributes']['source'];
-        }
-
-        $role = null;
-        if ( isset($index['attributes']['role']) ) {
-            $source = $index['attributes']['role'];
-        }
-
-        foreach ( $this->indexes as $i ) {
-            if ( $i->getType() == $type
-                && $i->getName() == $index['value']
-                && $i->getRole() == $role
-                && $i->getSource() == $source
-            ) {
-                $unique = false;
-                break;
-            }
-        }
-        if ( $unique === true ) {
-            $idx = new EADIndexes($this, $type, $index);
-            $this->indexes[] = $idx;
-        }
+        $this->indexes[] = $index;
         return $this;
     }
 
@@ -528,15 +580,75 @@ class EADFileFormat extends MappedFileFormat
     }
 
     /**
+     * Parse dates objects from bag
+     *
+     * @param array $data Dates data
+     *
+     * @return void
+     */
+    protected function parseDates($data)
+    {
+        $dates = clone $this->dates;
+        $has_changed = false;
+
+        //check for removal
+        foreach ( $this->dates as $date ) {
+            $found = false;
+            foreach ( $data as $new_date ) {
+                $odate = new EADDates($this, $new_date);
+                if ( $date->getDate() == $odate->getDate()
+                    && $date->getNormal() == $odate->getNormal()
+                    && $date->getBegin() == $odate->getBegin()
+                    && $date->getEnd() == $odate->getEnd()
+                ) {
+                    $found = true;
+                    break;
+                }
+            }
+            if ( !$found ) {
+                $this->removeDate($date);
+                $this->removed[] = $date;
+                $has_changed = true;
+            }
+        }
+
+        //check for new
+        foreach ( $data as $date ) {
+            $odate = new EADDates($this, $date);
+            $unique = true;
+
+            foreach ( $this->dates as $i ) {
+                if ( $i->getDate() == $odate->getDate()
+                    && $i->getNormal() == $odate->getNormal()
+                    && $i->getBegin() == $odate->getBegin()
+                    && $i->getEnd() == $odate->getEnd()
+                ) {
+                    $unique = false;
+                    break;
+                }
+            }
+
+            if ( $unique === true ) {
+                $this->addDate($odate);
+                $has_changed = true;
+            }
+        }
+
+        //notify if something has changed
+        if ( $has_changed ) {
+            $this->onPropertyChanged('dates', $dates, $this->dates);
+        }
+    }
+    /**
      * Add date
      *
-     * @param string $date Date
+     * @param EADDates $date Date
      *
      * @return EADFileFormat
      */
-    public function addDate($date)
+    public function addDate(EADDates $date)
     {
-        $this->dates[] = new EADDates($this, $date);
+        $this->dates[] = $date;
         return $this;
     }
 
@@ -615,19 +727,6 @@ class EADFileFormat extends MappedFileFormat
     }
 
     /**
-     * Set daos
-     *
-     * @param Collection $daos Daos collection
-     *
-     * @return EADFileFormat
-     */
-    public function setDaos($daos)
-    {
-        $this->daos = $daos;
-        return $this;
-    }
-
-    /**
      * Add dao
      *
      * @param EADDaos $dao dao
@@ -663,15 +762,71 @@ class EADFileFormat extends MappedFileFormat
     }
 
     /**
+     * Parse parents titles objects from bag
+     *
+     * @param array $data Parents title data
+     *
+     * @return void
+     */
+    protected function parseParentsTitles($data)
+    {
+        $parents_titles = clone $this->parents_titles;
+        $has_changed = false;
+
+        //check for removal
+        foreach ( $this->parents_titles as $ptitle ) {
+            $found = false;
+            $title = $ptitle->getTitle();
+            foreach ( $data as $new_ptitle ) {
+                if ( $title === $new_ptitle ) {
+                    $found = true;
+                    break;
+                }
+            }
+            if ( !$found ) {
+                $this->removeParentTitle($ptitle);
+                $this->removed[] = $ptitle;
+                $has_changed = true;
+            }
+        }
+
+        //check for new
+        foreach ( $data as $ptitle ) {
+            $unique = true;
+
+            foreach ( $this->parents_titles as $i ) {
+                if ( $i->getTitle() == $ptitle ) {
+                    $unique = false;
+                    break;
+                }
+            }
+
+            if ( $unique === true ) {
+                $this->addParentTitle(new EADParentTitle($this, $ptitle));
+                $has_changed = true;
+            }
+        }
+
+        //notify if something has changed
+        if ( $has_changed ) {
+            $this->onPropertyChanged(
+                'parents_titles',
+                $parents_titles,
+                $this->parents_titles
+            );
+        }
+    }
+
+    /**
      * Add parent title
      *
-     * @param string $title title
+     * @param EADParentTitle $title Parent title
      *
      * @return EADFileFormat
      */
-    public function addParentTitle($title)
+    public function addParentTitle(EADParentTitle $title)
     {
-        $this->parents_titles[] = new EADParentTitle($this, $title);
+        $this->parents_titles[] = $title;
         return $this;
     }
 
