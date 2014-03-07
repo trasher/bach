@@ -82,7 +82,7 @@ class Matricule
             $nodes = $this->_xpath->query($field, $headerNode);
             $this->_values[$field] = array();
             if ( $nodes->length > 0 ) {
-                foreach ( $nodes as $key=>$node ) {
+                foreach ( $nodes as $node ) {
                     $this->_values[$field][] = array(
                         'value'         => $node->nodeValue,
                         'attributes'    => $this->_parseAttributes($node->attributes)

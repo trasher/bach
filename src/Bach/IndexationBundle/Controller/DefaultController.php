@@ -147,7 +147,7 @@ class DefaultController extends Controller
 
                 $integrationService = $this->container
                     ->get('bach.indexation.process.arch_file_integration');
-                $res = $integrationService->integrate($task);
+                $integrationService->integrate($task);
 
                 $configreader = $this->container
                     ->get('bach.administration.configreader');
@@ -259,6 +259,7 @@ class DefaultController extends Controller
      */
     public function removeDocumentsAction($documents = null)
     {
+        $logger = $this->get('logger');
         if ( $documents === null ) {
             $documents = $this->get('request')->request->get('documents');
         }
@@ -309,6 +310,23 @@ class DefaultController extends Controller
             $client = $clients[$key];
             $update->addCommit(null, null, true);
             $result = $client->update($update);
+            if ( $result->getStatus() === 0 ) {
+                $logger->info(
+                    str_replace(
+                        array('%doc', '%time'),
+                        array($doc->getDocId(), $result->getQueryTime()),
+                        _('Document %doc successfully deleted from Solr in %time')
+                    )
+                );
+            } else {
+                $logger->err(
+                    str_replace(
+                        '%doc',
+                        $doc->getDocId(),
+                        _('Sorl failed to remove document %doc!')
+                    )
+                );
+            }
         }
 
         $em->flush();
@@ -325,20 +343,8 @@ class DefaultController extends Controller
      */
     public function emptyAction()
     {
-        //remove solr indexed documents
-        //FIXME: check if solr cores exists!
-        $client = $this->get("solarium.client.ead");
-        $update = $client->createUpdate();
-        $update->addDeleteQuery('*:*');
-        $update->addCommit();
-        $result = $client->update($update);
-
-        /*$client = $this->get("solarium.client.unimarc");
-        $update = $client->createUpdate();
-        $update->addDeleteQuery('*:*');
-        $update->addCommit();
-        $result = $client->update($update);*/
-
+        $logger = $this->get('logger');
+        //first, remove from database
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
         $platform   = $connection->getDatabasePlatform();
@@ -384,6 +390,38 @@ class DefaultController extends Controller
         } catch (\Exception $e) {
             //database does not support that. it is ok.
         }
+
+        //remove solr indexed documents
+        //FIXME: check if solr cores exists!
+        $client = $this->get("solarium.client.ead");
+        $update = $client->createUpdate();
+        $update->addDeleteQuery('*:*');
+        $update->addCommit();
+        $result = $client->update($update);
+
+        if ( $result->getStatus() === 0 ) {
+            $logger->info(
+                str_replace(
+                    array('%core', '%time'),
+                    array('ead', $result->getQueryTime()),
+                    _('%core core has been truncated in %time')
+                )
+            );
+        } else {
+            $logger->err(
+                str_replace(
+                    '%core',
+                    'ead',
+                    _('Sorl failed to empty %core core!')
+                )
+            );
+        }
+
+        /*$client = $this->get("solarium.client.unimarc");
+        $update = $client->createUpdate();
+        $update->addDeleteQuery('*:*');
+        $update->addCommit();
+        $result = $client->update($update);*/
 
         return new RedirectResponse(
             $this->get("router")->generate("bach_indexation_homepage")
@@ -464,7 +502,6 @@ class DefaultController extends Controller
                 }
 
                 foreach ( libxml_get_errors() as $error ) {
-                    $xml_errors[] = $error->message;
                     $this->get('session')->getFlashBag()->add(
                         'documentvalidation_errors',
                         $error->message . ' (line: ' . $error->line .

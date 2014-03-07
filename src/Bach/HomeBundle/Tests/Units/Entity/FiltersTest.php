@@ -37,7 +37,7 @@ class Filters extends Units\WebTestCase
         $filters = new Entity();
 
         $client = static::createClient();
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(
@@ -55,7 +55,7 @@ class Filters extends Units\WebTestCase
         $ao = (array)$filters->offsetGet('cSubject');
         $this->array($ao)->isIdenticalTo($expected);
 
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(
@@ -97,7 +97,7 @@ class Filters extends Units\WebTestCase
         $this->array($ao)->hasSize(1)->isIdenticalTo($expected);
 
         //test remove one of 3 filters
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(
@@ -119,7 +119,7 @@ class Filters extends Units\WebTestCase
         $this->array($ao)->hasSize(2)->strictlyContainsValues($expected);
 
         //test remove one of last filter
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(
@@ -134,7 +134,7 @@ class Filters extends Units\WebTestCase
         $this->boolean($exists)->isFalse();
 
         //test remove one of non existant filter
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(
@@ -148,7 +148,7 @@ class Filters extends Units\WebTestCase
         $ao = (array)$filters->offsetGet('cSubject');
         $this->array($ao)->hasSize(2)->strictlyContainsValues($expected);
 
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(
@@ -169,7 +169,7 @@ class Filters extends Units\WebTestCase
             }
         );
 
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(
@@ -196,8 +196,9 @@ class Filters extends Units\WebTestCase
 
         $this->string($bdate)->isIdenticalTo($bexpected);
         $this->string($edate)->isIdenticalTo($eexpected);
+        $this->string($dao)->isIdenticalTo('true');
 
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(

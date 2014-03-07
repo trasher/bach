@@ -191,7 +191,7 @@ class EADArchDesc
 
             if ( $nodes->length > 0 ) {
                 $result[$field] = array();
-                foreach ( $nodes as $key=>$node ) {
+                foreach ( $nodes as $node ) {
                     $result[$field][] = array(
                         'value'         => $node->nodeValue,
                         'attributes'    => $this->_parseAttributes(

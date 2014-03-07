@@ -218,7 +218,7 @@ EOF
                         $task = new ArchFileIntegrationTask($document);
 
                         if ( $dry === false ) {
-                            $res = $integrationService->integrate($task);
+                            $integrationService->integrate($task);
                         }
 
                         unset($task);

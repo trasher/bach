@@ -78,7 +78,7 @@ class TypesController extends Controller
     {
         $session = $this->getRequest()->getSession();
         $ft = new FieldType();
-        $form = $this->createFormBuilder($typeField)->getForm();
+        $form = $this->createFormBuilder($ft)->getForm();
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
@@ -109,7 +109,6 @@ class TypesController extends Controller
      */
     public function submitAction(Request $request, XMLProcess $xmlP)
     {
-        $session = $this->getRequest()->getSession();
         $t = new Types();
         $form = $this->createForm(new TypesForm(), $t);
         $form->bind($request);

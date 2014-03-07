@@ -58,7 +58,6 @@ class Analyzers
      */
     public function save(XMLProcess $xmlP)
     {
-        $fieldsArray = array();
         foreach ($this->analyzers as $f) {
             $fieldTypes = $xmlP->getElementsByName('fieldType');
             foreach ($fieldTypes as $t) {

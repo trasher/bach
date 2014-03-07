@@ -77,8 +77,8 @@ class CopyFieldsController extends Controller
      */
     public function addCopyFieldAction(Request $request)
     {
-        $session = $this->getRequest()->getSession();
-        $xmlp = $this->session->get('xmlP');
+        $session = $request->getSession();
+        $xmlp = $session->get('xmlP');
 
         $copyField = new CopyField($xmlp);
         $form = $this->createFormBuilder($copyField)->getForm();
@@ -87,8 +87,8 @@ class CopyFieldsController extends Controller
             if ($form->isValid()) {
                 // If the data is valid, we save the new copy field into the
                 // schema.xml file of corresponding core
-                $dynamicField->addField($xmlp);
-                $xmlP->saveXML();
+                $CopyField->addField($xmlp);
+                $xmlp->saveXML();
                 return $this->redirect(
                     $this->generateUrl('administration_copyfields')
                 );

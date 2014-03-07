@@ -50,7 +50,7 @@ class ViewParams extends Units\WebTestCase
         $this->variable($order)->isIdenticalTo(Vp::ORDER_RELEVANCE);
 
         $client = static::createClient();
-        $crawler = $client->request(
+        $client->request(
             'POST',
             '/placebo',
             array(
@@ -83,7 +83,7 @@ class ViewParams extends Units\WebTestCase
         )->hasMessage('Order doesnotexists is not known!');
 
         /** FIXME: this one works in regular app, but not in tests :/ */
-        /*$crawler = $client->request(
+        /*$client->request(
             'POST',
             '/placebo',
             array(

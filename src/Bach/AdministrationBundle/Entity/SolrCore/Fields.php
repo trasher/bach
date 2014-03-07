@@ -50,7 +50,7 @@ class Fields
     {
         $xml_str = $this->_send(
             $this->_reader->getCoresURL() . '/' . $core . '/admin/luke',
-            $options = array(
+            array(
                 'numTerms' => 0
             )
         );

@@ -127,7 +127,7 @@ class XMLProcess
         switch ($node->nodeType) {
         case XML_ELEMENT_NODE :
             $newNode = new SolrXMLElement($node->nodeName, $node->nodeValue);
-            foreach ($node->attributes as $key => $attr) {
+            foreach ($node->attributes as $attr) {
                 $this->_loadXMLHelper($attr, $newNode);
             }
             foreach ( $node->childNodes as $child ) {

@@ -343,7 +343,7 @@ EOF
         $found = 0;
         $fail = 0;
 
-        foreach ( $places as $orig=>$toponym ) {
+        foreach ( $places as $toponym ) {
             if ( $toponym->canBeLocalized() ) {
                 $output->writeln(
                     '<fg=green;>' .

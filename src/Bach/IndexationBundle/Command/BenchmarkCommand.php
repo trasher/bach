@@ -76,7 +76,7 @@ EOF
             for ($i=0;$i<$bCount;$i++) {
 
                 $t = microtime(true);
-                $universalFileFormat = $manager->convert(
+                $manager->convert(
                     $factory->encapsulate($file),
                     $type
                 );

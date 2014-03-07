@@ -90,9 +90,11 @@ class SolrCoreAdmin
     /**
      * Retrieve import status
      *
+     * @param string $coreName Solr core name
+     *
      * @return SolrCoreResponse
      */
-    public function getImportStatus()
+    public function getImportStatus($coreName)
     {
         return $this->_send(
             $this->_reader->getCoresURL() . '/' . $coreName . '/dataimport'
@@ -741,6 +743,7 @@ class SolrCoreAdmin
     private function _deleteCoreDir($coreInstanceDirPath)
     {
         if (is_dir($coreInstanceDirPath)) {
+            $output = array();
             exec('rm -r "' . $coreInstanceDirPath . '"', $output, $status);
             return $status == 0 ? true : false;
         }

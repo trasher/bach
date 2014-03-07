@@ -153,7 +153,6 @@ class XMLProcess extends Units\Test
 
         $xml_path = $this->_sca->getSchemaPath($this->params['solr_search_core']);
         $doc->load($xml_path);
-        $expected = $doc->saveXML();
 
         $actual = $this->_xmlp->saveXML();
 

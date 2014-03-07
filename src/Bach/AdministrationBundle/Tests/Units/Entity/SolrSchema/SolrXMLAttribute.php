@@ -37,7 +37,7 @@ class SolrXMLAttribute extends Units\Test
     {
         $this->exception(
             function () {
-                $attribute = new Attribute(null);
+                new Attribute(null);
             }
         )->hasMessage('SolrXMLAttribute must be instanciated with a name!');
     }
