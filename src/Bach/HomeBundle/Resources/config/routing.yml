@@ -100,6 +100,9 @@ bach_matricules_do_search:
     pattern:  /matricules-do-search
     defaults: { _controller: BachHomeBundle:Matricules:doSearch }
 
+bach_ead_html:
+    pattern: /document/{docid}/{expanded}
+    defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }
 
 #this one *MUST* be last
 remove_trailing_slash:

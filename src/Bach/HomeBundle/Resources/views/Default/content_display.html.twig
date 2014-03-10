@@ -34,6 +34,7 @@
                 {%- endif -%}
             </h2>
             {% if enable_social %}{{ socialButtons() }}{% endif %}
+            <a href="{{ path('bach_ead_html', {'docid': document.headerId, 'expanded': 'expanded'}) }}#{{ document.fragmentid }}">{{ _('View in document tree') }}</a>
         </header>
         {% if children == false %}
             {% set hasChildren = false %}

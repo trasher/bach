@@ -39,6 +39,14 @@ services:
         tags:
             - { name: twig.extension }
 
+    bach.home.display_html:
+        class: Bach\HomeBundle\Twig\DisplayHtml
+        arguments: [ @router ]
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: twig.extension }
+
     bach.socialBarHelper:
         class : Bach\HomeBundle\Templating\Helper\SocialBarHelper
         tags : 

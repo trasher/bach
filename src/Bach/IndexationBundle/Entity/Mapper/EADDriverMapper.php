@@ -42,6 +42,7 @@ class EADDriverMapper implements DriverMapperInterface
 
         $header_elements = array(
             'headerId' => 'eadid',
+            'headerTitle' => 'filedesc/titlestmt/titleproper',
             'headerAuthor' => 'filedesc/titlestmt/author',
             'headerDate'    => 'filedesc/publicationstmt/date',
             'headerPublisher'   => 'filedesc/publicationstmt/publisher',

@@ -1357,7 +1357,7 @@ div.sonata-bc .row-fluid .span6 {
  * ===== CDC =====
  */
 
-.cdcarchdesc, #comments > div {
+.cdcarchdesc, #docheader, #comments > div {
     margin-bottom: 1em;
     background-color: #f5f1ee;
     border-radius: 6px;
@@ -1374,9 +1374,10 @@ div.sonata-bc .row-fluid .span6 {
     background-image: url(../img/collapse.png);
 }
 
-#cdccontrol {
+#cdccontrol, #doccontrol {
     float: right;
     margin-right: .5em;
+    text-align: right;
 }
 
 /** Old design */

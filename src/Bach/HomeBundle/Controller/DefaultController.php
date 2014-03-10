@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\GeolocFields;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Bach home controller
@@ -391,7 +392,6 @@ class DefaultController extends SearchController
             $query = $client->createTerms();
 
             $query->setLimit($limit);
-
             $query->setFields($part);
 
             $found_terms = $client->terms($query);
@@ -416,7 +416,22 @@ class DefaultController extends SearchController
                         ksort($current_values, SORT_LOCALE_STRING);
                     }
                 }
-                $lists[$field] = $current_values;
+                if ( $field == 'headerId' ) {
+                    //retrieve documents titles...
+                    $ids = array();
+                    foreach ( $current_values as $v ) {
+                        $ids[] = $v['term'] . '_description';
+                    }
+
+                    $query = $this->getDoctrine()->getEntityManager()->createQuery(
+                        'SELECT e.headerId, e.headerTitle ' .
+                        'FROM BachIndexationBundle:EADFileFormat e ' .
+                        'WHERE e.fragmentid IN (:ids)'
+                    )->setParameter('ids', $ids);
+                    $lists[$field] = $query->getResult();
+                } else {
+                    $lists[$field] = $current_values;
+                }
             }
         }
 
@@ -449,7 +464,7 @@ class DefaultController extends SearchController
         $query = $client->createSelect();
         $query->setQuery('fragmentid:"' . $docid . '"');
         $query->setFields(
-            'headerId, fragment, parents, archDescUnitTitle, cUnittitle, cDate'
+            'headerId, fragmentid, fragment, parents, archDescUnitTitle, cUnittitle, cDate'
         );
         $query->setStart(0)->setRows(1);
 
@@ -601,6 +616,66 @@ class DefaultController extends SearchController
             'BachHomeBundle:Default:cdc.html.twig',
             $tplParams
         );
+    }
+
+    /**
+     * Displays an EAD document as HTML
+     *
+     * @param string  $docid    Document id
+     * @param boolean $expanded Expand tree on load
+     *
+     * @return void
+     */
+    public function eadHtmlAction($docid, $expanded = false)
+    {
+        $tpl_vars = $this->commonTemplateVariables();
+
+        $repo = $this->getDoctrine()
+            ->getRepository('BachIndexationBundle:Document');
+        $document = $repo->findOneByDocid($docid);
+
+        if ( $document === null ) {
+            throw new NotFoundHttpException(
+                str_replace(
+                    '%docid',
+                    $docid,
+                    _('Document "%docid" does not exists.')
+                )
+            );
+        } else {
+            if ( $document->isUploaded() ) {
+                $document->setUploadDir(
+                    $this->container->getParameter('upload_dir')
+                );
+            } else {
+                $document->setStoreDir(
+                    $this->container->getParameter('bach.typespaths')['ead']
+                );
+            }
+            $xml_file = $document->getAbsolutePath();
+
+            if ( !file_exists($xml_file) ) {
+                throw new NotFoundHttpException(
+                    str_replace(
+                        '%docid',
+                        $docid,
+                        _('Corresponding file for %docid document no longer exists on disk.')
+                    )
+                );
+            } else {
+                $xml_doc = new \DOMDocument();
+                $xml_doc->load($xml_file);
+
+                $tpl_vars['docid'] = $docid;
+                $tpl_vars['xml_doc'] = $xml_doc;
+                $tpl_vars['expanded'] = ($expanded !== false);
+
+                return $this->render(
+                    'BachHomeBundle:Default:html.html.twig',
+                    $tpl_vars
+                );
+            }
+        }
     }
 
     /**

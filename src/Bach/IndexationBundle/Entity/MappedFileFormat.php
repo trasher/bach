@@ -34,6 +34,11 @@ class MappedFileFormat extends FileFormat
     protected $headerId;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length=1000)
+     */
+    protected $headerTitle;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $headerSubtitle;

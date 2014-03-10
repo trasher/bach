@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-Displays an EAD fragment as HTML
+Displays an classification scheme as HTML
 
 @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
 @license  Unknown http://unknown.com
