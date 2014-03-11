@@ -567,6 +567,9 @@ class DisplayDao extends \Twig_Extension
             if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
             }
+            if ( $all === true && $daotitle === null ) {
+                $ret .= $dao;
+            }
             $ret .= '</a>';
             if ( $all === true ) {
                 $ret .= '</li>';
