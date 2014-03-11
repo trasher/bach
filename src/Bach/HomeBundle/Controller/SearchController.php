@@ -28,6 +28,7 @@ use Bach\HomeBundle\Entity\TagCloud;
 use Bach\HomeBundle\Entity\GeolocFields;
 use Bach\HomeBundle\Service\SolariumQueryFactory;
 use Bach\AdministrationBundle\Entity\SolrCore\Fields;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Bach search controller
@@ -641,5 +642,22 @@ abstract class SearchController extends Controller
             $tpl_vars['by_year_min'] = (int)$date_min->format('Y');
             $tpl_vars['by_year_max'] = (int)$date_max->format('Y');
         }
+    }
+
+    /**
+     * Redirect trailing slash
+     *
+     * @param Request $request Request
+     *
+     * @return void
+     */
+    public function removeTrailingSlashAction(Request $request)
+    {
+        $pathInfo = $request->getPathInfo();
+        $requestUri = $request->getRequestUri();
+
+        $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+
+        return $this->redirect($url, 301);
     }
 }

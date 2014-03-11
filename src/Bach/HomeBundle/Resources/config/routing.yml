@@ -100,3 +100,11 @@ bach_matricules_do_search:
     pattern:  /matricules-do-search
     defaults: { _controller: BachHomeBundle:Matricules:doSearch }
 
+
+#this one *MUST* be last
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: BachHomeBundle:Default:removeTrailingSlash }
+    requirements:
+        url: .*/$
+        _method: GET
