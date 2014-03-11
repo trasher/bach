@@ -42,6 +42,9 @@ file that was distributed with this source code.
     map.addControl(fullScreen);
 
     L.tileLayer('{{ tiles_url }}', {
+        {% if tiles_subdomains is iterable -%}
+        subdomains: [{% for subdomain in tiles_subdomains %}'{{ subdomain }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+        {% endif -%}
         maxZoom: 18,
         attribution: '{{ _('© Cartographic data')|escape('js') }} <a href="http://openstreetmap.org">{{ _('OpenStreetMap contributors')|escape('js') }}</a>, {{ _('© Imagery')|escape('js') }} {{ tiles_attribution|raw }}'
     }).addTo(map);
