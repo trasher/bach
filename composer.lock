@@ -716,12 +716,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "0742fc7167a4deedaabc8639849a3e71082999f1"
+                "reference": "4837b4afac4469c8740f33eae6bdcd8bd1545d2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/0742fc7167a4deedaabc8639849a3e71082999f1",
-                "reference": "0742fc7167a4deedaabc8639849a3e71082999f1",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/4837b4afac4469c8740f33eae6bdcd8bd1545d2e",
+                "reference": "4837b4afac4469c8740f33eae6bdcd8bd1545d2e",
                 "shasum": ""
             },
             "require": {
@@ -768,7 +768,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2014-01-20 11:29:43"
+            "time": "2014-03-04 01:42:11"
         },
         {
             "name": "doctrine/orm",
@@ -842,17 +842,17 @@
         },
         {
             "name": "egeloen/ckeditor-bundle",
-            "version": "2.1.9",
+            "version": "2.2.1",
             "target-dir": "Ivory/CKEditorBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egeloen/IvoryCKEditorBundle.git",
-                "reference": "907cad6b96a566c1e8842b4535d26f958b17857e"
+                "reference": "8f7ce17be05e649c2a7f3a2e2577836631de7c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egeloen/IvoryCKEditorBundle/zipball/907cad6b96a566c1e8842b4535d26f958b17857e",
-                "reference": "907cad6b96a566c1e8842b4535d26f958b17857e",
+                "url": "https://api.github.com/repos/egeloen/IvoryCKEditorBundle/zipball/8f7ce17be05e649c2a7f3a2e2577836631de7c83",
+                "reference": "8f7ce17be05e649c2a7f3a2e2577836631de7c83",
                 "shasum": ""
             },
             "require": {
@@ -871,7 +871,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                    "dev-master": "2.2-dev"
                 }
             },
             "autoload": {
@@ -893,7 +893,7 @@
             "keywords": [
                 "CKEditor"
             ],
-            "time": "2014-01-04 17:39:06"
+            "time": "2014-01-31 15:15:28"
         },
         {
             "name": "fp/lightopenid",
@@ -2260,21 +2260,25 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "3.1.2",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/basdenooijer/solarium.git",
-                "reference": "3.1.2"
+                "reference": "f602c2020d1b57e7a3aa0c75088222ce31438aba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basdenooijer/solarium/zipball/3.1.2",
-                "reference": "3.1.2",
+                "url": "https://api.github.com/repos/basdenooijer/solarium/zipball/f602c2020d1b57e7a3aa0c75088222ce31438aba",
+                "reference": "f602c2020d1b57e7a3aa0c75088222ce31438aba",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/event-dispatcher": ">=2.1,<3.0"
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7",
+                "squizlabs/php_codesniffer": "~1.4"
             },
             "type": "library",
             "autoload": {
@@ -2299,7 +2303,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2013-06-05 05:40:16"
+            "time": "2013-09-13 08:09:42"
         },
         {
             "name": "sonata-project/admin-bundle",
@@ -3366,12 +3370,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "e58c072c3066da6c18741cfb96121412b7a70eae"
+                "reference": "b86f465b9899162dd22d828f6b6cabe2eee6516f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/e58c072c3066da6c18741cfb96121412b7a70eae",
-                "reference": "e58c072c3066da6c18741cfb96121412b7a70eae",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/b86f465b9899162dd22d828f6b6cabe2eee6516f",
+                "reference": "b86f465b9899162dd22d828f6b6cabe2eee6516f",
                 "shasum": ""
             },
             "require": {
@@ -3432,7 +3436,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2014-01-17 13:12:15"
+            "time": "2014-02-12 10:09:33"
         },
         {
             "name": "atoum/atoum-bundle",
@@ -3441,18 +3445,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/AtoumBundle.git",
-                "reference": "8a267df5294f476160583f22660e449f4de8986f"
+                "reference": "05d6e5779b8f3c49773f86c69a650a8bdafda978"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/AtoumBundle/zipball/8a267df5294f476160583f22660e449f4de8986f",
-                "reference": "8a267df5294f476160583f22660e449f4de8986f",
+                "url": "https://api.github.com/repos/atoum/AtoumBundle/zipball/05d6e5779b8f3c49773f86c69a650a8bdafda978",
+                "reference": "05d6e5779b8f3c49773f86c69a650a8bdafda978",
                 "shasum": ""
             },
             "require": {
                 "atoum/atoum": "dev-master",
                 "fzaninotto/faker": "1.*",
                 "php": ">=5.3.3",
+                "symfony/console": "2.*",
                 "symfony/css-selector": "2.*",
                 "symfony/dom-crawler": "2.*",
                 "symfony/finder": "2.*",
@@ -3462,7 +3467,15 @@
                 "jedi/atoum-bundle": "*",
                 "rezzza/atoum-bundle": "*"
             },
+            "require-dev": {
+                "symfony/form": "2.*"
+            },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "atoum\\AtoumBundle": ""
@@ -3489,7 +3502,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2013-10-22 13:09:56"
+            "time": "2014-02-20 11:21:32"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -3635,12 +3648,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jonaswouters/XhprofBundle.git",
-                "reference": "94032ee1f0395b7ef73396a305c668000b2b7352"
+                "reference": "a30dd842fa60b6a7f383fca7ee7a23a6ad6c74c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jonaswouters/XhprofBundle/zipball/94032ee1f0395b7ef73396a305c668000b2b7352",
-                "reference": "94032ee1f0395b7ef73396a305c668000b2b7352",
+                "url": "https://api.github.com/repos/jonaswouters/XhprofBundle/zipball/a30dd842fa60b6a7f383fca7ee7a23a6ad6c74c6",
+                "reference": "a30dd842fa60b6a7f383fca7ee7a23a6ad6c74c6",
                 "shasum": ""
             },
             "require": {
@@ -3676,7 +3689,7 @@
             "keywords": [
                 "xhprof"
             ],
-            "time": "2013-12-05 18:06:44"
+            "time": "2014-02-18 09:02:35"
         }
     ],
     "aliases": [
