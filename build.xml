@@ -82,7 +82,6 @@
     <!-- ======================= -->
     <target name="patch-vendors" depends="install-deps">
         <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Solarium-complex-range.patch" escape="false" />
-        <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/GettextBundle-overrided-bundles.patch" escape="false" />
     </target>
 
     <!-- ================================ -->
