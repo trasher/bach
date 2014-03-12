@@ -472,6 +472,12 @@ class DefaultController extends SearchController
      */
     public function displayDocumentAction($docid, $page = 1, $ajax = false)
     {
+        $with_context = true;
+
+        if ( $this->getRequest()->get('nocontext') ) {
+            $with_context = false;
+        }
+
         $client = $this->get($this->entryPoint());
         $query = $client->createSelect();
         $query->setQuery('fragmentid:"' . $docid . '"');
@@ -494,6 +500,7 @@ class DefaultController extends SearchController
 
         $docs  = $rs->getDocuments();
         $doc = $docs[0];
+        $children = array();
 
         $tpl = '';
 
@@ -503,51 +510,57 @@ class DefaultController extends SearchController
             array(
                 'docid'         => $docid,
                 'document'      => $doc,
-                'archdesc'      => $doc['archDescUnitTitle']
+                'context'       => $with_context
             )
         );
 
-        $parents = explode('/', $doc['parents']);
-        if ( count($parents) > 0 ) {
-            $pquery = $client->createSelect();
-            $query = null;
-            foreach ( $parents as $p ) {
-                if ( $query !== null ) {
-                    $query .= ' | ';
+        if ( $with_context ) {
+            $tplParams['archdesc'] = $doc['archDescUnitTitle'];
+            $parents = explode('/', $doc['parents']);
+            if ( count($parents) > 0 ) {
+                $pquery = $client->createSelect();
+                $query = null;
+                foreach ( $parents as $p ) {
+                    if ( $query !== null ) {
+                        $query .= ' | ';
+                    }
+                    $query .= 'fragmentid:"' . $doc['headerId'] . '_' . $p . '"';
                 }
-                $query .= 'fragmentid:"' . $doc['headerId'] . '_' . $p . '"';
+                $pquery->setQuery($query);
+                $pquery->setFields('fragmentid, cUnittitle');
+                $rs = $client->select($pquery);
+                $ariane  = $rs->getDocuments();
+                if ( count($ariane) > 0 ) {
+                    $tplParams['ariane'] = $ariane;
+                }
             }
-            $pquery->setQuery($query);
-            $pquery->setFields('fragmentid, cUnittitle');
-            $rs = $client->select($pquery);
-            $ariane  = $rs->getDocuments();
-            if ( count($ariane) > 0 ) {
-                $tplParams['ariane'] = $ariane;
+
+            $max_results = 20;
+            $cquery = $client->createSelect();
+            $pid = substr($docid, strlen($doc['headerId']) + 1);
+
+            $query = '+headerId:"' . $doc['headerId'] . '" +parents: ';
+            if ( $pid === 'description' ) {
+                $query .= '""';
+            } else {
+                if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
+                    $pid = $doc['parents'] . '/' . $pid;
+                }
+                $query .= $pid;
             }
-        }
+            $cquery->setQuery($query);
+            $cquery->setStart(($page - 1) * $max_results);
+            $cquery->setRows($max_results);
+            $cquery->setFields('fragmentid, cUnittitle');
+            $rs = $client->select($cquery);
+            $children  = $rs->getDocuments();
+            $count_children = $rs->getNumFound();
 
-        $max_results = 20;
-        $cquery = $client->createSelect();
-        $pid = substr($docid, strlen($doc['headerId']) + 1);
-
-        $query = '+headerId:"' . $doc['headerId'] . '" +parents: ';
-        if ( $pid === 'description' ) {
-            $query .= '""';
+            $tplParams['count_children'] = $count_children;
         } else {
-            if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
-                $pid = $doc['parents'] . '/' . $pid;
-            }
-            $query .= $pid;
+            $tplParams['count_children'] = 0;
         }
-        $cquery->setQuery($query);
-        $cquery->setStart(($page - 1) * $max_results);
-        $cquery->setRows($max_results);
-        $cquery->setFields('fragmentid, cUnittitle');
-        $rs = $client->select($cquery);
-        $children  = $rs->getDocuments();
-        $count_children = $rs->getNumFound();
 
-        $tplParams['count_children'] = $count_children;
         if ( count($children) > 0 ) {
             $tplParams['children'] = $children;
             if ( count($children) < $count_children ) {
