@@ -87,7 +87,6 @@ Displays an EAD fragment as HTML
                             <header>
                                 <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>
                             </header>
-                            <!--<xsl:apply-templates select=".//dao|.//daoloc" mode="daos"/>-->
                             <xsl:variable name="daogrps" select=".//daogrp"/>
                             <xsl:variable name="daos" select=".//dao[not(parent::daogrp)]|.//daoloc[not(parent::daogrp)]"/>
                             <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daogrps, $daos, $viewer_uri, 'medium', $ajax, $covers_dir)"/>
@@ -119,21 +118,6 @@ Displays an EAD fragment as HTML
     </xsl:template>
 
     <xsl:template match="unittitle" mode="full">
-        <!--header>
-            <h2 property="dc:title">
-                <xsl:apply-templates mode="full"/>
-                <xsl:if test="../unitdate and not(../unitdate = '')">
-                    <span class="date" property="dc:date">
-                        <xsl:if test="../unitdate/@normal">
-                            <xsl:attribute name="content">
-                                <xsl:value-of select="../unitdate/@normal"/>
-                            </xsl:attribute>
-                        </xsl:if>
-                        <xsl:value-of select="concat(' • ', ../unitdate)"/>
-                    </span>
-                </xsl:if>
-            </h2>
-        </header-->
         <xsl:apply-templates mode="specific" select="../../scopecontent"/>
     </xsl:template>
 
