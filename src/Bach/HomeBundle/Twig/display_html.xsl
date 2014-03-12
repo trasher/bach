@@ -347,6 +347,7 @@ Displays an EAD document as HTML
 
     <xsl:template match="unittitle">
         <a class="display_doc">
+            <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
             <xsl:attribute name="link">
                 <xsl:choose>
                     <xsl:when test="not(ancestor::c[1])">
@@ -359,24 +360,19 @@ Displays an EAD document as HTML
             </xsl:attribute>
 
             <strong property="dc:title">
-                <xsl:apply-templates/>
+                <xsl:apply-templates />
             </strong>
-            <xsl:text> </xsl:text>
+
+            <xsl:if test="../unitdate and not(./unitdate)">
+                <span class="date" property="dc:date">
+                    <strong><xsl:value-of select="concat(' • ', ../unitdate)"/></strong>
+                </span>
+            </xsl:if>
+
             <xsl:if test="../unitid">
+                <xsl:text> - </xsl:text>
                 <span class="unitid" property="dc:identifier">
                     <xsl:value-of select="../unitid"/>
-                </span>
-            </xsl:if>
-            <xsl:if test="../unitdate">
-                <xsl:if test="../unitid"> - </xsl:if>
-                <span class="date" property="dc:date">
-                    <xsl:value-of select="../unitdate"/>
-                </span>
-            </xsl:if>
-            <xsl:if test="not(../unitdate) and unitdate">
-                <xsl:if test="../unitid"> - </xsl:if>
-                <span class="date" property="dc:date">
-                    <xsl:value-of select="unitdate"/>
                 </span>
             </xsl:if>
         </a>
@@ -391,6 +387,12 @@ Displays an EAD document as HTML
 
     <xsl:template match="titleproper|author|sponsor|addressline|subtitle">
         <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="unittitle/unitdate">
+        <span class="date" property="dc:date">
+            <xsl:value-of select="."/>
+        </span>
     </xsl:template>
 
     <xsl:template match="emph">

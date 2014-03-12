@@ -91,27 +91,30 @@ Displays an classification scheme as HTML
 
     <xsl:template match="unittitle">
         <strong property="dc:title"><xsl:apply-templates/></strong>
-        <xsl:text> </xsl:text>
+
+        <xsl:if test="../unitdate and not(./unitdate)">
+            <span class="date" property="dc:date">
+                <strong><xsl:value-of select="concat(' • ', ../unitdate)"/></strong>
+            </span>
+        </xsl:if>
+
         <xsl:if test="../unitid">
+            <xsl:text> - </xsl:text>
             <span class="unitid" property="dc:identifier">
                 <xsl:value-of select="../unitid"/>
             </span>
         </xsl:if>
-        <xsl:if test="../unitdate">
-            <xsl:if test="../unitid"> - </xsl:if>
-            <span class="date" property="dc:date">
-                <xsl:value-of select="../unitdate"/>
-            </span>
-        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="unittitle/unitdate">
+        <span class="date" property="dc:date">
+            <xsl:value-of select="."/>
+        </span>
     </xsl:template>
 
     <xsl:template match="otherfindaid">
         <xsl:apply-templates/>
     </xsl:template>
-
-    <!--<xsl:template match="otherfindaid" mode="extends">
-        <xsl:apply-templates mode="extends"/>
-    </xsl:template>-->
 
     <xsl:template match="head" mode="extends">
         <h5><xsl:value-of select="."/></h5>
