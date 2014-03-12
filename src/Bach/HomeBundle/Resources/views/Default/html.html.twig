@@ -87,3 +87,16 @@
     {{ displayHtml(docid, xml_doc, expanded)|raw }}
 {% endblock %}
 
+{% block menu %}
+    <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search" id="search">
+        <div>
+            {{ form_widget(form.query) }}
+            {{ form_widget(form._token) }}
+            {{ form_widget(form.perform_search) }}
+            <input type="hidden" name="filter_field" value="headerId"/>
+            <input type="hidden" name="filter_value" value="{{ docid }}"/>
+        </div>
+    </form>
+    <p>{{ _('Search against current document') }}</p>
+{% endblock %}
+

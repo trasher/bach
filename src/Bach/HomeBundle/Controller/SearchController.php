@@ -193,9 +193,11 @@ abstract class SearchController extends Controller
         $facet_names = array(
             'geoloc'        => _('Map selection'),
             'date_begin'    => _('Start date'),
-            'date_end'      => _('End date')
+            'date_end'      => _('End date'),
+            'headerId'      => _('Document')
         );
         $facet_labels = array();
+        $docs_titles = array();
 
         foreach ( $conf_facets as $facet ) {
             $solr_field = $facet->getSolrFieldName();
@@ -203,6 +205,22 @@ abstract class SearchController extends Controller
             $field_facets = $facetset->getFacet($solr_field);
 
             $values = array();
+
+            if ( $solr_field == 'headerId' ) {
+                //retrieve documents titles...
+                $ids = array();
+                foreach ( $field_facets as $key=>$value ) {
+                    $ids[] = $key . '_description';
+                }
+
+                $query = $this->getDoctrine()->getManager()->createQuery(
+                    'SELECT e.headerId, e.headerTitle ' .
+                    'FROM BachIndexationBundle:EADFileFormat e ' .
+                    'WHERE e.fragmentid IN (:ids)'
+                )->setParameter('ids', $ids);
+                $docs_titles = $query->getResult();
+            }
+
             foreach ( $field_facets as $item=>$count ) {
                 if ( !$filters->offsetExists($solr_field)
                     || !$filters->hasValue($solr_field, $item)
@@ -244,6 +262,16 @@ abstract class SearchController extends Controller
                             $facet_labels[$solr_field][$item] = $ys . '-' . $ye;
                         } else {
                             $facet_labels[$solr_field][$item] = $ys;
+                        }
+                    }
+
+                    if ( $solr_field == 'headerId' ) {
+                        foreach ( $docs_titles as $title ) {
+                            if ( $title['headerId'] === $item ) {
+                                $facet_labels[$solr_field][$item]
+                                    = $title['headerTitle'];
+                                break;
+                            }
                         }
                     }
                     $values[$item] = $count;
@@ -344,6 +372,39 @@ abstract class SearchController extends Controller
                     $facet_labels[$date_field][$cdate] = $ys . '-' . $ye;
                 } else {
                     $facet_labels[$date_field][$cdate] = $ys;
+                }
+            }
+        }
+
+        if ( $filters->offsetExists('headerId') ) {
+            if ( !isset($facet_labels['headerId']) ) {
+                $facet_labels['headerId'] = array();
+            }
+            $filtered_docs = $filters->offsetGet('headerId');
+            if ( count($docs_titles) === 0 ) {
+                 //retrieve documents titles...
+                $ids = array();
+                foreach ( $filtered_docs as $filtered_doc ) {
+                    $ids[] = $filtered_doc . '_description';
+                }
+
+                $query = $this->getDoctrine()->getManager()->createQuery(
+                    'SELECT e.headerId, e.headerTitle ' .
+                    'FROM BachIndexationBundle:EADFileFormat e ' .
+                    'WHERE e.fragmentid IN (:ids)'
+                )->setParameter('ids', $ids);
+                $docs_titles = $query->getResult();
+
+            }
+            foreach ( $filtered_docs as $filtered_doc ) {
+                if ( !isset($facet_labels['headerId'][$filtered_doc]) ) {
+                    foreach ( $docs_titles as $title ) {
+                        if ( $title['headerId'] === $filtered_doc ) {
+                            $facet_labels['headerId'][$filtered_doc]
+                                = $title['headerTitle'];
+                            break;
+                        }
+                    }
                 }
             }
         }

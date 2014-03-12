@@ -285,7 +285,8 @@ p {
 
 [id=menu] a,
 [id=menu] div.ui-accordion-content a,
-[id=menu] li {
+[id=menu] li,
+[id=menu] p {
     color: #968c82;
 }
 

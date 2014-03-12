@@ -323,17 +323,29 @@ class DefaultController extends SearchController
         $form = $this->createForm(new SearchQueryFormType(), $query);
         $redirectUrl = $this->get('router')->generate('bach_homepage');
 
-        if ($this->getRequest()->isMethod('POST')) {
-            $form->bind($this->getRequest());
+        $request = $this->getRequest();
+
+        if ( $request->isMethod('POST') ) {
+            $form->bind($request);
             if ($form->isValid()) {
                 $q = $query->getQuery();
+                $url_vars = array('query_terms' => $q);
+
+                $session = $request->getSession();
+                $session->set($this->getFiltersName(), null);
+
+                //check for filtering informations
+                if ( $request->get('filter_field')
+                    && $request->get('filter_value')
+                ) {
+                    $url_vars['filter_field'] = $request->get('filter_field');
+                    $url_vars['filter_value'] = $request->get('filter_value');
+                }
+
                 $redirectUrl = $this->get('router')->generate(
                     'bach_search',
-                    array('query_terms' => $q)
+                    $url_vars
                 );
-
-                $session = $this->getRequest()->getSession();
-                $session->set($this->getFiltersName(), null);
             }
         }
         return new RedirectResponse($redirectUrl);
@@ -423,7 +435,7 @@ class DefaultController extends SearchController
                         $ids[] = $v['term'] . '_description';
                     }
 
-                    $query = $this->getDoctrine()->getEntityManager()->createQuery(
+                    $query = $this->getDoctrine()->getManager()->createQuery(
                         'SELECT e.headerId, e.headerTitle ' .
                         'FROM BachIndexationBundle:EADFileFormat e ' .
                         'WHERE e.fragmentid IN (:ids)'
@@ -669,6 +681,12 @@ class DefaultController extends SearchController
                 $tpl_vars['docid'] = $docid;
                 $tpl_vars['xml_doc'] = $xml_doc;
                 $tpl_vars['expanded'] = ($expanded !== false);
+
+                $form = $this->createForm(
+                    new SearchQueryFormType(),
+                    new SearchQuery()
+                );
+                $tpl_vars['form'] = $form->createView();
 
                 return $this->render(
                     'BachHomeBundle:Default:html.html.twig',
