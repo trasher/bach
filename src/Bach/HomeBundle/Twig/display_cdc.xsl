@@ -35,7 +35,7 @@ Displays an classification scheme as HTML
                     <ul>
                         <xsl:for-each select="//not_matched/*">
                             <li>
-                                <a link="{concat('%%%', local-name(), '_description%%%')}"><xsl:value-of select="."/></a>
+                                <a link="{concat('%%%', local-name(), '%%%')}"><xsl:value-of select="."/></a>
                             </li>
                         </xsl:for-each>
                     </ul>
@@ -250,7 +250,7 @@ Displays an classification scheme as HTML
                 <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::getDao', string(@href), string(@title), '')"/>
             </xsl:when>
             <xsl:when test="//dadocs/*[local-name() = $docid] or not($docid = '')">
-                <a link="{concat('%%%', string($docid), '_description%%%')}">
+                <a link="{concat('%%%', string($docid), '%%%')}">
                     <xsl:if test="@title and . != ''">
                         <xsl:attribute name="title">
                             <xsl:value-of select="@title"/>

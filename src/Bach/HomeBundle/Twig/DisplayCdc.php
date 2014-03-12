@@ -132,7 +132,7 @@ class DisplayCdc extends \Twig_Extension
                 );
             } else {
                 $href = $router->generate(
-                    'bach_display_document',
+                    'bach_ead_html',
                     array(
                         'docid' => $matches[1]
                     )
