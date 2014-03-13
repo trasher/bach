@@ -12,7 +12,7 @@
  * @link     http://anaphore.eu
  */
 
-namespace {{ namespace }};
+namespace Bach\IndexationBundle\Entity\Driver\FORMAT\Parser\TYPE;
 
 use Bach\IndexationBundle\Entity\ObjectTree;
 use Bach\IndexationBundle\Entity\ObjectSheet;

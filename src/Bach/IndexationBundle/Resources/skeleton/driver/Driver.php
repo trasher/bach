@@ -1,6 +1,6 @@
 <?php
 /**
- * {{ format }} file format driver
+ * FORMAT file format driver
  *
  * PHP version 5
  *
@@ -12,7 +12,7 @@
  * @link     http://anaphore.eu
  */
 
-namespace {{ namespace }};
+namespace Bach\IndexationBundle\Entity\Driver\FORMAT;
 
 use Bach\IndexationBundle\Entity\FileDriver;
 use Bach\IndexationBundle\Entity\DataBag;
@@ -20,7 +20,7 @@ use Bach\IndexationBundle\Entity\ObjectTree;
 use Bach\IndexationBundle\Exception\UnknownDriverParserException;
 
 /**
- * {{ format }} file format driver
+ * FORMAT file format driver
  *
  * @category Indexation
  * @package  Bach
@@ -41,7 +41,7 @@ class Driver extends FileDriver
      */
     public function process(DataBag $bag)
     {
-        $parserClass = 'Bach\IndexationBundle\Entity\Driver\{{ format_uppercase }}\Parser\\'.
+        $parserClass = 'Bach\IndexationBundle\Entity\Driver\FORMAT_UPPERCASE\Parser\\'.
             strtoupper($bag->getType()) . '\Parser';
 
         if (!class_exists($parserClass)) {
@@ -62,7 +62,7 @@ class Driver extends FileDriver
      */
     public function getFileFormatName()
     {
-        return "{{ format }}";
+        return "FORMAT";
     }
 
     /**

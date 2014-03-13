@@ -1,6 +1,6 @@
 <?php
 /**
- * Mapper for {{ mapper }} data
+ * Mapper for FORMAT data
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@ namespace Bach\IndexationBundle\Entity\Mapper;
 use Bach\IndexationBundle\DriverMapperInterface;
 
 /**
- * Mapper for {{ mapper }} data
+ * Mapper for FORMAT data
  *
  * PHP version 5
  *
@@ -26,7 +26,7 @@ use Bach\IndexationBundle\DriverMapperInterface;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class {{ mapper }} implements DriverMapperInterface
+class FORMATDriverMapper implements DriverMapperInterface
 {
     /**
      * Translate elements
