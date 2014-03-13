@@ -85,7 +85,7 @@
     {{ parent() }}
     $(document).ready(function(){
         $('#empty').click(function(){
-            return confirm('{{ _('Do you really want to remove all published document?\n\nThis can not be undone!') }}');
+            return confirm('{{ _('Do you really want to remove all published document?\n\nThis can not be undone!')|escape('js') }}');
         });
 
         $('#delete_documents').click(function(){
@@ -95,9 +95,9 @@
                 return false;
             } else {
                 if ( _count == 1 ) {
-                    return confirm('{{ _('Do you want to remove selected document?') }}');
+                    return confirm('{{ _('Do you want to remove selected document?')|escape('js') }}');
                 } else {
-                    return confirm('{{ _('Do you want to remove all %count selected documents?') }}'.replace(/%count/, _count));
+                    return confirm('{{ _('Do you want to remove all %count selected documents?')|escape('js') }}'.replace(/%count/, _count));
                 }
             }
         });
