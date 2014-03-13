@@ -37,7 +37,7 @@ class DefaultController extends WebTestCase
      */
     public function testIndex()
     {
-        $this->request()->GET('/notexists/')
+        $this->request()->GET('/notexists')
             ->hasStatus(404);
 
         /*$this->request()->GET('/indexation')
