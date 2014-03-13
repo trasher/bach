@@ -14,6 +14,7 @@
 namespace Bach\IndexationBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Bach\IndexationBundle\Entity\FileFormat;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
 
 /**
@@ -100,7 +101,9 @@ class ArchFileIntegration
         $this->_entityManager->getConnection()->getConfiguration()
             ->setSQLLogger(null);
         foreach ($universalFileFormats as $universalFileFormat) {
-            $universalFileFormat->setDocument($doc);
+            if ( $universalFileFormat instanceof FileFormat ) {
+                $universalFileFormat->setDocument($doc);
+            }
             $this->_entityManager->persist($universalFileFormat);
             unset($universalFileFormat);
 

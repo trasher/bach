@@ -14,6 +14,7 @@ namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Bach\HomeBundle\Entity\Comment;
 
 /**
  * Bach EAD File Format entity
@@ -27,7 +28,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="EADUniversalFileFormat")
  */
-class EADFileFormat extends MappedFileFormat
+class EADFileFormat extends FileFormat
 {
     /**
      * @ORM\Id
@@ -95,6 +96,12 @@ class EADFileFormat extends MappedFileFormat
      * @ORM\Column(type="text", length=100)
      */
     protected $fragmentid;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="EADHeader", inversedBy="fragments")
+     * @ORM\JoinColumn(name="eadheader_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $eadheader;
 
     /**
      * @ORM\ManyToOne(targetEntity="EADFileFormat")
@@ -866,4 +873,163 @@ class EADFileFormat extends MappedFileFormat
         return $this->parents_titles;
     }
 
+    /**
+     * Get uniqid
+     *
+     * @return integer
+     */
+    public function getUniqid()
+    {
+        return $this->uniqid;
+    }
+
+    /**
+     * Set fragment
+     *
+     * @param string $fragment Fragment
+     *
+     * @return EADFileFormat
+     */
+    public function setFragment($fragment)
+    {
+        $this->fragment = $fragment;
+        return $this;
+    }
+
+    /**
+     * Get fragment
+     *
+     * @return string
+     */
+    public function getFragment()
+    {
+        return $this->fragment;
+    }
+
+    /**
+     * Set elt_order
+     *
+     * @param integer $eltOrder Order
+     *
+     * @return EADFileFormat
+     */
+    public function setEltOrder($eltOrder)
+    {
+        $this->elt_order = $eltOrder;
+        return $this;
+    }
+
+    /**
+     * Get elt_order
+     *
+     * @return integer
+     */
+    public function getEltOrder()
+    {
+        return $this->elt_order;
+    }
+
+    /**
+     * Set fragmentid
+     *
+     * @param string $fragmentid Fragment id
+     *
+     * @return EADFileFormat
+     */
+    public function setFragmentid($fragmentid)
+    {
+        $this->fragmentid = $fragmentid;
+        return $this;
+    }
+
+    /**
+     * Get fragmentid
+     *
+     * @return string
+     */
+    public function getFragmentid()
+    {
+        return $this->fragmentid;
+    }
+
+    /**
+     * Set eadheader
+     *
+     * @param EADHeader $eadheader EAD header
+     *
+     * @return EADFileFormat
+     */
+    public function setEadheader(EADHeader $eadheader)
+    {
+        $this->eadheader = $eadheader;
+        return $this;
+    }
+
+    /**
+     * Get eadheader
+     *
+     * @return EADHeader
+     */
+    public function getEadheader()
+    {
+        return $this->eadheader;
+    }
+
+    /**
+     * Set archdesc
+     *
+     * @param EADFileFormat $archdesc Archdesc
+     *
+     * @return EADFileFormat
+     */
+    public function setArchdesc(EADFileFormat $archdesc)
+    {
+        $this->archdesc = $archdesc;
+        return $this;
+    }
+
+    /**
+     * Get archdesc
+     *
+     * @return EADFileFormat
+     */
+    public function getArchdesc()
+    {
+        return $this->archdesc;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param Comment $comment Comment
+     *
+     * @return EADFileFormat
+     */
+    public function addComment(Comment $comment)
+    {
+        $this->comments[] = $comment;
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \Bach\HomeBundle\Entity\Comment $comment Comment
+     *
+     * @return void
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
 }

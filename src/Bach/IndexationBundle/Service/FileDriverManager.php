@@ -120,20 +120,35 @@ class FileDriverManager
             }
 
             $results = $driver->process($bag);
-            if (!is_null($mapper)) {
-                foreach ($results as $key=>$result) {
-                    $results[$key] = $mapper->translate($result);
-                }
-            }
         }
 
         $output = array();
-        $description = null;
-        foreach ($results as $result) {
-            if ( $description !== null ) {
-                $result['archdesc'] = $description;
-            }
+        $eadheader = null;
+        $archdesc = null;
 
+        //EAD specific
+        if ( $format === 'ead' ) {
+            $eadheader = new \Bach\IndexationBundle\Entity\EADHeader(
+                $mapper->translateHeader(
+                    $results['eadheader']
+                )
+            );
+            $mapper->setEadId($eadheader->getHeaderId());
+            $output[] = $eadheader;
+
+            $archdesc = new \Bach\IndexationBundle\Entity\EADFileFormat(
+                $mapper->translate(
+                    $results['archdesc']
+                )
+            );
+            $archdesc->setEadheader($eadheader);
+            $output[] = $archdesc;
+
+            $results = $results['elements'];
+        }
+
+        foreach ($results as $result) {
+            $result = $mapper->translate($result);
             $repo = $this->_entityManager->getRepository($doctrine_entity);
 
             $exists = null;
@@ -149,6 +164,13 @@ class FileDriverManager
                 $exists
             );
 
+            if ( $eadheader !== null ) {
+                $out->setEadheader($eadheader);
+            }
+            if ( $archdesc !== null ) {
+                $out->setArchdesc($archdesc);
+            }
+
             $removed = $out->getRemoved();
             if ( count($removed) > 0 ) {
                 foreach ( $removed as $r ) {
@@ -156,11 +178,6 @@ class FileDriverManager
                 }
             }
 
-            if ( isset($result['fragmentid'])
-                && $result['fragmentid'] === $result['headerId'] . '_description'
-            ) {
-                $description = $out;
-            }
             $output[] = $out;
         }
         return $output;

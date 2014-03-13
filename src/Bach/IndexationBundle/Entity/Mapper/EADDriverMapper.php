@@ -29,18 +29,20 @@ use Bach\IndexationBundle\Entity\EADFileFormat;
  */
 class EADDriverMapper implements DriverMapperInterface
 {
+    private $_eadid;
+
     /**
-     * Translate elements
+     * Translate eadheader
      *
-     * @param arrya $data Document data
+     * @param array $data EAD header data
      *
      * @return array
      */
-    public function translate($data)
+    public function translateHeader($data)
     {
-        $mappedData = array();
+        $mapped_data = array();
 
-        $header_elements = array(
+         $header_elements = array(
             'headerId' => 'eadid',
             'headerTitle' => 'filedesc/titlestmt/titleproper',
             'headerAuthor' => 'filedesc/titlestmt/author',
@@ -51,44 +53,80 @@ class EADDriverMapper implements DriverMapperInterface
         );
 
         foreach ( $header_elements as $map=>$element ) {
-            if ( array_key_exists($element, $data['header'])
+            if ( array_key_exists($element, $data)
                 && $map !== 'headerLanguage'
-                && isset($data['header'][$element][0])
+                && isset($data[$element][0])
             ) {
-                $mappedData[$map] = $data['header'][$element][0]['value'];
-            } else if ( array_key_exists($element, $data['header'])
-                && isset($data['header'][$element][0])
+                $mapped_data[$map] = $data[$element][0]['value'];
+            } else if ( array_key_exists($element, $data)
+                && isset($data[$element][0])
                 && $map === 'headerLanguage'
                 && array_key_exists(
                     'langcode',
-                    $data['header'][$element][0]['attributes']
+                    $data[$element][0]['attributes']
                 )
             ) {
-                $mappedData[$map]
-                    = $data['header'][$element][0]['attributes']['langcode'];
+                $mapped_data[$map]
+                    = $data[$element][0]['attributes']['langcode'];
             }
         }
-        $mappedData["headerSubtitle"] = null;
+
+        return $mapped_data;
+    }
+
+    /**
+     * Translate archdesc
+     *
+     * @param array $data Archdesc data
+     *
+     * @return array
+     */
+    public function translateArchdesc($data)
+    {
+        $mapped_data = array();
 
         $archdesc_elements = array(
-            'archDescUnitId'            => 'did/unitid',
-            'archDescUnitTitle'         => 'did/unittitle',
-            'archDescUnitDate'          => 'did/unitdate',
-            'archDescRepository'        => 'did/repository',
-            'archDescLangMaterial'      => 'did/langmaterial',
-            'archDescOrigination'       => 'did/origination',
-            'archDescAcqInfo'           => 'acqinfo',
-            'archDescScopeContent'      => 'scopecontent',
-            'archDescArrangement'       => 'arrangement',
-            'archDescAccessRestrict'    => 'accessrestrict'
+            'cUnitId'           => 'did/unitid',
+            'cUnitTitle'        => 'did/unittitle',
+            'cUnitDate'         => 'did/unitdate',
+            'cScopeContent'     => 'scopecontent',
+            'cControlacces'     => 'controlacces',
+            'fragment'          => 'fragment'
         );
 
-        // Partie spécifique à l'ead
         foreach ( $archdesc_elements as $map=>$element ) {
-            if ( array_key_exists($element, $data['archdesc']) ) {
-                $mappedData[$map] = $data['archdesc'][$element][0]['value'];
+            if ( array_key_exists($element, $data) ) {
+                $mapped_data[$map] = $data['c'][$element][0]['value'];
             }
         }
+
+        $mapped_data['fragmentid'] = $this->_eadid . $data['id'];
+
+        return $mapped_data;
+    }
+
+    /**
+     * Set eadid
+     *
+     * @param string $id eadid
+     *
+     * @return void
+     */
+    public function setEadId($id)
+    {
+        $this->_eadid = $id;
+    }
+
+    /**
+     * Translate elements
+     *
+     * @param array $data Document data
+     *
+     * @return array
+     */
+    public function translate($data)
+    {
+        $mapped_data = array();
 
         $ead_elements = array(
             'cUnitid'       => 'did/unitid',
@@ -97,13 +135,15 @@ class EADDriverMapper implements DriverMapperInterface
             'cControlacces' => 'controlacces'
         );
 
-        // Partie spécifique à l'ead
-        if ( array_key_exists("parents", $data["c"]) ) {
-            $mappedData["parents"] = implode("/", array_keys($data["c"]["parents"]));
-            $mappedData["parents_titles"] = $data["c"]["parents"];
+        if ( array_key_exists('parents', $data['c']) ) {
+            $mapped_data['parents'] = implode(
+                '/',
+                array_keys($data['c']['parents'])
+            );
+            $mapped_data['parents_titles'] = $data['c']['parents'];
         }
 
-        $mappedData['fragmentid'] = $mappedData['headerId'] . '_' . $data['id'];
+        $mapped_data['fragmentid'] = $this->_eadid . '_' . $data['id'];
 
         foreach ( $ead_elements as $map=>$element ) {
             if ( array_key_exists($element, $data['c'])
@@ -112,7 +152,7 @@ class EADDriverMapper implements DriverMapperInterface
                 || array_key_exists($element, $data['c'])
                 && $element === 'parents'
             ) {
-                $mappedData[$map] = $data['c'][$element][0]['value'];
+                $mapped_data[$map] = $data['c'][$element][0]['value'];
             }
         }
 
@@ -137,18 +177,18 @@ class EADDriverMapper implements DriverMapperInterface
                 && count($data['c'][$element])
             ) {
                 if (in_array($map, $descriptors) ) {
-                    $mappedData['descriptors'][$map] = $data['c'][$element];
+                    $mapped_data['descriptors'][$map] = $data['c'][$element];
                 } else {
-                    $mappedData[$map] = $data['c'][$element];
+                    $mapped_data[$map] = $data['c'][$element];
                 }
             }
         }
 
         //c elements order
         if ( isset($data['c']['order']) ) {
-            $mappedData['elt_order'] = $data['c']['order'];
+            $mapped_data['elt_order'] = $data['c']['order'];
         }
 
-        return $mappedData;
+        return $mapped_data;
     }
 }

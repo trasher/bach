@@ -303,6 +303,15 @@ class DefaultController extends Controller
             } else {
                 $update->addDeleteQuery('headerId:' . $doc->getDocId());
             }
+            if ( $doc->getExtension() == 'ead' ) {
+                $qb = $em->createQueryBuilder();
+                $qb->add('select', 'd')
+                    ->add('from', 'BachIndexationBundle:EADHeader h')
+                    ->add('where', 'h.headerId = :id)')
+                    ->setParameter('id', $doc->getDocId());
+                $eadheader = $query->getResult();
+                $em->remove($eadheader[0]);
+            }
             $em->remove($doc);
         }
 
@@ -357,6 +366,10 @@ class DefaultController extends Controller
 
         $connection->executeUpdate(
             $platform->getTruncateTableSQL('UniversalFileFormat', true)
+        );
+
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('EADHeader', true)
         );
 
         $connection->executeUpdate(
