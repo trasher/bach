@@ -66,8 +66,7 @@ atoum:
         AdministrationBundle: ~
 
 jns_xhprof:
-    location_web:    http://localhost/xhprof
-    enabled:         true
+    request_query_argument: ""
 
 web_profiler_extra:
     routing:
