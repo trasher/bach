@@ -41,7 +41,7 @@ class Geoloc
     /**
      * @var integer
      *
-     * @ORM\Column(name="place_id", type="integer", nullable=true)
+     * @ORM\Column(name="place_id", type="bigint", nullable=true)
      */
     protected $place_id;
 
@@ -55,7 +55,7 @@ class Geoloc
     /**
      * @var integer
      *
-     * @ORM\Column(name="osm_id", type="integer", nullable=true)
+     * @ORM\Column(name="osm_id", type="bigint", nullable=true)
      */
     protected $osm_id;
 

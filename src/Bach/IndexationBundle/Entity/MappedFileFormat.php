@@ -44,7 +44,7 @@ class MappedFileFormat extends FileFormat
     protected $headerSubtitle;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=100)
+    * @ORM\Column(type="string", nullable=true, length=500)
     */
     protected $headerAuthor;
 
