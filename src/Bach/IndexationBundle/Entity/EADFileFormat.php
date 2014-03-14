@@ -596,10 +596,17 @@ class EADFileFormat extends MappedFileFormat
             $found = false;
             foreach ( $data as $new_date ) {
                 $odate = new EADDates($this, $new_date);
+
+                $begin = $date->getBegin()->format('Y-m-d');
+                $obegin = $odate->getBegin()->format('Y-m-d');
+
+                $end = $date->getEnd()->format('Y-m-d');
+                $oend = $odate->getEnd()->format('Y-m-d');
+
                 if ( $date->getDate() == $odate->getDate()
                     && $date->getNormal() == $odate->getNormal()
-                    && $date->getBegin() == $odate->getBegin()
-                    && $date->getEnd() == $odate->getEnd()
+                    && $begin == $obegin
+                    && $end == $oend
                 ) {
                     $found = true;
                     break;
@@ -618,10 +625,17 @@ class EADFileFormat extends MappedFileFormat
             $unique = true;
 
             foreach ( $this->dates as $i ) {
+
+                $begin = $i->getBegin()->format('Y-m-d');
+                $obegin = $odate->getBegin()->format('Y-m-d');
+
+                $end = $i->getEnd()->format('Y-m-d');
+                $oend = $odate->getEnd()->format('Y-m-d');
+
                 if ( $i->getDate() == $odate->getDate()
                     && $i->getNormal() == $odate->getNormal()
-                    && $i->getBegin() == $odate->getBegin()
-                    && $i->getEnd() == $odate->getEnd()
+                    && $begin == $obegin
+                    && $end == $oend
                 ) {
                     $unique = false;
                     break;
