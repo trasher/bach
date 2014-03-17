@@ -128,11 +128,25 @@ class FileDriverManager
 
         //EAD specific
         if ( $format === 'ead' ) {
-            $eadheader = new \Bach\IndexationBundle\Entity\EADHeader(
-                $mapper->translateHeader(
-                    $results['eadheader']
-                )
+            $repo = $this->_entityManager
+                ->getRepository('BachIndexationBundle:EADHeader');
+
+            $results['eadheader'] = $mapper->translateHeader(
+                $results['eadheader']
             );
+
+            $eadheader = $repo->findOneByHeaderId(
+                $results['eadheader']['headerId']
+            );
+
+            if ( $eadheader === null ) {
+                $eadheader = new \Bach\IndexationBundle\Entity\EADHeader(
+                    $results['eadheader']
+                );
+            } else {
+                $eadheader->hydrate($results['eadheader']);
+            }
+
             $mapper->setEadId($eadheader->getHeaderId());
             $output[] = $eadheader;
 
@@ -147,9 +161,9 @@ class FileDriverManager
             $results = $results['elements'];
         }
 
+        $repo = $this->_entityManager->getRepository($doctrine_entity);
         foreach ($results as $result) {
             $result = $mapper->translate($result);
-            $repo = $this->_entityManager->getRepository($doctrine_entity);
 
             $exists = null;
             if ( isset($result['fragmentid']) ) {

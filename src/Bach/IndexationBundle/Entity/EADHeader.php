@@ -14,6 +14,8 @@ namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\NotifyPropertyChanged;
+use Doctrine\Common\PropertyChangedListener;
 
 /**
  * Bach EAD header entity
@@ -28,9 +30,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @ORM\ChangeTrackingPolicy("NOTIFY")
  */
-class EADHeader
+class EADHeader implements NotifyPropertyChanged
 {
+    private $_listeners = array();
+
     /**
      * @var integer
      *
@@ -86,6 +91,16 @@ class EADHeader
     protected $fragments;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
+    /**
       * The constructor
       *
       * @param array $data Data
@@ -93,7 +108,21 @@ class EADHeader
     public function __construct($data)
     {
         $this->fragments = new ArrayCollection();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
         $this->parseData($data);
+    }
+
+    /**
+     * Adds a listener that wants to be notified about property changes.
+     *
+     * @param PropertyChangedListener $listener Listener
+     *
+     * @return void
+     */
+    public function addPropertyChangedListener(PropertyChangedListener $listener)
+    {
+        $this->_listeners[] = $listener;
     }
 
     /**
@@ -107,16 +136,47 @@ class EADHeader
     {
         foreach ($data as $key=>$value) {
             if (property_exists($this, $key)) {
-                /*if ( $this->$key !== $value ) {
-                    $this->onPropertyChanged($key, $this->$key, $value);*/
+                if ( $this->$key !== $value ) {
+                    $this->onPropertyChanged($key, $this->$key, $value);
                     $this->$key = $value;
-                /*}*/
+                }
             } else {
                 throw new \RuntimeException(
                     __CLASS__ . ' - Key ' . $key . ' is not known!'
                 );
             }
         }
+    }
+
+    /**
+     * Notifies a property change
+     *
+     * @param string $propName Property name
+     * @param string $oldValue Old value of property
+     * @param string $newValue New value of property
+     *
+     * @return void
+     */
+    protected function onPropertyChanged($propName, $oldValue, $newValue)
+    {
+        if ( $this->_listeners) {
+            foreach ( $this->_listeners as $listener ) {
+                $listener->propertyChanged($this, $propName, $oldValue, $newValue);
+            }
+        }
+        $this->updated = new \DateTime();
+    }
+
+    /**
+     * Hydrate existing entity
+     *
+     * @param array $data Data
+     *
+     * @return void
+     */
+    public function hydrate($data)
+    {
+        $this->parseData($data);
     }
 
     /**
@@ -348,5 +408,52 @@ class EADHeader
     public function getFragments()
     {
         return $this->fragments;
+    }
+
+    /**
+     * Set creation date
+     *
+     * @param DateTime $created Creation date
+     *
+     * @return Document
+     */
+
+    public function setCreated(\DateTime $created)
+    {
+        $this->created = $created;
+        return $this;
+    }
+
+    /**
+     * Get creation date
+     *
+     * @return DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set modification date
+     *
+     * @param DateTime $updated Modification date
+     *
+     * @return Document
+     */
+    public function setUpdated(\DateTime $updated)
+    {
+        $this->updated = $updated;
+        return $this;
+    }
+
+    /**
+     * Get modification date
+     *
+     * @return DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }
