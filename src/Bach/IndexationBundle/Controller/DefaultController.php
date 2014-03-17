@@ -78,42 +78,36 @@ class DefaultController extends Controller
             }*/
 
             $document = $form->getData();
-            //set core name
-            $document->setCorename(
-                $this->container->getParameter(
-                    $document->getExtension() . '_corename'
-                )
-            );
             //generate document id
             $document->generateDocId();
 
             $em = $this->getDoctrine()->getManager();
 
-            //check if document already exists, and remove it first
-            //TODO: parametize or find a better solution.
-            //Catching exception in flush does not work because EntityManager
-            //is dead after the Exception occurs :(
-            $qb = $em->createQueryBuilder();
-            $qb->add('select', 'd')
-                ->add('from', 'BachIndexationBundle:Document d')
-                ->add('where', 'd.docid = :id')
-                ->setParameter('id', $document->getDocId());
+            //check if doc exists
+            $repo = $em->getRepository('BachIndexationBundle:Document');
+            $exists = $repo->findOneByDocid($document->getDocId());
 
-            $query = $qb->getQuery();
-            $existing = $query->getResult();
-
-            if ( count($existing) > 0 ) {
-                $existing_doc = $existing[0];
-                $existing_doc->setFile($document->getFile());
-                $document = $existing_doc;
-                $document->setUploadDir(
+            if ( $exists ) {
+                $exists->setFile($document->getFile());
+                $document = $exists;
+                $exists->setUpdated(new \DateTime());
+                $exists->setUploadDir(
                     $this->container->getParameter('upload_dir')
                 );
             } else {
-                //store document reference
-                $em->persist($document);
-                $em->flush();
+                $document->setCorename(
+                    $this->container->getParameter(
+                        $document->getExtension() . '_corename'
+                    )
+                );
+                $document->setStoreDir(
+                    $this->getContainer()->getParameter('bach.typespaths')[$type]
+                );
             }
+
+            //store document
+            $em->persist($document);
+            $em->flush();
 
             //create a new task
             $task = new ArchFileIntegrationTask($document);
@@ -128,22 +122,6 @@ class DefaultController extends Controller
             } else {
                 //if performall action was requested, do not store task in db
                 //and launch indexation process
-
-                if ( count($existing) > 0 ) {
-                    //first, remove document if it already has been published
-                    $this->removeDocumentsAction(
-                        array(
-                            $existing[0]->getExtension() . '::' .
-                            $existing[0]->getId()
-                        )
-                    );
-                    //persist document *after* deletion, to upload new file and so on
-                    //we have to change a field know to database,
-                    //for doctrine to process persistence
-                    $task->getDocument()->setName(null);
-                    $em->persist($task->getDocument());
-                    $em->flush();
-                }
 
                 $integrationService = $this->container
                     ->get('bach.indexation.process.arch_file_integration');
