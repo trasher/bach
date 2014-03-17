@@ -73,9 +73,9 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             // enable memory profiling
-            if (extension_loaded('memprof')) {
+            /*if (extension_loaded('memprof')) {
                 memprof_enable();
-            }
+            }*/
 
             $document = $form->getData();
             //set core name

@@ -118,14 +118,14 @@ class ArchFileIntegration
             $this->_entityManager->flush();
             $this->_entityManager->clear();
 
-            if ( function_exists('memprof_enable') ) {
+            /*if ( function_exists('memprof_enable') ) {
                 memprof_dump_callgrind(
                     fopen(
                         '/var/www/bach/app/cache/integrate.callgrind.out',
                         'w'
                     )
                 );
-            }
+            }*/
         }
     }
 

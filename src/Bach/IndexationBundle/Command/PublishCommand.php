@@ -89,9 +89,9 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // enable memory profiling
-        if (extension_loaded('memprof')) {
+        /*if (extension_loaded('memprof')) {
             memprof_enable();
-        }
+        }*/
         $count = 0;
 
         $dry = $input->getOption('dry-run');
