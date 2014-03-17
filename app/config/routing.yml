@@ -64,3 +64,11 @@ elfinder:
 #_internal:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #    prefix:   /_internal
+
+#this one *MUST* be last
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: BachHomeBundle:Default:removeTrailingSlash }
+    requirements:
+        url: .*/$
+        _method: GET

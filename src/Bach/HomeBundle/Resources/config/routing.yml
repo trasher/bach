@@ -104,10 +104,3 @@ bach_ead_html:
     pattern: /document/{docid}/{expanded}
     defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }
 
-#this one *MUST* be last
-remove_trailing_slash:
-    path: /{url}
-    defaults: { _controller: BachHomeBundle:Default:removeTrailingSlash }
-    requirements:
-        url: .*/$
-        _method: GET
