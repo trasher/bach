@@ -173,10 +173,10 @@ class DisplayHtml extends \Twig_Extension
             return _('Date:');
             break;
         case 'Address:':
-            return ('Address:');
+            return _('Address:');
             break;
         case 'Edition statement':
-            return ('Edition statement');
+            return _('Edition statement');
             break;
         case 'Profile':
             return _('Profile');
