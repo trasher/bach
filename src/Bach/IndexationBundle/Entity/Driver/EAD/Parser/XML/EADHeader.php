@@ -85,8 +85,15 @@ class EADHeader
             $this->_values[$field] = array();
             if ( $nodes->length > 0 ) {
                 foreach ( $nodes as $node ) {
+                    $value = strip_tags(
+                        str_replace(
+                            '<lb/>',
+                            ' ',
+                            $node->ownerDocument->saveXML($node)
+                        )
+                    );
                     $this->_values[$field][] = array(
-                        'value'         => $node->nodeValue,
+                        'value'         => $value,
                         'attributes'    => $this->_parseAttributes($node->attributes)
                     );
                 }

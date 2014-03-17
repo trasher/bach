@@ -129,7 +129,14 @@ class EADArchDesc
                 $current_title = '';
                 $title_xpath = $this->_xpath->query('./did/unittitle', $frag);
                 if ( $title_xpath->length == 1) {
-                    $current_title = $title_xpath->item(0)->nodeValue;
+                    $value = strip_tags(
+                        str_replace(
+                            '<lb/>',
+                            ' ',
+                            $rootNode->ownerDocument->saveXML($title_xpath->item(0))
+                        )
+                    );
+                    $current_title = $value;
                 }
                 $results = array_merge(
                     $results,
@@ -192,8 +199,15 @@ class EADArchDesc
             if ( $nodes->length > 0 ) {
                 $result[$field] = array();
                 foreach ( $nodes as $node ) {
+                    $value = strip_tags(
+                        str_replace(
+                            '<lb/>',
+                            ' ',
+                            $node->ownerDocument->saveXML($node)
+                        )
+                    );
                     $result[$field][] = array(
-                        'value'         => $node->nodeValue,
+                        'value'         => $value,
                         'attributes'    => $this->_parseAttributes(
                             $node->attributes
                         )
