@@ -50,6 +50,11 @@ abstract class FileFormat implements NotifyPropertyChanged
     protected $updated;
 
     /**
+     * Array of removed linked entities
+     */
+    protected $removed;
+
+    /**
       * The constructor
       *
       * @param array $data The input data
@@ -194,4 +199,13 @@ abstract class FileFormat implements NotifyPropertyChanged
         return $this->updated;
     }
 
+    /**
+     * Get removed associated entities
+     *
+     * @return ArrayCollection
+     */
+    public function getRemoved()
+    {
+        return $this->removed;
+    }
 }

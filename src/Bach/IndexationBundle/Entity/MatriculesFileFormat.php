@@ -217,8 +217,12 @@ class MatriculesFileFormat extends FileFormat
                         $value = new \DateTime(
                             $value . '-01-01'
                         );
-                        $has_changed = $this->$key->format('Y-m-d')
-                            !== $value->format('Y-m-d');
+                        if ( !$this->$key ) {
+                            $has_changed = true;
+                        } else {
+                            $has_changed = $this->$key->format('Y-m-d')
+                                !== $value->format('Y-m-d');
+                        }
                     } else {
                         $has_changed = ($this->$key !== $value);
                     }

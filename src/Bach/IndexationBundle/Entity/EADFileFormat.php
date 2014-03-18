@@ -114,8 +114,6 @@ class EADFileFormat extends FileFormat
      */
     protected $comments;
 
-    protected $removed;
-
     /**
      * The constructor
      *
@@ -340,16 +338,6 @@ class EADFileFormat extends FileFormat
                 );
             }
         }
-    }
-
-    /**
-     * Get removed associated entities
-     *
-     * @return ArrayCollection
-     */
-    public function getRemoved()
-    {
-        return $this->removed;
     }
 
     /**
