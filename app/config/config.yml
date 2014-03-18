@@ -255,3 +255,8 @@ services:
         tags:
             - { name: twig.extension }
 
+k_phoen_sitemap:
+    base_host: '%bach_url%'
+    base_host_sitemap: '%bach_url%'
+    limit: 50000
+

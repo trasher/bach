@@ -41,7 +41,8 @@
         "atoum/atoum-bundle": "dev-master",
         "jns/xhprof-bundle": "dev-master",
         "facebook/xhprof": "*@dev",
-        "elao/web-profiler-extra-bundle" : "dev-master"
+        "elao/web-profiler-extra-bundle" : "dev-master",
+        "kphoen/sitemap-bundle": "dev-master"
     },
     "suggest": {
         "leaseweb/memcache-bundle": "Use memcached (1.1.*)"

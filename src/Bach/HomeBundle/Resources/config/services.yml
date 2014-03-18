@@ -58,3 +58,10 @@ services:
         tags:
             - { name: 'twig.extension' }
         arguments : [ @service_container ]
+
+    bach.home.sitemap_provider:
+        class: Bach\HomeBundle\Provider\BachSitemapProvider
+        arguments: [ @doctrine.orm.entity_manager, @router, @service_container ]
+        tags:
+            - { name: sitemap.provider }
+

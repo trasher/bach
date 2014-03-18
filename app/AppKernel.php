@@ -73,7 +73,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Bach\ExposBundle\ExposBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
-            new FM\ElfinderBundle\FMElfinderBundle()
+            new FM\ElfinderBundle\FMElfinderBundle(),
+            new KPhoen\SitemapBundle\KPhoenSitemapBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'console'))) {

@@ -46,6 +46,7 @@ parameters:
         - otile2
         - otile3
         - otile4
+    bach_url: http://localhost
 
 bach_home:
     files:
