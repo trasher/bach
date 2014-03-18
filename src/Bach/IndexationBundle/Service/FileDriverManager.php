@@ -126,16 +126,18 @@ class FileDriverManager
         $eadheader = null;
         $archdesc = null;
 
+        $repo = $this->_entityManager->getRepository($doctrine_entity);
+
         //EAD specific
         if ( $format === 'ead' ) {
-            $repo = $this->_entityManager
+            $headerrepo = $this->_entityManager
                 ->getRepository('BachIndexationBundle:EADHeader');
 
             $results['eadheader'] = $mapper->translateHeader(
                 $results['eadheader']
             );
 
-            $eadheader = $repo->findOneByHeaderId(
+            $eadheader = $headerrepo->findOneByHeaderId(
                 $results['eadheader']['headerId']
             );
 
@@ -149,19 +151,31 @@ class FileDriverManager
 
             $mapper->setEadId($eadheader->getHeaderId());
             $output[] = $eadheader;
+            unset($headerrepo);
 
-            $archdesc = new \Bach\IndexationBundle\Entity\EADFileFormat(
-                $mapper->translate(
-                    $results['archdesc']
-                )
+            $archdesc = $repo->findOneByFragmentid(
+                $eadheader->getHeaderId() . '_description'
             );
-            $archdesc->setEadheader($eadheader);
+
+            if ( $archdesc === null ) {
+                $archdesc = new \Bach\IndexationBundle\Entity\EADFileFormat(
+                    $mapper->translate(
+                        $results['archdesc']
+                    )
+                );
+                $archdesc->setEadheader($eadheader);
+            } else {
+                $archdesc->hydrate(
+                    $mapper->translate(
+                        $results['archdesc']
+                    )
+                );
+            }
             $output[] = $archdesc;
 
             $results = $results['elements'];
         }
 
-        $repo = $this->_entityManager->getRepository($doctrine_entity);
         foreach ($results as $result) {
             $result = $mapper->translate($result);
 
