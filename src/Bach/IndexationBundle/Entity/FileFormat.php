@@ -105,7 +105,11 @@ abstract class FileFormat implements NotifyPropertyChanged
                 $listener->propertyChanged($this, $propName, $oldValue, $newValue);
             }
         }
-        $this->updated = new \DateTime();
+        if ( $propName !== 'updated' ) {
+            $now = new \DateTime();
+            $this->onPropertyChanged('updated', $this->updated, $now);
+            $this->updated = $now;
+        }
     }
 
     /**
