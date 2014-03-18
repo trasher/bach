@@ -101,7 +101,7 @@ class DefaultController extends Controller
                     )
                 );
                 $document->setStoreDir(
-                    $this->getContainer()->getParameter('bach.typespaths')[$type]
+                    $this->container->getParameter('bach.typespaths')[$document->getExtension()]
                 );
             }
 
