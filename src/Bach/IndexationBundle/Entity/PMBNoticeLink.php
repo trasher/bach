@@ -90,7 +90,7 @@ class PMBNoticeLink
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -113,7 +113,7 @@ class PMBNoticeLink
     /**
      * Get notice
      *
-     * @return string 
+     * @return string
      */
     public function getNotice()
     {

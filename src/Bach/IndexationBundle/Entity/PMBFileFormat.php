@@ -268,7 +268,7 @@ Class PMBFileFormat
     /**
      * Get titre_propre
      *
-     * @return string 
+     * @return string
      */
     public function getTitrePropre()
     {
@@ -291,7 +291,7 @@ Class PMBFileFormat
     /**
      * Get titrepropre_auteur_different
      *
-     * @return string 
+     * @return string
      */
     public function getTitrepropreAuteurDifferent()
     {
@@ -314,7 +314,7 @@ Class PMBFileFormat
     /**
      * Get titre_parallele
      *
-     * @return string 
+     * @return string
      */
     public function getTitreParallele()
     {
@@ -337,7 +337,7 @@ Class PMBFileFormat
     /**
      * Get titre_complement
      *
-     * @return string 
+     * @return string
      */
     public function getTitreComplement()
     {
@@ -360,7 +360,7 @@ Class PMBFileFormat
     /**
      * Get codage_unimarc
      *
-     * @return string 
+     * @return string
      */
     public function getCodageUnimarc()
     {
@@ -383,7 +383,7 @@ Class PMBFileFormat
     /**
      * Get part_of
      *
-     * @return string 
+     * @return string
      */
     public function getPartOf()
     {
@@ -406,7 +406,7 @@ Class PMBFileFormat
     /**
      * Get part_num
      *
-     * @return string 
+     * @return string
      */
     public function getPartNum()
     {
@@ -429,7 +429,7 @@ Class PMBFileFormat
     /**
      * Get editeur
      *
-     * @return string 
+     * @return string
      */
     public function getEditeur()
     {
@@ -452,7 +452,7 @@ Class PMBFileFormat
     /**
      * Get collection
      *
-     * @return string 
+     * @return string
      */
     public function getCollection()
     {
@@ -475,7 +475,7 @@ Class PMBFileFormat
     /**
      * Get num_collection
      *
-     * @return string 
+     * @return string
      */
     public function getNumCollection()
     {
@@ -498,7 +498,7 @@ Class PMBFileFormat
     /**
      * Get sous_collection
      *
-     * @return string 
+     * @return string
      */
     public function getSousCollection()
     {
@@ -544,7 +544,7 @@ Class PMBFileFormat
     /**
      * Get mention_edition
      *
-     * @return string 
+     * @return string
      */
     public function getMentionEdition()
     {
@@ -567,7 +567,7 @@ Class PMBFileFormat
     /**
      * Get autre_editeur
      *
-     * @return string 
+     * @return string
      */
     public function getAutreEditeur()
     {
@@ -590,7 +590,7 @@ Class PMBFileFormat
     /**
      * Get isbn
      *
-     * @return string 
+     * @return string
      */
     public function getIsbn()
     {
@@ -613,7 +613,7 @@ Class PMBFileFormat
     /**
      * Get importance_materielle
      *
-     * @return string 
+     * @return string
      */
     public function getImportanceMaterielle()
     {
@@ -636,7 +636,7 @@ Class PMBFileFormat
     /**
      * Get autres_carac_materielle
      *
-     * @return string 
+     * @return string
      */
     public function getAutresCaracMaterielle()
     {
@@ -659,7 +659,7 @@ Class PMBFileFormat
     /**
      * Get format
      *
-     * @return string 
+     * @return string
      */
     public function getFormat()
     {
@@ -682,7 +682,7 @@ Class PMBFileFormat
     /**
      * Get prix
      *
-     * @return string 
+     * @return string
      */
     public function getPrix()
     {
@@ -705,7 +705,7 @@ Class PMBFileFormat
     /**
      * Get materiel_accompagnement
      *
-     * @return string 
+     * @return string
      */
     public function getMaterielAccompagnement()
     {
@@ -728,7 +728,7 @@ Class PMBFileFormat
     /**
      * Get note_generale
      *
-     * @return string 
+     * @return string
      */
     public function getNoteGenerale()
     {
@@ -751,7 +751,7 @@ Class PMBFileFormat
     /**
      * Get note_content
      *
-     * @return string 
+     * @return string
      */
     public function getNoteContent()
     {
@@ -774,7 +774,7 @@ Class PMBFileFormat
     /**
      * Get extract
      *
-     * @return string 
+     * @return string
      */
     public function getExtract()
     {
@@ -797,7 +797,7 @@ Class PMBFileFormat
     /**
      * Get indexation_decimale
      *
-     * @return string 
+     * @return string
      */
     public function getIndexationDecimale()
     {
@@ -820,7 +820,7 @@ Class PMBFileFormat
     /**
      * Get key_word
      *
-     * @return string 
+     * @return string
      */
     public function getKeyWord()
     {
@@ -843,7 +843,7 @@ Class PMBFileFormat
     /**
      * Get link_ressource_electronque
      *
-     * @return string 
+     * @return string
      */
     public function getLinkRessourceElectronque()
     {
@@ -866,7 +866,7 @@ Class PMBFileFormat
     /**
      * Get format_elect_ressource
      *
-     * @return string 
+     * @return string
      */
     public function getFormatElectRessource()
     {
@@ -889,7 +889,7 @@ Class PMBFileFormat
     /**
      * Get statut_notice
      *
-     * @return string 
+     * @return string
      */
     public function getStatutNotice()
     {
@@ -912,7 +912,7 @@ Class PMBFileFormat
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -935,7 +935,7 @@ Class PMBFileFormat
     /**
      * Get url_vignette
      *
-     * @return string 
+     * @return string
      */
     public function getUrlVignette()
     {

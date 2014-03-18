@@ -398,6 +398,9 @@ class Document
             $xml = simplexml_load_file($this->file->getPathName());
             $this->docid = (string)$xml->id;
             break;
+        case 'pmb':
+            $this->docid = md5($this->file->getPathName());
+            break;
         default:
             throw new \RuntimeException('Document ID is mandatory!');
             break;

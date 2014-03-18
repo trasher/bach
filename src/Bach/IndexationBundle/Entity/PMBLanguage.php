@@ -37,10 +37,6 @@ class PMBLanguage
     protected $uniqid;
 
     /**
-     * @ORM\Column(type="integer", length=10)
-     */
-    protected $idpmblanguage;
-    /**
      * @ORM\Column(type="string", nullable=true, length=255)
      */
     protected $type;
@@ -78,31 +74,10 @@ class PMBLanguage
     }
 
     /**
-     * Set idpmblanguage
-     *
-     * @param integer $idpmblanguage
-     * @return PMBLanguage
-     */
-    public function setIdpmblanguage($idpmblanguage)
-    {
-        $this->idpmblanguage = $idpmblanguage;
-        return $this;
-    }
-
-    /**
-     * Get idpmblanguage
-     *
-     * @return integer 
-     */
-    public function getIdpmblanguage()
-    {
-        return $this->idpmblanguage;
-    }
-
-    /**
      * Set type
      *
      * @param string $type
+     *
      * @return PMBLanguage
      */
     public function setType($type)
@@ -114,7 +89,7 @@ class PMBLanguage
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -136,7 +111,7 @@ class PMBLanguage
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {

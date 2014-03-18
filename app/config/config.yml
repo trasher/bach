@@ -128,6 +128,10 @@ nelmio_solarium:
             client_class: Solarium\Client
             adapter_class: Solarium\Core\Client\Adapter\Http
             endpoints: matricules
+        pmb:
+            client_class: Solarium\Client
+            adapter_class: Solarium\Core\Client\Adapter\Http
+            endpoints: pmb
 
     endpoints:
         default:
@@ -148,14 +152,22 @@ nelmio_solarium:
             path: '%solr_path%'
             core: '%matricules_corename%'
             timeout: 5
+        pmb:
+            host: '%solr_host%'
+            port: '%solr_port%'
+            path: '%solr_path%'
+            core: '%pmb_corename%'
+            timeout: 5
 
 bach_indexation:
     types:
         - ead
         - matricules
+        - pmb
     paths:
         ead: '%ead_files_path%'
         matricules: '%matricules_files_path%'
+        pmb: '%pmb_files_path%'
 
 fos_user:
     db_driver: orm

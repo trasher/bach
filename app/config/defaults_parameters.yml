@@ -54,6 +54,7 @@ parameters:
     #Core names for each type
     ead_corename: ead
     matricules_corename: matricules
+    pmb_corename: pmb
     #Default search core
     solr_search_core: '%ead_corename%'
     solr_query_fields: ~
@@ -66,6 +67,8 @@ parameters:
     ead_oai_path: null
     matricules_files_path: null
     html_intros_path: null
+    pmb_files_path: null
+
 
     ##Features activation
     #main features

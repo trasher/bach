@@ -47,6 +47,38 @@ drivers:
             - lieu_naissance
             - start_dao
             - end_dao
+    pmb:
+        mapper: Bach\IndexationBundle\Entity\Mapper\PMBDriverMapper
+        universalfileformat: Bach\IndexationBundle\Entity\PMBFileFormat
+        preprocessor:
+        fields:
+            - idNotice
+            - zoneCodageUnimarc/codage
+            - zoneTitre/titrePrincipal
+            - prixISBN/ISBN
+            - zoneLangues/langueDocument
+            - zoneCollation/nbPages
+            - zoneCollation/illustration
+            - zoneCollation/taille
+            - zoneNotes/noteContenu
+            - zoneAuteurPrincipal/nom
+            - zoneAuteurPrincipal/prenom
+            - zoneAuteurPrincipal/codeFonction
+            - zoneAuteurPrincipal/s_9
+            - zoneEditeur/ville
+            - zoneEditeur/s_b
+            - zoneEditeur/nom
+            - zoneEditeur/annee
+            - zoneEditeur/s_9
+            - zoneCollection225/nom
+            - zoneCollection225/s_9
+            - zoneCollection410/nom
+            - zoneCollection410/s_9
+            - zoneIndexationDecimale/nom
+            - zoneIndexationDecimale/s_l
+            - zoneIndexationDecimale/s_9
+            - f_896/s_a
+            - zoneCategories/categorie
     ead:
         mapper: Bach\IndexationBundle\Entity\Mapper\EADDriverMapper
         fileformat: Bach\IndexationBundle\Entity\EADFileFormat
@@ -95,7 +127,7 @@ drivers:
                     - did/origination
                     - scopecontent
                     - controlacces
-                    - .//daoloc|.//dao|.//archref[not(contains(@href, 'http://')) and contains(@href, '.pdf')]
+                    - .//daoloc|.//dao|.//archref[not(contains(@href, 'http://'')) and contains(@href, '.pdf')]
                     - .//corpname
                     - .//famname
                     - .//genreform

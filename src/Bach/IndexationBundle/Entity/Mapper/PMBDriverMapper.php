@@ -16,7 +16,7 @@ namespace Bach\IndexationBundle\Entity\Mapper;
 use Bach\IndexationBundle\DriverMapperInterface;
 
 /**
- * Mapper for EAD data
+ * Mapper for PMBz data
  *
  * PHP version 5
  *
@@ -114,20 +114,6 @@ class PMBDriverMapper implements DriverMapperInterface
             }
         }
 
-        $ead_mulitple_elements = array(
-            'cCorpname'    => './/corpname',
-            'cFamname'     => './/famname',
-            'cGenreform'   => './/genreform',
-            'cGeogname'    => './/geogname',
-            'cName'        => './/name',
-            'cPersname'    => './/persname',
-            'cSubject'     => './/subject',
-            'cUnitDate'    => './/unitdate',
-            'cDate'        => './/date',
-            'fragment'     => 'fragment',
-            'daolist'      => './/daoloc|.//dao|.//archref[not(contains(@href, \'http://\')) and contains(@href, \'.pdf\')]',
-            'cTitle'       => './/title'
-        );
 
         foreach ( $ead_mulitple_elements as $map=>$element ) {
             if ( array_key_exists($element, $data['c'])

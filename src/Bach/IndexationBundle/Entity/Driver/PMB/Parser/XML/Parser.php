@@ -1,13 +1,13 @@
 <?php
 /**
- * Matricules Parser
+ * PMB Parser
  *
  * PHP version 5
  *
  * @category Indexation
  * @package  Bach
  * @author   Anaphore PI Team <uknown@unknown.com>
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -20,12 +20,12 @@ use Bach\IndexationBundle\Entity\DataBag;
 use Bach\IndexationBundle\ParserInterface;
 
 /**
- * Matricules Parser
+ * PMB Parser
  *
  * @category Indexation
  * @package  Bach
  * @author   Anaphore PI Team <uknown@unknown.com>
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -59,15 +59,18 @@ class Parser implements ParserInterface
     {
         $dom = $bag->getData();
         $xpath = new \DOMXPath($dom);
-
-        $matricule = new Matricule(
-            $xpath,
-            $xpath->query('/document')->item(0),
-            $this->_configuration['fields']
-        );
-        $this->_tree->append(
-            new ObjectSheet('matricules', $matricule)
-        );
+        $nodes = $xpath->query('//notice');
+		foreach ($nodes as $node) {
+	        $pmb = new PMB(
+	            $xpath,
+	            $node,
+	            $this->_configuration['fields']
+        	);
+	        $id = $xpath->query('idNotice', $node)->item(0)->nodeValue;
+	        $this->_tree->append(
+	            new ObjectSheet('notice_' . $id, $pmb)
+        	);
+		}
     }
 
     /**

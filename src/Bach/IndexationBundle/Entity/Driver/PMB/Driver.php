@@ -1,13 +1,13 @@
 <?php
 /**
- * Matricules file format driver
+ * PMB file format driver
  *
  * PHP version 5
  *
  * @category Indexation
  * @package  Bach
  * @author   Anaphore PI Team <uknown@unknown.com>
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -20,12 +20,12 @@ use Bach\IndexationBundle\Entity\ObjectTree;
 use Bach\IndexationBundle\Exception\UnknownDriverParserException;
 
 /**
- * Matricules file format driver
+ * PMB file format driver
  *
  * @category Indexation
  * @package  Bach
  * @author   Anaphore PI Team <uknown@unknown.com>
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -41,7 +41,7 @@ class Driver extends FileDriver
      */
     public function process(DataBag $bag)
     {
-        $parserClass = 'Bach\IndexationBundle\Entity\Driver\Matricules\Parser\\'.
+        $parserClass = 'Bach\IndexationBundle\Entity\Driver\PMB\Parser\\'.
             strtoupper($bag->getType()) . '\Parser';
 
         if (!class_exists($parserClass)) {
@@ -62,7 +62,7 @@ class Driver extends FileDriver
      */
     public function getFileFormatName()
     {
-        return 'matricules';
+        return 'pmb';
     }
 
     /**
@@ -76,7 +76,7 @@ class Driver extends FileDriver
     {
         $results = array();
 
-        $results[] = $tree->get('matricules')->getContent()->getValues();
+        $results[] = $tree->get('pmb')->getContent()->getValues();
 
         return $results;
     }

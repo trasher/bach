@@ -112,7 +112,7 @@ class PMBTitle
     /**
      * Get title_section_part
      *
-     * @return string 
+     * @return string
      */
     public function getTitleSectionPart()
     {
@@ -123,6 +123,7 @@ class PMBTitle
      * Set date_publication
      *
      * @param \DateTime $datePublication
+     *
      * @return PMBTitle
      */
     public function setDatePublication($datePublication)
@@ -145,6 +146,7 @@ class PMBTitle
      * Set sous_vedette_forme
      *
      * @param string $sousVedetteForme
+     *
      * @return PMBTitle
      */
     public function setSousVedetteForme($sousVedetteForme)
@@ -156,7 +158,7 @@ class PMBTitle
     /**
      * Get sous_vedette_forme
      *
-     * @return string 
+     * @return string
      */
     public function getSousVedetteForme()
     {
@@ -167,6 +169,7 @@ class PMBTitle
      * Set langue
      *
      * @param string $langue
+     *
      * @return PMBTitle
      */
     public function setLangue($langue)
@@ -178,7 +181,7 @@ class PMBTitle
     /**
      * Get langue
      *
-     * @return string 
+     * @return string
      */
     public function getLangue()
     {
@@ -189,6 +192,7 @@ class PMBTitle
      * Set version
      *
      * @param string $version
+     *
      * @return PMBTitle
      */
     public function setVersion($version)
@@ -201,7 +205,7 @@ class PMBTitle
     /**
      * Get version
      *
-     * @return string 
+     * @return string
      */
     public function getVersion()
     {
@@ -212,6 +216,7 @@ class PMBTitle
      * Set mention_arrangement
      *
      * @param string $mentionArrangement
+     *
      * @return PMBTitle
      */
     public function setMentionArrangement($mentionArrangement)
@@ -224,7 +229,7 @@ class PMBTitle
     /**
      * Get mention_arrangement
      *
-     * @return string 
+     * @return string
      */
     public function getMentionArrangement()
     {
@@ -235,6 +240,7 @@ class PMBTitle
      * Set comment
      *
      * @param string $comment
+     *
      * @return PMBTitle
      */
     public function setComment($comment)
@@ -246,7 +252,7 @@ class PMBTitle
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
