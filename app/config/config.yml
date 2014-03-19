@@ -26,16 +26,18 @@ twig:
     #cache: false
     globals:
         lang: '%locale%'
-        openid: '%openid_enabled%'
-        expos: '%show_expos%'
-        cdc: '%has_cdc%'
-        show_tagcloud: '%show_tagcloud%'
         client_code: '%client_code%'
-        matricules: '%has_matricules%'
-        enable_social: '%enable_social%'
         tiles_url: '%tiles_url%'
         tiles_attribution: '%tiles_attribution%'
         tiles_subdomains: '%tiles_subdomains%'
+        features:
+            matricules: '%feature.matricules%'
+            cdc: '%feature.cdc%'
+            openid: '%feature.openid%'
+            expos: '%feature.expos%'
+            tagcloud: '%feature.tagcloud%'
+            social: '%feature.social%'
+
 
 # Assetic Configuration
 assetic:
@@ -69,12 +71,12 @@ doctrine:
         auto_mapping: true
 
 # Swiftmailer Configuration
-swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: memory }
+#swiftmailer:
+#    transport: "%mailer_transport%"
+#    host:      "%mailer_host%"
+#    username:  "%mailer_user%"
+#    password:  "%mailer_password%"
+#    spool:     { type: memory }
 
 # Solarium Configuration
 nelmio_solarium:

@@ -102,7 +102,7 @@ abstract class SearchController extends Controller
      */
     protected function commonTemplateVariables()
     {
-        $show_maps = $this->container->getParameter('show_maps');
+        $show_maps = $this->container->getParameter('feature.maps');
         $viewer_uri = $this->container->getParameter('viewer_uri');
         $covers_dir = $this->container->getParameter('covers_dir');
 
@@ -125,7 +125,7 @@ abstract class SearchController extends Controller
      */
     protected function handleGeoloc(SolariumQueryFactory $factory, &$tpl_vars)
     {
-        $show_maps = $this->container->getParameter('show_maps');
+        $show_maps = $this->container->getParameter('feature.maps');
         if ( $show_maps ) {
             $request = $this->getRequest();
             $session = $request->getSession();
@@ -186,7 +186,7 @@ abstract class SearchController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        $show_maps = $this->container->getParameter('show_maps');
+        $show_maps = $this->container->getParameter('feature.maps');
         $facets = array();
         $facetset = $searchResults->getFacetSet();
 
@@ -666,7 +666,7 @@ abstract class SearchController extends Controller
      */
     protected function getGeolocFields()
     {
-        $show_maps = $this->container->getParameter('show_maps');
+        $show_maps = $this->container->getParameter('feature.maps');
         if ( $show_maps && !isset($this->_geoloc) ) {
             $class = $this->getGeolocClass();
             $gf = new $class;

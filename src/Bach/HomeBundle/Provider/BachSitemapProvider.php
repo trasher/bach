@@ -122,7 +122,7 @@ class BachSitemapProvider implements ProviderInterface
         }
 
         //if enabled, add matricules URLs
-        if ( $this->container->getParameter('has_matricules') === true ) {
+        if ( $this->container->getParameter('feature.matricules') === true ) {
             $url = new Url();
             $url->setLoc(
                 $this->router->generate('bach_matricules')

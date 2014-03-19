@@ -74,7 +74,7 @@ class DefaultController extends SearchController
         $factory = $this->get($this->factoryName());
         $factory->setDateField('cDateBegin');
 
-        $show_tagcloud = $this->container->getParameter('show_tagcloud');
+        $show_tagcloud = $this->container->getParameter('feature.tagcloud');
         if ( $show_tagcloud ) {
             $tagcloud = $factory->getTagCloud($this->getDoctrine()->getManager());
 
