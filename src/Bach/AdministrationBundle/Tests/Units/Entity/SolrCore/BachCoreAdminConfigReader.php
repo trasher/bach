@@ -15,7 +15,8 @@ namespace Bach\AdministrationBundle\Tests\Units\Entity\SolrCore;
 
 use atoum\AtoumBundle\Test\Units;
 use Symfony\Component\Yaml\Parser;
-use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader as ConfigReader;
+use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader
+    as ConfigReader;
 
 /**
  * Bach BachCoreAdminConfigReader unit tests

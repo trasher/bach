@@ -80,9 +80,12 @@ class FileDriverManager
             //Importation configuration du driver
             if (array_key_exists('drivers', $this->_conf)) {
                 if (array_key_exists($format, $this->_conf['drivers'])) {
-                    if (array_key_exists('mapper', $this->_conf['drivers'][$format])) {
+                    $format_conf = $this->_conf['drivers'][$format];
+                    if (array_key_exists('mapper', $format_conf)) {
                         try {
-                            $reflection = new \ReflectionClass($this->_conf['drivers'][$format]['mapper']);
+                            $reflection = new \ReflectionClass(
+                                $format_conf['mapper']
+                            );
                             if ( in_array('Bach\IndexationBundle\DriverMapperInterface', $reflection->getInterfaceNames())) {
                                 $mapper = $reflection->newInstance();
                             }
@@ -91,21 +94,24 @@ class FileDriverManager
                         }
                     }
 
-                    if ( array_key_exists('universalfileformat', $this->_conf['drivers'][$format]) ) {
+                    if ( array_key_exists('universalfileformat', $format_conf) ) {
                         try {
-                            $reflection = new \ReflectionClass($this->_conf['drivers'][$format]['universalfileformat']);
-                            $universalFileFormatClass = $this->_conf['drivers'][$format]['universalfileformat'];
-                            $doctrine_entity = $this->_conf['drivers'][$format]['doctrine'];
+                            $reflection = new \ReflectionClass(
+                                $format_conf['universalfileformat']
+                            );
+                            $universalFileFormatClass
+                                = $format_conf['universalfileformat'];
+                            $doctrine_entity = $format_conf['doctrine'];
                         }
                         catch (\RuntimeException $e) {
                             throw $e;
                         }
                     }
 
-                    if ( array_key_exists('preprocessor', $this->_conf['drivers'][$format])
+                    if ( array_key_exists('preprocessor', $format_conf)
                         && is_null($preprocessor)
                     ) {
-                        $preprocessor = $this->_conf['drivers'][$format]['preprocessor'];
+                        $preprocessor = $format_conf['preprocessor'];
                     }
                 }
             }
@@ -248,8 +254,9 @@ class FileDriverManager
                 if ('Bach\IndexationBundle\Entity\FileDriver' == $reflection->getParentClass()->getName()) {
                     $configuration = array();
                     if ( array_key_exists('drivers', $this->_conf) ) {
-                        if ( array_key_exists(strtolower($file->getBasename()), $this->_conf['drivers'])) {
-                            $configuration = $this->_conf['drivers'][strtolower($file->getBasename())];
+                        $basename = strtolower($file->getBasename());
+                        if ( array_key_exists($basename, $this->_conf['drivers'])) {
+                            $configuration = $this->_conf['drivers'][$basename];
                         }
                     }
                     $this->_registerDriver(

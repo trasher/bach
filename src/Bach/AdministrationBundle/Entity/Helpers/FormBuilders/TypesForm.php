@@ -62,7 +62,8 @@ class TypesForm extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\Types',
+                'data_class' => 'Bach\AdministrationBundle\Entity' .
+                '\Helpers\FormObjects\Types',
             )
         );
     }

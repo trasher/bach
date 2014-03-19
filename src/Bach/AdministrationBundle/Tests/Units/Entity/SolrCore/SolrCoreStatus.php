@@ -72,7 +72,9 @@ class SolrCoreStatus extends Units\Test
             'app'
         );
         $this->_sca = new SolrCoreAdmin($config_reader);
-        $this->_scs = $this->_sca->getStatus($this->params['solr_search_core'])->getCoreStatus($this->params['solr_search_core']);
+        $this->_scs = $this->_sca
+            ->getStatus($this->params['solr_search_core'])
+            ->getCoreStatus($this->params['solr_search_core']);
     }
 
     /**
@@ -92,20 +94,28 @@ class SolrCoreStatus extends Units\Test
         if ($object === null) {
             $this->assertTrue(false);
         } else {
-            $this->assertEquals($object, '/var/solr/TestCoreStatus/', 'GetInstanceDir error!');
+            $this->assertEquals(
+                $object,
+                '/var/solr/TestCoreStatus/',
+                'GetInstanceDir error!'
+            );
         }
     }
-    
+
     public function testGetDataDir()
     {
         $object = $this->scs->getdataDir();
         if ($object === null) {
             $this->assertTrue(false);
         } else {
-            $this->assertEquals($object, '/var/solr/TestCoreStatus/data/', 'GetDataDir error!');
+            $this->assertEquals(
+                $object,
+                '/var/solr/TestCoreStatus/data/',
+                'GetDataDir error!'
+            );
         }
     }
-    
+
     public function testGetConfig()
     {
         $object = $this->scs->getConfig();
@@ -115,7 +125,7 @@ class SolrCoreStatus extends Units\Test
             $this->assertEquals($object, 'solrconfig.xml', 'GetConfig error!');
         }
     }
-    
+
     public function testGetSchema()
     {
         $object = $this->scs->getSchema();
@@ -125,57 +135,73 @@ class SolrCoreStatus extends Units\Test
             $this->assertEquals($object, 'schema.xml', 'GetSchema error!');
         }
     }
-    
+
     public function testGetStartTime()
     {
-        $this->assertInstanceOf('DateTime', $this->scs->getStartTime(), 'GetStartTime error!');
+        $this->assertInstanceOf(
+            'DateTime',
+            $this->scs->getStartTime(),
+            'GetStartTime error!'
+        );
     }
-    
+
     public function testGetUptime()
     {
         $this->assertTrue(true);
     }
-    
+
     public function testGetNumDocs()
     {
         $this->assertEquals($this->scs->getNumDocs(), '0', 'GetNumDocs error!');
     }
-    
+
     public function testGetMaxDocs()
     {
         $this->assertEquals($this->scs->getMaxDoc(), '0', 'GetMaxDocs error!');
     }
-    
+
     public function testGetVersion()
     {
         $this->assertEquals($this->scs->getVersion(), '1', 'GetVersion error!');
     }
-    
+
     public function testGetSegmentCount()
     {
-        $this->assertEquals($this->scs->getSegmentCount(), '0', 'GetSegmentCount error!');
+        $this->assertEquals(
+            $this->scs->getSegmentCount(),
+            '0',
+            'GetSegmentCount error!'
+        );
     }
-    
+
     public function testGetCurrent()
     {
         $this->assertTrue($this->scs->getCurrent(), 'GetCurrent error!');
     }
-    
+
     public function testHasDeletions()
     {
         $this->assertFalse($this->scs->hasDeletions(), 'HasDeletions error!');
     }
-    
+
     public function testGetDirectory()
     {
-        $this->assertNotEquals($this->scs->getDirectory(), null, 'GetDirectory error!');
+        $this->assertNotEquals(
+            $this->scs->getDirectory(),
+            null,
+            'GetDirectory error!'
+        );
     }
-    
+
     public function testGetSizeInBytes()
     {
-        $this->assertEquals($this->scs->getSizeInBytes(), '65', 'GetSizeInBytes error!');
+        $this->assertEquals(
+            $this->scs->getSizeInBytes(),
+            '65',
+            'GetSizeInBytes error!'
+        );
     }
-    
+
     public function testGetSize()
     {
         $this->assertEquals($this->scs->getSize(), '65 bytes', 'GetSize error!');

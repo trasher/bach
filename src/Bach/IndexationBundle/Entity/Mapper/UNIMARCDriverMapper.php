@@ -100,15 +100,21 @@ class UNIMARCDriverMapper implements DriverMapperInterface
                 foreach ( $subAreas as $subArea ) {
                     if ( $subArea->getRef() == "a" ) {
                         if ( !array_key_exists('archDescRepository', $mappedData) ) {
-                            $mappedData['archDescRepository'] = $subArea->getContent();
+                            $mappedData['archDescRepository']
+                                = $subArea->getContent();
                         } else {
-                            $mappedData['archDescRepository'] = $mappedData['archDescRepository']."  ;  ".$subArea->getContent();
+                            $mappedData['archDescRepository']
+                                = $mappedData['archDescRepository']."  ;  " .
+                                $subArea->getContent();
                         }
                     } else if ( $subArea->getRef() == 'b' ) {
                         if ( !array_key_exists('archDescRepository', $mappedData) ) {
-                            $mappedData['archDescRepository'] = $subArea->getContent();
+                            $mappedData['archDescRepository']
+                                = $subArea->getContent();
                         } else {
-                            $mappedData['archDescRepository'] = $mappedData['archDescRepository']."  ;  ".$subArea->getContent();
+                            $mappedData['archDescRepository']
+                                = $mappedData['archDescRepository']."  ;  " .
+                                $subArea->getContent();
                         }
                     }
                 }
@@ -126,7 +132,9 @@ class UNIMARCDriverMapper implements DriverMapperInterface
                         if ( !array_key_exists('archDescAcqInfo', $mappedData) ) {
                             $mappedData['archDescAcqInfo'] = $subArea->getContent();
                         } else {
-                            $mappedData['archDescAcqInfo'] = $mappedData['archDescAcqInfo']."     ;   ".$subArea->getContent();
+                            $mappedData['archDescAcqInfo']
+                                = $mappedData['archDescAcqInfo']."     ;   " .
+                                $subArea->getContent();
                         }
                     }
                 }

@@ -37,8 +37,9 @@ class OpenIdUserManager extends UserManager
      * @param IdentityManagerInterface $identityManager Identity manager
      * @param EntityManager            $entityManager   Entity manager
      */
-    public function __construct(IdentityManagerInterface $identityManager, EntityManager $entityManager)
-    {
+    public function __construct(IdentityManagerInterface $identityManager,
+        EntityManager $entityManager
+    ) {
         parent::__construct($identityManager);
 
         $this->entityManager = $entityManager;

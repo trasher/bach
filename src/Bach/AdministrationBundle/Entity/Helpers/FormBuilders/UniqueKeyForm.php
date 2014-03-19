@@ -79,7 +79,8 @@ class UniqueKeyForm extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\UniqueKey',
+                'data_class' => 'Bach\AdministrationBundle\Entity' .
+                '\Helpers\FormObjects\UniqueKey',
             )
         );
     }

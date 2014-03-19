@@ -944,7 +944,8 @@ class SolrCoreAdmin
             $newEntity->setAttribute(
                 'query',
                 'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
-                '\'${SolrXMLFile.uniqid}\' AND source IS NULL AND role IS NULL AND type != \'cDate\''
+                '\'${SolrXMLFile.uniqid}\' AND source IS NULL AND ' .
+                'role IS NULL AND type != \'cDate\''
             );
             $newEntity->setAttribute('transformer', 'script:makeSourcesDynamics');
             $elt->appendChild($newEntity);

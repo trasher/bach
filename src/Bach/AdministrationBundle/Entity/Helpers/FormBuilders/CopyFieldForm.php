@@ -101,7 +101,8 @@ class CopyFieldForm extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\CopyField',
+                'data_class' => 'Bach\AdministrationBundle\Entity' .
+                '\Helpers\FormObjects\CopyField',
             )
         );
     }

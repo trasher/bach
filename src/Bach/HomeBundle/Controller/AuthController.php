@@ -41,7 +41,9 @@ class AuthController extends Controller
 
         // get the login error if there is one
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+            $error = $request->attributes->get(
+                SecurityContext::AUTHENTICATION_ERROR
+            );
         } else {
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);

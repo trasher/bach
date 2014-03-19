@@ -194,7 +194,8 @@ EOF
                         $exists->setFile(new File($ftp));
                         $exists->setUpdated(new \DateTime());
                         $exists->setStoreDir(
-                            $this->getContainer()->getParameter('bach.typespaths')[$type]
+                            $this->getContainer()
+                                ->getParameter('bach.typespaths')[$type]
                         );
                     } else {
                         $document->setCorename(
@@ -203,7 +204,8 @@ EOF
                             )
                         );
                         $document->setStoreDir(
-                            $this->getContainer()->getParameter('bach.typespaths')[$type]
+                            $this->getContainer()
+                                ->getParameter('bach.typespaths')[$type]
                         );
                     }
 

@@ -123,7 +123,8 @@ class PerformanceForm extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\Performance',
+                'data_class' => 'Bach\AdministrationBundle\Entity' .
+                '\Helpers\FormObjects\Performance',
             )
         );
     }

@@ -115,7 +115,8 @@ class DisplayCdc extends \Twig_Extension
         $this->_setNotMatched($xml, $docs);
 
         $proc->registerPHPFunctions();
-        $text .= '<div class="css-treeview">' . $proc->transformToXml($xml) . '</div>';
+        $text .= '<div class="css-treeview">' .
+            $proc->transformToXml($xml) . '</div>';
 
         $router = $this->_router;
         $request = $this->_request;

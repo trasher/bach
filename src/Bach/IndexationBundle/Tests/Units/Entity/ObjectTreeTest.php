@@ -56,8 +56,10 @@ class ObjectTree extends Units\Test
         $this->boolean($is_instance_true)->isTrue();
         $this->boolean($is_instance_false)->isFalse();
 
-        $is_instance_true = $tree->get('child')->get('bar')->getContent() instanceof Bar;
-        $is_instance_false = $tree->get('child')->get('bar')->getContent() instanceof Foo;
+        $is_instance_true = $tree->get('child')
+            ->get('bar')->getContent() instanceof Bar;
+        $is_instance_false = $tree->get('child')
+            ->get('bar')->getContent() instanceof Foo;
 
         $this->boolean($is_instance_true)->isTrue();
         $this->boolean($is_instance_false)->isFalse();

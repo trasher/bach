@@ -72,7 +72,8 @@ class DynamicFieldsForm extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Bach\AdministrationBundle\Entity\Helpers\FormObjects\DynamicFields',
+                'data_class' => 'Bach\AdministrationBundle\Entity' .
+                '\Helpers\FormObjects\DynamicFields',
             )
         );
     }

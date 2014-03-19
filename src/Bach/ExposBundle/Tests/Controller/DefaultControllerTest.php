@@ -38,7 +38,9 @@ class DefaultController extends ControllerTest
             ->hasStatus(404);
 
         //a successfull request, with filtering only
-        /*$this->request->GET('/search?filter_field=cSubject&filter_value=enjeux+internationaux')
+        /*$this->request->GET(
+             '/search?filter_field=cSubject&filter_value=enjeux+internationaux'
+         )
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler

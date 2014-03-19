@@ -15,7 +15,8 @@ namespace Bach\AdministrationBundle\Tests\Units\Entity\SolrCore;
 
 use atoum\AtoumBundle\Test\Units;
 use Symfony\Component\Yaml\Parser;
-use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader as ConfigReader;
+use Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader
+    as ConfigReader;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin as CoreAdmin;
 
 /**
@@ -157,14 +158,20 @@ class SolrCoreAdmin extends Units\Test
 
     public function testDeleteIndex() {
         $this->sca->create('coreTestDeleteIndex', 'coreTestDeleteIndex');
-        $response = $this->sca->delete('coreTestDeleteIndex', SolrCoreAdmin::DELETE_INDEX);
+        $response = $this->sca->delete(
+            'coreTestDeleteIndex',
+            SolrCoreAdmin::DELETE_INDEX
+        );
         $this->assertTrue($response === false ? false : $response->isOk());
         $this->sca->delete('coreTestDeleteIndex');
     }
 
     public function testDeleteData() {
         $this->sca->create('coreTestDeleteData', 'coreTestDeleteData');
-        $response = $this->sca->delete('coreTestDeleteData', SolrCoreAdmin::DELETE_DATA);
+        $response = $this->sca->delete(
+            'coreTestDeleteData',
+            SolrCoreAdmin::DELETE_DATA
+        );
         $this->assertTrue($response === false ? false : $response->isOk());
         $this->sca->delete('coreTestDeleteData');
     }
