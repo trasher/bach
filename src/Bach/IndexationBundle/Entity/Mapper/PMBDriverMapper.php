@@ -39,93 +39,40 @@ class PMBDriverMapper implements DriverMapperInterface
     {
         $mappedData = array();
 
-        $header_elements = array(
-            'headerId' => 'eadid',
-            'headerAuthor' => 'filedesc/titlestmt/author',
-            'headerDate'    => 'filedesc/publicationstmt/date',
-            'headerPublisher'   => 'filedesc/publicationstmt/publisher',
-            'headerAddress'     => 'filedesc/publicationstmt/address/addressline',
-            'headerLanguage'    => 'profiledesc/langusage/language'
+        $notice_elements = array(
+             'noticeId' => 'idNotice',
+             'noticeCodage' => 'zoneCodageUnimarc/codage',
+             'noticeTitrePrincipal' => 'zoneTitre/titrePrincipal',
+             'noticeISBN' => 'prixISBN/ISBN',
+             'noticeLangueDocument' => 'zoneLangues/langueDocument',
+             'noticenbPages' => 'zoneCollation/nbPages',
+             'noticeIllustration' => 'zoneCollation/illustration',
+             'noticeTaille' => 'zoneCollation/taille',
+             'noticeNoteContenu' => 'zoneNotes/noteContenu',
+             'noticeAuteurPrincipalnom' => 'zoneAuteurPrincipal/nom',
+             'noticeAuteurPrincipalprenom' => 'zoneAuteurPrincipal/prenom',
+             'noticeAuteurPrincipalCodeFonctionv' => 'zoneAuteurPrincipal/codeFonctionv',
+             'noticeAuteurPrincipals_9' => 'zoneAuteurPrincipal/s_9',
+             'noticeville' => 'zoneEditeur/ville',
+             'noticeEditeus_bv' => 'zoneEditeur/s_bv',
+             'noticeEditeunom' => 'zoneEditeur/nom',
+             'noticeEditeuannee' => 'zoneEditeur/annee',
+             'noticeEditeus_9' => 'zoneEditeur/s_9',
+             'notice225nom' => 'zoneCollection225/nom',
+             'notice225s_9' => 'zoneCollection225/s_9',
+             'notice410nom' => 'zoneCollection410/nom',
+             'notice410s_9' => 'zoneCollection410/s_9',
+             'noticeIndexationnom' => 'zoneIndexationDecimale/nom',
+             'noticeIndexations_lv' => 'zoneIndexationDecimale/s_lv',
+             'noticeIndexations_9' => 'zoneIndexationDecimale/s_9',
+             'noticef_896s_a' => 'f_896/s_a',
+             'noticecategorie' => 'zoneCategories/categorie'
         );
 
-        foreach ( $header_elements as $map=>$element ) {
-            if ( array_key_exists($element, $data['header'])
-                && $map !== 'headerLanguage'
-                && isset($data['header'][$element][0])
-            ) {
-                $mappedData[$map] = $data['header'][$element][0]['value'];
-            } else if ( array_key_exists($element, $data['header'])
-                && isset($data['header'][$element][0])
-                && $map === 'headerLanguage'
-                && array_key_exists(
-                    'langcode',
-                    $data['header'][$element][0]['attributes']
-                )
-            ) {
-                $mappedData[$map]
-                    = $data['header'][$element][0]['attributes']['langcode'];
+        foreach ( $notice_elements as $map=>$element ) {
+
+                $mappedData[$map] = $data['idNotice'][$element][0]['attributes'];
             }
-        }
-        $mappedData["headerSubtitle"] = null;
-
-        $archdesc_elements = array(
-            'archDescUnitId'            => 'did/unitid',
-            'archDescUnitTitle'         => 'did/unittitle',
-            'archDescUnitDate'          => 'did/unitdate',
-            'archDescRepository'        => 'did/repository',
-            'archDescLangMaterial'      => 'did/langmaterial',
-            'archDescOrigination'       => 'did/origination',
-            'archDescAcqInfo'           => 'acqinfo',
-            'archDescScopeContent'      => 'scopecontent',
-            'archDescArrangement'       => 'arrangement',
-            'archDescAccessRestrict'    => 'accessrestrict'
-        );
-
-        // Partie spécifique à l'ead
-        foreach ( $archdesc_elements as $map=>$element ) {
-            if ( array_key_exists($element, $data['archdesc']) ) {
-                $mappedData[$map] = $data['archdesc'][$element][0]['value'];
-            }
-        }
-
-        $ead_elements = array(
-            'cUnitid'       => 'did/unitid',
-            'cUnittitle'    => 'did/unittitle',
-            'cScopcontent'  => 'scopecontent',
-            'cControlacces' => 'controlacces'
-        );
-
-        // Partie spécifique à l'ead
-        if ( array_key_exists("parents", $data["c"]) ) {
-            $mappedData["parents"] = implode("/", array_keys($data["c"]["parents"]));
-            $mappedData["parents_titles"] = $data["c"]["parents"];
-        }
-
-        $mappedData['fragmentid'] = $mappedData['headerId'] . '_' . $data['id'];
-
-        foreach ( $ead_elements as $map=>$element ) {
-            if ( array_key_exists($element, $data['c'])
-                && count($data['c'][$element])
-                && $element !== 'parents'
-                || array_key_exists($element, $data['c'])
-                && $element === 'parents'
-            ) {
-                $mappedData[$map] = $data['c'][$element][0]['value'];
-            }
-        }
-
-
-        foreach ( $ead_mulitple_elements as $map=>$element ) {
-            if ( array_key_exists($element, $data['c'])
-                && count($data['c'][$element])
-            ) {
-                $mappedData[$map] = $data['c'][$element];
-            }
-        }
-
-        //c elements order
-        if ( isset($data['c']['order']) ) {
-            $mappedData['elt_order'] = $data['c']['order'];
         }
 
         return $mappedData;
