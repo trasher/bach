@@ -137,10 +137,9 @@ class BachSitemapProvider implements ProviderInterface
             $elements = $query->getResult();
             foreach ( $elements as $elt ) {
                 $url = new Url();
-                /** FIXME: not the good URL (it does not exists yet) */
                 $url->setLoc(
                     $this->router->generate(
-                        'bach_display_document',
+                        'bach_display_matricules',
                         array(
                             'docid' => $elt['id']
                         )

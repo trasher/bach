@@ -54,6 +54,7 @@
                         <th>{{ _('Place of birth') }}</th>
                         <th>{{ _('Class') }}</th>
                         <th>{{ _('Place of recording') }}</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,6 +114,9 @@
                             {{ document.lieu_enregistrement }}
                         {%- endif -%}
                     </td>
+                    <td>
+                        <a class="display_doc" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Show record') }}</a>
+                    </td>
                 </tr>
             {% endfor %}
                 </tbody>
@@ -140,4 +144,43 @@
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
+{% endblock %}
+
+{# Binded when not in mobile mode #}
+{% block mobile_js_off %}
+    {{ parent() }}
+
+    $('.display_doc').click(function(event){
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+        var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
+        _elt.appendTo('body');
+
+        var _width = $(window).width() * 0.8;
+        var _height = $(window).height() * 0.8;
+
+        $.ajax({
+            url: $(this).attr('href') + '/ajax',
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')|escape('js')} %}
+            success: function(data) {
+                _elt.append(data);
+                _elt.dialog({
+                    height: _height,
+                    width: _width,
+                    modal: true,
+                    close: function(event, ui){
+                        _elt.remove();
+                    }
+                });
+            }
+        });
+
+        return false;
+    });
+{% endblock %}
+
+{# Binded when in mobile mode #}
+{% block mobile_js_on %}
+    $('.display_doc').unbind('click');
 {% endblock %}

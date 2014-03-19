@@ -1,0 +1,11 @@
+{% extends '::base.html.twig' %}
+
+{% block container %}
+    {% include 'BachHomeBundle:Matricules:content_display.html.twig' with {'docid': docid, 'document': document} %}
+{% endblock %}
+
+{% block menu %}
+    {% if referer is defined %}
+        <h2 class="back"><a href="{{ referer }}">{{ _('Back to search results') }}</a></h2>
+    {% endif %}
+{% endblock %}

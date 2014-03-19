@@ -811,6 +811,26 @@ h2.back a:hover {
 }
 
 /**
+ * ===== Matricule record view =====
+ */
+.matricule_record table {
+    border: 1px solid #a3968d;
+    border-spacing: .2em;
+    border-collapse: separate;
+}
+
+.matricule_record th,
+.matricule_record td
+{
+    padding: .2em;
+}
+.matricule_record th {
+    font-weight: bold;
+    text-align: left;
+    background-color: #d1c6c0;
+}
+
+/**
  * ===== Common styles =====
  */
 

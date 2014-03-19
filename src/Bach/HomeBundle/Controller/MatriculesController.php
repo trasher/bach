@@ -244,6 +244,87 @@ class MatriculesController extends SearchController
     }
 
     /**
+     * Document display
+     *
+     * @param int     $docid Document unique identifier
+     * @param int     $page  Page
+     * @param boolean $ajax  Called from ajax
+     *
+     * @return void
+     */
+    public function displayDocumentAction($docid, $page = 1, $ajax = false)
+    {
+        $client = $this->get($this->entryPoint());
+        $query = $client->createSelect();
+        $query->setQuery('id:"' . $docid . '"');
+        $query->setStart(0)->setRows(1);
+
+        $rs = $client->select($query);
+
+        if ( $rs->getNumFound() !== 1 ) {
+            throw new \RuntimeException(
+                str_replace(
+                    '%count%',
+                    $rs->getNumFound(),
+                    _('%count% results found, 1 expected.')
+                )
+            );
+        }
+
+        $docs  = $rs->getDocuments();
+        $doc = $docs[0];
+        $children = array();
+
+        $tpl = '';
+
+        $tplParams = $this->commonTemplateVariables();
+        $tplParams = array_merge(
+            $tplParams,
+            array(
+                'docid'         => $docid,
+                'document'      => $doc
+            )
+        );
+
+        if ( $ajax === 'ajax' ) {
+            $tpl = 'BachHomeBundle:Matricules:content_display.html.twig';
+            $tplParams['ajax'] = true;
+        } else {
+            $tpl = 'BachHomeBundle:Matricules:display.html.twig';
+            $tplParams['ajax'] = false;
+        }
+
+        //retrieve comments
+        /*$query = $this->getDoctrine()->getManager()
+            ->createQuery(
+                'SELECT c, d FROM BachHomeBundle:Comment c
+                JOIN c.eadfile d
+                WHERE c.state = :state
+                AND d.fragmentid = :docid
+                ORDER BY c.creation_date DESC, c.id DESC'
+            )->setParameters(
+                array(
+                    'state' => Comment::PUBLISHED,
+                    'docid' => $docid
+                )
+            );
+        $comments = $query->getResult();
+        if ( count($comments) > 0 ) {
+            $tplParams['comments'] = $comments;
+        }*/
+
+        /** FIXME: find a suitable comportement for the stuff to avoid loops
+        $referer = $this->getRequest()->headers->get('referer');
+        if ( $referer !== null ) {
+            $tplParams['referer'] = $referer;
+        }*/
+
+        return $this->render(
+            $tpl,
+            $tplParams
+        );
+    }
+    /**
      * Get Solarium EntryPoint
      *
      * @return string

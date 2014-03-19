@@ -100,6 +100,12 @@ bach_matricules_do_search:
     pattern:  /matricules-do-search
     defaults: { _controller: BachHomeBundle:Matricules:doSearch }
 
+bach_display_matricules:
+    pattern: /matricules/show/{docid}/{ajax}
+    defaults: { _controller BachHomeBundle:Matricules:displayDocument, ajax: false }
+    requirements:
+        _method: GET
+
 bach_ead_html:
     pattern: /document/{docid}/{expanded}
     defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }
