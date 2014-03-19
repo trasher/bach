@@ -72,11 +72,9 @@ class DynamicFieldsController extends Controller
     /**
      * Add dynamic field
      *
-     * @param Request $request Request
-     *
      * @return void
      */
-    public function addDynamicFieldAction(Request $request)
+    public function addDynamicFieldAction()
     {
         $df = new DynamicField();
         $form = $this->createForm(new DynamicFieldsForm(), $df);

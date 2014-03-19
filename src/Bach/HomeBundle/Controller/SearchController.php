@@ -209,7 +209,7 @@ abstract class SearchController extends Controller
             if ( $solr_field == 'headerId' ) {
                 //retrieve documents titles...
                 $ids = array();
-                foreach ( $field_facets as $key=>$value ) {
+                foreach ( array_keys($field_facets) as $key ) {
                     $ids[] = $key . '_description';
                 }
 

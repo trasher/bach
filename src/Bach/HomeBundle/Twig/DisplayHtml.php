@@ -81,7 +81,7 @@ class DisplayHtml extends \Twig_Extension
     {
         $html = '';
         $proc = new \XsltProcessor();
-        $xsl = $proc->importStylesheet(
+        $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_html.xsl')
         );
 

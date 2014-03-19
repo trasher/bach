@@ -34,11 +34,9 @@ class PerformanceController extends Controller
     /**
      * Refresh
      *
-     * @param Request $request Request
-     *
      * @return void
      */
-    public function refreshAction(Request $request)
+    public function refreshAction()
     {
         $session = $this->getRequest()->getSession();
         $configreader = $this->container->get('bach.administration.configreader');

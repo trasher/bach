@@ -60,7 +60,6 @@ class BachSitemapProvider implements ProviderInterface
      */
     public function populate(Sitemap $sitemap)
     {
-        $root = $this->container->getParameter('bach_url');
         //add home URL
         $url = new Url();
         $url->setLoc(

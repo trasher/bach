@@ -401,7 +401,7 @@ class EADHeader implements NotifyPropertyChanged
      */
     public function removeFragment(EADFileFormat $fragment)
     {
-        $this->fragments->removeElement($fragments);
+        $this->fragments->removeElement($fragment);
     }
 
     /**
