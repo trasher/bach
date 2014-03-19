@@ -27,7 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="PMBFileFormat")
  */
 
-Class PMBFileFormat
+Class PMBFileFormat extends FileFormat
 {
 
     /**

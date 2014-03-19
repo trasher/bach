@@ -68,13 +68,6 @@ class PMBDriverMapper implements DriverMapperInterface
              'noticef_896s_a' => 'f_896/s_a',
              'noticecategorie' => 'zoneCategories/categorie'
         );
-
-        foreach ( $notice_elements as $map=>$element ) {
-
-                $mappedData[$map] = $data['idNotice'][$element][0]['attributes'];
-            }
-        }
-
         return $mappedData;
     }
 }
