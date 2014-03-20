@@ -155,6 +155,9 @@ class Fields
         case 'cCorpname':
             return _('Corporate name');
             break;
+        case 'cFunction':
+            return _('Function');
+            break;
         case 'cGenreform':
             return _('Genre');
             break;

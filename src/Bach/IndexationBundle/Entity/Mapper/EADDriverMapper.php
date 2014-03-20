@@ -168,7 +168,8 @@ class EADDriverMapper implements DriverMapperInterface
             'cDate'        => './/date',
             'fragment'     => 'fragment',
             'daolist'      => './/daoloc|.//dao|.//archref[not(contains(@href, \'http://\')) and contains(@href, \'.pdf\')]',
-            'cTitle'       => './/title'
+            'cTitle'       => './/title',
+            'cFunction'     => './/function'
         );
         $descriptors = EADFileFormat::$descriptors;
 

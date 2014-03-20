@@ -75,6 +75,7 @@ drivers:
                     - .//unitdate
                     - .//date
                     - .//title
+                    - .//function
     unimarc:
         mapper: Bach\IndexationBundle\Entity\Mapper\UNIMARCDriverMapper
         doctrine: BachIndexationBundle:UNIMARCFileFormat

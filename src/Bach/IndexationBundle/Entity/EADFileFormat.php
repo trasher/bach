@@ -152,7 +152,8 @@ class EADFileFormat extends FileFormat
         'cDateBegin',
         'cDateEnd',
         'dao',
-        'cTitle'
+        'cTitle',
+        'cFunction'
     );
 
     /**
@@ -173,7 +174,8 @@ class EADFileFormat extends FileFormat
         'cDateEnd',
         'subject_w_expanded',
         'parents_titles',
-        'cTitle'
+        'cTitle',
+        'cFunction'
     );
 
     /**
@@ -212,7 +214,8 @@ class EADFileFormat extends FileFormat
         'cName',
         'cPersname',
         'cSubject',
-        'cTitle'
+        'cTitle',
+        'cFunction'
     );
 
     /**
@@ -226,7 +229,8 @@ class EADFileFormat extends FileFormat
         'cName',
         'cPersname',
         'cSubject',
-        'cTitle'
+        'cTitle',
+        'cFunction'
     );
 
     /**
