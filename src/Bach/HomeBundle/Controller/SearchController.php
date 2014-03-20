@@ -209,13 +209,13 @@ abstract class SearchController extends Controller
             if ( $solr_field == 'headerId' ) {
                 //retrieve documents titles...
                 $ids = array();
-                foreach ( array_keys($field_facets) as $key ) {
+                foreach ( $field_facets as $key=>$value ) {
                     $ids[] = $key . '_description';
                 }
 
                 $query = $this->getDoctrine()->getManager()->createQuery(
-                    'SELECT e.headerId, e.headerTitle ' .
-                    'FROM BachIndexationBundle:EADFileFormat e ' .
+                    'SELECT h.headerId, h.headerTitle ' .
+                    'FROM BachIndexationBundle:EADHeader h JOIN h.fragments e ' .
                     'WHERE e.fragmentid IN (:ids)'
                 )->setParameter('ids', $ids);
                 $docs_titles = $query->getResult();
@@ -389,8 +389,8 @@ abstract class SearchController extends Controller
                 }
 
                 $query = $this->getDoctrine()->getManager()->createQuery(
-                    'SELECT e.headerId, e.headerTitle ' .
-                    'FROM BachIndexationBundle:EADFileFormat e ' .
+                    'SELECT h.headerId, h.headerTitle ' .
+                    'FROM BachIndexationBundle:EADHeader h JOIN h.fragments e ' .
                     'WHERE e.fragmentid IN (:ids)'
                 )->setParameter('ids', $ids);
                 $docs_titles = $query->getResult();
