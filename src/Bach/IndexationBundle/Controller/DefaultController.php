@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\SplFileInfo;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Solarium\Exception\HttpException;
 
 /**
  * Default indexation controller
@@ -385,35 +386,44 @@ class DefaultController extends Controller
 
         //remove solr indexed documents
         //FIXME: check if solr cores exists!
-        $client = $this->get("solarium.client.ead");
-        $update = $client->createUpdate();
-        $update->addDeleteQuery('*:*');
-        $update->addCommit();
-        $result = $client->update($update);
+        $known_types = $this->container->getParameter('bach.types');
+        foreach ( $known_types as $type ) {
+            $client = $this->get('solarium.client.' . $type);
+            $update = $client->createUpdate();
+            $update->addDeleteQuery('*:*');
+            $update->addCommit();
 
-        if ( $result->getStatus() === 0 ) {
-            $logger->info(
-                str_replace(
-                    array('%core', '%time'),
-                    array('ead', $result->getQueryTime()),
-                    _('%core core has been truncated in %time')
-                )
-            );
-        } else {
-            $logger->err(
-                str_replace(
-                    '%core',
-                    'ead',
-                    _('Sorl failed to empty %core core!')
-                )
-            );
+            try {
+                $result = $client->update($update);
+
+                if ( $result->getStatus() === 0 ) {
+                    $logger->info(
+                        str_replace(
+                            array('%core', '%time'),
+                            array($type, $result->getQueryTime()),
+                            _('%core core has been truncated in %time')
+                        )
+                    );
+                } else {
+                    $logger->err(
+                        str_replace(
+                            '%core',
+                            $type,
+                            _('Solr failed to empty %core core!')
+                        )
+                    );
+                }
+            } catch ( HttpException $ex ) {
+                $logger->err(
+                    str_replace(
+                        '%core',
+                        $type,
+                        _('Solr failed to empty %core core!') . ' | ' .
+                        $ex->getMessage()
+                    )
+                );
+            }
         }
-
-        /*$client = $this->get("solarium.client.unimarc");
-        $update = $client->createUpdate();
-        $update->addDeleteQuery('*:*');
-        $update->addCommit();
-        $result = $client->update($update);*/
 
         return new RedirectResponse(
             $this->get("router")->generate("bach_indexation_homepage")
