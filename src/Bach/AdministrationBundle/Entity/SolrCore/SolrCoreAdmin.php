@@ -990,6 +990,93 @@ class SolrCoreAdmin
             $elt->appendChild($newEntity);
         }
 
+        //take care of eadheader
+        if ( $meta->hasAssociation('eadheader')) {
+            $mapping = $meta->getAssociationMapping('eadheader');
+            $mapping_entity = $this->_em->getClassMetadata(
+                $mapping['targetEntity']
+            );
+            $mapping_table = $mapping_entity->getTablename();
+
+            $newEntity = $doc->createElement('entity');
+            $newEntity->setAttribute('name', 'eadheader');
+            $newEntity->setAttribute(
+                'query',
+                'SELECT * FROM ' . $mapping_table . ' WHERE id=' .
+                '\'${SolrXMLFile.eadheader_id}\''
+            );
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'headerId');
+            $newField->setAttribute('name', 'headerId');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'headerTitle');
+            $newField->setAttribute('name', 'headerTitle');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'headerSubtitle');
+            $newField->setAttribute('name', 'headerSubtitle');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'headerAuthor');
+            $newField->setAttribute('name', 'headerAuthor');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'headerDate');
+            $newField->setAttribute('name', 'headerDate');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'headerPublisher');
+            $newField->setAttribute('name', 'headerPublisher');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'headerAddress');
+            $newField->setAttribute('name', 'headerAddress');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'headerLanguage');
+            $newField->setAttribute('name', 'headerLanguage');
+            $newEntity->appendChild($newField);
+
+            $elt->appendChild($newEntity);
+        }
+
+        //take care of archdesc
+        if ( $meta->hasAssociation('archdesc') ) {
+            $newEntity = $doc->createElement('entity');
+            $newEntity->setAttribute('name', 'archdesc');
+            $newEntity->setAttribute(
+                'query',
+                'SELECT * FROM ' . $tableName . ' WHERE uniqid=' .
+                '\'${SolrXMLFile.archdesc_id}\''
+            );
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'cUnitid');
+            $newField->setAttribute('name', 'archDescUnitId');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'cUnittitle');
+            $newField->setAttribute('name', 'archDescUnitTitle');
+            $newEntity->appendChild($newField);
+
+            $newField = $doc->createElement('field');
+            $newField->setAttribute('column', 'cScopcontent');
+            $newField->setAttribute('name', 'archDescScopeContent');
+            $newEntity->appendChild($newField);
+
+            $elt->appendChild($newEntity);
+        }
+
         //take care of daos
         if ( $meta->hasAssociation('daos') ) {
             $mapping = $meta->getAssociationMapping('daos');

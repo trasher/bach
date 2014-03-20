@@ -153,7 +153,18 @@ class EADFileFormat extends FileFormat
         'cDateEnd',
         'dao',
         'cTitle',
-        'cFunction'
+        'cFunction',
+        'headerId',
+        'headerTitle',
+        'headerSubtitle',
+        'headerAuthor',
+        'headerDate',
+        'headerPublisher',
+        'headerAddress',
+        'headerLanguage',
+        'archDescUnitId',
+        'archDescUnitTitle',
+        'archDescScopeContent'
     );
 
     /**
@@ -192,7 +203,9 @@ class EADFileFormat extends FileFormat
         'cDateBegin',
         'cDateEnd',
         'dao',
-        'subject_w_expanded'
+        'subject_w_expanded',
+        'created',
+        'updated'
     );
 
     /**
