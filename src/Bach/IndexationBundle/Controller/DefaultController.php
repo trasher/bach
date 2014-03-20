@@ -101,7 +101,8 @@ class DefaultController extends Controller
                     )
                 );
                 $document->setStoreDir(
-                    $this->container->getParameter('bach.typespaths')[$document->getExtension()]
+                    $this->container
+                        ->getParameter('bach.typespaths')[$document->getExtension()]
                 );
             }
 
@@ -277,7 +278,7 @@ class DefaultController extends Controller
             $doc->setUploadDir($this->container->getParameter('upload_dir'));
             $update = $updates[$doc->getCorename()];
             if ( $doc->getExtension() === 'matricules' ) {
-                $update->addDeleteQuery('headerId:' . $doc->getId());
+                $update->addDeleteQuery('id:' . $doc->getDocId());
             } else {
                 $update->addDeleteQuery('headerId:' . $doc->getDocId());
             }
