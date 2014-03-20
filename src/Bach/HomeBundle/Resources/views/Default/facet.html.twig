@@ -64,7 +64,7 @@
                 orig_href: $('#orig_href').val()
             },
             type: 'POST',
-            {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')|escape('js')} %}
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')} %}
             success: function(data) {
                 var _elt = $('#display_facets');
                 _elt.empty();

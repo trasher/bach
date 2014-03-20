@@ -91,7 +91,7 @@
         $('#delete_documents').click(function(){
             var _count = $('#published_documents :checked').length;
             if ( _count == 0 ) {
-                alert('{{ _('Please select at least one document.') }}');
+                alert('{{ _('Please select at least one document.')|escape('js') }}');
                 return false;
             } else {
                 if ( _count == 1 ) {

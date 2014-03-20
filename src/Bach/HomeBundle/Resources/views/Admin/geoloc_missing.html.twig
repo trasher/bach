@@ -111,7 +111,7 @@ file that was distributed with this source code.
             _list.empty();
             $.ajax({
                 url: _da_url.replace('NAME', _this.html()),
-                {% include '::loader.js.twig' with {'parent_elt': '#sidebar', 'error_message': _('Unable to propose positions :(')|escape('js')} %}
+                {% include '::loader.js.twig' with {'parent_elt': '#sidebar', 'error_message': _('Unable to propose positions :(')} %}
                 success: function(data) {
                     if ( data.length > 0 ) {
                         var _ul = $('<ul></ul>');
@@ -182,7 +182,7 @@ file that was distributed with this source code.
                                     url: '{{ path('bach_store_geoloc') }}',
                                     method: 'POST',
                                     data: _features_stored[_count],
-                                    {% include '::loader.js.twig' with {'parent_elt': '#map', 'error_message': _('Unable to store that location :(')|escape('js')} %}
+                                    {% include '::loader.js.twig' with {'parent_elt': '#map', 'error_message': _('Unable to store that location :(')} %}
                                     success: function(data) {
                                         if ( data.success === true ) {
                                             alert('{{ _('Position has been successfully stored!')|escape('js') }}');

@@ -60,7 +60,7 @@
         $.ajax({
             url: $(this).attr('href') + '/ajax',
             data: {'nocontext': true},
-            {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')|escape('js')} %}
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')} %}
             success: function(data) {
                 _elt.append(data);
                 _initAudio(true);

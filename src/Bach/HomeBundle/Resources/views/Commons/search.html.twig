@@ -371,7 +371,7 @@
                         orig_href: _url
                     },
                     type: 'POST',
-                    {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')|escape('js')} %}
+                    {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')} %}
                     success: function(data) {
                         _elt.append(data);
                         _elt.dialog({

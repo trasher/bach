@@ -10,7 +10,7 @@
                 {% if error_message is defined -%}
                 alert('{{ error_message }}');
                 {% else -%}
-                alert('{{ _('An error occured loading document :(') }}');
+                alert('{{ _('An error occured loading document :(')|escape('js') }}');
                 {%- endif %}
             },
     {% endif %}
