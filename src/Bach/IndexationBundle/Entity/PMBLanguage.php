@@ -48,7 +48,7 @@ class PMBLanguage
 
     /**
      * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="language")
-     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid") 
+     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid")
      */
     protected $pmbfile;
 
@@ -66,7 +66,7 @@ class PMBLanguage
     /**
      * Get uniqid
      *
-     * @return integer 
+     * @return integer
      */
     public function getUniqid()
     {
@@ -133,7 +133,7 @@ class PMBLanguage
     /**
      * Get languageassoc
      *
-     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
+     * @return \Bach\IndexationBundle\Entity\PMBFileFormat
      */
     public function getLanguageassoc()
     {

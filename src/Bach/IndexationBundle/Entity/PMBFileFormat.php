@@ -75,7 +75,7 @@ class PMBFileFormat extends FileFormat
     protected $part_num;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $editeur;
 
@@ -234,16 +234,40 @@ class PMBFileFormat extends FileFormat
                 $this->parseAuthors($value);
             } else if ( $key === 'category' ) {
                 $this->parseCategory($value);
-            } elseif (property_exists($this, $key)) {
-                if ( $this->$key !== $value ) {
-                    $this->onPropertyChanged($key, $this->$key, $value);
-                    $this->$key = $value;
-                    //var_dump($value);
-                }
-            } elseif ($key === 'language' ) {
+            } else if ($key === 'language' ) {
                 $this->parseLanguage($value);
-            } elseif ( $key == 'title' ) {
+            } else if ( $key == 'title' ) {
                 $this->parseTitle($value);
+            } else if (property_exists($this, $key)) {
+            	if ( isset($value[0])) {
+                    if ( $key == 'year' ) {
+                        try {
+                            $year = new \DateTime(
+                                $value[0]['value'] . '-01-01'
+                            );
+                            //TODO: test if value has changed
+                            //$this->$key->format('Y') === $year->format('Y')
+                            $this->$key = $year;
+                        } catch ( \Exception $e ) {
+                            //empty catch - not a valid date
+                        }
+                    } else if ($key == 'url_vignette'){
+                        //echo $value[0]['value']."\n";
+                        try {
+                            $url = substr(urldecode($value[0]['value']), 25);
+                            $this->$key = $url;
+                            echo $url."</br>";
+                        } catch ( \Exception $e ) {
+                            throw new \RuntimeException(" error url encode");
+                        }
+                    } else {
+                        if ( $this->$key !== $value[0]['value'] ) {
+                            //$this->onPropertyChanged($key, $this->$key, $value);
+                            $this->$key = $value[0]['value'];
+                            //var_dump($value);
+                        }
+                    }
+                }
             } else {
                 throw new \RuntimeException("Missing property for entry " . $key);
             }
@@ -259,8 +283,12 @@ class PMBFileFormat extends FileFormat
      */
     protected function parseAuthors($data)
     {
+        var_dump($data);
         $authors = clone $this->authors;
         $has_changed = false;
+        foreach ($data as $value) {
+            echo $data[0]['value']."\n";
+        }
 
     }
 
@@ -275,6 +303,9 @@ class PMBFileFormat extends FileFormat
     {
         $category = clone $this->category;
         $has_changed = false;
+        foreach ($data as $value) {
+            echo $data[0]['value']."\n";
+        }
 
     }
 
@@ -287,8 +318,11 @@ class PMBFileFormat extends FileFormat
      */
     protected function parseLanguage($data)
     {
-        $Language = clone $this->Language;
+        $language = clone $this->language;
         $has_changed = false;
+        foreach ($data as $value) {
+            echo $data[0]['value']."\n";
+        }
 
     }
     /**
@@ -302,8 +336,11 @@ class PMBFileFormat extends FileFormat
     {
         $Title = clone $this->Title;
         $has_changed = false;
+        foreach ($data as $value) {
+            echo $data[0]['value']."\n";
+        }
 
-    }             
+    }
 
     /**
      * Get uniqid
@@ -584,7 +621,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Get year
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getYear()
     {
@@ -1095,7 +1132,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Get category
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCategory()
     {
@@ -1127,7 +1164,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Get notice
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     /*public function getNotice()
     {
@@ -1177,21 +1214,21 @@ class PMBFileFormat extends FileFormat
     public function setIdNotice($idNotice)
     {
         $this->idNotice = $idNotice;
-    
+
         return $this;
     }
 
     /**
      * Get idNotice
      *
-     * @return string 
+     * @return string
      */
     public function getIdNotice()
     {
         return $this->idNotice;
     }
 
-    
+
     /**
      * Remove authors
      *

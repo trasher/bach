@@ -37,7 +37,7 @@ class PMBDriverMapper implements DriverMapperInterface
      */
     public function translate($data)
     {
-        $mappedData = array();
+        $mapped_data = array();
 
         $notices_elements = array(
             'idNotice' => 'idNotice',
