@@ -75,6 +75,11 @@ EOF
                 null,
                 InputOption::VALUE_NONE,
                 _('Do not really publish.')
+            )->addOption(
+                'no-change-check',
+                null,
+                InputOption::VALUE_NONE,
+                _('Do not check if file has been modified')
             );
     }
 
@@ -179,10 +184,15 @@ EOF
                 $integrationService = $this->getContainer()
                     ->get('bach.indexation.process.arch_file_integration');
 
+
+                $no_check_changes = $input->getOption('no-change-check');
+
                 $docs = array();
+
                 foreach ( $files_to_publish[$type] as $ftp ) {
+                    $f = new File($ftp);
                     $document = new Document();
-                    $document->setFile(new File($ftp));
+                    $document->setFile($f);
                     $document->setExtension($type);
                     $document->generateDocId();
 
@@ -190,8 +200,21 @@ EOF
                     $repo = $em->getRepository('BachIndexationBundle:Document');
                     $exists = $repo->findOneByDocid($document->getDocId());
                     if ( $exists ) {
+
+                        if ( !$no_check_changes ) {
+                            $change_date = new \DateTime();
+                            $last_file_change = $f->getMTime();
+                            $change_date->setTimestamp($last_file_change);
+
+                            if ( $exists->getUpdated() > $change_date ) {
+                                $progress->advance();
+                                /** TODO: log something? */
+                                continue;
+                            }
+                        }
+
                         $document = $exists;
-                        $exists->setFile(new File($ftp));
+                        $exists->setFile($f);
                         $exists->setUpdated(new \DateTime());
                         $exists->setStoreDir(
                             $this->getContainer()
