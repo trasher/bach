@@ -196,7 +196,6 @@ class EADDates
             //if date is in the future, we remove it
             if ( $this->begin > $now ) {
                 $this->begin = null;
-                $this->_is_valid = false;
             }
         } catch ( \Exception $e ) {
             $this->_is_valid = false;
@@ -231,6 +230,10 @@ class EADDates
             }
         } catch ( \Exception $e ) {
             $_is_valid = false;
+        }
+
+        if ( $this->begin === null || $this->end === null ) {
+            $this->_is_valid = false;
         }
     }
 
