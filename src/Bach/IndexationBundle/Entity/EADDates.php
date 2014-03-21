@@ -96,6 +96,8 @@ class EADDates
      */
     protected $eadfile;
 
+    private $_is_valid = true;
+
     /**
       * The constructor
       *
@@ -145,7 +147,19 @@ class EADDates
             } else {
                 $edate = $bdate;
             }
+
+            if ( $edate === '0' || $bdate === '0' ) {
+                //not a valid date
+                $this->_is_valid = false;
+                return;
+            }
         } else {
+            if ( $date === '0' || $date === 'Sans date' || $date === 's.d' ) {
+                //not a valid date
+                $this->_is_valid = false;
+                return;
+            }
+
             //here the date is unique, and probably not well formed
             $bdate = $date;
             $edate = $date;
@@ -184,7 +198,7 @@ class EADDates
                 $this->begin = null;
             }
         } catch ( \Exception $e ) {
-            //TODO: add a parameter somewhere to decide if we throw or not
+            $this->_is_valid = false;
         }
 
         //try to set end date
@@ -215,8 +229,7 @@ class EADDates
                 $this->end = null;
             }
         } catch ( \Exception $e ) {
-            //TODO: add a parameter somewhere to decide if we throw or not
-            //throw $e;
+            $_is_valid = false;
         }
     }
 
@@ -412,5 +425,15 @@ class EADDates
     public function getEadfile()
     {
         return $this->eadfile;
+    }
+
+    /**
+     * Is date valid?
+     *
+     * @return boolean
+     */
+    public function isValid()
+    {
+        return $this->_is_valid;
     }
 }

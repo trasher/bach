@@ -609,19 +609,21 @@ class EADFileFormat extends FileFormat
             foreach ( $data as $new_date ) {
                 $odate = new EADDates($this, $new_date);
 
-                $begin = $date->getBegin()->format('Y-m-d');
-                $obegin = $odate->getBegin()->format('Y-m-d');
+                if ( $odate->isValid() ) {
+                    $begin = $date->getBegin()->format('Y-m-d');
+                    $obegin = $odate->getBegin()->format('Y-m-d');
 
-                $end = $date->getEnd()->format('Y-m-d');
-                $oend = $odate->getEnd()->format('Y-m-d');
+                    $end = $date->getEnd()->format('Y-m-d');
+                    $oend = $odate->getEnd()->format('Y-m-d');
 
-                if ( $date->getDate() == $odate->getDate()
-                    && $date->getNormal() == $odate->getNormal()
-                    && $begin == $obegin
-                    && $end == $oend
-                ) {
-                    $found = true;
-                    break;
+                    if ( $date->getDate() == $odate->getDate()
+                        && $date->getNormal() == $odate->getNormal()
+                        && $begin == $obegin
+                        && $end == $oend
+                    ) {
+                        $found = true;
+                        break;
+                    }
                 }
             }
             if ( !$found ) {
@@ -634,29 +636,32 @@ class EADFileFormat extends FileFormat
         //check for new
         foreach ( $data as $date ) {
             $odate = new EADDates($this, $date);
-            $unique = true;
 
-            foreach ( $this->dates as $i ) {
+            if ( $odate->isValid() ) {
+                $unique = true;
 
-                $begin = $i->getBegin()->format('Y-m-d');
-                $obegin = $odate->getBegin()->format('Y-m-d');
+                foreach ( $this->dates as $i ) {
 
-                $end = $i->getEnd()->format('Y-m-d');
-                $oend = $odate->getEnd()->format('Y-m-d');
+                    $begin = $i->getBegin()->format('Y-m-d');
+                    $obegin = $odate->getBegin()->format('Y-m-d');
 
-                if ( $i->getDate() == $odate->getDate()
-                    && $i->getNormal() == $odate->getNormal()
-                    && $begin == $obegin
-                    && $end == $oend
-                ) {
-                    $unique = false;
-                    break;
+                    $end = $i->getEnd()->format('Y-m-d');
+                    $oend = $odate->getEnd()->format('Y-m-d');
+
+                    if ( $i->getDate() == $odate->getDate()
+                        && $i->getNormal() == $odate->getNormal()
+                        && $begin == $obegin
+                        && $end == $oend
+                    ) {
+                        $unique = false;
+                        break;
+                    }
                 }
-            }
 
-            if ( $unique === true ) {
-                $this->addDate($odate);
-                $has_changed = true;
+                if ( $unique === true ) {
+                    $this->addDate($odate);
+                    $has_changed = true;
+                }
             }
         }
 
