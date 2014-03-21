@@ -6,7 +6,7 @@
  *
  * @category Indexation
  * @package  Bach
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -16,13 +16,13 @@ namespace Bach\IndexationBundle\Entity\Mapper;
 use Bach\IndexationBundle\DriverMapperInterface;
 
 /**
- * Mapper for PMBz data
+ * Mapper for PMB data
  *
  * PHP version 5
  *
  * @category Indexation
  * @package  Bach
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -39,35 +39,61 @@ class PMBDriverMapper implements DriverMapperInterface
     {
         $mappedData = array();
 
-        $notice_elements = array(
-             'noticeId' => 'idNotice',
-             'noticeCodage' => 'zoneCodageUnimarc/codage',
-             'noticeTitrePrincipal' => 'zoneTitre/titrePrincipal',
-             'noticeISBN' => 'prixISBN/ISBN',
-             'noticeLangueDocument' => 'zoneLangues/langueDocument',
-             'noticenbPages' => 'zoneCollation/nbPages',
-             'noticeIllustration' => 'zoneCollation/illustration',
-             'noticeTaille' => 'zoneCollation/taille',
-             'noticeNoteContenu' => 'zoneNotes/noteContenu',
-             'noticeAuteurPrincipalnom' => 'zoneAuteurPrincipal/nom',
-             'noticeAuteurPrincipalprenom' => 'zoneAuteurPrincipal/prenom',
-             'noticeAuteurPrincipalCodeFonctionv' => 'zoneAuteurPrincipal/codeFonctionv',
-             'noticeAuteurPrincipals_9' => 'zoneAuteurPrincipal/s_9',
-             'noticeville' => 'zoneEditeur/ville',
-             'noticeEditeus_bv' => 'zoneEditeur/s_bv',
-             'noticeEditeunom' => 'zoneEditeur/nom',
-             'noticeEditeuannee' => 'zoneEditeur/annee',
-             'noticeEditeus_9' => 'zoneEditeur/s_9',
-             'notice225nom' => 'zoneCollection225/nom',
-             'notice225s_9' => 'zoneCollection225/s_9',
-             'notice410nom' => 'zoneCollection410/nom',
-             'notice410s_9' => 'zoneCollection410/s_9',
-             'noticeIndexationnom' => 'zoneIndexationDecimale/nom',
-             'noticeIndexations_lv' => 'zoneIndexationDecimale/s_lv',
-             'noticeIndexations_9' => 'zoneIndexationDecimale/s_9',
-             'noticef_896s_a' => 'f_896/s_a',
-             'noticecategorie' => 'zoneCategories/categorie'
+        $notices_elements = array(
+            'idNotice' => 'idNotice',
+            'codage' => 'zoneCodageUnimarc/codage',
+            'titrePrincipal' => 'zoneTitre/titrePrincipal',
+            'titrePropreAuteurDiffzoneTitre' => 'zoneTitre/titrePropreAuteurDiffzoneTitre',
+            'titreParallele' => 'zoneTitre/titreParallele',
+            'titreComplement' => 'zoneTitre/titreComplement',
+            'prix' => 'prixISBN/s_d',
+            'lien' => 'zoneLiens/lien',
+            'eFormat' => 'zoneLiens/eFormat',
+            'langueDocument' => 'zoneLangues/langueDocument',
+            'langueOriginale' => 'zoneLangues/langueOriginale',
+            'mention' => 'zoneMentionEdition/mention',
+            'nbPages' => 'zoneCollation/nbPages',
+            'illustration' => 'zoneCollation/illustration',
+            'taille' => 'zoneCollation/taille',
+            'materielAccompagnement' => 'zoneCollation/materielAccompagnement',
+            'noteGenerale' => 'zoneNotes/noteGenerale',
+            'noteContenu' => 'zoneNotes/noteContenu',
+            'noteResume' => 'zoneNotes/noteResume',
+            'zoneAuteursAutresnom' => 'zoneAuteursAutres/nom',
+            'zoneAuteursAutresprenom' => 'zoneAuteursAutres/prenom',
+            'zoneAuteursAutrescodeFonction' => 'zoneAuteursAutres/codeFonction',
+            'zoneAuteursSecondairesnom' => 'zoneAuteursSecondaires/nom',
+            'zoneAuteursSecondairesprenom' => 'zoneAuteursSecondaires/prenom',
+            'zoneAuteursSecondairescodeFonction' => 'zoneAuteursSecondaires/codeFonction',
+            'zoneAuteurPrincipalnom' => 'zoneAuteurPrincipal/nom',
+            'zoneAuteurPrincipalprenom' => 'zoneAuteurPrincipal/prenom',
+            'zoneAuteurPrincipalcodeFonction' => 'zoneAuteurPrincipal/codeFonction',
+            'ville' => 'zoneEditeur/ville',
+            's_b' => 'zoneEditeur/s_b',
+            'zoneEditeurnom' => 'zoneEditeur/nom',
+            'zoneEditeur/annee' => 'zoneEditeur/annee',
+            '225/nom' => 'zoneCollection225/nom',
+            'numDansCollection' => 'zoneCollection225/numDansCollection',
+            'ISSN' => 'zoneCollection225/ISSN',
+            '410nom' => 'zoneCollection410/nom',
+            '410s_v' => 'zoneCollection410/s_v',
+            's_t' => 'f_411/s_t',
+            's_x' => 'f_411/s_x',
+            'titre' => 'zoneMere/titre',
+            'v' => 'zoneMere/numero',
+            'zoneIndexationDecimalenom' => 'zoneIndexationDecimale/nom',
+            'zoneIndexationDecimales_l' => 'zoneIndexationDecimale/s_l',
+            'f_896s_a' => 'f_896/s_a',
+            'mot' => 'zoneMotsClesLibres/mot',
+            'categorie' => 'zoneCategories/categorie'
         );
-        return $mappedData;
+
+        foreach ( $notices_elements as $map=>$element ) {
+
+		    if ( array_key_exists($element, $data) ) {
+		        $mapped_data[$map]= $data[$element];
+		    }
+		}
+        return $mapped_data;
     }
 }

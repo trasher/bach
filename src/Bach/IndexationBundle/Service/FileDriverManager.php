@@ -191,11 +191,13 @@ class FileDriverManager
         }
 
         foreach ($results as &$result) {
+        	//var_dump($mapper->translate($result));
             $result = $mapper->translate($result);
-
             $exists = null;
             if ( isset($result['fragmentid']) ) {
                 $exists = $repo->findOneByFragmentid($result['fragmentid']);
+            } else if (isset($result['idNotice'])) {
+                $exists = $repo->findOneByIdNotice($result['idNotice'][0]['value']);
             } else {
                 $exists = $repo->findOneById($result['id'][0]['value']);
             }

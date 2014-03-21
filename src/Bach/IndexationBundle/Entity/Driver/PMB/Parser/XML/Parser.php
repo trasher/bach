@@ -60,6 +60,7 @@ class Parser implements ParserInterface
         $dom = $bag->getData();
         $xpath = new \DOMXPath($dom);
         $nodes = $xpath->query('//notice');
+        $pmbs = array();
 		foreach ($nodes as $node) {
 	        $pmb = new PMB(
 	            $xpath,
@@ -67,10 +68,11 @@ class Parser implements ParserInterface
 	            $this->_configuration['fields']
         	);
 	        $id = $xpath->query('idNotice', $node)->item(0)->nodeValue;
-	        $this->_tree->append(
-	            new ObjectSheet('notice_' . $id, $pmb)
-        	);
+	        $pmbs[] = $pmb;
 		}
+		$this->_tree->append(
+			new ObjectSheet('notices', $pmbs)
+		);
     }
 
     /**

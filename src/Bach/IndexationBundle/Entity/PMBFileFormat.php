@@ -3,7 +3,7 @@
  * Bach PMB File Format entity
  *
  * PHP version 5
- *
+  *
  * @category Indexation
  * @package  Bach
  * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @category Indexation
  * @package  Bach
- * @author   Vincent Fleurette <vincent.fleurettes@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  *
@@ -27,7 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="PMBFileFormat")
  */
 
-Class PMBFileFormat extends FileFormat
+class PMBFileFormat extends FileFormat
 {
 
     /**
@@ -36,7 +36,10 @@ Class PMBFileFormat extends FileFormat
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $uniqid;
-
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $idNotice;
     /**
      * @ORM\Column(type="string")
      */
@@ -220,7 +223,6 @@ Class PMBFileFormat extends FileFormat
         $this-> notice = new ArrayCollection();
         $this-> language = new ArrayCollection();
         $this-> title = new ArrayCollection();
-        //$this-> comments = new ArrayCollection();
         parent::__construct($data);
 
 
@@ -235,9 +237,12 @@ Class PMBFileFormat extends FileFormat
      */
     protected function parseData($data)
     {
+    	var_dump($data);
         foreach ($data as $key=>$datum) {
             if (property_exists($this, $key)) {
                 $this->$key = $datum;
+            } else {
+            	throw new \RuntimeException("Missing property for entry " . $key);
             }
         }
     }
@@ -1102,4 +1107,41 @@ Class PMBFileFormat extends FileFormat
     {
         return $this->language;
     }
+
+
+
+    /**
+     * Set idNotice
+     *
+     * @param string $idNotice
+     * @return PMBFileFormat
+     */
+    public function setIdNotice($idNotice)
+    {
+        $this->idNotice = $idNotice;
+    
+        return $this;
+    }
+
+    /**
+     * Get idNotice
+     *
+     * @return string 
+     */
+    public function getIdNotice()
+    {
+        return $this->idNotice;
+    }
+
+    
+    /**
+     * Remove authors
+     *
+     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors
+     */
+    public function removeAuthor(\Bach\IndexationBundle\Entity\PMBAuthor $authors)
+    {
+        $this->authors->removeElement($authors);
+    }
+
 }

@@ -50,35 +50,39 @@ drivers:
     pmb:
         mapper: Bach\IndexationBundle\Entity\Mapper\PMBDriverMapper
         universalfileformat: Bach\IndexationBundle\Entity\PMBFileFormat
+        doctrine: BachIndexationBundle:PMBFileFormat
         preprocessor:
         fields:
-            - idNotice
-            - zoneCodageUnimarc/codage
-            - zoneTitre/titrePrincipal
-            - prixISBN/ISBN
-            - zoneLangues/langueDocument
-            - zoneCollation/nbPages
-            - zoneCollation/illustration
-            - zoneCollation/taille
-            - zoneNotes/noteContenu
-            - zoneAuteurPrincipal/nom
-            - zoneAuteurPrincipal/prenom
-            - zoneAuteurPrincipal/codeFonction
-            - zoneAuteurPrincipal/s_9
-            - zoneEditeur/ville
-            - zoneEditeur/s_b
-            - zoneEditeur/nom
-            - zoneEditeur/annee
-            - zoneEditeur/s_9
-            - zoneCollection225/nom
-            - zoneCollection225/s_9
-            - zoneCollection410/nom
-            - zoneCollection410/s_9
-            - zoneIndexationDecimale/nom
-            - zoneIndexationDecimale/s_l
-            - zoneIndexationDecimale/s_9
-            - f_896/s_a
-            - zoneCategories/categorie
+             - idNotice
+             - zoneCodageUnimarc/codage
+             - zoneTitre/titrePrincipal
+             - zoneTitre/titrePropreAuteurDiffzoneTitre
+             - zoneTitre/titreParallele
+             - zoneTitre/titreComplement
+             - prixISBN/s_d
+             - zoneLiens/lien
+             - zoneLiens/eFormat
+             - zoneLangues
+             - zoneMentionEdition/mention
+             - zoneCollation/nbPages
+             - zoneCollation/illustration
+             - zoneCollation/taille
+             - zoneCollation/materielAccompagnement
+             - zoneNotes/noteGenerale
+             - zoneNotes/noteContenu
+             - zoneNotes/noteResume
+             - zoneAuteursAutres|zoneAuteursSecondaires|zoneAuteurPrincipal
+             - zoneEditeur
+             - zoneCollection225|zoneCollection410
+             - f_411/s_t
+             - f_411/s_x
+             - zoneMere/titre
+             - zoneMere/numero
+             - zoneIndexationDecimale/nom
+             - zoneIndexationDecimale/s_l
+             - f_896/s_a
+             - zoneMotsClesLibres/mot
+             - zoneCategories/categorie
     ead:
         mapper: Bach\IndexationBundle\Entity\Mapper\EADDriverMapper
         fileformat: Bach\IndexationBundle\Entity\EADFileFormat
