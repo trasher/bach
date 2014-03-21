@@ -39,3 +39,21 @@ services:
 
     bach.indexation.nominatim:
         class: '%bach_indexation_nominatim.class%'
+
+    publication.logger:
+        class: Symfony\Bridge\Monolog\Logger
+        arguments: [app]
+        calls:
+            - [ pushHandler, [@publication.logger_handler] ]
+
+    publication.logger_handler:
+        class: Monolog\Handler\StreamHandler
+        arguments: [%kernel.logs_dir%/publication.log, 200]
+        calls:
+            - [ setFormatter, [@publication.formatter]]
+
+    publication.formatter:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] %%level_name%% - %%message%%\n"
+

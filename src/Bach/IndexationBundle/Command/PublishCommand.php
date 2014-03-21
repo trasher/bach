@@ -23,6 +23,7 @@ Use Symfony\Component\HttpFoundation\File\File;
 use Bach\IndexationBundle\Entity\Document;
 use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Psr\Log\LoggerInterface;
 
 /**
  * Publication command
@@ -110,6 +111,8 @@ EOF
 
         $type = null;
         $container = $this->getContainer();
+
+        $logger = $container->get('publication.logger');
         $known_types = $container->getParameter('bach.types');
 
         if ( $input->getArgument('type')) {
@@ -209,6 +212,13 @@ EOF
                             if ( $exists->getUpdated() > $change_date ) {
                                 $progress->advance();
                                 /** TODO: log something? */
+                                $logger->info(
+                                    str_replace(
+                                        '%doc',
+                                        $ftp,
+                                        _('Document %doc has not been changed, no publication required.')
+                                    )
+                                );
                                 continue;
                             }
                         }
