@@ -174,16 +174,6 @@ class PMBFileFormat extends FileFormat
     protected $format_elect_ressource;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
-     */
-    protected $statut_notice;
-
-    /**
-     * @ORM\Column(type="text", nullable=true, length=1000)
-     */
-    protected $comment;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $url_vignette;
@@ -205,7 +195,7 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\OneToMany(targetEntity="PMBNoticeLink", mappedBy="pmbfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
-    protected $notice;
+    //protected $notice;
     /**
      * @ORM\OneToMany(targetEntity="PMBLanguage", mappedBy="pmbfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
@@ -220,7 +210,7 @@ class PMBFileFormat extends FileFormat
     {
         $this-> authors = new ArrayCollection();
         $this-> category = new ArrayCollection();
-        $this-> notice = new ArrayCollection();
+        //$this-> notice = new ArrayCollection();
         $this-> language = new ArrayCollection();
         $this-> title = new ArrayCollection();
         parent::__construct($data);
@@ -237,15 +227,83 @@ class PMBFileFormat extends FileFormat
      */
     protected function parseData($data)
     {
-    	var_dump($data);
-        foreach ($data as $key=>$datum) {
-            if (property_exists($this, $key)) {
-                $this->$key = $datum;
+
+        foreach ($data as $key=>$value) {
+            /*if ( in_array($key, self::$known_indexes) ) {*/
+            if ( $key === 'authors' ) {
+                $this->parseAuthors($value);
+            } else if ( $key === 'category' ) {
+                $this->parseCategory($value);
+            } elseif (property_exists($this, $key)) {
+                if ( $this->$key !== $value ) {
+                    $this->onPropertyChanged($key, $this->$key, $value);
+                    $this->$key = $value;
+                    //var_dump($value);
+                }
+            } elseif ($key === 'language' ) {
+                $this->parseLanguage($value);
+            } elseif ( $key == 'title' ) {
+                $this->parseTitle($value);
             } else {
-            	throw new \RuntimeException("Missing property for entry " . $key);
+                throw new \RuntimeException("Missing property for entry " . $key);
             }
         }
     }
+
+    /**
+     * Parse authors objects from bag
+     *
+     * @param array $data Authors data
+     *
+     * @return void
+     */
+    protected function parseAuthors($data)
+    {
+        $authors = clone $this->authors;
+        $has_changed = false;
+
+    }
+
+    /**
+     * Parse category objects from bag
+     *
+     * @param array $data Category data
+     *
+     * @return void
+     */
+    protected function parseCategory($data)
+    {
+        $category = clone $this->category;
+        $has_changed = false;
+
+    }
+
+    /**
+     * Parse language objects from bag
+     *
+     * @param array $data Language data
+     *
+     * @return void
+     */
+    protected function parseLanguage($data)
+    {
+        $Language = clone $this->Language;
+        $has_changed = false;
+
+    }
+    /**
+     * Parse title objects from bag
+     *
+     * @param array $data Title data
+     *
+     * @return void
+     */
+    protected function parseTitle($data)
+    {
+        $Title = clone $this->Title;
+        $has_changed = false;
+
+    }             
 
     /**
      * Get uniqid
@@ -885,21 +943,21 @@ class PMBFileFormat extends FileFormat
      *
      * @return PMBFileFormat
      */
-    public function setStatutNotice($statutNotice)
+    /*public function setStatutNotice($statutNotice)
     {
         $this->statut_notice = $statutNotice;
         return $this;
-    }
+    }*/
 
     /**
      * Get statut_notice
      *
      * @return string
      */
-    public function getStatutNotice()
+    /*public function getStatutNotice()
     {
         return $this->statut_notice;
-    }
+    }*/
 
     /**
      * Set comment
@@ -908,21 +966,21 @@ class PMBFileFormat extends FileFormat
      *
      * @return PMBFileFormat
      */
-    public function setComment($comment)
+    /*public function setComment($comment)
     {
         $this->comment = $comment;
         return $this;
-    }
+    }*/
 
     /**
      * Get comment
      *
      * @return string
      */
-    public function getComment()
+    /*public function getComment()
     {
         return $this->comment;
-    }
+    }*/
 
     /**
      * Set url_vignette
@@ -1050,31 +1108,31 @@ class PMBFileFormat extends FileFormat
      * @param \Bach\IndexationBundle\Entity\PMBNoticeLink $notice
      * @return PMBFileFormat
      */
-    public function addNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
+    /*public function addNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
     {
         $this->notice[] = $notice;
         return $this;
-    }
+    }*/
 
     /**
      * Remove notice
      *
      * @param \Bach\IndexationBundle\Entity\PMBNoticeLink $notice
      */
-    public function removeNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
+    /*public function removeNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
     {
         $this->notice->removeElement($notice);
-    }
+    }*/
 
     /**
      * Get notice
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getNotice()
+    /*public function getNotice()
     {
         return $this->notice;
-    }
+    }*/
 
     /**
      * Add language
@@ -1082,11 +1140,11 @@ class PMBFileFormat extends FileFormat
      * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
      * @return PMBFileFormat
      */
-    public function addLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
+    /*public function addLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
     {
         $this->language[] = $language;
         return $this;
-    }
+    }*/
 
     /**
      * Remove language
