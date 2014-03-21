@@ -37,6 +37,7 @@ use Bach\HomeBundle\Entity\SearchQuery;
  */
 class MatriculesController extends SearchController
 {
+    protected $date_field = 'date_enregistrement';
 
     /**
      * Default page
@@ -125,7 +126,7 @@ class MatriculesController extends SearchController
 
         $factory = $this->get($this->factoryName());
         $factory->setGeolocFields($this->getGeolocFields());
-        $factory->setDateField('date_enregistrement');
+        $factory->setDateField($this->date_field);
 
         if ( $filters->count() > 0 ) {
             $tpl_vars['filters'] = $filters;

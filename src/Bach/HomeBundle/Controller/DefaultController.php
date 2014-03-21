@@ -40,6 +40,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class DefaultController extends SearchController
 {
+    protected $date_field = 'cDateBegin';
+
     /**
      * Default page
      *
@@ -72,7 +74,7 @@ class DefaultController extends SearchController
         $tpl_vars['form'] = $form->createView();
 
         $factory = $this->get($this->factoryName());
-        $factory->setDateField('cDateBegin');
+        $factory->setDateField($this->date_field);
 
         $show_tagcloud = $this->container->getParameter('feature.tagcloud');
         if ( $show_tagcloud ) {
@@ -215,7 +217,7 @@ class DefaultController extends SearchController
 
         $factory = $this->get($this->factoryName());
         $factory->setGeolocFields($this->getGeolocFields());
-        $factory->setDateField('cDateBegin');
+        $factory->setDateField($this->date_field);
 
         // On effectue une recherche
         $form = $this->createForm(

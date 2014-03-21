@@ -44,6 +44,7 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class SearchController extends Controller
 {
     private $_geoloc;
+    protected $date_field;
 
     /**
      * Default page
@@ -583,6 +584,7 @@ abstract class SearchController extends Controller
 
         //Add filters to container
         $container->setFilters($filters);
+        $factory->setDateField($this->date_field);
         $factory->prepareQuery($container);
 
         $searchResults = $factory->performQuery(
