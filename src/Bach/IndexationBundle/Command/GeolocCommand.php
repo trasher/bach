@@ -314,6 +314,13 @@ EOF
             }
         }
 
+        if ( count($places) === 0 ) {
+            $output->writeln(
+                _('Ne places to localize.')
+            );
+            return 0;
+        }
+
         if ( !$quiet ) {
             $output->writeln(
                 str_replace(
