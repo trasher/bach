@@ -442,7 +442,7 @@
                         show: true,
                         align: "center",
                         fill: true,
-                        fillColor: "rgb(183,58,52)"
+                        fillColor: "{{ _plot_fill_color }}"
                     }
                 },
                 colors: ["rgba(163,150,141,0)"],
@@ -451,12 +451,12 @@
                 yaxis: { tickDecimals: 0 },
                 selection: {
                     mode: "x",
-                    color: 'rgb(209,198,192)'
+                    color: '{{ _plot_selection_color }}'
                 },
                 grid: {
                     backgroundColor: null,
                     borderWidth: 1,
-                    borderColor: "rgb(163,150,141)"
+                    borderColor: "{{ _plot_border_color }}"
                 },
                 shadowSize: 0
             };
