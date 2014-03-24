@@ -88,7 +88,7 @@ file that was distributed with this source code.
                                 </a>
                             </td>
                         </tr>
-                    {% elseif (admin.getCode == 'sonata.admin.geolocfields' or admin.getCode == 'sonata.admin.matricules.geolocfields' ) and admin.isGranted('EDIT') %}
+                    {% elseif (admin.getCode == 'sonata.admin.geolocfields' or admin.getCode == 'sonata.admin.matricules.geolocfields' and features.matricules ) and admin.isGranted('EDIT') %}
                         <tr>
                             <td class="sonata-ba-list-label">
                                 {{ admin.label|trans({}, admin.translationdomain) }}
