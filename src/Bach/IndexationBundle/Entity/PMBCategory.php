@@ -53,8 +53,10 @@ class PMBCategory
      * @param array $data Entity data
      */
 
-    public function __construct($data)
+    public function __construct($category,$pmb)
     {
+        $this->pmbfile = $pmb;
+        $this->category = $category;
     }
 
     /**

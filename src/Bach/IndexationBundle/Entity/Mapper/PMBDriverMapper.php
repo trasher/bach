@@ -75,10 +75,10 @@ class PMBDriverMapper implements DriverMapperInterface
 
         foreach ( $notices_elements as $map=>$element ) {
 
-		    if ( array_key_exists($element, $data) ) {
-		        $mapped_data[$map]= $data[$element];
-		    }
-		}
+            if ( array_key_exists($element, $data) ) {
+                $mapped_data[$map]= $data[$element];
+            }
+        }
         return $mapped_data;
     }
 }

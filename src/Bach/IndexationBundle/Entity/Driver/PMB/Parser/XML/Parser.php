@@ -61,18 +61,18 @@ class Parser implements ParserInterface
         $xpath = new \DOMXPath($dom);
         $nodes = $xpath->query('//notice');
         $pmbs = array();
-		foreach ($nodes as $node) {
-	        $pmb = new PMB(
-	            $xpath,
-	            $node,
-	            $this->_configuration['fields']
-        	);
-	        $id = $xpath->query('idNotice', $node)->item(0)->nodeValue;
-	        $pmbs[] = $pmb;
-		}
-		$this->_tree->append(
-			new ObjectSheet('notices', $pmbs)
-		);
+        foreach ($nodes as $node) {
+            $pmb = new PMB(
+                $xpath,
+                $node,
+                $this->_configuration['fields']
+            );
+            $id = $xpath->query('idNotice', $node)->item(0)->nodeValue;
+            $pmbs[] = $pmb;
+        }
+        $this->_tree->append(
+            new ObjectSheet('notices', $pmbs)
+        );
     }
 
     /**

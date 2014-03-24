@@ -58,9 +58,10 @@ class PMBLanguage
      *
      * @param array $data Entity data
      */
-    public function __construct($data)
+    public function __construct($content,$pmb)
     {
-
+        $this->pmbfile = $pmb;
+        $this->content = $content;
     }
 
     /**
