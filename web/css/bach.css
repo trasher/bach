@@ -1221,6 +1221,7 @@ div.sonata-bc .btn, .form-actions .btn {
     height: auto;
     text-indent: 0;
     width: auto;
+    padding: 4px 8px;
 }
 
 .form-actions .btn {
@@ -1289,6 +1290,21 @@ div.sonata-bc .pagination {
 
 div.sonata-bc .row-fluid .span6 {
     width: 100%;
+}
+
+div.sonata-bc .editable-container {
+    position: absolute;
+    background: #fff;
+    padding: .2em;
+    margin-top: -.5em;
+}
+
+div.sonata-bc .editable-container form {
+    margin: 0;
+}
+
+div.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-boolean i {
+    margin-right: 0;
 }
 
 /**
