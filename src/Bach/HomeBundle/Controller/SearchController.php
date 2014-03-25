@@ -268,7 +268,7 @@ abstract class SearchController extends Controller
                         }
                     }
 
-                    if ( $solr_field == 'headerId' ) {
+                    if ( $solr_field == 'headerId' && count($docs_titles) > 0 ) {
                         foreach ( $docs_titles as $title ) {
                             if ( $title['headerId'] === $item ) {
                                 $facet_labels[$solr_field][$item]
