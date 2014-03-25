@@ -390,6 +390,24 @@ class DefaultController extends Controller
         $connection->executeUpdate(
             $platform->getTruncateTableSQL('ead_file_format', true)
         );
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('PMBAuthor', true)
+        );
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('PMBCategory', true)
+        );
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('PMBLanguage', true)
+        );
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('PMBNoticeLink', true)
+        );
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('PMBTitle', true)
+        );
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('PMBFileFormat ', true)
+        );
 
         $connection->executeUpdate(
             $platform->getTruncateTableSQL('matricules_file_format', true)

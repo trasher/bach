@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
- * @ORM\Table(name="pmb_authors")
+ * @ORM\Table(name="PMBAuthor")
  */
 class PMBAuthor
 {
