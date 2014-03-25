@@ -223,7 +223,6 @@ class PMBFileFormat extends FileFormat
     {
 
         foreach ($data as $key=>$value) {
-            /*if ( in_array($key, self::$known_indexes) ) {*/
             if ( $key === 'authors' ) {
                 $this->parseAuthors($value);
             } else if ( $key === 'category' ) {
@@ -247,15 +246,13 @@ class PMBFileFormat extends FileFormat
                         try {
                             $url = substr(urldecode($value[0]['value']), 25);
                             $this->$key = $url;
-                            //echo $url."</br>";
                         } catch ( \Exception $e ) {
                             throw new \RuntimeException(" error url encode");
                         }
                     } else {
                         if ( $this->$key !== $value[0]['value'] ) {
-                            //$this->onPropertyChanged($key, $this->$key, $value);
+                            $this->onPropertyChanged($key, $this->$key, $value[0]['value']);
                             $this->$key = $value[0]['value'];
-                            //var_dump($value);
                         }
                     }
                 }

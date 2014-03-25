@@ -307,6 +307,8 @@ class DefaultController extends Controller
             $update = $updates[$doc->getCorename()];
             if ( $doc->getExtension() === 'matricules' ) {
                 $update->addDeleteQuery('id:' . $doc->getDocId());
+            } else if ( $doc->getExtension() === 'pmb' ) {
+                $update->addDeleteQuery('idNotice:' . $doc->getDocId());
             } else {
                 $update->addDeleteQuery('headerId:' . $doc->getDocId());
             }
