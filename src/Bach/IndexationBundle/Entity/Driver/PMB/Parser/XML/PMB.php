@@ -86,11 +86,41 @@ class PMB
                     $value = null;
                     $attributes = null;
                     //var_dump($field);
-                    if ( $field === 'zoneAuteursAutres|zoneAuteursSecondaires|zoneAuteurPrincipal' ){
-                        //var_dump($node->localName);
+                    if ( $field === 'zoneAuteursAutres|zoneAuteursSecondaires|zoneAuteurPrincipal' ) {
+                        $name = null;
+                        $surname = null;
+                        $function = null;
+                        $type = null;
+                        foreach ($node->childNodes as $child) {
+                            switch($child->localName){
+                            case 'nom':
+                                $name = $child->nodeValue;
+                                break;
+                            case 'prenom':
+                                $surname = $child->nodeValue;
+                                break;
+                            case 'codeFonction':
+                                $function = $child->nodeValue;
+                                break;
+                            }
+                        }
+                        switch ($node->localName){
+                        case "zoneAuteursAutres" :
+                            $type = 'other';
+                            break;
+                        case "zoneAuteursSecondaires" :
+                            $type = 'secondary';
+                            break;
+
+                        case "zoneAuteurPrincipal" :
+                            $type = 'primary';
+                            break;
+                        }
                         //var_dump($node->nodeValue);
                         //nom //prenom
-                        //$attributes'code' = //code
+                        $value = $name . ' ' . $surname;
+                        $attributes['function'] = $function;
+                        $attributes['type'] = $type;
                     } else {
                         $value = $node->nodeValue;
                         $attributes = $this->_parseAttributes($node->attributes);
