@@ -74,7 +74,7 @@ class PMBTitle
 
     /**
      * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="title")
-     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid") 
+     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid")
      */
     protected $pmbfile;
     /**
@@ -89,7 +89,7 @@ class PMBTitle
     /**
      * Get uniqid
      *
-     * @return integer 
+     * @return integer
      */
     public function getUniqid()
     {
@@ -99,7 +99,7 @@ class PMBTitle
     /**
      * Set title_section_part
      *
-     * @param string $titleSectionParut
+     * @param string $titleSectionPart titleSectionPart
      *
      * @return PMBTitle
      */
@@ -122,7 +122,7 @@ class PMBTitle
     /**
      * Set date_publication
      *
-     * @param \DateTime $datePublication
+     * @param \DateTime $datePublication datePublication
      *
      * @return PMBTitle
      */
@@ -135,7 +135,7 @@ class PMBTitle
     /**
      * Get date_publication
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDatePublication()
     {
@@ -145,7 +145,7 @@ class PMBTitle
     /**
      * Set sous_vedette_forme
      *
-     * @param string $sousVedetteForme
+     * @param string $sousVedetteForme sousVedetteForme
      *
      * @return PMBTitle
      */
@@ -168,7 +168,7 @@ class PMBTitle
     /**
      * Set langue
      *
-     * @param string $langue
+     * @param string $langue langue
      *
      * @return PMBTitle
      */
@@ -191,14 +191,14 @@ class PMBTitle
     /**
      * Set version
      *
-     * @param string $version
+     * @param string $version version
      *
      * @return PMBTitle
      */
     public function setVersion($version)
     {
         $this->version = $version;
-    
+
         return $this;
     }
 
@@ -215,14 +215,14 @@ class PMBTitle
     /**
      * Set mention_arrangement
      *
-     * @param string $mentionArrangement
+     * @param string $mentionArrangement mentionArrangement
      *
      * @return PMBTitle
      */
     public function setMentionArrangement($mentionArrangement)
     {
         $this->mention_arrangement = $mentionArrangement;
-    
+
         return $this;
     }
 
@@ -239,7 +239,7 @@ class PMBTitle
     /**
      * Set comment
      *
-     * @param string $comment
+     * @param string $comment comment
      *
      * @return PMBTitle
      */
@@ -274,7 +274,7 @@ class PMBTitle
     /**
      * Get pmbfile
      *
-     * @return \Bach\IndexationBundle\Entity\PMBFileFormat 
+     * @return \Bach\IndexationBundle\Entity\PMBFileFormat
      */
     public function getTitleassoc()
     {

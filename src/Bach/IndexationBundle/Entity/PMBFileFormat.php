@@ -192,10 +192,7 @@ class PMBFileFormat extends FileFormat
      * @ORM\OneToMany(targetEntity="PMBCategory", mappedBy="pmbfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $category;
-    /**
-     * @ORM\OneToMany(targetEntity="PMBNoticeLink", mappedBy="pmbfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
-     */
-    //protected $notice;
+
     /**
      * @ORM\OneToMany(targetEntity="PMBLanguage", mappedBy="pmbfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
@@ -208,14 +205,11 @@ class PMBFileFormat extends FileFormat
      */
     public function __construct($data)
     {
-        $this-> authors = new ArrayCollection();
+        $this-> authors  = new ArrayCollection();
         $this-> category = new ArrayCollection();
-        //$this-> notice = new ArrayCollection();
         $this-> language = new ArrayCollection();
-        $this-> title = new ArrayCollection();
+        $this-> title    = new ArrayCollection();
         parent::__construct($data);
-
-
     }
 
     /**
@@ -239,20 +233,17 @@ class PMBFileFormat extends FileFormat
             } else if ( $key == 'title' ) {
                 $this->parseTitle($value);
             } else if (property_exists($this, $key)) {
-            	if ( isset($value[0])) {
+                if ( isset($value[0])) {
                     if ( $key == 'year' ) {
                         try {
                             $year = new \DateTime(
                                 $value[0]['value'] . '-01-01'
                             );
                             //TODO: test if value has changed
-                            //$this->$key->format('Y') === $year->format('Y')
                             $this->$key = $year;
                         } catch ( \Exception $e ) {
-                            //empty catch - not a valid date
                         }
-                    } else if ($key == 'url_vignette'){
-                        //echo $value[0]['value']."\n";
+                    } else if ($key == 'url_vignette') {
                         try {
                             $url = substr(urldecode($value[0]['value']), 25);
                             $this->$key = $url;
@@ -344,8 +335,6 @@ class PMBFileFormat extends FileFormat
         $Title = clone $this->Title;
         $has_changed = false;
         foreach ($data as $value) {
-            var_dump( $data[0]['value']);
-            //echo $data[0]['value']."\n";
         }
 
     }
@@ -363,7 +352,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set titre_propre
      *
-     * @param string $titrePropre
+     * @param string $titrePropre titrePropre
      *
      * @return PMBFileFormat
      */
@@ -386,7 +375,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set titrepropre_auteur_different
      *
-     * @param string $titrepropreAuteurDifferent
+     * @param string $titrepropreAuteurDifferent titrepropreAuteurDifferent
      *
      * @return PMBFileFormat
      */
@@ -409,7 +398,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set titre_parallele
      *
-     * @param string $titreParallele
+     * @param string $titreParallele titreParallele
      *
      * @return PMBFileFormat
      */
@@ -432,8 +421,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set titre_complement
      *
-     * @param string $titreComplemen
-     * t
+     * @param string $titreComplement titreComplement
+     *
      * @return PMBFileFormat
      */
     public function setTitreComplement($titreComplement)
@@ -455,7 +444,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set codage_unimarc
      *
-     * @param string $codageUnimarc
+     * @param string $codageUnimarc codageUnimarc
      *
      * @return PMBFileFormat
      */
@@ -478,7 +467,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set part_of
      *
-     * @param string $partOf
+     * @param string $partOf partOf
      *
      * @return PMBFileFormat
      */
@@ -501,7 +490,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set part_num
      *
-     * @param string $partNum
+     * @param string $partNum partNum
      *
      * @return PMBFileFormat
      */
@@ -524,7 +513,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set editeur
      *
-     * @param string $editeur
+     * @param string $editeur editeur
      *
      * @return PMBFileFormat
      */
@@ -547,7 +536,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set collection
      *
-     * @param string $collection
+     * @param string $collection collection
      *
      * @return PMBFileFormat
      */
@@ -570,7 +559,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set num_collection
      *
-     * @param string $numCollection
+     * @param string $numCollection numCollection
      *
      * @return PMBFileFormat
      */
@@ -593,7 +582,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set sous_collection
      *
-     * @param string $sousCollection
+     * @param string $sousCollection sousCollection
      *
      * @return PMBFileFormat
      */
@@ -616,7 +605,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set year
      *
-     * @param \DateTime $year
+     * @param \DateTime $year year
      *
      * @return PMBFileFormat
      */
@@ -639,7 +628,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set mention_edition
      *
-     * @param string $mentionEdition
+     * @param string $mentionEdition mentionEdition
      *
      * @return PMBFileFormat
      */
@@ -662,7 +651,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set autre_editeur
      *
-     * @param string $autreEditeur
+     * @param string $autreEditeur autreEditeur
      *
      * @return PMBFileFormat
      */
@@ -685,7 +674,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set isbn
      *
-     * @param string $isbn
+     * @param string $isbn isbn
      *
      * @return PMBFileFormat
      */
@@ -708,7 +697,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set importance_materielle
      *
-     * @param string $importanceMaterielle
+     * @param string $importanceMaterielle importanceMaterielle
      *
      * @return PMBFileFormat
      */
@@ -731,7 +720,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set autres_carac_materielle
      *
-     * @param string $autresCaracMaterielle
+     * @param string $autresCaracMaterielle autresCaracMaterielle
      *
      * @return PMBFileFormat
      */
@@ -754,9 +743,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Set format
      *
-     * @param string $format
+     * @param string $format format
      *
-     * @return PMBFileFormat
+     * @return PMBFileFormat format
      */
     public function setFormat($format)
     {
@@ -777,9 +766,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Set prix
      *
-     * @param string $prix
+     * @param string $prix prix
      *
-     * @return PMBFileFormat
+     * @return PMBFileFormat prix
      */
     public function setPrix($prix)
     {
@@ -800,7 +789,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set materiel_accompagnement
      *
-     * @param string $materielAccompagnement
+     * @param string $materielAccompagnement materielAccompagnement
      *
      * @return PMBFileFormat
      */
@@ -823,7 +812,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set note_generale
      *
-     * @param string $noteGenerale
+     * @param string $noteGenerale noteGenerale
      *
      * @return PMBFileFormat
      */
@@ -846,7 +835,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set note_content
      *
-     * @param string $noteContent
+     * @param string $noteContent noteContent
      *
      * @return PMBFileFormat
      */
@@ -869,9 +858,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Set extract
      *
-     * @param string $extract
+     * @param string $extract extract
      *
-     * @return PMBFileFormat
+     * @return PMBFileFormat extract
      */
     public function setExtract($extract)
     {
@@ -892,7 +881,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set indexation_decimale
      *
-     * @param string $indexationDecimale
+     * @param string $indexationDecimale indexationDecimale
      *
      * @return PMBFileFormat
      */
@@ -915,7 +904,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set key_word
      *
-     * @param string $keyWord
+     * @param string $keyWord keyWord
      *
      * @return PMBFileFormat
      */
@@ -938,7 +927,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set link_ressource_electronque
      *
-     * @param string $linkRessourceElectronque
+     * @param string $linkRessourceElectronque linkRessourceElectronque
      *
      * @return PMBFileFormat
      */
@@ -961,7 +950,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set format_elect_ressource
      *
-     * @param string $formatElectRessource
+     * @param string $formatElectRessource formatElectRessource
      *
      * @return PMBFileFormat
      */
@@ -982,55 +971,9 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set statut_notice
-     *
-     * @param string $statutNotice
-     *
-     * @return PMBFileFormat
-     */
-    /*public function setStatutNotice($statutNotice)
-    {
-        $this->statut_notice = $statutNotice;
-        return $this;
-    }*/
-
-    /**
-     * Get statut_notice
-     *
-     * @return string
-     */
-    /*public function getStatutNotice()
-    {
-        return $this->statut_notice;
-    }*/
-
-    /**
-     * Set comment
-     *
-     * @param string $comment
-     *
-     * @return PMBFileFormat
-     */
-    /*public function setComment($comment)
-    {
-        $this->comment = $comment;
-        return $this;
-    }*/
-
-    /**
-     * Get comment
-     *
-     * @return string
-     */
-    /*public function getComment()
-    {
-        return $this->comment;
-    }*/
-
-    /**
      * Set url_vignette
      *
-     * @param string $urlVignette
+     * @param string $urlVignette urlVignette
      *
      * @return PMBFileFormat
      */
@@ -1066,7 +1009,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Remove title
      *
-     * @param \Bach\IndexationBundle\Entity\PMBTitle $title
+     * @param \Bach\IndexationBundle\Entity\PMBTitle $title title
+     *
+     * @return PMBFileFormat
      */
     public function removeTitle(\Bach\IndexationBundle\Entity\PMBTitle $title)
     {
@@ -1086,7 +1031,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Add author
      *
-     * @param PMBAuthor $author
+     * @param PMBAuthor $author author
+     *
      * @return PMBFileFormat
      */
     public function addAuthor(PMBAuthor $author)
@@ -1098,7 +1044,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Remove author
      *
-     * @param PMBAuthor $author
+     * @param PMBAuthor $author author
+     *
+     * @return PMBFileFormat
      */
     public function removeAutor(PMBAuthor $author)
     {
@@ -1118,7 +1066,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Add category
      *
-     * @param \Bach\IndexationBundle\Entity\PMBCategory $category
+     * @param \Bach\IndexationBundle\Entity\PMBCategory $category category
+     *
      * @return PMBFileFormat
      */
     public function addCategory(\Bach\IndexationBundle\Entity\PMBCategory $category)
@@ -1130,7 +1079,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Remove category
      *
-     * @param \Bach\IndexationBundle\Entity\PMBCategory $category
+     * @param \Bach\IndexationBundle\Entity\PMBCategory $category category
+     *
+     * @return PMBFileFormat
      */
     public function removeCategory(PMBCategory $category)
     {
@@ -1148,41 +1099,10 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Add notice
-     *
-     * @param \Bach\IndexationBundle\Entity\PMBNoticeLink $notice
-     * @return PMBFileFormat
-     */
-    /*public function addNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
-    {
-        $this->notice[] = $notice;
-        return $this;
-    }*/
-
-    /**
-     * Remove notice
-     *
-     * @param \Bach\IndexationBundle\Entity\PMBNoticeLink $notice
-     */
-    /*public function removeNotice(\Bach\IndexationBundle\Entity\PMBNoticeLink $notice)
-    {
-        $this->notice->removeElement($notice);
-    }*/
-
-    /**
-     * Get notice
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    /*public function getNotice()
-    {
-        return $this->notice;
-    }*/
-
-    /**
      * Add language
      *
-     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
+     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language language
+     *
      * @return PMBFileFormat
      */
     public function addLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
@@ -1194,7 +1114,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Remove language
      *
-     * @param PMBLanguage $language
+     * @param PMBLanguage $language language
+     *
+     * @return PMBFileFormat
      */
     public function removeLanguage(PMBLanguage $language)
     {
@@ -1211,12 +1133,11 @@ class PMBFileFormat extends FileFormat
         return $this->language;
     }
 
-
-
     /**
      * Set idNotice
      *
-     * @param string $idNotice
+     * @param string $idNotice idNotice
+     *
      * @return PMBFileFormat
      */
     public function setIdNotice($idNotice)
@@ -1236,16 +1157,16 @@ class PMBFileFormat extends FileFormat
         return $this->idNotice;
     }
 
-
     /**
      * Remove authors
      *
-     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors
+     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors authors
+     *
+     * @return PMBFileFormat
      */
     public function removeAuthor(\Bach\IndexationBundle\Entity\PMBAuthor $authors)
     {
         $this->authors->removeElement($authors);
     }
-
 
 }

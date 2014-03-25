@@ -50,7 +50,8 @@ class PMBCategory
      /**
      * Main constructor
      *
-     * @param array $data Entity data
+     * @param string        $category Entity category
+     * @param PMBFileFormat $pmb      Entity pmb
      */
 
     public function __construct($category,$pmb)
@@ -72,7 +73,8 @@ class PMBCategory
     /**
      * Set idpmbcategory
      *
-     * @param integer $idpmbcategory
+     * @param integer $idpmbcategory idpmbcategory
+     *
      * @return PMBCategory
      */
     public function setIdpmbcategory($idpmbcategory)
@@ -94,7 +96,7 @@ class PMBCategory
     /**
      * Set category
      *
-     * @param string $category
+     * @param string $category category
      *
      * @return PMBCategory
      */
@@ -117,7 +119,7 @@ class PMBCategory
     /**
      * Set categoryassoc
      *
-     * @param PMBFileFormat $categoryassoc
+     * @param PMBFileFormat $categoryassoc Categoryassoc
      *
      * @return PMBCategory
      */
@@ -136,4 +138,4 @@ class PMBCategory
     {
         return $this->categoryassoc;
     }
- }
+}

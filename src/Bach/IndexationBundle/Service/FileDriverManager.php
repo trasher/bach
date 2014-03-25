@@ -191,7 +191,6 @@ class FileDriverManager
         }
 
         foreach ($results as &$result) {
-        	//var_dump($mapper->translate($result));
             $result = $mapper->translate($result);
             $exists = null;
             if ( isset($result['fragmentid']) ) {

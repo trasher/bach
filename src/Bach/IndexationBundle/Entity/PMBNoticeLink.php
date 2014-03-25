@@ -48,7 +48,7 @@ class PMBNoticeLink
 
     /**
      * @ORM\ManyToOne(targetEntity="PMBFileFormat", inversedBy="notice")
-     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid") 
+     * @ORM\JoinColumn(name="pmbfile_id", referencedColumnName="uniqid")
      */
     protected $pmbfile;
 
@@ -123,7 +123,7 @@ class PMBNoticeLink
     /**
      * Set pmbfile
      *
-     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $pmbfile
+     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $pmbfile pmbfile
      *
      * @return PMBNoticeLink
      */

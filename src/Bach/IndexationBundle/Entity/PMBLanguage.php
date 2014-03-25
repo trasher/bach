@@ -56,7 +56,8 @@ class PMBLanguage
     /**
      * Main constructor
      *
-     * @param array $data Entity data
+     * @param string        $content Entity content
+     * @param PMBFileFormat $pmb     Entity pmb
      */
     public function __construct($content,$pmb)
     {
@@ -77,7 +78,7 @@ class PMBLanguage
     /**
      * Set type
      *
-     * @param string $type
+     * @param string $type type
      *
      * @return PMBLanguage
      */
@@ -100,7 +101,8 @@ class PMBLanguage
     /**
      * Set content
      *
-     * @param string $content
+     * @param string $content content
+     *
      * @return PMBLanguage
      */
     public function setContent($content)
@@ -122,7 +124,8 @@ class PMBLanguage
     /**
      * Set languageassoc
      *
-     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $languageassoc
+     * @param \Bach\IndexationBundle\Entity\PMBFileFormat $languageassoc languageassoc
+     *
      * @return PMBLanguage
      */
     public function setLanguageassoc(\Bach\IndexationBundle\Entity\PMBFileFormat $languageassoc = null)
