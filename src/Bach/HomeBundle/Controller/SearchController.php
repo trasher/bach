@@ -214,12 +214,14 @@ abstract class SearchController extends Controller
                     $ids[] = $key . '_description';
                 }
 
-                $query = $this->getDoctrine()->getManager()->createQuery(
-                    'SELECT h.headerId, h.headerTitle ' .
-                    'FROM BachIndexationBundle:EADHeader h JOIN h.fragments e ' .
-                    'WHERE e.fragmentid IN (:ids)'
-                )->setParameter('ids', $ids);
-                $docs_titles = $query->getResult();
+                if ( count($ids) > 0 ) {
+                    $query = $this->getDoctrine()->getManager()->createQuery(
+                        'SELECT h.headerId, h.headerTitle ' .
+                        'FROM BachIndexationBundle:EADHeader h JOIN h.fragments e ' .
+                        'WHERE e.fragmentid IN (:ids)'
+                    )->setParameter('ids', $ids);
+                    $docs_titles = $query->getResult();
+                }
             }
 
             foreach ( $field_facets as $item=>$count ) {
