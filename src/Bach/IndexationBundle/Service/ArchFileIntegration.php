@@ -90,43 +90,13 @@ class ArchFileIntegration
         $format = $task->getFormat();
         $preprocessor = $task->getPreprocessor();
 
-        $universalFileFormats = $this->_manager->convert(
+        $this->_manager->convert(
             $this->_factory->encapsulate($spl),
             $format,
+            $doc,
+            $flush,
             $preprocessor
         );
-
-        $count = 0;
-        //disable SQL Logger...
-        $this->_entityManager->getConnection()->getConfiguration()
-            ->setSQLLogger(null);
-        foreach ($universalFileFormats as $universalFileFormat) {
-            if ( $universalFileFormat instanceof FileFormat ) {
-                $universalFileFormat->setDocument($doc);
-            }
-            $this->_entityManager->persist($universalFileFormat);
-            unset($universalFileFormat);
-
-            $count++;
-
-            if ( $count % 100 === 0 && $flush ) {
-                $this->_entityManager->flush();
-            }
-        }
-
-        if ( $flush ) {
-            $this->_entityManager->flush();
-            $this->_entityManager->clear();
-
-            /*if ( function_exists('memprof_enable') ) {
-                memprof_dump_callgrind(
-                    fopen(
-                        '/var/www/bach/app/cache/integrate.callgrind.out',
-                        'w'
-                    )
-                );
-            }*/
-        }
     }
 
     /**
@@ -147,6 +117,7 @@ class ArchFileIntegration
 
             if ( $count % 20000 === 0 ) {
                 $this->_entityManager->flush();
+                $this->_entityManager->clear();
             }
         }
 

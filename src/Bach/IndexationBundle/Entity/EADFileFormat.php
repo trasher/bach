@@ -98,7 +98,7 @@ class EADFileFormat extends FileFormat
     protected $fragmentid;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EADHeader", inversedBy="fragments")
+     * @ORM\ManyToOne(targetEntity="EADHeader")
      * @ORM\JoinColumn(name="eadheader_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $eadheader;

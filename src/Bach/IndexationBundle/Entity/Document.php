@@ -189,7 +189,8 @@ class Document
             $this->file->move($this->_upload_dir, $this->path);
         }
 
-        unset($this->file);
+        //FIXME: is this really needed?
+        //unset($this->file);
     }
 
     /**
@@ -438,6 +439,16 @@ class Document
     {
         $this->_store_dir = $dir;
         return $this;
+    }
+
+    /**
+     * Get storage directory
+     *
+     * @return string
+     */
+    public function getStoreDir()
+    {
+        return $this->_store_dir;
     }
 
     /**

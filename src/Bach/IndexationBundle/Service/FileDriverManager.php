@@ -62,14 +62,17 @@ class FileDriverManager
     /**
      * Convert an input file into UniversalFileFormat object
      *
-     * @param DataBag $bag          Data bag
-     * @param string  $format       File format
-     * @param string  $preprocessor Preprocessor, if any (defaults to null)
+     * @param DataBag  $bag          Data bag
+     * @param string   $format       File format
+     * @param Document $doc          Document
+     * @param boolean  $flush        Whether to flush
+     * @param string   $preprocessor Preprocessor, if any (defaults to null)
      *
      * @return UniversalFileFormat the normalized file object
      */
-    public function convert(DataBag $bag, $format, $preprocessor = null)
-    {
+    public function convert(DataBag $bag, $format, $doc, $flush,
+        $preprocessor = null
+    ) {
         if ( !array_key_exists($format, $this->_drivers) ) {
             throw new \DomainException('Unsupported file format: ' . $format);
         } else {
@@ -131,6 +134,14 @@ class FileDriverManager
         $output = array();
         $eadheader = null;
         $archdesc = null;
+        $store_dir = $doc->getStoreDir();
+
+        $count = 0;
+        //disable SQL Logger...
+        $this->_entityManager->getConnection()->getConfiguration()
+            ->setSQLLogger(null);
+
+        //$baseMemory = memory_get_usage();
 
         $repo = $this->_entityManager->getRepository($doctrine_entity);
 
@@ -156,7 +167,7 @@ class FileDriverManager
             }
 
             $mapper->setEadId($eadheader->getHeaderId());
-            $output[] = $eadheader;
+            $this->_entityManager->persist($eadheader);
             unset($headerrepo);
 
             $archdesc = $repo->findOneByFragmentid(
@@ -177,12 +188,12 @@ class FileDriverManager
                     )
                 );
             }
-            $output[] = $archdesc;
+            $this->_entityManager->persist($archdesc);
 
             $results = $results['elements'];
         }
 
-        foreach ($results as $result) {
+        foreach ($results as &$result) {
             $result = $mapper->translate($result);
 
             $exists = null;
@@ -212,9 +223,42 @@ class FileDriverManager
                 }
             }
 
-            $output[] = $out;
+            $out->setDocument($doc);
+            $this->_entityManager->persist($out);
+
+            $count++;
+
+            if ( $count % 100 === 0 && $flush ) {
+                $this->_entityManager->flush();
+                $this->_entityManager->clear();
+
+                if ( $eadheader !== null ) {
+                    $eadheader = $this->_entityManager->merge($eadheader);
+                }
+
+                if ( $archdesc !== null ) {
+                    if ( $eadheader !== null ) {
+                        $archdesc->setEadheader($eadheader);
+                    }
+                    $archdesc = $this->_entityManager->merge($archdesc);
+                }
+                $doc = $this->_entityManager->merge($doc);
+                $doc->setStoreDir($store_dir);
+                /*echo sprintf(
+                    '%8d: ',
+                    $count
+                ) . round(
+                    (memory_get_usage() - $baseMemory)/1048576,
+                    2
+                ) . "\n";*/
+            }
         }
-        return $output;
+
+        if ( $flush ) {
+            $this->_entityManager->flush();
+            $this->_entityManager->clear();
+        }
+        //echo round(memory_get_peak_usage()/1048576, 2) . "\n";
     }
 
     /**

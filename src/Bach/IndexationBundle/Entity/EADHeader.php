@@ -86,11 +86,6 @@ class EADHeader implements NotifyPropertyChanged
     protected $headerLanguage;
 
     /**
-     * @ORM\OneToMany(targetEntity="EADFileFormat", mappedBy="eadheader", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
-     */
-    protected $fragments;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     protected $created;
