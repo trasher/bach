@@ -238,7 +238,7 @@ class PMBFileFormat extends FileFormat
                             $year = new \DateTime(
                                 $value[0]['value'] . '-01-01'
                             );
-                            if ( $this->$key !== $year ) {
+                            if ( $this->$key !== $value ) {
                                 $this->onPropertyChanged($key, $this->$key, $year);
                                 $this->$key = $year;
                             }
@@ -247,14 +247,14 @@ class PMBFileFormat extends FileFormat
                     } else if ($key == 'url_vignette') {
                         try {
                             $url = substr(urldecode($value[0]['value']), 25);
-                            if ( $this->$key !== $url ) {
+                            if ( $this->$key !== $value ) {
                                 $this->onPropertyChanged($key, $this->$key, $url);
                                 $this->$key = $url;
                             }
                         } catch ( \Exception $e ) {
                             throw new \RuntimeException(" error url encode");
                         }
-                    } else if ( $this->$key !== $value[0]['value'] ) {
+                    } else if ( $this->$key !== $value ) {
                             $this->onPropertyChanged($key, $this->$key, $value[0]['value']);
                             $this->$key = $value[0]['value'];
                     }

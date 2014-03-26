@@ -75,11 +75,11 @@ class Driver extends FileDriver
     private function _processTree(ObjectTree $tree)
     {
         $results = array();
-        
+
         $pmbs = $tree->get('notices')->getContent();
         foreach ( $pmbs as $pmb ) {
             $results[] = $pmb->getValues();
-        } 
+        }
 
         return $results;
     }

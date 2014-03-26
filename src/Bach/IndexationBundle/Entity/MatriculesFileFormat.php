@@ -496,7 +496,7 @@ class MatriculesFileFormat extends FileFormat
     /**
      * Get matricule
      *
-     * @return string 
+     * @return string
      */
     public function getMatricule()
     {
