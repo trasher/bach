@@ -238,22 +238,25 @@ class PMBFileFormat extends FileFormat
                             $year = new \DateTime(
                                 $value[0]['value'] . '-01-01'
                             );
-                            //TODO: test if value has changed
-                            $this->$key = $year;
+                            if ( $this->$key !== $year ) {
+                                $this->onPropertyChanged($key, $this->$key, $year);
+                                $this->$key = $year;
+                            }
                         } catch ( \Exception $e ) {
                         }
                     } else if ($key == 'url_vignette') {
                         try {
                             $url = substr(urldecode($value[0]['value']), 25);
-                            $this->$key = $url;
+                            if ( $this->$key !== $url ) {
+                                $this->onPropertyChanged($key, $this->$key, $url);
+                                $this->$key = $url;
+                            }
                         } catch ( \Exception $e ) {
                             throw new \RuntimeException(" error url encode");
                         }
-                    } else {
-                        if ( $this->$key !== $value[0]['value'] ) {
+                    } else if ( $this->$key !== $value[0]['value'] ) {
                             $this->onPropertyChanged($key, $this->$key, $value[0]['value']);
                             $this->$key = $value[0]['value'];
-                        }
                     }
                 }
             } else {
@@ -355,7 +358,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setTitrePropre($titrePropre)
     {
-        $this->titre_propre = $titrePropre;
+        if ( $this->titre_propre !== $titre_propre ) {
+            $this->onPropertyChanged(
+                'titre_propre',
+                $this->titre_propre,
+                $titre_propre
+            );
+            $this->titre_propre = $titre_propre;
+        }
         return $this;
     }
 
@@ -378,7 +388,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setTitrepropreAuteurDifferent($titrepropreAuteurDifferent)
     {
-        $this->titrepropre_auteur_different = $titrepropreAuteurDifferent;
+        if ( $this->titrepropre_auteur_different !== $titrepropre_auteur_different ) {
+            $this->onPropertyChanged(
+                'titrepropre_auteur_different',
+                $this->titrepropre_auteur_different,
+                $titrepropre_auteur_different
+            );
+            $this->titrepropre_auteur_different = $titrepropre_auteur_different;
+        }
         return $this;
     }
 
@@ -401,7 +418,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setTitreParallele($titreParallele)
     {
-        $this->titre_parallele = $titreParallele;
+        if ( $this->titre_parallele !== $titre_parallele ) {
+            $this->onPropertyChanged(
+                'titre_parallele',
+                $this->titre_parallele,
+                $titre_parallele
+            );
+            $this->titre_parallele = $titre_parallele;
+        }
         return $this;
     }
 
@@ -424,7 +448,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setTitreComplement($titreComplement)
     {
-        $this->titre_complement = $titreComplement;
+        if ( $this->titre_complement !== $titre_complement ) {
+            $this->onPropertyChanged(
+                'titre_complement',
+                $this->titre_complement,
+                $titre_complement
+            );
+            $this->titre_complement = $titre_complement;
+        }
         return $this;
     }
 
@@ -447,7 +478,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setCodageUnimarc($codageUnimarc)
     {
-        $this->codage_unimarc = $codageUnimarc;
+        if ( $this->codage_unimarc !== $codage_unimarc ) {
+            $this->onPropertyChanged(
+                'codage_unimarc',
+                $this->codage_unimarc,
+                $codage_unimarc
+            );
+            $this->codage_unimarc = $codage_unimarc;
+        }
         return $this;
     }
 
@@ -470,7 +508,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setPartOf($partOf)
     {
-        $this->part_of = $partOf;
+        if ( $this->part_of !== $part_of ) {
+            $this->onPropertyChanged(
+                'part_of',
+                $this->part_of,
+                $part_of
+            );
+            $this->part_of = $part_of;
+        }
         return $this;
     }
 
@@ -493,7 +538,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setPartNum($partNum)
     {
-        $this->part_num = $partNum;
+        if ( $this->part_num !== $part_num ) {
+            $this->onPropertyChanged(
+                'part_num',
+                $this->part_num,
+                $part_num
+            );
+            $this->part_num = $part_num;
+        }
         return $this;
     }
 
@@ -516,7 +568,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setEditeur($editeur)
     {
-        $this->editeur = $editeur;
+        if ( $this->editeur !== $editeur ) {
+            $this->onPropertyChanged(
+                'editeur',
+                $this->editeur,
+                $editeur
+            );
+            $this->editeur = $editeur;
+        }
         return $this;
     }
 
@@ -539,7 +598,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setCollection($collection)
     {
-        $this->collection = $collection;
+        if ( $this->collection !== $collection ) {
+            $this->onPropertyChanged(
+                'collection',
+                $this->collection,
+                $collection
+            );
+            $this->collection = $collection;
+        }
         return $this;
     }
 
@@ -562,7 +628,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setNumCollection($numCollection)
     {
-        $this->num_collection = $numCollection;
+        if ( $this->num_collection !== $num_collection ) {
+            $this->onPropertyChanged(
+                'num_collection',
+                $this->num_collection,
+                $num_collection
+            );
+            $this->num_collection = $num_collection;
+        }
         return $this;
     }
 
@@ -585,7 +658,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setSousCollection($sousCollection)
     {
-        $this->sous_collection = $sousCollection;
+        if ( $this->sous_collection !== $sous_collection ) {
+            $this->onPropertyChanged(
+                'sous_collection',
+                $this->sous_collection,
+                $sous_collection
+            );
+            $this->sous_collection = $sous_collection;
+        }
         return $this;
     }
 
@@ -608,7 +688,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setYear($year)
     {
-        $this->year = $year;
+        if ( $this->year !== $year ) {
+            $this->onPropertyChanged(
+                'year',
+                $this->year,
+                $year
+            );
+            $this->year = $year;
+        }
         return $this;
     }
 
@@ -631,7 +718,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setMentionEdition($mentionEdition)
     {
-        $this->mention_edition = $mentionEdition;
+        if ( $this->mention_edition !== $mention_edition ) {
+            $this->onPropertyChanged(
+                'mention_edition',
+                $this->mention_edition,
+                $mention_edition
+            );
+            $this->mention_edition = $mention_edition;
+        }
         return $this;
     }
 
@@ -654,7 +748,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setAutreEditeur($autreEditeur)
     {
-        $this->autre_editeur = $autreEditeur;
+        if ( $this->autre_editeur !== $autre_editeur ) {
+            $this->onPropertyChanged(
+                'autre_editeur',
+                $this->autre_editeur,
+                $autre_editeur
+            );
+            $this->autre_editeur = $autre_editeur;
+        }
         return $this;
     }
 
@@ -677,7 +778,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setIsbn($isbn)
     {
-        $this->isbn = $isbn;
+        if ( $this->isbn !== $isbn ) {
+            $this->onPropertyChanged(
+                'isbn',
+                $this->isbn,
+                $isbn
+            );
+            $this->isbn = $isbn;
+        }
         return $this;
     }
 
@@ -700,7 +808,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setImportanceMaterielle($importanceMaterielle)
     {
-        $this->importance_materielle = $importanceMaterielle;
+        if ( $this->importance_materielle !== $importance_materielle ) {
+            $this->onPropertyChanged(
+                'importance_materielle',
+                $this->importance_materielle,
+                $importance_materielle
+            );
+            $this->importance_materielle = $importance_materielle;
+        }
         return $this;
     }
 
@@ -723,7 +838,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setAutresCaracMaterielle($autresCaracMaterielle)
     {
-        $this->autres_carac_materielle = $autresCaracMaterielle;
+        if ( $this->autresCaracMaterielle !== $autresCaracMaterielle ) {
+            $this->onPropertyChanged(
+                'autresCaracMaterielle',
+                $this->autresCaracMaterielle,
+                $autresCaracMaterielle
+            );
+            $this->autresCaracMaterielle = $autresCaracMaterielle;
+        }
         return $this;
     }
 
@@ -746,7 +868,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setFormat($format)
     {
-        $this->format = $format;
+        if ( $this->format !== $format ) {
+            $this->onPropertyChanged(
+                'format',
+                $this->format,
+                $format
+            );
+            $this->format = $format;
+        }
         return $this;
     }
 
@@ -769,7 +898,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setPrix($prix)
     {
-        $this->prix = $prix;
+        if ( $this->prix !== $prix ) {
+            $this->onPropertyChanged(
+                'prix',
+                $this->prix,
+                $prix
+            );
+            $this->prix = $prix;
+        }
         return $this;
     }
 
@@ -792,7 +928,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setMaterielAccompagnement($materielAccompagnement)
     {
-        $this->materiel_accompagnement = $materielAccompagnement;
+        if ( $this->materiel_accompagnement !== $materiel_accompagnement ) {
+            $this->onPropertyChanged(
+                'materiel_accompagnement',
+                $this->materiel_accompagnement,
+                $materiel_accompagnement
+            );
+            $this->materiel_accompagnement = $materiel_accompagnement;
+        }
         return $this;
     }
 
@@ -815,7 +958,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setNoteGenerale($noteGenerale)
     {
-        $this->note_generale = $noteGenerale;
+        if ( $this->note_generale !== $note_generale ) {
+            $this->onPropertyChanged(
+                'note_generale',
+                $this->note_generale,
+                $note_generale
+            );
+            $this->note_generale = $note_generale;
+        }
         return $this;
     }
 
@@ -838,7 +988,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setNoteContent($noteContent)
     {
-        $this->note_content = $noteContent;
+        if ( $this->note_content !== $note_content ) {
+            $this->onPropertyChanged(
+                'note_content',
+                $this->note_content,
+                $note_content
+            );
+            $this->note_content = $note_content;
+        }
         return $this;
     }
 
@@ -861,7 +1018,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setExtract($extract)
     {
-        $this->extract = $extract;
+        if ( $this->extract !== $extract ) {
+            $this->onPropertyChanged(
+                'extract',
+                $this->extract,
+                $extract
+            );
+            $this->extract = $extract;
+        }
         return $this;
     }
 
@@ -884,7 +1048,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setIndexationDecimale($indexationDecimale)
     {
-        $this->indexation_decimale = $indexationDecimale;
+        if ( $this->indexation_decimale !== $indexation_decimale ) {
+            $this->onPropertyChanged(
+                'indexation_decimale',
+                $this->indexation_decimale,
+                $indexation_decimale
+            );
+            $this->indexation_decimale = $indexation_decimale;
+        }
         return $this;
     }
 
@@ -907,7 +1078,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setKeyWord($keyWord)
     {
-        $this->key_word = $keyWord;
+        if ( $this->key_word !== $key_word ) {
+            $this->onPropertyChanged(
+                'key_word',
+                $this->key_word,
+                $key_word
+            );
+            $this->key_word = $key_word;
+        }
         return $this;
     }
 
@@ -930,7 +1108,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setLinkRessourceElectronque($linkRessourceElectronque)
     {
-        $this->link_ressource_electronque = $linkRessourceElectronque;
+        if ( $this->link_ressource_electronque !== $link_ressource_electronque ) {
+            $this->onPropertyChanged(
+                'link_ressource_electronque',
+                $this->link_ressource_electronque,
+                $link_ressource_electronque
+            );
+            $this->link_ressource_electronque = $link_ressource_electronque;
+        }
         return $this;
     }
 
@@ -953,7 +1138,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setFormatElectRessource($formatElectRessource)
     {
-        $this->format_elect_ressource = $formatElectRessource;
+        if ( $this->format_elect_ressource !== $format_elect_ressource ) {
+            $this->onPropertyChanged(
+                'format_elect_ressource',
+                $this->format_elect_ressource,
+                $format_elect_ressource
+            );
+            $this->format_elect_ressource = $format_elect_ressource;
+        }
         return $this;
     }
 
@@ -976,7 +1168,14 @@ class PMBFileFormat extends FileFormat
      */
     public function setUrlVignette($urlVignette)
     {
-        $this->url_vignette = $urlVignette;
+        if ( $this->url_vignette !== $url_vignette ) {
+            $this->onPropertyChanged(
+                'url_vignette',
+                $this->url_vignette,
+                $url_vignette
+            );
+            $this->url_vignette = $url_vignette;
+        }
         return $this;
     }
 
