@@ -134,7 +134,6 @@ class FileDriverManager
         $output = array();
         $eadheader = null;
         $archdesc = null;
-        $store_dir = $doc->getStoreDir();
 
         $count = 0;
         //disable SQL Logger...
@@ -243,7 +242,6 @@ class FileDriverManager
                     $archdesc = $this->_entityManager->merge($archdesc);
                 }
                 $doc = $this->_entityManager->merge($doc);
-                $doc->setStoreDir($store_dir);
                 /*echo sprintf(
                     '%8d: ',
                     $count

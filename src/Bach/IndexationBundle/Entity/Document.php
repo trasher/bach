@@ -91,6 +91,9 @@ class Document
      */
     protected $updated;
 
+    private $_store_dir;
+    private $_upload_dir;
+
     /**
      * Constructor
      *
@@ -142,6 +145,20 @@ class Document
             }
         }
         return $this;
+    }
+
+    /**
+     * Get upload directory
+     *
+     * @return string
+     */
+    public function getUploadDir()
+    {
+        return str_replace(
+            '/published_docs',
+            '',
+            $this->_upload_dir
+        );
     }
 
     /**
