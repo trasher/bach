@@ -140,14 +140,14 @@ class DefaultController extends Controller
             }
         }
 
-        $tf = $this->container->get('bach.indexation.typesfiles');
+        //$tf = $this->container->get('bach.indexation.typesfiles');
 
         return $this->render(
             'BachIndexationBundle:Indexation:add.html.twig',
             array(
                 'directory_contents'    => null,
                 'upload_form'           => $form->createView(),
-                'existing_files'        => $tf->getExistingFiles()
+                'existing_files'        => array()//$tf->getExistingFiles()
             )
         );
     }
