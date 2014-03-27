@@ -73,11 +73,6 @@ class DefaultController extends Controller
         $form->handleRequest($this->getRequest());
 
         if ($form->isValid()) {
-            // enable memory profiling
-            /*if (extension_loaded('memprof')) {
-                memprof_enable();
-            }*/
-
             $document = $form->getData();
             //generate document id
             $document->generateDocId();
