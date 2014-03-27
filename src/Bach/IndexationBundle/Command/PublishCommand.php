@@ -224,6 +224,7 @@ EOF
                         $document = $exists;
                         $exists->setFile($f);
                         $exists->setUpdated(new \DateTime());
+                        $exists->setUploaded(false);
                         $exists->setStoreDir(
                             $this->getContainer()
                                 ->getParameter('bach.typespaths')[$type]

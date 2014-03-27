@@ -90,6 +90,7 @@ class DefaultController extends Controller
                 $exists->setUploadDir(
                     $this->container->getParameter('upload_dir')
                 );
+                $exists->setUploaded(true);
             } else {
                 $document->setCorename(
                     $this->container->getParameter(

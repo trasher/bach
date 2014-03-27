@@ -479,4 +479,16 @@ class Document
     {
         return $this->uploaded;
     }
+
+    /**
+     * Set document as (not) uploaded
+     *
+     * @param boolean $uploaded Uploaded or not
+     *
+     * @return void
+     */
+    public function setUploaded($uploaded)
+    {
+        $this->uploaded = $uploaded;
+    }
 }
