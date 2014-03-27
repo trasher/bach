@@ -13,8 +13,6 @@
 
 namespace Bach\IndexationBundle\Service;
 
-use Bach\IndexationBundle\Entity\UniversalFileFormat;
-
 /**
  * File format factory
  *
@@ -43,7 +41,9 @@ class UniversalFileFormatFactory
             if (class_exists($class)) {
                 $universal = new $class($data);
             } else {
-                $universal = new UniversalFileFormat($data);
+                throw new \RuntimeException(
+                    'File format class ' . $class . ' does not exists.'
+                );
             }
         } else {
             $universal = $exists;

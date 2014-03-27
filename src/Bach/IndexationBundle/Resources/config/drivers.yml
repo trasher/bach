@@ -1,7 +1,7 @@
 drivers:
     matricules:
         mapper: Bach\IndexationBundle\Entity\Mapper\MatriculesDriverMapper
-        universalfileformat: Bach\IndexationBundle\Entity\MatriculesFileFormat
+        fileformat: Bach\IndexationBundle\Entity\MatriculesFileFormat
         doctrine: BachIndexationBundle:MatriculesFileFormat
         fields:
             - id
@@ -18,7 +18,7 @@ drivers:
             - end_dao
     ead:
         mapper: Bach\IndexationBundle\Entity\Mapper\EADDriverMapper
-        universalfileformat: Bach\IndexationBundle\Entity\EADFileFormat
+        fileformat: Bach\IndexationBundle\Entity\EADFileFormat
         doctrine: BachIndexationBundle:EADFileFormat
         preprocessor:
         fields:
@@ -78,5 +78,5 @@ drivers:
                     - .//function
     unimarc:
         mapper: Bach\IndexationBundle\Entity\Mapper\UNIMARCDriverMapper
-        doctrine: BachIndexationBundle:UNIMARCFileFormat
-        #universalfileformat: Bach\IndexationBundle\Entity\UniversalFileFormat\UNIMARCFileFormat
+        doctrine: BachIndexationBundle:UniversalFileFormat
+        fileformat: Bach\IndexationBundle\Entity\UniversalFileFormat\UniversalFileFormat

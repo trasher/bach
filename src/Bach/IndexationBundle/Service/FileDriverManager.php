@@ -75,61 +75,30 @@ class FileDriverManager
     ) {
         if ( !array_key_exists($format, $this->_drivers) ) {
             throw new \DomainException('Unsupported file format: ' . $format);
-        } else {
-            $mapper = null;
-            $universalFileFormatClass = null;
-            $doctrine_entity = null;
-
-            //Importation configuration du driver
-            if (array_key_exists('drivers', $this->_conf)) {
-                if (array_key_exists($format, $this->_conf['drivers'])) {
-                    $format_conf = $this->_conf['drivers'][$format];
-                    if (array_key_exists('mapper', $format_conf)) {
-                        try {
-                            $reflection = new \ReflectionClass(
-                                $format_conf['mapper']
-                            );
-                            if ( in_array('Bach\IndexationBundle\DriverMapperInterface', $reflection->getInterfaceNames())) {
-                                $mapper = $reflection->newInstance();
-                            }
-                        } catch (\RuntimeException $e) {
-                            throw $e;
-                        }
-                    }
-
-                    if ( array_key_exists('universalfileformat', $format_conf) ) {
-                        try {
-                            $reflection = new \ReflectionClass(
-                                $format_conf['universalfileformat']
-                            );
-                            $universalFileFormatClass
-                                = $format_conf['universalfileformat'];
-                            $doctrine_entity = $format_conf['doctrine'];
-                        }
-                        catch (\RuntimeException $e) {
-                            throw $e;
-                        }
-                    }
-
-                    if ( array_key_exists('preprocessor', $format_conf)
-                        && is_null($preprocessor)
-                    ) {
-                        $preprocessor = $format_conf['preprocessor'];
-                    }
-                }
-            }
-
-            $driver = $this->_drivers[$format];
-
-            if ( !is_null($preprocessor) ) {
-                $bag = $this->_preProcessorFactory->preProcess(
-                    $bag,
-                    $preprocessor
-                );
-            }
-
-            $results = $driver->process($bag);
         }
+
+        $mapper = null;
+        $fileformat_class = null;
+        $doctrine_entity = null;
+
+        $this->_getConfiguration(
+            $format,
+            $mapper,
+            $fileformat_class,
+            $doctrine_entity,
+            $preprocessor
+        );
+
+        $driver = $this->_drivers[$format];
+
+        if ( !is_null($preprocessor) ) {
+            $bag = $this->_preProcessorFactory->preProcess(
+                $bag,
+                $preprocessor
+            );
+        }
+
+        $results = $driver->process($bag);
 
         $output = array();
         $eadheader = null;
@@ -204,7 +173,7 @@ class FileDriverManager
 
             $out = $this->_fileFormatFactory->build(
                 $result,
-                $universalFileFormatClass,
+                $fileformat_class,
                 $exists
             );
 
@@ -257,6 +226,73 @@ class FileDriverManager
             $this->_entityManager->clear();
         }
         //echo round(memory_get_peak_usage()/1048576, 2) . "\n";
+    }
+
+    /**
+     * Load driver configuration
+     *
+     * @param string $format            Data type
+     * @param string &$mapper           Mapper name
+     * @param string &$fileformat_class File format class
+     * @param string &$doctrine_entity  Doctrine entity name
+     * @param string &$preprocessor     Preprocessor
+     *
+     * @return void
+     */
+    private function _getConfiguration($format, &$mapper, &$fileformat_class,
+        &$doctrine_entity, &$preprocessor
+    ) {
+        //Import driver configuration
+        if (array_key_exists('drivers', $this->_conf)) {
+            if (array_key_exists($format, $this->_conf['drivers'])) {
+                $format_conf = $this->_conf['drivers'][$format];
+                if (array_key_exists('mapper', $format_conf)) {
+                    try {
+                        $reflection = new \ReflectionClass(
+                            $format_conf['mapper']
+                        );
+
+                        $expected = 'Bach\IndexationBundle' .
+                            '\DriverMapperInterface';
+                        $interfaces = $reflection->getInterfaceNames();
+
+                        if ( !in_array($expected, $interfaces)) {
+                            throw new \RuntimeException(
+                                'Found mapper does not implements ' . $expected
+                            );
+                        }
+                        $mapper = $reflection->newInstance();
+                    } catch (\RuntimeException $e) {
+                        throw $e;
+                    }
+                }
+
+                if ( array_key_exists('fileformat', $format_conf) ) {
+                    $fileformat_class = $format_conf['fileformat'];
+                } else {
+                    throw new \RuntimeException(
+                        'Driver configuration for ' . $format .
+                        ' is missing the fileformat entry.'
+                    );
+                }
+
+                if ( array_key_exists('doctrine', $format_conf) ) {
+                    $doctrine_entity = $format_conf['doctrine'];
+                } else {
+                    throw new \RuntimeException(
+                        'Driver configuration for ' . $format .
+                        ' is missing the doctrine entry.'
+                    );
+                }
+
+                if ( array_key_exists('preprocessor', $format_conf)
+                    && is_null($preprocessor)
+                ) {
+                    $preprocessor = $format_conf['preprocessor'];
+                }
+            }
+        }
+
     }
 
     /**
