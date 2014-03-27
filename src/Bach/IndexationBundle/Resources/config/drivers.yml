@@ -49,7 +49,7 @@ drivers:
             - end_dao
     pmb:
         mapper: Bach\IndexationBundle\Entity\Mapper\PMBDriverMapper
-        universalfileformat: Bach\IndexationBundle\Entity\PMBFileFormat
+        fileformat: Bach\IndexationBundle\Entity\PMBFileFormat
         doctrine: BachIndexationBundle:PMBFileFormat
         preprocessor:
         fields:

@@ -237,23 +237,13 @@ class PMBFileFormat extends FileFormat
                             $year = new \DateTime(
                                 $value[0]['value'] . '-01-01'
                             );
-                            if ( $this->$key !== $value ) {
+                            if ( $this->$key === null || $this->$key->format('Y') !== $year->format('Y') ) {
                                 $this->onPropertyChanged($key, $this->$key, $year);
                                 $this->$key = $year;
                             }
                         } catch ( \Exception $e ) {
                         }
-                    } else if ($key == 'url_vignette') {
-                        try {
-                            $url = substr(urldecode($value[0]['value']), 25);
-                            if ( $this->$key !== $value ) {
-                                $this->onPropertyChanged($key, $this->$key, $url);
-                                $this->$key = $url;
-                            }
-                        } catch ( \Exception $e ) {
-                            throw new \RuntimeException(" error url encode");
-                        }
-                    } else if ( $this->$key !== $value ) {
+                    } else if ( $this->$key !== $value[0]['value'] ) {
                             $this->onPropertyChanged($key, $this->$key, $value[0]['value']);
                             $this->$key = $value[0]['value'];
                     }
@@ -274,7 +264,6 @@ class PMBFileFormat extends FileFormat
     protected function parseAuthors($data)
     {
         $authors = clone $this->authors;
-        $has_changed = false;
         foreach ($data as $entry) {
             $author = new PMBAuthor(
                 $entry['attributes']['type'],
@@ -296,7 +285,6 @@ class PMBFileFormat extends FileFormat
     protected function parseCategory($data)
     {
         $category = clone $this->category;
-        $has_changed = false;
         foreach ($data as $value) {
             $result = new PMBCategory($data[0]['value'], $this);
             $this->addCategory($result);
@@ -314,9 +302,7 @@ class PMBFileFormat extends FileFormat
     protected function parseLanguage($data)
     {
         $language = clone $this->language;
-        $has_changed = false;
         foreach ($data as $value) {
-            //var_dump( $data[0]['value']);
             $result = new PMBLanguage($data[0]['value'], $this);
             $this->addLanguage($result);
         }

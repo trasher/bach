@@ -399,7 +399,13 @@ class Document
             $this->docid = (string)$xml->id;
             break;
         case 'pmb':
-            $this->docid = md5($this->file->getPathName());
+        	if (null !== $this->file) {
+        		if ( $this->uploaded ) {
+        			$this->docid = md5($this->file->getClientOriginalName());
+        		} else {
+               		$this->docid = md5($this->file->getPathName());
+            	}
+        	}
             break;
         default:
             throw new \RuntimeException('Document ID is mandatory!');
