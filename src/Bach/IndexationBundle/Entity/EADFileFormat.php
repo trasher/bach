@@ -497,7 +497,7 @@ class EADFileFormat extends FileFormat
 
                     $role = null;
                     if ( isset($new_index['attributes']['role']) ) {
-                        $source = $new_index['attributes']['role'];
+                        $role = $new_index['attributes']['role'];
                     }
 
                     if ( $index->getType() == $type
@@ -530,7 +530,7 @@ class EADFileFormat extends FileFormat
 
                     $role = null;
                     if ( isset($index['attributes']['role']) ) {
-                        $source = $index['attributes']['role'];
+                        $role = $index['attributes']['role'];
                     }
 
                     if ( $i->getType() == $type
