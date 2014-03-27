@@ -203,7 +203,6 @@ EOF
                     $repo = $em->getRepository('BachIndexationBundle:Document');
                     $exists = $repo->findOneByDocid($document->getDocId());
                     if ( $exists ) {
-
                         if ( !$no_check_changes ) {
                             $change_date = new \DateTime();
                             $last_file_change = $f->getMTime();
@@ -211,7 +210,6 @@ EOF
 
                             if ( $exists->getUpdated() > $change_date ) {
                                 $progress->advance();
-                                /** TODO: log something? */
                                 $logger->info(
                                     str_replace(
                                         '%doc',
@@ -254,6 +252,14 @@ EOF
 
                         if ( $dry === false ) {
                             $integrationService->integrate($task);
+                            $logger->info(
+                                str_replace(
+                                    '%doc',
+                                    $ftp,
+                                    _('Document %doc has not been successfully published.')
+                                )
+                            );
+
                         }
 
                         unset($task);
