@@ -221,7 +221,6 @@ class PMBFileFormat extends FileFormat
      */
     protected function parseData($data)
     {
-
         foreach ($data as $key=>$value) {
             if ( $key === 'authors' ) {
                 $this->parseAuthors($value);
