@@ -217,8 +217,8 @@ abstract class SearchController extends Controller
                 if ( count($ids) > 0 ) {
                     $query = $this->getDoctrine()->getManager()->createQuery(
                         'SELECT h.headerId, h.headerTitle ' .
-                        'FROM BachIndexationBundle:EADHeader h JOIN h.fragments e ' .
-                        'WHERE e.fragmentid IN (:ids)'
+                        'FROM BachIndexationBundle:EADFileFormat e ' .
+                        'JOIN e.eadheader h WHERE e.fragmentid IN (:ids)'
                     )->setParameter('ids', $ids);
                     $docs_titles = $query->getResult();
                 }
@@ -393,8 +393,8 @@ abstract class SearchController extends Controller
 
                 $query = $this->getDoctrine()->getManager()->createQuery(
                     'SELECT h.headerId, h.headerTitle ' .
-                    'FROM BachIndexationBundle:EADHeader h JOIN h.fragments e ' .
-                    'WHERE e.fragmentid IN (:ids)'
+                    'FROM BachIndexationBundle:EADFileFormat e ' .
+                    'JOIN e.eadheader h WHERE e.fragmentid IN (:ids)'
                 )->setParameter('ids', $ids);
                 $docs_titles = $query->getResult();
 
