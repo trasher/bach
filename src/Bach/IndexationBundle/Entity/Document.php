@@ -93,6 +93,7 @@ class Document
 
     private $_store_dir;
     private $_upload_dir;
+    private $_upload_done;
 
     /**
      * Constructor
@@ -183,7 +184,7 @@ class Document
                 );
                 $this->name = $this->file->getFileName();
             }
-        } else {
+        } elseif ( $this->_upload_done !== true ) {
             throw new \RuntimeException('No file specified. Cannot continue.');
         }
     }
@@ -198,12 +199,13 @@ class Document
      */
     public function upload()
     {
-        if (null === $this->file) {
+        if (null === $this->file || $this->_upload_done ) {
             return;
         }
 
         if ( $this->uploaded ) {
             $this->file->move($this->_upload_dir, $this->path);
+            $this->_upload_done = true;
         }
 
         //FIXME: is this really needed?
