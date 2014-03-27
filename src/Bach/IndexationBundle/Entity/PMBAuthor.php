@@ -84,6 +84,378 @@ class PMBAuthor
         $value=null;
         switch ($code) {
         case '005':
+            $value = "Actor";
+            break;
+        case '010':
+            $value = "Adaptator";
+            break;
+        case '018':
+            $value = "Author of the animation";
+            break;
+        case '020':
+            $value = "Annotator";
+            break;
+        case '030':
+            $value = "Arranger";
+            break;
+        case '040':
+            $value = "Artist";
+            break;
+        case '050':
+            $value = "Rightholder";
+            break;
+        case '060':
+            $value = "Aassociated name";
+            break;
+        case '065':
+            $value = "Auctioneer";
+            break;
+        case '070':
+            $value = "Author";
+            break;
+        case '072':
+            $value = "Author of a quote or extracts";
+            break;
+        case '075':
+            $value = "Postfacier, author of the colophon, etc.";
+            break;
+        case '080':
+            $value = "Prefacer, etc.";
+            break;
+        case '090':
+            $value = "Dialogist";
+            break;
+        case '100':
+            $value = "Bibliographic antecedent";
+            break;
+        case '110':
+            $value = "Bookbinder";
+            break;
+        case '120':
+            $value = "Model maker of the bookbinding";
+            break;
+        case '130':
+            $value = "Model maker";
+            break;
+        case '140':
+            $value = "Designer cover";
+            break;
+        case '150':
+            $value = "Designer bookplate";
+            break;
+        case '160':
+            $value = "Bookseller";
+            break;
+        case '170':
+            $value = "Calligrapher";
+            break;
+        case '180':
+            $value = "Mapmaker";
+            break;
+        case '190':
+            $value = "Censor";
+            break;
+        case '195':
+            $value = "Choir conductor";
+            break;
+        case '200':
+            $value = "Action Director";
+            break;
+        case '202':
+            $value = "Circus Performer";
+            break;
+        case '205':
+            $value = "Contributor";
+            break;
+        case '207':
+            $value = "Humorist";
+            break;
+        case '210':
+            $value = "Commentator";
+            break;
+        case '212':
+            $value = "Comment author";
+            break;
+        case '220':
+            $value = "Compiler";
+            break;
+        case '230':
+            $value = "Compositor";
+            break;
+        case '240':
+            $value = "Compositor printing works";
+            break;
+        case '245':
+            $value = "Designer";
+            break;
+        case '250':
+            $value = "Conductor";
+            break;
+        case '255':
+            $value = "Project consulting";
+            break;
+        case '257':
+            $value = "Continuator";
+            break;
+        case '260':
+            $value = "Copyright holder";
+            break;
+        case '270':
+            $value = "Proofreader";
+            break;
+        case '273':
+            $value = "Exhibition curator";
+            break;
+        case '274':
+            $value = "Danser";
+            break;
+        case '280':
+            $value = "Dedicatee";
+            break;
+        case '290':
+            $value = "Dedicator";
+            break;
+        case '295':
+            $value = "Organisme de soutenance";
+            break;
+        case '300':
+            $value = "Director";
+            break;
+        case '305':
+            $value = "Applicant";
+            break;
+        case '310':
+            $value = "Distributor";
+            break;
+        case '320':
+            $value = "Patron";
+            break;
+        case '330':
+            $value = "Alleged author";
+            break;
+        case '340':
+            $value = "Scientific Editor";
+            break;
+        case '350':
+            $value = "Engraver";
+            break;
+        case '360':
+            $value = "Etcher";
+            break;
+        case '365':
+            $value = "Expert";
+            break;
+        case '370':
+            $value = "Monteur";
+            break;
+        case '380':
+            $value = "Counterfeiter";
+            break;
+        case '390':
+            $value = "Former owner";
+            break;
+        case '395':
+            $value = "Founder";
+            break;
+        case '400':
+            $value = "Patron";
+            break;
+        case '410':
+            $value = "Graphic technicians";
+            break;
+        case '420':
+            $value = "Honoured person";
+            break;
+        case '430':
+            $value = "Illuminator";
+            break;
+        case '440':
+            $value = "Illustrator";
+            break;
+        case '450':
+            $value = "Sending person";
+            break;
+        case '460':
+            $value = "Interviewee";
+            break;
+        case '470':
+            $value = "Interviewer";
+            break;
+        case '475':
+            $value = "Publisher community";
+            break;
+        case '480':
+            $value = "Librettist";
+            break;
+        case '490':
+            $value = "Licence holder";
+            break;
+        case '500':
+            $value = "Licensor";
+            break;
+        case '510':
+            $value = "Lithographer ";
+            break;
+        case '520':
+            $value = "Lyricist";
+            break;
+        case '530':
+            $value = "Engraver metal";
+            break;
+        case '535':
+            $value = "Mime artist";
+            break;
+        case '540':
+            $value = "Monitor";
+            break;
+        case '545':
+            $value = "Musician";
+            break;
+        case '550':
+            $value = "Narrator";
+            break;
+        case '555':
+            $value = "Opposent";
+            break;
+        case '557':
+            $value = "Meeting planner";
+            break;
+        case '560':
+            $value = "Instigator";
+            break;
+        case '570':
+            $value = "Other";
+            break;
+        case '580':
+            $value = "Manufacturer of the paper ";
+            break;
+        case '582':
+            $value = "Patent applicant ";
+            break;
+        case '584':
+            $value = "Inventor of the patent";
+            break;
+        case '587':
+            $value = "Patent holder";
+            break;
+        case '590':
+            $value = "Performer";
+            break;
+        case '595':
+            $value = "Research Manager ";
+            break;
+        case '600':
+            $value = "Photographer";
+            break;
+        case '605':
+            $value = "Presenter";
+            break;
+        case '610':
+            $value = "Printer";
+            break;
+        case '620':
+            $value = "Printer engravings";
+            break;
+        case '630':
+            $value = "Producer";
+            break;
+        case '632':
+            $value = "Artistic director ";
+            break;
+        case '633':
+            $value = "Member of the production crew";
+            break;
+        case '635':
+            $value = "Programmer";
+            break;
+        case '637':
+            $value = "Project managers";
+            break;
+        case '640':
+            $value = "Proofreading";
+            break;
+        case '650':
+            $value = "Commercial editor";
+            break;
+        case '651':
+            $value = "Publication manager";
+            break;
+        case '655':
+            $value = "Puppeteer";
+            break;
+        case '660':
+            $value = "Recipient of letters";
+            break;
+        case '670':
+            $value = "sound engineer ";
+            break;
+        case '673':
+            $value = "Manager of the research team";
+            break;
+        case '675':
+            $value = "Head of critical review";
+            break;
+        case '677':
+            $value = "Member of the research team";
+            break;
+        case '680':
+            $value = "Rubricateur";
+            break;
+        case '690':
+            $value = "Scriptwriter";
+            break;
+        case '695':
+            $value = "Scientific adviser";
+            break;
+        case '700':
+            $value = "Scrivener ";
+            break;
+        case '705':
+            $value = "Sculptor";
+            break;
+        case '710':
+            $value = "Secretary";
+            break;
+        case '720':
+            $value = "Signatory";
+            break;
+        case '721':
+            $value = "Singer";
+            break;
+        case '723':
+            $value = "Sponsor";
+            break;
+        case '725':
+            $value = "Organisation of standardisation";
+            break;
+        case '726':
+            $value = "Stuntman";
+            break;
+        case '727':
+            $value = "Thesis advisor";
+            break;
+        case '730':
+            $value = "Translator";
+            break;
+        case '740':
+            $value = "Designer typeface ";
+            break;
+        case '750':
+            $value = "typographer";
+            break;
+        case '753':
+            $value = "Seller";
+            break;
+        case '755':
+            $value = "Vocalist";
+            break;
+        case '760':
+            $value = "Woodcutter";
+            break;
+        case '770':
+            $value = "Accompanying material author";
+            break;
+        /*case '005':
             $value = "Acteur";
             break;
         case '010':
@@ -454,7 +826,7 @@ class PMBAuthor
             break;
         case '770':
             $value = "Auteur du matériel d'accompagnement";
-            break;
+            break;*/
         default:
             $value=$code;
             break;
