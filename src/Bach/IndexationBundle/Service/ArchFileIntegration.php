@@ -110,7 +110,13 @@ class ArchFileIntegration
     public function integrateAll($tasks, $progress)
     {
         $count = 0;
+        $cleared = false;
         foreach ( $tasks as $task) {
+            if ( $cleared ) {
+                $doc = $task->getDocument();
+                $doc = $this->_entityManager->merge($doc);
+                $task->setDocument($doc);
+            }
             $progress->advance();
             $this->integrate($task, false);
             $count++;
@@ -118,6 +124,7 @@ class ArchFileIntegration
             if ( $count % 20000 === 0 ) {
                 $this->_entityManager->flush();
                 $this->_entityManager->clear();
+                $cleared = true;
             }
         }
 

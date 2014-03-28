@@ -209,19 +209,23 @@ class MatriculesFileFormat extends FileFormat
             if (property_exists($this, $key)) {
                 if ( isset($datum[0]) ) {
                     $value = $datum[0]['value'];
-                    if ( strlen($value) == 4
-                        && ($key === 'date_enregistrement'
+                    if ( $key === 'date_enregistrement'
                         || $key === 'annee_naissance'
-                        || $key === 'classe')
+                        || $key === 'classe'
                     ) {
-                        $value = new \DateTime(
-                            $value . '-01-01'
-                        );
-                        if ( !$this->$key ) {
-                            $has_changed = true;
+                        if ( strlen($value) === 4 ) {
+                            $value = new \DateTime(
+                                $value . '-01-01'
+                            );
+                            if ( !$this->$key ) {
+                                $has_changed = true;
+                            } else {
+                                $has_changed = $this->$key->format('Y-m-d')
+                                    !== $value->format('Y-m-d');
+                            }
                         } else {
-                            $has_changed = $this->$key->format('Y-m-d')
-                                !== $value->format('Y-m-d');
+                            //invalid year
+                            $value = null;
                         }
                     } else {
                         $has_changed = ($this->$key !== $value);

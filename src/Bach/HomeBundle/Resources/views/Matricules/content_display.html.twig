@@ -61,11 +61,11 @@
                 </tr>
                 <tr>
                     <th>{{ _('Class') }}</th>
-                    <td>{{ document.classe|date('Y') }}</td>
+                    <td>{% if document.classe is defined %}{{document.classe|date('Y') }}{% else %}-{% endif %}</td>
                 </tr>
                 <tr>
                     <th>{{ _('Year of birth') }}</th>
-                    <td>{{ document.annee_naissance|date('Y') }}</td>
+                    <td>{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
                 </tr>
                 <tr>
                     <th>{{ _('Place of birth') }}</th>
@@ -73,7 +73,7 @@
                 </tr>
                 <tr>
                     <th>{{ _('Year of recording') }}</th>
-                    <td>{{ document.date_enregistrement|date('Y') }}</td>
+                    <td>{% if document.date_enregistrement is defined %}{{document.date_enregistrement|date('Y') }}{% else %}-{% endif %}</td>
                 </tr>
                 <tr>
                     <th>{{ _('Place of recording') }}</th>

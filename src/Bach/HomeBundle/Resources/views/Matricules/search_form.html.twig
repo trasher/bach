@@ -98,7 +98,7 @@
                             {% endfor %}
                         {%- endif -%}
                     </td>
-                    <td>{{ document.annee_naissance|date('Y') }}</td>
+                    <td>{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
                     <td>
                         {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_naissance')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.uniqid).getField('lieu_naissance')[0]|raw }}
@@ -106,7 +106,7 @@
                             {{ document.lieu_naissance }}
                         {%- endif -%}
                     </td>
-                    <td>{{ document.classe|date('Y') }}</td>
+                    <td>{% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}</td>
                     <td>
                         {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')[0]|raw }}
