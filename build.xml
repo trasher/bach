@@ -80,7 +80,7 @@
     <!-- ======================= -->
     <!-- Patch vendors libraries -->
     <!-- ======================= -->
-    <target name="patch-vendors" depends="install-deps">
+    <target name="patch-vendors">
         <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Solarium-complex-range.patch" escape="false" />
     </target>
 
