@@ -385,7 +385,6 @@ class DefaultController extends Controller
         }
 
         //remove solr indexed documents
-        //FIXME: check if solr cores exists!
         $known_types = $this->container->getParameter('bach.types');
         foreach ( $known_types as $type ) {
             $client = $this->get('solarium.client.' . $type);

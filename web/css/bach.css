@@ -883,6 +883,10 @@ div.sonata-bc #map.big {
     margin-bottom: 0;
 }
 
+div.sonata-bc #map form {
+    margin-bottom: 0;
+}
+
 [id=map] .info {
     padding: 6px 8px;
     background: white;

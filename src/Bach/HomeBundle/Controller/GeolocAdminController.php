@@ -139,30 +139,63 @@ class GeolocAdminController extends Controller
      */
     public function geolocVisualizeAction()
     {
-        $gf = new \Bach\HomeBundle\Entity\GeolocMainFields;
-        $gf = $gf->loadDefaults(
-            $this->getDoctrine()->getManager()
-        );
-        $geoloc = $gf->getSolrFieldsNames();
+        $known_types = $this->container->getParameter('bach.types');
+        foreach ( $known_types as $type ) {
+            $geoloc = null;
 
-        $query = $this->get("solarium.client")->createSelect();
-        $query->setQuery('*:*');
-        $query->setStart(0)->setRows(0);
+            switch ( $type ) {
+            case 'ead':
+                $gf = new \Bach\HomeBundle\Entity\GeolocMainFields;
+                $gf = $gf->loadDefaults(
+                    $this->getDoctrine()->getManager()
+                );
+                $geoloc = $gf->getSolrFieldsNames();
+                break;
+            case 'matricules':
+                $gf = new \Bach\HomeBundle\Entity\GeolocMatriculesFields;
+                $gf = $gf->loadDefaults(
+                    $this->getDoctrine()->getManager()
+                );
+                $geoloc = $gf->getSolrFieldsNames();
+                break;
+            default:
+                continue;
+                break;
+            }
 
-        $facetSet = $query->getFacetSet();
-        $facetSet->setLimit(-1);
-        $facetSet->setMinCount(1);
+            if ( $geoloc !== null ) {
+                $client = $this->get('solarium.client.' . $type);
+                $query = $client->createSelect();
+                $query->setQuery('*:*');
+                $query->setStart(0)->setRows(0);
 
-        foreach ( $geoloc as $field ) {
-            $facetSet->createFacetField($field)
-                ->setField($field);
-        }
+                $facetSet = $query->getFacetSet();
+                $facetSet->setLimit(-1);
+                $facetSet->setMinCount(1);
 
-        $rs = $this->get('solarium.client')->select($query);
+                foreach ( $geoloc as $field ) {
+                    $facetSet->createFacetField($field)
+                        ->setField($field);
+                }
 
-        $facetset = $rs->getFacetSet();
-        foreach ( $geoloc as $field ) {
-            $map_facets[$field] = $facetset->getFacet($field);
+                try {
+                    $rs = $client->select($query);
+
+                    $facetset = $rs->getFacetSet();
+                    foreach ( $geoloc as $field ) {
+                        if ( !isset($map_facets[$field]) ) {
+                            $map_facets[$field] = $facetset->getFacet($field);
+                        } else {
+                            $map_facets[$field] = array_merge(
+                                $map_facets[$field],
+                                $facetset->getFacet($field)
+                            );
+                        }
+                    }
+                } catch ( HttpException $ex ) {
+                    //empty catch
+                }
+            }
         }
 
         $factory = $this->get("bach.home.solarium_query_factory");
