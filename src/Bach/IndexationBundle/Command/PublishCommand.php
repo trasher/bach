@@ -257,7 +257,7 @@ EOF
                                 str_replace(
                                     '%doc',
                                     $ftp,
-                                    _('Document %doc has not been successfully published.')
+                                    _('Document %doc has been successfully published.')
                                 )
                             );
 

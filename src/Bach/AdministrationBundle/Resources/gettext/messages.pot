@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-04 16:20+0100\n"
+"POT-Creation-Date: 2014-03-28 10:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -341,22 +341,22 @@ msgstr ""
 msgid "(none)"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:144
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:146
 #, php-format
 msgid "A core named %corename already exists!"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:145
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:155
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:147
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:157
 msgid "Core has not been created."
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:154
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:156
 #, php-format
 msgid "A directory %dir already exists!"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:199
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:201
 msgid ""
 "A temporary core has been created in %tempdir. You have to put it the right "
 "place.\n"
@@ -365,7 +365,7 @@ msgid ""
 "%solr_url"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:368
+#: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:370
 #, php-format
 msgid "Unable to unload %corename, therefore it should not be removed."
 msgstr ""
@@ -387,61 +387,65 @@ msgid "Corporate name"
 msgstr ""
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:159
-msgid "Genre"
+msgid "Function"
 msgstr ""
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:162
-msgid "Geographic name"
+msgid "Genre"
 msgstr ""
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:165
-msgid "Personal name"
+msgid "Geographic name"
 msgstr ""
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:168
-msgid "Subject"
+msgid "Personal name"
 msgstr ""
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:171
-msgid "Unit ID"
+msgid "Subject"
 msgstr ""
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:174
+msgid "Unit ID"
+msgstr ""
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:177
 msgid "Unit title"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:180
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:183
 msgid "File description author"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:183
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:186
 msgid "Document identifier"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:186
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:189
 msgid "Document publisher"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:189
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:192
 msgid "Document language"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:192
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:195
 msgid "Digital substitute"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:195
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:198
 msgid "Dates periods"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:198
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:201
 msgid "Archival description identifier"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:201
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:204
 msgid "Archival description access restriction"
 msgstr ""
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:230
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:233
 msgid "without specific"
 msgstr ""

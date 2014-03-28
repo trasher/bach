@@ -308,7 +308,7 @@ class DefaultController extends Controller
                     str_replace(
                         '%doc',
                         $doc->getDocId(),
-                        _('Sorl failed to remove document %doc!')
+                        _('Solr failed to remove document %doc!')
                     )
                 );
             }
