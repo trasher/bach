@@ -364,6 +364,10 @@ class DefaultController extends Controller
             $platform->getTruncateTableSQL('EADUniversalFileFormat', true)
         );
 
+        $connection->executeUpdate(
+            $platform->getTruncateTableSQL('MatriculesFileFormat', true)
+        );
+
         //FIXME: remove integration task as well?
         //FIXME: are files not deleted this way?
         $connection->executeUpdate(
