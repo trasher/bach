@@ -867,26 +867,26 @@ class PMBAuthor
     }
 
     /**
-     * Set lastname
+     * Set name
      *
-     * @param string $lastname Last name
+     * @param string $name Last name
      *
      * @return PMBAuthor
      */
-    public function setLastname($lastname)
+    public function setName($name)
     {
-        $this->lastname = $lastname;
+        $this->name = $name;
         return $this;
     }
 
     /**
-     * Get lastname
+     * Get name
      *
      * @return string
      */
-    public function getLastname()
+    public function getName()
     {
-        return $this->lastname;
+        return $this->name;
     }
 
     /**
@@ -913,15 +913,15 @@ class PMBAuthor
     }
 
     /**
-     * Set codefonction
+     * Set function
      *
-     * @param string $codefonction Function code
+     * @param string $function function code
      *
      * @return PMBAuthor
      */
-    public function setCodefonction($codefonction)
+    public function setFunction($function)
     {
-        $this->codefonction = $codefonction;
+        $this->function = $function;
         return $this;
     }
 
@@ -930,9 +930,9 @@ class PMBAuthor
      *
      * @return string
      */
-    public function getCodefonction()
+    public function getFunction()
     {
-        return $this->codefonction;
+        return $this->function;
     }
 
     /**
@@ -956,5 +956,15 @@ class PMBAuthor
     public function getPmbfile()
     {
         return $this->pmbfile;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

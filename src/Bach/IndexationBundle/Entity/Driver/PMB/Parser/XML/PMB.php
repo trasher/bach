@@ -121,6 +121,23 @@ class PMB
                         $value = $name . ' ' . $surname;
                         $attributes['function'] = $function;
                         $attributes['type'] = $type;
+                    } else if ($field === 'zoneLangues') {
+                        $languedocument = null;
+                        $type = null;
+                        foreach ($node->childNodes as $child) {
+                            switch($child->localName){
+                            case 'langueDocument':
+                                $languedocument = $child->nodeValue;
+                                $type=$child->localName;
+                                break;
+                            case 'langueOriginale':
+                                $languedocument = $child->nodeValue;
+                                $type=$child->localName;
+                                break;
+                            }
+                        }
+                        $value = $languedocument;
+                        $attributes['type'] = $type;
                     } else {
                         $value = $node->nodeValue;
                         $attributes = $this->_parseAttributes($node->attributes);

@@ -56,13 +56,15 @@ class PMBLanguage
     /**
      * Main constructor
      *
+     * @param string        $type    Entity type
      * @param string        $content Entity content
      * @param PMBFileFormat $pmb     Entity pmb
      */
-    public function __construct($content,$pmb)
+    public function __construct($type, $content,$pmb)
     {
         $this->pmbfile = $pmb;
         $this->content = $content;
+        $this->type = $type;
     }
 
     /**
@@ -139,7 +141,7 @@ class PMBLanguage
      *
      * @return \Bach\IndexationBundle\Entity\PMBFileFormat
      */
-    public function getLanguageassoc()
+    public function getLanguage()
     {
         return $this->languageassoc;
     }

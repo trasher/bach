@@ -264,14 +264,53 @@ class PMBFileFormat extends FileFormat
     protected function parseAuthors($data)
     {
         $authors = clone $this->authors;
-        foreach ($data as $entry) {
-            $author = new PMBAuthor(
-                $entry['attributes']['type'],
-                $entry['value'],
-                $entry['attributes']['function'],
-                $this
-            );
-            $this->addAuthor($author);
+        $has_changed = false;
+        //check for removal
+        foreach ( $this->authors as $author ) {
+            $found = false;
+            foreach ($data as $entry) {
+                if ( $author->getName() === $entry['value']
+                    && $author->getTypeAuth() === $entry['attributes']['type']
+                    && $author->getFunction() === PMBAuthor::convertCodeFunction($entry['attributes']['function'])
+                ) {
+                    $found = true;
+                    break;
+                }
+            }
+            if ( !$found ) {
+                $this->removeAutor($author);
+                $this->removed[] = $author;
+                $has_changed = true;
+            }
+        }
+        //check for new
+        foreach ( $data as $entry ) {
+            $unique = true;
+            foreach ( $this->authors as $i ) {
+                if ( $i->getName() == $entry['value']
+                    && $i->getTypeAuth() == $entry['attributes']['type']
+                    && $i->getFunction() == PMBAuthor::convertCodeFunction($entry['attributes']['function'])
+                ) {
+                    $unique = false;
+                    break;
+                }
+            }
+
+            if ( $unique === true ) {
+                $newauthor = new PMBAuthor(
+                    $entry['attributes']['type'],
+                    $entry['value'],
+                    $entry['attributes']['function'],
+                    $this
+                );
+                $this->addAuthor($newauthor);
+                $has_changed = true;
+            }
+        }
+
+        //notify if something has changed
+        if ( $has_changed ) {
+            $this->onPropertyChanged('authors', $authors, $this->authors);
         }
     }
 
@@ -285,9 +324,42 @@ class PMBFileFormat extends FileFormat
     protected function parseCategory($data)
     {
         $category = clone $this->category;
-        foreach ($data as $value) {
-            $result = new PMBCategory($data[0]['value'], $this);
-            $this->addCategory($result);
+        $has_changed = false;
+        //check for removal
+        foreach ( $this->category as $category ) {
+            $found = false;
+            foreach ($data as $value) {
+                if ( $category->getCategory() === $value['value']) {
+                    $found = true;
+                    break;
+                }
+            }
+            if ( !$found ) {
+                $this->removeCategory($category);
+                $this->removed[] = $category;
+                $has_changed = true;
+            }
+        }
+        //check for new
+        foreach ( $data as $value ) {
+            $unique = true;
+            foreach ( $this->category as $i ) {
+                if ( $i->getCategory() == $value['value'] ) {
+                    $unique = false;
+                    break;
+                }
+            }
+
+            if ( $unique === true ) {
+                $result = new PMBCategory($value['value'], $this);
+                $this->addCategory($result);
+                $has_changed = true;
+            }
+        }
+
+        //notify if something has changed
+        if ( $has_changed ) {
+            $this->onPropertyChanged('category', $category, $this->category);
         }
 
     }
@@ -302,9 +374,47 @@ class PMBFileFormat extends FileFormat
     protected function parseLanguage($data)
     {
         $language = clone $this->language;
-        foreach ($data as $value) {
-            $result = new PMBLanguage($data[0]['value'], $this);
-            $this->addLanguage($result);
+        $has_changed = false;
+
+        //check for removal
+        foreach ( $this->language as $thelanguage ) {
+            $found = false;
+            foreach ($data as $value) {
+                if ( $thelanguage->getContent() === $value['value']
+                    && $thelanguage->getType() === $value['attributes']['type']
+                ) {
+                    $found = true;
+                    break;
+                }
+            }
+            if ( !$found ) {
+                $this->removeLanguage($thelanguage);
+                $this->removed[] = $thelanguage;
+                $has_changed = true;
+            }
+        }
+        //check for new
+        foreach ( $data as $value ) {
+            $unique = true;
+            foreach ( $this->language as $i ) {
+                if ( $i->getContent() == $value['value']
+                    && $i->getType() == $value['attributes']['type']
+                ) {
+                    $unique = false;
+                    break;
+                }
+            }
+
+            if ( $unique === true ) {
+                $result = new PMBLanguage($value['attributes']['type'], $value['value'], $this);
+                $this->addLanguage($result);
+                $has_changed = true;
+            }
+        }
+
+        //notify if something has changed
+        if ( $has_changed ) {
+            $this->onPropertyChanged('language', $language, $this->language);
         }
 
     }
