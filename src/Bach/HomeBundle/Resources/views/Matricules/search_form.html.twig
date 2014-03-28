@@ -44,7 +44,7 @@
         </article>
         {% endfor %}
     {% else %}
-            <table class="list">
+            <table class="list matricules">
                 <thead>
                     <tr>
                         <th></th>
@@ -54,13 +54,13 @@
                         <th>{{ _('Place of birth') }}</th>
                         <th>{{ _('Class') }}</th>
                         <th>{{ _('Place of recording') }}</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
             {% for document in searchResults %}
                 <tr>
                     <td>
+                        <a class="display_doc" title="{{ _('Show record') }}" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Show record') }}</a>
                         {% if document.start_dao is defined %}
                             {% set series_name %}
                                 {%- for i in document.start_dao|split('/') -%}
@@ -113,9 +113,6 @@
                         {%- else -%}
                             {{ document.lieu_enregistrement }}
                         {%- endif -%}
-                    </td>
-                    <td>
-                        <a class="display_doc" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Show record') }}</a>
                     </td>
                 </tr>
             {% endfor %}

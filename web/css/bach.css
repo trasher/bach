@@ -402,6 +402,15 @@ p {
     font-size: .9em;
 }
 
+.matricules .display_doc {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(../img/open.png) top left no-repeat;
+    text-indent: 20px;
+    overflow: hidden;
+}
+
 /**
  * ===== Search results =====
  */
