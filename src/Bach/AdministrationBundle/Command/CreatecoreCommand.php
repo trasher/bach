@@ -121,6 +121,9 @@ EOF
         case 'MatriculesFileFormat':
             $orm_name .= '\MatriculesFileFormat';
             break;
+        case 'PMBFileFormat':
+            $orm_name .= '\PMBFileFormat';
+            break;
         default:
             throw new \RuntimeException(
                 str_replace(
