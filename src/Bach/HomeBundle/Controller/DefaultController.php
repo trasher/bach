@@ -439,8 +439,8 @@ class DefaultController extends SearchController
 
                     $query = $this->getDoctrine()->getManager()->createQuery(
                         'SELECT h.headerId, h.headerTitle ' .
-                        'FROM BachIndexationBundle:EADHeader h JOIN h.fragments e ' .
-                        'WHERE e.fragmentid IN (:ids)'
+                        'FROM BachIndexationBundle:EADFileFormat e ' .
+                        'JOIN e.eadheader h WHERE e.fragmentid IN (:ids)'
                     )->setParameter('ids', $ids);
                     $lists[$field] = $query->getResult();
                 } else {
