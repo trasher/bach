@@ -456,3 +456,497 @@ msgstr "Nouvelle entrée de géolocalisation"
 #: src/Bach/IndexationBundle/Service/TypesFiles.php:145
 msgid "File or directory %path does not exists!"
 msgstr "Le fichier ou le dossier %path n'existe pas !"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:87
+msgid "Actor"
+msgstr "Acteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:90
+msgid "Adaptator"
+msgstr "Adaptateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:93
+msgid "Author of the animation"
+msgstr "Auteur de l'animation"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:96
+msgid "Annotator"
+msgstr "Annotateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:99
+msgid "Arranger"
+msgstr "Arrangeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:102
+msgid "Artist"
+msgstr "Artiste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:105
+msgid "Rightholder"
+msgstr "Titulaire des droits');"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:108
+msgid "Aassociated name"
+msgstr "Nom associé"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:111
+msgid "Auctioneer"
+msgstr "Commissaire-priseur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:114
+msgid "Author"
+msgstr "Auteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:117
+msgid "Author of a quote or extracts"
+msgstr "Auteur d'une citation ou d'extraits"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:120
+msgid "Postfacier, author of the colophon, etc."
+msgstr "Postfacier, auteur du colophon, etc."
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:123
+msgid "Prefacer, etc."
+msgstr "Préfacier, etc."
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:126
+msgid "Dialogist"
+msgstr "Dialoguiste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:129
+msgid "Bibliographic antecedent"
+msgstr "Antécédent bibliographique"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:132
+msgid "Bookbinder"
+msgstr "Relieur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:135
+msgid "Model maker of the bookbinding"
+msgstr "Maquettiste de la reliure"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:138
+msgid "Model maker"
+msgstr "Maquettiste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:141
+msgid "Designer cover"
+msgstr "Concepteur de la jaquette"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:144
+msgid "Designer bookplate"
+msgstr "Concepteur de l'ex-libris"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:147
+msgid "Bookseller"
+msgstr "Libraire"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:150
+msgid "Calligrapher"
+msgstr "Calligraphe"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:153
+msgid "Mapmaker"
+msgstr "Cartographe"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:156
+msgid "Censor"
+msgstr "Censeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:159
+msgid "Choir conductor"
+msgstr "Chef de choeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:162
+msgid "Action Director"
+msgstr "Chorégraphe"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:165
+msgid "Circus Performer"
+msgstr "Artiste de cirque"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:168
+msgid "Contributor"
+msgstr "Collaborateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:171
+msgid "Humorist"
+msgstr "Humoriste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:174
+msgid "Commentator"
+msgstr "Commentateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:177
+msgid "Comment author"
+msgstr "Auteur du commentaire"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:180
+msgid "Compiler"
+msgstr "Compilateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:183
+msgid "Compositor"
+msgstr "Compositeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:186
+msgid "Compositor printing works"
+msgstr "Compositeur d'imprimerie"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:189
+msgid "Designer"
+msgstr "Concepteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:192
+msgid "Conductor"
+msgstr "Chef d'orchestre"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:195
+msgid "Project consulting"
+msgstr "Consultant de projet"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:198
+msgid "Continuator"
+msgstr "Continuateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:201
+msgid "Copyright holder"
+msgstr "étenteur du copyright"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:204
+msgid "Proofreader"
+msgstr "Correcteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:207
+msgid "Exhibition curator"
+msgstr "Commissaire d'exposition"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:210
+msgid "Danser"
+msgstr "Danseur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:213
+msgid "Dedicatee"
+msgstr "Dédicataire"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:216
+msgid "Dedicator"
+msgstr "Dédicateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:219
+msgid "Organization  of viva"
+msgstr "Organisme de soutenance"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:222
+msgid "Director"
+msgstr "Metteur en scéne, réalisateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:225
+msgid "Applicant"
+msgstr "Candidat"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:228
+msgid "Distributor"
+msgstr "Distributeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:231
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:261
+msgid "Patron"
+msgstr "Donateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:234
+msgid "Alleged author"
+msgstr "Auteur présumé"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:237
+msgid "Scientific Editor"
+msgstr "Editeur scientifique"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:240
+msgid "Engraver"
+msgstr "Graveur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:243
+msgid "Etcher"
+msgstr "Aquafortiste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:246
+msgid "Expert"
+msgstr "Expert"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:249
+msgid "film editor"
+msgstr "Monteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:252
+msgid "Counterfeiter"
+msgstr "Faussaire"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:255
+msgid "Former owner"
+msgstr "Ancien possesseur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:258
+msgid "Founder"
+msgstr "Fondateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:264
+msgid "Graphic technicians"
+msgstr "Technicien graphique"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:267
+msgid "Honoured person"
+msgstr "Personne honorée"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:270
+msgid "Illuminator"
+msgstr "Enlumineur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:273
+msgid "Illustrator"
+msgstr "Illustrateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:276
+msgid "Sending person"
+msgstr "Auteur de l'envoi"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:279
+msgid "Interviewee"
+msgstr "Personne interviewée"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:282
+msgid "Interviewer"
+msgstr "Intervieweur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:285
+msgid "Publisher community"
+msgstr "Collectivité éditrice"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:288
+msgid "Librettist"
+msgstr "Librettiste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:291
+msgid "Licence holder"
+msgstr "Détenteur de licence"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:294
+msgid "Licensor"
+msgstr "Concédant de licence"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:297
+msgid "Lithographer"
+msgstr "Lithographe"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:300
+msgid "Lyricist"
+msgstr "Parolier"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:303
+msgid "Engraver metal"
+msgstr "Graveur sur métal"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:306
+msgid "Mime artist"
+msgstr "Mime"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:309
+msgid "Monitor"
+msgstr "Moniteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:312
+msgid "Musician"
+msgstr "Musicien"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:315
+msgid "Narrator"
+msgstr "Narrateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:318
+msgid "Opposent"
+msgstr "Opposant"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:321
+msgid "Meeting planner"
+msgstr "Organisateur de réunion, de conférence"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:324
+msgid "Instigator"
+msgstr "Instigateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:327
+msgid "Other"
+msgstr "Autre"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:330
+msgid "Manufacturer of the paper"
+msgstr "Fabricant du papier"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:333
+msgid "Patent applicant"
+msgstr "Demandeur de brevet"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:336
+msgid "Inventor of the patent"
+msgstr "Inventeur de brevet"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:339
+msgid "Patent holder"
+msgstr "Titulaire de brevet"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:342
+msgid "Performer"
+msgstr "Interpréte"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:345
+msgid "Research Manager"
+msgstr "Directeur de la recherche"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:348
+msgid "Photographer"
+msgstr "Photographe"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:351
+msgid "Presenter"
+msgstr "Présentateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:354
+msgid "Printer"
+msgstr "Imprimeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:357
+msgid "Printer engravings"
+msgstr "Imprimeur de gravures"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:360
+msgid "Producer"
+msgstr "Producteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:363
+msgid "Artistic director"
+msgstr "Directeur artistique"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:366
+msgid "Member of the production crew"
+msgstr "Membre de l'équipe de production"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:369
+msgid "Programmer"
+msgstr "Programmeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:372
+msgid "Project managers"
+msgstr "Gestionnaire de projet"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:375
+msgid "Proofreading"
+msgstr "Correcteur sur épreuves"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:378
+msgid "Commercial editor"
+msgstr "Editeur commercial"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:381
+msgid "Publication manager"
+msgstr "Directeur de publication"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:384
+msgid "Puppeteer"
+msgstr "Marionnettiste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:387
+msgid "Recipient of letters"
+msgstr "Destinataire de lettres"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:390
+msgid "sound engineer"
+msgstr "Ingénieur du son"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:393
+msgid "Manager of the research team"
+msgstr "Responsable de l'équipe de recherche"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:396
+msgid "Head of critical review"
+msgstr "Responsable du compte-rendu critique"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:399
+msgid "Member of the research team"
+msgstr "Membre de l'équipe de recherche"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:402
+msgid "Rubricateur"
+msgstr "Rubricateur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:405
+msgid "Scriptwriter"
+msgstr "Scénariste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:408
+msgid "Scientific adviser"
+msgstr "Conseiller scientifique"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:411
+msgid "Scrivener"
+msgstr "Copiste"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:414
+msgid "Sculptor"
+msgstr "Sculpteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:417
+msgid "Secretary"
+msgstr "Secrétaire"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:420
+msgid "Signatory"
+msgstr "Signataire"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:423
+msgid "Singer"
+msgstr "Chanteur (Musique classique)"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:426
+msgid "Sponsor"
+msgstr "Parraineur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:429
+msgid "Organisation of standardisation"
+msgstr "Organisme de normalisation"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:432
+msgid "Stuntman"
+msgstr "Cascadeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:435
+msgid "Thesis advisor"
+msgstr "Directeur de thése"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:438
+msgid "Translator"
+msgstr "Traducteur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:441
+msgid "Designer typeface"
+msgstr "Concepteur de caractères"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:444
+msgid "typographer"
+msgstr "Typographe"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:447
+msgid "Seller"
+msgstr "Vendeur"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:450
+msgid "Vocalist"
+msgstr "Chanteur, exécutant vocal"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:453
+msgid "Woodcutter"
+msgstr "Graveur sur bois"
+
+#: src/Bach/IndexationBundle/Entity/PMBAuthor.php:456
+msgid "Accompanying material author"
+msgstr "Auteur du matériel d'accompagnement"
+
