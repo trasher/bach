@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManager;
 use Bach\IndexationBundle\Entity\Document;
+Use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Twig extension to display an EAD document as HTML
@@ -71,63 +72,95 @@ class DisplayHtml extends \Twig_Extension
     /**
      * Displays an EAD document as HTML with XSLT
      *
-     * @param string      $docid    Document id
-     * @param DOMDocument $xml_doc  Document
-     * @param boolean     $expanded Expand tree on load
+     * @param string  $docid    Document id
+     * @param string  $xml_file Document
+     * @param boolean $expanded Expand tree on load
      *
      * @return string
      */
-    public function display($docid, \DOMDocument $xml_doc, $expanded)
+    public function display($docid, $xml_file, $expanded)
     {
-        $html = '';
-        $proc = new \XsltProcessor();
-        $proc->importStylesheet(
-            simplexml_load_file(__DIR__ . '/display_html.xsl')
-        );
+        $cache = new \Doctrine\Common\Cache\ApcCache();
+        $cached_doc = null;
+        $cached_doc_date = $cache->fetch('html_date_' . $docid);
 
-        $proc->setParameter('', 'docid', $docid);
-        if ( $expanded === true ) {
-            $proc->setParameter('', 'expanded', 'true');
-        }
-        $proc->registerPHPFunctions();
+        $redo = true;
+        if ( $cached_doc_date ) {
+            //check if document is newer than cache
+            $f = new File($xml_file);
 
-        $html .= $proc->transformToXml($xml_doc);
+            $change_date = new \DateTime();
+            $last_file_change = $f->getMTime();
+            $change_date->setTimestamp($last_file_change);
 
-        $router = $this->_router;
-        $request = $this->_request;
-        $callback = function ($matches) use ($router, $request) {
-            $href = '';
-            if ( count($matches) > 2 ) {
-                $href = $router->generate(
-                    'bach_search',
-                    array(
-                        'query_terms'   => $request->get('query_terms'),
-                        'filter_field'  => 'c' . ucwords($matches[1]),
-                        'filter_value'  => $matches[2]
-                    )
-                );
-            } else {
-                $href = $router->generate(
-                    'bach_display_document',
-                    array(
-                        'docid' => $matches[1]
-                    )
-                );
+            if ( $cached_doc_date > $change_date ) {
+                $redo = false;
             }
-            return 'href="' . str_replace('&', '&amp;', $href) . '"';
-        };
+        }
 
-        $html = preg_replace_callback(
-            '/link="%%%(.[^:]+)::(.[^%]*)%%%"/',
-            $callback,
-            $html
-        );
+        if ( !$redo ) {
+            $cached_doc = $cache->fetch('html_' . $docid);
+        }
 
-        $html = preg_replace_callback(
-            '/link="%%%(.[^%]+)%%%"/',
-            $callback,
-            $html
-        );
+        if ( !$cached_doc ) {
+            $html = '';
+            $proc = new \XsltProcessor();
+            $proc->importStylesheet(
+                simplexml_load_file(__DIR__ . '/display_html.xsl')
+            );
+
+            $proc->setParameter('', 'docid', $docid);
+            if ( $expanded === true ) {
+                $proc->setParameter('', 'expanded', 'true');
+            }
+            $proc->registerPHPFunctions();
+
+            $xml_doc = new \DOMDocument();
+            $xml_doc->load($xml_file);
+
+            $html .= $proc->transformToXml($xml_doc);
+
+            $router = $this->_router;
+            $request = $this->_request;
+            $callback = function ($matches) use ($router, $request) {
+                $href = '';
+                if ( count($matches) > 2 ) {
+                    $href = $router->generate(
+                        'bach_search',
+                        array(
+                            'query_terms'   => $request->get('query_terms'),
+                            'filter_field'  => 'c' . ucwords($matches[1]),
+                            'filter_value'  => $matches[2]
+                        )
+                    );
+                } else {
+                    $href = $router->generate(
+                        'bach_display_document',
+                        array(
+                            'docid' => $matches[1]
+                        )
+                    );
+                }
+                return 'href="' . str_replace('&', '&amp;', $href) . '"';
+            };
+
+            $html = preg_replace_callback(
+                '/link="%%%(.[^:]+)::(.[^%]*)%%%"/',
+                $callback,
+                $html
+            );
+
+            $html = preg_replace_callback(
+                '/link="%%%(.[^%]+)%%%"/',
+                $callback,
+                $html
+            );
+
+            $cache->save('html_' . $docid, $html);
+            $cache->save('html_date_' . $docid, new \DateTime());
+        } else {
+            $html = $cached_doc;
+        }
 
         return $html;
     }

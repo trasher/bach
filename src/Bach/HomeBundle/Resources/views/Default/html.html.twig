@@ -85,7 +85,7 @@
         <a href="#" id="doccollapse">{{ _('Collapse all') }}</a> | <a href="#" id="docexpand">{{ _('Expand all') }}</a>
         <br/><a href="#" id="headercollapse">{{ _('Display/Hide document informations') }}</a>
     </p>
-    {{ displayHtml(docid, xml_doc, expanded)|raw }}
+    {{ displayHtml(docid, xml_file, expanded)|raw }}
 {% endblock %}
 
 {% block menu %}

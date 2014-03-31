@@ -691,11 +691,8 @@ class DefaultController extends SearchController
                     )
                 );
             } else {
-                $xml_doc = new \DOMDocument();
-                $xml_doc->load($xml_file);
-
                 $tpl_vars['docid'] = $docid;
-                $tpl_vars['xml_doc'] = $xml_doc;
+                $tpl_vars['xml_file'] = $xml_file;
                 $tpl_vars['expanded'] = ($expanded !== false);
 
                 $form = $this->createForm(
