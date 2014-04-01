@@ -1316,6 +1316,23 @@ div.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-boolean i {
     margin-right: 0;
 }
 
+div.sonata-bc .content td {
+    border-right: none;
+    border-left: 1px solid #e6e6e6;
+}
+
+div.sonata-bc .btn-primary {
+    background-color: #F5F5F5;
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    text-shadow: none;
+    color: inherit;
+}
+
+div.sonata-bc .btn-primary:hover {
+    color: inherit;
+    background-color: #e6e6e6;
+}
+
 /**
  * ===== Sonata sortable =====
  */
