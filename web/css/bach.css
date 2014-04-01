@@ -71,10 +71,6 @@ a {
     padding: .2em 1em;
 }
 
-#container .ui-tabs-nav.ui-widget-header {
-    border: none;
-}
-
 #container .ui-tabs .ui-tabs-panel {
     padding: 1em 0 0;
 }
