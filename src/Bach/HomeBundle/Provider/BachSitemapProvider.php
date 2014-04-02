@@ -69,7 +69,7 @@ class BachSitemapProvider implements ProviderInterface
         $sitemap->add($url);
 
         //if enabled, add classification scheme URL
-        if ( $this->container->getParameter('has_cdc') === true ) {
+        if ( $this->container->getParameter('feature.cdc') === true ) {
             $url = new Url();
             //$href = $router->generate(
             $url->setLoc(
@@ -151,7 +151,7 @@ class BachSitemapProvider implements ProviderInterface
 
         //if enabled, add expos URLs
         /** TODO */
-        /*if ( $this->container->getParameter('show_expos') === true ) {
+        /*if ( $this->container->getParameter('feature.expos') === true ) {
             $url = new Url();
             $url->setLoc(
                 $this->router->generate('expos_homepage')
