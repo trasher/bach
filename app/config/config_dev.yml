@@ -22,6 +22,7 @@ monolog:
             level: info
 
 assetic:
+    #set to false to speed up rendering in dev mode, but dont forget to assetic:dump!
     use_controller: true
 
 #swiftmailer:

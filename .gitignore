@@ -5,6 +5,7 @@ app/cache/*
 app/config/parameters.yml
 app/config/constants.php
 app/bootstrap.php.cache
+app/Resources/themes/*/
 web/bundles/*
 web/config.php
 !Uploader

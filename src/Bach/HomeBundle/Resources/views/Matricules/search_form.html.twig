@@ -15,11 +15,11 @@
                 {% if document.dao is defined %}
                     {{ displayDao(document.dao)|raw }}
                 {% else %}
-                    <img src="{{ asset('img/no_image.png') }}" alt=""/>
+                    <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
                 {% endif %}
             </figure>
             <h3{# property="dc:title"#}>
-                <a href="#{#{ path('bach_display_document', {docid: document.fragmentid}) }#}" class="display_doc">
+                <a href="{{ path('bach_display_matricules', {'docid': document.id}) }}" class="display_doc">
                     {% set name %}
                     {%- if hlSearchResults.getResult(document.uniqid).getField('txt_nom')|length > 0 -%}
                         {{ hlSearchResults.getResult(document.uniqid).getField('txt_nom')[0]|raw }}

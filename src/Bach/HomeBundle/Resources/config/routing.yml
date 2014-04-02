@@ -110,3 +110,6 @@ bach_ead_html:
     pattern: /document/{docid}/{expanded}
     defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }
 
+dynamic_css:
+    pattern: /css/{name}.css
+    defaults: { _controller: BachHomeBundle:Default:dynamicCss, _format: css }

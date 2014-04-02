@@ -74,7 +74,8 @@ class AppKernel extends Kernel
             new Bach\ExposBundle\ExposBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new FM\ElfinderBundle\FMElfinderBundle(),
-            new KPhoen\SitemapBundle\KPhoenSitemapBundle()
+            new KPhoen\SitemapBundle\KPhoenSitemapBundle(),
+            new Liip\ThemeBundle\LiipThemeBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'console'))) {

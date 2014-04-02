@@ -34,7 +34,8 @@
         "symfony/icu": "1.1.*",
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
         "egeloen/ckeditor-bundle": "2.*",
-        "helios-ag/fm-elfinder-bundle": "1.*"
+        "helios-ag/fm-elfinder-bundle": "1.*",
+        "liip/theme-bundle": "dev-master"
     },
     "require-dev": {
         "atoum/atoum": "dev-master",

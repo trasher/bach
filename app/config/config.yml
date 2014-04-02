@@ -26,7 +26,6 @@ twig:
     #cache: false
     globals:
         lang: '%locale%'
-        client_code: '%client_code%'
         tiles_url: '%tiles_url%'
         tiles_attribution: '%tiles_attribution%'
         tiles_subdomains: '%tiles_subdomains%'
@@ -262,3 +261,6 @@ k_phoen_sitemap:
     base_host_sitemap: '%bach_url%'
     limit: 50000
 
+liip_theme:
+    themes: %bach_themes%
+    active_theme: %bach_default_theme%

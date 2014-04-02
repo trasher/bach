@@ -796,4 +796,18 @@ class DefaultController extends SearchController
     {
         return 'bach_search';
     }
+
+    /**
+     * Serve twig generated CSS
+     *
+     * @param string $name CSS name
+     *
+     * @return void
+     */
+    public function dynamicCssAction($name)
+    {
+        return $this->render(
+            '::' . $name . '.css.twig'
+        );
+    }
 }

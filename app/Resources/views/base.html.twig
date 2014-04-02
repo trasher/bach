@@ -2,7 +2,7 @@
 {% set _plot_fill_color = 'rgb(183,58,52)' %}
 {% set _plot_selection_color = 'rgb(209,198,192)' %}
 
-{% extends ['::' ~ client_code ~ '_layout.html.twig', '::layout.html.twig'] %}
+{% extends ['::layout.html.twig'] %}
 
 {% block html_headers %}
     <meta charset="utf-8">
@@ -24,31 +24,15 @@
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
     {% endstylesheets %}
     <link href="{{ asset('css/bach_print.css') }}" type="text/css" rel="stylesheet" media="print"/>
-    {% if client_code != '' %}
-        {% if asset_exists('/css/' ~ client_code ~ '/bach.css') %}
-        <link href="{{ asset('/css/' ~ client_code ~ '/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
-        {% endif %}
-        {% if asset_exists('/css/' ~ client_code ~ '/bach_print.css') -%}
-        <link href="{{ asset('css/' ~ client_code ~ '/bach_print.css') }}" type="text/css" rel="stylesheet" media="screen" />
-        {% endif -%}
-    {% endif -%}
-    {% if client_code != '' and asset_exists('/css/' ~ client_code ~ '/jquery-ui/jquery-ui-1.10.3.custom.min.css') -%}
-    <link href="{{ asset('css/' ~ client_code ~ '/jquery-ui/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    {% else -%}
     <link href="{{ asset('css/jquery-ui/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    {% endif %}
     <!--[if lt IE 9]>
         <script src="{{ asset('js/html5-ie.js') }}"></script>
         <link href="{{ asset('css/bach-ie.css') }}" type="text/css" rel="stylesheet" media="screen" />
-        {% if client_code != '' and asset_exists('/css/' ~ client_code ~ '/bach-ie.css') %}
-        <link href="{{ asset('css/' ~ client_code ~ '/bach-ie.css') }}" type="text/css" rel="stylesheet" media="screen" />
-        {% endif %}
+        {% block client_ie %}{% endblock %}
     <![endif]-->
     <!--[if lte IE 7]>
         <link href="{{ asset('css/bach-ie7.css') }}" type="text/css" rel="stylesheet" media="screen" />
-        {% if client_code != '' and asset_exists('/css/' ~ client_code ~ '/bach-ie7.css') %}
-        <link href="{{ asset('css/' ~ client_code ~ '/bach-ie7.css') }}" type="text/css" rel="stylesheet" media="screen" />
-        {% endif %}
+        {% block client_ie7 %}{% endblock %}
     <![endif]-->
     <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" />
 {% endblock %}

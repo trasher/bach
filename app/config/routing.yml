@@ -63,6 +63,10 @@ elfinder:
 kphoen_sitemap:
     resource: "@KPhoenSitemapBundle/Resources/config/routing.yml"
 
+liip_theme:
+    resource: "@LiipThemeBundle/Resources/config/routing.xml"
+    prefix: /theme
+
 # Internal routing configuration to handle ESI
 #_internal:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"

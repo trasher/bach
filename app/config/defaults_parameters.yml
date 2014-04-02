@@ -51,7 +51,6 @@ parameters:
     viewer_uri: http://viewer.localhost/
     covers_dir: '%kernel.root_dir%/../web/covers/'
     cdc_path: '%kernel.root_dir%/../cdc.xml'
-    client_code: null
     tiles_url: 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg'
     tiles_attribution: '<a href="http://www.mapquest.com/">MapQuest</a>'
     tiles_subdomains:
@@ -64,6 +63,10 @@ parameters:
     gettext.locale_shortcuts:
         en: en_US
         fr: fr_FR
+
+
+    bach_themes: ['web', 'phone']
+    bach_default_theme: 'web'
 
     #mail parameters (not used for now)
     #mailer_transport: smtp
