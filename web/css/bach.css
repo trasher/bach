@@ -257,6 +257,14 @@ p {
     list-style-type: decimal;
 }
 
+[id=menu] ol {
+    padding-left: 1.5em;
+}
+
+[id=menu] .ui-accordion-content ol {
+    padding-left: 0;
+}
+
 [id=menu] li.active a {
   background-color: #d1c6c0;
   color: #4a4041;
@@ -455,9 +463,9 @@ p {
     margin-top: 3px;
 }
 
-[id=change_view] label {
+/*[id=change_view] label {
     vertical-align: 70%;
-}
+}*/
 
 .select_container {
     display: inline-block;
@@ -1639,18 +1647,23 @@ figure section .flashplayer {
 
     [id=navigation]:after {
         content: "\2261"; /* unicode "burger" */
-        position: absolute;
-        top: -0.95em;
-        right: 0;
+        /*position: absolute;
+        top: -0.15em;
+        right: 0;*/
         width: 0.8em;
         text-align: center;
-        font-size: 4em;
+        font-size: 3em;
         font-weight: bold;
         line-height: 1;
+        cursor: pointer;
     }
 
     .header, .header h1, [id=navigation], [id=navigation] a, [id=navigation] li {
         display: block;
+    }
+
+    [id=navigation] a {
+        padding: .4em 1em;
     }
 
     [id=container] {
@@ -1670,7 +1683,6 @@ figure section .flashplayer {
 
     [id="search"] input[type="text"] {
         min-width: 5em;
-        width: 85%;
     }
 
     .access {
@@ -1692,5 +1704,25 @@ figure section .flashplayer {
 
     [id=user_login] {
         position: relative;
+    }
+
+    .results_count {
+        padding-bottom: 0;
+        padding-right: 0;
+    }
+
+    [id=change_view] {
+        display: block;
+        position: relative;
+        text-align: right;
+    }
+
+    .ui-rangeSlider {
+        margin: 0 2em;
+    }
+
+    /** Do not work in mobile mode */
+    #dates_plot {
+        display: none;
     }
 }
