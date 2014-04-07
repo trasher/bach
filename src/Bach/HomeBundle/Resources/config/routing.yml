@@ -55,8 +55,8 @@ bach_do_search:
         _method: POST
 
 bach_browse:
-    pattern: /browse/{part}/{show_all}/{ajax}
-    defaults: { _controller: BachHomeBundle:Default:browse, part: '', 'show_all': false, 'ajax': false }
+    pattern: /browse/{part}/{ajax}
+    defaults: { _controller: BachHomeBundle:Default:browse, part: '', 'ajax': false }
     requirements:
         _method: GET
 

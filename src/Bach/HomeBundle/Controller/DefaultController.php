@@ -433,13 +433,12 @@ class DefaultController extends SearchController
     /**
      * Browse contents
      *
-     * @param string  $part     Part to browse
-     * @param boolean $show_all Show all results
-     * @param boolean $ajax     If we were called from ajax
+     * @param string  $part Part to browse
+     * @param boolean $ajax If we were called from ajax
      *
      * @return void
      */
-    public function browseAction($part = '', $show_all = false, $ajax = false)
+    public function browseAction($part = '', $ajax = false)
     {
         $fields = $this->getDoctrine()
             ->getRepository('BachHomeBundle:BrowseFields')
@@ -469,60 +468,58 @@ class DefaultController extends SearchController
 
         $lists = array();
 
-        $limit = 20;
-        if ( $show_all === 'show_all' ) {
-            $limit = -1;
-            $templateVars['show_all'] = true;
-        } else {
-            $templateVars['show_all'] = 'false';
-        }
-
         if ( $part !== '' ) {
             $client = $this->get($this->entryPoint());
-            // get a terms query instance
-            $query = $client->createTerms();
 
-            $query->setLimit($limit);
-            $query->setFields($part);
+            $query = $client->createSelect();
+            $query->setQuery('*:*');
+            $query->setRows(0);
+            $facetSet = $query->getFacetSet();
+            $facetSet->setLimit(-1);
+            $facetSet->setMinCount(1);
 
-            $found_terms = $client->terms($query);
-            foreach ( $found_terms as $field=>$terms ) {
-                $lists[$field] = array();
-                $current_values = array();
-                foreach ( $terms as $term=>$count ) {
-                    $current_values[$term] = array(
-                        'term'  => $term,
-                        'count' => $count
-                    );
-                }
-                if ( $show_all === 'show_all' ) {
-                    if ( defined('SORT_FLAG_CASE') ) {
-                        //TODO: find a better way!
-                        if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
-                            setlocale(LC_COLLATE, 'fr_FR.utf8');
-                        }
-                        ksort($current_values, SORT_LOCALE_STRING | SORT_FLAG_CASE);
-                    } else {
-                        //fallback for PHP < 5.4
-                        ksort($current_values, SORT_LOCALE_STRING);
-                    }
-                }
-                if ( $field == 'headerId' ) {
-                    //retrieve documents titles...
-                    $ids = array();
-                    foreach ( $current_values as $v ) {
-                        $ids[] = $v['term'] . '_description';
-                    }
+            $facetSet->createFacetField($part)
+                ->setField($part);
 
-                    $query = $this->getDoctrine()->getManager()->createQuery(
-                        'SELECT h.headerId, h.headerTitle ' .
-                        'FROM BachIndexationBundle:EADFileFormat e ' .
-                        'JOIN e.eadheader h WHERE e.fragmentid IN (:ids)'
-                    )->setParameter('ids', $ids);
-                    $lists[$field] = $query->getResult();
-                } else {
-                    $lists[$field] = $current_values;
+            $rs = $client->select($query);
+            $facetSet = $rs->getFacetSet();
+            $facets = $facetSet->getFacet($part);
+
+            $lists[$part] = array();
+            $current_values = array();
+            foreach ( $facets as $term=>$count ) {
+                $current_values[$term] = array(
+                    'term'  => $term,
+                    'count' => $count
+                );
+            }
+
+            if ( defined('SORT_FLAG_CASE') ) {
+                //TODO: find a better way!
+                if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
+                    setlocale(LC_COLLATE, 'fr_FR.utf8');
                 }
+                ksort($current_values, SORT_LOCALE_STRING | SORT_FLAG_CASE);
+            } else {
+                //fallback for PHP < 5.4
+                ksort($current_values, SORT_LOCALE_STRING);
+            }
+
+            if ( $part == 'headerId' ) {
+                //retrieve documents titles...
+                $ids = array();
+                foreach ( $current_values as $v ) {
+                    $ids[] = $v['term'] . '_description';
+                }
+
+                $query = $this->getDoctrine()->getManager()->createQuery(
+                    'SELECT h.headerId, h.headerTitle ' .
+                    'FROM BachIndexationBundle:EADFileFormat e ' .
+                    'JOIN e.eadheader h WHERE e.fragmentid IN (:ids)'
+                )->setParameter('ids', $ids);
+                $lists[$part] = $query->getResult();
+            } else {
+                $lists[$part] = $current_values;
             }
         }
 
