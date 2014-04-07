@@ -910,9 +910,14 @@ class SolrCoreAdmin
                 $newEntity->setAttribute('name', $f);
                 $newEntity->setAttribute(
                     'query',
-                    'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
-                    '\'${SolrXMLFile.uniqid}\' AND type=\'' . $f . '\''
+                    'SELECT * FROM ' . $mapping_table . ' WHERE type=\'' . $f . '\''
                 );
+
+                $newEntity->setAttribute('cacheKey', 'eadfile_id');
+                $newEntity->setAttribute('cacheLookup', 'SolrXMLFile.uniqid');
+                $newEntity->setAttribute('processor', 'SqlEntityProcessor');
+                $newEntity->setAttribute('cacheImpl', 'SortedMapBackedCache');
+
                 $newField = $doc->createElement('field');
                 $newField->setAttribute('column', 'name');
                 $newField->setAttribute('name', $f);
@@ -931,10 +936,17 @@ class SolrCoreAdmin
                 $newEntity->setAttribute('name', 'dyn_' . $cond);
                 $newEntity->setAttribute(
                     'query',
-                    'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
-                    '\'${SolrXMLFile.uniqid}\' AND ' . $cond . ' IS NOT NULL'
+                    'SELECT * FROM ' . $mapping_table . ' WHERE ' . $cond .
+                    ' IS NOT NULL'
                 );
+
                 $newEntity->setAttribute('transformer', 'script:' . $func);
+
+                $newEntity->setAttribute('cacheKey', 'eadfile_id');
+                $newEntity->setAttribute('cacheLookup', 'SolrXMLFile.uniqid');
+                $newEntity->setAttribute('processor', 'SqlEntityProcessor');
+                $newEntity->setAttribute('cacheImpl', 'SortedMapBackedCache');
+
                 $elt->appendChild($newEntity);
             }
 
@@ -943,11 +955,17 @@ class SolrCoreAdmin
             $newEntity->setAttribute('name', 'dyn_none');
             $newEntity->setAttribute(
                 'query',
-                'SELECT * FROM ' . $mapping_table . ' WHERE eadfile_id=' .
-                '\'${SolrXMLFile.uniqid}\' AND source IS NULL AND ' .
+                'SELECT * FROM ' . $mapping_table . ' WHERE source IS NULL AND ' .
                 'role IS NULL AND type != \'cDate\''
             );
+
             $newEntity->setAttribute('transformer', 'script:makeSourcesDynamics');
+
+            $newEntity->setAttribute('cacheKey', 'eadfile_id');
+            $newEntity->setAttribute('cacheLookup', 'SolrXMLFile.uniqid');
+            $newEntity->setAttribute('processor', 'SqlEntityProcessor');
+            $newEntity->setAttribute('cacheImpl', 'SortedMapBackedCache');
+
             $elt->appendChild($newEntity);
         }
 
