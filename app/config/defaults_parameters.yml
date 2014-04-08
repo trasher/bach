@@ -40,6 +40,7 @@ parameters:
     feature.cdc: false
     feature.matricules: false
     feature.expos: false
+    feature.browse: true
     #display features
     feature.maps: true
     feature.tagcloud: true

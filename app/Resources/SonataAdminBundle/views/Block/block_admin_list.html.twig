@@ -27,6 +27,10 @@ file that was distributed with this source code.
                 </tr>
 
                 {% for admin in group.items %}
+                    {% if admin.getCode == 'sonata.admin.browsefields ' and features.browse
+                        or admin.getCode == 'sonata.admin.geoloc' and features.maps
+                        or admin.getCode != 'sonata.admin.browsefields' and admin.getCode != 'sonata.admin.geoloc'
+                    %}
                     {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
                         <tr>
                             <td class="sonata-ba-list-label">
@@ -88,7 +92,7 @@ file that was distributed with this source code.
                                 </a>
                             </td>
                         </tr>
-                    {% elseif (admin.getCode == 'sonata.admin.geolocfields' or admin.getCode == 'sonata.admin.matricules.geolocfields' and features.matricules ) and admin.isGranted('EDIT') %}
+                    {% elseif features.maps and (admin.getCode == 'sonata.admin.geolocfields' or admin.getCode == 'sonata.admin.matricules.geolocfields' and features.matricules ) and admin.isGranted('EDIT') %}
                         <tr>
                             <td class="sonata-ba-list-label">
                                 {{ admin.label|trans({}, admin.translationdomain) }}
@@ -100,6 +104,7 @@ file that was distributed with this source code.
                                 </a>
                             </td>
                         </tr>
+                    {% endif %}
                     {% endif %}
                 {% endfor %}
 

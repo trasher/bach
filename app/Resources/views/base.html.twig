@@ -63,9 +63,11 @@
                         <a href="{{ path('bach_classification') }}">{{ _('Classification scheme') }}</a>
                     </li>
                     {% endif %}
+                    {% if features.browse %}
                     <li{% if app.request.attributes.get('_route') == 'bach_browse' %} class="active"{% endif %}>
                         <a href="{{ path('bach_browse') }}">{{ _('Browse') }}</a>
                     </li>
+                    {% endif %}
                     {% if features.expos %}
                     <li{% if app.request.attributes.get('_route') == 'expos_homepage' %} class="active"{% endif %}>
                         <a href="{{ path('expos_homepage') }}">{{ _('Virtual expositions') }}</a>

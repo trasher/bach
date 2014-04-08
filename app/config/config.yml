@@ -36,7 +36,8 @@ twig:
             expos: '%feature.expos%'
             tagcloud: '%feature.tagcloud%'
             social: '%feature.social%'
-
+            browse: '%feature.browse%'
+            maps: '%feature.maps%'
 
 # Assetic Configuration
 assetic:
