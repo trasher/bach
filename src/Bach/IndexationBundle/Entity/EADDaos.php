@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  *
- * @ORM\Table()
+ * @ORM\Table(name="ead_daos")
  * @ORM\Entity
  */
 class EADDaos

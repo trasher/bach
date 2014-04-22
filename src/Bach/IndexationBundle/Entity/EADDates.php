@@ -27,7 +27,7 @@ use Bach\IndexationBundle\Entity\EADFileFormat;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  *
- * @ORM\Table()
+ * @ORM\Table(name="ead_dates")
  * @ORM\Entity
  */
 class EADDates

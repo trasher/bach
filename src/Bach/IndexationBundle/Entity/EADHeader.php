@@ -28,7 +28,7 @@ use Doctrine\Common\PropertyChangedListener;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  *
- * @ORM\Table()
+ * @ORM\Table(name="ead_header")
  * @ORM\Entity
  * @ORM\ChangeTrackingPolicy("NOTIFY")
  */

@@ -26,7 +26,7 @@ use Bach\HomeBundle\Entity\Comment;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
- * @ORM\Table(name="EADUniversalFileFormat")
+ * @ORM\Table(name="ead_file_format")
  */
 class EADFileFormat extends FileFormat
 {

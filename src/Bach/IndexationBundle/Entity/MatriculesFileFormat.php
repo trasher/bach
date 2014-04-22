@@ -25,7 +25,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
- * @ORM\Table(name="MatriculesFileFormat")
+ * @ORM\Table(name="matricules_file_format")
  */
 class MatriculesFileFormat extends FileFormat
 {

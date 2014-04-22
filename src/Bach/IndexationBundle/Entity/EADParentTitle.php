@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  *
- * @ORM\Table()
+ * @ORM\Table(name="ead_parent_title")
  * @ORM\Entity
  */
 class EADParentTitle

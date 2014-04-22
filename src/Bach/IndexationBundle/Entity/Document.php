@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @link     http://anaphore.eu
 
  * @ORM\Entity(repositoryClass="DocumentRepository")
+ * @ORM\Table(name="documents")
  * @ORM\HasLifecycleCallbacks
  */
 class Document
