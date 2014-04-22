@@ -37,6 +37,7 @@ facetting. A patch has been provided and should be included in a later
 release, but while it is not, we have to apply patch manually after having
 installed dependencies via composer. Patch is available at:
 https://github.com/basdenooijer/solarium/issues/240
+Run "phing patch-vendors" to automatically apply the relevant patch.
 
 Create database if it doe not exists yet::
 

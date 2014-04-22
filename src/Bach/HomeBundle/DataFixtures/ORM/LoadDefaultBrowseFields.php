@@ -53,7 +53,7 @@ class LoadDefaultBrowseFields implements FixtureInterface
             array(
                 'field'     => 'cGeogname',
                 'fr_label'  => 'Lieux',
-                'en_label'  => 'Pleaces'
+                'en_label'  => 'Places'
             )
         );
 
