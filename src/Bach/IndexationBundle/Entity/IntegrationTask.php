@@ -28,7 +28,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @UniqueEntity("document_id")
  */
-class ArchFileIntegrationTask
+class IntegrationTask
 {
     const STATUS_NONE = 0;
     const STATUS_OK = 1;
@@ -113,7 +113,7 @@ class ArchFileIntegrationTask
     *
     * @param string $preprocessor Pre processor
     *
-    * @return ArchFileIntegrationTask
+    * @return IntegrationTask
     */
     public function setPreprocessor($preprocessor)
     {
@@ -136,7 +136,7 @@ class ArchFileIntegrationTask
      *
      * @param integer $status Stauts
      *
-     * @return ArchFileIntegrationTask
+     * @return IntegrationTask
      */
     public function setStatus($status)
     {
@@ -159,7 +159,7 @@ class ArchFileIntegrationTask
      *
      * @param Document $document Document
      *
-     * @return ArchFileIntegrationTask
+     * @return IntegrationTask
      */
     public function setDocument($document)
     {

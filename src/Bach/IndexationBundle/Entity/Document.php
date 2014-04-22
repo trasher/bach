@@ -72,7 +72,7 @@ class Document
     protected $corename;
 
     /**
-     * @ORM\OneToOne(targetEntity="ArchFileIntegrationTask", mappedBy="document")
+     * @ORM\OneToOne(targetEntity="IntegrationTask", mappedBy="document")
      */
     protected $task;
 

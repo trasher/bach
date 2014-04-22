@@ -15,7 +15,7 @@ namespace Bach\IndexationBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Bach\IndexationBundle\Entity\FileFormat;
-use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
+use Bach\IndexationBundle\Entity\IntegrationTask;
 
 /**
  * Archival file integration in database
@@ -57,15 +57,15 @@ class ArchFileIntegration
     public function proceedQueue()
     {
         $repository = $this->_entityManager
-            ->getRepository('BachIndexationBundle:ArchFileIntegrationTask');
-        $tasks = $repository->findByStatus(ArchFileIntegrationTask::STATUS_NONE);
+            ->getRepository('BachIndexationBundle:IntegrationTask');
+        $tasks = $repository->findByStatus(IntegrationTask::STATUS_NONE);
 
         foreach ($tasks as $task) {
             try {
                 $this->integrate($task);
-                $task->setStatus(ArchFileIntegrationTask::STATUS_OK);
+                $task->setStatus(IntegrationTask::STATUS_OK);
             } catch(\Exception $e) {
-                $task->setStatus(ArchFileIntegrationTask::STATUS_KO);
+                $task->setStatus(IntegrationTask::STATUS_KO);
             }
 
             //anyways, presist task
@@ -78,12 +78,12 @@ class ArchFileIntegration
     /**
      * Proceed task database integration
      *
-     * @param ArchFileIntegrationTask $task  Task to proceed
+     * @param IntegrationTask $task  Task to proceed
      * @param boolean                 $flush Wether to flush
      *
      * @return void
      */
-    public function integrate(ArchFileIntegrationTask $task, $flush = true)
+    public function integrate(IntegrationTask $task, $flush = true)
     {
         $spl = new \SplFileInfo($task->getPath());
         $doc = $task->getDocument();

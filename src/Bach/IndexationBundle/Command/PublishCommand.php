@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 Use Symfony\Component\HttpFoundation\File\File;
 use Bach\IndexationBundle\Entity\Document;
-use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
+use Bach\IndexationBundle\Entity\IntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use Psr\Log\LoggerInterface;
 
@@ -249,7 +249,7 @@ EOF
                         }
 
                         //create a new task
-                        $task = new ArchFileIntegrationTask($document);
+                        $task = new IntegrationTask($document);
 
                         if ( $dry === false ) {
                             $integrationService->integrate($task);
@@ -282,7 +282,7 @@ EOF
                             $em->flush();
                         }
                     }
-                    $task = new ArchFileIntegrationTask($document);
+                    $task = new IntegrationTask($document);
                     $tasks[] = $task;
                 }
                 $em->flush();

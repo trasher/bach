@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Bach\IndexationBundle\Entity\Document;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\SplFileInfo;
-use Bach\IndexationBundle\Entity\ArchFileIntegrationTask;
+use Bach\IndexationBundle\Entity\IntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use Solarium\Exception\HttpException;
 
@@ -108,7 +108,7 @@ class DefaultController extends Controller
             $em->flush();
 
             //create a new task
-            $task = new ArchFileIntegrationTask($document);
+            $task = new IntegrationTask($document);
 
             if ( $form->get('perform')->isClicked() ) {
                 //store file task in the database if perform action was requested
@@ -158,7 +158,7 @@ class DefaultController extends Controller
         $em2 = $this->getDoctrine()->getManager();
 
         $repository = $em2
-            ->getRepository('BachIndexationBundle:ArchFileIntegrationTask');
+            ->getRepository('BachIndexationBundle:IntegrationTask');
 
         $entities = $repository
             ->createQueryBuilder('t')
@@ -180,13 +180,13 @@ class DefaultController extends Controller
 
             switch ( (int)$entity->getStatus() ) {
             default:
-            case ArchFileIntegrationTask::STATUS_NONE:
+            case IntegrationTask::STATUS_NONE:
                 $status = "";
                 break;
-            case ArchFileIntegrationTask::STATUS_OK:
+            case IntegrationTask::STATUS_OK:
                 $status = "success";
                 break;
-            case ArchFileIntegrationTask::STATUS_KO:
+            case IntegrationTask::STATUS_KO:
             default:
                 $status = "error";
                 break;
@@ -211,8 +211,8 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-            'SELECT t FROM BachIndexationBundle:ArchFileIntegrationTask t ' .
-            'WHERE t.status > ' . ArchFileIntegrationTask::STATUS_NONE
+            'SELECT t FROM BachIndexationBundle:IntegrationTask t ' .
+            'WHERE t.status > ' . IntegrationTask::STATUS_NONE
         );
         $tasks = $query->getResult();
 
@@ -375,7 +375,7 @@ class DefaultController extends Controller
         );
 
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('ArchFileIntegrationTask', true)
+            $platform->getTruncateTableSQL('IntegrationTask', true)
         );
 
         try {
