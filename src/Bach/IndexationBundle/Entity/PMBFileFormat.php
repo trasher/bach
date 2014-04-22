@@ -199,6 +199,28 @@ class PMBFileFormat extends FileFormat
     protected $language;
 
     /**
+     * Fields that will be excluded from fulltext field
+     */
+    public static $nonfulltext = array(
+        'uniqid',
+        'idNotice'
+    );
+
+    /**
+     * Fields included in spell field
+     */
+    public static $spellers = array(
+
+    );
+
+    /**
+     * Fields included in suggestions field
+     */
+    public static $suggesters = array(
+
+    );
+
+    /**
      * The constructor
      *
      * @param array $data The input data
@@ -253,6 +275,7 @@ class PMBFileFormat extends FileFormat
             }
         }
     }
+
 
     /**
      * Parse authors objects from bag
