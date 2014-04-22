@@ -108,14 +108,13 @@ class SolrCoreAdmin
      *
      * @param string $coreType  Solr core type
      * @param string $coreName  Solr core name
-     * @param string $tableName Database table name
      * @param string $orm_name  ORM class name
      * @param mixed  $em        Entity manager
      * @param array  $db_params Database parameters for newly created core
      *
      * @return boolean|SolrCoreResponse
      */
-    public function create($coreType, $coreName, $tableName,
+    public function create($coreType, $coreName,
         $orm_name, $em, $db_params
     ) {
         $coreInstanceDir =  preg_replace('/[^a-zA-Z0-9-_]/', '', $coreName);
@@ -161,7 +160,6 @@ class SolrCoreAdmin
                 $coreType,
                 $coreInstanceDirPath,
                 $coreName,
-                $tableName,
                 $orm_name,
                 $db_params
             );
@@ -424,14 +422,13 @@ class SolrCoreAdmin
      * @param string $coreType            Solr core type
      * @param string $coreInstanceDirPath Core instance path
      * @param string $coreName            Core anme
-     * @param string $tableName           Database table name
      * @param array  $orm_name            ORM class name
      * @param array  $db_params           Database parameters for newly created core
      *
      * @return boolean
      */
     private function _createCoreDir($coreType, $coreInstanceDirPath, $coreName,
-        $tableName, $orm_name, $db_params
+        $orm_name, $db_params
     ) {
         if (!is_dir($coreInstanceDirPath)) {
             $template  = $this->_reader->getCoreTemplatePath($coreType);
@@ -453,7 +450,6 @@ class SolrCoreAdmin
             $this->_createSchema($coreInstanceDirPath, $coreName, $orm_name);
             $this->_createDataConfigFile(
                 $coreInstanceDirPath,
-                $tableName,
                 $orm_name,
                 $db_params
             );
@@ -830,15 +826,20 @@ class SolrCoreAdmin
      * Create data config file
      *
      * @param string $coreInstanceDirPath Core instance path
-     * @param string $tableName           Database table name
      * @param string $orm_name            ORM class name
      * @param array  $db_params           Database parameters for newly created core
      *
      * @return void
      */
     private function _createDataConfigFile($coreInstanceDirPath,
-        $tableName, $orm_name, $db_params
+        $orm_name, $db_params
     ) {
+        $meta = $this->_em->getClassMetadata($orm_name);
+        //table name from entity
+        $table_name = $meta->getTablename();
+        //main fields from entity
+        $fields = $meta->getFieldNames();
+
         $dataConfigFilePath = $coreInstanceDirPath . '/' .
             $this->_reader->getDefaultConfigDir() . '/' .
             $this->_reader->getDefaultDataConfigFileName();
@@ -864,14 +865,9 @@ class SolrCoreAdmin
                 $query .= ', ' . $v . ' AS ' . $k;
             }
         }
-        $query .= ' FROM ' . $tableName;
+        $query .= ' FROM ' . $table_name;
 
         $elt->setAttribute('query', $query);
-
-        $meta = $this->_em->getClassMetadata($orm_name);
-
-        //main fields from entity
-        $fields = $meta->getFieldNames();
 
         //fields specific attributes
         if ( property_exists($orm_name, 'dataconfig_attrs') ) {
@@ -1073,7 +1069,7 @@ class SolrCoreAdmin
             $newEntity->setAttribute('name', 'archdesc');
             $newEntity->setAttribute(
                 'query',
-                'SELECT * FROM ' . $tableName . ' WHERE uniqid=' .
+                'SELECT * FROM ' . $table_name . ' WHERE uniqid=' .
                 '\'${SolrXMLFile.archdesc_id}\''
             );
 

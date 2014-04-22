@@ -107,7 +107,6 @@ EOF
         $result = $sca->create(
             $type,
             $core_name,
-            $type,
             $orm_name,
             $em,
             $db_params
