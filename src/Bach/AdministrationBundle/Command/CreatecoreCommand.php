@@ -91,7 +91,13 @@ EOF
             $orm_name .= '\MatriculesFileFormat';
             break;
         default:
-            $orm_name .= '\UniversalFileFormat';
+            throw new \RuntimeException(
+                str_replace(
+                    '%type',
+                    $type,
+                    _('Unkwown type %type')
+                )
+            );
             break;
         }
 
