@@ -1,6 +1,6 @@
 <?php
 /**
- * Archival file integration in database from command line
+ * Proceeed publication queue
  *
  * PHP version 5
  *
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Archival file integration in database from command line
+ * Proceed publication queue
  *
  * PHP version 5
  *
@@ -28,7 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class ArchFileIntegrationCommand extends ContainerAwareCommand
+class ProceedQueueCommand extends ContainerAwareCommand
 {
     /**
      * Configures command
@@ -38,11 +38,11 @@ class ArchFileIntegrationCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('bach:process:archfileintegration')
-            ->setDescription('Integrate archivists file')
+            ->setName('bach:proceed_queue')
+            ->setDescription(_('Proceed publication queue'))
             ->setHelp(
                 <<<EOF
-The <info>%command.name%</info> command convert a archivist file in format for SOLR engine
+<info>%command.name%</info> publish waiting documents in queue
 EOF
             );
     }
