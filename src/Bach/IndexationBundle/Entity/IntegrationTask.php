@@ -26,6 +26,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
+ * @ORM\Table(name="integration_task")
  * @UniqueEntity("document_id")
  */
 class IntegrationTask
