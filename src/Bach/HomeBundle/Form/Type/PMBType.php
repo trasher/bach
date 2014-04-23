@@ -1,0 +1,109 @@
+<?php
+/**
+ * PMB search form
+ *
+ * PHP version 5
+ *
+ * @category Search
+ * @package  Bach
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+
+namespace Bach\HomeBundle\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+/**
+ * PMB search form
+ *
+ * @category Search
+ * @package  Bach
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
+ * @license  Unknown http://unknown.com
+ * @link     http://anaphore.eu
+ */
+class PMBType extends AbstractType
+{
+
+    /**
+     * Builds the form
+     *
+     * @param FormBuilderInterface $builder Form builder
+     * @param array                $options Form options
+     *
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        /*$builder
+            ->add(
+                'nom',
+                null,
+                array(
+                    'label'     => _('Name'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'prenoms',
+                null,
+                array(
+                    'label'     => _('Surname'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'annee_naissance',
+                null,
+                array(
+                    'label'     => ('Year of birth'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'lieu_naissance',
+                null,
+                array(
+                    'label'     => _('Place of birth'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'date_enregistrement',
+                null,
+                array(
+                    'label'     =>_('Place of recording'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'lieu_enregistrement',
+                null,
+                array(
+                    'label'     => _('Place of recording'),
+                    'required'  => false
+                )
+            )
+            ->add(
+                'perform',
+                'submit',
+                array(
+                    'label' => _("Search"),
+                )
+            );*/
+    }
+
+    /**
+     * Get form name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'pmb_search_form';
+    }
+}

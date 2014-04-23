@@ -205,6 +205,30 @@ bach_display_matricules:
     requirements:
         _method: GET
 
+bach_pmb:
+    pattern:  /pmb
+    defaults: { _controller: BachHomeBundle:PMB:index }
+
+bach_pmb_search:
+    pattern: /pmb/search/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:PMB:search, 'query_terms': null, 'page': 1, 'facet_name': null }
+    requirements:
+        page: \d+
+
+bach_pmb_fullfacet:
+    pattern: /pmb/fullfacet/{query_terms}/{name}
+    defaults: { _controller: BachHomeBundle:PMB:fullFacet }
+
+bach_pmb_do_search:
+    pattern:  /pmb-do-search
+    defaults: { _controller: BachHomeBundle:PMB:doSearch }
+
+bach_display_pmb:
+    pattern: /pmb/show/{docid}/{ajax}
+    defaults: { _controller BachHomeBundle:PMB:displayDocument, ajax: false }
+    requirements:
+        _method: GET
+
 bach_ead_html:
     pattern: /document/{docid}/{expanded}
     defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }

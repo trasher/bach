@@ -41,6 +41,10 @@ services:
         class: "%bach.home.solarium_query_factory.class%"
         arguments: [ @solarium.client.matricules ]
 
+    bach.pmb.solarium_query_factory:
+        class: "%bach.home.solarium_query_factory.class%"
+        arguments: [ @solarium.client.pmb ]
+
     bach.home.display_ead_fragment:
         class: Bach\HomeBundle\Twig\DisplayEADFragment
         arguments: [ @router, '%feature.comments%', '%cote_location%' ]
@@ -80,7 +84,7 @@ services:
 
     bach.socialBarHelper:
         class : Bach\HomeBundle\Templating\Helper\SocialBarHelper
-        tags : 
+        tags :
         - {name : 'templating.helper', alias : 'social-buttons'}
         arguments : [ @templating ]
 
