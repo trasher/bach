@@ -78,7 +78,6 @@ parameters:
     #facebook - https://developers.facebook.com/docs/plugins/like-button/
     social.fb: true
     social.fb.locale: 'en_US' #either en_US, fr_FR
-    social.fb.send: false
     social.fb.width: 300
     social.fb.showFaces: false
     social.fb.layout: 'button_count'

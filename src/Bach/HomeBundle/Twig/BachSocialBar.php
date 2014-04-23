@@ -142,7 +142,6 @@ class BachSocialBar extends \Twig_Extension
         $parameters = $parameters + array(
             'url' => null,
             'locale'    => $this->container->getParameter('social.fb.locale'),
-            'send'      => $this->container->getParameter('social.fb.send'),
             'width'     => $this->container->getParameter('social.fb.width'),
             'showFaces' => $this->container->getParameter('social.fb.showFaces'),
             'layout'    => $this->container->getParameter('social.fb.layout'),
