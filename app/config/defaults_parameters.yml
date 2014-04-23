@@ -61,11 +61,33 @@ parameters:
         - otile3
         - otile4
 
+    #social networks parameters
+    #twitter  https://dev.twitter.com/docs/tweet-button
+    social.twitter: true
+    social.twitter.locale: '%locale%'
+    social.twitter.message: "Un document intéressant : "
+    social.twitter.text: 'Tweet'
+    social.twitter.via: 'anaphorelabs'
+    social.twitter.tag: 'bach' #comma separated
+    #g+ - https://developers.google.com/+/web/+1button
+    social.gplus: true
+    social.gplus.locale: '%locale%'
+    social.gplus.size: 'medium' #either small, medium, standard or tall
+    social.gplus.annotation: 'bubble' #either none, bubble or inline
+    social.gplus.width: '300'
+    #facebook - https://developers.facebook.com/docs/plugins/like-button/
+    social.fb: true
+    social.fb.locale: 'en_US' #either en_US, fr_FR
+    social.fb.send: false
+    social.fb.width: 300
+    social.fb.showFaces: false
+    social.fb.layout: 'button_count'
+    social.fb.share: false
+
     #supported gettext bundle languages
     gettext.locale_shortcuts:
         en: en_US
         fr: fr_FR
-
 
     bach_themes: ['web', 'phone']
     bach_default_theme: 'web'

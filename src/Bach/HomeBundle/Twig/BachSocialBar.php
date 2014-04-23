@@ -132,15 +132,21 @@ class BachSocialBar extends \Twig_Extension
      */
     public function getFacebookLikeButton($parameters = array())
     {
+        $enabled = $this->container->getParameter('social.fb');
+
+        if ( !$enabled ) {
+            return '';
+        }
+
         // default values, you can override the values by setting them
         $parameters = $parameters + array(
             'url' => null,
-            /*'locale' => 'en_US',*/
-            'locale' => 'fr_FR',
-            'send' => false,
-            'width' => 300,
-            'showFaces' => false,
-            'layout' => 'button_count',
+            'locale'    => $this->container->getParameter('social.fb.locale'),
+            'send'      => $this->container->getParameter('social.fb.send'),
+            'width'     => $this->container->getParameter('social.fb.width'),
+            'showFaces' => $this->container->getParameter('social.fb.showFaces'),
+            'layout'    => $this->container->getParameter('social.fb.layout'),
+            'share'     => $this->container->getParameter('social.fb.share')
         );
 
         return $this->container->get('bach.socialBarHelper')
@@ -156,16 +162,19 @@ class BachSocialBar extends \Twig_Extension
      */
     public function getTwitterButton($parameters = array())
     {
+        $enabled = $this->container->getParameter('social.twitter');
+
+        if ( !$enabled ) {
+            return '';
+        }
+
         $parameters = $parameters + array(
-            'url' => null,
-            /*'locale' => 'en',*/
-            'locale' => 'fr',
-            /*'message' => 'I want to share that page with you',*/
-            'message' => 'Un document d\'archives intéressant pour vous : ',
-            'text' => 'Tweet',
-            /*'via' => 'The Acme team',*/
-            'via' => 'anaphorelabs',
-            'tag' => '#bach',
+            'url'       => null,
+            'locale'    => $this->container->getParameter('social.twitter.locale'),
+            'message'   => $this->container->getParameter('social.twitter.message'),
+            'text'      => $this->container->getParameter('social.twitter.text'),
+            'via'       => $this->container->getParameter('social.twitter.via'),
+            'tag'       => $this->container->getParameter('social.twitter.tag'),
         );
 
         return $this->container->get('bach.socialBarHelper')
@@ -181,13 +190,18 @@ class BachSocialBar extends \Twig_Extension
      */
     public function getGooglePlusButton($parameters = array())
     {
+        $enabled = $this->container->getParameter('social.gplus');
+
+        if ( !$enabled ) {
+            return '';
+        }
+
         $parameters = $parameters + array(
-            'url' => null,
-            /*'locale' => 'en',*/
-            'locale' => 'fr',
-            'size' => 'medium',
-            'annotation' => 'bubble',
-            'width' => '300',
+            'url'           => null,
+            'locale'        => $this->container->getParameter('social.gplus.locale'),
+            'size'          => $this->container->getParameter('social.gplus.size'),
+            'annotation'    => $this->container->getParameter('social.gplus.annotation'),
+            'width'         => $this->container->getParameter('social.gplus.width'),
         );
 
         return $this->container->get('bach.socialBarHelper')
