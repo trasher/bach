@@ -79,7 +79,7 @@ class ArchFileIntegration
      * Proceed task database integration
      *
      * @param IntegrationTask $task  Task to proceed
-     * @param boolean                 $flush Wether to flush
+     * @param boolean         $flush Wether to flush
      *
      * @return void
      */
