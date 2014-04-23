@@ -38,6 +38,7 @@ twig:
             social: '%feature.social%'
             browse: '%feature.browse%'
             maps: '%feature.maps%'
+            register: '%feature.register%'
 
 # Assetic Configuration
 assetic:

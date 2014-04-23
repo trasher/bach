@@ -47,6 +47,7 @@ parameters:
     #other
     feature.openid: false
     feature.social: false
+    feature.register: false
 
     #UI parameters
     viewer_uri: http://viewer.localhost/

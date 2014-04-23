@@ -20,6 +20,9 @@
     <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
     <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
     -->
+{% if features.register %}
+    <p class="center">{{ _('No account yet?') }}<br/><a href="{{ path('fos_user_registration_register') }}">{{ _('Register an account') }}</a></p>
+{% endif %}
     <p class="center">
         <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
     </p>
