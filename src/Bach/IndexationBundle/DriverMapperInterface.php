@@ -16,7 +16,7 @@ namespace Bach\IndexationBundle;
 
 
 /**
- * DriverManager convert an input file into a UniversalFileFormat object
+ * DriverManager convert an input file into a FileFormat object
  *
  * @category Indexation
  * @package  Bach

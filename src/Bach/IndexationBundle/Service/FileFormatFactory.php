@@ -24,7 +24,7 @@ namespace Bach\IndexationBundle\Service;
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
-class UniversalFileFormatFactory
+class FileFormatFactory
 {
     /**
      * Builds
@@ -33,24 +33,24 @@ class UniversalFileFormatFactory
      * @param string $class  Class name
      * @param object $exists Existing object, if any
      *
-     * @return UniversalFileFormat
+     * @return FileFormat
      */
     public function build($data, $class, $exists)
     {
         if ( !$exists ) {
             if (class_exists($class)) {
-                $universal = new $class($data);
+                $fileformat = new $class($data);
             } else {
                 throw new \RuntimeException(
                     'File format class ' . $class . ' does not exists.'
                 );
             }
         } else {
-            $universal = $exists;
-            $universal->hydrate($data);
+            $fileformat = $exists;
+            $fileformat->hydrate($data);
         }
 
-        return $universal;
+        return $fileformat;
     }
 }
 

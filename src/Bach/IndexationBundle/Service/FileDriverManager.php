@@ -1,6 +1,6 @@
 <?php
 /**
- * Convert an input file into a UniversalFileFormat object
+ * Convert an input file into a FileFormat object
  *
  * PHP version 5
  *
@@ -18,11 +18,11 @@ use Bach\IndexationBundle\Entity\FileDriver;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\ORM\EntityManager;
-use Bach\IndexationBundle\Entity\UniversalFileFormat;
+use Bach\IndexationBundle\Entity\FileFormat;
 use Bach\IndexationBundle\Entity\DataBag;
 
 /**
- * Convert an input file into a UniversalFileFormat object
+ * Convert an input file into a FileFormat object
  *
  * PHP version 5
  *
@@ -44,12 +44,11 @@ class FileDriverManager
     /**
      * Constructor
      *
-     * @param UniversalFileFormatFactory $fileFormatFactory   Universal file
-     *                                                          format Factory
-     * @param PreProcessorFactory        $preProcessorFactory Pre processor factory
-     * @param EntityManager              $entityManager       The entity manager
+     * @param FileFormatFactory   $fileFormatFactory   File format Factory
+     * @param PreProcessorFactory $preProcessorFactory Pre processor factory
+     * @param EntityManager       $entityManager       The entity manager
      */
-    public function __construct(UniversalFileFormatFactory $fileFormatFactory,
+    public function __construct(FileFormatFactory $fileFormatFactory,
         PreProcessorFactory $preProcessorFactory, EntityManager $entityManager
     ) {
         $this->_importConfiguration();
@@ -60,7 +59,7 @@ class FileDriverManager
     }
 
     /**
-     * Convert an input file into UniversalFileFormat object
+     * Convert an input file into FileFormat object
      *
      * @param DataBag  $bag          Data bag
      * @param string   $format       File format
@@ -68,7 +67,7 @@ class FileDriverManager
      * @param boolean  $flush        Whether to flush
      * @param string   $preprocessor Preprocessor, if any (defaults to null)
      *
-     * @return UniversalFileFormat the normalized file object
+     * @return FileFormat the normalized file object
      */
     public function convert(DataBag $bag, $format, $doc, $flush,
         $preprocessor = null

@@ -116,11 +116,20 @@ class CoreAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $orm_name = 'Bach\IndexationBundle\Entity';
         switch ( $cc->core ) {
-        case 'EADUniversalFileFormat':
+        case 'EADFileFormat':
             $orm_name .= '\EADFileFormat';
             break;
+        case 'MatriculesFileFormat':
+            $orm_name .= '\MatriculesFileFormat';
+            break;
         default:
-            $orm_name .= '\UniversalFileFormat';
+            throw new \RuntimeException(
+                str_replace(
+                    '%type',
+                    $cc->core,
+                    _('Unkwown type %type')
+                )
+            );
             break;
         }
 

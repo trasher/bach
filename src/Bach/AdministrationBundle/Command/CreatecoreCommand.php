@@ -75,7 +75,7 @@ EOF
         $type = $input->getArgument('type');
 
         if ( !$type ) {
-            $type = 'EADUniversalFileFormat';
+            $type = 'EADFileFormat';
         }
 
         $configreader = $container->get('bach.administration.configreader');
@@ -84,7 +84,7 @@ EOF
         $em = $this->getContainer()->get('doctrine')->getManager();
         $orm_name = 'Bach\IndexationBundle\Entity';
         switch ( $type ) {
-        case 'EADUniversalFileFormat':
+        case 'EADFileFormat':
             $orm_name .= '\EADFileFormat';
             break;
         case 'MatriculesFileFormat':

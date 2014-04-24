@@ -22,7 +22,6 @@ parameters:
     solr_path: /solr
     #Core names for each type
     ead_corename: ead
-    unimarc_corename: unimarc
     matricules_corename: matricules
     #Default search core
     solr_search_core: '%ead_corename%'
@@ -32,7 +31,6 @@ parameters:
 
     #Path to files for each type
     ead_files_path: null
-    unimarc_files_path: null
     matricules_files_path: null
 
     ##Features activation

@@ -193,7 +193,7 @@ class EADHeader implements NotifyPropertyChanged
      *
      * @param string $headerId Header id
      *
-     * @return UniversalFileFormat
+     * @return EADHeader
      */
     public function setHeaderId($headerId)
     {
@@ -217,7 +217,7 @@ class EADHeader implements NotifyPropertyChanged
      *
      * @param string $headerAuthor header author
      *
-     * @return UniversalFileFormat
+     * @return EADHeader
      */
     public function setHeaderAuthor($headerAuthor)
     {
@@ -241,7 +241,7 @@ class EADHeader implements NotifyPropertyChanged
      *
      * @param \DateTime $headerDate Header date
      *
-     * @return UniversalFileFormat
+     * @return EADHeader
      */
     public function setHeaderDate($headerDate)
     {
@@ -264,7 +264,7 @@ class EADHeader implements NotifyPropertyChanged
      *
      * @param string $headerPublisher Header publisher
      *
-     * @return UniversalFileFormat
+     * @return EADHeader
      */
     public function setHeaderPublisher($headerPublisher)
     {
@@ -287,7 +287,7 @@ class EADHeader implements NotifyPropertyChanged
      *
      * @param string $headerAddress Header address
      *
-     * @return UniversalFileFormat
+     * @return EADHeader
      */
     public function setHeaderAddress($headerAddress)
     {
@@ -320,7 +320,7 @@ class EADHeader implements NotifyPropertyChanged
      *
      * @param string $headerSubtitle Header subtitle
      *
-     * @return UniversalFileFormat
+     * @return EADHeader
      */
     public function setHeaderSubtitle($headerSubtitle)
     {
@@ -333,7 +333,7 @@ class EADHeader implements NotifyPropertyChanged
      *
      * @param string $headerLanguage Header language
      *
-     * @return UniversalFileFormat
+     * @return EADHeader
      */
     public function setHeaderLanguage($headerLanguage)
     {

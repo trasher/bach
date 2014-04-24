@@ -90,10 +90,6 @@ nelmio_solarium:
             client_class: Solarium\Client
             adapter_class: Solarium\Core\Client\Adapter\Http
             endpoints: ead
-        unimarc:
-            client_class: Solarium\Client
-            adapter_class: Solarium\Core\Client\Adapter\Http
-            endpoints: unimarc
         matricules:
             client_class: Solarium\Client
             adapter_class: Solarium\Core\Client\Adapter\Http
@@ -112,12 +108,6 @@ nelmio_solarium:
             path: '%solr_path%'
             core: '%ead_corename%'
             timeout: 5
-        unimarc:
-            host: '%solr_host%'
-            port: '%solr_port%'
-            path: '%solr_path%'
-            core: '%unimarc_corename%'
-            timeout: 5
         matricules:
             host: '%solr_host%'
             port: '%solr_port%'
@@ -128,11 +118,9 @@ nelmio_solarium:
 bach_indexation:
     types:
         - ead
-        - unimarc
         - matricules
     paths:
         ead: '%ead_files_path%'
-        unimarc: '%unimarc_files_path%'
         matricules: '%matricules_files_path%'
 
 fos_user:

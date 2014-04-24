@@ -341,10 +341,6 @@ class DefaultController extends Controller
         }
 
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('UniversalFileFormat', true)
-        );
-
-        $connection->executeUpdate(
             $platform->getTruncateTableSQL('EADHeader', true)
         );
 
@@ -361,7 +357,7 @@ class DefaultController extends Controller
             $platform->getTruncateTableSQL('EADParentTitle', true)
         );
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('EADUniversalFileFormat', true)
+            $platform->getTruncateTableSQL('EADFileFormat', true)
         );
 
         $connection->executeUpdate(
