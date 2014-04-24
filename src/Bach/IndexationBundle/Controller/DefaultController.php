@@ -341,37 +341,37 @@ class DefaultController extends Controller
         }
 
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('EADHeader', true)
+            $platform->getTruncateTableSQL('ead_header', true)
         );
 
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('EADDates', true)
+            $platform->getTruncateTableSQL('ead_dates', true)
         );
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('EADIndexes', true)
+            $platform->getTruncateTableSQL('ead_indexes', true)
         );
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('EADDaos', true)
+            $platform->getTruncateTableSQL('ead_daos', true)
         );
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('EADParentTitle', true)
+            $platform->getTruncateTableSQL('ead_parent_title', true)
         );
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('EADFileFormat', true)
+            $platform->getTruncateTableSQL('ead_file_format', true)
         );
 
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('MatriculesFileFormat', true)
+            $platform->getTruncateTableSQL('matricules_file_format', true)
         );
 
         //FIXME: remove integration task as well?
         //FIXME: are files not deleted this way?
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('Document', true)
+            $platform->getTruncateTableSQL('documents', true)
         );
 
         $connection->executeUpdate(
-            $platform->getTruncateTableSQL('IntegrationTask', true)
+            $platform->getTruncateTableSQL('integration_task', true)
         );
 
         try {
