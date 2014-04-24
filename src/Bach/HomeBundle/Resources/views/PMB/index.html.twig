@@ -10,6 +10,15 @@
 {% block show_results %}
   {% for document in searchResults %}
     <article id="result_{{ document.uniqid }}" role="document" about="{{ document.uniqid }}">
+        {% if show_pics %}
+        <figure class="result_pic{% if document.url_vignette is not defined %} no-image{% endif %}">
+            {% if document.url_vignette is defined %}
+                <img src="http://pmb.phpdev{{ document.url_vignette}}" alt=""/>
+            {% else %}
+                <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
+            {% endif %}
+        </figure>
+        {% endif %}
       <h3 property="dc:title">{{ document.titre_propre }}</h3>
     </article>
   {% endfor %}
