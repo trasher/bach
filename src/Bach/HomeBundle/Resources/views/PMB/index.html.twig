@@ -19,7 +19,24 @@
             {% endif %}
         </figure>
         {% endif %}
-      <h3 property="dc:title">{{ document.titre_propre }}</h3>
+        <div>
+        <h3 property="dc:title">{{ document.titre_propre }}</h3>
+        {% if document.editeur is defined %}
+        <p>editor : {{ document.editeur }}</p>
+        {% endif %}
+        {% if document.note_content is defined %}
+        <p>note : {{ document.note_content }}</p>
+        {% endif %}
+        {% if document.note_generale is defined %}
+        <p>{{ document.note_generale }}</p>
+        {% endif %}
+        {% if document.extract is defined %}
+        <p>Extract : {{ document.extract }}</p>
+        {% endif %}
+        {% if document.indexation_decimale is defined %}
+        <p>{{ document.indexation_decimale }}</p>
+        {% endif %}
+    </div>
     </article>
   {% endfor %}
 {% endblock %}
