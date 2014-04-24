@@ -173,11 +173,11 @@ EOF
             );
 
             if ( $input->getOption('solr-only') ) {
-                $steps = 1;
+                $steps = 2;
             } else {
                 $steps = count($files_to_publish[$type]);
-                //add solr step
-                $steps++;
+                //add solr steps
+                $steps+=2;
             }
 
             $progress = $this->getHelperSet()->get('progress');
@@ -289,7 +289,7 @@ EOF
                 $integrationService->integrateAll($tasks, $progress);
             }
 
-            $this->_solrFullImport($type, $progress, $dry);
+            $this->_solrFullImport($output, $type, $progress, $dry);
 
             $progress->finish();
         } else {
@@ -305,22 +305,48 @@ EOF
     /**
      * Proceedd solr full data import
      *
-     * @param string  $type     Documents type
-     * @param Helper  $progress Progress bar instance
-     * @param boolean $dry      Dry run mode
+     * @param OutputInterface $output   Stdout
+     * @param string          $type     Documents type
+     * @param Helper          $progress Progress bar instance
+     * @param boolean         $dry      Dry run mode
      *
      * @return void
      */
-    private function _solrFullImport($type, $progress, $dry)
+    private function _solrFullImport($output, $type, $progress, $dry)
     {
         $progress->advance();
         $configreader = $this->getContainer()
             ->get('bach.administration.configreader');
+        $corename = $this->getContainer()->getParameter($type . '_corename');
         $sca = new SolrCoreAdmin($configreader);
         if ( $dry === false ) {
-            $sca->fullImport(
-                $this->getContainer()->getParameter($type . '_corename')
-            );
+            $sca->fullImport($corename);
+        }
+
+        $done = false;
+
+        while ( !$done ) {
+            sleep(2);
+            $response = $sca->getImportStatus($corename);
+            if ( $response->getImportStatus() === 'idle' ) {
+                $progress->advance();
+                $done = true;
+                $messages = $response->getImportMessages();
+                $messages = \simplexml_import_dom($messages);
+                $output->writeln('');
+                $output->writeln('');
+                foreach ( $messages as $message ) {
+                    $str = (string)$message;
+                    if ( isset($message['name']) && trim($message['name']) !== '' ) {
+                        $str = $message['name'] . ': ' . $str;
+                    }
+
+                    $output->writeln(
+                        '<fg=green>' . $str . '</fg=green>'
+                    );
+                }
+
+            }
         }
     }
 }

@@ -67,6 +67,30 @@ class SolrCoreResponse
     }
 
     /**
+     * Get data import status
+     *
+     * @return string
+     */
+    public function getImportStatus()
+    {
+        $xpath = '/response/str[@name="status"]';
+        $status = $this->_xpath->query($xpath);
+        return $status->item(0)->nodeValue;
+    }
+
+    /**
+     * Get data import messages
+     *
+     * @return DOMNodeList
+     */
+    public function getImportMessages()
+    {
+        $xpath = '/response/lst[@name="statusMessages"]';
+        $messages = $this->_xpath->query($xpath);
+        return $messages->item(0);
+    }
+
+    /**
      * Get error code if exist otherwise returns null.
      *
      * @return Ambigous <NULL, string>
