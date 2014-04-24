@@ -8,38 +8,38 @@
 {% block cookie_param_name %}bach_pmb_view_params{% endblock %}
 
 {% block show_results %}
-  {% for document in searchResults %}
-    <article id="result_{{ document.uniqid }}" role="document" about="{{ document.uniqid }}">
-        {% if show_pics %}
-        <figure class="result_pic{% if document.url_vignette is not defined %} no-image{% endif %}">
-            {% if document.url_vignette is defined %}
-                <img src="http://pmb.phpdev{{ document.url_vignette}}" alt=""/>
-            {% else %}
-                <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
+    {% for document in searchResults %}
+        <article id="result_{{ document.uniqid }}" role="document" about="{{ document.uniqid }}">
+            {% if show_pics %}
+                <figure class="result_pic{% if document.url_vignette is not defined %} no-image{% endif %}">
+                    {% if document.url_vignette is defined %}
+                        <img src="http://pmb.phpdev{{ document.url_vignette}}" alt=""/>
+                    {% else %}
+                        <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
+                    {% endif %}
+                </figure>
             {% endif %}
-        </figure>
-        {% endif %}
-        <div>
-        <h3 property="dc:title">{{ document.titre_propre }}</h3>
-        {% if document.editeur is defined %}
-            <p><strong>editor : </strong>{{ document.editeur }}</p>
-        {% endif %}
-        {% if document.note_content is defined %}
-            <p><strong>note : </strong>{{ document.note_content }}</p>
-        {% endif %}
-        {% if document.note_generale is defined %}
-            <p>{{ document.note_generale }}</p>
-        {% endif %}
-        {% if document.extract is defined %}
-            <p><strong>Extract : </strong>{{ document.extract }}</p>
-        {% endif %}
-        {% if document.indexation_decimale is defined %}
-            <p><strong>{{ document.indexation_decimale }}</strong></p>
-        {% endif %}
-        {% if document.key_word is defined %}
-        <p>{{ document.key_word }}</p>
-        {% endif %}
-    </div>
-    </article>
-  {% endfor %}
+            <div>
+                <h3 property="dc:title">{{ document.titre_propre }}</h3>
+                {% if document.editeur is defined %}
+                    <p><strong>Editor : </strong>{{ document.editeur }}</p>
+                {% endif %}
+                {% if document.note_content is defined %}
+                    <p><strong>Note : </strong>{{ document.note_content }}</p>
+                {% endif %}
+                {% if document.note_generale is defined %}
+                    <p>{{ document.note_generale }}</p>
+                {% endif %}
+                {% if document.extract is defined %}
+                    <p><strong>Extract : </strong>{{ document.extract }}</p>
+                {% endif %}
+                {% if document.indexation_decimale is defined %}
+                    <p><strong>{{ document.indexation_decimale }}</strong></p>
+                {% endif %}
+                {% if document.key_word is defined %}
+                    <p>{{ document.key_word }}</p>
+                {% endif %}
+            </div>
+        </article>
+    {% endfor %}
 {% endblock %}

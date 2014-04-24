@@ -157,7 +157,11 @@ class PMBController extends SearchController
 
             $conf_facets = array();
             $fields = array(
-                // TODO edit array with database table PMB Field
+                'collection' => 'Collection',
+                'editeur' => 'Editeur',
+                'year' => 'Année',
+                'indexation_decimale' => 'Indexation decimale',
+                'format' => 'Format',
             );
             foreach ( $fields as $field_name=>$trad ) {
                 $facet = new Facets();
