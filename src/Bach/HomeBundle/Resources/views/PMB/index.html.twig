@@ -22,19 +22,22 @@
         <div>
         <h3 property="dc:title">{{ document.titre_propre }}</h3>
         {% if document.editeur is defined %}
-        <p>editor : {{ document.editeur }}</p>
+            <p><strong>editor : </strong>{{ document.editeur }}</p>
         {% endif %}
         {% if document.note_content is defined %}
-        <p>note : {{ document.note_content }}</p>
+            <p><strong>note : </strong>{{ document.note_content }}</p>
         {% endif %}
         {% if document.note_generale is defined %}
-        <p>{{ document.note_generale }}</p>
+            <p>{{ document.note_generale }}</p>
         {% endif %}
         {% if document.extract is defined %}
-        <p>Extract : {{ document.extract }}</p>
+            <p><strong>Extract : </strong>{{ document.extract }}</p>
         {% endif %}
         {% if document.indexation_decimale is defined %}
-        <p>{{ document.indexation_decimale }}</p>
+            <p><strong>{{ document.indexation_decimale }}</strong></p>
+        {% endif %}
+        {% if document.key_word is defined %}
+        <p>{{ document.key_word }}</p>
         {% endif %}
     </div>
     </article>
