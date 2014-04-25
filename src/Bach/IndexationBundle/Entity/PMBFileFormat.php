@@ -203,21 +203,28 @@ class PMBFileFormat extends FileFormat
      */
     public static $nonfulltext = array(
         'uniqid',
-        'idNotice'
+        'idNotice',
+        'year'
     );
 
     /**
      * Fields included in spell field
      */
     public static $spellers = array(
-
+        'titre_propre',
+        'indexation_decimale',
+        'editeur',
+        'collection'
     );
 
     /**
      * Fields included in suggestions field
      */
     public static $suggesters = array(
-
+        'titre_propre',
+        'indexation_decimale',
+        'editeur',
+        'collection'
     );
 
     /**
