@@ -324,7 +324,61 @@ class PMBController extends SearchController
         }
         return new RedirectResponse($redirectUrl);
     }
+    /**
+     * Document display
+     *
+     * @param int     $docid Document unique identifier
+     * @param int     $page  Page
+     * @param boolean $ajax  Called from ajax
+     *
+     * @return void
+     */
+    public function displayDocumentAction($docid, $page = 1, $ajax = false)
+    {
+        $client = $this->get($this->entryPoint());
+        $query = $client->createSelect();
+        $query->setQuery('id:"' . $docid . '"');
+        $query->setStart(0)->setRows(1);
 
+        $rs = $client->select($query);
+
+        if ( $rs->getNumFound() !== 1 ) {
+            throw new \RuntimeException(
+                str_replace(
+                    '%count%',
+                    $rs->getNumFound(),
+                    _('%count% results found, 1 expected.')
+                )
+            );
+        }
+
+        $docs  = $rs->getDocuments();
+        $doc = $docs[0];
+        $children = array();
+
+        $tpl = '';
+
+        $tplParams = $this->commonTemplateVariables();
+        $tplParams = array_merge(
+            $tplParams,
+            array(
+                'docid'         => $docid,
+                'document'      => $doc
+            )
+        );
+
+        if ( $ajax === 'ajax' ) {
+            $tpl = 'BachHomeBundle:PMB:content_display.html.twig';
+            $tplParams['ajax'] = true;
+        } else {
+            $tpl = 'BachHomeBundle:PMB:display.html.twig';
+            $tplParams['ajax'] = false;
+        }
+        return $this->render(
+            $tpl,
+            $tplParams
+        );
+    }
     /**
      * Get available ordering options
      *

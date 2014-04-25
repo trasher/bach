@@ -1,0 +1,20 @@
+    <article about="{{ docid }}" class="show_fragment">
+        <header>
+            <h2 property="dc:title">
+                {{ document.titre_propre }}
+            </h2>
+            {% if features.social %}{{ socialButtons() }}{% endif %}
+        </header>
+        <section class="matricule_record">
+            <table>
+                <tr>
+                    <th>{{ _('Editor') }}</th>
+                    <td>{{ document.editeur }}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Note') }}</th>
+                    <td>{{ document.note_content }}</td>
+                </tr>
+            </table>
+        </section>
+    </article>

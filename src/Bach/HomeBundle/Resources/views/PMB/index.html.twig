@@ -21,6 +21,15 @@
             {% endif %}
             <div>
                 <h3 property="dc:title">{{ document.titre_propre }}</h3>
+                <a href="{{ path('bach_display_pmb', {docid: document.idNotice}) }}" class="display_doc">
+                {%- if hlSearchResults.getResult(document.uniqid).getField('titre_propre')|length > 0 -%}
+                    {{ hlSearchResults.getResult(document.uniqid).getField('titre_propre')[0]|raw }}
+                {%- elseif document.titre_propre is defined -%}
+                    {{ document.titre_propre }}
+                {%- else -%}
+                    {{ _('Untitled unit') }}
+                {%- endif -%}
+                </a>
                 {% if document.editeur is defined %}
                     <p><strong>Editor : </strong>{{ document.editeur }}</p>
                 {% endif %}
