@@ -6,15 +6,51 @@
             {% if features.social %}{{ socialButtons() }}{% endif %}
         </header>
         <section class="matricule_record">
+            <figure class="fright">
+                {% if document.url_vignette is defined %}
+                    <img src="http://pmb.phpdev{{ document.url_vignette}}" alt=""/>
+                {% else %}
+                    <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
+                {% endif %}
+            </figure>
+            
             <table>
-                <tr>
-                    <th>{{ _('Editor') }}</th>
-                    <td>{{ document.editeur }}</td>
-                </tr>
-                <tr>
-                    <th>{{ _('Note') }}</th>
-                    <td>{{ document.note_content }}</td>
-                </tr>
+                {% if document.editeur is defined %}
+                    <tr>
+                        <th>{{ _('Editor') }}</th>
+                        <td>{{ document.editeur }}</td>
+                    </tr>
+                {% endif %}
+                {% if document.note_content is defined %}
+                    <tr>
+                        <th>{{ _('Note') }}</th>
+                        <td>{{ document.note_content }}</td>
+                    </tr>
+                {% endif %}
+                {% if document.note_generale is defined %}
+                    <tr>
+                        <th>{{ _('Note generale') }}</th>
+                        <td>{{ document.note_generale }}</td>
+                    </tr>
+                {% endif %}
+                {% if document.extract is defined %}
+                    <tr>
+                        <th>{{ _('Extract') }}</th>
+                        <td>{{ document.extract }}</td>
+                    </tr>
+                {% endif %}
+                {% if document.indexation_decimale is defined %}
+                    <tr>
+                        <th>{{ _('Indexation decimale') }}</th>
+                        <td>{{ document.indexation_decimale }}</td>
+                    </tr>
+                {% endif %}
+                {% if document.key_word is defined %}
+                    <tr>
+                        <th>{{ _('keyword') }}</th>
+                        <td>{{ document.key_word }}</td>
+                    </tr>
+                {% endif %}
             </table>
         </section>
     </article>
