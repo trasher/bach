@@ -337,7 +337,7 @@ class PMBController extends SearchController
     {
         $client = $this->get($this->entryPoint());
         $query = $client->createSelect();
-        $query->setQuery('id:"' . $docid . '"');
+        $query->setQuery('uniqid:"' . $docid . '"');
         $query->setStart(0)->setRows(1);
 
         $rs = $client->select($query);
@@ -362,7 +362,7 @@ class PMBController extends SearchController
         $tplParams = array_merge(
             $tplParams,
             array(
-                'docid'         => $docid,
+                'uniqid'        => $docid,
                 'document'      => $doc
             )
         );
