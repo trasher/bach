@@ -38,7 +38,7 @@
  * @category Search
  * @package  Bach
  * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
- * @license  Unknown http://unknown.com
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
@@ -63,7 +63,7 @@ use Bach\HomeBundle\Entity\SearchQuery;
  * @category Search
  * @package  Bach
  * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
- * @license  Unknown http://unknown.com
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 

@@ -38,7 +38,7 @@
  * @category Indexation
  * @package  Bach
  * @author   Vincent Fleurette <vincent.fleurettes@anaphore.eu>
- * @license  Unknown http://unknown.com
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 namespace Bach\IndexationBundle\Entity;

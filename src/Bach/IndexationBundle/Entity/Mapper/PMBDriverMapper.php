@@ -35,11 +35,10 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- *
  * @category Indexation
  * @package  Bach
  * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
- * @license  Unknown http://unknown.com
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
@@ -55,7 +54,7 @@ use Bach\IndexationBundle\DriverMapperInterface;
  * @category Indexation
  * @package  Bach
  * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
- * @license  Unknown http://unknown.com
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 class PMBDriverMapper implements DriverMapperInterface
