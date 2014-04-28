@@ -898,6 +898,26 @@ h2.back a:hover {
 }
 
 /**
+ * ===== PMB record view =====
+ */
+.pmb_record table {
+    border: 1px solid #a3968d;
+    border-spacing: .2em;
+    border-collapse: separate;
+    text-align: justify;
+}
+.pmb_record th,
+.pmb_record td
+{
+    padding: .2em;
+}
+.pmb_record th {
+    font-weight: bold;
+    text-align: left;
+    background-color: #d1c6c0;
+}
+
+/**
  * ===== Common styles =====
  */
 
