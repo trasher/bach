@@ -228,6 +228,17 @@ class PMBFileFormat extends FileFormat
     );
 
     /**
+     * Fields types, if not string
+     */
+    public static $types = array(
+        'titre_propre'           => 'text',
+        'indexation_decimale'    => 'text',
+        'editeur'                => 'text',
+        'collection'             => 'text',
+        'fulltext'               => 'text'
+    );
+
+    /**
      * The constructor
      *
      * @param array $data The input data

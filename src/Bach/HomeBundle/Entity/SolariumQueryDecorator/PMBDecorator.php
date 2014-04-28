@@ -39,10 +39,11 @@ class PMBDecorator extends SolariumQueryDecoratorAbstract
     public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data)
     {
         if ( $data !== '*:*' ) {
-            /*$dismax = $query->getDisMax();
+            //var_dump($query);
+            $dismax = $query->getDisMax();
             $dismax->setQueryFields(
-                'txt_nom^2 txt_prenoms lieu_naissance lieu_enregistrement fulltext^0.1'
-            );*/
+                'titre_propre^2 editeur indexation_decimale collection fulltext^0.1'
+            );
         }
         $query->setQuery($data);
     }
@@ -54,6 +55,6 @@ class PMBDecorator extends SolariumQueryDecoratorAbstract
      */
     public function getHlFields()
     {
-        return '';
+        return 'titre_propre';
     }
 }

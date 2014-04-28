@@ -79,6 +79,10 @@ bach_matricules_suggest:
     requirements:
         _method: GET
 
+bach_pmb_suggest:
+    pattern: /pmb/suggest
+    defaults: { _controller: BachHomeBundle:PMB:doSuggest }
+
 bach_display_document_paginate:
     pattern: /show/{docid}/{page}/{ajax}
     defaults: { _controller BachHomeBundle:Default:displayDocument, page: 1, ajax: false }
