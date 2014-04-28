@@ -1,12 +1,12 @@
 <?php
 /**
- * Bach Solarium matricules decorator
+ * Bach Solarium pmb decorator
  *
  * PHP version 5
  *
  * @category Search
  * @package  Bach
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
@@ -16,11 +16,11 @@ namespace Bach\HomeBundle\Entity\SolariumQueryDecorator;
 use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 
 /**
- * Bach Solarium matricules decorator
+ * Bach Solarium pmb decorator
  *
  * @category Search
  * @package  Bach
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
  * @license  Unknown http://unknown.com
  * @link     http://anaphore.eu
  */
