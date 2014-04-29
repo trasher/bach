@@ -916,6 +916,9 @@ h2.back a:hover {
     text-align: left;
     background-color: #d1c6c0;
 }
+.list_pmb{
+    text-align: justify;
+}
 
 /**
  * ===== Common styles =====
