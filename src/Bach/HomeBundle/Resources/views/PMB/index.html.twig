@@ -75,10 +75,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% if document.dyndescr_authtype_other is defined %}
                     <p><strong>{{ _('Other author : ') }}</strong>{{ document.dyndescr_authtype_other[0] }}</p>
                 {% endif %}
-                {% if document.editeur is defined %}
+                {% if document.category is defined %}
                     <p><strong>{{ _('Category : ') }}</strong>{{ document.category[0] }}</p>
                 {% endif %}
-                {% if document.editeur is defined %}
+                {% if document.language is defined %}
                     <p><strong>{{ _('Language : ') }}</strong>{{ document.language[0] }}</p>
                 {% endif %}
                 {% if document.note_content is defined %}
