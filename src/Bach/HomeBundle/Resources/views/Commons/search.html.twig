@@ -789,7 +789,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 checkZones();
 
                 map.on('overlayadd overlayremove', function(e) {
-                    console.log(e.name);
                     if ( e.type == 'overlayremove' && e.name == '{{ _('Zones') }}' ) {
                         _zones_actives = false;
                         map.off('zoomend', checkZones);
