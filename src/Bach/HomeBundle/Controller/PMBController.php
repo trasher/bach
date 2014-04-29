@@ -317,14 +317,7 @@ class PMBController extends SearchController
     protected function getFacetsDateFields()
     {
         return array(
-            'dyndescr_authtype_primary',
-            'category',
-            'language',
-            'collection',
-            'editeur',
-            'year',
-            'indexation_decimale',
-            'format'
+            'year' 
         );
     }
 
