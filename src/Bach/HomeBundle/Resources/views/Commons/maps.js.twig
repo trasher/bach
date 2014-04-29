@@ -124,6 +124,8 @@
                         {% endif %}
                         var _layers = [];
                         var _overlays = [];
+                        var _markers = [];
+
                         for ( field in data) {
                             var _points = L.geoJson(
                                 data[field], {
@@ -132,7 +134,14 @@
                                 }
                             );
                             _fields_points[_fields_points.length] = _points;
-                            var _layer = L.layerGroup([_points]);
+
+                            var _marker = L.markerClusterGroup({
+                                showCoverageOnHover: false,
+                                disableClusteringAtZoom: 12
+                            });
+                            _marker.addLayer(_points);
+
+                            var _layer = L.layerGroup([_marker]);
                             _layers[_layers.length] = _layer;
                             _overlays[field.replace('-', '_')] = _layer;
                         }

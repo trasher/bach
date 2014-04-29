@@ -49,6 +49,8 @@ POSSIBILITY OF SUCH DAMAGE.
         'js/leaflet/leaflet.css'
         'js/leaflet/leaflet.fullscreen/Control.FullScreen.css'
         'js/leaflet/leaflet.geosearch/l.geosearch.css'
+        'js/leaflet/leaflet.markercluster/MarkerCluster.css'
+        'js/leaflet/leaflet.markercluster/MarkerCluster.Default.css'
         output='assetic/css/compiled/leaflet_plugins.css'
         filter='cssrewrite'
     %}
@@ -327,6 +329,7 @@ POSSIBILITY OF SUCH DAMAGE.
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
+    <script src="{{ asset('js/leaflet/leaflet.markercluster/leaflet.markercluster.js') }}" type="text/javascript"></script>
     {% endif %}
     <!--[if lte IE 8]><script src="{{ asset('js/jqplot/excanvas.min.js') }}" type="text/javascript"></script><![endif]-->
     <script type="text/javascript" src="{{ asset('dewplayer/swfobject.js') }}"></script>
