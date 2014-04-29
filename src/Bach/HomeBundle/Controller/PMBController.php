@@ -317,7 +317,7 @@ class PMBController extends SearchController
     protected function getFacetsDateFields()
     {
         return array(
-            'year' 
+
         );
     }
 

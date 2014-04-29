@@ -101,7 +101,8 @@ class PMBDriverMapper implements DriverMapperInterface
             'indexation_decimale' => 'zoneIndexationDecimale/s_l',
             'url_vignette' => 'f_896/s_a',
             'key_word' => 'zoneMotsClesLibres/mot',
-            'category' => 'zoneCategories/categorie'
+            'category' => 'zoneCategories/categorie',
+            'fragment' => 'fragment'
         );
 
         foreach ( $notices_elements as $map=>$element ) {

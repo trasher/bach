@@ -180,6 +180,7 @@ class PMB
                 }
             }
         }
+        $this->_values['fragment'] = $headerNode->ownerDocument->saveXML($headerNode);
     }
 
     /**

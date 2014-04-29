@@ -210,6 +210,11 @@ class PMBFileFormat extends FileFormat
     protected $url_vignette;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $fragment;
+    
+    /**
      * @ORM\OneToMany(targetEntity="PMBTitle", mappedBy="pmbfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $title;
