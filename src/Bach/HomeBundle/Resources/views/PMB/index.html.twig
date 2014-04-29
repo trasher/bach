@@ -64,16 +64,31 @@ POSSIBILITY OF SUCH DAMAGE.
                 {%- endif -%}
                 </a>
                 {% if document.editeur is defined %}
-                    <p><strong>Editor : </strong>{{ document.editeur }}</p>
+                    <p><strong>{{ _('Editor : ') }}</strong>{{ document.editeur }}</p>
+                {% endif %}
+                {% if document.dyndescr_authtype_primary is defined %}
+                    <p><strong>{{ _('Primary author : ') }}</strong>{{ document.dyndescr_authtype_primary[0] }}</p>
+                {% endif %}
+                {% if document.dyndescr_authtype_secondary is defined %}
+                    <p><strong>{{ _('Secondary author : ') }}</strong>{{ document.dyndescr_authtype_secondary[0] }}</p>
+                {% endif %}
+                {% if document.dyndescr_authtype_other is defined %}
+                    <p><strong>{{ _('Other author : ') }}</strong>{{ document.dyndescr_authtype_other[0] }}</p>
+                {% endif %}
+                {% if document.editeur is defined %}
+                    <p><strong>{{ _('Category : ') }}</strong>{{ document.category[0] }}</p>
+                {% endif %}
+                {% if document.editeur is defined %}
+                    <p><strong>{{ _('Language : ') }}</strong>{{ document.language[0] }}</p>
                 {% endif %}
                 {% if document.note_content is defined %}
-                    <p><strong>Note : </strong>{{ document.note_content }}</p>
+                    <p><strong>{{ _('Note : ') }}</strong>{{ document.note_content }}</p>
                 {% endif %}
                 {% if document.note_generale is defined %}
-                    <p>{{ document.note_generale }}</p>
+                    <p><strong>{{ _('Note : ') }}</strong>{{ document.note_generale }}</p>
                 {% endif %}
                 {% if document.extract is defined %}
-                    <p><strong>Extract : </strong>{{ document.extract }}</p>
+                    <p><strong>{{ _('Extract : ') }}</strong>{{ document.extract }}</p>
                 {% endif %}
                 {% if document.indexation_decimale is defined %}
                     <p><strong>{{ document.indexation_decimale }}</strong></p>
@@ -105,4 +120,37 @@ POSSIBILITY OF SUCH DAMAGE.
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
+{% endblock %}
+{# Binded when not in mobile mode #}
+{% block mobile_js_off %}
+    {{ parent() }}
+
+    $('.display_doc').click(function(event){
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+        var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
+        _elt.appendTo('body');
+
+        var _width = $(window).width() * 0.8;
+        var _height = $(window).height() * 0.8;
+
+        $.ajax({
+            url: $(this).attr('href') + '/ajax',
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')} %}
+            success: function(data) {
+                _elt.append(data);
+                _elt.dialog({
+                    height: _height,
+                    width: _width,
+                    modal: true,
+                    close: function(event, ui){
+                        _elt.remove();
+                    }
+                });
+            }
+        });
+
+        return false;
+    });
 {% endblock %}

@@ -230,12 +230,43 @@ class PMBFileFormat extends FileFormat
     protected $language;
 
     /**
+     * Extra fields not in database
+     */
+    public static $extra_entities = array(
+        'authors'  => 'name',
+        'category' => 'category',
+        'language' => 'content'
+    );
+    /**
+     * Dynamic descriptors discover
+     *
+     * array(
+     *  db column name not null => solr function called (defined in schema.xml)
+     * )
+     */
+    public static $dynamic_descriptors = array(
+        'type_auth'     => 'makeAuthorsDynamics',
+        'function' => 'makeAuthorsFuncDynamics'
+    );
+    /**
      * Fields that will be excluded from fulltext field
      */
     public static $nonfulltext = array(
         'uniqid',
         'idNotice',
-        'year'
+        'year',
+        'created',
+        'updated'
+    );
+
+    /**
+     * Fields that are mutlivalued
+     */
+    public static $multivalued = array(
+        'title',
+        'authors',
+        'category',
+        'language'
     );
 
     /**
@@ -245,6 +276,9 @@ class PMBFileFormat extends FileFormat
         'titre_propre',
         'indexation_decimale',
         'editeur',
+        'authors',
+        'category',
+        'language',
         'collection'
     );
 
@@ -255,6 +289,9 @@ class PMBFileFormat extends FileFormat
         'titre_propre',
         'indexation_decimale',
         'editeur',
+        'authors',
+        'category',
+        'language',
         'collection'
     );
 
@@ -266,6 +303,10 @@ class PMBFileFormat extends FileFormat
         'indexation_decimale'    => 'text',
         'editeur'                => 'text',
         'collection'             => 'text',
+        'title'                  => 'text',
+        'authors'                => 'text',
+        'category'               => 'text',
+        'language'               => 'text',
         'fulltext'               => 'text'
     );
 

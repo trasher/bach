@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * Bach PMB Language entity
  *

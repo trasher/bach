@@ -210,6 +210,9 @@ class BachCoreAdminConfigReader
         case 'MatriculesFileFormat':
             $path .= 'matricules';
             break;
+        case 'PMBFileFormat':
+            $path .= 'pmb';
+            break;
         default:
             $path .= 'archives';
             break;

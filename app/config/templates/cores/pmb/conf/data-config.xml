@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<dataConfig>
+  <dataSource type="" driver="" url="" user="" password=""/>
+  <script><![CDATA[
+      function makeAuthorsDynamics(row) {
+        var _type_auth = row.get("type_auth");
+        var _name = row.get("name");
+
+        var _key = "dyndescr_authtype_" + _type_auth;
+        row.put(_key, _name);
+
+        return row;
+      }
+      function makeAuthorsFuncDynamics(row) {
+          var _name = row.get("name");
+          var _function = row.get("function");
+
+          if ( !_function ) {
+              _function = "none";
+          }
+
+          var _key = "dyndescr_authfunction_" + _function;
+          row.put(_key, _name);
+
+          return row;
+      }
+
+  ]]></script>
+  <document>
+    <entity name="SolrXMLFile" query="">
+    </entity>
+  </document>
+</dataConfig>

@@ -188,11 +188,14 @@ class PMBController extends SearchController
 
             $conf_facets = array();
             $fields = array(
-                'collection' => 'Collection',
-                'editeur' => 'Editeur',
-                'year' => 'Année',
-                'indexation_decimale' => 'Indexation decimale',
-                'format' => 'Format',
+                'dyndescr_authtype_primary'    => 'Authors',
+                'category'                     => 'Category',
+                'language'                     => 'Language',
+                'collection'                   => 'Collection',
+                'editeur'                      => 'Editeur',
+                'year'                         => 'Année',
+                'indexation_decimale'          => 'Indexation decimale',
+                'format'                       => 'Format',
             );
             foreach ( $fields as $field_name=>$trad ) {
                 $facet = new Facets();
