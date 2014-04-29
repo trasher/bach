@@ -195,7 +195,7 @@ class PMBController extends SearchController
                 'editeur'                      => 'Editeur',
                 'year'                         => 'Année',
                 'indexation_decimale'          => 'Indexation decimale',
-                'format'                       => 'Format',
+                'format'                       => 'Format'
             );
             foreach ( $fields as $field_name=>$trad ) {
                 $facet = new Facets();
@@ -317,6 +317,14 @@ class PMBController extends SearchController
     protected function getFacetsDateFields()
     {
         return array(
+            'dyndescr_authtype_primary',
+            'category',
+            'language',
+            'collection',
+            'editeur',
+            'year',
+            'indexation_decimale',
+            'format'
         );
     }
 
@@ -454,20 +462,23 @@ class PMBController extends SearchController
     protected function getUniqueFacet($name)
     {
         $conf_facets = array();
-        /*
+
         $fields = array(
-            'nom'                   => 'Nom',
-            'prenoms'               => 'Prénom',
-            'classe'                => 'Classe',
-            'lieu_naissance'        => 'Lieu de naissance',
-            'lieu_enregistrement'   => 'Lieu d\'enregistrement'
+            'dyndescr_authtype_primary'    => 'Authors',
+            'category'                     => 'Category',
+            'language'                     => 'Language',
+            'collection'                   => 'Collection',
+            'editeur'                      => 'Editeur',
+            'year'                         => 'Année',
+            'indexation_decimale'          => 'Indexation decimale',
+            'format'                       => 'Format'
         );
 
         $facet = new Facets();
         $facet->setSolrFieldName($name);
         $facet->setFrLabel($fields[$name]);
         $conf_facets[] = $facet;
-        */
+
         return $conf_facets;
     }
 
