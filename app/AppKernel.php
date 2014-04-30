@@ -143,7 +143,7 @@ class AppKernel extends Kernel
     public function getCacheDir()
     {
         if ( defined('BACH_CACHE_DIR') ) {
-            return BACH_CACHE_DIR;
+            return BACH_CACHE_DIR . $this->environment;
         } else {
             return parent::getCacheDir();
         }
