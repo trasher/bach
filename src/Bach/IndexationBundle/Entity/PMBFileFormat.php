@@ -55,7 +55,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
- * @ORM\Table(name="PMBFileFormat")
+ * @ORM\Table(name="pmb_file_format")
  */
 
 class PMBFileFormat extends FileFormat
@@ -74,26 +74,26 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\Column(type="string")
      */
-    protected $titre_propre;
+    protected $title_proper;
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $titrepropre_auteur_different;
+    protected $clean_title_author_different;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $titre_parallele;
+    protected $parallel_title;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $titre_complement;
+    protected $title_complement;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $codage_unimarc;
+    protected $cod_unimarc;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -108,7 +108,7 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $editeur;
+    protected $editor;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -118,12 +118,12 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $num_collection;
+    protected $numcollection;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $sous_collection;
+    protected $subcollection;
     /**
      * @ORM\Column(type="date", nullable=true)
      */
@@ -137,7 +137,7 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $autre_editeur;
+    protected $other_editor;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -147,12 +147,12 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\Column(type="string", nullable=true, length=100)
      */
-    protected $importance_materielle;
+    protected $material_importance;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $autres_carac_materielle;
+    protected $other_physical_characteristics;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -162,22 +162,22 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $prix;
+    protected $price;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=100)
      */
-    protected $materiel_accompagnement;
+    protected $material_support;
 
     /**
      * @ORM\Column(type="text", nullable=true, length=1000)
      */
-    protected $note_generale;
+    protected $note_general;
 
     /**
      * @ORM\Column(type="text", nullable=true, length=1000)
      */
-    protected $note_content;
+    protected $textcontent;
 
     /**
      * @ORM\Column(type="text", nullable=true, length=1000)
@@ -187,17 +187,17 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $indexation_decimale;
+    protected $indexing_decimal;
 
     /**
      * @ORM\Column(type="text", nullable=true, length=1000)
      */
-    protected $key_word;
+    protected $keyword;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $link_ressource_electronque;
+    protected $link_ressource_elect;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -207,13 +207,13 @@ class PMBFileFormat extends FileFormat
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $url_vignette;
+    protected $urlimg;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $fragment;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="PMBTitle", mappedBy="pmbfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
@@ -278,9 +278,9 @@ class PMBFileFormat extends FileFormat
      * Fields included in spell field
      */
     public static $spellers = array(
-        'titre_propre',
-        'indexation_decimale',
-        'editeur',
+        'title_proper',
+        'indexing_decimal',
+        'editor',
         'authors',
         'category',
         'language',
@@ -291,9 +291,9 @@ class PMBFileFormat extends FileFormat
      * Fields included in suggestions field
      */
     public static $suggesters = array(
-        'titre_propre',
-        'indexation_decimale',
-        'editeur',
+        'title_proper',
+        'indexing_decimal',
+        'editor',
         'authors',
         'category',
         'language',
@@ -304,9 +304,9 @@ class PMBFileFormat extends FileFormat
      * Fields types, if not string
      */
     public static $types = array(
-        'titre_propre'           => 'text',
-        'indexation_decimale'    => 'text',
-        'editeur'                => 'text',
+        'title_proper'           => 'text',
+        'indexing_decimal'    => 'text',
+        'editor'                => 'text',
         'collection'             => 'text',
         'title'                  => 'text',
         'authors'                => 'text',
@@ -547,9 +547,9 @@ class PMBFileFormat extends FileFormat
     {
         $Title = clone $this->Title;
         $has_changed = false;
-        foreach ($data as $value) {
-        }
+        /*foreach ($data as $value) {
 
+        }*/
     }
 
     /**
@@ -563,160 +563,177 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set titre_propre
+     * Set idNotice
      *
-     * @param string $titrePropre titrePropre
-     *
+     * @param string $idNotice
      * @return PMBFileFormat
      */
-    public function setTitrePropre($titrePropre)
+    public function setIdNotice($idNotice)
     {
-        if ( $this->titre_propre !== $titre_propre ) {
+        $this->idNotice = $idNotice;
+
+        return $this;
+    }
+
+    /**
+     * Get idNotice
+     *
+     * @return string
+     */
+    public function getIdNotice()
+    {
+        return $this->idNotice;
+    }
+
+    /**
+     * Set title_proper
+     *
+     * @param string $titleProper
+     * @return PMBFileFormat
+     */
+    public function setTitleProper($titleProper)
+    {
+        if ( $this->title_proper !== $titleProper ) {
             $this->onPropertyChanged(
-                'titre_propre',
-                $this->titre_propre,
-                $titre_propre
+                'title_proper',
+                $this->title_proper,
+                $titleProper
             );
-            $this->titre_propre = $titre_propre;
+            $this->title_proper = $titleProper;
         }
         return $this;
     }
 
     /**
-     * Get titre_propre
+     * Get title_proper
      *
      * @return string
      */
-    public function getTitrePropre()
+    public function getTitleProper()
     {
-        return $this->titre_propre;
+        return $this->title_proper;
     }
 
     /**
-     * Set titrepropre_auteur_different
+     * Set clean_title_author_different
      *
-     * @param string $titrepropreAuteurDifferent titrepropreAuteurDifferent
-     *
+     * @param string $cleanTitleAuthorDifferent
      * @return PMBFileFormat
      */
-    public function setTitrepropreAuteurDifferent($titrepropreAuteurDifferent)
+    public function setCleanTitleAuthorDifferent($cleanTitleAuthorDifferent)
     {
-        if ( $this->titrepropre_auteur_different !== $titrepropre_auteur_different ) {
+        if ( $this->clean_title_author_different !== $cleanTitleAuthorDifferent ) {
             $this->onPropertyChanged(
-                'titrepropre_auteur_different',
-                $this->titrepropre_auteur_different,
-                $titrepropre_auteur_different
+                'clean_title_author_different',
+                $this->clean_title_author_different,
+                $cleanTitleAuthorDifferent
             );
-            $this->titrepropre_auteur_different = $titrepropre_auteur_different;
+            $this->clean_title_author_different = $cleanTitleAuthorDifferent;
         }
         return $this;
     }
 
     /**
-     * Get titrepropre_auteur_different
+     * Get clean_title_author_different
      *
      * @return string
      */
-    public function getTitrepropreAuteurDifferent()
+    public function getCleanTitleAuthorDifferent()
     {
-        return $this->titrepropre_auteur_different;
+        return $this->clean_title_author_different;
     }
 
     /**
-     * Set titre_parallele
+     * Set parallel_title
      *
-     * @param string $titreParallele titreParallele
-     *
+     * @param string $parallelTitle
      * @return PMBFileFormat
      */
-    public function setTitreParallele($titreParallele)
+    public function setParallelTitle($parallelTitle)
     {
-        if ( $this->titre_parallele !== $titre_parallele ) {
+        if ( $this->parallel_title !== $parallelTitle ) {
             $this->onPropertyChanged(
-                'titre_parallele',
-                $this->titre_parallele,
-                $titre_parallele
+                'parallel_title',
+                $this->parallel_title,
+                $parallelTitle
             );
-            $this->titre_parallele = $titre_parallele;
+            $this->parallel_title = $parallelTitle;
         }
         return $this;
     }
 
     /**
-     * Get titre_parallele
+     * Get parallel_title
      *
      * @return string
      */
-    public function getTitreParallele()
+    public function getParallelTitle()
     {
-        return $this->titre_parallele;
+        return $this->parallel_title;
     }
 
     /**
-     * Set titre_complement
+     * Set title_complement
      *
-     * @param string $titreComplement titreComplement
-     *
+     * @param string $titleComplement
      * @return PMBFileFormat
      */
-    public function setTitreComplement($titreComplement)
+    public function setTitleComplement($titleComplement)
     {
-        if ( $this->titre_complement !== $titre_complement ) {
+        if ( $this->title_complement !== $titleComplement ) {
             $this->onPropertyChanged(
-                'titre_complement',
-                $this->titre_complement,
-                $titre_complement
+                'title_complement',
+                $this->title_complement,
+                $titleComplement
             );
-            $this->titre_complement = $titre_complement;
+            $this->title_complement = $titleComplement;
         }
         return $this;
     }
 
     /**
-     * Get titre_complement
+     * Get title_complement
      *
      * @return string
      */
-    public function getTitreComplement()
+    public function getTitleComplement()
     {
-        return $this->titre_complement;
+        return $this->title_complement;
     }
 
     /**
-     * Set codage_unimarc
+     * Set cod_unimarc
      *
-     * @param string $codageUnimarc codageUnimarc
-     *
+     * @param string $codUnimarc
      * @return PMBFileFormat
      */
-    public function setCodageUnimarc($codageUnimarc)
+    public function setCodUnimarc($codUnimarc)
     {
-        if ( $this->codage_unimarc !== $codage_unimarc ) {
+        if ( $this->cod_unimarc !== $codUnimarc ) {
             $this->onPropertyChanged(
-                'codage_unimarc',
-                $this->codage_unimarc,
-                $codage_unimarc
+                'cod_unimarc',
+                $this->cod_unimarc,
+                $codUnimarc
             );
-            $this->codage_unimarc = $codage_unimarc;
+            $this->cod_unimarc = $codUnimarc;
         }
         return $this;
     }
 
     /**
-     * Get codage_unimarc
+     * Get cod_unimarc
      *
      * @return string
      */
-    public function getCodageUnimarc()
+    public function getCodUnimarc()
     {
-        return $this->codage_unimarc;
+        return $this->cod_unimarc;
     }
 
     /**
      * Set part_of
      *
-     * @param string $partOf partOf
-     *
+     * @param string $partOf
      * @return PMBFileFormat
      */
     public function setPartOf($partOf)
@@ -745,8 +762,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set part_num
      *
-     * @param string $partNum partNum
-     *
+     * @param string $partNum
      * @return PMBFileFormat
      */
     public function setPartNum($partNum)
@@ -773,40 +789,38 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set editeur
+     * Set editor
      *
-     * @param string $editeur editeur
-     *
+     * @param string $editor
      * @return PMBFileFormat
      */
-    public function setEditeur($editeur)
+    public function setEditor($editor)
     {
-        if ( $this->editeur !== $editeur ) {
+        if ( $this->editor !== $editor ) {
             $this->onPropertyChanged(
-                'editeur',
-                $this->editeur,
-                $editeur
+                'editor',
+                $this->editor,
+                $editor
             );
-            $this->editeur = $editeur;
+            $this->editor = $editor;
         }
         return $this;
     }
 
     /**
-     * Get editeur
+     * Get editor
      *
      * @return string
      */
-    public function getEditeur()
+    public function getEditor()
     {
-        return $this->editeur;
+        return $this->editor;
     }
 
     /**
      * Set collection
      *
-     * @param string $collection collection
-     *
+     * @param string $collection
      * @return PMBFileFormat
      */
     public function setCollection($collection)
@@ -833,70 +847,67 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set num_collection
+     * Set numcollection
      *
-     * @param string $numCollection numCollection
-     *
+     * @param string $numcollection
      * @return PMBFileFormat
      */
-    public function setNumCollection($numCollection)
+    public function setNumcollection($numcollection)
     {
-        if ( $this->num_collection !== $num_collection ) {
+        if ( $this->numcollection !== $numcollection ) {
             $this->onPropertyChanged(
-                'num_collection',
-                $this->num_collection,
-                $num_collection
+                'numcollection',
+                $this->numcollection,
+                $numcollection
             );
-            $this->num_collection = $num_collection;
+            $this->numcollection = $numcollection;
         }
         return $this;
     }
 
     /**
-     * Get num_collection
+     * Get numcollection
      *
      * @return string
      */
-    public function getNumCollection()
+    public function getNumcollection()
     {
-        return $this->num_collection;
+        return $this->numcollection;
     }
 
     /**
-     * Set sous_collection
+     * Set subcollection
      *
-     * @param string $sousCollection sousCollection
-     *
+     * @param string $subcollection
      * @return PMBFileFormat
      */
-    public function setSousCollection($sousCollection)
+    public function setSubcollection($subcollection)
     {
-        if ( $this->sous_collection !== $sous_collection ) {
+        if ( $this->subcollection !== $subcollection ) {
             $this->onPropertyChanged(
-                'sous_collection',
-                $this->sous_collection,
-                $sous_collection
+                'subcollection',
+                $this->subcollection,
+                $subcollection
             );
-            $this->sous_collection = $sous_collection;
+            $this->subcollection = $subcollection;
         }
         return $this;
     }
 
     /**
-     * Get sous_collection
+     * Get subcollection
      *
      * @return string
      */
-    public function getSousCollection()
+    public function getSubcollection()
     {
-        return $this->sous_collection;
+        return $this->subcollection;
     }
 
     /**
      * Set year
      *
-     * @param \DateTime $year year
-     *
+     * @param \DateTime $year
      * @return PMBFileFormat
      */
     public function setYear($year)
@@ -925,8 +936,7 @@ class PMBFileFormat extends FileFormat
     /**
      * Set mention_edition
      *
-     * @param string $mentionEdition mentionEdition
-     *
+     * @param string $mentionEdition
      * @return PMBFileFormat
      */
     public function setMentionEdition($mentionEdition)
@@ -953,40 +963,38 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set autre_editeur
+     * Set other_editor
      *
-     * @param string $autreEditeur autreEditeur
-     *
+     * @param string $otherEditor
      * @return PMBFileFormat
      */
-    public function setAutreEditeur($autreEditeur)
+    public function setOtherEditor($otherEditor)
     {
-        if ( $this->autre_editeur !== $autre_editeur ) {
+        if ( $this->other_editor !== $otherEditor ) {
             $this->onPropertyChanged(
-                'autre_editeur',
-                $this->autre_editeur,
-                $autre_editeur
+                'other_editor',
+                $this->other_editor,
+                $otherEditor
             );
-            $this->autre_editeur = $autre_editeur;
+            $this->other_editor = $otherEditor;
         }
         return $this;
     }
 
     /**
-     * Get autre_editeur
+     * Get other_editor
      *
      * @return string
      */
-    public function getAutreEditeur()
+    public function getOtherEditor()
     {
-        return $this->autre_editeur;
+        return $this->other_editor;
     }
 
     /**
      * Set isbn
      *
-     * @param string $isbn isbn
-     *
+     * @param string $isbn
      * @return PMBFileFormat
      */
     public function setIsbn($isbn)
@@ -1013,71 +1021,68 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set importance_materielle
+     * Set material_importance
      *
-     * @param string $importanceMaterielle importanceMaterielle
-     *
+     * @param string $materialImportance
      * @return PMBFileFormat
      */
-    public function setImportanceMaterielle($importanceMaterielle)
+    public function setMaterialImportance($materialImportance)
     {
-        if ( $this->importance_materielle !== $importance_materielle ) {
+        if ( $this->material_importance !== $materialImportance ) {
             $this->onPropertyChanged(
-                'importance_materielle',
-                $this->importance_materielle,
-                $importance_materielle
+                'material_importance',
+                $this->material_importance,
+                $materialImportance
             );
-            $this->importance_materielle = $importance_materielle;
+            $this->material_importance = $materialImportance;
         }
         return $this;
     }
 
     /**
-     * Get importance_materielle
+     * Get material_importance
      *
      * @return string
      */
-    public function getImportanceMaterielle()
+    public function getMaterialImportance()
     {
-        return $this->importance_materielle;
+        return $this->material_importance;
     }
 
     /**
-     * Set autres_carac_materielle
+     * Set other_physical_characteristics
      *
-     * @param string $autresCaracMaterielle autresCaracMaterielle
-     *
+     * @param string $otherPhysicalCharacteristics
      * @return PMBFileFormat
      */
-    public function setAutresCaracMaterielle($autresCaracMaterielle)
+    public function setOtherPhysicalCharacteristics($otherPhysicalCharacteristics)
     {
-        if ( $this->autresCaracMaterielle !== $autresCaracMaterielle ) {
+        if ( $this->other_physical_characteristics !== $otherPhysicalCharacteristics ) {
             $this->onPropertyChanged(
                 'autresCaracMaterielle',
-                $this->autresCaracMaterielle,
+                $this->other_physical_characteristics,
                 $autresCaracMaterielle
             );
-            $this->autresCaracMaterielle = $autresCaracMaterielle;
+            $this->other_physical_characteristics = $otherPhysicalCharacteristics;
         }
         return $this;
     }
 
     /**
-     * Get autres_carac_materielle
+     * Get other_physical_characteristics
      *
      * @return string
      */
-    public function getAutresCaracMaterielle()
+    public function getOtherPhysicalCharacteristics()
     {
-        return $this->autres_carac_materielle;
+        return $this->other_physical_characteristics;
     }
 
     /**
      * Set format
      *
-     * @param string $format format
-     *
-     * @return PMBFileFormat format
+     * @param string $format
+     * @return PMBFileFormat
      */
     public function setFormat($format)
     {
@@ -1103,131 +1108,127 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set prix
+     * Set price
      *
-     * @param string $prix prix
-     *
-     * @return PMBFileFormat prix
-     */
-    public function setPrix($prix)
-    {
-        if ( $this->prix !== $prix ) {
-            $this->onPropertyChanged(
-                'prix',
-                $this->prix,
-                $prix
-            );
-            $this->prix = $prix;
-        }
-        return $this;
-    }
-
-    /**
-     * Get prix
-     *
-     * @return string
-     */
-    public function getPrix()
-    {
-        return $this->prix;
-    }
-
-    /**
-     * Set materiel_accompagnement
-     *
-     * @param string $materielAccompagnement materielAccompagnement
-     *
+     * @param string $price
      * @return PMBFileFormat
      */
-    public function setMaterielAccompagnement($materielAccompagnement)
+    public function setPrice($price)
     {
-        if ( $this->materiel_accompagnement !== $materiel_accompagnement ) {
+        if ( $this->price !== $price ) {
             $this->onPropertyChanged(
-                'materiel_accompagnement',
-                $this->materiel_accompagnement,
-                $materiel_accompagnement
+                'price',
+                $this->price,
+                $price
             );
-            $this->materiel_accompagnement = $materiel_accompagnement;
+            $this->price = $price;
         }
         return $this;
     }
 
     /**
-     * Get materiel_accompagnement
+     * Get price
      *
      * @return string
      */
-    public function getMaterielAccompagnement()
+    public function getPrice()
     {
-        return $this->materiel_accompagnement;
+        return $this->price;
     }
 
     /**
-     * Set note_generale
+     * Set material_support
      *
-     * @param string $noteGenerale noteGenerale
-     *
+     * @param string $materialSupport
      * @return PMBFileFormat
      */
-    public function setNoteGenerale($noteGenerale)
+    public function setMaterialSupport($materialSupport)
     {
-        if ( $this->note_generale !== $note_generale ) {
+        if ( $this->material_support !== $materialSupport ) {
             $this->onPropertyChanged(
-                'note_generale',
-                $this->note_generale,
-                $note_generale
+                'material_support',
+                $this->material_support,
+                $materialSupport
             );
-            $this->note_generale = $note_generale;
+            $this->material_support = $materialSupport;
         }
         return $this;
     }
 
     /**
-     * Get note_generale
+     * Get material_support
      *
      * @return string
      */
-    public function getNoteGenerale()
+    public function getMaterialSupport()
     {
-        return $this->note_generale;
+        return $this->material_support;
     }
 
     /**
-     * Set note_content
+     * Set note_general
      *
-     * @param string $noteContent noteContent
-     *
+     * @param string $noteGeneral
      * @return PMBFileFormat
      */
-    public function setNoteContent($noteContent)
+    public function setNoteGeneral($noteGeneral)
     {
-        if ( $this->note_content !== $note_content ) {
+        if ( $this->note_general !== $noteGeneral ) {
             $this->onPropertyChanged(
-                'note_content',
-                $this->note_content,
-                $note_content
+                'note_general',
+                $this->note_general,
+                $noteGeneral
             );
-            $this->note_content = $note_content;
+            $this->note_general = $noteGeneral;
         }
         return $this;
     }
 
     /**
-     * Get note_content
+     * Get note_general
      *
      * @return string
      */
-    public function getNoteContent()
+    public function getNoteGeneral()
     {
-        return $this->note_content;
+        return $this->note_general;
+    }
+
+    /**
+     * Set textcontent
+     *
+     * @param string $textcontent
+     * @return PMBFileFormat
+     */
+    public function setTextcontent($textcontent)
+    {
+        $this->textcontent = $textcontent;
+        if ( $this->textcontent !== $textcontent ) {
+            $this->onPropertyChanged(
+                'textcontent',
+                $this->textcontent,
+                $textcontent
+            );
+            $this->textcontent = $textcontent;
+        }
+        return $this;
+    }
+
+    /**
+     * Get textcontent
+     *
+     * @return string
+     */
+    public function getTextcontent()
+    {
+        return $this->textcontent;
     }
 
     /**
      * Set extract
      *
-     * @param string $extract extract
-     *
-     * @return PMBFileFormat extract
+     * @param string $extract
+     * @return PMBFileFormat
      */
     public function setExtract($extract)
     {
@@ -1253,111 +1254,107 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set indexation_decimale
+     * Set indexing_decimal
      *
-     * @param string $indexationDecimale indexationDecimale
-     *
+     * @param string $indexingDecimal
      * @return PMBFileFormat
      */
-    public function setIndexationDecimale($indexationDecimale)
+    public function setIndexingDecimal($indexingDecimal)
     {
-        if ( $this->indexation_decimale !== $indexation_decimale ) {
+        if ( $this->indexing_decimal !== $indexingDecimal ) {
             $this->onPropertyChanged(
-                'indexation_decimale',
-                $this->indexation_decimale,
-                $indexation_decimale
+                'indexing_decimal',
+                $this->indexing_decimal,
+                $indexingDecimal
             );
-            $this->indexation_decimale = $indexation_decimale;
+            $this->indexing_decimal = $indexingDecimal;
         }
         return $this;
     }
 
     /**
-     * Get indexation_decimale
+     * Get indexing_decimal
      *
      * @return string
      */
-    public function getIndexationDecimale()
+    public function getIndexingDecimal()
     {
-        return $this->indexation_decimale;
+        return $this->indexing_decimal;
     }
 
     /**
-     * Set key_word
+     * Set keyword
      *
-     * @param string $keyWord keyWord
-     *
+     * @param string $keyword
      * @return PMBFileFormat
      */
-    public function setKeyWord($keyWord)
+    public function setKeyword($keyword)
     {
-        if ( $this->key_word !== $key_word ) {
+        if ( $this->keyword !== $keyword ) {
             $this->onPropertyChanged(
-                'key_word',
-                $this->key_word,
-                $key_word
+                'keyword',
+                $this->keyword,
+                $keyword
             );
-            $this->key_word = $key_word;
+            $this->keyword = $keyword;
         }
         return $this;
     }
 
     /**
-     * Get key_word
+     * Get keyword
      *
      * @return string
      */
-    public function getKeyWord()
+    public function getKeyword()
     {
-        return $this->key_word;
+        return $this->keyword;
     }
 
     /**
-     * Set link_ressource_electronque
+     * Set link_ressource_elect
      *
-     * @param string $linkRessourceElectronque linkRessourceElectronque
-     *
+     * @param string $linkRessourceElect
      * @return PMBFileFormat
      */
-    public function setLinkRessourceElectronque($linkRessourceElectronque)
+    public function setLinkRessourceElect($linkRessourceElect)
     {
-        if ( $this->link_ressource_electronque !== $link_ressource_electronque ) {
+        if ( $this->link_ressource_elect !== $linkRessourceElect ) {
             $this->onPropertyChanged(
-                'link_ressource_electronque',
-                $this->link_ressource_electronque,
-                $link_ressource_electronque
+                'link_ressource_elect',
+                $this->link_ressource_elect,
+                $linkRessourceElect
             );
-            $this->link_ressource_electronque = $link_ressource_electronque;
+            $this->link_ressource_elect = $linkRessourceElect;
         }
         return $this;
     }
 
     /**
-     * Get link_ressource_electronque
+     * Get link_ressource_elect
      *
      * @return string
      */
-    public function getLinkRessourceElectronque()
+    public function getLinkRessourceElect()
     {
-        return $this->link_ressource_electronque;
+        return $this->link_ressource_elect;
     }
 
     /**
      * Set format_elect_ressource
      *
-     * @param string $formatElectRessource formatElectRessource
-     *
+     * @param string $formatElectRessource
      * @return PMBFileFormat
      */
     public function setFormatElectRessource($formatElectRessource)
     {
-        if ( $this->format_elect_ressource !== $format_elect_ressource ) {
+        if ( $this->format_elect_ressource !== $formatElectRessource ) {
             $this->onPropertyChanged(
                 'format_elect_ressource',
                 $this->format_elect_ressource,
-                $format_elect_ressource
+                $formatElectRessource
             );
-            $this->format_elect_ressource = $format_elect_ressource;
+            $this->format_elect_ressource = $formatElectRessource;
         }
         return $this;
     }
@@ -1373,54 +1370,103 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set url_vignette
+     * Set urlimg
      *
-     * @param string $urlVignette urlVignette
-     *
+     * @param string $urlimg
      * @return PMBFileFormat
      */
-    public function setUrlVignette($urlVignette)
+    public function setUrlimg($urlimg)
     {
-        if ( $this->url_vignette !== $url_vignette ) {
+        if ( $this->urlimg !== $urlimg ) {
             $this->onPropertyChanged(
-                'url_vignette',
-                $this->url_vignette,
-                $url_vignette
+                'urlimg',
+                $this->urlimg,
+                $urlimg
             );
-            $this->url_vignette = $url_vignette;
+            $this->urlimg = $urlimg;
         }
         return $this;
     }
 
     /**
-     * Get url_vignette
+     * Get urlimg
      *
      * @return string
      */
-    public function getUrlVignette()
+    public function getUrlimg()
     {
-        return $this->url_vignette;
+        return $this->urlimg;
+    }
+
+    /**
+     * Set fragment
+     *
+     * @param string $fragment
+     * @return PMBFileFormat
+     */
+    public function setFragment($fragment)
+    {
+        if ( $this->fragment !== $fragment ) {
+            $this->onPropertyChanged(
+                'fragment',
+                $this->fragment,
+                $fragment
+            );
+            $this->fragment = $fragment;
+        }
+        return $this;
+    }
+
+    /**
+     * Get fragment
+     *
+     * @return string
+     */
+    public function getFragment()
+    {
+        return $this->fragment;
+    }
+
+
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 
     /**
      * Add title
      *
-     * @param \Bach\IndexationBundle\Entity\PMBTitle $title titre
-     *
+     * @param \Bach\IndexationBundle\Entity\PMBTitle $title
      * @return PMBFileFormat
      */
     public function addTitle(\Bach\IndexationBundle\Entity\PMBTitle $title)
     {
         $this->title[] = $title;
+
         return $this;
     }
 
     /**
      * Remove title
      *
-     * @param \Bach\IndexationBundle\Entity\PMBTitle $title title
-     *
-     * @return PMBFileFormat
+     * @param \Bach\IndexationBundle\Entity\PMBTitle $title
      */
     public function removeTitle(\Bach\IndexationBundle\Entity\PMBTitle $title)
     {
@@ -1438,28 +1484,26 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Add author
+     * Add authors
      *
-     * @param PMBAuthor $author author
-     *
+     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors
      * @return PMBFileFormat
      */
-    public function addAuthor(PMBAuthor $author)
+    public function addAuthor(\Bach\IndexationBundle\Entity\PMBAuthor $authors)
     {
-        $this->authors[] = $author;
+        $this->authors[] = $authors;
+
         return $this;
     }
 
     /**
-     * Remove author
+     * Remove authors
      *
-     * @param PMBAuthor $author author
-     *
-     * @return PMBFileFormat
+     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors
      */
-    public function removeAutor(PMBAuthor $author)
+    public function removeAuthor(\Bach\IndexationBundle\Entity\PMBAuthor $authors)
     {
-        $this->authors->removeElement($author);
+        $this->authors->removeElement($authors);
     }
 
     /**
@@ -1475,24 +1519,22 @@ class PMBFileFormat extends FileFormat
     /**
      * Add category
      *
-     * @param \Bach\IndexationBundle\Entity\PMBCategory $category category
-     *
+     * @param \Bach\IndexationBundle\Entity\PMBCategory $category
      * @return PMBFileFormat
      */
     public function addCategory(\Bach\IndexationBundle\Entity\PMBCategory $category)
     {
         $this->category[] = $category;
+
         return $this;
     }
 
     /**
      * Remove category
      *
-     * @param \Bach\IndexationBundle\Entity\PMBCategory $category category
-     *
-     * @return PMBFileFormat
+     * @param \Bach\IndexationBundle\Entity\PMBCategory $category
      */
-    public function removeCategory(PMBCategory $category)
+    public function removeCategory(\Bach\IndexationBundle\Entity\PMBCategory $category)
     {
         $this->category->removeElement($category);
     }
@@ -1510,24 +1552,22 @@ class PMBFileFormat extends FileFormat
     /**
      * Add language
      *
-     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language language
-     *
+     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
      * @return PMBFileFormat
      */
     public function addLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
     {
         $this->language[] = $language;
+
         return $this;
     }
 
     /**
      * Remove language
      *
-     * @param PMBLanguage $language language
-     *
-     * @return PMBFileFormat
+     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
      */
-    public function removeLanguage(PMBLanguage $language)
+    public function removeLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
     {
         $this->language->removeElement($language);
     }
@@ -1543,39 +1583,26 @@ class PMBFileFormat extends FileFormat
     }
 
     /**
-     * Set idNotice
+     * Set document
      *
-     * @param string $idNotice idNotice
-     *
+     * @param \Bach\IndexationBundle\Entity\Document $document
      * @return PMBFileFormat
      */
-    public function setIdNotice($idNotice)
+    public function setDocument(\Bach\IndexationBundle\Entity\Document $document = null)
     {
-        $this->idNotice = $idNotice;
+        $this->document = $document;
 
         return $this;
     }
 
     /**
-     * Get idNotice
+     * Get document
      *
-     * @return string
+     * @return \Bach\IndexationBundle\Entity\Document
      */
-    public function getIdNotice()
+    public function getDocument()
     {
-        return $this->idNotice;
-    }
-
-    /**
-     * Remove authors
-     *
-     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors authors
-     *
-     * @return PMBFileFormat
-     */
-    public function removeAuthor(\Bach\IndexationBundle\Entity\PMBAuthor $authors)
-    {
-        $this->authors->removeElement($authors);
+        return $this->document;
     }
 
 }

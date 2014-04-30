@@ -55,7 +55,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @link     http://anaphore.eu
  *
  * @ORM\Entity
- * @ORM\Table(name="PMBAuthor")
+ * @ORM\Table(name="pmb_author")
  */
 class PMBAuthor
 {
