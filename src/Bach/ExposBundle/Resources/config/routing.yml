@@ -32,15 +32,23 @@
 expos_homepage:
     pattern: /
     defaults: { _controller: ExposBundle:Default:index }
+    requirements:
+        _method: GET
 
 expos_show:
     pattern:  /{expo}
     defaults: { _controller: ExposBundle:Default:show }
+    requirements:
+        _method: GET
 
 room_show:
     pattern: /{expo}/{room}
     defaults: { _controller: ExposBundle:Default:showRoom }
+    requirements:
+        _method: GET
 
 panel_show:
     pattern: /{expo}/{room}/{panel}
     defaults: { _controller: ExposBundle:Default:showPanel }
+    requirements:
+        _method: GET
