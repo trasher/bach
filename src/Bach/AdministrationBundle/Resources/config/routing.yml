@@ -89,12 +89,6 @@ administration_coreadmin:
     requirements:
         _method: GET|POST
 
-administration_indexer:
-    pattern:  /indexer
-    defaults: { _controller: AdministrationBundle:Indexer:indexer }
-    requirements:
-        _method: GET
-
 administration_newcore:
     pattern: /newcore
     defaults: { _controller: AdministrationBundle:CoreAdmin:newcore }

@@ -42,12 +42,6 @@ bach_indexation_queue:
     requirements:
         _method: GET
 
-bach_indexation_upload_process:
-    pattern:  /uploadProcess
-    defaults: { _controller: BachIndexationBundle:Default:indexProcess }
-    requirements:
-        _method:  POST
-
 bach_indexation_purge:
     pattern:  /purge
     defaults: { _controller: BachIndexationBundle:Default:purge }
