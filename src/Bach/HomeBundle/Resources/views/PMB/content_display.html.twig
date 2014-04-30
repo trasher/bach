@@ -48,6 +48,24 @@ POSSIBILITY OF SUCH DAMAGE.
             </figure>
 
             <table>
+                {% if document.dyndescr_authtype_primary is defined %}
+                    <tr>
+                        <th>{{ _('Primary author : ') }}</th>
+                        <td>{{ document.dyndescr_authtype_primary[0] }}</td>
+                </tr>
+                {% endif %}
+                {% if document.dyndescr_authtype_secondary is defined %}
+                    <tr>
+                        <th>{{ _('Secondary author : ') }}</th>
+                        <td>{{ document.dyndescr_authtype_secondary[0] }}</td>
+                    </tr>
+                {% endif %}
+                {% if document.dyndescr_authtype_other is defined %}
+                    <tr>
+                        <th>{{ _('Other author : ') }}</th>
+                        <td>{{ document.dyndescr_authtype_other[0] }}</td>
+                    </tr>
+                {% endif %}
                 {% if document.editor is defined %}
                     <tr>
                         <th>{{ _('Editor') }}</th>
@@ -76,6 +94,18 @@ POSSIBILITY OF SUCH DAMAGE.
                     <tr>
                         <th>{{ _('Indexing decimal decimale') }}</th>
                         <td>{{ document.indexing_decimal }}</td>
+                    </tr>
+                {% endif %}
+                {% if document.category is defined %}
+                    <tr>
+                        <th>{{ _('Category') }}</th>
+                        <td>{{ document.category[0] }}</td>
+                    </tr>
+                {% endif %}
+                {% if document.language is defined %}
+                    <tr>
+                        <th>{{ _('Language') }}</th>
+                        <td>{{ document.language[0] }}</td>
                     </tr>
                 {% endif %}
                 {% if document.keyword is defined %}

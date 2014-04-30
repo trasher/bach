@@ -76,13 +76,27 @@ POSSIBILITY OF SUCH DAMAGE.
                     <p><strong>{{ _('Other author : ') }}</strong>{{ document.dyndescr_authtype_other[0] }}</p>
                 {% endif %}
                 {% if document.category is defined %}
-                    <p><strong>{{ _('Category : ') }}</strong>{{ document.category[0] }}</p>
+                    <p><strong>{{ _('Category : ') }}</strong>
+                    {% for index in document.category %}
+                        {% if not loop.first %}
+                            |
+                        {% endif %}
+                        {{ document.category[loop.index0] }}
+                    {% endfor %}
+                    </p>
                 {% endif %}
                 {% if document.language is defined %}
-                    <p><strong>{{ _('Language : ') }}</strong>{{ document.language[0] }}</p>
+                    <p><strong>{{ _('Language : ') }}</strong>
+                    {% for index in document.language %}
+                        {% if not loop.first %}
+                            |
+                        {% endif %}
+                        {{ document.language[loop.index0] }}
+                    {% endfor %}
+                    </p>
                 {% endif %}
                 {% if document.textcontent is defined %}
-                    <p><strong>{{ _('Note : ') }}</strong>{{ document.textcontent }}</p>
+                    <p><strong>{{ _('Note : ') }}</strong>{{ document.textcontent }}
                 {% endif %}
                 {% if document.note_general is defined %}
                     <p><strong>{{ _('Note : ') }}</strong>{{ document.note_general }}</p>
@@ -93,8 +107,18 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% if document.indexing_decimal is defined %}
                     <p><strong>{{ document.indexing_decimal }}</strong></p>
                 {% endif %}
+                {% if document.year is defined %}
+                    <p><strong>{{ _('Year : ') }}</strong>{{ document.year|date("Y") }}</p>
+                {% endif %}
                 {% if document.keyword is defined %}
-                    <p>{{ document.keyword }}</p>
+                    {% set keyword = document.keyword|split(';') %}
+                    <p><strong>{{ _('Keyword : ') }}</strong>
+                    {% for index in keyword %}
+                        {% if not loop.first %}
+                            |
+                        {% endif %}
+                        {{ keyword[loop.index0] }}
+                    {% endfor %}
                 {% endif %}
             </div>
         </article>
