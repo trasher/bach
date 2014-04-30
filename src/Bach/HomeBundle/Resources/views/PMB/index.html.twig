@@ -77,22 +77,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% endif %}
                 {% if document.category is defined %}
                     <p><strong>{{ _('Category : ') }}</strong>
-                    {% for index in document.category %}
-                        {% if not loop.first %}
-                            |
-                        {% endif %}
-                        {{ document.category[loop.index0] }}
-                    {% endfor %}
+                        {{ document.category|join(' | ') }}
                     </p>
                 {% endif %}
                 {% if document.language is defined %}
                     <p><strong>{{ _('Language : ') }}</strong>
-                    {% for index in document.language %}
-                        {% if not loop.first %}
-                            |
-                        {% endif %}
-                        {{ document.language[loop.index0] }}
-                    {% endfor %}
+                        {{ document.language|join(' | ')|upper }}
                     </p>
                 {% endif %}
                 {% if document.textcontent is defined %}
@@ -113,12 +103,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% if document.keyword is defined %}
                     {% set keyword = document.keyword|split(';') %}
                     <p><strong>{{ _('Keyword : ') }}</strong>
-                    {% for index in keyword %}
-                        {% if not loop.first %}
-                            |
-                        {% endif %}
-                        {{ keyword[loop.index0] }}
-                    {% endfor %}
+                        {{ keyword|join(' | ')  }}
                 {% endif %}
             </div>
         </article>
