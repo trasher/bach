@@ -50,7 +50,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\UniqueKeyForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 /**
  * Bach unique key controller

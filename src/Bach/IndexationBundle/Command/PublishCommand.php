@@ -54,7 +54,6 @@ Use Symfony\Component\HttpFoundation\File\File;
 use Bach\IndexationBundle\Entity\Document;
 use Bach\IndexationBundle\Entity\IntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
-use Psr\Log\LoggerInterface;
 
 /**
  * Publication command

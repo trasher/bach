@@ -45,7 +45,6 @@
 namespace Bach\AdministrationBundle\Controller;
 
 use Bach\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
-use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\CoreCreationForm;
 use Symfony\Component\HttpFoundation\Request;
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\CoreCreation;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;

@@ -44,13 +44,11 @@
 
 namespace Bach\HomeBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Bach\HomeBundle\Form\Type\MatriculesType;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\ViewParams;
-use Bach\HomeBundle\Entity\GeolocFields;
 use Bach\HomeBundle\Entity\Facets;
 use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;

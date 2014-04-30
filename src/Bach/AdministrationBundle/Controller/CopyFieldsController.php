@@ -50,7 +50,6 @@ use Bach\AdministrationBundle\Entity\Helpers\FormObjects\CopyField;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\CopyFields;
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\CopyFieldsForm;
-use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 /**
  * Bach analyzers controller

@@ -46,8 +46,6 @@ namespace Bach\HomeBundle\Twig;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManager;
-use Bach\IndexationBundle\Entity\Document;
 Use Symfony\Component\HttpFoundation\File\File;
 
 /**

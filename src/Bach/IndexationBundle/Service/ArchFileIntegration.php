@@ -45,7 +45,6 @@
 namespace Bach\IndexationBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Bach\IndexationBundle\Entity\FileFormat;
 use Bach\IndexationBundle\Entity\IntegrationTask;
 
 /**

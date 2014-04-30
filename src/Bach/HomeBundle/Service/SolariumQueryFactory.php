@@ -49,7 +49,6 @@ use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 use Bach\HomeBundle\Entity\Filters;
-use Solarium\QueryType\Select\Result\Facet\Field;
 use Doctrine\ORM\EntityRepository;
 use Bach\HomeBundle\Entity\TagCloud;
 

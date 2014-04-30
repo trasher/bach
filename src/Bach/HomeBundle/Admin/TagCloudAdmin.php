@@ -44,10 +44,7 @@
 namespace Bach\HomeBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Bach\HomeBundle\Entity\TagCloud;
 use Bach\IndexationBundle\Entity\EADFileFormat;
 use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 use Symfony\Component\DependencyInjection\ContainerInterface;

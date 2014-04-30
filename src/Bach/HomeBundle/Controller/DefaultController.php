@@ -50,12 +50,7 @@ use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
-use Bach\HomeBundle\Entity\BrowseFields;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
-use Bach\HomeBundle\Entity\GeolocFields;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**

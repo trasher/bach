@@ -44,9 +44,7 @@
 
 namespace Bach\HomeBundle\Controller;
 
-use Bach\HomeBundle\Entity\TagCloud;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Bach tag cloud admin controller

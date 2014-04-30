@@ -46,7 +46,6 @@ namespace Bach\HomeBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Bach\IndexationBundle\Entity\Toponym;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Solarium\Exception\HttpException;
 
 /**

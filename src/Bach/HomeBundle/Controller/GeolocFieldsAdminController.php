@@ -45,7 +45,6 @@
 namespace Bach\HomeBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Bach geolocalization fields admin controller

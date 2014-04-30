@@ -44,7 +44,6 @@
 
 namespace Bach\AdministrationBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Bach\AdministrationBundle\Entity\Helpers\FormBuilders\PerformanceForm;
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\Performance;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
