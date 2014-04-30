@@ -44,27 +44,27 @@ POSSIBILITY OF SUCH DAMAGE.
     {% for document in searchResults %}
         <article id="result_{{ document.uniqid }}" role="document" about="{{ document.uniqid }}">
             {% if show_pics %}
-                <figure class="result_pic{% if document.url_vignette is not defined %} no-image{% endif %}">
-                    {% if document.url_vignette is defined %}
-                        <img src="http://pmb.phpdev{{ document.url_vignette}}" alt=""/>
+                <figure class="result_pic{% if document.urlimg is not defined %} no-image{% endif %}">
+                    {% if document.urlimg is defined %}
+                        <img src="http://pmb.phpdev{{ document.urlimg}}" alt=""/>
                     {% else %}
                         <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
                     {% endif %}
                 </figure>
             {% endif %}
             <div class="list_pmb" >
-                <h3 property="dc:title">{{ document.titre_propre }}</h3>
+                <h3 property="dc:title">{{ document.title_proper }}</h3>
                 <a href="{{ path('bach_display_pmb', {'docid': document.uniqid}) }}" class="display_doc">
                 {%- if hlSearchResults.getResult(document.uniqid).getField('titre_propre')|length > 0 -%}
                     {{ hlSearchResults.getResult(document.uniqid).getField('titre_propre')[0]|raw }}
-                {%- elseif document.titre_propre is defined -%}
-                    {{ document.titre_propre }}
+                {%- elseif document.title_proper is defined -%}
+                    {{ document.title_proper }}
                 {%- else -%}
                     {{ _('Untitled unit') }}
                 {%- endif -%}
                 </a>
-                {% if document.editeur is defined %}
-                    <p><strong>{{ _('Editor : ') }}</strong>{{ document.editeur }}</p>
+                {% if document.editor is defined %}
+                    <p><strong>{{ _('Editor : ') }}</strong>{{ document.editor }}</p>
                 {% endif %}
                 {% if document.dyndescr_authtype_primary is defined %}
                     <p><strong>{{ _('Primary author : ') }}</strong>{{ document.dyndescr_authtype_primary[0] }}</p>
@@ -81,20 +81,20 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% if document.language is defined %}
                     <p><strong>{{ _('Language : ') }}</strong>{{ document.language[0] }}</p>
                 {% endif %}
-                {% if document.note_content is defined %}
-                    <p><strong>{{ _('Note : ') }}</strong>{{ document.note_content }}</p>
+                {% if document.textcontent is defined %}
+                    <p><strong>{{ _('Note : ') }}</strong>{{ document.textcontent }}</p>
                 {% endif %}
-                {% if document.note_generale is defined %}
-                    <p><strong>{{ _('Note : ') }}</strong>{{ document.note_generale }}</p>
+                {% if document.note_general is defined %}
+                    <p><strong>{{ _('Note : ') }}</strong>{{ document.note_general }}</p>
                 {% endif %}
                 {% if document.extract is defined %}
                     <p><strong>{{ _('Extract : ') }}</strong>{{ document.extract }}</p>
                 {% endif %}
-                {% if document.indexation_decimale is defined %}
-                    <p><strong>{{ document.indexation_decimale }}</strong></p>
+                {% if document.indexing_decimal is defined %}
+                    <p><strong>{{ document.indexing_decimal }}</strong></p>
                 {% endif %}
-                {% if document.key_word is defined %}
-                    <p>{{ document.key_word }}</p>
+                {% if document.keyword is defined %}
+                    <p>{{ document.keyword }}</p>
                 {% endif %}
             </div>
         </article>

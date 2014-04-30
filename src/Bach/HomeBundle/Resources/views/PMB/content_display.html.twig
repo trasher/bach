@@ -34,36 +34,36 @@ POSSIBILITY OF SUCH DAMAGE.
     <article about="{{ uniqid }}" class="show_fragment">
         <header>
             <h2 property="dc:title">
-                {{ document.titre_propre }}
+                {{ document.title_proper }}
             </h2>
             {% if features.social %}{{ socialButtons() }}{% endif %}
         </header>
         <section class="pmb_record">
             <figure class="fright">
-                {% if document.url_vignette is defined %}
-                    <img src="http://pmb.phpdev{{ document.url_vignette}}" alt=""/>
+                {% if document.urlimg is defined %}
+                    <img src="http://pmb.phpdev{{ document.urlimg}}" alt=""/>
                 {% else %}
                     <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
                 {% endif %}
             </figure>
 
             <table>
-                {% if document.editeur is defined %}
+                {% if document.editor is defined %}
                     <tr>
                         <th>{{ _('Editor') }}</th>
-                        <td>{{ document.editeur }}</td>
+                        <td>{{ document.editor }}</td>
                     </tr>
                 {% endif %}
-                {% if document.note_content is defined %}
+                {% if document.textcontent is defined %}
                     <tr>
                         <th>{{ _('Note') }}</th>
-                        <td>{{ document.note_content }}</td>
+                        <td>{{ document.textcontent }}</td>
                     </tr>
                 {% endif %}
-                {% if document.note_generale is defined %}
+                {% if document.note_general is defined %}
                     <tr>
-                        <th>{{ _('Note generale') }}</th>
-                        <td>{{ document.note_generale }}</td>
+                        <th>{{ _('General note') }}</th>
+                        <td>{{ document.note_general }}</td>
                     </tr>
                 {% endif %}
                 {% if document.extract is defined %}
@@ -72,16 +72,16 @@ POSSIBILITY OF SUCH DAMAGE.
                         <td>{{ document.extract }}</td>
                     </tr>
                 {% endif %}
-                {% if document.indexation_decimale is defined %}
+                {% if document.indexing_decimal is defined %}
                     <tr>
-                        <th>{{ _('Indexation decimale') }}</th>
-                        <td>{{ document.indexation_decimale }}</td>
+                        <th>{{ _('Indexing decimal decimale') }}</th>
+                        <td>{{ document.indexing_decimal }}</td>
                     </tr>
                 {% endif %}
-                {% if document.key_word is defined %}
+                {% if document.keyword is defined %}
                     <tr>
-                        <th>{{ _('keyword') }}</th>
-                        <td>{{ document.key_word }}</td>
+                        <th>{{ _('Keyword') }}</th>
+                        <td>{{ document.keyword }}</td>
                     </tr>
                 {% endif %}
             </table>
