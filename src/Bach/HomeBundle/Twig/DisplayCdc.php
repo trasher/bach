@@ -117,7 +117,7 @@ class DisplayCdc extends \Twig_Extension
         unset($archdesc->dsc);
 
         $proc = new \XsltProcessor();
-        $xsl = $proc->importStylesheet(
+        $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_fragment.xsl')
         );
 
@@ -133,7 +133,7 @@ class DisplayCdc extends \Twig_Extension
 
         //display classification scheme itself
         $proc = new \XsltProcessor();
-        $xsl = $proc->importStylesheet(
+        $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_cdc.xsl')
         );
 

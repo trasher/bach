@@ -130,7 +130,6 @@ class FileDriverManager
 
         $results = $driver->process($bag);
 
-        $output = array();
         $eadheader = null;
         $archdesc = null;
 

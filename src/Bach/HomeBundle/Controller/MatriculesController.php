@@ -230,6 +230,10 @@ class MatriculesController extends SearchController
                 $suggestions = $factory->getSuggestions($query_terms);
             }
 
+            if ( isset($suggestions) && $suggestions->count() > 0 ) {
+                $tpl_vars['suggestions'] = $suggestions;
+            }
+
             $this->handleYearlyResults($factory, $tpl_vars);
         }
 
@@ -303,7 +307,6 @@ class MatriculesController extends SearchController
 
         $docs  = $rs->getDocuments();
         $doc = $docs[0];
-        $children = array();
 
         $tpl = '';
 

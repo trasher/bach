@@ -167,14 +167,12 @@ class EADDates
         $date = $data['value'];
         $bdate = null;
         $edate = null;
-        $same = true;
 
         if ( isset($data['attributes']['normal']) ) {
             $extrems = explode('/', $data['attributes']['normal']);
             $bdate = $extrems[0];
             if ( isset($extrems[1]) ) {
                 $edate = $extrems[1];
-                $same = false;
             } else {
                 $edate = $bdate;
             }
@@ -260,7 +258,7 @@ class EADDates
                 $this->end = null;
             }
         } catch ( \Exception $e ) {
-            $_is_valid = false;
+            $this->_is_valid = false;
         }
 
         if ( $this->begin === null || $this->end === null ) {

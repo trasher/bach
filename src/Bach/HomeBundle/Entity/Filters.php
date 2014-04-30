@@ -89,7 +89,8 @@ class Filters extends \ArrayObject
                 );
             }
 
-            for ( $i = 0; $i < count($filter_fields); $i++ ) {
+            $count = count($filter_fields);
+            for ( $i = 0; $i < $count; $i++ ) {
                 $this->addFilter(
                     $filter_fields[$i],
                     $filter_values[$i]
