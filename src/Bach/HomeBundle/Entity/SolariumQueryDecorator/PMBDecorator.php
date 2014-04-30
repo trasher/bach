@@ -73,7 +73,7 @@ class PMBDecorator extends SolariumQueryDecoratorAbstract
             //var_dump($query);
             $dismax = $query->getDisMax();
             $dismax->setQueryFields(
-                'titre_propre^2 editeur indexation_decimale collection fulltext^0.1'
+                'title_proper^2 editor indexing_decimal collection fulltext^0.1'
             );
         }
         $query->setQuery($data);
@@ -86,6 +86,6 @@ class PMBDecorator extends SolariumQueryDecoratorAbstract
      */
     public function getHlFields()
     {
-        return 'titre_propre';
+        return 'title_proper';
     }
 }
