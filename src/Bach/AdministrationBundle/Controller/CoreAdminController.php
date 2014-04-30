@@ -71,12 +71,7 @@ class CoreAdminController extends Controller
     public function newCoreAction()
     {
         $session = $this->getRequest()->getSession();
-        $form = $this->createForm(
-            new CoreCreationForm(
-                $this->getDoctrine(),
-                $this->container->getParameter('database_name')
-            )
-        );
+        $form = $this->createForm('corecreation');
         return $this->render(
             'AdministrationBundle:Default:newcore.html.twig',
             array(
@@ -135,22 +130,18 @@ class CoreAdminController extends Controller
         $configreader = $this->container->get('bach.administration.configreader');
         $sca = new SolrCoreAdmin($configreader);
         $cc = new CoreCreation();
-        $form = $this->createForm(
-            new CoreCreationForm(
-                $this->getDoctrine(),
-                $this->container->getParameter('database_name')
-            ),
-            $cc
-        );
+        $form = $this->createForm('corecreation', $cc);
         $form->bind($request);
 
         $em = $this->getDoctrine()->getManager();
         $orm_name = 'Bach\IndexationBundle\Entity';
         switch ( $cc->core ) {
         case 'EADFileFormat':
+        case 'ead':
             $orm_name .= '\EADFileFormat';
             break;
         case 'MatriculesFileFormat':
+        case 'matricules':
             $orm_name .= '\MatriculesFileFormat';
             break;
         default:
@@ -165,18 +156,17 @@ class CoreAdminController extends Controller
         }
 
         $db_params = $sca->getJDBCDatabaseParameters(
-            $this->getContainer()->getParameter('database_driver'),
-            $this->getContainer()->getParameter('database_host'),
-            $this->getContainer()->getParameter('database_port'),
-            $this->getContainer()->getParameter('database_name'),
-            $this->getContainer()->getParameter('database_user'),
-            $this->getContainer()->getParameter('database_password')
+            $this->container->getParameter('database_driver'),
+            $this->container->getParameter('database_host'),
+            $this->container->getParameter('database_port'),
+            $this->container->getParameter('database_name'),
+            $this->container->getParameter('database_user'),
+            $this->container->getParameter('database_password')
         );
 
         $result = $sca->create(
             $cc->core,
             $cc->name,
-            $cc->core,
             $orm_name,
             $em,
             $db_params

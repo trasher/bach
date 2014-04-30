@@ -32,6 +32,7 @@
 parameters:
     administration.xmlimport.class: Bach\AdministrationBundle\Service\XMLImport
     administration.configreader.class: Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader
+    bach_administration_corecreationform.class: Bach\AdministrationBundle\Entity\Helpers\FormBuilders\CoreCreationForm
 
 services:
     bach.administration.xmlimport:
@@ -41,3 +42,9 @@ services:
     bach.administration.configreader:
         class: %administration.configreader.class%
         arguments: [ '%solr_ssl%', '%solr_host%', '%solr_port%', '%solr_path%', '%kernel.cache_dir%', '%kernel.root_dir%' ]
+
+    bach.administration.form.type.document:
+        class: '%bach_administration_corecreationform.class%'
+        arguments: [ '%bach.types%' ]
+        tags:
+            - { name: form.type, alias: corecreation}

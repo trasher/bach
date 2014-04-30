@@ -61,20 +61,18 @@ use Symfony\Component\Form\AbstractType;
  */
 class CoreCreationForm extends AbstractType
 {
-    private $_tables;
-    private $_doctrine;
-    private $_dbname;
+    private $_files_types;
 
     /**
-     * Main Constructor
+     * Main constructor
      *
-     * @param Doctrine $doctrine Doctrine instance
-     * @param string   $dbname   Database name
+     * @param array $files_types Known files types
      */
-    public function __construct($doctrine, $dbname)
+    public function __construct(array $files_types)
     {
-        $this->_doctrine = $doctrine;
-        $this->_dbname = $dbname;
+        foreach ( $files_types as $ftype ) {
+            $this->_files_types[$ftype] = strtoupper($ftype);
+        }
     }
 
     /**
@@ -87,13 +85,12 @@ class CoreCreationForm extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->_getTableNamesFromDataBase();
         $builder->add(
             'core',
             'choice',
             array(
                 'required' => true,
-                'choices'  => $this->_tables
+                'choices'  => $this->_files_types
             )
         )->add(
             'name',
@@ -122,34 +119,12 @@ class CoreCreationForm extends AbstractType
     }
 
     /**
-     * Retrieve *Format tables names form database
-     *
-     * @return void
-     */
-    private function _getTableNamesFromDataBase()
-    {
-        $sql = "SELECT table_name AS name FROM information_schema.tables " .
-            "WHERE table_schema LIKE '" . $this->_dbname . "'";
-        $connection = $this->_doctrine->getConnection();
-        $result = $connection->query($sql);
-        $res = array();
-        while ( $row = $result->fetch() ) {
-            $t = $row['name'];
-            $subStr = substr($t, strlen($t) - 6);
-            if ( $subStr === 'Format' ) {
-                $res[$t] = $t;
-            }
-        }
-        $this->_tables = $res;
-    }
-
-    /**
      * Get form name
      *
      * @return String
      */
     public function getName()
     {
-        return 'coreCreationForm';
+        return 'corecreation';
     }
 }
