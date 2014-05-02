@@ -565,7 +565,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set idNotice
      *
-     * @param string $idNotice
+     * @param string $idNotice idNotice
+     *
      * @return PMBFileFormat
      */
     public function setIdNotice($idNotice)
@@ -588,7 +589,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set title_proper
      *
-     * @param string $titleProper
+     * @param string $titleProper titleProper
+     *
      * @return PMBFileFormat
      */
     public function setTitleProper($titleProper)
@@ -617,7 +619,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set clean_title_author_different
      *
-     * @param string $cleanTitleAuthorDifferent
+     * @param string $cleanTitleAuthorDifferent cleanTitleAuthorDifferent
+     *
      * @return PMBFileFormat
      */
     public function setCleanTitleAuthorDifferent($cleanTitleAuthorDifferent)
@@ -646,7 +649,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set parallel_title
      *
-     * @param string $parallelTitle
+     * @param string $parallelTitle parallelTitle
+     *
      * @return PMBFileFormat
      */
     public function setParallelTitle($parallelTitle)
@@ -675,7 +679,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set title_complement
      *
-     * @param string $titleComplement
+     * @param string $titleComplement titleComplement
+     *
      * @return PMBFileFormat
      */
     public function setTitleComplement($titleComplement)
@@ -704,7 +709,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set cod_unimarc
      *
-     * @param string $codUnimarc
+     * @param string $codUnimarc codUnimarc
+     *
      * @return PMBFileFormat
      */
     public function setCodUnimarc($codUnimarc)
@@ -733,7 +739,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set part_of
      *
-     * @param string $partOf
+     * @param string $partOf partOf
+     *
      * @return PMBFileFormat
      */
     public function setPartOf($partOf)
@@ -762,7 +769,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set part_num
      *
-     * @param string $partNum
+     * @param string $partNum partNum
+     *
      * @return PMBFileFormat
      */
     public function setPartNum($partNum)
@@ -791,7 +799,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set editor
      *
-     * @param string $editor
+     * @param string $editor editor
+     *
      * @return PMBFileFormat
      */
     public function setEditor($editor)
@@ -820,7 +829,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set collection
      *
-     * @param string $collection
+     * @param string $collection collection
+     *
      * @return PMBFileFormat
      */
     public function setCollection($collection)
@@ -849,7 +859,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set numcollection
      *
-     * @param string $numcollection
+     * @param string $numcollection numcollection
+     *
      * @return PMBFileFormat
      */
     public function setNumcollection($numcollection)
@@ -878,7 +889,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set subcollection
      *
-     * @param string $subcollection
+     * @param string $subcollection subcollection
+     *
      * @return PMBFileFormat
      */
     public function setSubcollection($subcollection)
@@ -907,7 +919,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set year
      *
-     * @param \DateTime $year
+     * @param \DateTime $year year
+     *
      * @return PMBFileFormat
      */
     public function setYear($year)
@@ -936,7 +949,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set mention_edition
      *
-     * @param string $mentionEdition
+     * @param string $mentionEdition mentionEdition
+     *
      * @return PMBFileFormat
      */
     public function setMentionEdition($mentionEdition)
@@ -965,7 +979,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set other_editor
      *
-     * @param string $otherEditor
+     * @param string $otherEditor otherEditor
+     *
      * @return PMBFileFormat
      */
     public function setOtherEditor($otherEditor)
@@ -994,7 +1009,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set isbn
      *
-     * @param string $isbn
+     * @param string $isbn isbn
+     *
      * @return PMBFileFormat
      */
     public function setIsbn($isbn)
@@ -1023,7 +1039,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set material_importance
      *
-     * @param string $materialImportance
+     * @param string $materialImportance materialImportance
+     *
      * @return PMBFileFormat
      */
     public function setMaterialImportance($materialImportance)
@@ -1052,7 +1069,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set other_physical_characteristics
      *
-     * @param string $otherPhysicalCharacteristics
+     * @param string $otherPhysicalCharacteristics otherPhysicalCharacteristics
+     *
      * @return PMBFileFormat
      */
     public function setOtherPhysicalCharacteristics($otherPhysicalCharacteristics)
@@ -1081,7 +1099,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set format
      *
-     * @param string $format
+     * @param string $format format
+     *
      * @return PMBFileFormat
      */
     public function setFormat($format)
@@ -1110,7 +1129,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set price
      *
-     * @param string $price
+     * @param string $price price
+     *
      * @return PMBFileFormat
      */
     public function setPrice($price)
@@ -1139,7 +1159,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set material_support
      *
-     * @param string $materialSupport
+     * @param string $materialSupport materialSupport
+     *
      * @return PMBFileFormat
      */
     public function setMaterialSupport($materialSupport)
@@ -1168,7 +1189,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set note_general
      *
-     * @param string $noteGeneral
+     * @param string $noteGeneral noteGeneral
+     *
      * @return PMBFileFormat
      */
     public function setNoteGeneral($noteGeneral)
@@ -1197,7 +1219,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set textcontent
      *
-     * @param string $textcontent
+     * @param string $textcontent textcontent
+     *
      * @return PMBFileFormat
      */
     public function setTextcontent($textcontent)
@@ -1227,7 +1250,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set extract
      *
-     * @param string $extract
+     * @param string $extract extract
+     *
      * @return PMBFileFormat
      */
     public function setExtract($extract)
@@ -1256,7 +1280,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set indexing_decimal
      *
-     * @param string $indexingDecimal
+     * @param string $indexingDecimal indexingDecimal
+     *
      * @return PMBFileFormat
      */
     public function setIndexingDecimal($indexingDecimal)
@@ -1285,7 +1310,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set keyword
      *
-     * @param string $keyword
+     * @param string $keyword keyword
+     *
      * @return PMBFileFormat
      */
     public function setKeyword($keyword)
@@ -1314,7 +1340,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set link_ressource_elect
      *
-     * @param string $linkRessourceElect
+     * @param string $linkRessourceElect linkRessourceElect
+     *
      * @return PMBFileFormat
      */
     public function setLinkRessourceElect($linkRessourceElect)
@@ -1343,7 +1370,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set format_elect_ressource
      *
-     * @param string $formatElectRessource
+     * @param string $formatElectRessource formatElectRessource
+     *
      * @return PMBFileFormat
      */
     public function setFormatElectRessource($formatElectRessource)
@@ -1372,7 +1400,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set urlimg
      *
-     * @param string $urlimg
+     * @param string $urlimg urlimg
+     *
      * @return PMBFileFormat
      */
     public function setUrlimg($urlimg)
@@ -1401,7 +1430,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set fragment
      *
-     * @param string $fragment
+     * @param string $fragment fragment
+     *
      * @return PMBFileFormat
      */
     public function setFragment($fragment)
@@ -1453,7 +1483,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Add title
      *
-     * @param \Bach\IndexationBundle\Entity\PMBTitle $title
+     * @param \Bach\IndexationBundle\Entity\PMBTitle $title title
+     *
      * @return PMBFileFormat
      */
     public function addTitle(\Bach\IndexationBundle\Entity\PMBTitle $title)
@@ -1466,7 +1497,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Remove title
      *
-     * @param \Bach\IndexationBundle\Entity\PMBTitle $title
+     * @param \Bach\IndexationBundle\Entity\PMBTitle $title title
+     *
+     * @return void
      */
     public function removeTitle(\Bach\IndexationBundle\Entity\PMBTitle $title)
     {
@@ -1477,6 +1510,8 @@ class PMBFileFormat extends FileFormat
      * Get title
      *
      * @return \Doctrine\Common\Collections\Collection
+     *
+     * @return void
      */
     public function getTitle()
     {
@@ -1486,7 +1521,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Add authors
      *
-     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors
+     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors authors
+     *
      * @return PMBFileFormat
      */
     public function addAuthor(\Bach\IndexationBundle\Entity\PMBAuthor $authors)
@@ -1499,7 +1535,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Remove authors
      *
-     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors
+     * @param \Bach\IndexationBundle\Entity\PMBAuthor $authors authors
+     *
+     * @return void
      */
     public function removeAuthor(\Bach\IndexationBundle\Entity\PMBAuthor $authors)
     {
@@ -1519,7 +1557,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Add category
      *
-     * @param \Bach\IndexationBundle\Entity\PMBCategory $category
+     * @param \Bach\IndexationBundle\Entity\PMBCategory $category category
+     *
      * @return PMBFileFormat
      */
     public function addCategory(\Bach\IndexationBundle\Entity\PMBCategory $category)
@@ -1532,7 +1571,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Remove category
      *
-     * @param \Bach\IndexationBundle\Entity\PMBCategory $category
+     * @param \Bach\IndexationBundle\Entity\PMBCategory $category category
+     *
+     * @return void
      */
     public function removeCategory(\Bach\IndexationBundle\Entity\PMBCategory $category)
     {
@@ -1552,7 +1593,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Add language
      *
-     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
+     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language language
+     *
      * @return PMBFileFormat
      */
     public function addLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
@@ -1565,7 +1607,9 @@ class PMBFileFormat extends FileFormat
     /**
      * Remove language
      *
-     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language
+     * @param \Bach\IndexationBundle\Entity\PMBLanguage $language language
+     *
+     * @return void
      */
     public function removeLanguage(\Bach\IndexationBundle\Entity\PMBLanguage $language)
     {
@@ -1585,7 +1629,8 @@ class PMBFileFormat extends FileFormat
     /**
      * Set document
      *
-     * @param \Bach\IndexationBundle\Entity\Document $document
+     * @param \Bach\IndexationBundle\Entity\Document $document document
+     *
      * @return PMBFileFormat
      */
     public function setDocument(\Bach\IndexationBundle\Entity\Document $document = null)
