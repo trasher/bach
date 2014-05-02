@@ -38,6 +38,8 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block do_search_path %}bach_do_search{% endblock %}
 {% block cookie_param_name %}bach_view_params{% endblock %}
 
+{% block title_extend %}{% if q is defined and q|trim != '' %} - {{ _('Search on "%term"')|replace({'%term': q}) }}{% endif %}{% endblock %}
+
 {% block css %}
     {% if min_date is defined and max_date is defined -%}
     <link href="{{ asset('css/jqrangeslider/iThing-min.css') }}" type="text/css" rel="stylesheet" media="screen" />

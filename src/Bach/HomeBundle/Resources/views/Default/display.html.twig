@@ -33,6 +33,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% extends '::base.html.twig' %}
 
+{% set the_title %}
+    {%- if document.cUnittitle is defined -%}
+        {{ document.cUnittitle|length > 50 ? document.cUnittitle|slice(0, 50) ~ '...' : document.cUnittitle }}
+    {%- else -%}
+        {{ _('Untitled unit') }}
+    {%- endif -%}
+{% endset %}
+{% block title_extend %} - {{ _('Consult document "%title"')|replace({'%title': the_title}) }}{% endblock %}
+
 {% block container %}
     {% include 'BachHomeBundle:Default:content_display.html.twig' with {'docid': docid, 'document': document, 'children': children} %}
 {% endblock %}
