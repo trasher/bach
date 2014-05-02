@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 {% if url is not defined or url == null %}
-    {% set url = app.request.uri %}
+    {% set url = app.request.uri|replace({'/ajax': ''}) %}
 {% endif %}
 
 {% spaceless %}

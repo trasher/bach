@@ -171,7 +171,7 @@ class BachSocialBar extends \Twig_Extension
 
         // default values, you can override the values by setting them
         $parameters = $parameters + array(
-            'url' => null,
+            'url'       => null,
             'locale'    => $this->container->getParameter('social.fb.locale'),
             'width'     => $this->container->getParameter('social.fb.width'),
             'showFaces' => $this->container->getParameter('social.fb.showFaces'),
