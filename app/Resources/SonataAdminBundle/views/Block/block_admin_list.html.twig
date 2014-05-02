@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
 
                 {% for admin in group.items %}
-                    {% if admin.getCode == 'sonata.admin.browsefields ' and features.browse
+                    {% if admin.getCode == 'sonata.admin.browsefields' and features.browse
                         or admin.getCode == 'sonata.admin.geoloc' and features.maps
                         or admin.getCode != 'sonata.admin.browsefields' and admin.getCode != 'sonata.admin.geoloc'
                     %}
