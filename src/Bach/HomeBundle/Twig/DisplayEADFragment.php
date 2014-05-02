@@ -64,15 +64,18 @@ class DisplayEADFragment extends \Twig_Extension
     private $_request;
     private $_viewer_uri;
     private $_covers_dir;
+    private $_comms;
 
     /**
      * Main constructor
      *
      * @param UrlGeneratorInterface $router Router
+     * @param boolean               $comms  Comments feature enabled
      */
-    public function __construct(Router $router)
+    public function __construct(Router $router, $comms)
     {
         $this->_router = $router;
+        $this->_comms = $comms;
     }
 
     /**
@@ -163,6 +166,9 @@ class DisplayEADFragment extends \Twig_Extension
         $proc->setParameter('', 'docid', $docid);
         $proc->setParameter('', 'viewer_uri', $this->_viewer_uri);
         $proc->setParameter('', 'covers_dir', $this->_covers_dir);
+        $comments_enabled = $this->_comms ? 'true' : 'false';
+        $proc->setParameter('', 'comments_enabled', $comments_enabled);
+
         if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
         }

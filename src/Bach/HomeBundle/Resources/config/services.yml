@@ -43,7 +43,7 @@ services:
 
     bach.home.display_ead_fragment:
         class: Bach\HomeBundle\Twig\DisplayEADFragment
-        arguments: [ @router ]
+        arguments: [ @router, '%feature.comments%' ]
         calls:
             - [setRequest, ['@?request=']]
             - [setViewer, ['%viewer_uri%']]

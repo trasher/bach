@@ -73,6 +73,7 @@ parameters:
     #display features
     feature.maps: true
     feature.tagcloud: true
+    feature.comments: true
     #other
     feature.openid: false
     feature.social: false

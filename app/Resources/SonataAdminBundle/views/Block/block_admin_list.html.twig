@@ -54,7 +54,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% for admin in group.items %}
                     {% if admin.getCode == 'sonata.admin.browsefields' and features.browse
                         or admin.getCode == 'sonata.admin.geoloc' and features.maps
-                        or admin.getCode != 'sonata.admin.browsefields' and admin.getCode != 'sonata.admin.geoloc'
+                        or admin.getCode == 'sonata.admin.comment' and features.comments
+                        or admin.getCode != 'sonata.admin.browsefields' and admin.getCode != 'sonata.admin.geoloc' and admin.getCode != 'sonata.admin.comment'
                     %}
                     {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
                         <tr>

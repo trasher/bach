@@ -609,22 +609,25 @@ class DefaultController extends SearchController
         }
 
         //retrieve comments
-        $query = $this->getDoctrine()->getManager()
-            ->createQuery(
-                'SELECT c, d FROM BachHomeBundle:Comment c
-                JOIN c.eadfile d
-                WHERE c.state = :state
-                AND d.fragmentid = :docid
-                ORDER BY c.creation_date DESC, c.id DESC'
-            )->setParameters(
-                array(
-                    'state' => Comment::PUBLISHED,
-                    'docid' => $docid
-                )
-            );
-        $comments = $query->getResult();
-        if ( count($comments) > 0 ) {
-            $tplParams['comments'] = $comments;
+        $show_comments = $this->container->getParameter('feature.comments');
+        if ( $show_comments ) {
+            $query = $this->getDoctrine()->getManager()
+                ->createQuery(
+                    'SELECT c, d FROM BachHomeBundle:Comment c
+                    JOIN c.eadfile d
+                    WHERE c.state = :state
+                    AND d.fragmentid = :docid
+                    ORDER BY c.creation_date DESC, c.id DESC'
+                )->setParameters(
+                    array(
+                        'state' => Comment::PUBLISHED,
+                        'docid' => $docid
+                    )
+                );
+            $comments = $query->getResult();
+            if ( count($comments) > 0 ) {
+                $tplParams['comments'] = $comments;
+            }
         }
 
         /** FIXME: find a suitable comportement for the stuff to avoid loops

@@ -49,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:param name="full" select="1"/>
     <xsl:param name="ajax" select="''"/>
     <xsl:param name="children" select="''"/>
+    <xsl:param name="comments_enabled" select="''"/>
     <xsl:param name="comments" select="''"/>
     <xsl:param name="viewer_uri" select="''"/>
     <xsl:param name="covers_dir" select="''"/>
@@ -79,10 +80,12 @@ POSSIBILITY OF SUCH DAMAGE.
                             <xsl:if test="not($children = '')">
                                 <li><a href="#children_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Sub-units')"/> (<xsl:value-of select="$count_subs"/>)</a></li>
                             </xsl:if>
-                            <xsl:if test="not($comments = '')">
-                                <li><a href="#comments"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Comments')"/></a></li>
+                            <xsl:if test="$comments_enabled = 'true'">
+                                <xsl:if test="not($comments = '')">
+                                    <li><a href="#comments"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Comments')"/></a></li>
+                                </xsl:if>
+                                <li><a href="__path_add_comment__"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Add comment')"/></a></li>
                             </xsl:if>
-                            <li><a href="__path_add_comment__"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Add comment')"/></a></li>
                         </ul>
                     </xsl:if>
 

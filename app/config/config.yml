@@ -70,6 +70,7 @@ twig:
             browse: '%feature.browse%'
             maps: '%feature.maps%'
             register: '%feature.register%'
+            comments: '%feature.comments%'
 
 # Assetic Configuration
 assetic:
