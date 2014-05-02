@@ -54,7 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% endif %}
             <div class="list_pmb" >
                 <h3 property="dc:title">{{ document.title_proper }}</h3>
-                <a href="{{ path('bach_display_pmb', {'docid': document.uniqid}) }}" class="display_doc">
+                <strong>{{_('Link to the notice : ')}} </strong><a href="{{ path('bach_display_pmb', {'docid': document.uniqid}) }}" class="display_doc">
                 {%- if hlSearchResults.getResult(document.uniqid).getField('titre_propre')|length > 0 -%}
                     {{ hlSearchResults.getResult(document.uniqid).getField('titre_propre')[0]|raw }}
                 {%- elseif document.title_proper is defined -%}
@@ -64,25 +64,51 @@ POSSIBILITY OF SUCH DAMAGE.
                 {%- endif -%}
                 </a>
                 {% if document.editor is defined %}
-                    <p><strong>{{ _('Editor : ') }}</strong>{{ document.editor }}</p>
+                    <p><strong>{{ _('Editor : ') }}</strong>
+                    {% set facet = document.editor %}
+                    {% set index_name = "editor" %}
+                <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.editor}}</a></p>
                 {% endif %}
                 {% if document.dyndescr_authtype_primary is defined %}
-                    <p><strong>{{ _('Primary author : ') }}</strong>{{ document.dyndescr_authtype_primary[0] }}</p>
+                    <p><strong>{{ _('Primary author : ') }}</strong>
+                    {% set facet = document.dyndescr_authtype_primary[0]  %}
+                    {% set index_name = "dyndescr_authtype_primary" %}
+                <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.dyndescr_authtype_primary[0]}}</a></p>
                 {% endif %}
                 {% if document.dyndescr_authtype_secondary is defined %}
-                    <p><strong>{{ _('Secondary author : ') }}</strong>{{ document.dyndescr_authtype_secondary[0] }}</p>
+                <p><strong>{{ _('Secondary author : ') }}</strong>
+                    {% set facet = document.dyndescr_authtype_secondary[0]  %}
+                    {% set index_name = "dyndescr_authtype_secondary" %}
+                <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.dyndescr_authtype_secondary[0]}}</a></p>
                 {% endif %}
                 {% if document.dyndescr_authtype_other is defined %}
-                    <p><strong>{{ _('Other author : ') }}</strong>{{ document.dyndescr_authtype_other[0] }}</p>
+                    <p><strong>{{ _('Other author : ') }}</strong>
+                        {% set facet = document.dyndescr_authtype_other[0]  %}
+                    {% set index_name = "dyndescr_authtype_other" %}
+                <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.dyndescr_authtype_other[0]}}</a></p>
                 {% endif %}
                 {% if document.category is defined %}
                     <p><strong>{{ _('Category : ') }}</strong>
-                        {{ document.category|join(' | ') }}
-                    </p>
+                        {% for index in document.category %}
+                        {% if loop.first == false %}
+                             |
+                        {% endif %}
+                        {% set facet = document.category[loop.index0]  %}
+                        {% set index_name = "category" %}
+                    <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.category[loop.index0] }}</a>
+                {% endfor %}
+            </p>
                 {% endif %}
                 {% if document.language is defined %}
-                    <p><strong>{{ _('Language : ') }}</strong>
-                        {{ document.language|join(' | ')|upper }}
+                <p><strong>{{ _('Language : ') }}</strong>
+                    {% for index in document.language %}
+                    {% if loop.first == false %}
+                         |
+                    {% endif %}
+                    {% set facet = document.language[loop.index0]  %}
+                    {% set index_name = "language" %}
+                    <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.language[loop.index0] }}</a>
+                    {% endfor %}
                     </p>
                 {% endif %}
                 {% if document.textcontent is defined %}
@@ -95,10 +121,16 @@ POSSIBILITY OF SUCH DAMAGE.
                     <p><strong>{{ _('Extract : ') }}</strong>{{ document.extract }}</p>
                 {% endif %}
                 {% if document.indexing_decimal is defined %}
-                    <p><strong>{{ document.indexing_decimal }}</strong></p>
+                    <p><strong>{{ _('Decimal indexing : ') }}</strong>
+                    {% set facet = document.indexing_decimal %}
+                    {% set index_name = "indexing_decimal" %}
+                    <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.indexing_decimal}}</a></p>
                 {% endif %}
                 {% if document.year is defined %}
-                    <p><strong>{{ _('Year : ') }}</strong>{{ document.year|date("Y") }}</p>
+                    <p><strong>{{ _('Year : ') }}</strong>
+                    {% set facet = document.year|date("Y") %}
+                    {% set index_name = "editor" %}
+                <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.year|date("Y")}}</a></p>
                 {% endif %}
                 {% if document.keyword is defined %}
                     {% set keyword = document.keyword|split(';') %}
