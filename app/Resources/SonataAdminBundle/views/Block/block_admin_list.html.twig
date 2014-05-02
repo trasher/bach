@@ -42,6 +42,9 @@ POSSIBILITY OF SUCH DAMAGE.
             {% for role in group.roles if not display %}
                 {% set display = is_granted(role)%}
             {% endfor %}
+            {% if group.label == 'Virtual expositions' and not features.expos %}
+                {% set display = false %}
+            {% endif %}
 
             {% if display %}
                 <tr>
