@@ -133,6 +133,21 @@ class SocialBarHelper extends Helper
     }
 
     /**
+     * Get Scoop.it button
+     *
+     * @param array $parameters Button parameters
+     *
+     * @return string
+     */
+    public function scoopitButton($parameters)
+    {
+        return $this->templating->render(
+            'BachHomeBundle:helper:scoopitButton.html.twig',
+            $parameters
+        );
+    }
+
+    /**
      * Helper name
      *
      * @return string

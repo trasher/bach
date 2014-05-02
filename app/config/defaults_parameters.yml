@@ -112,6 +112,9 @@ parameters:
     social.fb.showFaces: false
     social.fb.layout: 'button_count'
     social.fb.share: false
+    #scoopit - http://www.scoop.it/install-button
+    social.scoopit: true
+    social.scoopit.layout: 'horizontal' #either 'horizontal', 'vertical' or 'none'
 
     #supported gettext bundle languages
     gettext.locale_shortcuts:

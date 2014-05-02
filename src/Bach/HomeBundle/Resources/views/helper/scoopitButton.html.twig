@@ -30,28 +30,12 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 #}
-    <div id="social">
-{% if facebook is not sameas(false) %}
-        <div class="button facebookButton">
-            {{ facebookButton(facebook) }}
-        </div>
+
+{% if url is not defined or url == null %}
+    {% set url = app.request.uri|replace({'/ajax': ''}) %}
 {% endif %}
 
-{% if twitter is not sameas(false) %}
-        <div class="button twitterButton">
-            {{ twitterButton(twitter) }}
-        </div>
-{% endif %}
-
-{% if googleplus is not sameas(false) %}
-        <div class="button googleplus">
-            {{ googlePlusButton(googleplus) }}
-        </div>
-{% endif %}
-
-{% if scoopit is not sameas(false) %}
-        <div class="button scoopit">
-            {{ scoopitButton(scoopit) }}
-        </div>
-{% endif %}
-    </div>
+{% spaceless %}
+<a href="http://www.scoop.it" class="scoopit-button" scit-position="{{ layout }}" scit-url="{{ url }}" >Scoop.it</a>
+<script type="text/javascript" src="http://www.scoop.it/button/scit.js"></script>
+{% endspaceless %}

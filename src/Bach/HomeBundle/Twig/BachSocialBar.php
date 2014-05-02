@@ -108,6 +108,11 @@ class BachSocialBar extends \Twig_Extension
                 'getGooglePlusButton',
                 array('is_safe' => array('html'))
             ),
+            'scoopitButton' => new \Twig_Function_Method(
+                $this,
+                'getScoopitButton',
+                array('is_safe' => array('html'))
+            )
         );
     }
 
@@ -147,6 +152,14 @@ class BachSocialBar extends \Twig_Extension
             $render_parameters['googleplus'] = false;
         }
 
+        if ( !array_key_exists('scoopit', $parameters) ) {
+            $render_parameters['scoopit'] = array();
+        } else if ( is_array($parameters['scoopit']) ) {
+            $render_parameters['scoopit'] = $parameters['scoopit'];
+        } else {
+            $render_parameters['scoopit'] = false;
+        }
+
         // get the helper service and display the template
         return $this->container->get('bach.socialBarHelper')
             ->socialButtons($render_parameters);
@@ -184,7 +197,7 @@ class BachSocialBar extends \Twig_Extension
     }
 
     /**
-     * Twitter buttons
+     * Twitter button
      *
      * @param array $parameters Twitter parameters
      *
@@ -237,4 +250,29 @@ class BachSocialBar extends \Twig_Extension
         return $this->container->get('bach.socialBarHelper')
             ->googlePlusButton($parameters);
     }
+
+    /**
+     * Scoopit buttons
+     *
+     * @param array $parameters Scoopit parameters
+     *
+     * @return string
+     */
+    public function getScoopitButton($parameters = array())
+    {
+        $enabled = $this->container->getParameter('social.scoopit');
+
+        if ( !$enabled ) {
+            return '';
+        }
+
+        $parameters = $parameters + array(
+            'url'       => null,
+            'layout'    => $this->container->getParameter('social.scoopit.layout')
+        );
+
+        return $this->container->get('bach.socialBarHelper')
+            ->scoopitButton($parameters);
+    }
+
 }
