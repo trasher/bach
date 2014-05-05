@@ -92,8 +92,8 @@ abstract class FileFormat implements NotifyPropertyChanged
       */
     public function __construct($data)
     {
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
+        $this->created = new \DateTime('NOW', new \DateTimeZone('UTC'));
+        $this->updated = new \DateTime('NOW', new \DateTimeZone('UTC'));
         $this->parseData($data);
     }
 
@@ -142,7 +142,7 @@ abstract class FileFormat implements NotifyPropertyChanged
             }
         }
         if ( $propName !== 'updated' ) {
-            $now = new \DateTime();
+            $now = new \DateTime('NOW', new \DateTimeZone('UTC'));
             $this->onPropertyChanged('updated', $this->updated, $now);
             $this->updated = $now;
         }
