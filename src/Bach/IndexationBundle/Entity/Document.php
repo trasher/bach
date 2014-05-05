@@ -433,20 +433,6 @@ class Document
     }
 
     /**
-     * Set creation date
-     *
-     * @param DateTime $created Creation date
-     *
-     * @return Document
-     */
-
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-        return $this;
-    }
-
-    /**
      * Get creation date
      *
      * @return DateTime
