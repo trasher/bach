@@ -153,7 +153,9 @@ class MatriculesFileFormat extends FileFormat
         'annee_naissance',
         'start_dao',
         'end_dao',
-        'txt_prenoms'
+        'txt_prenoms',
+        'created',
+        'updated'
     );
 
     /**
@@ -183,7 +185,6 @@ class MatriculesFileFormat extends FileFormat
         'date_enregistrement'   => 'date',
         'annee_naissance'       => 'date',
         'classe'                => 'date',
-        'matricule'             => 'int',
         'txt_prenoms'           => 'text_names'
     );
 
