@@ -52,7 +52,7 @@ bach_browse:
     pattern: /browse/{part}/{show_all}/{ajax}
     defaults: { _controller: BachHomeBundle:Default:browse, part: '', 'show_all': false, 'ajax': false }
     requirements:
-        _method: GET
+        _method: GET|POST
 
 bach_suggest:
     pattern: /suggest
