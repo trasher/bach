@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app@20140305100944\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-28 10:34+0100\n"
-"PO-Revision-Date: 2014-03-28 10:35+0100\n"
+"POT-Creation-Date: 2014-05-02 16:37+0200\n"
+"PO-Revision-Date: 2014-05-02 16:39+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_US\n"
@@ -17,123 +17,135 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: app/Resources/gettext/twig.cache.php:487
+#: app/Resources/gettext/twig.cache.php:410
+msgid "No account yet?"
+msgstr "No account yet?"
+
+#: app/Resources/gettext/twig.cache.php:414
+msgid "Register an account"
+msgstr "Register an account"
+
+#: app/Resources/gettext/twig.cache.php:482
+msgid "Registration is disabled."
+msgstr "Registration is disabled."
+
+#: app/Resources/gettext/twig.cache.php:560
 msgid "Your browser is quite old, some features may not work."
 msgstr "Your browser is quite old, some features may not work."
 
-#: app/Resources/gettext/twig.cache.php:489
+#: app/Resources/gettext/twig.cache.php:562
 msgid ""
 "You may have a better experience with a more recent or an alternative one."
 msgstr ""
 "You may have a better experience with a more recent or an alternative one."
 
-#: app/Resources/gettext/twig.cache.php:609
+#: app/Resources/gettext/twig.cache.php:682
 msgid "Loading..."
 msgstr "Loading..."
 
-#: app/Resources/gettext/twig.cache.php:611
+#: app/Resources/gettext/twig.cache.php:684
 msgid "Currently loading..."
 msgstr "Currently loading..."
 
-#: app/Resources/gettext/twig.cache.php:641
+#: app/Resources/gettext/twig.cache.php:714
 msgid "An error occured loading document :("
 msgstr "An error occured loading document :("
 
-#: app/Resources/gettext/twig.cache.php:938
-#: app/Resources/gettext/twig.cache.php:1059
+#: app/Resources/gettext/twig.cache.php:1051
+#: app/Resources/gettext/twig.cache.php:1136
 msgid "Bach archival search tool"
 msgstr "Bach archival search tool"
 
-#: app/Resources/gettext/twig.cache.php:1106
+#: app/Resources/gettext/twig.cache.php:1193
 msgid "Search"
 msgstr "Search"
 
-#: app/Resources/gettext/twig.cache.php:1122
+#: app/Resources/gettext/twig.cache.php:1209
 msgid "Matricules"
 msgstr "Matricules"
 
-#: app/Resources/gettext/twig.cache.php:1140
+#: app/Resources/gettext/twig.cache.php:1227
 msgid "Classification scheme"
 msgstr "Classification scheme"
 
-#: app/Resources/gettext/twig.cache.php:1155
+#: app/Resources/gettext/twig.cache.php:1245
 msgid "Browse"
 msgstr "Browse"
 
-#: app/Resources/gettext/twig.cache.php:1171
+#: app/Resources/gettext/twig.cache.php:1263
 msgid "Virtual expositions"
 msgstr "Virtual expositions"
 
-#: app/Resources/gettext/twig.cache.php:1192
+#: app/Resources/gettext/twig.cache.php:1284
 msgid "Publish"
 msgstr "Publish"
 
-#: app/Resources/gettext/twig.cache.php:1210
-#: app/Resources/gettext/twig.cache.php:2742
-#: app/Resources/gettext/twig.cache.php:2765
+#: app/Resources/gettext/twig.cache.php:1302
+#: app/Resources/gettext/twig.cache.php:7209
+#: app/Resources/gettext/twig.cache.php:7232
 msgid "Manage"
 msgstr "Manage"
 
-#: app/Resources/gettext/twig.cache.php:1228
+#: app/Resources/gettext/twig.cache.php:1320
 msgid "Manage Solr"
 msgstr "Manage Solr"
 
-#: app/Resources/gettext/twig.cache.php:1259
+#: app/Resources/gettext/twig.cache.php:1351
 msgid "My profile"
 msgstr "My profile"
 
-#: app/Resources/gettext/twig.cache.php:1289
+#: app/Resources/gettext/twig.cache.php:1381
 msgid "Login with OpenID"
 msgstr "Login with OpenID"
 
-#: app/Resources/gettext/twig.cache.php:1316
+#: app/Resources/gettext/twig.cache.php:1408
 msgid "Error"
 msgstr "Error"
 
-#: app/Resources/gettext/twig.cache.php:1348
+#: app/Resources/gettext/twig.cache.php:1440
 msgid "Warning"
 msgstr "Warning"
 
-#: app/Resources/gettext/twig.cache.php:1380
+#: app/Resources/gettext/twig.cache.php:1472
 msgid "Done"
 msgstr "Done"
 
-#: app/Resources/gettext/twig.cache.php:1543
+#: app/Resources/gettext/twig.cache.php:1635
 msgid "Help not available"
 msgstr "Help not available"
 
-#: app/Resources/gettext/twig.cache.php:1545
+#: app/Resources/gettext/twig.cache.php:1637
 msgid "No help is available for this section."
 msgstr "No help is available for this section."
 
-#: app/Resources/gettext/twig.cache.php:1621
+#: app/Resources/gettext/twig.cache.php:1880
 msgid " - An error occured :("
 msgstr " - An error occured :("
 
-#: app/Resources/gettext/twig.cache.php:1631
+#: app/Resources/gettext/twig.cache.php:1890
 msgid "An error occured."
 msgstr "An error occured."
 
-#: app/Resources/gettext/twig.cache.php:1635
+#: app/Resources/gettext/twig.cache.php:1894
 msgid "The server returned:"
 msgstr "The server returned:"
 
-#: app/Resources/gettext/twig.cache.php:1643
+#: app/Resources/gettext/twig.cache.php:1902
 msgid "Please go back and try again, or report the issue."
 msgstr "Please go back and try again, or report the issue."
 
-#: app/Resources/gettext/twig.cache.php:1697
+#: app/Resources/gettext/twig.cache.php:1956
 msgid " - Page not found :("
 msgstr " - Page not found :("
 
-#: app/Resources/gettext/twig.cache.php:1726
+#: app/Resources/gettext/twig.cache.php:1985
 msgid "The page you requested does not exist, or has been removed."
 msgstr "The page you requested does not exist, or has been removed."
 
-#: app/Resources/gettext/twig.cache.php:2700
+#: app/Resources/gettext/twig.cache.php:7167
 msgid "Visualize"
 msgstr "Visualize"
 
-#: app/Resources/gettext/twig.cache.php:2715
+#: app/Resources/gettext/twig.cache.php:7182
 msgid "Missing locations"
 msgstr "Missing locations"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-28 10:34+0100\n"
+"POT-Creation-Date: 2014-05-02 16:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,122 +17,134 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: app/Resources/gettext/twig.cache.php:487
+#: app/Resources/gettext/twig.cache.php:410
+msgid "No account yet?"
+msgstr ""
+
+#: app/Resources/gettext/twig.cache.php:414
+msgid "Register an account"
+msgstr ""
+
+#: app/Resources/gettext/twig.cache.php:482
+msgid "Registration is disabled."
+msgstr ""
+
+#: app/Resources/gettext/twig.cache.php:560
 msgid "Your browser is quite old, some features may not work."
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:489
+#: app/Resources/gettext/twig.cache.php:562
 msgid ""
 "You may have a better experience with a more recent or an alternative one."
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:609
+#: app/Resources/gettext/twig.cache.php:682
 msgid "Loading..."
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:611
+#: app/Resources/gettext/twig.cache.php:684
 msgid "Currently loading..."
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:641
+#: app/Resources/gettext/twig.cache.php:714
 msgid "An error occured loading document :("
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:938
-#: app/Resources/gettext/twig.cache.php:1059
+#: app/Resources/gettext/twig.cache.php:1051
+#: app/Resources/gettext/twig.cache.php:1136
 msgid "Bach archival search tool"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1106
+#: app/Resources/gettext/twig.cache.php:1193
 msgid "Search"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1122
+#: app/Resources/gettext/twig.cache.php:1209
 msgid "Matricules"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1140
+#: app/Resources/gettext/twig.cache.php:1227
 msgid "Classification scheme"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1155
+#: app/Resources/gettext/twig.cache.php:1245
 msgid "Browse"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1171
+#: app/Resources/gettext/twig.cache.php:1263
 msgid "Virtual expositions"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1192
+#: app/Resources/gettext/twig.cache.php:1284
 msgid "Publish"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1210
-#: app/Resources/gettext/twig.cache.php:2742
-#: app/Resources/gettext/twig.cache.php:2765
+#: app/Resources/gettext/twig.cache.php:1302
+#: app/Resources/gettext/twig.cache.php:7209
+#: app/Resources/gettext/twig.cache.php:7232
 msgid "Manage"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1228
+#: app/Resources/gettext/twig.cache.php:1320
 msgid "Manage Solr"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1259
+#: app/Resources/gettext/twig.cache.php:1351
 msgid "My profile"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1289
+#: app/Resources/gettext/twig.cache.php:1381
 msgid "Login with OpenID"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1316
+#: app/Resources/gettext/twig.cache.php:1408
 msgid "Error"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1348
+#: app/Resources/gettext/twig.cache.php:1440
 msgid "Warning"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1380
+#: app/Resources/gettext/twig.cache.php:1472
 msgid "Done"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1543
+#: app/Resources/gettext/twig.cache.php:1635
 msgid "Help not available"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1545
+#: app/Resources/gettext/twig.cache.php:1637
 msgid "No help is available for this section."
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1621
+#: app/Resources/gettext/twig.cache.php:1880
 msgid " - An error occured :("
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1631
+#: app/Resources/gettext/twig.cache.php:1890
 msgid "An error occured."
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1635
+#: app/Resources/gettext/twig.cache.php:1894
 msgid "The server returned:"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1643
+#: app/Resources/gettext/twig.cache.php:1902
 msgid "Please go back and try again, or report the issue."
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1697
+#: app/Resources/gettext/twig.cache.php:1956
 msgid " - Page not found :("
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:1726
+#: app/Resources/gettext/twig.cache.php:1985
 msgid "The page you requested does not exist, or has been removed."
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:2700
+#: app/Resources/gettext/twig.cache.php:7167
 msgid "Visualize"
 msgstr ""
 
-#: app/Resources/gettext/twig.cache.php:2715
+#: app/Resources/gettext/twig.cache.php:7182
 msgid "Missing locations"
 msgstr ""
