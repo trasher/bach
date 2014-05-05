@@ -194,19 +194,6 @@ abstract class FileFormat implements NotifyPropertyChanged
     }
 
     /**
-     * Set modification date
-     *
-     * @param DateTime $updated Modification date
-     *
-     * @return Document
-     */
-    public function setUpdated(\DateTime $updated)
-    {
-        $this->updated = $updated;
-        return $this;
-    }
-
-    /**
      * Get modification date
      *
      * @return DateTime
