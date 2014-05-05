@@ -339,5 +339,5 @@
   </types>
 
   <!-- field to use to determine and enforce document uniqueness. -->
-  <uniqueKey>uniqid</uniqueKey>
+  <uniqueKey>id</uniqueKey>
 </schema>
