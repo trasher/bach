@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block show_results %}
             {% for document in searchResults %}
-                <article id="result_{{ document.uniqid }}" role="document" about="{{ document.fragmentid }}"{% if view == 'thumbs' %} class="thumbs"{% endif %}>
+                <article id="result_{{ document.fragmentid }}" role="document" about="{{ document.fragmentid }}"{% if view == 'thumbs' %} class="thumbs"{% endif %}>
                     {% if show_pics %}
                     <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
                         {% if document.dao is defined %}
@@ -71,8 +71,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
                     <h3 property="dc:title">
                         <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
-                        {%- if hlSearchResults.getResult(document.uniqid).getField('cUnittitle')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.uniqid).getField('cUnittitle')[0]|raw }}
+                        {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
                         {%- elseif document.cUnittitle is defined -%}
                             {{ document.cUnittitle }}
                         {%- else -%}
