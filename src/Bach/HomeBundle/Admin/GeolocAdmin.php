@@ -60,7 +60,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
  */
 class GeolocAdmin extends Admin
 {
-    protected $baseRouteName = 'admin_vendor_bundlename_adminclassname';
+    protected $baseRouteName = 'admin_bach_homebundle_geolocadmin';
     protected $baseRoutePattern = 'geoloc';
 
     /**
