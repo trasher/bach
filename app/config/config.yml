@@ -47,6 +47,7 @@ framework:
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
+        assets_base_urls: /
     default_locale:  "%locale%"
     session:         ~
 

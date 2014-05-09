@@ -229,6 +229,12 @@ dynamic_css:
     defaults: { _controller: BachHomeBundle:Default:dynamicCss, _format: css }
     requirements:
         _method: GET
+        
+dynamic_js:
+    pattern: /scripts/{name}.js
+    defaults: { _controller: BachHomeBundle:Default:dynamicJs, _format: js }
+    requirements:
+        _method: GET
 
 remote_image_infos_nopath:
     pattern: /infosimage/{img}.{ext}

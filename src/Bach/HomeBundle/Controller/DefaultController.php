@@ -852,6 +852,21 @@ class DefaultController extends SearchController
     }
 
     /**
+     * Serve twig generated JS
+     *
+     * @param string $name JS name
+     *
+     * @return void
+     */
+    public function dynamicJsAction($name)
+    {
+        return $this->render(
+            'BachHomeBundle:js:' . $name . '.js.twig'
+        );
+    }
+
+
+    /**
      * Get session name for view parameters
      *
      * @return string

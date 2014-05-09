@@ -50,10 +50,6 @@ monolog:
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: error
 
-framework:
-    templating:
-        assets_base_urls: /
-
 assetic:
     filters:
         yui_css:
