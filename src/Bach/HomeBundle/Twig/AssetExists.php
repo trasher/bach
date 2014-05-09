@@ -1,0 +1,120 @@
+<?php
+/**
+ * Does asset exists
+ *
+ * PHP version 5
+ *
+ * Copyright (c) 2014, Anaphore
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     (1) Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *     (2) Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *     (3)The name of the author may not be used to
+ *    endorse or promote products derived from this software without
+ *    specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @category Templating
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
+ * @link     http://anaphore.eu
+ */
+
+namespace Bach\HomeBundle\Twig;
+
+use Symfony\Component\HttpKernel\KernelInterface;
+
+/**
+ * Does asset exists
+ *
+ * PHP version 5
+ *
+ * @category Templating
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
+ * @link     http://anaphore.eu
+ */
+class AssetExists extends \Twig_Extension
+{
+    private $_kernel;
+
+    /**
+     * Main constructor
+     *
+     * @param KernelInterface $kernel Kernel
+     */
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->_kernel = $kernel;
+    }
+
+    /**
+     * Get provided functions
+     *
+     * @return array
+     */
+    public function getFunctions()
+    {
+        return array(
+            'asset_exists' => new \Twig_Function_Method($this, 'assetExists')
+        );
+    }
+
+    /**
+     * Checks if asset exists
+     *
+     * @param string $path Path to asset file
+     *
+     * @return boolean
+     */
+    public function assetExists($path)
+    {
+        $webRoot = realpath($this->_kernel->getRootDir() . '/../web/');
+        $toCheck = realpath($webRoot . $path);
+
+        // check if the file exists
+        if (!is_file($toCheck)) {
+            return false;
+        }
+
+        // check if file is well contained in web/ directory (prevents ../ in paths)
+        if (strncmp($webRoot, $toCheck, strlen($webRoot)) !== 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Extension name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'asset_exists';
+    }
+}

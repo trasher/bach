@@ -1,0 +1,270 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% extends '::base.html.twig' %}
+
+    {# Empty block to prevent navigation duplicate #}
+    {% block content %}{% endblock %}
+
+    {% block css %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.16.custom.css') }}" media="all">
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="all"  />
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap-responsive.min.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/x-editable/css/bootstrap-editable.css') }}" type="text/css" media="all" />
+
+            {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
+                <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/select2/select2.css') }}" media="all">
+                <style>
+                    div.select2-container {
+                        margin-left: 0px !important;
+                    }
+
+                    div.select2-drop ul {
+                        margin: 0px !important;
+                    }
+                </style>
+            {% endif %}
+
+        <!-- base application asset -->
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all" />
+    {% endblock %}
+
+    {% block js_calls %}
+        <script type="text/javascript">
+            window.SONATA_CONFIG = {
+                CONFIRM_EXIT: {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}true{% else %}false{% endif %},
+                USE_SELECT2: {% if admin_pool is defined and admin_pool.getOption('use_select2') %}true{% else %}false{% endif %}
+            };
+            window.SONATA_TRANSLATIONS = {
+                CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
+            };
+        </script>
+
+        <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataadmin/x-editable/js/bootstrap-editable.min.js') }}"></script>
+        <script type="text/javascript">
+            $.fn.editable.defaults.mode = 'inline';
+        </script>
+
+            {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
+                <script src="{{ asset('bundles/sonataadmin/select2/select2.min.js') }}"></script>
+            {% endif %}
+
+        <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
+        {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}<script src="{{ asset('bundles/sonataadmin/jquery/jquery.confirmExit.js') }}" type="text/javascript"></script>{% endif %}
+        <script src="{{ asset('bundles/sonataadmin/base.js') }}" type="text/javascript"></script>
+        <!-- Formatter stuff -->
+        <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}" type="text/javascript"></script>
+    {% endblock %}
+
+    {% block title_extend %}
+        | {{ 'Admin'|trans({}, 'SonataAdminBundle') }}
+
+        {% if block('title') is not empty %}
+            - {{ block('title')|raw }}
+        {% else %}
+            {% if action is defined %}
+                -
+                {% for menu in admin.breadcrumbs(action) %}
+                    {% if not loop.first  %}
+                        &gt;
+                    {% endif %}
+                    {{ menu.label }}
+                {% endfor %}
+            {% endif %}
+        {% endif%}
+    {% endblock %}
+
+    {% block container %}
+        <div class="sonata-bc {% if block('side_menu') is empty %}sonata-ba-no-side-menu{% endif %}">
+            {# initialize block value #}
+
+        {% block sonata_nav %}
+            <div class="navbar">
+                <div class="navbar-inner">
+                        {% if admin_pool is defined %}
+
+                            {% block sonata_nav_menu_before %}{% endblock %}
+
+                            {% block sonata_nav_menu %}
+                                <div class="nav-collapse">
+                                    <ul class="nav">
+                                        {% block top_bar_before_nav %} {% endblock %}
+                                        {% block sonata_top_bar_nav %}
+                                            {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+                                                {% for group in admin_pool.dashboardgroups %}
+                                                    {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+                                                    {% for role in group.roles if not display %}
+                                                        {% set display = is_granted(role) %}
+                                                    {% endfor %}
+
+                                                    {# Do not display the group label if no item in group is available #}
+                                                    {% set item_count = 0 %}
+                                                    {% if display %}
+                                                        {% for admin in group.items if item_count == 0 %}
+                                                            {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                                {% set item_count = item_count+1 %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+
+                                                    {% if display and (item_count > 0) %}
+                                                    <li class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans({}, group.label_catalogue) }} <span class="caret"></span></a>
+                                                        <ul class="dropdown-menu">
+                                                            {% for admin in group.items %}
+                                                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                                    <li{% if app.request.get('_sonata_admin') == admin.code %} class="active"{% endif %}><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endblock %}
+                                        {% block top_bar_after_nav %} {% endblock %}
+                                    </ul>
+
+                                    {% block sonata_top_bar_search %}
+                                        {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+                                            <form action="{{ url('sonata_admin_search') }}" method="GET"  class="navbar-search">
+                                                <div class="input-append">
+                                                    <input type="text" name="q" value="{{ app.request.get('q') }}" class="input-large search-query" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
+                                                </div>
+                                            </form>
+                                        {% endif %}
+                                    {% endblock %}
+
+                                </div>
+                            {% endblock %}
+
+                            {% block sonata_nav_menu_after %}{% endblock %}
+
+                        {% endif %}
+                </div>
+            </div>
+        {% endblock sonata_nav %}
+
+            <div>
+            {% block sonata_page_content %}
+                {% block notice %}
+                    {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+                {% endblock %}
+
+                <div class="row-fluid">
+                    {% block sonata_breadcrumb %}
+                    {% if block('breadcrumb') is not empty or action is defined %}
+                        <div>
+                            <ul class="breadcrumb">
+                                {% if block('breadcrumb') is empty %}
+                                    {% if action is defined %}
+                                        {% for menu in admin.breadcrumbs(action) %}
+                                            {% if not loop.last  %}
+                                                <li>
+                                                    {% if menu.uri is not empty %}
+                                                        <a href="{{ menu.uri }}">{{ menu.label }}</a>
+                                                    {% else %}
+                                                        {{ menu.label }}
+                                                    {% endif %}
+                                                    <span class="divider">/</span>
+                                                </li>
+                                            {% else %}
+                                                <li class="active">{{ menu.label }}</li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% else %}
+                                    {{ block('breadcrumb')|raw }}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {% endblock sonata_breadcrumb %}
+
+                    {% if block('actions') is not empty %}
+                        <div>
+                            {{ block('actions')|raw }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="row-fluid">
+                    {% if block('side_menu') is not empty %}
+                        <div class="sidebar span2">
+                            <div class="well sonata-ba-side-menu" style="padding: 8px 0;">{{ block('side_menu')|raw }}</div>
+                        </div>
+                    {% endif %}
+
+                    <div class="content {{ block('side_menu') is not empty ? ' span10' : 'span12' }}">
+                        {% block sonata_admin_content %}
+
+                            {% if block('preview') is not empty %}
+                                <div class="sonata-ba-preview">{{ block('preview')|raw }}</div>
+                            {% endif %}
+
+                            {% if block('content') is not empty %}
+                                <div class="sonata-ba-content">{{ block('content')|raw }}</div>
+                            {% endif %}
+
+                            {% if block('show') is not empty %}
+                                <div class="sonata-ba-show">{{ block('show')|raw }}</div>
+                            {% endif %}
+
+                            {% set _form = block('form') %}
+                            {% if _form is not empty %}
+                                <div class="sonata-ba-form">{{ _form|raw }}</div>
+                            {% endif %}
+
+                            {% if block('list_table') is not empty or block('list_filters') is not empty %}
+                                <div class="row-fluid">
+                                    <div class="sonata-ba-list span10">
+                                        {{ block('list_table')|raw }}
+                                    </div>
+                                    <div class="sonata-ba-filter span2">
+                                        {{ block('list_filters')|raw }}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        {% endblock %}
+                    </div>
+                </div>
+
+                {% block footer %}
+                {% endblock %}
+            {% endblock %}
+            </div>
+        </div>
+    {% endblock %}

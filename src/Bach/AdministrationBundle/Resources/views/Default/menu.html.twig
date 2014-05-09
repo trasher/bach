@@ -1,0 +1,90 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+<aside id="refine">
+    <h2>{{ _('Administration') }}</h2>
+    <ul>
+        <li{% if app.request.attributes.get('_route') == 'administration_dashboard' %} class="active"{% endif %}>
+            <a href="{{ url('administration_dashboard') }}">{{ _('Dashboard') }}</a>
+        </li>
+        <li>
+        <form action="{{ path('administration_dashboard') }}" method="POST">
+            <select name="selectedCore" onchange="this.form.submit();">
+                <option value="none">{{ _('Select a core') }}</option>
+                {% for core in coreNames %}
+                <option value="{{ core }}" {% if (coreName == core) %} selected="selected" {% endif %}>{{ core }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        </li>
+        <li>
+            <a href="{{ path('administration_newcore') }}" class="jbtn">{{ _('Add new core') }}</a>
+        </li>
+    </ul>
+{% if (coreName != 'none' ) %}
+    <h2>{{ _('Schema') }}</h2>
+    <ul>
+        <li{% if app.request.attributes.get('_route') == 'administration_fields' %} class="active"{% endif %}>
+            <a href="{{ url('administration_fields') }}">{{ _('Fields') }}</a>
+        </li>
+        <li{% if app.request.attributes.get('_route') == 'administration_dynamicfields' %} class="active"{% endif %}>
+            <a href="{{ url('administration_dynamicfields') }}">{{ _('Dynamic fields') }}</a>
+        </li>
+        <li{% if app.request.attributes.get('_route') == 'administration_copyfields' %} class="active"{% endif %}>
+            <a href="{{ url('administration_copyfields') }}">{{ _('Copy fields') }}</a>
+        </li>
+        <li{% if app.request.attributes.get('_route') == 'administration_fieldstype' %} class="active"{% endif %}>
+            <a href="{{ url('administration_fieldstype') }}">{{ _('Fields type') }}</a>
+        </li>
+        <li{% if app.request.attributes.get('_route') == 'administration_analyzers' %} class="active"{% endif %}>
+            <a href="{{ url('administration_analyzers') }}">{{ _('Analyzers') }}</a>
+        </li>
+        <li{% if app.request.attributes.get('_route') == 'administration_uniquekey' %} class="active"{% endif %}>
+            <a href="{{ url('administration_uniquekey') }}">{{ _('Unique key') }}</a>
+        </li>
+    </ul>
+
+    <h2>{{ _('Administration') }}</h2>
+    <ul>
+        <li{% if app.request.attributes.get('_route') == 'administration_coreadmin' %} class="active"{% endif %}>
+            <a href="{{ url('administration_coreadmin') }}">{{ _('Core admin') }}</a>
+        </li>
+    </ul>
+
+    <h2>{{ _('Performance') }}</h2>
+    <ul>
+        <li{% if app.request.attributes.get('_route') == 'administration_performance' %} class="active"{% endif %}>
+            <a href="{{ url('administration_performance') }}">{{ _('Performance admin') }}</a>
+        </li>
+    </ul>
+{% endif %}
+</aside>

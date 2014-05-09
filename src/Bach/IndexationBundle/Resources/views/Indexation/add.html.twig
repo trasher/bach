@@ -1,0 +1,117 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% extends 'BachIndexationBundle:Indexation:main.html.twig' %}
+
+{% block css %}
+    <link href="{{ asset('css/jquery.treeview.css') }}" type="text/css" rel="stylesheet" media="screen" />
+{% endblock %}
+
+{% block container %}
+    {% form_theme upload_form 'BachIndexationBundle:Indexation:form_errors.html.twig' %}
+
+    {{ form_start(upload_form) }}
+            {{ form_errors(upload_form) }}
+            {{ form_errors(upload_form.file) }}
+            {{ form_errors(upload_form.extension) }}
+        {#<fieldset>
+            <legend>{{ _('Existing files') }</legend>
+            <p>{{ _('Select files or directories you want to publish') }}</p>
+            <div class="well">
+            {% if existing_files is defined %}
+                {% for format,files in existing_files %}
+                <h3>{{ format }}</h3>
+                <ul class="filetree">
+                    {% for dir,file in files %}
+                    <li>
+                        <input type="checkbox" name="existing[]" id="existing_{{ loop.index }}" value="{% if file is iterable %}{{ dir ~ '/' }}{% else %}{{ file }}{% endif %}"/>
+                        {% if file is iterable %}
+                        <label for="existing_{{ loop.index }}" class="folder">{{ dir }}</label>
+                        <ul>
+                            {% for subfile in file %}
+                            <li>
+                                <input type="checkbox" name="existing[]" id="existing_{{ loop.parent.loop.index  }}{{ loop.index }}" value="{{ dir ~ '/' ~ subfile }}"/>
+                                <label for="existing_{{ loop.parent.loop.index  }}{{ loop.index }}">{{ subfile }}</label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <label for="existing_{{ loop.index }}">{{ file }}</label>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            {% else %}
+                <p>{{ _('No files on server.') }}</p>
+            {% endif %}
+            </div>
+        </fieldset>#}
+
+        <fieldset>
+            <legend>{{ _('Send a new file') }}</legend>
+            <div class="well">
+                {{ form_label(upload_form.file) }}
+                {{ form_widget(upload_form.file) }}<br/>
+                {{ form_label(upload_form.extension) }}
+                {{ form_widget(upload_form.extension) }}
+            </div>
+        </fieldset>
+
+        <footer>
+            {{ form_widget(upload_form._token) }}
+            {{ form_widget(upload_form.perform) }}
+            {{ form_widget(upload_form.performall) }}
+        </footer>
+    {{ form_end(upload_form) }}
+
+    <div id="help_window">
+        <h3>{{ _('Publication help') }}</h3>
+        <div>
+            <p>{{ _('Publication process will extract all useful informations from a file. Select file you want to publish and its format.<br/>Then you will choose either to proceed publication, or to add the job to the queue for a further publication (used for bg files).') }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_calls %}
+    <script src="{{ asset('js/jquery.treeview.js')  }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+        $(function(){
+            $('.filetree').treeview({
+                collapsed: true
+            });
+        });
+{% endblock %}

@@ -1,0 +1,186 @@
+# Copyright (c) 2014, Anaphore
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#
+#     (1) Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#
+#     (2) Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in
+#     the documentation and/or other materials provided with the
+#     distribution.
+#
+#     (3)The name of the author may not be used to
+#    endorse or promote products derived from this software without
+#    specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+# STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+# IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+bach_homepage:
+    pattern:  /
+    defaults: { _controller: BachHomeBundle:Default:index }
+    requirements:
+        _method: GET
+
+bach_search:
+    pattern: /search/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:Default:search, 'query_terms': null, 'page': 1, 'facet_name': null }
+    requirements:
+        _method: GET
+        page: \d+
+
+bach_do_search:
+    pattern:  /do-search
+    defaults: { _controller: BachHomeBundle:Default:doSearch }
+    requirements:
+        _method: POST
+
+bach_browse:
+    pattern: /browse/{part}/{show_all}/{ajax}
+    defaults: { _controller: BachHomeBundle:Default:browse, part: '', 'show_all': false, 'ajax': false }
+    requirements:
+        _method: GET|POST
+
+bach_suggest:
+    pattern: /suggest
+    defaults: { _controller: BachHomeBundle:Default:doSuggest }
+    requirements:
+        _method: GET
+
+bach_matricules_suggest:
+    pattern: /matricules/suggest
+    defaults: { _controller: BachHomeBundle:Matricules:doSuggest }
+    requirements:
+        _method: GET
+
+bach_display_document_paginate:
+    pattern: /show/{docid}/{page}/{ajax}
+    defaults: { _controller BachHomeBundle:Default:displayDocument, page: 1, ajax: false }
+    requirements:
+        _method: GET
+        page: \d+
+
+bach_display_document:
+    pattern: /show/{docid}/{ajax}
+    defaults: { _controller BachHomeBundle:Default:displayDocument, ajax: false }
+    requirements:
+        _method: GET
+
+bach_get_cover:
+    pattern: /file/covers/{name}
+    defaults: { _controller BachHomeBundle:Files:getCover }
+    requirements:
+        _method: GET
+        name: '.+'
+
+bach_get_file:
+    pattern: /file/{type}/{name}
+    defaults: { _controller BachHomeBundle:Files:getFile }
+    requirements:
+        _method: GET
+        type: video|music|image|misc
+        name: '.+'
+
+bach_fullfacet:
+    pattern: /fullfacet/{query_terms}/{name}
+    defaults: { _controller: BachHomeBundle:Default:fullFacet }
+    requirements:
+        _method: GET|POST
+
+bach_geozones:
+    pattern: /geo/zones/{bbox}
+    defaults: {_controller: BachHomeBundle:Default:getZones}
+    requirements:
+        _method: GET
+
+bach_add_comment:
+    pattern: /comment/{docid}/add/{ajax}
+    defaults: { _controller: BachHomeBundle:Comments:add, ajax: false }
+    requirements:
+        _method: GET|POST
+
+bach_classification:
+    pattern: /classification-scheme
+    defaults: { _controller: BachHomeBundle:Default:cdc }
+    requirements:
+        _method: GET
+
+bach_toponym_geoloc:
+    pattern: /geoloc/toponym/{name}
+    defaults: { _controller: BachHomeBundle:Geoloc:toponym }
+    requirements:
+        _method: GET
+
+bach_raw_geoloc:
+    pattern: /geoloc/raw/{name}
+    defaults: { _controller: BachHomeBundle:Geoloc:raw }
+    requirements:
+        _method: GET
+
+bach_store_geoloc:
+    pattern: /geoloc/store
+    defaults: { _controller: BachHomeBundle:Geoloc:store }
+    requirements:
+        _method: POST
+
+bach_remove_geoloc:
+    pattern: /geoloc/remove/{name}
+    defaults: { _controller: BachHomeBundle:Geoloc:remove }
+    requirements:
+        _method: GET
+
+bach_matricules:
+    pattern:  /matricules
+    defaults: { _controller: BachHomeBundle:Matricules:index }
+    requirements:
+        _method: GET
+
+bach_matricules_search:
+    pattern: /matricules/search/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:Matricules:search, 'query_terms': null, 'page': 1, 'facet_name': null }
+    requirements:
+        _method: GET
+        page: \d+
+
+bach_matricules_fullfacet:
+    pattern: /matricules/fullfacet/{query_terms}/{name}
+    defaults: { _controller: BachHomeBundle:Matricules:fullFacet }
+    requirements:
+        _method: GET|POST
+
+bach_matricules_do_search:
+    pattern:  /matricules-do-search
+    defaults: { _controller: BachHomeBundle:Matricules:doSearch }
+    requirements:
+        _method: POST
+
+bach_display_matricules:
+    pattern: /matricules/show/{docid}/{ajax}
+    defaults: { _controller BachHomeBundle:Matricules:displayDocument, ajax: false }
+    requirements:
+        _method: GET
+
+bach_ead_html:
+    pattern: /document/{docid}/{expanded}
+    defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }
+    requirements:
+        _method: GET
+
+dynamic_css:
+    pattern: /css/{name}.css
+    defaults: { _controller: BachHomeBundle:Default:dynamicCss, _format: css }
+    requirements:
+        _method: GET

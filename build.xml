@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Phing build configuration
+
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+@author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+@license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
+@link     http://anaphore.eu
+-->
+<project name="Bach" default="dist">
+    <property name="source" value="src" />
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <echo msg="Making directories..." />
+        <mkdir dir="${project.basedir}/build/api" />
+        <mkdir dir="${project.basedir}/build/code-browser" />
+        <mkdir dir="${project.basedir}/build/coverage" />
+        <mkdir dir="${project.basedir}/build/logs" />
+        <mkdir dir="${project.basedir}/build" />
+        <mkdir dir="${project.basedir}/build/bach" />
+        <mkdir dir="${project.basedir}/build/pdepend" />
+    </target>
+
+    <!-- ======================= -->
+    <!-- Copy app for deployment -->
+    <!-- ======================= -->
+    <target name="build" depends="prepare,patch-vendors,proceed-assets,proceed-translations,build-classmap">
+        <echo msg="Bach is building..." />
+
+        <copy file="LICENSE" tofile="${project.basedir}/build/bach/LICENSE" overwrite="true"/>
+        <copy todir="${project.basedir}/build/bach/app" >
+            <fileset dir="app">
+                <patternset>
+                    <exclude name="cache/**"/>
+                    <exclude name="logs/**"/>
+                    <exclude name="web/assets/**"/>
+                </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${project.basedir}/build/bach/src" >
+            <fileset dir="src">
+                <patternset>
+                    <exclude name="**/*Test*"/>
+                    <exclude name="**/benchmark/"/>
+                </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${project.basedir}/build/bach/web" >
+            <fileset dir="web">
+                <patternset>
+                    <exclude name="uploads/**"/>
+                    <exclude name="covers/**"/>
+                </patternset>
+            </fileset>
+        </copy>
+        <phingcall target="clean-vendors" />
+    </target>
+
+    <!-- ============== -->
+    <!-- Install assets -->
+    <!-- ============== -->
+    <target name="proceed-assets">
+        <SymfonyConsole console="php app/console" command="assetic:dump">
+            <arg name="no-debug"/>
+        </SymfonyConsole>
+    </target>
+
+    <!-- ============================ -->
+    <!-- Combine gettext translations -->
+    <!-- ============================ -->
+    <target name="proceed-translations">
+        <SymfonyConsole console="php app/console" command="gettext:combine">
+            <arg value="en_US,fr_FR" />
+        </SymfonyConsole>
+    </target>
+
+    <!-- ================= -->
+    <!-- Launch unit tests -->
+    <!-- ================= -->
+    <target name="atoum">
+        <SymfonyConsole console="php app/console" command="atoum"/>
+    </target>
+
+    <!-- ======================= -->
+    <!-- Patch vendors libraries -->
+    <!-- ======================= -->
+    <target name="patch-vendors">
+        <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Solarium-complex-range.patch" escape="false" />
+    </target>
+
+    <!-- ================================ -->
+    <!-- Copy and clean vendors libraries -->
+    <!-- ================================ -->
+    <target name="clean-vendors" depends="prepare">
+        <copy todir="${project.basedir}/build/bach/vendor" >
+            <fileset dir="vendor">
+                <patternset>
+                    <exclude name=".git"/>
+                    <exclude name="**/*Test*"/>
+                </patternset>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- (DEFAULT)  Target: dist                       --> 
+    <!-- ============================================  -->
+    <target name="dist" depends="clean,qa,build">
+        <echo msg="Creating archive..." />
+
+        <tar destfile="./build/bach.tar.gz" compression="gzip">
+            <fileset dir="./build/bach">
+                <include name="*" />
+            </fileset>
+        </tar>
+
+        <echo msg="Files copied and compressed in build directory OK!" />
+    </target>
+
+    <target name="quickdist" depends="clean,build">
+        <echo msg="Creating archive..." />
+
+        <tar destfile="./build/bach.tar.gz" compression="gzip">
+            <fileset dir="./build/bach">
+                <include name="*" />
+            </fileset>
+        </tar>
+
+        <echo msg="Files copied and compressed in build directory OK!" />
+    </target>
+
+    <!-- ================================= -->
+    <!-- Install dependencies via composer -->
+    <!-- ================================= -->
+    <target name="install-deps">
+        <composer command="install"/>
+    </target>
+
+    <!-- ================================= -->
+    <!-- Build composer optimized classmap -->
+    <!-- ================================= -->
+    <target name="build-classmap">
+        <composer command="dump-autoload">
+            <arg value="-o"/>
+        </composer>
+    </target>
+
+    <!-- ============ -->
+    <!-- Main QA task -->
+    <!-- ============ -->
+    <target name="qa" description="Quality Assurance tasks" depends="prepare">
+        <phingcall target="pdepend" />
+        <phingcall target="phpmd" />
+        <phingcall target="phpcpd" />
+        <phingcall target="phploc" />
+        <phingcall target="phpcs" />
+        <!--<phingcall target="phpdoc" />-->
+        <phingcall target="atoum" />
+        <!--<phingcall target="phpcb" />-->
+    </target>
+
+    <!-- ====================== -->
+    <!-- Coding standards check -->
+    <!-- ====================== -->
+    <target name="phpcs">
+        <phpcodesniffer standard="PEAR">
+            <fileset dir="${project.basedir}/${source}">
+                <include name="**/*.php"/>
+            </fileset>
+            <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
+        </phpcodesniffer>
+    </target>
+
+    <!-- ================== -->
+    <!-- Dependencies check -->
+    <!-- ================== -->
+    <target name="pdepend" depends="prepare">
+        <phpdepend file="${project.basedir}/${source}" excludeDirectories="skeleton">
+            <logger type="jdepend-xml" outfile="${project.basedir}/build/logs/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${project.basedir}/build/pdepend/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${project.basedir}/build/pdepend/overview-pyramid.svg" />
+        </phpdepend>
+    </target>
+
+    <!-- ============= -->
+    <!-- Mess detector -->
+    <!-- ============= -->
+    <target name="phpmd" depends="prepare">
+        <phpmd file="${project.basedir}/${source}">
+            <formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
+        </phpmd>
+    </target>
+    <target name="hphpmd" depends="prepare">
+        <phpmd file="${project.basedir}/${source}">
+            <formatter type="html" outfile="${project.basedir}/build/phpmd.html" />
+        </phpmd>
+    </target>
+
+    <!-- =================== -->
+    <!-- Copy/paste detector -->
+    <!-- =================== -->
+    <target name="phpcpd" depends="prepare">
+        <phpcpd file="${project.basedir}/${source}">
+            <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
+        </phpcpd>
+    </target>
+
+    <!-- ===================== -->
+    <!-- Some stats on project -->
+    <!-- ===================== -->
+    <target name="phploc" depends="prepare">
+        <exec logoutput="true" dir="${project.basedir}" command="phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}'" escape="false" />
+    </target>
+
+    <!-- ===================== -->
+    <!-- CodeBrowser generator -->
+    <!-- ===================== -->
+    <target name="phpcb" depends="prepare">
+        <exec logoutput="true" command="phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}' --output '${project.basedir}/build/code-browser'" escape="false" />
+    </target>
+
+    <!-- ================ -->
+    <!-- Clean everything -->
+    <!-- ================ -->
+    <target name="clean" description="Clean all builds">
+        <delete dir="${project.basedir}/build"/>
+    </target>
+
+</project>

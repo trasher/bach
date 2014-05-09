@@ -1,0 +1,178 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+    {% if ariane is defined or archdesc is defined %}
+        <ul class="breadcrumb">
+            {% if archdesc is defined %}
+                <li>
+                    <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ archdesc }}</a>
+                </li>
+            {% endif %}
+            {% if ariane is defined %}
+                {% for fil in ariane %}
+                <li>
+                    <a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">
+                    {%- if fil.cUnittitle is defined -%}
+                        {{ fil.cUnittitle }}
+                    {%- else -%}
+                        {{ _('Untitled unit') }}
+                    {%- endif -%}
+                    </a>
+                </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    {% endif %}
+
+    <article about="{{ docid }}" class="show_fragment">
+        <header>
+            <h2 property="dc:title">
+                {%- if document.cUnittitle is defined -%}
+                    {{ document.cUnittitle }}
+                {%- else -%}
+                    {{ _('Untitled unit') }}
+                {%- endif -%}
+                {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
+                    <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
+                {%- endif -%}
+            </h2>
+            {% if features.social %}{{ socialButtons() }}{% endif %}
+            {% if context == true %}
+            <a href="{{ path('bach_ead_html', {'docid': document.headerId, 'expanded': 'expanded'}) }}#{{ document.fragmentid }}">{{ _('View in document tree') }}</a>
+            {% endif %}
+        </header>
+        {% if children == false %}
+            {% set hasChildren = false %}
+        {% else %}
+            {% set hasChildren = true %}
+        {% endif %}
+        {% if comments is defined %}
+            {% set hasComments = true %}
+        {% else %}
+            {% set hasComments = false %}
+        {% endif %}
+        {{ displayFragment(document.fragment, docid, true, hasChildren, hasComments, count_children, ajax)|raw }}
+        {% if not children == false %}
+            <section id="children_documents">
+                <header>
+                    <h3>{{ _('Sub units') }} ({{ count_children }})</h3>
+                </header>
+                <ul>
+                {% for child in children %}
+                    <li>
+                        <a href="{{ path('bach_display_document', {docid: child.fragmentid}) }}" property="dc:hasPart">
+                        {%- if child.cUnittitle is defined -%}
+                            {{ child.cUnittitle }}
+                        {%- else -%}
+                            {{ _('Untitled unit') }}
+                        {%- endif -%}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+                {% if totalPages is defined and totalPages > 1 %}
+                    {% include 'pagination.html.twig' with {
+                        currentFilters: { docid: docid },
+                        currentPage: page,
+                        paginationPath: 'bach_display_document_paginate',
+                        lastPage: totalPages,
+                        anchor: 'children_documents'
+                    } only %}
+                {% endif %}
+            </section>
+        {% endif %}
+        {% if comments is defined %}
+            <section id="comments">
+                <header>
+                    <h3>{{ _('User comments') }}</h3>
+                </header>
+                {% for comment in comments %}
+                    <div>
+                        <header>
+                            <h4>
+                                {{ comment.subject }}
+                                <span class="author"> /
+                                {% if comment.getOpenedBy %}
+                                    {% set uname = comment.getOpenedBy %}
+                                {% else %}
+                                    {% set uname = _('Anonymous') %}
+                                {% endif %}
+                                {{ _('By %user%')|replace({'%user%': uname}) }}
+                                {{ _('on %date%')|replace({'%date%': comment.getLocalizedCreationDate}) }}
+                                </span>
+                            </h4>
+                        </header>
+                        <div>
+                            {{ comment.message|raw }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
+        {% endif %}
+    </article>
+
+    <script type="text/javascript">
+        $(function() {
+            $('article.show_fragment > ul a').each(function(){
+                var _this = $(this);
+                var _href = _this.attr('href') + '/ajax';
+                if ( !_href.match(/^#.*/) ) {
+                    _this.attr('href', _href);
+                }
+            });
+
+            $('article.show_fragment').tabs({
+                //active: $('#tabs li.active').index(),
+                beforeLoad: function( event, ui ) {
+                    if ( ui.tab.data( "loaded" ) ) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{{ _('Loading...') }}"/><br/>{{ _('Currently loading...') }}</p></figure>');
+                    $('body').append(_img);
+ 
+                    ui.jqXHR.done(function() {
+                        ui.tab.data( "loaded", true );
+                    });
+                    ui.jqXHR.fail(function(){
+                        alert('{{ _('An error occured loading tab :(')|escape('js') }}');
+                        $('#loading').remove();
+                    });
+                },
+                load: function(event, ui){
+                    $('#loading').remove();
+                }
+            });
+        });
+    </script>

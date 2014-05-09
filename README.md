@@ -31,6 +31,14 @@ Ask composer to download and install all dependencies::
 
     $ php -d date.timezone=UTC composer.phar install
 
+/!\ Solarium bug /!\
+As for now, a "bug" has been spotted in solarium regarding to date range
+facetting. A patch has been provided and should be included in a later
+release, but while it is not, we have to apply patch manually after having
+installed dependencies via composer. Patch is available at:
+https://github.com/basdenooijer/solarium/issues/240
+Run "phing patch-vendors" to automatically apply the relevant patch.
+
 Create database if it doe not exists yet::
 
     $ php app/console doctrine:database:create
@@ -54,12 +62,20 @@ Finally, enable apache rewrite module and put the following lines in
 your virtual host configuration (or in `bach/web/.htaccess`)::
 
     RewriteEngine On
-    RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ app.php [QSA,L]
-    RewriteRule ^/bachdev/(.*) /$1 [PT]
 
 You're now ready to go :)
 
 Just put your browser to the location you've installed
 Bach, and enjoy!
+
+From Git
+--------
+
+If you're installing from Gti repository, you'll have to run some extra commands:
+
+* generate compiled language files, running :
+  $ php app/console gettext:combine en_US,fr_FR
+* write asset files:
+  $ php app/console assetic:dump --env=prod --no-debug

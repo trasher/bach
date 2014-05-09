@@ -1,0 +1,136 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% extends '::base.html.twig' %}
+
+{% block title_extend %} - {{ _('View document %doc')|replace({'%doc': docid}) }}{% endblock %}
+
+{% block css %}
+    <link href="{{ asset('css/treeview.css') }}" type="text/css" rel="stylesheet" media="screen" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    $(function(){
+        $('#doccontrol').removeClass('hidden');
+        $('#doccontrol a').on('click', function(){
+            var _this = $(this);
+            if ( _this.attr('id') == 'doccollapse' ) {
+                $('input[type=checkbox]').prop('checked', false);
+            }
+            if ( _this.attr('id') == 'docexpand' ) {
+                $('input[type=checkbox]').prop('checked', true);
+            }
+            if ( _this.attr('id') == 'headercollapse' ) {
+                $('#docheader').toggle();
+            }
+            return false;
+        });
+    });
+
+    {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
+{% endblock %}
+
+{% block js_calls %}
+    {{ parent() }}
+    {% javascripts
+        'js/jquery-ui/jquery.ui.accordion.min.js'
+        'js/jquery-ui/jquery.ui.menu.min.js'
+        'js/jquery-ui/jquery.ui.autocomplete.min.js'
+        'js/jquery-ui/jquery.ui.spinner.min.js'
+        'js/jquery-ui/jquery.ui.tabs.min.js'
+        output='assetic/js/compiled/search_jquery-ui.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    <script type="text/javascript" src="{{ asset('dewplayer/swfobject.js') }}"></script>
+{% endblock %}
+
+{# Binded when not in mobile mode #}
+{% block mobile_js_off %}
+    {{ parent() }}
+
+    $('.display_doc').click(function(event){
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+        var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
+        _elt.appendTo('body');
+
+        var _width = $(window).width() * 0.8;
+        var _height = $(window).height() * 0.8;
+
+        $.ajax({
+            url: $(this).attr('href') + '/ajax',
+            data: {'nocontext': true},
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')} %}
+            success: function(data) {
+                _elt.append(data);
+                _initAudio(true);
+                _initVideo(true);
+                _elt.dialog({
+                    height: _height,
+                    width: _width,
+                    modal: true,
+                    close: function(event, ui){
+                        _elt.remove();
+                    }
+                });
+            }
+        });
+
+        return false;
+    });
+{% endblock %}
+
+{% block container %}
+    <p id="doccontrol" class="hidden">
+        <a href="#" id="doccollapse">{{ _('Collapse all') }}</a> | <a href="#" id="docexpand">{{ _('Expand all') }}</a>
+        <br/><a href="#" id="headercollapse">{{ _('Display/Hide document informations') }}</a>
+    </p>
+    {{ displayHtml(docid, xml_file, expanded)|raw }}
+{% endblock %}
+
+{% block menu %}
+    <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search" id="search">
+        <div>
+            {{ form_widget(form.query) }}
+            {{ form_widget(form._token) }}
+            {{ form_widget(form.perform_search) }}
+            <input type="hidden" name="filter_field" value="headerId"/>
+            <input type="hidden" name="filter_value" value="{{ docid }}"/>
+        </div>
+    </form>
+    <p>{{ _('Search against current document') }}</p>
+{% endblock %}
+

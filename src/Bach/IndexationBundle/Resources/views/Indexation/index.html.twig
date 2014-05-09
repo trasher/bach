@@ -1,0 +1,142 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% extends 'BachIndexationBundle:Indexation:main.html.twig' %}
+
+{% block container %}
+
+    {# Validation results #}
+    {% if app.session.flashbag.has('documentvalidation') %}
+    <div id="flash-warnings" class="noscript">
+        <h3>{{ _('Validation results') }}</h3>
+        {% for flashMessage in app.session.flashbag.get('documentvalidation') %}
+        <div class="flash-message">
+            {{ flashMessage | raw }}
+        </div>
+        {% endfor %}
+        {% if app.session.flashbag.has('documentvalidation_errors') %}
+            <p><a href="#" id="toggleerrors">{{ _('Show/hide errors') }}</a></p>
+            <div class="flash-errors hidden">
+            {% for flashMessage in app.session.flashbag.get('documentvalidation_errors') %}
+                <p>{{ flashMessage | raw }}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
+    <form id="published_documents" class="list" action="{{ path("bach_indexation_deletedocuments") }}" method="POST">
+    <fieldset>
+        <legend>
+            {{ _('Published documents') }}
+            <span>
+                <a id="empty" href="{{ path("bach_indexation_empty") }}" class="btn btn-delete" title="{{ _('Remove all published documents') }}">{{ _('Remove all') }}</a>
+                <a href="{{ path('bach_indexation_homepage') }}" id="refresh" class="btn btn-refresh" title="{{ _('Refresh list') }}">{{ _('Refresh') }}</a>
+            </span>
+        </legend>
+
+        {% if documents is defined and documents|length > 0 %}
+        <table>
+            <thead>
+                <th>#</th>
+                <th>{{ _('Identifier') }}</th>
+                <th>{{ _('Type') }}</th>
+                <th>{{ _('File') }}</th>
+                <th>{{ _('Creation') }}</th>
+                <th>{{ _('Modification') }}</th>
+                <th></th>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="7">
+                        <button type="submit" id="delete_documents" class="btn btn-delete" title="{{ _('Remove selected documents') }}">{{ _('Remove selected') }}</button>
+                        {% include 'pagination.html.twig' with {
+                            currentFilters: { },
+                            currentPage: currentPage,
+                            paginationPath: 'bach_indexation_homepage',
+                            lastPage: lastPage
+                        } only %}
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for document in documents %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="documents[]" id="document_{{ document.getId }}" value="{{ document.getExtension }}::{{ document.getId }}"/>
+                        <label for="document_{{ document.getId }}">{{ document.getId }}</label>
+                    </td>
+                    <td>{{ document.getDocId }}</td>
+                    <td>{{ document.getExtension }}</td>
+                    <td>{{ document.getName }}</td>
+                    <td>{{ document.getCreated|date(_('Y-m-d h:i:s A')) }}</td>
+                    <td>{{ document.getUpdated|date(_('Y-m-d h:i:s A')) }}</td>
+                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}" title="{{ _('Validate against EAD DTD') }}"><img src="{{ asset('img/validate.png') }}" alt="{{ _('Validate against EAD DTD') }}"/></a>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>{{ _('No documents published yet.') }}</p>
+        {% endif %}
+    </fieldset>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    $(document).ready(function(){
+        $('#empty').click(function(){
+            return confirm('{{ _('Do you really want to remove all published document?\n\nThis can not be undone!')|escape('js') }}');
+        });
+
+        $('#delete_documents').click(function(){
+            var _count = $('#published_documents :checked').length;
+            if ( _count == 0 ) {
+                alert('{{ _('Please select at least one document.')|escape('js') }}');
+                return false;
+            } else {
+                if ( _count == 1 ) {
+                    return confirm('{{ _('Do you want to remove selected document?')|escape('js') }}');
+                } else {
+                    return confirm('{{ _('Do you want to remove all %count selected documents?')|escape('js') }}'.replace(/%count/, _count));
+                }
+            }
+        });
+
+        $('#toggleerrors').click(function(){
+            $(this).parent().next('div').toggleClass('hidden');
+        });
+    });
+{% endblock %}

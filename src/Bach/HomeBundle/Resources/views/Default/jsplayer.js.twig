@@ -1,0 +1,193 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+            var _alerted = false;
+            function _swfcb(e) {
+                if ( e.success ) {
+                    $(e.id).tooltip();
+                } else if ( !_alerted ) {
+                    _alerted = true;
+                    $('#relative_documents').prepend($('<div id="flash-warnings"><h3>{{ _('Flash missing')|escape('js') }}</h3><p>{{ _('You need flash to use embed player!')|escape('js') }}<br/>{{ _('You can still click on the links to read them on your own side.')|escape('js') }}</p></div>'));
+                }
+            }
+
+            _initAudioUnique = function(link) {
+                $('#dewuniqueplayer').remove();
+                var _this = $(link);
+                var _parent = $(_this.parents('figure')[0]);
+                _parent.append($('<div id="dewplayer_content"></div>'));
+                _parent.css('height', '175px');
+                _playlist = _this.attr('href');
+
+                var flashvars = {
+                    mp3: _playlist,
+                    javascript: "on",
+                    showtime: "true",
+                    autostart: "true"
+                };
+
+                var _swf = '{{ asset('dewplayer/dewplayer-mini.swf') }}';
+                var _dewheight = 20;
+                var _dewWitdh = 150;
+
+                var params = {
+                    wmode: "transparent",
+                    movie: _swf
+                };
+                var attributes = {
+                    id: "dewuniqueplayer"
+                };
+                swfobject.embedSWF(_swf, "dewplayer_content", _dewWitdh, _dewheight, "9.0.0", false, flashvars, params, attributes);
+            }
+
+            _initVideoUnique = function(link) {
+                $('#dewuniquetube').remove();
+                var _this = $(link);
+                var _parent = $(_this.parents('figure')[0]);
+                var _a = _this.find('a');
+
+                var flashvars = {
+                    movie: _a.attr('href'),
+                    javascript: "on"
+                };
+
+                var _swf = '{{ asset('dewtube/dewtube.swf') }}';
+                var _dewheight = 150;
+                var _dewWitdh = 150;
+
+                var params = {
+                    wmode: "transparent",
+                    movie: _swf
+                };
+                var attributes = {
+                    id: "dewuniquetube"
+                };
+                swfobject.embedSWF(_swf, _this.attr('id'), _dewWitdh, _dewheight, "9.0.0", false, flashvars, params, attributes);
+            }
+
+            _initAudio = function(ajax) {
+                var _selector = 'a.flashplayer';
+                var _musicselector = 'a.flashmusicplayer';
+
+                if ( ajax == true ) {
+                    _selector = 'a.ajaxflashplayer';
+                    _musicselector = 'a.ajaxflashmusicplayer';
+                }
+                var _musicplay = $(_musicselector)[0];
+                var _omusicplay = $(_musicplay);
+
+                if ($(_musicselector).length > 0){
+                    var _musicplay = $(_musicselector)[0];
+                    var _omusicplay = $(_musicplay);
+                    $(_omusicplay.parents("ul")[0]).before($('<div id="dewplayer_content"></div>'));
+
+                    _playlist = _buildPlaylist(_musicselector);
+
+                    var flashvars = {
+                        mp3: _playlist,
+                        javascript: "on",
+                        showtime: "true"
+                    };
+
+                    var _swf = '{{ asset('dewplayer/dewplayer-rect.swf') }}';
+                    var _dewheight = 20;
+                    var _dewWitdh = 240;
+
+                    var params = {
+                        wmode: "transparent",
+                        movie: _swf
+                    };
+                    var attributes = {
+                        id: "dewplayer"
+                    };
+                    swfobject.embedSWF(_swf, "dewplayer_content", _dewWitdh, _dewheight, "9.0.0", false, flashvars, params, attributes, _swfcb);
+                }
+            }
+
+            _initVideo = function(ajax) {
+                var _selector = '.flashplayer';
+                var _videoselector = '.flashplayer';
+
+                if ( ajax == true ) {
+                    _selector = '.ajaxflashplayer';
+                    _videoselector = '.ajaxflashplayer';
+                }
+                var _videoplay = $(_videoselector)[0];
+                var _ovideoplay = $(_videoplay);
+
+                $(_videoselector).each(function(){
+                    var _this = $(this);
+                    var _pid = _this.attr('id');
+                    var _a = _this.find('a');
+
+                    var _swf = '{{ asset('dewtube/dewtube.swf') }}';
+                    var _dewheight = 300;
+                    var _dewWitdh = 300;
+
+                    var flashvars = {
+                        movie: _a.attr('href') + '&width=' + _dewWitdh  + '&height=' + _dewheight,
+                        javascript: "on",
+                        showtime: "true"
+                    };
+
+                    var params = {
+                        wmode: "transparent",
+                        movie: _swf
+                    };
+                    var attributes = {
+                        id: "dewtube_" + _pid,
+                        title: _a.attr('title'),
+                        'class': _this.attr('class')
+                    };
+
+                    swfobject.embedSWF(_swf, _pid, _dewWitdh, _dewheight, "9.0.0", false, flashvars, params, attributes, _swfcb);
+                });
+            }
+
+            _buildPlaylist = function(selector) {
+                var _list= '';
+                $(selector).each(function(){
+                    var _this = $(this);
+                    if ( _list.length > 0 ) {
+                        _list += '|';
+                    }
+                    _list += _this.attr('href');
+                    _this.on('click', function(){
+                        var dewp = document.getElementById("dewplayer");
+                        if(dewp!=null) {
+                            dewp.dewset(_this.attr('href'));
+                        }
+                        return false;
+                    });
+                });
+                return _list;
+            }

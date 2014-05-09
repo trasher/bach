@@ -1,0 +1,35 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#Admin translations
+msgid "Facets"
+msgstr "Facets"
+
+msgid "Browse fields"
+msgstr "Browse fields"
+
+msgid "Geolocalization"
+msgstr "Geolocalization"
+
+msgid "Comments"
+msgstr "Comments"
+
+msgid "Tag cloud"
+msgstr "Tag cloud"
+
+msgid "Geolocalization fields"
+msgstr "Geolocalization fields"
+
+msgid "Geolocalization fields (matricules)"
+msgstr "Geolocalization fields (matricules)"
+
+#/Admin translations

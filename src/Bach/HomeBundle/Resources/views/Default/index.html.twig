@@ -1,0 +1,186 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% extends 'BachHomeBundle:Commons:search.html.twig' %}
+
+{% block subtitle %}{{ _('Welcome to Bach\'s!') }}{% endblock %}
+
+{% block show_results %}
+            {% for document in searchResults %}
+                <article id="result_{{ document.fragmentid }}" role="document" about="{{ document.fragmentid }}"{% if view == 'thumbs' %} class="thumbs"{% endif %}>
+                    {% if show_pics %}
+                    <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
+                        {% if document.dao is defined %}
+                            {{ displayDao(document.dao)|raw }}
+                        {% else %}
+                            <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
+                        {% endif %}
+                    </figure>
+                    {% endif %}
+
+                    <div{% if not show_pics %} class="nopic"{% endif %}>
+                    {%- if (view == 'list' or view == 'txtlist') and (document.parents_titles is defined or document.archDescUnitTitle is defined) -%}
+                        <ul class="breadcrumb">
+                        {%- if document.archDescUnitTitle is defined -%}
+                            <li>
+                                <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ document.archDescUnitTitle }}</a>
+                            </li>
+                        {%- endif -%}
+                        {%- if document.parents_titles is defined -%}
+                            {% set parents_ids = document.parents|split('/') %}
+                            {% for ptitle in document.parents_titles %}
+                                <li>
+                                    <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ parents_ids[loop.index0]}) }}" property="dc:isPartOf">
+                                        {{ ptitle }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {%- endif -%}
+                        </ul>
+                    {%- endif -%}
+
+                    <h3 property="dc:title">
+                        <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
+                        {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
+                        {%- elseif document.cUnittitle is defined -%}
+                            {{ document.cUnittitle }}
+                        {%- else -%}
+                            {{ _('Untitled unit') }}
+                        {%- endif -%}
+                        {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
+                            <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
+                        {%- endif -%}
+                        </a>
+                    </h3>
+                    {% if view == 'list' or view == 'txtlist' %}
+                    {{ displayFragment(document.fragment, document.fragmentid)|raw }}
+                    {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+{% endblock %}
+
+{# Binded when not in mobile mode #}
+{% block mobile_js_off %}
+    {{ parent() }}
+
+    $('.display_doc').click(function(event){
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+        var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
+        _elt.appendTo('body');
+
+        var _width = $(window).width() * 0.8;
+        var _height = $(window).height() * 0.8;
+
+        $.ajax({
+            url: $(this).attr('href') + '/ajax',
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')} %}
+            success: function(data) {
+                _elt.append(data);
+                _initAudio(true);
+                _initVideo(true);
+                _elt.dialog({
+                    height: _height,
+                    width: _width,
+                    modal: true,
+                    close: function(event, ui){
+                        _elt.remove();
+                    }
+                });
+            }
+        });
+
+        return false;
+    });
+{% endblock %}
+
+{# Binded when in mobile mode #}
+{% block mobile_js_on %}
+    $('.display_doc').unbind('click');
+{% endblock %}
+
+{% block autocomplete %}
+    function split(val) {
+        return val.split(/ +/);
+    }
+    function extractLast(term) {
+        return split(term).pop();
+    }
+
+    $('#searchQuery_query').autocomplete({
+        source: function(request, response) {
+            $.getJSON(
+                '{{ path('bach_suggest') }}', {
+                    q: extractLast(request.term)
+                }, response
+            );
+        },
+        select: function(event, ui) {
+            var terms = split(this.value);
+            terms.pop();
+            terms.push(ui.item.value);
+            terms.push('');
+            this.value = terms.join(' ');
+            return false;
+        }
+    }).data('uiAutocomplete')._renderItem = function( ul, item ) {
+        var newText = String(item.value).replace(
+            new RegExp(preg_quote(extractLast(this.term)), "gi"),
+            "<span class='ui-state-highlight'>$&</span>"
+        );
+
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a>" + newText + "</a>")
+            .appendTo(ul);
+    };
+{% endblock %}
+
+{% block player %}
+    {% if searchResults is defined and searchResults|length > 0 %}
+    {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
+
+    $('.flashmusicplayer').on('click', function(){
+        _initAudioUnique(this);
+        return false;
+    });
+
+    $('.flashplayer').on('click', function() {
+        _initVideoUnique(this);
+        return false;
+    });
+    {% endif %}
+{% endblock %}

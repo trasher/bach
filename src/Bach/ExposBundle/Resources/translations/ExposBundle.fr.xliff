@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="ExposBundle.en.xliff" >
+        <body>
+            <trans-unit id="Virtual expositions">
+                <source>Virtual expositions</source>
+                <target>Expositions virtuelles</target>
+            </trans-unit>
+            <trans-unit id="Rooms">
+                <source>Rooms</source>
+                <target>Salles</target>
+            </trans-unit>
+            <trans-unit id="Panels">
+                <source>Panels</source>
+                <target>Panneaux</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

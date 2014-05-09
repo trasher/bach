@@ -1,0 +1,146 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+    <article about="{{ docid }}" class="show_fragment">
+        <header>
+            <h2 property="dc:title">
+                {{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}
+                {#%- if document.cUnittitle is defined -%}
+                    {{ document.cUnittitle }}
+                {%- else -%}
+                    {{ _('Untitled unit') }}
+                {%- endif -%}
+                {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
+                    <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
+                {%- endif -%#}
+            </h2>
+            {% if features.social %}{{ socialButtons() }}{% endif %}
+        </header>
+        {% if comments is defined %}
+            {% set hasComments = true %}
+        {% else %}
+            {% set hasComments = false %}
+        {% endif %}
+        <section class="matricule_record">
+            {% if document.start_dao is defined %}
+                <figure class="fright">
+                    {% set series_name %}
+                        {%- for i in document.start_dao|split('/') -%}
+                            {%- if not loop.last -%}
+                                /{{ i }}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {% endset %}
+                    {% set images_link %}
+                        {%- if viewer_uri[-1:1] != '/' -%}/{%- endif -%}
+                        {%- if document.end_dao is defined and document.start_dao != document.end_dao -%}
+                            series{{ series_name }}?s={{ document.start_dao|split('/')|slice(-1,1)[0] }}&e={{ document.end_dao|split('/')|slice(-1,1)[0] }}
+                        {%- else -%}
+                            viewer/{{ document.start_dao }}
+                        {%- endif -%}
+                    {% endset %}
+                    <a href="{{ viewer_uri ~ images_link }}">
+                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/medium' }}" alt="{{ _('Show related image') }}"/>
+                    </a>
+                </figure>
+            {% endif %}
+
+            <table>
+                <tr>
+                    <th>{{ _('Identifier') }}</th>
+                    <td>{{ document.id }}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Cote') }}</th>
+                    <td>{{ document.cote }}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Name') }}</th>
+                    <td>{{ document.nom }}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Surnames') }}</th>
+                    <td>{{ document.prenoms|join(' ') }}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Class') }}</th>
+                    <td>{% if document.classe is defined %}{{document.classe|date('Y') }}{% else %}-{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Year of birth') }}</th>
+                    <td>{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Place of birth') }}</th>
+                    <td>{{ document.lieu_naissance }}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Year of recording') }}</th>
+                    <td>{% if document.date_enregistrement is defined %}{{document.date_enregistrement|date('Y') }}{% else %}-{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>{{ _('Place of recording') }}</th>
+                    <td>{{ document.lieu_enregistrement }}</td>
+                </tr>
+            </table>
+        </section>
+        {#{ displayFragment(document.fragment, docid, true, hasChildren, hasComments, count_children, ajax)|raw }#}
+        {% if comments is defined %}
+            <section id="comments">
+                <header>
+                    <h3>{{ _('User comments') }}</h3>
+                </header>
+                {% for comment in comments %}
+                    <div>
+                        <header>
+                            <h4>
+                                {{ comment.subject }}
+                                <span class="author"> /
+                                {% if comment.getOpenedBy %}
+                                    {% set uname = comment.getOpenedBy %}
+                                {% else %}
+                                    {% set uname = _('Anonymous') %}
+                                {% endif %}
+                                {{ _('By %user%')|replace({'%user%': uname}) }}
+                                {{ _('on %date%')|replace({'%date%': comment.getLocalizedCreationDate}) }}
+                                </span>
+                            </h4>
+                        </header>
+                        <div>
+                            {{ comment.message|raw }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
+        {% endif %}
+    </article>

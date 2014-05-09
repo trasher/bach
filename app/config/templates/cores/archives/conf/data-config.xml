@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<dataConfig>
+  <dataSource type="" driver="" url="" user="" password=""/>
+  <script><![CDATA[
+      function makeSourcesDynamics(row) {
+        var _type = row.get("type");
+        var _source = row.get("source");
+        var _value = row.get("name");
+
+        if ( !_source ) {
+            _source = "none";
+        }
+
+        var _key = "dyndescr_" + _type + "_" + _source;
+        row.put(_key, _value);
+
+        return row;
+      }
+      function makeRolesDynamics(row) {
+        var _type = row.get("type");
+        var _role = row.get("role");
+        var _value = row.get("name");
+
+        var _key = "dyndescr_" + _type + "_" + _role;
+        row.put(_key, _value);
+
+        return row;
+      }
+
+  ]]></script>
+  <document>
+    <entity name="SolrXMLFile" query="">
+    </entity>
+  </document>
+</dataConfig>

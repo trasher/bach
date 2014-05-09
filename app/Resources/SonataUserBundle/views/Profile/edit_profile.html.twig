@@ -1,0 +1,99 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% extends '::base.html.twig' %}
+
+{% block menu %}
+    <ul>
+        <li{% if app.request.attributes.get('_route') == 'sonata_user_profile_show' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_show') }}">{% trans %}My profile{% endtrans %}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'sonata_user_profile_edit' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit') }}">{% trans %}Edit profile{% endtrans %}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'sonata_user_profile_edit_authentication' %} class="active"{% endif %}><a href="{{ path('sonata_user_profile_edit_authentication') }}">{% trans %}Edit authentication{% endtrans %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block container %}
+    <h2>{{ "title_user_account" | trans({}, 'SonataUserBundle')}} - {{ "title_user_edit_profile" | trans({}, 'SonataUserBundle')}}</h2>
+
+    {{ form_errors(form) }}
+
+    {% form_theme form _self %}
+
+    {% block form_row %}
+
+        {# custom field row output #}
+    {% endblock form_row %}
+
+    <div class="form">
+    <form action="{{ path('sonata_user_profile_edit') }}" method="POST" class="form-horizontal">
+        <div class="control-group">
+            {{ form_label(form.gender, 'form.label_gender'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.gender) }}
+        </div>
+        <div class="control-group">
+            {{ form_label(form.firstname, 'form.label_firstname'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.firstname) }}
+        </div>
+        <div class="control-group">
+            {{ form_label(form.lastname, 'form.label_lastname'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.lastname) }}
+        </div>
+        <div class="control-group">
+            {{ form_label(form.website , 'form.label_website'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.website) }}
+        </div>
+        <div class="control-group">
+            {{ form_label(form.dateOfBirth, 'form.label_date_of_birth'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.dateOfBirth, {'attr': {'class': 'span1'}}) }}
+        </div>
+        <div class="control-group">
+            {{ form_label(form.biography, 'form.label_biography'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.biography) }}
+        </div>
+        <div class="control-group">
+            {{ form_label(form.locale, 'form.label_locale'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.locale) }}
+        </div>
+        <div class="control-group">
+            {{ form_label(form.timezone, 'form.label_timezone'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.timezone) }}
+        </div>
+        <div class="control-group">
+            {{ form_label(form.phone, 'form.label_phone'|trans({}, 'SonataUserBundle'), {'attr': {'class': 'control-label'}}) }}
+            {{ form_widget(form.phone) }}
+        </div>
+
+        {{ form_rest(form) }}
+        <input type="submit" name="submit" value="{{ 'sonata_user_submit'|trans({}, 'SonataUserBundle') }}" />
+    </form>
+    </div>
+{% endblock %}

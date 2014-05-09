@@ -1,0 +1,112 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% for facet_field,facet in facets %}
+<div>
+    <form id="live-search" action="" method="post">
+        <fieldset>
+            <label for="filter">{{ _('Enter a text to filter:') }}</label>
+            <input type="text" class="text-input" id="filter" value="" />
+            <span id="filter-count"></span>
+            <span class="fright">
+                <label for="facet_order">{{ _('Order:') }}</label>
+                <select name="facet_order" id="facet_order">
+                    <option value="0"{% if facet_order is not defined or facet_order != '1' %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
+                    <option value="1"{% if facet_order is defined and facet_order == 1 %} selected="selected"{% endif %}>{{ _('Alphabetic') }}</option>
+                </select>
+            </span>
+        </fieldset>
+        {% if orig_href is defined %}
+            <input type="hidden" name="orig_href" id="orig_href" value="{{ orig_href }}"/>
+        {% endif %}
+    </form>
+
+    <ol id="facets_list">
+    {% set index_name = facet.index_name %}
+    {% set facet_content = facet.content %}
+
+    {% for facet,count in facet_content %}
+        <li>
+            <a href="{{ path(search_uri, {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
+        </li>
+    {% endfor %}
+    </ol>
+</div>
+{% endfor %}
+
+<script type="text/javascript">
+    $("#filter").keyup(function(){
+        $('#filter-count').text('{{ _('Searching...') }}');
+
+        // Retrieve the input field text and reset the count to zero
+        var filter = $(this).val(), count = 0;
+
+        // Loop through the comment list
+        $('#facets_list li').each(function(){
+            // If the list item does not contain the text phrase fade it out
+            if ($(this).text().search(new RegExp(filter, 'i')) < 0) {
+                $(this).fadeOut();
+
+            // Show the list item if the phrase matches and increase the count by 1
+            } else {
+                $(this).show();
+                count++;
+            }
+        });
+
+        // Update the count
+        var numberItems = count;
+        $("#filter-count").text('{{ _('%count filtered results')|escape('js') }}'.replace('%count', count));
+    });
+
+    $('#facet_order').change(function(){
+        $.ajax({
+            url: $('#orig_href').val(),
+            data: {
+                facet_order: $('#facet_order option:selected').val(),
+                orig_href: $('#orig_href').val()
+            },
+            type: 'POST',
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')} %}
+            success: function(data) {
+                var _elt = $('#display_facets');
+                _elt.empty();
+                _elt.append(data);
+            }
+        });
+    });
+
+        $('#live-search').submit(function(){
+            return false;
+        });
+</script>

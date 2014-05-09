@@ -1,10 +1,71 @@
 <?php
 
+/**
+ * Bach Kernel
+ *
+ * PHP version 5
+ *
+ * Copyright (c) 2014, Anaphore
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     (1) Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *     (2) Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *     (3)The name of the author may not be used to
+ *    endorse or promote products derived from this software without
+ *    specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @category Core
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
+ * @link     http://anaphore.eu
+ */
+
+if ( file_exists(__DIR__ . '/config/constants.php') ) {
+    include_once __DIR__ . '/config/constants.php';
+}
+
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
+/**
+ * Bach Kernel
+ *
+ * @category Core
+ * @package  Bach
+ * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
+ * @link     http://anaphore.eu
+ */
 class AppKernel extends Kernel
 {
+    /**
+     * Returns an array of bundles to registers.
+     *
+     * @return BundleInterface[] An array of bundle instances.
+     */
     public function registerBundles()
     {
         $bundles = array(
@@ -20,22 +81,85 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Nelmio\SolariumBundle\NelmioSolariumBundle(),
-            new Anph\IndexationBundle\AnphIndexationBundle(),
-            new Anph\HomeBundle\AnphHomeBundle(),
-            new Anph\AdministrationBundle\AdministrationBundle(),
+            new Lsw\GettextTranslationBundle\LswGettextTranslationBundle(),
+            new Bach\IndexationBundle\BachIndexationBundle(),
+            new Bach\HomeBundle\BachHomeBundle(),
+            new Bach\AdministrationBundle\AdministrationBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new Fp\OpenIdBundle\FpOpenIdBundle(),
+            //Sonata dependencies
+            new Sonata\CoreBundle\SonataCoreBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\jQueryBundle\SonatajQueryBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),
+            new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
+            new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
+            //new Lsw\MemcacheBundle\LswMemcacheBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Pix\SortableBehaviorBundle\PixSortableBehaviorBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Bach\ExposBundle\ExposBundle(),
+            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+            new FM\ElfinderBundle\FMElfinderBundle(),
+            new KPhoen\SitemapBundle\KPhoenSitemapBundle(),
+            new Liip\ThemeBundle\LiipThemeBundle()
         );
 
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+        if (in_array($this->getEnvironment(), array('dev', 'test', 'console'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new atoum\AtoumBundle\AtoumAtoumBundle();
+            $bundles[] = new Jns\Bundle\XhprofBundle\JnsXhprofBundle();
+            $bundles[] = new Elao\WebProfilerExtraBundle\WebProfilerExtraBundle();
         }
 
         return $bundles;
     }
 
+    /**
+     * Loads the container configuration
+     *
+     * @param LoaderInterface $loader A LoaderInterface instance
+     *
+     * @return void
+     */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load(
+            __DIR__ . '/config/config_' . $this->getEnvironment() . '.yml'
+        );
+    }
+
+    /**
+     * Gets the cache directory.
+     *
+     * @return string The cache directory
+     */
+    public function getCacheDir()
+    {
+        if ( defined('BACH_CACHE_DIR') ) {
+            return BACH_CACHE_DIR . $this->environment;
+        } else {
+            return parent::getCacheDir();
+        }
+    }
+
+    /**
+     * Gets the log directory.
+     *
+     * @return string The log directory
+     */
+    public function getLogDir()
+    {
+        if ( defined('BACH_LOG_DIR') ) {
+            return BACH_LOG_DIR;
+        } else {
+            return parent::getLogDir();
+        }
     }
 }

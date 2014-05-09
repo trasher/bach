@@ -1,78 +1,265 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Bach</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <link href="{{ asset('css/bach.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-</head>
-<body>
-    {% block body %}
-    <div class="wrap">
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a class="brand" href="#">Bach</a>
-                    {#<p class="navbar-text pull-right">
-                        Logged in as <a href="#" class="navbar-link">Username</a>
-                    </p>#}
-                    {% block navbar %}
-                    <ul class="nav">
-                        <li{% if path(app.request.attributes.get('_route')) == path('anph_home_homepage') %} class="active"{% endif %}>
-                            <a href="{{ path('anph_home_homepage') }}">Home</a>
-                        </li>
-                        <li{% if path(app.request.attributes.get('_route')) == path('anph_indexation_homepage') %} class="active"{% endif %}>
-                            <a href="{{ path('anph_indexation_homepage') }}">Indexation</a>
-                        </li>
-                        <li{% if path(app.request.attributes.get('_route')) == path('administration_dashboard') %} class="active"{% endif %}>
-                            <a href="{{ url('administration_dashboard') }}">Administration</a>
-                        </li>
-                        {#<li><a href="#">Aide</a></li>#}
-                    </ul>
-                    {% endblock %}
-                </div><!-- /.container-fluid -->
-            </div><!-- /.navbar-inner  -->
-        </div><!-- /.navbar-fixed-top -->
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
 
-        <div class="container-fluid">
-            <div class="row-fluid">{% block container %} {% endblock %}</div>
-        </div><!-- /.containe-fluid -->
-        <!--/.fluid-container-->
-        <div class="push"></div>
-    </div><!-- /.wrap -->
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% set _plot_border_color = 'rgb(163,150,141)' %}
+{% set _plot_fill_color = 'rgb(183,58,52)' %}
+{% set _plot_selection_color = 'rgb(209,198,192)' %}
+
+{% extends ['::layout.html.twig'] %}
+
+{% block html_headers %}
+    <meta charset="utf-8">
+    <title>Bach{% block title_extend %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="{{ _('Bach archival search tool') }}">
+    {% block page_metadata %}
+    <meta name="description" content="{{ _('Bach archival search tool') }}">
+    <meta name="author" content="Anaphore">
     {% endblock %}
-    {% block javascripts %}
-    <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
-    <script src="{{ asset('js/bootstrap-dropdown.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/bootstrap-button.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/bootstrap-tooltip.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/anaphore.js') }}" type=" text/javascript></script>
-    <script src="http://static.scripting.com/github/bootstrap2/js/bootstrap-modal.js"></script>
-    <script>
-        $(document).ready(function() {
+    {# Scripts should be at the bottom of the page... But SonataAdmin is *not* happy with that -_- #}
+    <script src="{{ asset('js/jquery-1.10.2.min.js') }}" type="text/javascript"></script>
+    {% stylesheets
+        'css/reset.css'
+        'css/bach.css'
+        filter='cssrewrite'
+        output='assetic/css/compiled/bach.css'
+     %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+    <link href="{{ asset('css/bach_print.css') }}" type="text/css" rel="stylesheet" media="print"/>
+    <link href="{{ asset('css/jquery-ui/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <!--[if lt IE 9]>
+        <script src="{{ asset('js/html5-ie.js') }}"></script>
+        <link href="{{ asset('css/bach-ie.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        {% block client_ie %}{% endblock %}
+    <![endif]-->
+    <!--[if lte IE 7]>
+        <link href="{{ asset('css/bach-ie7.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        {% block client_ie7 %}{% endblock %}
+    <![endif]-->
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" />
+{% endblock %}
+
+{% block header %}
+    <aside id="menu" role="search">
+        <header class="header">
+            <h1><a href="{{ path('bach_homepage') }}"><img src="{{ asset('img/logo.png') }}" alt="Bach"/></a></h1>
+        </header>
+        {{ block('menu') }}
+    </aside>
+{% endblock %}
+
+{% block navigation %}
+            <nav role="navigation" id="navigation" class="nav-opened">
+            {% spaceless %}
+                <ul>
+                    <li{% if app.request.attributes.get('_route') == 'bach_homepage' or app.request.attributes.get('_route') == 'bach_search' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_search') }}">{{ _('Search') }}</a>
+                    </li>
+                    {% if features.matricules %}
+                    <li{% if app.request.attributes.get('_route') == 'bach_matricules' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_matricules') }}">{{ _('Matricules') }}</a>
+                    </li>
+                    {% endif %}
+                    {% if features.cdc %}
+                     <li{% if app.request.attributes.get('_route') == 'bach_classification' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_classification') }}">{{ _('Classification scheme') }}</a>
+                    </li>
+                    {% endif %}
+                    {% if features.browse %}
+                    <li{% if app.request.attributes.get('_route') == 'bach_browse' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_browse') }}">{{ _('Browse') }}</a>
+                    </li>
+                    {% endif %}
+                    {% if features.expos %}
+                    <li{% if app.request.attributes.get('_route') == 'expos_homepage' %} class="active"{% endif %}>
+                        <a href="{{ path('expos_homepage') }}">{{ _('Virtual expositions') }}</a>
+                    </li>
+                    {% endif %}
+                    {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {% if is_granted('ROLE_ARCHIVIST') %}
+                    <li{% if app.request.attributes.get('_route')|slice(0, 15) == 'bach_indexation' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_indexation_homepage') }}">{{ _('Publish') }}</a>
+                    </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CONTENT_ADMIN') %}
+                    <li{% if app.request.attributes.get('_route') == 'sonata_admin_dashboard' %} class="active"{% endif %}>
+                        <a href="{{ url('sonata_admin_dashboard') }}">{{ _('Manage') }}</a>
+                    </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <li{% if app.request.attributes.get('_route') == 'administration_dashboard' %} class="active"{% endif %}>
+                        <a href="{{ url('administration_dashboard') }}">{{ _('Manage Solr') }}</a>
+                    </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            {% endspaceless %}
+            </nav>
+{% endblock %}
+
+{% block login %}
+            <div id="user_login">
+            {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} <a href="{{ path('sonata_user_profile_show') }}">{{ _('My profile') }}</a>
+                <a class="logout" href="{% if is_granted('ROLE_PREVIOUS_ADMIN') %}?_switch_user=_exit{% else %}{{ path('fos_user_security_logout') }}{% endif %}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+            {% else %}
+                <a class="login" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                {% if features.openid %}
+                <a class="openid" href="{{ path('fp_openid_security_login') }}" title="{{ _('Login with OpenID') }}"><img src="{{ asset('img/openid-16x16.gif') }}" alt="OpenID"/></a>
+                {% endif %}
+            {% endif %}
+            </div>
+
+{% endblock %}
+
+{% block flash_messages %}
+            {# Globally display errors #}
+            {% if app.session.flashbag.has('errors') %}
+            <div id="flash-errors" class="noscript">
+                <h3>{{ _('Error') }}</h3>
+                {% for flashMessage in app.session.flashbag.get('errors') %}
+                <div class="flash-message">
+                    {{ flashMessage | raw }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {# Globally display warnings #}
+            {% if app.session.flashbag.has('warnings') %}
+            <div id="flash-warnings" class="noscript">
+                <h3>{{ _('Warning') }}</h3>
+                {% for flashMessage in app.session.flashbag.get('warnings') %}
+                <div class="flash-message">
+                    {{ flashMessage | raw }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {# Globally display success #}
+            {% if app.session.flashbag.has('success') %}
+            <div id="flash-success" class="noscript">
+                <h3>{{ _('Done') }}</h3>
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="flash-message">
+                    {{ flashMessage | raw }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ block('navigation') }}
+    {{ block('login') }}
+    {{ block('flash_messages') }}
+    {{ block('container') }}
+{% endblock %}
+
+{% block main_js %}
+    {# Javascript that are required everywhere #}
+    {% javascripts
+        'js/jquery-ui/jquery.ui.core.min.js'
+        'js/jquery-ui/jquery.ui.widget.min.js'
+        'js/jquery-ui/jquery.ui.mouse.min.js'
+        'js/jquery-ui/jquery.ui.position.min.js'
+        'js/jquery-ui/jquery.ui.button.min.js'
+        'js/jquery-ui/jquery.ui.dialog.min.js'
+        'js/jquery-ui/jquery.ui.tooltip.min.js'
+        output='assetic/js/compiled/jquery-ui.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    {# Additionnal page javascripts #}
+    {{ block('js_calls') }}
+    <script type="text/javascript">
+        {% block javascripts %}{% endblock %}
+
+        _mobile = function(){
+            if ( window.innerWidth < 768 ) {
+                //hide per default on mobile
+                $('#navigation > ul').toggleClass('hidden')
+                $('#navigation').on('click', function(){
+                    $(this).find('ul').toggleClass('hidden');
+                });
+                {{ block ('mobile_js_on') }}
+            } else {
+                //unbind elements and remove class when resizing
+                $('#navigation > ul').removeClass('hidden');
+                $('#navigation').unbind('click');
+                {{ block ('mobile_js_off') }}
+            }
+        };
+        _mobile();
+
+        $(document).ready(function () {
+
+            $(window).resize(function() {
+                _mobile();
+            });
+
+            $('.jbtn').button();
+
+            //TODO: remove or set in admin
             $('#coreTitleDialog').bind('show');
             $('#renamdialog').bind('show');
-        });
-        function closeDialog () {
-            $('#coreTitleDialog').modal('hide');
-            $('#renamdialog').bind('hide');
-        };
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('a').tooltip({
-                'selector': '',
-                'placement': 'bottom'
+
+            //tooltip on each a
+            $('a').tooltip();
+
+            //global help display window
+            var _help = $('#help_window');
+
+            if ( _help.length == 0 ) {
+                var _help = $('<div id="help_window"><h3>{{ _('Help not available') }}</h3>{{ _('No help is available for this section.') }}</div>');
+                _help.appendTo('body');
+            }
+
+            _help.dialog({
+                autoOpen: false,
+                title: _help.children('h3:first-child').text(),
+                create: function() {
+                    _help.children('h3:first-child').remove();
+                }
             });
+
+            $('#show_help').click(function(){
+                _help.dialog('open');
+                return false;
+            });
+
         });
     </script>
-    {% endblock %}
-</body>
-</html>
+{% endblock %}

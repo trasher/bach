@@ -1,0 +1,216 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% extends 'BachHomeBundle:Commons:search.html.twig' %}
+
+{% block title_extend %} - {{ _('Matricules search') }}{% endblock %}
+{% block subtitle %}{{ _('Search in matricules') }}{% endblock %}
+{% block search_path %}bach_matricules_search{% endblock %}
+{% block fullfacet_path %}bach_matricules_fullfacet{% endblock %}
+{% block do_search_path %}{{ search_path }}{% endblock %}
+{% block cookie_param_name %}bach_matricules_view_params{% endblock %}
+
+{% block show_results %}
+    {% if view == 'thumbs' %}
+        {% for document in searchResults %}
+        <article id="result_{{ document.uniqid }}" role="document" about="{#{ document.fragmentid }#}" class="thumbs"}>
+            <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
+                {% if document.dao is defined %}
+                    {{ displayDao(document.dao)|raw }}
+                {% else %}
+                    <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
+                {% endif %}
+            </figure>
+            <h3{# property="dc:title"#}>
+                <a href="{{ path('bach_display_matricules', {'docid': document.id}) }}" class="display_doc">
+                    {% set name %}
+                    {%- if hlSearchResults.getResult(document.uniqid).getField('txt_nom')|length > 0 -%}
+                        {{ hlSearchResults.getResult(document.uniqid).getField('txt_nom')[0]|raw }}
+                    {%- else -%}
+                        {{ document.nom }}
+                    {%- endif -%}
+                    {% endset %}
+                    {% set surname %}
+                    {%- if hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')|length > 0 -%}
+                        {{ hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')[0]|raw }}
+                    {%- else -%}
+                        {% for prenom in document.prenoms %}
+                        {{ prenom }}
+                        {% endfor %}
+                    {%- endif -%}
+                    {% endset %}
+                    {% set birth_date = document.annee_naissance|date('Y') %}
+                    {% set full = name ~ ' ' ~ surname ~ ', ' ~ birth_date %}
+                    {{ full |raw }}
+                </a>
+            </h3>
+        </article>
+        {% endfor %}
+    {% else %}
+            <table class="list matricules">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ _('Name') }}</th>
+                        <th>{{ _('Surnames') }}</th>
+                        <th>{{ _('Year of birth') }}</th>
+                        <th>{{ _('Place of birth') }}</th>
+                        <th>{{ _('Class') }}</th>
+                        <th>{{ _('Place of recording') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for document in searchResults %}
+                <tr>
+                    <td>
+                        <a class="display_doc" title="{{ _('Show record') }}" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Show record') }}</a>
+                        {% if document.start_dao is defined %}
+                            {% set series_name %}
+                                {%- for i in document.start_dao|split('/') -%}
+                                    {%- if not loop.last -%}
+                                        /{{ i }}
+                                    {%- endif -%}
+                                {%- endfor -%}
+                            {% endset %}
+                            {% set images_link %}
+                                {%- if viewer_uri[-1:1] != '/' -%}/{%- endif -%}
+                                {%- if document.end_dao is defined and document.start_dao != document.end_dao -%}
+                                    series{{ series_name }}?s={{ document.start_dao|split('/')|slice(-1,1)[0] }}&e={{ document.end_dao|split('/')|slice(-1,1)[0] }}
+                                {%- else -%}
+                                    viewer/{{ document.start_dao }}
+                                {%- endif -%}
+                            {% endset %}
+                            <a href="{{ viewer_uri ~ images_link }}">
+                                <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Show related image') }}"/>
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('txt_nom')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('txt_nom')[0]|raw }}
+                        {%- else -%}
+                            {{ document.nom }}
+                        {%- endif -%}
+                    </td>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')[0]|raw }}
+                        {%- else -%}
+                            {% for prenom in document.prenoms %}
+                                {{ prenom }}
+                            {% endfor %}
+                        {%- endif -%}
+                    </td>
+                    <td>{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_naissance')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('lieu_naissance')[0]|raw }}
+                        {%- else -%}
+                            {{ document.lieu_naissance }}
+                        {%- endif -%}
+                    </td>
+                    <td>{% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}</td>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')[0]|raw }}
+                        {%- else -%}
+                            {{ document.lieu_enregistrement }}
+                        {%- endif -%}
+                    </td>
+                </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+    {% endif %}
+{% endblock %}
+
+{% block autocomplete %}
+    $('#searchQuery_query').autocomplete({
+        source: function(request, response) {
+            $.getJSON(
+                '{{ path('bach_matricules_suggest') }}', {
+                    q: request.term
+                }, response
+            );
+        }
+    }).data('uiAutocomplete')._renderItem = function( ul, item ) {
+        var newText = String(item.value).replace(
+            new RegExp(preg_quote(this.term), "gi"),
+            "<span class='ui-state-highlight'>$&</span>"
+        );
+
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a>" + newText + "</a>")
+            .appendTo(ul);
+    };
+{% endblock %}
+
+{# Binded when not in mobile mode #}
+{% block mobile_js_off %}
+    {{ parent() }}
+
+    $('.display_doc').click(function(event){
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+        var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
+        _elt.appendTo('body');
+
+        var _width = $(window).width() * 0.8;
+        var _height = $(window).height() * 0.8;
+
+        $.ajax({
+            url: $(this).attr('href') + '/ajax',
+            {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')} %}
+            success: function(data) {
+                _elt.append(data);
+                _elt.dialog({
+                    height: _height,
+                    width: _width,
+                    modal: true,
+                    close: function(event, ui){
+                        _elt.remove();
+                    }
+                });
+            }
+        });
+
+        return false;
+    });
+{% endblock %}
+
+{# Binded when in mobile mode #}
+{% block mobile_js_on %}
+    $('.display_doc').unbind('click');
+{% endblock %}

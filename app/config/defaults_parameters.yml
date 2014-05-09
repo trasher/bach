@@ -1,0 +1,138 @@
+# Copyright (c) 2014, Anaphore
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#
+#     (1) Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#
+#     (2) Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in
+#     the documentation and/or other materials provided with the
+#     distribution.
+#
+#     (3)The name of the author may not be used to
+#    endorse or promote products derived from this software without
+#    specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+# STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+# IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+parameters:
+    #Main URL. Required for sitemaps
+    bach_url: http://localhost
+
+    #database parameters
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: bach
+    database_user: bach
+    database_password: A_PASSWORD
+    database_path: null
+
+    #application locale
+    locale: en
+    secret: fcfe28f4f96b6167f7e541210b30616ac #Usefull?
+
+    #Solr parameters
+    solr_ssl: false
+    solr_host: localhost
+    solr_port: 8080
+    solr_path: /solr
+    #Core names for each type
+    ead_corename: ead
+    matricules_corename: matricules
+    #Default search core
+    solr_search_core: '%ead_corename%'
+
+    #Path to store uploaded files (from web publication)
+    upload_dir: '%kernel.root_dir%/../web/uploads/'
+
+    #Path to files for each type
+    ead_files_path: null
+    matricules_files_path: null
+
+    ##Features activation
+    #main features
+    feature.cdc: false
+    feature.matricules: false
+    feature.expos: false
+    feature.browse: true
+    #display features
+    feature.maps: true
+    feature.tagcloud: true
+    feature.comments: true
+    #other
+    feature.openid: false
+    feature.social: false
+    feature.register: false
+
+    #UI parameters
+    viewer_uri: http://viewer.localhost/
+    covers_dir: '%kernel.root_dir%/../web/covers/'
+    cdc_path: '%kernel.root_dir%/../cdc.xml'
+    tiles_url: 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg'
+    tiles_attribution: '<a href="http://www.mapquest.com/">MapQuest</a>'
+    tiles_subdomains:
+        - otile1
+        - otile2
+        - otile3
+        - otile4
+
+    #social networks parameters
+    #twitter  https://dev.twitter.com/docs/tweet-button
+    social.twitter: true
+    social.twitter.locale: '%locale%'
+    social.twitter.message: "Un document intéressant : "
+    social.twitter.text: 'Tweet'
+    social.twitter.via: 'anaphorelabs'
+    social.twitter.tag: 'bach' #comma separated
+    #g+ - https://developers.google.com/+/web/+1button
+    social.gplus: true
+    social.gplus.locale: '%locale%'
+    social.gplus.size: 'medium' #either small, medium, standard or tall
+    social.gplus.annotation: 'bubble' #either none, bubble or inline
+    social.gplus.width: '300'
+    #facebook - https://developers.facebook.com/docs/plugins/like-button/
+    social.fb: true
+    social.fb.locale: 'en_US' #either en_US, fr_FR
+    social.fb.width: 300
+    social.fb.showFaces: false
+    social.fb.layout: 'button_count'
+    social.fb.share: false
+    #scoopit - http://www.scoop.it/install-button
+    social.scoopit: true
+    social.scoopit.layout: 'horizontal' #either 'horizontal', 'vertical' or 'none'
+
+    #supported gettext bundle languages
+    gettext.locale_shortcuts:
+        en: en_US
+        fr: fr_FR
+
+    bach_themes: ['web', 'phone']
+    bach_default_theme: 'web'
+
+    #mail parameters (not used for now)
+    #mailer_transport: smtp
+    #mailer_host: localhost
+    #mailer_user: null
+    #mailer_password: null
+
+bach_home:
+    #Paths to retrieve different types of files
+    files:
+        videos: '%kernel.root_dir%/../data/videos/'
+        musics: '%kernel.root_dir%/../data/musics/'
+        misc: '%kernel.root_dir%/../data/files/'

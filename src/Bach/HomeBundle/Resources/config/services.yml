@@ -1,0 +1,98 @@
+# Copyright (c) 2014, Anaphore
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#
+#     (1) Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#
+#     (2) Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in
+#     the documentation and/or other materials provided with the
+#     distribution.
+#
+#     (3)The name of the author may not be used to
+#    endorse or promote products derived from this software without
+#    specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+# STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+# IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+parameters:
+   bach.home.solarium_query_factory.class: Bach\HomeBundle\Service\SolariumQueryFactory
+
+services:
+    bach.home.solarium_query_factory:
+        class: "%bach.home.solarium_query_factory.class%"
+        arguments: [ @solarium.client.default ]
+
+    bach.matricules.solarium_query_factory:
+        class: "%bach.home.solarium_query_factory.class%"
+        arguments: [ @solarium.client.matricules ]
+
+    bach.home.display_ead_fragment:
+        class: Bach\HomeBundle\Twig\DisplayEADFragment
+        arguments: [ @router, '%feature.comments%' ]
+        calls:
+            - [setRequest, ['@?request=']]
+            - [setViewer, ['%viewer_uri%']]
+            - [setCoversDir, ['%covers_dir%']]
+        tags:
+            - { name: twig.extension }
+    bach.home.display_dao:
+        class: Bach\HomeBundle\Twig\DisplayDao
+        arguments: [ @router, '%viewer_uri%', '%covers_dir%' ]
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: twig.extension }
+
+    bach.home.openid_user_manager:
+        class: Bach\HomeBundle\Entity\OpenIdUserManager
+        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]
+
+    bach.home.display_cdc:
+        class: Bach\HomeBundle\Twig\DisplayCdc
+        arguments: [ @router, '%cdc_path%' ]
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: twig.extension }
+
+    bach.home.display_html:
+        class: Bach\HomeBundle\Twig\DisplayHtml
+        arguments: [ @router ]
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: twig.extension }
+
+    bach.socialBarHelper:
+        class : Bach\HomeBundle\Templating\Helper\SocialBarHelper
+        tags : 
+        - {name : 'templating.helper', alias : 'social-buttons'}
+        arguments : [ @templating ]
+
+    twig.extension.bach_social_bar:
+        class: Bach\HomeBundle\Twig\BachSocialBar
+        tags:
+            - { name: 'twig.extension' }
+        arguments : [ @service_container ]
+
+    bach.home.sitemap_provider:
+        class: Bach\HomeBundle\Provider\BachSitemapProvider
+        arguments: [ @doctrine.orm.entity_manager, @router, @service_container ]
+        tags:
+            - { name: sitemap.provider }
+

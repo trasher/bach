@@ -1,0 +1,84 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Bach\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "Bach archival search tool"
+msgstr "Bach archival search tool"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Browse"
+msgstr "Browse"
+
+msgid "Publish"
+msgstr "Publish"
+
+msgid "Manage"
+msgstr "Manage"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Warning"
+msgstr "Warning"
+
+msgid "Help not available"
+msgstr "Help not available"
+
+msgid "No help is available for this section."
+msgstr "No help is available for this section."
+
+msgid "Please authenticate"
+msgstr "Please authenticate"
+
+msgid "Register a new account"
+msgstr "Register a new account"
+
+msgid "Account registered"
+msgstr "Account registered"
+
+msgid "User profile:"
+msgstr "User profile:"
+
+msgid "Edit %username% profile"
+msgstr "Edit %username% profile"
+
+msgid "Show profile"
+msgstr "Show profile"
+
+msgid "Edit profile"
+msgstr "Edit profile"
+
+msgid "Edit authentication"
+msgstr "Edit authentication"
+
+msgid "My profile"
+msgstr "My profile"
+
+msgid "Manage Solr"
+msgstr "manage Solr"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Facets"
+msgstr "Facets"
+
+msgid "Solr field name"
+msgstr "Solr field name"
+
+msgid "Your browser is quite old, some features may not work."
+msgstr "Your browser is quite old, some features may not work."
+
+msgid "You may have a better experience with a more recent or an alternative one."
+msgstr "You may have a better experience with a more recent or an alternative one."
+

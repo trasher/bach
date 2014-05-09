@@ -2,18 +2,20 @@
 ######################
 app/logs/*
 app/cache/*
-app/spool/*
-app/bootstrap/*
-app/config/parameters.ini
 app/config/parameters.yml
+app/config/constants.php
 app/bootstrap.php.cache
+app/Resources/themes/*/
 web/bundles/*
+web/config.php
 !Uploader
 vendor/
 build/
 .settings
 composer.phar
 web/uploads/*
+web/covers
+web/assetic
 
 # Eclipse generated files #
 ######################
@@ -37,3 +39,14 @@ Thumbs.db
 .vimfiles*
 *.vimentry
 quick_gen_project_*.sh
+
+#test generatedrated files
+tests-results/
+
+#files to publish
+files/
+files
+
+#generated i18n
+app/Resources/gettext/combined
+app/Resources/gettext/version

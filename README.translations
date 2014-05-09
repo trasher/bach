@@ -1,0 +1,35 @@
+Bach's translations
+===================
+
+Translations are done by Symfony for templates, and GettextBundle for PHP files.
+
+To generate the whole files:
+- symfony
+php app/console  translation:update --prefix="" --output-format='po' --clean --force fr BachHomeBundle
+php app/console  translation:update --prefix="" --output-format='po' --clean --force en BachHomeBundle
+
+To see what will be done, you can replace "--force" by "--dump-messages" in
+the above commands. Not changed strings will be displayed in white, new or
+modified strings in green and deleted strings in red.
+
+Files are stored in src/Bach/HomeBundle/Resources/translations/messages.fr.po and
+src/Bach/HomeBundle/Resources/translations/messages.en.po
+
+You just have to translate those PO files.
+
+- gettext bundle:
+php app/console gettext:bundle:extract BachHomeBundle
+
+Files are stored in 
+src/Bach/HomeBundle/Resources/gettext/locale/en_US/LC_MESSAGES/messages.po and
+src/Bach/HomeBundle/Resources/gettext/locale/fr_FR/LC_MESSAGES/messages.po.
+
+You have to open those files (with poedit for example), and to update from pot file
+src/Bach/HomeBundle/Resources/gettext/messages.pot; then translate it.
+
+Once translations are done, run the following:
+php app/console gettext:combine en_US,fr_FR
+
+Note that Git sources does not provide compiled gettext files, so you'll
+ have to run the last command yourself.
+

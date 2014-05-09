@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+Doctrine group entity configuration
+
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+@author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+@license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
+@link     http://anaphore.eu
+-->
+<conf>
+	<defaultLang>en</defaultLang>
+	<lang>fr</lang>
+	<schema>
+		<attribute name="name" type="string" required="true" />
+		<attribute name="version" type="string" required="true" default="1.5" />
+	</schema>
+	<field parent="fields">
+		<attribute name="name" type="string" required="true">
+			<label lang="en">Name</label>
+			<descr lang="en">
+				The name for the field. Field names should consist of alphanumeric or underscore characters only
+				and not start with a digit. This is not currently strictly enforced, but other field names
+				will not have first class support from all components and back compatibility is not guaranteed.
+				Names with both leading and trailing underscores (e.g. _version_) are reserved.
+			</descr>
+		</attribute>
+		<attribute name="type" type="string" required="true">
+			<label lang="en">Type</label>
+			<descr lang="en">
+				The name of a field type.
+			</descr>
+		</attribute>
+		<attribute name="indexed" type="boolean" required="true" default="true">
+			<label lang="en">Indexed</label>
+			<descr lang="en">
+				True if this field should be indexed. If (and only if) a field is indexed, then it is searchable,
+				sortable, and facetable.
+			</descr>
+		</attribute>
+		<attribute name="stored" type="boolean" required="true" default="true">
+			<label lang="en">Stored</label>
+			<descr lang="en">
+				True if this field should be retrievable during a search.
+			</descr>
+		</attribute>
+		<attribute name="multiValued" type="boolean" required="false" default="true">
+			<label lang="en">Multi valued</label>
+			<descr lang="en">
+				True if this field may contain multiple values per document, i.e. if it can appear multiple times in a document.
+			</descr>
+		</attribute>
+		<attribute name="omitNorms" type="boolean" required="false" default="true">
+			<label lang="en">Omit norms</label>
+			<descr lang="en">
+				(Expert) set to true to omit the norms associated with this field (this disables length normalization
+				and index-time boosting for the field, and saves some memory). Only full-text fields or fields that
+				need an index-time boost need norms. Norms are omitted for primitive (non-analyzed) types by default.
+			</descr>
+		</attribute>
+		<attribute name="omitTermFreqAndPositions" type="boolean" required="false" default="true">
+			<label lang="en">Omit term freq and positions</label>
+			<descr lang="en">
+				If set, omit term freq, positions and payloads from postings for this field.
+			</descr>
+		</attribute>
+		<attribute name="omitPositions" type="boolean" required="false" default="true">
+			<label lang="en">Omit positions</label>
+			<descr lang="en">
+				If set, omits positions, but keeps term frequencies.
+			</descr>
+		</attribute>
+		<attribute name="termVectors" type="boolean" required="false" default="false">
+			<descr lang="en">
+				Set to true to store the term vector for a given field. When using MoreLikeThis, fields used for
+				similarity should be stored for best performance.
+			</descr>
+		</attribute>
+		<attribute name="termPositions" type="boolean" required="false" default="false">
+			<label lang="en">Term positions</label>
+			<descr lang="en">
+				Store position information with the term vector. This will increase storage costs.
+			</descr>
+		</attribute>
+		<attribute name="termOffsets" type="boolean" required="false" default="false">
+			<label lang="en">Term off sets</label>
+			<descr lang="en">
+				Store offset information with the term vector. This will increase storage costs.
+			</descr>
+		</attribute>
+		<attribute name="required" type="boolean" required="false" default="false">
+			<label lang="en">Required</label>
+			<descr lang="en">
+				The field is required. It will throw an error if the value does not exist.
+			</descr>
+		</attribute>
+		<attribute name="default" type="string" required="false" default="false">
+			<label lang="en">Default value</label>
+			<descr lang="en">
+				A value that should be used if no value is specified when adding a document.
+			</descr>
+		</attribute>
+	</field>
+	<dynamicField parent="fields">
+		<attribute name="name" type="string" required="true">
+			<label lang="en">Name</label>
+			<descr lang="en">
+				The name for the field. Field names should consist of alphanumeric or underscore characters only
+				and not start with a digit. This is not currently strictly enforced, but other field names
+				will not have first class support from all components and back compatibility is not guaranteed.
+				Names with both leading and trailing underscores (e.g. _version_) are reserved.
+			</descr>
+		</attribute>
+		<attribute name="type" type="string" required="true">
+			<label lang="en">Type</label>
+			<descr lang="en">
+				The name of a field type.
+			</descr>
+		</attribute>
+		<attribute name="indexed" type="boolean" required="true" default="true">
+			<label lang="en">Indexed</label>
+			<descr lang="en">
+				True if this field should be indexed. If (and only if) a field is indexed, then it is searchable,
+				sortable, and facetable.
+			</descr>
+		</attribute>
+		<attribute name="stored" type="boolean" required="true" default="true">
+			<label lang="en">Stored</label>
+			<descr lang="en">
+				True if this field should be retrievable during a search.
+			</descr>
+		</attribute>
+		<attribute name="multiValued" type="boolean" required="false" default="true">
+			<label lang="en">Multi valued</label>
+			<descr lang="en">
+				True if this field may contain multiple values per document, i.e. if it can appear multiple times in a document.
+			</descr>
+		</attribute>
+		<attribute name="omitNorms" type="boolean" required="false" default="true">
+			<label lang="en">Omit norms</label>
+			<descr lang="en">
+				(Expert) set to true to omit the norms associated with this field (this disables length normalization
+				and index-time boosting for the field, and saves some memory). Only full-text fields or fields that
+				need an index-time boost need norms. Norms are omitted for primitive (non-analyzed) types by default.
+			</descr>
+		</attribute>
+		<attribute name="omitTermFreqAndPositions" type="boolean" required="false" default="true">
+			<label lang="en">Omit term freq and positions</label>
+			<descr lang="en">
+				If set, omit term freq, positions and payloads from postings for this field.
+			</descr>
+		</attribute>
+		<attribute name="omitPositions" type="boolean" required="false" default="true">
+			<label lang="en">Omit positions</label>
+			<descr lang="en">
+				If set, omits positions, but keeps term frequencies.
+			</descr>
+		</attribute>
+		<attribute name="termVectors" type="boolean" required="false" default="false">
+			<descr lang="en">
+				Set to true to store the term vector for a given field. When using MoreLikeThis, fields used for
+				similarity should be stored for best performance.
+			</descr>
+		</attribute>
+		<attribute name="termPositions" type="boolean" required="false" default="false">
+			<label lang="en">Term positions</label>
+			<descr lang="en">
+				Store position information with the term vector. This will increase storage costs.
+			</descr>
+		</attribute>
+		<attribute name="termOffsets" type="boolean" required="false" default="false">
+			<label lang="en">Term off sets</label>
+			<descr lang="en">
+				Store offset information with the term vector. This will increase storage costs.
+			</descr>
+		</attribute>
+		<attribute name="required" type="boolean" required="false" default="false">
+			<label lang="en">Required</label>
+			<descr lang="en">
+				The field is required. It will throw an error if the value does not exist.
+			</descr>
+		</attribute>
+		<attribute name="default" type="string" required="false" default="false">
+			<label lang="en">Default value</label>
+			<descr lang="en">
+				A value that should be used if no value is specified when adding a document.
+			</descr>
+		</attribute>
+	</dynamicField>
+	<fieldType parent="types">
+		<attribute name="name" type="string" required="true">
+			<label lang="en">Name</label>
+			<descr lang="en">
+				Is just a label to be used by field definitions.
+			</descr>
+		</attribute>
+		<attribute name="class" type="string" required="true">
+			<label lang="en">Class</label>
+			<descr lang="en">
+				Determines the real behavior of the fieldType.
+			</descr>
+			<value>solr.TextField</value>
+			<value>solr.StrField</value>
+			<value>solr.TrieIntField</value>
+			<value>solr.TrieLongField</value>
+			<value>solr.TrieFloatField</value>
+			<value>solr.TrieDoubleField</value>
+			<value>solr.TrieDateField</value>
+			<value>solr.CurrencyField</value>
+			<value>solr.SpatialRecursivePrefixTreeFieldType</value>
+			<value>solr.PointType</value>
+			<value>solr.BoolField</value>
+			<value>solr.BinaryField</value>
+			<value>solr.LatLonType</value>
+			<value>solr.SpatialRecursivePrefixTreeFieldType</value>
+		</attribute>
+		<attribute name="sortMissingLast" type="boolean" required="true" default="true">
+			<label lang="en">Sort missing last</label>
+			<descr lang="en">
+				SortMissingLast and sortMissingFirst attributes are optional attributes are currently supported on types
+				that are sorted internally as strings and on numeric types. This includes "string","boolean", and, as
+				of 3.5 (and 4.x), int, float, long, date, double, including the "Trie" variants. If sortMissingLast="true",
+				then a sort on this field will cause documents without the field to come after documents with the field,
+				regardless of the requested sort order (asc or desc). If sortMissingLast="false" and sortMissingFirst="false"
+				(the default), then default lucene sorting will be used which places docs without the field first in an ascending
+				sort and last in a descending sort.
+			</descr>
+		</attribute>
+		<attribute name="sortMissingFirst" type="boolean" required="true" default="true">
+			<label lang="en">Sort missing first</label>
+			<descr lang="en">
+				If sortMissingFirst="true", then a sort on this field will cause documents without the field to come
+				before documents with the field, regardless of the requested sort order.
+			</descr>
+		</attribute>
+		<attribute name="indexed" type="boolean" required="true" default="true">
+			<label lang="en">Indexed</label>
+			<descr lang="en">
+				True if this field should be indexed. If (and only if) a field is indexed, then it is searchable,
+				sortable, and facetable.
+			</descr>
+		</attribute>
+		<attribute name="stored" type="boolean" required="true" default="true">
+			<label lang="en">Stored</label>
+			<descr lang="en">
+				True if this field should be retrievable during a search.
+			</descr>
+		</attribute>
+		<attribute name="multiValued" type="boolean" required="false" default="true">
+			<label lang="en">Multi valued</label>
+			<descr lang="en">
+				True if this field may contain multiple values per document, i.e. if it can appear multiple times in a document.
+			</descr>
+		</attribute>
+		<attribute name="omitNorms" type="boolean" required="false" default="true">
+			<label lang="en">Omit norms</label>
+			<descr lang="en">
+				(Expert) set to true to omit the norms associated with this field (this disables length normalization
+				and index-time boosting for the field, and saves some memory). Only full-text fields or fields that
+				need an index-time boost need norms. Norms are omitted for primitive (non-analyzed) types by default.
+			</descr>
+		</attribute>
+		<attribute name="omitTermFreqAndPositions" type="boolean" required="false" default="true">
+			<label lang="en">Omit term freq and positions</label>
+			<descr lang="en">
+				If set, omit term freq, positions and payloads from postings for this field.
+			</descr>
+		</attribute>
+		<attribute name="omitPositions" type="boolean" required="false" default="true">
+			<label lang="en">Omit positions</label>
+			<descr lang="en">
+				If set, omits positions, but keeps term frequencies.
+			</descr>
+		</attribute>
+		<attribute name="positionIncrementGap" type="integer" required="false">
+			<label lang="en">Position increment gap</label>
+			<descr lang="en">
+				The optional positionIncrementGap puts space between multiple fields of this type on the same document,
+				with the purpose of preventing false phrase matching across fields.
+			</descr>
+		</attribute>
+		<attribute name="autoGeneratePhraseQueries" type="boolean" required="false" default="true" />
+	</fieldType>
+	<fieldTypeExtraAttributes class="solr.CurrencyField">
+		<attribute name="currencyConfig" type="string" required="false">
+			<descr lang="en">
+				Name of an xml file holding exchange rates.
+			</descr>
+		</attribute>
+		<attribute name="defaultCurrency" type="string" required="false">
+			<descr lang="en">
+				Specifies the default currency if none specified.
+			</descr>
+		</attribute>
+		<attribute name="precisionStep" type="integer" required="false">
+			<descr lang="en">
+				Specifies the precisionStep for the TrieLong field used for the amount.
+			</descr>
+		</attribute>
+	</fieldTypeExtraAttributes>
+	<copyField parent="schema">
+		<attribute name="source" type="string" required="true">
+			<label lang="en">Source</label>
+		</attribute>
+		<attribute name="dest" type="string" required="true">
+			<label lang="en">Dest</label>
+		</attribute>
+		<attribute name="maxChars" type="integer" required="false">
+			<label lang="en">Max chars</label>
+		</attribute>
+		<descr lang="en">
+			Any number of "copy field" declarations can be included in your schema, to instruct Solr that you want it
+			to duplicate any data it sees in the "source" field of documents that are added to the index, in the "dest"
+			field of that document. You are responsible for ensuring that the datatypes of the fields are compatible.
+			The original text is sent from the "source" field to the "dest" field, before any configured analyzers for
+			the originating or destination field are invoked. This is provided as a convenient way to ensure that data
+			is put into several fields, without needing to include the data in the update command multiple times.
+			The copy is done at the stream source level and no copy feeds into another copy. The maxChars property
+			may be used in a copyField declaration. This simply limits the number of characters copied.
+			A common requirement is to copy or merge all input fields into a single solr field. To do this the value of
+			source attribute must be "*".
+		</descr>
+	</copyField>
+	<uniqueKey parent="schema">
+		<attribute name="uniqueKey">
+			<label lang="en">Unique Key</label>
+			<descr lang="en">
+				The "unique key" declaration can be used to inform Solr that there is a field in your index which should be
+				unique for all documents. If a document is added that contains the same value for this field as an existing
+				document, the old document will be deleted. It is not mandatory for a schema to have a uniqueKey field,
+				but an overwhelming majority of them do. It shouldn't matter whether you rename this to something else
+				(and change the "unique key" value), but occasionally it has in the past. We recommend that you just
+				leave this definition alone. 
+			</descr>
+		</attribute>
+	</uniqueKey>
+	<analyzer parent="fieldType">
+		<attribute name="class" type="string" required="false">
+			<label lang="en">Class</label>
+			<descr lang="en">
+				Specifying the class name of an Analyzer — anything extending org.apache.lucene.analysis.Analyzer.
+			</descr>
+			<value>org.apache.lucene.analysis.WhitespaceAnalyzer</value>
+			<value>org.apache.lucene.analysis.FrenchAnalyzer</value>
+			<value>org.apache.lucene.analysis.EnglishAnalyzer</value>
+			<value>org.apache.lucene.analysis.standard.StandardAnalyzer</value>
+		</attribute>
+	</analyzer>
+</conf>

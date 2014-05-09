@@ -1,0 +1,185 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% embed base_template %}
+
+    {% block css %}
+        {{ parent() }}
+        <link href="{{ asset('js/leaflet/leaflet.css') }}" type="text/css" rel="stylesheet" media="screen" />
+        <link href="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endblock %}
+
+    {% block js_calls %}
+        {{ parent() }}
+        <script src="{{ asset('js/leaflet/leaflet.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('js/leaflet/leaflet.fullscreen/Control.FullScreen.js') }}" type="text/javascript"></script>
+    {% endblock %}
+
+    {% block sonata_admin_content %}
+        <div id="map" class="big"></div>
+    {% endblock %}
+
+    {% block javascripts %}
+        var allpoints;
+        var current;
+        var selected;
+
+        /**
+        * Returns element height, including margins
+        */
+        function _eltRealSize(_elt) {
+            var _s = 0;
+            _s += _elt.outerHeight();
+            _s += parseFloat(_elt.css('margin-top').replace('px', ''));
+            _s += parseFloat(_elt.css('margin-bottom').replace('px', ''));
+            return _s;
+        }
+
+        var remove_href = '{{ path('bach_remove_geoloc', {name: 'NAME'}) }}';
+        var edit_href = '{{ path('bach_toponym_geoloc', {name: 'NAME'}) }}';
+
+        function onEachFeature(feature, layer) {
+            popup = layer.bindPopup();
+            var _name = feature.properties.name;
+            popup = layer.bindPopup(
+                '<strong>' + _name + '</strong> (' +
+                feature.properties.results + ' {{ _('result(s)') }})'
+            );
+        }
+
+        var _layers;
+
+        $(function(){
+            var wheight = $(window).height();
+            var _oSize = 0;
+
+            _oSize += _eltRealSize($('#navigation'));
+            _oSize += _eltRealSize($('.navbar'));
+            _oSize += parseFloat(
+                $('#container').css('padding-top').replace('px', '')
+            );
+            _oSize += parseFloat(
+                $('#container').css('padding-bottom').replace('px', '')
+            );
+
+            var newHeight = Math.floor(wheight - _oSize) + "px";
+            $("#map").css("height", newHeight);
+
+            var map;
+            var _layers;
+
+            map = L.map('map', {
+                minZoom: 1
+            }).on('popupopen', function(e){
+                var _popup = e.popup;
+                var _container = $(_popup._container);
+                var _feature = _popup._source.feature;
+                var _content = _container.find('.leaflet-popup-content');
+
+                if ( _content.find('a.remove').length == 0 ) {
+                    _content = _content.html();
+                    _content += '<ul>';
+                    _content += '<li><a class="remove" href="' + remove_href.replace('NAME', _feature.properties.name)  + '">{{ _('remove') }}</a></li>';
+                    _content += '<li><a class="edit" href="' + edit_href.replace('NAME', _feature.properties.name)  + '">{{ _('edit') }}</a></li>';
+                    _content += '</ul>';
+
+                    _popup.setContent(_content);
+
+                    _container = $(_container);
+                    _container.find('a.remove').on('click', function() {
+                        var _href = $(this).attr('href');
+                        $.ajax({
+                            url: _href,
+                            {% include '::loader.js.twig' with {'silent_error': true} %}
+                            success: function(data) {
+                                var _name = _feature.properties.name;
+                                allpoints.removeLayer(allpoints.getLayer(_popup._source._leaflet_id));
+                                alert('{{ _('NAME has been removed') }}'.replace('NAME', _name));
+                            }
+                        });
+                        return false;
+                    });
+
+                    _container.find('a.edit').on('click', function() {
+                        alert('{{ _('Not yet implemented!') }}');
+                        return false;
+                    });
+                }
+            });
+
+
+            {% for field, geo in geojson -%}
+            var {{ field|replace({'-': '_'}) }}_points = L.geoJson({{ geo|raw }}, {
+                onEachFeature: onEachFeature
+            });
+            var {{ field|replace({'-': '_'}) }}_layer = L.layerGroup([{{ field|replace({'-': '_'}) }}_points]);
+            {% endfor %}
+
+            var overlays = {
+            {% for field in geojson|keys -%}
+                '{{ field }}': {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
+            {% endfor %}
+            };
+            var _groups = L.control.layers({}, overlays).addTo(map);
+
+            var _layers = L.layerGroup([
+                {% for field in geojson|keys -%}
+                {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
+            {% endfor %}
+            ]).addTo(map);
+
+            var allpoints = L.featureGroup([
+                {%- for field in geojson|keys -%}
+                {{ field|replace({'-': '_'}) }}_points{% if not loop.last %},{% endif %}
+            {%- endfor -%}
+            ]);
+
+            map.fitBounds(allpoints.getBounds(), {
+                padding: [50, 50],
+                maxZoom: 13
+            });
+
+            var fullScreen = new L.Control.FullScreen();
+            map.addControl(fullScreen);
+
+            L.tileLayer('{{ tiles_url }}', {
+                {% if tiles_subdomains is iterable -%}
+                subdomains: [{% for subdomain in tiles_subdomains %}'{{ subdomain }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+                {% endif -%}
+                maxZoom: 18,
+                attribution: '{{ _('© Cartographic data')|escape('js') }} <a href="http://openstreetmap.org">{{ _('OpenStreetMap contributors')|escape('js') }}</a>, {{ _('© Imagery')|escape('js') }} {{ tiles_attribution|raw }}'
+            }).addTo(map);
+
+        });
+    {% endblock %}
+{% endembed %}

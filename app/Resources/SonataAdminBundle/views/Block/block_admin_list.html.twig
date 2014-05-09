@@ -1,0 +1,140 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+
+    <table class="table table-condensed sonata-ba-list">
+
+        {% for group in groups %}
+            {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+            {% for role in group.roles if not display %}
+                {% set display = is_granted(role)%}
+            {% endfor %}
+            {% if group.label == 'Virtual expositions' and not features.expos %}
+                {% set display = false %}
+            {% endif %}
+
+            {% if display %}
+                <tr>
+                    <td colspan="3" style="background: none repeat scroll 0 0 #F7F7F7;"><strong>{{ group.label|trans({}, group.label_catalogue) }}</strong></td>
+                </tr>
+
+                {% for admin in group.items %}
+                    {% if admin.getCode == 'sonata.admin.browsefields' and features.browse
+                        or admin.getCode == 'sonata.admin.geoloc' and features.maps
+                        or admin.getCode == 'sonata.admin.comment' and features.comments
+                        or admin.getCode != 'sonata.admin.browsefields' and admin.getCode != 'sonata.admin.geoloc' and admin.getCode != 'sonata.admin.comment'
+                    %}
+                    {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                        <tr>
+                            <td class="sonata-ba-list-label">
+                                {{ admin.label|trans({}, admin.translationdomain) }}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                                        {% if admin.subClasses is empty %}
+                                            <a class="btn btn-link" href="{{ admin.generateUrl('create')}}">
+                                                <i class="icon-plus"></i>
+                                                {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
+                                            </a>
+                                        {% else %}
+                                            <a class="btn btn-link dropdown-toggle" data-toggle="dropdown" href="#">
+                                                <i class="icon-plus"></i>
+                                                {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                {% for subclass in admin.subclasses|keys %}
+                                                    <li>
+                                                        <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                        <a class="btn btn-link" href="{{ admin.generateUrl('list')}}">
+                                            <i class="icon-list"></i>
+                                            {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
+                                        </a>
+                                    {% endif %}
+                                     {% if admin.hasroute('geoloc_visualize') and (admin.isGranted('EDIT') or admin.isGranted('DELETE')) %}
+                                        <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_visualize')}}">
+                                            <i class="icon-globe"></i>
+                                            {{ _('Visualize') }}
+                                        </a>
+                                    {% endif %}
+                                    {% if admin.hasroute('geoloc_missing') and admin.isGranted('CREATE') %}
+                                        <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_missing')}}">
+                                            <i class="icon-globe"></i>
+                                            {{ _('Missing locations') }}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% elseif features.tagcloud and admin.getCode == 'sonata.admin.tagcloud' and admin.isGranted('EDIT') %}
+                        <tr>
+                            <td class="sonata-ba-list-label">
+                                {{ admin.label|trans({}, admin.translationdomain) }}
+                            </td>
+                            <td>
+                                <a class="btn btn-link" href="{{ admin.generateUrl('edit', {id: 1})}}">
+                                    <i class="icon-wrench"></i>
+                                    {{ _('Manage') }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% elseif features.maps and (admin.getCode == 'sonata.admin.geolocfields' or admin.getCode == 'sonata.admin.matricules.geolocfields' and features.matricules ) and admin.isGranted('EDIT') %}
+                        <tr>
+                            <td class="sonata-ba-list-label">
+                                {{ admin.label|trans({}, admin.translationdomain) }}
+                            </td>
+                            <td>
+                                <a class="btn btn-link" href="{{ admin.generateUrl('edit', {id: 1})}}">
+                                    <i class="icon-wrench"></i>
+                                    {{ _('Manage') }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}
