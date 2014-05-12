@@ -133,29 +133,28 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1em;
 }
 
+h2, h3, h4, h5, h6 {
+    margin: .8em 0 .4em;
+}
+
 h2 {
     font-size: 1.8em;
-    margin: .8em 0 .4em;
 }
 
 h3 {
     font-size: 1.6em;
-    margin: .8em 0 .4em;
 }
 
 h4 {
     font-size: 1.4em;
-    margin: .8em 0 .4em;
 }
 
 h5 {
     font-size: 1.2em;
-    margin: .8em 0 .4em;
 }
 
 h6 {
     font-size: 1.1em;
-    margin: .8em 0 .4em;
 }
 
 strong {
@@ -1689,9 +1688,9 @@ figure section .flashplayer {
         right: 0;*/
         width: 0.8em;
         text-align: center;
-        font-size: 3em;
+        font-size: 2.5em;
         font-weight: bold;
-        line-height: 1;
+        line-height: 0.5;
         cursor: pointer;
     }
 
@@ -1761,5 +1760,39 @@ figure section .flashplayer {
     /** Do not work in mobile mode */
     #dates_plot {
         display: none;
+    }
+
+    [id=social] {
+        float: none;
+        margin-top: 0;
+    }
+
+    [id=social] .button {
+        float: none;
+    }
+
+    #container .ui-tabs .ui-tabs-nav li {
+        margin-top: 0;
+    }
+
+    #container .ui-tabs .ui-tabs-nav li a {
+        padding: .2em .5em;
+    }
+
+    #container .ui-tabs .ui-tabs-panel {
+        padding: .3em 0 0;
+    }
+
+    h2, h3, h4, h5, h6 {
+        margin: .4em 0 .2em;
+    }
+
+    #loading p {
+        width: 90%;
+        margin-left: 5%;
+    }
+
+    .fb_iframe_widget > span {
+        vertical-align: baseline!important;
     }
 }
