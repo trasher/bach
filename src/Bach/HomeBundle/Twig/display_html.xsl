@@ -400,10 +400,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 </span>
             </xsl:if>
 
-            <xsl:if test="../unitid">
+            <xsl:if test="../unitid[not(@type='ordre_c')]">
                 <xsl:text> - </xsl:text>
                 <span class="unitid" property="dc:identifier">
-                    <xsl:value-of select="../unitid"/>
+                    <xsl:value-of select="../unitid[not(@type='ordre_c')]"/>
                 </span>
             </xsl:if>
         </a>
