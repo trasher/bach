@@ -414,6 +414,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="date|language">
         <xsl:value-of select="' '"/>
         <xsl:apply-templates/>
+        <xsl:value-of select="' '"/>
     </xsl:template>
 
     <xsl:template match="titleproper|author|sponsor|addressline|subtitle">
