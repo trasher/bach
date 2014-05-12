@@ -254,11 +254,12 @@ class ViewParams
     /**
      * Bind request
      *
-     * @param Request $request Request to bind to
+     * @param Request $request     Request to bind to
+     * @param string  $cookie_name Name for the cookie
      *
      * @return void
      */
-    public function bind(Request $request)
+    public function bind(Request $request, $cookie_name)
     {
         $this->_request = $request;
 
@@ -317,7 +318,7 @@ class ViewParams
             $_cook = new \stdClass();
             $_cook->map = $this->showMap();
             $_cook->daterange = $this->showDaterange();
-            setcookie('bach_view_params', json_encode($_cook));
+            setcookie($cookie_name, json_encode($_cook), 0, '/');
         }
     }
 
@@ -330,9 +331,8 @@ class ViewParams
      */
     public function bindCookie($name)
     {
-            $_cook = json_decode($_COOKIE[$name]);
-            $this->setShowMap($_cook->map);
-            $this->setShowDaterange($_cook->daterange);
-
+        $_cook = json_decode($_COOKIE[$name]);
+        $this->setShowMap($_cook->map);
+        $this->setShowDaterange($_cook->daterange);
     }
 }

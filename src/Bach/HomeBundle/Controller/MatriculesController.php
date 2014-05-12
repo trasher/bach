@@ -99,22 +99,22 @@ class MatriculesController extends SearchController
         }
 
         /** Manage view parameters */
-        $view_params = $session->get('matricules_view_params');
+        $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
             $view_params = new ViewParams();
         }
         $view_params->setResultsByPage(20);
 
         //take care of user view params
-        if ( isset($_COOKIE['bach_matricules_view_params']) ) {
-            $view_params->bindCookie('bach_matricules_view_params');
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $view_params->bindCookie($this->getCookieName());
         }
 
         //set current view parameters according to request
-        $view_params->bind($request);
+        $view_params->bind($request, $this->getCookieName());
 
         //store new view parameters
-        $session->set('matricules_view_params', $view_params);
+        $session->set($this->getParamSessionName(), $view_params);
 
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
 
@@ -507,7 +507,7 @@ class MatriculesController extends SearchController
     {
         $request = $this->getRequest();
         $session = $request->getSession();
-        $view_params = $session->get('matricules_view_params');
+        $view_params = $session->get($this->getParamSessionName());
 
         if ( $view_params->advancedSearch() ) {
             return 'adv_matricules';
@@ -534,5 +534,15 @@ class MatriculesController extends SearchController
     protected function getSearchUri()
     {
         return 'bach_matricules_search';
+    }
+
+    /**
+     * Get session name for view parameters
+     *
+     * @return string
+     */
+    protected function getParamSessionName()
+    {
+        return 'matricules_view_params';
     }
 }
