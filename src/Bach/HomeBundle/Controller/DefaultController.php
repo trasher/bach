@@ -92,6 +92,7 @@ class DefaultController extends SearchController
         $view_params->bind($request, $this->getCookieName());
 
         $tpl_vars = $this->searchTemplateVariables($view_params);
+        $session->set($this->getFiltersName(), null);
 
         $form = $this->createForm(
             new SearchQueryFormType(),
