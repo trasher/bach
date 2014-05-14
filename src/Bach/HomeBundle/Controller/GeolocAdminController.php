@@ -229,16 +229,8 @@ class GeolocAdminController extends Controller
             }
         }
 
-        $factory = $this->get("bach.home.solarium_query_factory");
-        $geojson = $factory->getGeoJson(
-            $map_facets,
-            $this->getDoctrine()
-                ->getRepository('BachIndexationBundle:Geoloc')
-        );
-
         return $this->render(
-            'BachHomeBundle:Admin:geoloc_visualize.html.twig',
-            array('geojson' => $geojson)
+            'BachHomeBundle:Admin:geoloc_visualize.html.twig'
         );
     }
 }

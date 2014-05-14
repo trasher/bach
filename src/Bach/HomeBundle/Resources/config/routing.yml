@@ -100,6 +100,18 @@ bach_fullfacet:
     requirements:
         _method: GET|POST
 
+bach_geojson:
+    pattern: /geojson
+    defaults: {_controller: BachHomeBundle:Default:getGeoJson}
+    requirements:
+        _method: GET
+
+bach_matricules_geojson:
+    pattern: /matricules/geojson
+    defaults: {_controller: BachHomeBundle:Matricules:getGeoJson}
+    requirements:
+        _method: GET
+
 bach_geozones:
     pattern: /geo/zones/{bbox}
     defaults: {_controller: BachHomeBundle:Default:getZones}

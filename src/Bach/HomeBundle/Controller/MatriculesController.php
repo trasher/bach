@@ -78,9 +78,62 @@ class MatriculesController extends SearchController
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        $redirectUrl = $this->get('router')->generate('bach_matricules_search');
+        /** Manage view parameters */
+        $view_params = $session->get($this->getParamSessionName());
+        if ( !$view_params ) {
+            $view_params = new ViewParams();
+        }
+        $view_params->setResultsByPage(20);
+
+        //take care of user view params
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $view_params->bindCookie($this->getCookieName());
+        }
+
+        //set current view parameters according to request
+        $view_params->bind($request, $this->getCookieName());
+
+        $tpl_vars = $this->searchTemplateVariables($view_params);
         $session->set($this->getFiltersName(), null);
-        return new RedirectResponse($redirectUrl);
+
+        if ( $view_params->advancedSearch() ) {
+            $form = $this->createForm(
+                new MatriculesType(),
+                null
+            );
+            $tpl_vars['search_path'] = 'bach_matricules_search';
+        } else {
+            $form = $this->createForm(
+                new SearchQueryFormType(),
+                null
+            );
+            $tpl_vars['search_path'] = 'bach_matricules_do_search';
+        }
+
+        $factory = $this->get($this->factoryName());
+        $factory->setDateField($this->date_field);
+
+        $slider_dates = $factory->getSliderDates(new Filters());
+
+        if ( is_array($slider_dates) ) {
+            $tpl_vars = array_merge($tpl_vars, $slider_dates);
+        }
+
+        if ( $view_params->advancedSearch() ) {
+            $tpl_vars['adv_form'] = $form->createView();
+        } else {
+            $tpl_vars['form'] = $form->createView();
+        }
+
+
+        $this->handleGeoloc($factory);
+
+        $this->handleYearlyResults($factory, $tpl_vars);
+
+        return $this->render(
+            'BachHomeBundle:Matricules:search_form.html.twig',
+            $tpl_vars
+        );
     }
 
     /**
@@ -246,11 +299,6 @@ class MatriculesController extends SearchController
         if ( is_array($slider_dates) ) {
             $tpl_vars = array_merge($tpl_vars, $slider_dates);
         }
-
-        $this->handleGeoloc(
-            $factory,
-            $tpl_vars
-        );
 
         if ( $view_params->advancedSearch() ) {
             $tpl_vars['adv_form'] = $form->createView();

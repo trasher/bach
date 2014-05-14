@@ -908,6 +908,19 @@ h2.back a:hover {
     margin-bottom: 1em;
 }
 
+.nomapres {
+    position: absolute;
+    bottom: 0;
+    background-color:rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    color:white;
+    padding: .2em .5em;
+}
+.leaflet-container .nomapres a {
+    color: white;
+    text-decoration: underline;
+}
+
 div.sonata-bc #map {
     width: 300px;
     float: right;

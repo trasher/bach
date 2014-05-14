@@ -570,21 +570,24 @@ class SolariumQueryFactory
                                     //lets display a point instead
                                     $lon = $polygon->getLon();
                                     $lat = $polygon->getLat();
-                                    $geometry = str_replace(
-                                        array('%lon', '%lat'),
-                                        array($lon, $lat),
-                                        '{"type":"Point","coordinates":[%lon,%lat]}'
+                                    $geometry = array(
+                                        'type'          => 'Point',
+                                        'coordinates'   => array(
+                                            (float)$lon,
+                                            (float)$lat
+                                        )
                                     );
                                 }
 
                                 $count = $value[$name];
-                                $results[] = str_replace(
-                                    '%geometry',
-                                    $geometry,
-                                    "\n" . '{"type": "Feature", "id":"' . $id .
-                                    '", "properties":{"name": "' . $name  . 
-                                    '", "results": ' . $count .
-                                    '}, "geometry": %geometry}'
+                                $results[] = array(
+                                    'type'          => 'Feature',
+                                    'id'            => (string)$id,
+                                    'properties'    => array(
+                                        'name'      => $name,
+                                        'results'   => $count
+                                    ),
+                                    'geometry'  => $geometry
                                 );
                             }
                         }
@@ -592,10 +595,10 @@ class SolariumQueryFactory
                             if ( $merged === true ) {
                                 $result = array_merge($result, $results);
                             } else {
-                                $result[$field]
-                                    = '{"type": "FeatureCollection", "features":[' .
-                                    implode(',', $results) .
-                                    ']}';
+                                $result[$field] = array(
+                                    'type'      => 'FeatureCollection',
+                                    'features'  => $results
+                                );
                             }
                         }
                     }
@@ -604,9 +607,10 @@ class SolariumQueryFactory
         }
 
         if ( $merged === true ) {
-            $result = '{"type": "FeatureCollection", "features":[' .
-                implode(',', $result) .
-                ']}';
+            $result = array(
+                'type'      => 'FeatureCollection',
+                'features'  => $result
+            );
         }
 
         return $result;

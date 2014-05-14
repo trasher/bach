@@ -144,12 +144,11 @@ abstract class SearchController extends Controller
     /**
      * Handle geolocalization
      *
-     * @param SolariumQueryFactory $factory   Query factory
-     * @param array                &$tpl_vars Template variables
+     * @param SolariumQueryFactory $factory Query factory
      *
      * @return void
      */
-    protected function handleGeoloc(SolariumQueryFactory $factory, &$tpl_vars)
+    protected function handleGeoloc(SolariumQueryFactory $factory)
     {
         $show_maps = $this->container->getParameter('feature.maps');
         if ( $show_maps ) {
@@ -185,12 +184,6 @@ abstract class SearchController extends Controller
                 $this->mapFacetsName(),
                 $map_facets
             );
-            $geojson = $factory->getGeoJson(
-                $map_facets,
-                $this->getDoctrine()
-                    ->getRepository('BachIndexationBundle:Geoloc')
-            );
-            $tpl_vars['geojson'] = $geojson;
         }
     }
 
@@ -453,14 +446,33 @@ abstract class SearchController extends Controller
         }
 
         if ( $show_maps ) {
-            $session->set('map_facets', $map_facets);
-            $geojson = $factory->getGeoJson(
-                $map_facets,
-                $this->getDoctrine()
-                    ->getRepository('BachIndexationBundle:Geoloc')
+            $session->set(
+                $this->mapFacetsName(),
+                $map_facets
             );
-            $tpl_vars['geojson'] = $geojson;
         }
+    }
+
+    /**
+     * Loads Geojson data
+     *
+     * @return void
+     */
+    public function getGeoJsonAction()
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        $factory = $this->get($this->factoryName());
+        $map_facets = $session->get($this->mapFacetsName());
+
+        $geojson = $factory->getGeoJson(
+            $map_facets,
+            $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:Geoloc')
+        );
+
+        return new JsonResponse($geojson);
     }
 
     /**
@@ -549,9 +561,7 @@ abstract class SearchController extends Controller
             true
         );
 
-        $response = new Response($geojson);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        return new JsonResponse($geojson);
     }
 
     /**

@@ -112,7 +112,7 @@ class DefaultController extends SearchController
             }
         }
 
-        $this->handleGeoloc($factory, $tpl_vars);
+        $this->handleGeoloc($factory);
 
         $slider_dates = $factory->getSliderDates(new Filters());
         if ( is_array($slider_dates) ) {
