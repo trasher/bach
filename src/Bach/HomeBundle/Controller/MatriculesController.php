@@ -75,6 +75,9 @@ class MatriculesController extends SearchController
      */
     public function indexAction()
     {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
         $redirectUrl = $this->get('router')->generate('bach_matricules_search');
         $session->set($this->getFiltersName(), null);
         return new RedirectResponse($redirectUrl);
