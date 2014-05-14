@@ -74,6 +74,14 @@ services:
         tags:
             - { name: twig.extension }
 
+    bach.home.display_pmb_fragment:
+        class: Bach\HomeBundle\Twig\DisplayPMBFragment
+        arguments: [ @router, '%feature.comments%' ]
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: twig.extension }
+
     bach.home.display_html:
         class: Bach\HomeBundle\Twig\DisplayHtml
         arguments: [ @router, '%cote_location%' ]
