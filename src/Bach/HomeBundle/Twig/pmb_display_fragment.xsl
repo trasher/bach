@@ -46,97 +46,71 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
 
-    <xsl:param name="full" select="1"/>
-    <xsl:param name="ajax" select="''"/>
-    <xsl:param name="children" select="''"/>
-    <xsl:param name="comments_enabled" select="''"/>
-    <xsl:param name="comments" select="''"/>
-    <xsl:param name="viewer_uri" select="''"/>
-    <xsl:param name="covers_dir" select="''"/>
-    <xsl:param name="count_subs" select="''"/>
-    <xsl:param name="cdc" select="'false'"/>
-    <xsl:param name="docid"/>
-    
-    <xsl:template match="notices/">
-            <xsl:value-of select="notice/idNotice"/>
-            <xsl:value-of select="notice/zoneCodageUnimarc"/>
-                <xsl:value-of select="notice/zoneCodageUnimarc"/>
-            <xsl:value-of select="notice/zoneTitre"/>
-                <xsl:value-of select="notice/zoneTitre/titrePrincipal"/>
-                <xsl:value-of select="notice/zoneTitre/titreComplement"/>
-            <xsl:value-of select="notice/prixISBN"/>
-                <xsl:value-of select="notice/prixISBN/ISBN"/>
-            <xsl:value-of select="notice/zoneLangues"/>
-                <xsl:value-of select="notice/zoneLangues/langueDocument"/>
-                <xsl:value-of select="notice/zoneLangues/langueOriginale"/>
-            <xsl:value-of select="notice/zoneCollation"/>
-                <xsl:value-of select="notice/zoneCollation/nbPages"/>
-                <xsl:value-of select="notice/zoneCollation/illustration"/>
-                <xsl:value-of select="notice/zoneCollation/taille"/>
-                <xsl:value-of select="notice/zoneCollation/materielAccompagnement"/>
-            <xsl:value-of select="notice/zoneNotes"/>
-                <xsl:value-of select="notice/zoneNotes/noteContenu"/>
-                <xsl:value-of select="notice/zoneNotes/noteResume"/>
-            <xsl:value-of select="notice/zoneAuteurPrincipal"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipal/nom"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipal/prenom"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipal/codeFonction"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipal/dates"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipal/siteWeb"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipal/s_9"/>
-            <xsl:value-of select="notice/zoneAuteurPrincipalCollectivite"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipalCollectivite/nom"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipalCollectivite/prenom"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipalCollectivite/codeFonction"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipalCollectivite/dates"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipalCollectivite/siteWeb"/>
-                <xsl:value-of select="notice/zoneAuteurPrincipalCollectivite/s_9"/>
-            <xsl:value-of select="notice/zoneAuteursSecondaires"/>
-                <xsl:value-of select="notice/zoneAuteursSecondaires/nom"/>
-                <xsl:value-of select="notice/zoneAuteursSecondaires/prenom"/>
-                <xsl:value-of select="notice/zoneAuteursSecondaires/codeFonction"/>
-                <xsl:value-of select="notice/zoneAuteursSecondaires/dates"/>
-                <xsl:value-of select="notice/zoneAuteursSecondaires/siteWeb"/>
-                <xsl:value-of select="notice/zoneAuteursSecondaires/s_9"/>
-            <xsl:value-of select="notice/zoneAuteursSecondairesCollectivite"/>
-                <xsl:value-of select="notice/zoneAuteursSecondairesCollectivite/nom"/>
-                <xsl:value-of select="notice/zoneAuteursSecondairesCollectivite/prenom"/>
-                <xsl:value-of select="notice/zoneAuteursSecondairesCollectivite/codeFonction"/>
-                <xsl:value-of select="notice/zoneAuteursSecondairesCollectivite/dates"/>
-                <xsl:value-of select="notice/zoneAuteursSecondairesCollectivite/siteWeb"/>
-                <xsl:value-of select="notice/zoneAuteursSecondairesCollectivite/s_9"/>
-            <xsl:value-of select="notice/zoneAuteursAutres"/>
-                <xsl:value-of select="notice/zoneAuteursAutres/nom"/>
-                <xsl:value-of select="notice/zoneAuteursAutres/prenom"/>
-                <xsl:value-of select="notice/zoneAuteursAutres/codeFonction"/>
-                <xsl:value-of select="notice/zoneAuteursAutres/dates"/>
-                <xsl:value-of select="notice/zoneAuteursAutres/siteWeb"/>
-                <xsl:value-of select="notice/zoneAuteursAutres/s_9"/>
-            <xsl:value-of select="notice/zoneEditeur"/>
-                <xsl:value-of select="notice/zoneEditeur/ville"/>
-                <xsl:value-of select="notice/zoneEditeur/s_b"/>
-                <xsl:value-of select="notice/zoneEditeur/nom"/>
-                <xsl:value-of select="notice/zoneEditeur/annee"/>
-                <xsl:value-of select="notice/zoneEditeur/s_9"/>
-            <xsl:value-of select="notice/zoneCollection225"/>
-                <xsl:value-of select="notice/zoneCollection225/nom"/>
-                <xsl:value-of select="notice/zoneCollection225/s_9"/>
-            <xsl:value-of select="notice/zoneCollection410"/>
-                <xsl:value-of select="notice/zoneCollection410/nom"/>
-                <xsl:value-of select="notice/zoneCollection410/s_9"/>
-            <xsl:value-of select="notice/zoneIndexationDecimale"/>
-                <xsl:value-of select="notice/zoneIndexationDecimale/nom"/>
-                <xsl:value-of select="notice/zoneIndexationDecimale/s_l"/>
-                <xsl:value-of select="notice/zoneIndexationDecimale/s_9"/>
-            <xsl:value-of select="notice/f_896"/>
-                <xsl:value-of select="notice/f_896/s_a"/>
-            <xsl:value-of select="notice/zoneMotsClesLibres"/>
-                <xsl:value-of select="notice/zoneMotsClesLibres/mot"/>
-            <xsl:value-of select="notice/zoneCategories"/>
-                <xsl:value-of select="notice/zoneCategories/s_9"/>
-                <xsl:value-of select="notice/zoneCategories/categorie"/>
+    <xsl:template match="notice">
+        <header>
+            <h2 property="dc:title">
+                <xsl:value-of select="//titrePrincipal"/>
+            </h2>
+        </header>
+
+        <xsl:apply-templates/>
     </xsl:template>
 
+    <xsl:template match="idNotice">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Identifiant notice : ')"/><xsl:value-of select="."/></p>
+    </xsl:template>
+    <xsl:template match="zoneCodageUnimarc">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Codage Unimarc : ')"/><xsl:value-of select="."/></p>
+    </xsl:template>
+    <xsl:template match="zoneEditeur">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Editor')"/></h3>
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Nom : ')"/><xsl:value-of select="nom"/></p>
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'City : ')"/><xsl:value-of select="ville"/></p>
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Year : ')"/><xsl:value-of select="annee"/></p>
+    </xsl:template>
+    <xsl:template match="zoneAuteurPrincipal">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Primary Author')"/></h3>
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Firstname : ')"/><xsl:value-of select="prenom"/></p>
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Lastname : ')"/><xsl:value-of select="nom"/></p>
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Function : ')"/><xsl:value-of select="codeFonction"/></p>
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Dates : ')"/><xsl:value-of select="dates"/></p>
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'WebSite : ')"/><xsl:value-of select="siteWeb"/></p>
+    </xsl:template>
+    <xsl:template match="zoneMentionEdition">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Mention editor : ')"/><xsl:value-of select="."/></p>
+    </xsl:template>
+    <xsl:template match="f_411">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'f_411 : ')"/><xsl:value-of select="."/></p>
+    </xsl:template>
+    <xsl:template match="zoneMotsClesLibres">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Keywords : ')"/><xsl:value-of select="."/></p>
+    </xsl:template>
+        <xsl:template match="zoneCategories">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Category : ')"/><xsl:value-of select="categorie"/></p>
+    </xsl:template>
+    <xsl:template match="zoneCategories">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Category : ')"/><xsl:value-of select="categorie"/></p>
+    </xsl:template>
+       <xsl:template match="zoneCollection410">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', '410 : ')"/><xsl:value-of select="nom"/></p>
+    </xsl:template>
+       <xsl:template match="zoneCollection225">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', '225 : ')"/><xsl:value-of select="nom"/></p>
+    </xsl:template>
+
+    <!--<xsl:template match="zoneTitre/*"/>
+    <xsl:template match="titreComplement|titrePropreAuteurDiffzoneTitre|titreParallele">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>-->
+    <xsl:template match="/langueDocument">
+        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Language : ')"/><xsl:value-of select="."/></p>
+    </xsl:template>
+    <xsl:template match="zoneNotes">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Notes')"/></h3>
+        <p><xsl:value-of select="."/></p>
+    </xsl:template>
 
     <!-- Per default, display nothing -->
     <xsl:template match="*|@*|node()"/>

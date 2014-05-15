@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 {% extends '::base.html.twig' %}
-
+{% block title_extend %} - {{ document.title_proper }}{% endblock %}
 {% block container %}
     {% include 'BachHomeBundle:PMB:content_display.html.twig' with {'uniqid': uniqid, 'document': document} %}
 {% endblock %}

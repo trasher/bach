@@ -139,7 +139,7 @@ private $_router;
      *
      * @return string
      */
-    /*public function display($fragment, $docid, $full = false, $hasChildren = false,
+    public function display($fragment, $docid, $full = false, $hasChildren = false,
         $hasComments = false, $countSub = 0, $ajax = false
     ) {
         $proc = new \XsltProcessor();
@@ -162,14 +162,14 @@ private $_router;
         };
 
         $xml = simplexml_load_string($fragment);
-        $proc->setParameter('', 'full', $full);
+     
+        /*$proc->setParameter('', 'full', $full);
         $proc->setParameter('', 'docid', $docid);
         $proc->setParameter('', 'viewer_uri', $this->_viewer_uri);
         $proc->setParameter('', 'covers_dir', $this->_covers_dir);
         $comments_enabled = $this->_comms ? 'true' : 'false';
         $proc->setParameter('', 'comments_enabled', $comments_enabled);
-
-        if ( $hasChildren === true ) {
+                if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
         }
         if ( $hasComments === true ) {
@@ -180,9 +180,12 @@ private $_router;
         }
         if ( $ajax === true ) {
             $proc->setParameter('', 'ajax', 'true');
-        }
+        }*/
+
         $proc->registerPHPFunctions();
         $text = $proc->transformToXml($xml);
+
+
         //it is not possible to build routes from the XSL, so we'll build them here
         $text = preg_replace_callback(
             '/link="%%%(.[^:]+)::(.[^%]*)%%%"/',
@@ -194,14 +197,8 @@ private $_router;
             'bach_add_comment',
             array('docid' => $docid)
         );
-
-        $text = str_replace(
-            '__path_add_comment__',
-            $add_comment_path,
-            $text
-        );
         return $text;
-    }*/
+    }
 
     /**
      * Get translations from XSL stylesheet.
@@ -216,8 +213,68 @@ private $_router;
     public static function i18nFromXsl($ref)
     {
         switch ( $ref ) {
-        case 'Publication informations':
-            return _('Publication informations');
+        case 'Codage Unimarc : ':
+            return _('Codage Unimarc : ');
+            break;
+        case 'Identifiant notice : ':
+            return _('Identifiant notice : ');
+            break;
+        case 'Editor':
+            return _('Editor');
+            break;
+        case 'Nom : ':
+            return _('Nom : ');
+            break;
+        case 'City : ':
+            return _('City : ');
+            break;
+        case 'Year : ':
+            return _('Year : ');
+            break;
+        case 'Primary Author':
+            return _('Primary Author');
+            break;
+        case 'Firstname : ':
+            return _('Firstname : ');
+            break;
+        case 'Lastname : ':
+            return _('Lastname : ');
+            break;
+        case 'Function : ':
+            return _('Function : ');
+            break;
+        case 'Dates : ':
+            return _('Dates : ');
+            break;
+        case 'WebSite : ':
+            return _('WebSite : ');
+            break;
+        case 'Mention editor : ':
+            return _('Mention editor : ');
+            break;
+        case 'f_411 : ':
+            return _('f_411 : ');
+            break;
+        case 'Keywords : ':
+            return _('Keywords : ');
+            break;
+        case 'Category : ':
+            return _('Category : ');
+            break;
+        case '410 : ':
+            return _('410 : ');
+            break;
+        case '225 : ':
+            return _('225 : ');
+            break;
+        case 'Language : : ':
+            return _('Language : ');
+            break;
+        case 'Notes':
+            return _('Notes');
+            break;
+        case 'Codage Unimarc : ':
+            return _('Codage Unimarc : ');
             break;
         default:
             //TODO: add an alert in logs, a translation may be missing!
@@ -236,7 +293,7 @@ private $_router;
      */
     public function getName()
     {
-        return 'display_pmb_fragment';
+        return 'pmb_display_fragment';
     }
 
 }
