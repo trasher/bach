@@ -132,9 +132,10 @@ abstract class SearchController extends Controller
         $covers_dir = $this->container->getParameter('covers_dir');
 
         $tpl_vars = array(
-            'viewer_uri'    => $viewer_uri,
-            'show_maps'     => $show_maps,
-            'covers_dir'    => $covers_dir
+            'viewer_uri'        => $viewer_uri,
+            'show_maps'         => $show_maps,
+            'covers_dir'        => $covers_dir,
+            'cookie_param_name' => $this->getCookieName()
         );
 
         return $tpl_vars;
@@ -505,6 +506,23 @@ abstract class SearchController extends Controller
     abstract protected function getViews();
 
     /**
+     * Get session name for view parameters
+     *
+     * @return string
+     */
+    abstract protected function getParamSessionName();
+
+    /**
+     * Get cookie name for view parameters
+     *
+     * @return string
+     */
+    protected function getCookieName()
+    {
+        return 'bach_' . $this->getParamSessionName();
+    }
+
+    /**
      * Get geographical zones
      *
      * @param stirng $bbox Bounding box
@@ -586,11 +604,11 @@ abstract class SearchController extends Controller
 
         $query_terms = urldecode($query_terms);
 
-        $view_params = $session->get('view_params');
+        $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
             $view_params = new ViewParams();
         }
-        $view_params->bind($request);
+        $view_params->bind($request, $this->getCookieName());
 
         $geoloc = $this->getGeolocFields();
 

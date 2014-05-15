@@ -79,19 +79,20 @@ class DefaultController extends SearchController
         $session = $request->getSession();
 
         /** Manage view parameters */
-        $view_params = $session->get('view_params');
+        $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
             $view_params = new ViewParams();
         }
         //take care of user view params
-        if ( isset($_COOKIE['bach_view_params']) ) {
-            $view_params->bindCookie('bach_view_params');
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $view_params->bindCookie($this->getCookieName());
         }
 
         //set current view parameters according to request
-        $view_params->bind($request);
+        $view_params->bind($request, $this->getCookieName());
 
         $tpl_vars = $this->searchTemplateVariables($view_params);
+        $session->set($this->getFiltersName(), null);
 
         $form = $this->createForm(
             new SearchQueryFormType(),
@@ -195,20 +196,20 @@ class DefaultController extends SearchController
         }
 
         /** Manage view parameters */
-        $view_params = $session->get('view_params');
+        $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
             $view_params = new ViewParams();
         }
         //take care of user view params
-        if ( isset($_COOKIE['bach_view_params']) ) {
-            $view_params->bindCookie('bach_view_params');
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $view_params->bindCookie($this->getCookieName());
         }
 
         //set current view parameters according to request
-        $view_params->bind($request);
+        $view_params->bind($request, $this->getCookieName());
 
         //store new view parameters
-        $session->set('view_params', $view_params);
+        $session->set($this->getParamSessionName(), $view_params);
 
         $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
@@ -838,5 +839,15 @@ class DefaultController extends SearchController
         return $this->render(
             '::' . $name . '.css.twig'
         );
+    }
+
+    /**
+     * Get session name for view parameters
+     *
+     * @return string
+     */
+    protected function getParamSessionName()
+    {
+        return 'view_params';
     }
 }

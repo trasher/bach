@@ -325,7 +325,6 @@ class SolariumQueryFactory
                         );
                         $fr->setField($this->_date_field);
                         $fr->setStart($this->_low_date);
-                        //$fr->setgap('+' . $this->_date_gap . 'YEARS');
                         $gap = $this->_getGap(
                             new \DateTime($this->_low_date),
                             new \DateTime($this->_up_date)

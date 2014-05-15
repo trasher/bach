@@ -36,7 +36,6 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block search_path %}bach_search{%endblock %}
 {% block fullfacet_path %}bach_fullfacet{%endblock %}
 {% block do_search_path %}bach_do_search{% endblock %}
-{% block cookie_param_name %}bach_view_params{% endblock %}
 
 {% block title_extend %}{% if q is defined and q|trim != '' %} - {{ _('Search on "%term"')|replace({'%term': q}) }}{% endif %}{% endblock %}
 
@@ -340,7 +339,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block javascripts %}
             $.cookie.json = true;
-            var _view_params = $.cookie('{{ block('cookie_param_name') }}');
+            var _view_params = $.cookie('{{ cookie_param_name }}');
 
             if ( !_view_params ) {
                 _view_params = {
@@ -530,7 +529,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% endif %}
 
             _setCookie = function() {
-                $.cookie('{{ block('cookie_param_name') }}', _view_params, { expires: 365 });
+                $.cookie('{{ cookie_param_name }}', _view_params, { expires: 365, path: '/' });
             }
 
             $('#sh_daterange').on('click', function(){

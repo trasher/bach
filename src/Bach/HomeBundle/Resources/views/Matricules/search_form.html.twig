@@ -38,12 +38,11 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block search_path %}bach_matricules_search{% endblock %}
 {% block fullfacet_path %}bach_matricules_fullfacet{% endblock %}
 {% block do_search_path %}{{ search_path }}{% endblock %}
-{% block cookie_param_name %}bach_matricules_view_params{% endblock %}
 
 {% block show_results %}
     {% if view == 'thumbs' %}
         {% for document in searchResults %}
-        <article id="result_{{ document.uniqid }}" role="document" about="{#{ document.fragmentid }#}" class="thumbs"}>
+        <article id="result_{{ document.id }}" role="document" about="{#{ document.fragmentid }#}" class="thumbs"}>
             <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
                 {% if document.dao is defined %}
                     {{ displayDao(document.dao)|raw }}
@@ -54,15 +53,15 @@ POSSIBILITY OF SUCH DAMAGE.
             <h3{# property="dc:title"#}>
                 <a href="{{ path('bach_display_matricules', {'docid': document.id}) }}" class="display_doc">
                     {% set name %}
-                    {%- if hlSearchResults.getResult(document.uniqid).getField('txt_nom')|length > 0 -%}
-                        {{ hlSearchResults.getResult(document.uniqid).getField('txt_nom')[0]|raw }}
+                    {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
+                        {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
                     {%- else -%}
                         {{ document.nom }}
                     {%- endif -%}
                     {% endset %}
                     {% set surname %}
-                    {%- if hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')|length > 0 -%}
-                        {{ hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')[0]|raw }}
+                    {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
+                        {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
                     {%- else -%}
                         {% for prenom in document.prenoms %}
                         {{ prenom }}
@@ -116,15 +115,15 @@ POSSIBILITY OF SUCH DAMAGE.
                         {% endif %}
                     </td>
                     <td>
-                        {%- if hlSearchResults.getResult(document.uniqid).getField('txt_nom')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.uniqid).getField('txt_nom')[0]|raw }}
+                        {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
                         {%- else -%}
                             {{ document.nom }}
                         {%- endif -%}
                     </td>
                     <td>
-                        {%- if hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.uniqid).getField('txt_prenoms')[0]|raw }}
+                        {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
                         {%- else -%}
                             {% for prenom in document.prenoms %}
                                 {{ prenom }}
@@ -133,16 +132,16 @@ POSSIBILITY OF SUCH DAMAGE.
                     </td>
                     <td>{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
                     <td>
-                        {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_naissance')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.uniqid).getField('lieu_naissance')[0]|raw }}
+                        {%- if hlSearchResults.getResult(document.id).getField('lieu_naissance')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.id).getField('lieu_naissance')[0]|raw }}
                         {%- else -%}
                             {{ document.lieu_naissance }}
                         {%- endif -%}
                     </td>
                     <td>{% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}</td>
                     <td>
-                        {%- if hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.uniqid).getField('lieu_enregistrement')[0]|raw }}
+                        {%- if hlSearchResults.getResult(document.id).getField('lieu_enregistrement')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.id).getField('lieu_enregistrement')[0]|raw }}
                         {%- else -%}
                             {{ document.lieu_enregistrement }}
                         {%- endif -%}
