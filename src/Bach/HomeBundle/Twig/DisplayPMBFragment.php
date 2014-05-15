@@ -167,7 +167,7 @@ private $_router;
         $proc->setParameter('', 'docid', $docid);
         $proc->setParameter('', 'viewer_uri', $this->_viewer_uri);
         $proc->setParameter('', 'covers_dir', $this->_covers_dir);
-        $comments_enabled = $this->_comms ? 'true' : 'false';
+        $comments_enabled = $this->_comms ? 'true':'false';
         $proc->setParameter('', 'comments_enabled', $comments_enabled);
                 if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
@@ -213,68 +213,68 @@ private $_router;
     public static function i18nFromXsl($ref)
     {
         switch ( $ref ) {
-        case 'Codage Unimarc : ':
-            return _('Codage Unimarc : ');
+        case 'Codage Unimarc:':
+            return _('Codage Unimarc:');
             break;
-        case 'Identifiant notice : ':
-            return _('Identifiant notice : ');
+        case 'Identifiant notice:':
+            return _('Identifiant notice:');
             break;
         case 'Editor':
             return _('Editor');
             break;
-        case 'Nom : ':
-            return _('Nom : ');
+        case 'Nom:':
+            return _('Nom:');
             break;
-        case 'City : ':
-            return _('City : ');
+        case 'City:':
+            return _('City:');
             break;
-        case 'Year : ':
-            return _('Year : ');
+        case 'Year:':
+            return _('Year:');
             break;
         case 'Primary Author':
             return _('Primary Author');
             break;
-        case 'Firstname : ':
-            return _('Firstname : ');
+        case 'Firstname:':
+            return _('Firstname:');
             break;
-        case 'Lastname : ':
-            return _('Lastname : ');
+        case 'Lastname:':
+            return _('Lastname:');
             break;
-        case 'Function : ':
-            return _('Function : ');
+        case 'Function:':
+            return _('Function:');
             break;
-        case 'Dates : ':
-            return _('Dates : ');
+        case 'Dates:':
+            return _('Dates:');
             break;
-        case 'WebSite : ':
-            return _('WebSite : ');
+        case 'WebSite:':
+            return _('WebSite:');
             break;
-        case 'Mention editor : ':
-            return _('Mention editor : ');
+        case 'Mention editor:':
+            return _('Mention editor:');
             break;
-        case 'f_411 : ':
-            return _('f_411 : ');
+        case 'f_411:':
+            return _('f_411:');
             break;
-        case 'Keywords : ':
-            return _('Keywords : ');
+        case 'Keywords:':
+            return _('Keywords:');
             break;
-        case 'Category : ':
-            return _('Category : ');
+        case 'Category:':
+            return _('Category:');
             break;
-        case '410 : ':
-            return _('410 : ');
+        case '410:':
+            return _('410:');
             break;
-        case '225 : ':
-            return _('225 : ');
+        case '225:':
+            return _('225:');
             break;
-        case 'Language : : ':
-            return _('Language : ');
+        case 'Language:: ':
+            return _('Language:');
             break;
         case 'Notes':
             return _('Notes');
             break;
-        case 'Codage Unimarc : ':
-            return _('Codage Unimarc : ');
+        case 'Title:':
+            return _('Title:');
             break;
         default:
             //TODO: add an alert in logs, a translation may be missing!
