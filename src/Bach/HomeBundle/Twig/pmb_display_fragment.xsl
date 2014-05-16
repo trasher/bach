@@ -123,6 +123,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="prenom|nom|codeFonction|dates|siteWeb">
         <p>
             <xsl:value-of select="."/>
+            <xsl:value-of select="."/>
         </p>
     </xsl:template>
     <xsl:template match="zoneMentionEdition">
