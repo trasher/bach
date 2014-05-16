@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
     
     <article about="{{ uniqid }}" class="show_fragment">
-            {{ displayFragment(document.fragment, document.uniqid, true, "1", "0", "0", ajax)|raw }}
+            
         {#<header>
             <h2 property="dc:title">
                 {{ document.title_proper }}
@@ -48,8 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
                 {% endif %}
             </figure>
-
-            <table>
+            {{ displayFragment(document.fragment, document.uniqid, true, "1", "0", "0", ajax)|raw }}
             {#
                 {% if document.dyndescr_authtype_primary is defined %}
                     <tr>
@@ -118,6 +117,5 @@ POSSIBILITY OF SUCH DAMAGE.
                         <td>{{ keyword|join(' | ')  }}</td>
                     </tr>
                 {% endif %}#}
-            </table>
         </section>
     </article>

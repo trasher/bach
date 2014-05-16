@@ -231,9 +231,6 @@ private $_router;
         case 'Year:':
             return _('Year:');
             break;
-        case 'Primary Author':
-            return _('Primary Author');
-            break;
         case 'Firstname:':
             return _('Firstname:');
             break;
@@ -274,7 +271,40 @@ private $_router;
             return _('Notes');
             break;
         case 'Title:':
-            return _('Title:');
+            return _('Title');
+            break;
+        case 'Primary Author':
+            return _('Primary Author');
+            break;
+        case 'Primary Author collectivity':
+            return _('Primary Author collectivity');
+            break;
+        case 'Secondary Author':
+            return _('Secondary Author');
+            break;
+        case 'Secondary Author collectivity':
+            return _('Secondary Author collectivity');
+            break;
+        case 'Other Author':
+            return _('Other Author');
+            break;
+        case 'Decimal indexing':
+            return _('Decimal indexing');
+            break;
+        case 'Decimal indexing':
+            return _('Decimal indexing');
+            break;
+        case 'Zone Mother':
+            return _('Zone Mother');
+            break;
+        case 'Note content':
+            return _('Note content');
+            break;
+        case 'Note resume':
+            return _('Note resume');
+            break;
+        case 'Note generale':
+            return _('Note generale');
             break;
         default:
             //TODO: add an alert in logs, a translation may be missing!

@@ -56,12 +56,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <xsl:apply-templates/>
     </xsl:template>
     <xsl:template match="zoneTitre">
+                <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Title:')"/></h3>
         <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template match="titreComplement|titrePropreAuteurDiffzoneTitre|titreParallele">
         <p>
-            <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Title:')"/>
             <xsl:value-of select="."/>
         </p>
     </xsl:template>
@@ -71,22 +71,63 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="zoneCodageUnimarc">
         <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Codage Unimarc:')"/><xsl:value-of select="."/></p>
     </xsl:template>
-    <xsl:template match="zoneEditeur">
+        <xsl:template match="zoneEditeur">
         <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Editor')"/></h3>
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Nom:')"/><xsl:value-of select="nom"/></p>
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'City:')"/><xsl:value-of select="ville"/></p>
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Year:')"/><xsl:value-of select="annee"/></p>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="nom|ville|annee">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
     </xsl:template>
     <xsl:template match="zoneAuteurPrincipal">
-        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Primary Author')"/></h3>
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Firstname:')"/><xsl:value-of select="prenom"/></p>
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Lastname:')"/><xsl:value-of select="nom"/></p>
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Function:')"/><xsl:value-of select="codeFonction"/></p>
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Dates:')"/><xsl:value-of select="dates"/></p>
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'WebSite:')"/><xsl:value-of select="siteWeb"/></p>
+                <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Primary Author')"/></h3>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="prenom|nom|codeFonction|dates|siteWeb">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+        <xsl:template match="zoneAuteurPrincipalCollectivite">
+            <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Primary Author collectivity')"/></h3>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="prenom|nom|codeFonction|dates|siteWeb">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    <xsl:template match="zoneAuteursSecondaires">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Secondary Author')"/></h3>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="prenom|nom|codeFonction|dates|siteWeb">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    <xsl:template match="zoneAuteursSecondairesCollectivite">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Secondary Author collectivity')"/></h3>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="prenom|nom|codeFonction|dates|siteWeb">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    <xsl:template match="zoneAuteursAutres">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Other Author')"/></h3>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="prenom|nom|codeFonction|dates|siteWeb">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
     </xsl:template>
     <xsl:template match="zoneMentionEdition">
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Mention editor:')"/><xsl:value-of select="."/></p>
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Mention editor:')"/></h3>
+        <p><xsl:value-of select="."/></p>
     </xsl:template>
     <xsl:template match="f_411">
         <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'f_411:')"/><xsl:value-of select="."/></p>
@@ -94,36 +135,110 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="zoneMotsClesLibres">
         <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Keywords:')"/><xsl:value-of select="."/></p>
     </xsl:template>
+    <xsl:template match="zoneMotsClesLibres">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Keywords:')"/></h3><p>
+            <xsl:call-template name="split">
+                <xsl:with-param name="zoneMotsClesLibres">
+                    <xsl:value-of select="."/>
+                </xsl:with-param>
+            </xsl:call-template>
+        </p>
+    </xsl:template>
+    <xsl:template name="split">
+        <xsl:param name="zoneMotsClesLibres"/>
+        <xsl:choose>
+            <xsl:when test="contains($zoneMotsClesLibres,';')">| <xsl:text/>
+                <xsl:value-of select="substring-before($zoneMotsClesLibres,';')"/>
+                <xsl:call-template name="split">
+                    <xsl:with-param name="zoneMotsClesLibres">
+                        <xsl:value-of select="substring-after($zoneMotsClesLibres,';')"/>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$zoneMotsClesLibres"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
     <xsl:template match="zoneCategories[1]">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Category:')"/></h3>
         <p>
-            <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Category:')"/>
             <!--<xsl:value-of select="categorie"/>-->
             <xsl:for-each select="//zoneCategories">
                 <xsl:value-of select="categorie"/>
                 <xsl:if test="following-sibling::*[local-name() = 'zoneCategories']">
-                    <xsl:text>, </xsl:text>
+                    <xsl:text>| </xsl:text>
                 </xsl:if>
             </xsl:for-each>
         </p>
     </xsl:template>
-
+    <xsl:template match="zoneCollection225">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', '225:')"/></h3>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="nom|numDansCollection|s_9">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
     <xsl:template match="zoneCollection410">
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', '410:')"/><xsl:value-of select="nom"/></p>
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', '410:')"/></h3>
+        <xsl:apply-templates/>
     </xsl:template>
-       <xsl:template match="zoneCollection225">
-        <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', '225:')"/><xsl:value-of select="nom"/></p>
+    <xsl:template match="nom|s_9">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
     </xsl:template>
-
-
-    <xsl:template match="/langueDocument">
+    <xsl:template match="zoneIndexationDecimale">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Decimal indexing')"/></h3>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="nom|s_l|s_9">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    <xsl:template match="zoneMere">
+        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Zone Mother')"/></h3>
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="titre|numero">
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    <xsl:template match="langueDocument">
         <p><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Language:')"/><xsl:value-of select="."/></p>
     </xsl:template>
     <xsl:template match="zoneNotes">
-        <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Notes')"/></h3>
-        <p><xsl:value-of select="."/></p>
+        <xsl:apply-templates/>
     </xsl:template>
-
+    <xsl:template match="noteContenu">
+            <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Note content')"/></h3>
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    <xsl:template match="zoneNotes">
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="noteGenerale">
+            <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Note generale')"/></h3>
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
+    <xsl:template match="zoneNotes">
+        <xsl:apply-templates/>
+    </xsl:template>
+    <xsl:template match="noteResume">
+            <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Note resume')"/></h3>
+        <p>
+            <xsl:value-of select="."/>
+        </p>
+    </xsl:template>
     <!-- Per default, display nothing -->
     <xsl:template match="*|@*|node()"/>
     <xsl:template match="*|@*|node()" mode="full"/>
