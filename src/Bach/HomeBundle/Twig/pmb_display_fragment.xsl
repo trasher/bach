@@ -138,25 +138,31 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="zoneMotsClesLibres">
         <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayPMBFragment::i18nFromXsl', 'Keywords:')"/></h3><p>
             <xsl:call-template name="split">
-                <xsl:with-param name="zoneMotsClesLibres">
+                <xsl:with-param name="text">
                     <xsl:value-of select="."/>
                 </xsl:with-param>
             </xsl:call-template>
         </p>
     </xsl:template>
     <xsl:template name="split">
-        <xsl:param name="zoneMotsClesLibres"/>
+        <xsl:param name="text"/>
+        <xsl:param name="first" select="'true'"/>
+        <xsl:param name="sep" select="';'"/>
         <xsl:choose>
-            <xsl:when test="contains($zoneMotsClesLibres,';')">| <xsl:text/>
-                <xsl:value-of select="substring-before($zoneMotsClesLibres,';')"/>
+            <xsl:when test="contains($text,$sep)">
+                <xsl:if test="$first = 'false'">
+                    <xsl:text>, </xsl:text>
+                </xsl:if>
+                <xsl:value-of select="substring-before($text, $sep)"/>
                 <xsl:call-template name="split">
-                    <xsl:with-param name="zoneMotsClesLibres">
-                        <xsl:value-of select="substring-after($zoneMotsClesLibres,';')"/>
+                    <xsl:with-param name="text">
+                        <xsl:value-of select="substring-after($text, $sep)"/>
                     </xsl:with-param>
+                    <xsl:with-param name="first">false</xsl:with-param>
                 </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="$zoneMotsClesLibres"/>
+                <xsl:value-of select="$text"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -168,7 +174,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <xsl:for-each select="//zoneCategories">
                 <xsl:value-of select="categorie"/>
                 <xsl:if test="following-sibling::*[local-name() = 'zoneCategories']">
-                    <xsl:text>| </xsl:text>
+                    <xsl:text>, </xsl:text>
                 </xsl:if>
             </xsl:for-each>
         </p>
