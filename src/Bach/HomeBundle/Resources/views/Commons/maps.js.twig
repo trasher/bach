@@ -107,7 +107,7 @@
                     url: '{{ ajax_path }}',
                     {% include '::loader.js.twig' with {'parent_elt': '#map', 'silent_error': true} %}
                     success: function(data) {
-                        if ( data.length == 0 ) {
+                        if ( data.data.length == 0 ) {
                             map.setView([47.010, 5.087], 5);
                             var _div = $('<div class="nomapres">{{ _('No geolocalized places were found!') }} </div>');
                             {% if from_search %}
@@ -130,9 +130,9 @@
                             disableClusteringAtZoom: 12
                         });#}
 
-                        for ( field in data) {
+                        for ( field in data.data) {
                             var _points = L.geoJson(
-                                data[field], {
+                                data.data[field], {
                                     {% if from_search %}style: style,{% endif %}
                                     onEachFeature: onEachFeature
                                 }
@@ -143,7 +143,7 @@
                             {#var _layer = L.layerGroup([_marker]);#}
                             var _layer = L.layerGroup([_points]);
                             _layers[_layers.length] = _layer;
-                            _overlays[field.replace('-', '_')] = _layer;
+                            _overlays[data.labels[field]] = _layer;
                         }
                         var _groups = L.control.layers({}, _overlays).addTo(map);
 

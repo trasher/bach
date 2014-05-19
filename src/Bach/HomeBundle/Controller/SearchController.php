@@ -51,7 +51,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Service\SolariumQueryFactory;
-use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -101,7 +100,6 @@ abstract class SearchController extends Controller
     protected function searchTemplateVariables($view_params, $page = 1)
     {
         $common_vars = $this->commonTemplateVariables();
-        $solr_fields = new Fields();
 
         $tpl_vars = array(
             'page'              => $page,
@@ -113,8 +111,7 @@ abstract class SearchController extends Controller
             'available_orders'  => $this->getOrders(),
             'available_views'   => $this->getViews(),
             'map_facets_name'   => $this->mapFacetsName(),
-            'q'                 => '',
-            'solr_fields'       => $solr_fields
+            'q'                 => ''
         );
 
         return array_merge($common_vars, $tpl_vars);

@@ -51,6 +51,7 @@ use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 use Bach\HomeBundle\Entity\Filters;
 use Doctrine\ORM\EntityRepository;
 use Bach\HomeBundle\Entity\TagCloud;
+use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 
 /**
  * Bach Solarium query factory
@@ -492,13 +493,16 @@ class SolariumQueryFactory
         $map_facets, EntityRepository $repo, $zones = false, $merged = false
     ) {
         $result = array();
+        $labels = array();
         $values = array();
         $all_values = array();
         $parameters = array();
 
         if ( count($map_facets) > 0 ) {
+            $solr_fields = new Fields();
             foreach ( $map_facets as $field=>$facet ) {
                 $values[$field] = null;
+                $labels[$field] = $solr_fields->getFieldLabel($field);
                 foreach ( $facet as $item=>$count ) {
                     if ( !isset($values[$field][$item]) ) {
                         $values[$field][$item] = $count;
@@ -613,7 +617,10 @@ class SolariumQueryFactory
             );
         }
 
-        return $result;
+        return array(
+            'labels'    => $labels,
+            'data'      => $result
+        );
     }
 
     /**
