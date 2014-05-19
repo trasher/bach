@@ -74,8 +74,8 @@ class BachHomeExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        //$configuration = new Configuration();
-        //$config = $this->processConfiguration($configuration, $configs);
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader(
             $container,
@@ -83,10 +83,11 @@ class BachHomeExtension extends Extension
         );
         $loader->load('services.yml');
 
-        foreach ( $configs[0]['files'] as $name=>$path ) {
+        foreach ( $config['files'] as $name=>$path ) {
             if ( !defined('BACH_FILES_' . strtoupper($name)) ) {
                 define('BACH_FILES_' . strtoupper($name), realpath($path));
             }
+            $container->setParameter('bach_files_' . $name, realpath($path));
         }
     }
 }
