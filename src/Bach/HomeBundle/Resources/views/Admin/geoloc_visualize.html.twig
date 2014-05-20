@@ -119,6 +119,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             var _href = $(this).attr('href');
                             $.ajax({
                                 url: _href,
+                                type: 'POST',
                                 {% include '::loader.js.twig' with {'silent_error': true} %}
                                 success: function(data) {
                                     var _name = _feature.properties.name;

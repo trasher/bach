@@ -152,7 +152,7 @@ bach_remove_geoloc:
     pattern: /geoloc/remove/{name}
     defaults: { _controller: BachHomeBundle:Geoloc:remove }
     requirements:
-        _method: GET
+        _method: POST
 
 bach_matricules:
     pattern:  /matricules
