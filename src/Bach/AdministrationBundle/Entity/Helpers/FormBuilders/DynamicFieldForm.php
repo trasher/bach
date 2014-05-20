@@ -45,7 +45,6 @@
 namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Bach\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -62,6 +61,7 @@ use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
  */
 class DynamicFieldForm extends AbstractType
 {
+    private $_xmlp;
 
     /**
      * Main constructor
@@ -135,7 +135,8 @@ class DynamicFieldForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'default');
         $builder->add(
             'default',
-            'text', array(
+            'text',
+            array(
                 'label'    => $attr->getLabel(),
                 'required' => false
             )
@@ -192,7 +193,7 @@ class DynamicFieldForm extends AbstractType
         $types = $types->getElementsByName('fieldType');
         foreach ($types as $t) {
             $schemaAttr = $t->getAttribute('name');
-            if (!in_array($schemaAttr->getValue(), $choices)) {
+            if ( !in_array($schemaAttr->getValue(), $choices) ) {
                 $choices[$schemaAttr->getValue()] = $schemaAttr->getValue();
             }
         }

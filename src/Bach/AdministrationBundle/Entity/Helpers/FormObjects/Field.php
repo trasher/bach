@@ -47,7 +47,6 @@ namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
 use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
-
 /**
  * Field form object
  *
@@ -122,7 +121,10 @@ class Field
             $elt->addAttribute($attr);
         }
         if ($this->stored != null) {
-            $attr = new SolrXMLAttribute('stored', $this->stored ? 'true' : 'false');
+            $attr = new SolrXMLAttribute(
+                'stored',
+                $this->stored ? 'true' : 'false'
+            );
             $elt->addAttribute($attr);
         }
         if ($this->multiValued != null) {
