@@ -379,31 +379,6 @@ class MatriculesController extends SearchController
             $tplParams['ajax'] = false;
         }
 
-        //retrieve comments
-        /*$query = $this->getDoctrine()->getManager()
-            ->createQuery(
-                'SELECT c, d FROM BachHomeBundle:Comment c
-                JOIN c.eadfile d
-                WHERE c.state = :state
-                AND d.fragmentid = :docid
-                ORDER BY c.creation_date DESC, c.id DESC'
-            )->setParameters(
-                array(
-                    'state' => Comment::PUBLISHED,
-                    'docid' => $docid
-                )
-            );
-        $comments = $query->getResult();
-        if ( count($comments) > 0 ) {
-            $tplParams['comments'] = $comments;
-        }*/
-
-        /** FIXME: find a suitable comportement for the stuff to avoid loops
-        $referer = $this->getRequest()->headers->get('referer');
-        if ( $referer !== null ) {
-            $tplParams['referer'] = $referer;
-        }*/
-
         return $this->render(
             $tpl,
             $tplParams

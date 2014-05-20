@@ -239,9 +239,6 @@ class Document
             $this->file->move($this->_upload_dir, $this->path);
             $this->_upload_done = true;
         }
-
-        //FIXME: is this really needed?
-        //unset($this->file);
     }
 
     /**
