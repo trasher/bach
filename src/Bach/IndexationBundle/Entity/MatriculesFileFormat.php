@@ -240,6 +240,9 @@ class MatriculesFileFormat extends FileFormat
             if (property_exists($this, $key)) {
                 if ( isset($datum[0]) ) {
                     $value = $datum[0]['value'];
+                    if ( trim($value) === '' ) {
+                        $value = null;
+                    }
                     if ( $key === 'date_enregistrement'
                         || $key === 'annee_naissance'
                         || $key === 'classe'
