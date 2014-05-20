@@ -43,10 +43,27 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block show_results %}
     {% if view == 'thumbs' %}
         {% for document in searchResults %}
-        <article id="result_{{ document.id }}" role="document" about="{#{ document.fragmentid }#}" class="thumbs"}>
-            <figure class="result_pic{% if document.dao is not defined %} no-image{% endif %}">
-                {% if document.dao is defined %}
-                    {{ displayDao(document.dao)|raw }}
+        <article id="result_{{ document.id }}" role="document" about="{{ document.id }}" class="thumbs">
+            <figure class="result_pic{% if document.start_dao is not defined %} no-image{% endif %}">
+                {% if document.start_dao is defined %}
+                    {% set series_name %}
+                        {%- for i in document.start_dao|split('/') -%}
+                            {%- if not loop.last -%}
+                                /{{ i }}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {% endset %}
+                    {% set images_link %}
+                        {%- if viewer_uri[-1:1] != '/' -%}/{%- endif -%}
+                        {%- if document.end_dao is defined and document.start_dao != document.end_dao -%}
+                            series{{ series_name }}?s={{ document.start_dao|split('/')|slice(-1,1)[0] }}&e={{ document.end_dao|split('/')|slice(-1,1)[0] }}
+                        {%- else -%}
+                            viewer/{{ document.start_dao }}
+                        {%- endif -%}
+                    {% endset %}
+                    <a href="{{ viewer_uri ~ images_link }}">
+                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ _('Show related image') }}"/>
+                    </a>
                 {% else %}
                     <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
                 {% endif %}
