@@ -48,7 +48,6 @@ use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\ViewParams;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Service\SolariumQueryFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -582,7 +581,6 @@ abstract class SearchController extends Controller
         $query->setDictionary('suggest');
         $query->setOnlyMorePopular(true);
         $query->setCount(10);
-        //$query->setCollate(true);
         $terms = $this->get($this->entryPoint())->suggester($query)->getResults();
 
         $suggestions = array();

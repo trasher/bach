@@ -518,7 +518,6 @@ class EADFileFormat extends FileFormat
         //check for removal
         foreach ( $this->indexes as $index ) {
             $found = false;
-            //$href = $dao->getHref();
             foreach ( $data as $type => $values ) {
                 foreach ( $values as $new_index ) {
                     $source = null;

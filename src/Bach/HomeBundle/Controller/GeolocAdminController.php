@@ -134,27 +134,6 @@ class GeolocAdminController extends Controller
             }
         }
 
-        /*$nominatim = $this->container->get('bach.indexation.Nominatim');
-        $found = array();
-
-        foreach ( $places as $orig=>$toponym ) {
-            if ( $toponym->canBeLocalized() ) {
-                $result = $nominatim->proceed($toponym);
-
-                if ( $result !== false ) {
-                    if ( !is_array($result) ) {
-                        $result = (array)$result;
-                    }
-
-                    foreach ( $result as $r ) {
-                        $ent = new Geoloc();
-                        $ent->hydrate($toponym, $result);
-                        $found[$origin][] = $ent;
-                    }
-                }
-            }
-        }*/
-
         return $this->render(
             'BachHomeBundle:Admin:geoloc_missing.html.twig',
             array(
