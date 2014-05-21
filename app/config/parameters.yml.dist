@@ -34,3 +34,4 @@ parameters:
     locale: fr
     ead_files_path: PATH_TO_EAD_FILES
     viewer_uri: VIEWER_FULL_URI
+    secret: TO_CHANGE

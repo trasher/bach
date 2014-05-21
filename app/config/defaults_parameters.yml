@@ -44,7 +44,7 @@ parameters:
 
     #application locale
     locale: en
-    secret: fcfe28f4f96b6167f7e541210b30616ac #Usefull?
+    secret: fcfe28f4f96b6167f7e541210b30616ac #To change
 
     #Solr parameters
     solr_ssl: false
