@@ -123,8 +123,16 @@ POSSIBILITY OF SUCH DAMAGE.
                                 {% include '::loader.js.twig' with {'silent_error': true} %}
                                 success: function(data) {
                                     var _name = _feature.properties.name;
-                                    /** FIXME: should remove the point on the map, but does not. */
-                                    allpoints.removeLayer(allpoints.getLayer(_popup._source._leaflet_id));
+                                    var _id = _popup._source._leaflet_id;
+                                    if (allpoints.getLayer(_id) ) {
+                                        allpoints.removeLayer(allpoints.getLayer(_id));
+                                    } else {
+                                        allpoints.eachLayer(function(l){
+                                            if ( l.getLayer(_id) ) {
+                                                l.removeLayer(_id);
+                                            }
+                                        });
+                                    }
                                     alert('{{ _('NAME has been removed') }}'.replace('NAME', _name));
                                 }
                             });
