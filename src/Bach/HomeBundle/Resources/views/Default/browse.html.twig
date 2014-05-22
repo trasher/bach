@@ -62,7 +62,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 _da_url = _da_url.replace('PARTNAME', part),
                 $.ajax({
                     url: _da_url,
-                    type: 'POST',
                     {% include '::loader.js.twig' with {'error_message': _('An error occured loading terms :(')} %}
                     success: function(data) {
                         var _elt = $('#' + part);
