@@ -96,3 +96,12 @@ services:
         tags:
             - { name: sitemap.provider }
 
+    bach.home.ead_view_params:
+        class: Bach\HomeBundle\Entity\ViewParams
+        arguments: [ '%display.ead.show_maps%', '%display.ead.show_daterange%' ]
+
+    bach.home.matricules_view_params:
+        class: Bach\HomeBundle\Entity\ViewParams
+        arguments: [ '%display.matricules.show_maps%', '%display.matricules.show_daterange%' ]
+
+

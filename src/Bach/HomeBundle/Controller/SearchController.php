@@ -96,7 +96,7 @@ abstract class SearchController extends Controller
      *
      * @return array
      */
-    protected function searchTemplateVariables($view_params, $page = 1)
+    protected function searchTemplateVariables(ViewParams $view_params, $page = 1)
     {
         $common_vars = $this->commonTemplateVariables();
 
@@ -611,7 +611,7 @@ abstract class SearchController extends Controller
 
         $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
-            $view_params = new ViewParams();
+            $view_params = $this->get($this->getViewParamsServicename());
         }
         $view_params->bind($request, $this->getCookieName());
 
@@ -709,6 +709,13 @@ abstract class SearchController extends Controller
      * @return string
      */
     abstract protected function getSearchUri();
+
+    /**
+     * Get view params service name
+     *
+     * @return string
+     */
+    abstract protected function getViewParamsServicename();
 
     /**
      * Get configured geolocalization fields

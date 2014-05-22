@@ -46,7 +46,6 @@ namespace Bach\HomeBundle\Controller;
 
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
@@ -81,7 +80,7 @@ class DefaultController extends SearchController
         /** Manage view parameters */
         $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
-            $view_params = new ViewParams();
+            $view_params = $this->get($this->getViewParamsServicename());
         }
         //take care of user view params
         if ( isset($_COOKIE[$this->getCookieName()]) ) {
@@ -198,7 +197,7 @@ class DefaultController extends SearchController
         /** Manage view parameters */
         $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
-            $view_params = new ViewParams();
+            $view_params = $this->get($this->getViewParamsServicename());
         }
         //take care of user view params
         if ( isset($_COOKIE[$this->getCookieName()]) ) {
@@ -819,6 +818,16 @@ class DefaultController extends SearchController
     protected function getSearchUri()
     {
         return 'bach_search';
+    }
+
+    /**
+     * Get view params service name
+     *
+     * @return string
+     */
+    protected function getViewParamsServicename()
+    {
+        return ('bach.home.ead_view_params');
     }
 
     /**

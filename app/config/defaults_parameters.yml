@@ -74,6 +74,12 @@ parameters:
     feature.maps: true
     feature.tagcloud: true
     feature.comments: true
+    display.show_maps: true
+    display.show_daterange: true
+    display.ead.show_maps: '%display.show_maps%'
+    display.ead.show_daterange: '%display.show_daterange%'
+    display.matricules.show_maps: '%display.show_maps%'
+    display.matricules.show_daterange: '%display.show_daterange%'
     #other
     feature.openid: false
     feature.social: false

@@ -48,7 +48,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Bach\HomeBundle\Form\Type\MatriculesType;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\Filters;
-use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\Facets;
 use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
@@ -81,7 +80,7 @@ class MatriculesController extends SearchController
         /** Manage view parameters */
         $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
-            $view_params = new ViewParams();
+            $view_params = $this->get($this->getViewParamsServicename());
         }
         $view_params->setResultsByPage(20);
 
@@ -158,7 +157,7 @@ class MatriculesController extends SearchController
         /** Manage view parameters */
         $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
-            $view_params = new ViewParams();
+            $view_params = $this->get($this->getViewParamsServicename());
         }
         $view_params->setResultsByPage(20);
 
@@ -561,6 +560,16 @@ class MatriculesController extends SearchController
     protected function getSearchUri()
     {
         return 'bach_matricules_search';
+    }
+
+    /**
+     * Get view params service name
+     *
+     * @return string
+     */
+    protected function getViewParamsServicename()
+    {
+        return ('bach.home.matricules_view_params');
     }
 
     /**

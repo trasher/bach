@@ -79,6 +79,18 @@ class ViewParams
     private $_request;
 
     /**
+     * Constructor
+     *
+     * @param boolean $show_map       Whether to display map
+     * @param boolean $show_daterange Whether to diplay date range
+     */
+    public function __construct($show_map, $show_daterange)
+    {
+        $this->_show_map = $show_map;
+        $this->_show_daterange = $show_daterange;
+    }
+
+    /**
      * Should pictures be displayed
      *
      * @return boolean
