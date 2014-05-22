@@ -521,7 +521,9 @@ class DefaultController extends SearchController
         );
 
         if ( $with_context ) {
-            $tplParams['archdesc'] = $doc['archDescUnitTitle'];
+            if ( isset($doc['archDescUnitTitle']) ) {
+                $tplParams['archdesc'] = $doc['archDescUnitTitle'];
+            }
             $parents = explode('/', $doc['parents']);
             if ( count($parents) > 0 ) {
                 $pquery = $client->createSelect();
