@@ -76,8 +76,11 @@ parameters:
     feature.comments: true
     display.show_maps: true
     display.show_daterange: true
+    display.rows: 10
+    display.ead.rows: '%display.rows%'
     display.ead.show_maps: '%display.show_maps%'
     display.ead.show_daterange: '%display.show_daterange%'
+    display.matricules.rows: 20
     display.matricules.show_maps: '%display.show_maps%'
     display.matricules.show_daterange: '%display.show_daterange%'
     #other

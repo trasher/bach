@@ -78,17 +78,7 @@ class DefaultController extends SearchController
         $session = $request->getSession();
 
         /** Manage view parameters */
-        $view_params = $session->get($this->getParamSessionName());
-        if ( !$view_params ) {
-            $view_params = $this->get($this->getViewParamsServicename());
-        }
-        //take care of user view params
-        if ( isset($_COOKIE[$this->getCookieName()]) ) {
-            $view_params->bindCookie($this->getCookieName());
-        }
-
-        //set current view parameters according to request
-        $view_params->bind($request, $this->getCookieName());
+        $view_params = $this->handleViewParams();
 
         $tpl_vars = $this->searchTemplateVariables($view_params);
         $session->set($this->getFiltersName(), null);
@@ -195,20 +185,7 @@ class DefaultController extends SearchController
         }
 
         /** Manage view parameters */
-        $view_params = $session->get($this->getParamSessionName());
-        if ( !$view_params ) {
-            $view_params = $this->get($this->getViewParamsServicename());
-        }
-        //take care of user view params
-        if ( isset($_COOKIE[$this->getCookieName()]) ) {
-            $view_params->bindCookie($this->getCookieName());
-        }
-
-        //set current view parameters according to request
-        $view_params->bind($request, $this->getCookieName());
-
-        //store new view parameters
-        $session->set($this->getParamSessionName(), $view_params);
+        $view_params = $this->handleViewParams();
 
         $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
