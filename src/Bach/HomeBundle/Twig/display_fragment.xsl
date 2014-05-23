@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
     xmlns:php="http://php.net/xsl"
     exclude-result-prefixes="php">
 
-    <xsl:output method="html" omit-xml-declaration="yes"/>
+    <xsl:output method="xml" omit-xml-declaration="yes"/>
 
     <xsl:param name="full" select="1"/>
     <xsl:param name="ajax" select="''"/>
@@ -623,15 +623,11 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="lb" mode="full">
-        <xsl:if test="not(preceding-sibling::lb)">
-            <br/>
-        </xsl:if>
+        <br/>
     </xsl:template>
 
     <xsl:template match="lb" mode="resume">
-        <xsl:if test="not(preceding-sibling::lb)">
-            <br/>
-        </xsl:if>
+        <br/>
     </xsl:template>
 
     <xsl:template match="controlaccess" mode="resume">
