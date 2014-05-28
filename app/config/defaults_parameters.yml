@@ -74,6 +74,7 @@ parameters:
     feature.maps: true
     feature.tagcloud: true
     feature.comments: true
+    feature.autocomplete: true
     display.show_maps: true
     display.show_daterange: true
     display.rows: 10

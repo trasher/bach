@@ -71,6 +71,7 @@ twig:
             maps: '%feature.maps%'
             register: '%feature.register%'
             comments: '%feature.comments%'
+            autocomplete: '%feature.autocomplete%'
 
 # Assetic Configuration
 assetic:

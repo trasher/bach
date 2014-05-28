@@ -133,6 +133,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block autocomplete %}
+    {% if features.autocomplete %}
     function split(val) {
         return val.split(/ +/);
     }
@@ -167,6 +168,7 @@ POSSIBILITY OF SUCH DAMAGE.
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
+    {% endif %}
 {% endblock %}
 
 {% block player %}
