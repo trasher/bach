@@ -62,6 +62,7 @@ parameters:
 
     #Path to files for each type
     ead_files_path: null
+    ead_oai_path: null
     matricules_files_path: null
     html_intros_path: null
 
