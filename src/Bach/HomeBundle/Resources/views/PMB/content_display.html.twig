@@ -42,11 +42,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <section class="pmb_record">
             <figure class="fright">
-                {% if document.urlimg is defined %}
-                    <img src="http://pmb.phpdev{{ document.urlimg}}" alt=""/>
-                {% else %}
-                    <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
-                {% endif %}
+                    {% if document.urlimg is defined %}
+                        {% if document.urlimg|slice(0, 7) == 'http://'%}
+                            <img src="{{ document.urlimg}}" alt=""/>
+                        {% else %}
+                            <img src="http://pmb.phpdev{{ document.urlimg}}" alt=""/>
+                        {% endif %}
+                    {% else %}
+                        <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
+                    {% endif %}
             </figure>
             {{ displayFragment(document.fragment, document.uniqid, true, "1", "0", "0", ajax)|raw }}
             {#
