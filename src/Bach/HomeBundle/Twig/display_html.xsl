@@ -430,6 +430,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="unittitle/unitdate">
         <span class="date" property="dc:date">
+            <xsl:value-of select="' '"/>
             <xsl:value-of select="."/>
         </span>
     </xsl:template>
