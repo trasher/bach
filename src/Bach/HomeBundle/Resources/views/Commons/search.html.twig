@@ -194,7 +194,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block container %}
     {% if searchResults is not defined %}
-        <h2 id="welcome">{% block subtitle %}{% endblock %}</h2>
+        {% block intro %}{% endblock %}
     {% endif %}
 
     {% if form is defined %}

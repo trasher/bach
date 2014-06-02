@@ -189,4 +189,29 @@ class FilesController extends Controller
         }
     }
 
+    /**
+     * Retrieve HTML contents linked file
+     *
+     * @param string $name File name
+     *
+     * @return void
+     */
+    public function getHtmlIntroFileAction($name)
+    {
+        $path = $this->container->getParameter('html_intros_path');
+        $path .= '/' . $name;
+
+        $file = fopen($path, 'rb');
+        $out = fopen('php://output', 'wb');
+
+        $mime = mime_content_type($path);
+        header('Cache-Control: public');
+        header('Content-type: ' . $mime);
+        header('Content-Length:' . filesize($path));
+        stream_copy_to_stream($file, $out);
+
+        fclose($out);
+        fclose($file);
+
+    }
 }

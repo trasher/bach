@@ -86,6 +86,13 @@ bach_get_cover:
         _method: GET
         name: '.+'
 
+bach_get_html_intro_file:
+    pattern: /file/intro/{name}
+    defaults: { _controller BachHomeBundle:Files:getHtmlIntroFile }
+    requirements:
+        _method: GET
+        name: '.+'
+
 bach_get_file:
     pattern: /file/{type}/{name}
     defaults: { _controller BachHomeBundle:Files:getFile }
