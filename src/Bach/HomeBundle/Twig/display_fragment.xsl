@@ -56,6 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:param name="count_subs" select="''"/>
     <xsl:param name="cdc" select="'false'"/>
     <xsl:param name="docid"/>
+    <xsl:param name="cote_location" select="''"/>
 
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12|archdesc">
         <xsl:variable name="id">
@@ -97,22 +98,14 @@ POSSIBILITY OF SUCH DAMAGE.
                             </xsl:if>
                         </xsl:attribute>
 
+                        <xsl:if test="$cote_location = 'top' and did/unitid">
+                            <xsl:apply-templates select="did/unitid" mode="cote"/>
+                        </xsl:if>
+
                         <xsl:apply-templates mode="full"/>
 
-                        <xsl:if test="did/unitid">
-                            <xsl:if test="did/unitid/@label">
-                                <xsl:choose>
-                                    <xsl:when test="/archdesc">
-                                        <h3><xsl:value-of select="concat(did/unitid/@label, ' ')"/></h3>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <strong><xsl:value-of select="concat(did/unitid/@label, ' ')"/></strong>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                            <span class="unitid" property="dc:identifier">
-                                <xsl:value-of select="did/unitid"/>
-                            </span>
+                        <xsl:if test="$cote_location = 'bottom' and did/unitid">
+                            <xsl:apply-templates select="did/unitid" mode="cote"/>
                         </xsl:if>
                     </div>
 
@@ -139,6 +132,24 @@ POSSIBILITY OF SUCH DAMAGE.
                     </div>
                 </xsl:otherwise>
             </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="did/unitid" mode="cote">
+        <section class="cote">
+            <xsl:if test="@label">
+                <xsl:choose>
+                    <xsl:when test="/archdesc">
+                        <h3><xsl:value-of select="concat(@label, ' ')"/></h3>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <strong><xsl:value-of select="concat(@label, ' ')"/></strong>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:if>
+            <span class="unitid" property="dc:identifier">
+                <xsl:value-of select="."/>
+            </span>
+        </section>
     </xsl:template>
 
     <xsl:template match="did" mode="full">

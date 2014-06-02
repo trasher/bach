@@ -63,15 +63,18 @@ class DisplayHtml extends \Twig_Extension
 {
     private $_router;
     private $_request;
+    private $_cote_location;
 
     /**
      * Main constructor
      *
-     * @param UrlGeneratorInterface $router Router
+     * @param UrlGeneratorInterface $router   Router
+     * @param string                $cote_loc Cote location
      */
-    public function __construct(Router $router)
+    public function __construct(Router $router, $cote_loc)
     {
         $this->_router = $router;
+        $this->_cote_location = $cote_loc;
     }
 
     /**
@@ -140,7 +143,11 @@ class DisplayHtml extends \Twig_Extension
             unset($archdesc_doc->archdesc->eadheader);
             unset($archdesc_doc->archdesc->dsc);
 
-            $display = new DisplayEADFragment($this->_router, false);
+            $display = new DisplayEADFragment(
+                $this->_router,
+                false,
+                $this->_cote_location
+            );
             $display->setRequest($this->_request);
             $archdesc_xml = $display->display(
                 $archdesc_doc->archdesc->asXML(),
