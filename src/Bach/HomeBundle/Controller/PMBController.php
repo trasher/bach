@@ -102,19 +102,10 @@ class PMBController extends SearchController
         }
 
         /** Manage view parameters */
-        $view_params = $session->get('pmb_view_params');
-        if ( !$view_params ) {
-            $view_params = new ViewParams();
-        }
-        $view_params->setResultsByPage(20);
-
-        //take care of user view params
-        if ( isset($_COOKIE['bach_pmb_view_params']) ) {
-            $view_params->bindCookie('bach_pmb_view_params');
-        }
+        $view_params = $this->handleViewParams();
 
         //set current view parameters according to request
-        $view_params->bind($request);
+        //$view_params->bind($request);
 
         //store new view parameters
         $session->set('pmb_view_params', $view_params);
@@ -503,6 +494,26 @@ class PMBController extends SearchController
     protected function getSearchUri()
     {
         return 'bach_pmb_search';
+    }
+
+        /**
+     * Get view params service name
+     *
+     * @return string
+     */
+    protected function getViewParamsServicename()
+    {
+        return ('bach.home.pmb_view_params');
+    }
+
+    /**
+     * Get session name for view parameters
+     *
+     * @return string
+     */
+    protected function getParamSessionName()
+    {
+        return 'pmb_view_params';
     }
 }
 ?>
