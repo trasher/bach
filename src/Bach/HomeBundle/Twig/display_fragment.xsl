@@ -70,26 +70,29 @@ POSSIBILITY OF SUCH DAMAGE.
             </xsl:choose>
         </xsl:variable>
 
-            <xsl:choose>
-                <xsl:when test="$full = 1">
-                    <xsl:if test="$cdc = 'false'">
-                        <ul>
+        <xsl:choose>
+            <xsl:when test="$full = 1">
+                <xsl:if test="$cdc = 'false'">
+                    <ul>
+                        <xsl:if test="count(./*[not(local-name() = 'did')]) + count(./did/*[not(local-name() = 'unittitle')]) &gt; 0">
                             <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Content')"/></a></li>
-                            <xsl:if test=".//dao|.//daoloc">
-                                <li><a href="#relative_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Documents')"/></a></li>
+                        </xsl:if>
+                        <xsl:if test=".//dao|.//daoloc">
+                            <li><a href="#relative_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Documents')"/></a></li>
+                        </xsl:if>
+                        <xsl:if test="not($children = '')">
+                            <li><a href="#children_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Sub-units')"/> (<xsl:value-of select="$count_subs"/>)</a></li>
+                        </xsl:if>
+                        <xsl:if test="$comments_enabled = 'true'">
+                            <xsl:if test="not($comments = '')">
+                                <li><a href="#comments"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Comments')"/></a></li>
                             </xsl:if>
-                            <xsl:if test="not($children = '')">
-                                <li><a href="#children_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Sub-units')"/> (<xsl:value-of select="$count_subs"/>)</a></li>
-                            </xsl:if>
-                            <xsl:if test="$comments_enabled = 'true'">
-                                <xsl:if test="not($comments = '')">
-                                    <li><a href="#comments"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Comments')"/></a></li>
-                                </xsl:if>
-                                <li><a href="__path_add_comment__"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Add comment')"/></a></li>
-                            </xsl:if>
-                        </ul>
-                    </xsl:if>
+                            <li><a href="__path_add_comment__"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Add comment')"/></a></li>
+                        </xsl:if>
+                    </ul>
+                </xsl:if>
 
+                <xsl:if test="count(./*[not(local-name() = 'did')]) + count(./did/*[not(local-name() = 'unittitle')]) &gt; 0">
                     <div id="{$id}">
                         <xsl:attribute name="class">
                             <xsl:text>content</xsl:text>
@@ -108,30 +111,31 @@ POSSIBILITY OF SUCH DAMAGE.
                             <xsl:apply-templates select="did/unitid" mode="cote"/>
                         </xsl:if>
                     </div>
+                </xsl:if>
 
-                    <xsl:if test=".//dao|.//daoloc">
-                        <figure id="relative_documents">
-                            <header>
-                                <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>
-                            </header>
-                            <xsl:variable name="daogrps" select=".//daogrp"/>
-                            <xsl:variable name="daos" select=".//dao[not(parent::daogrp)]|.//daoloc[not(parent::daogrp)]"/>
-                            <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daogrps, $daos, $viewer_uri, 'medium', $ajax, $covers_dir)"/>
-                        </figure>
-                    </xsl:if>
-                </xsl:when>
-                <xsl:otherwise>
-                    <div id="{$id}">
-                        <xsl:attribute name="class">
-                            <xsl:text>content</xsl:text>
-                            <xsl:if test="/archdesc">
-                                <xsl:text> archdesc</xsl:text>
-                            </xsl:if>
-                        </xsl:attribute>
-                        <xsl:apply-templates mode="resume"/>
-                    </div>
-                </xsl:otherwise>
-            </xsl:choose>
+                <xsl:if test=".//dao|.//daoloc">
+                    <figure id="relative_documents">
+                        <header>
+                            <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>
+                        </header>
+                        <xsl:variable name="daogrps" select=".//daogrp"/>
+                        <xsl:variable name="daos" select=".//dao[not(parent::daogrp)]|.//daoloc[not(parent::daogrp)]"/>
+                        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayDao::displayDaos', $daogrps, $daos, $viewer_uri, 'medium', $ajax, $covers_dir)"/>
+                    </figure>
+                </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
+                <div id="{$id}">
+                    <xsl:attribute name="class">
+                        <xsl:text>content</xsl:text>
+                        <xsl:if test="/archdesc">
+                            <xsl:text> archdesc</xsl:text>
+                        </xsl:if>
+                    </xsl:attribute>
+                    <xsl:apply-templates mode="resume"/>
+                </div>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="did/unitid" mode="cote">
