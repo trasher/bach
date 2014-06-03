@@ -1,3 +1,20 @@
+0.9.2 (2014-06-03)
+
+- Loads map points via Ajax, reduces page size
+- Fix empty facets
+- Fix matricules thumbnails display
+- Update to latest libraries releases
+- A bit of cleanup
+- Map and date range can now be hidden per default
+- Autocomplete can now be disabled
+- Factorize view parameters handling
+- Set IE8 as an old browser
+- Prevent empty breadcump display
+- Prevent empty content display
+- Improve HTML EAD view
+- It is now possible to add an intro text on some pages from an HTML file
+- Fix collapsed dates
+
 0.9.1 (2014-05-15)
 
 - Minor improvements on mobile view
