@@ -60,6 +60,7 @@ twig:
         tiles_url: '%tiles_url%'
         tiles_attribution: '%tiles_attribution%'
         tiles_subdomains: '%tiles_subdomains%'
+        html_intros_path: '%html_intros_path%'
         features:
             matricules: '%feature.matricules%'
             cdc: '%feature.cdc%'
@@ -71,6 +72,7 @@ twig:
             maps: '%feature.maps%'
             register: '%feature.register%'
             comments: '%feature.comments%'
+            autocomplete: '%feature.autocomplete%'
 
 # Assetic Configuration
 assetic:
@@ -277,6 +279,14 @@ services:
         arguments: [ @kernel ]
         tags:
             - { name: twig.extension }
+    bach.twig.html_intro:
+        class: Bach\HomeBundle\Twig\HtmlIntro
+        arguments: [ @router ]
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [setRequest, ['@?request=']]
+            - [setHtmlContentsPath, ['%html_intros_path%']]
 
 k_phoen_sitemap:
     base_host: '%bach_url%'

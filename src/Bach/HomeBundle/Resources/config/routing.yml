@@ -52,7 +52,7 @@ bach_browse:
     pattern: /browse/{part}/{show_all}/{ajax}
     defaults: { _controller: BachHomeBundle:Default:browse, part: '', 'show_all': false, 'ajax': false }
     requirements:
-        _method: GET|POST
+        _method: GET
 
 bach_suggest:
     pattern: /suggest
@@ -86,6 +86,13 @@ bach_get_cover:
         _method: GET
         name: '.+'
 
+bach_get_html_intro_file:
+    pattern: /file/intro/{name}
+    defaults: { _controller BachHomeBundle:Files:getHtmlIntroFile }
+    requirements:
+        _method: GET
+        name: '.+'
+
 bach_get_file:
     pattern: /file/{type}/{name}
     defaults: { _controller BachHomeBundle:Files:getFile }
@@ -99,6 +106,18 @@ bach_fullfacet:
     defaults: { _controller: BachHomeBundle:Default:fullFacet }
     requirements:
         _method: GET|POST
+
+bach_geojson:
+    pattern: /geojson
+    defaults: {_controller: BachHomeBundle:Default:getGeoJson}
+    requirements:
+        _method: GET
+
+bach_matricules_geojson:
+    pattern: /matricules/geojson
+    defaults: {_controller: BachHomeBundle:Matricules:getGeoJson}
+    requirements:
+        _method: GET
 
 bach_geozones:
     pattern: /geo/zones/{bbox}
@@ -140,7 +159,7 @@ bach_remove_geoloc:
     pattern: /geoloc/remove/{name}
     defaults: { _controller: BachHomeBundle:Geoloc:remove }
     requirements:
-        _method: GET
+        _method: POST
 
 bach_matricules:
     pattern:  /matricules

@@ -60,6 +60,9 @@ POSSIBILITY OF SUCH DAMAGE.
     <link href="{{ asset('css/jquery-ui/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <!--[if lt IE 9]>
         <script src="{{ asset('js/html5-ie.js') }}"></script>
+        <script type="text/javascript">
+            var _isOldIE = true;
+        </script>
         <link href="{{ asset('css/bach-ie.css') }}" type="text/css" rel="stylesheet" media="screen" />
         {% block client_ie %}{% endblock %}
     <![endif]-->
@@ -231,10 +234,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             $('.jbtn').button();
-
-            //TODO: remove or set in admin
-            $('#coreTitleDialog').bind('show');
-            $('#renamdialog').bind('show');
 
             //tooltip on each a
             $('a').tooltip();

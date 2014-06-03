@@ -1,0 +1,276 @@
+{% if from_search is not defined %}
+    {% set from_search = false %}
+{% endif %}
+            var map;
+            var allpoints;
+            var info;
+            var _fields_points = [];
+
+            {% if from_search %}
+                // get color depending on number of results
+                function getColor(d) {
+                    return d > 200 ? '#800026' :
+                        d > 100    ? '#BD0026' :
+                        d > 50     ? '#E31A1C' :
+                        d > 20     ? '#FC4E2A' :
+                        d > 10     ? '#FD8D3C' :
+                        d > 5      ? '#FEB24C' :
+                        d > 1      ? '#FED976' :
+                                    '#FFEDA0' ;
+                }
+
+                function style(feature) {
+                    return {
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',
+                        dashArray: '3',
+                        fillOpacity: 0.7,
+                        fillColor: getColor(feature.properties.results)
+                    };
+                }
+
+                function highlightFeature(e) {
+                    var layer = e.target;
+
+                    try{
+                        layer.setStyle({
+                            weight: 1,
+                            color: '#666',
+                            dashArray: '',
+                            fillOpacity: 0.7
+                        });
+
+                        if (!L.Browser.ie && !L.Browser.opera) {
+                            layer.bringToFront();
+                        }
+                    } catch (ex) {}
+
+                    info.update(layer.feature.properties);
+                }
+
+                function resetHighlight(e) {
+                    for ( field in _fields_points ) {
+                        _fields_points[field].resetStyle(e.target);
+                    }
+                    info.update();
+                }
+
+            {% endif %}
+
+            var _initMap = function(callback) {
+                map = L.map('map', {
+                    minZoom: 1
+                });
+
+                var fullScreen = new L.Control.FullScreen();
+                map.addControl(fullScreen);
+
+                {% if from_search %}
+                new L.Control.GeoSearch({
+                    provider: new L.GeoSearch.Provider.OpenStreetMap(),
+                    showMarker: false,
+                    searchLabel: '{{ _('Enter your search...')|escape('js') }}',
+                    notFoundMessage: '{{ _('Sorry, that place cannot be found.')|escape('js') }}',
+                    zoomLevel: 10
+                }).addTo(map);
+                {% endif %}
+
+                L.tileLayer('{{ tiles_url }}', {
+                    {% if tiles_subdomains is iterable -%}
+                    subdomains: [{% for subdomain in tiles_subdomains %}'{{ subdomain }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+                    {% endif -%}
+                    maxZoom: 18,
+                    attribution: '{{ _('© Cartographic data')|escape('js') }} <a href="http://openstreetmap.org">{{ _('OpenStreetMap contributors')|escape('js') }}</a>, {{ _('© Imagery')|escape('js') }} {{ tiles_attribution|raw }}'
+                }).addTo(map);
+
+
+                {% if from_search %}
+                // control that shows location info on hover
+                info = L.control();
+
+                info.onAdd = function (map) {
+                    this._div = L.DomUtil.create('div', 'info');
+                    this.update();
+                    return this._div;
+                };
+
+                info.update = function (props) {
+                    this._div.innerHTML = (props ?
+                        '<strong>' + props.name + '</strong> - ' + props.results
+                        : '{{ _('Hover over a zone') }}');
+                };
+
+                {% endif %}
+
+                $.ajax({
+                    url: '{{ ajax_path }}',
+                    {% include '::loader.js.twig' with {'parent_elt': '#map', 'silent_error': true} %}
+                    success: function(data) {
+                        if ( data.data.length == 0 ) {
+                            map.setView([47.010, 5.087], 5);
+                            var _div = $('<div class="nomapres">{{ _('No geolocalized places were found!') }} </div>');
+                            {% if from_search %}
+                            var _a = $('<a href="#" id="nores_hide">{{ _('Hide map') }}</a>');
+                            _a.on('click', _bindMapHide);
+                            _div.append(_a);
+                            {% endif %}
+                            $('#map').append(_div);
+                            return;
+                        }
+
+                        {% if from_search %}
+                        info.addTo(map);
+                        {% endif %}
+                        var _layers = [];
+                        var _overlays = [];
+                        var _markers = [];
+                        {#var _marker = L.markerClusterGroup({
+                            showCoverageOnHover: false,
+                            disableClusteringAtZoom: 12
+                        });#}
+
+                        for ( field in data.data) {
+                            var _points = L.geoJson(
+                                data.data[field], {
+                                    {% if from_search %}style: style,{% endif %}
+                                    onEachFeature: onEachFeature
+                                }
+                            );
+                            _fields_points[_fields_points.length] = _points;
+                            {#_marker.addLayer(_points);#}
+
+                            {#var _layer = L.layerGroup([_marker]);#}
+                            var _layer = L.layerGroup([_points]);
+                            _layers[_layers.length] = _layer;
+                            _overlays[data.labels[field]] = _layer;
+                        }
+                        var _groups = L.control.layers({}, _overlays).addTo(map);
+
+                        var _layers = L.layerGroup(_layers).addTo(map);
+                        allpoints = L.featureGroup(_fields_points);
+
+                        map.fitBounds(allpoints.getBounds(), {
+                            padding: [50, 50],
+                            maxZoom: 13
+                        });
+
+                        if ( callback ) {
+                            callback();
+                        }
+                    }
+                });
+
+                {# Zones at zoom causes many issues. Disabled for now. #}
+                {#var _legend;
+
+                function _loadLegend() {
+                    _legend = L.control({position: 'bottomright'});
+                    _legend.onAdd = function (map) {
+                        var div = L.DomUtil.create('div', 'info legend'),
+                            /* TODO: it would be better to set grades dynamically as it depends on search results/corpus */
+                            grades = [0, 1, 5, 10, 20, 50, 100, 200],
+                            labels = [],
+                            from, to;
+
+                        for (var i = 0; i < grades.length; i++) {
+                            from = grades[i];
+                            to = grades[i + 1];
+
+                            labels.push(
+                                '<i style="background:' + getColor(from + 1) + '"></i> ' +
+                                from + (to ? '&ndash;' + to : '+'));
+                        }
+                        div.innerHTML = labels.join('<br/>');
+                        return div;
+                    };
+                    _legend.addTo(map);
+                };
+
+                var _zones_loaded = false;
+                var _zones_actives = true;
+                var _state_changed = false;
+                var _zones_layer;
+                var _zones_overlay;
+
+                function checkZones(e) {
+                    zoom = map.getZoom();
+
+                    if ( zoom >= 9 && _zones_actives ) {
+                        //if we've just zoomed, or if we drag map, reload zones
+                        _zones_loaded = true;
+                        var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX', facets_name: map_facets_name}) }}';
+
+                        $.ajax({
+                            url: _da_url.replace('BBOX', map.getBounds().toBBoxString()),
+                            {% include '::loader.js.twig' with {'parent_elt': '#map', 'silent_error': true} %}
+                            success: function(data) {
+                                if ( !_zones_layer ) {
+                                    _zones_layer = L.geoJson(data, {
+                                        style: style,
+                                        onEachFeature: onEachFeature
+                                    });
+                                    _layers.addLayer(_zones_layer);
+                                    _groups.addOverlay(_zones_layer, '{{ _('Zones') }}');
+                                    _state_changed = true;
+
+                                } else {
+                                    if ( !_layers.hasLayer(_zones_layer) ) {
+                                        _layers.addLayer(_zones_layer);
+                                        _state_changed = true;
+                                    }
+
+                                    _zones_layer.clearLayers();
+                                    _zones_layer.addData(data);
+                                }
+
+                                if ( _state_changed ) {
+                                    if ( !_legend ) {
+                                        _loadLegend();
+                                    }
+                                    _state_changed = false;
+                                }
+                            }
+                        });
+                    }
+
+                    if ( zoom >= 9 ) {
+                        if ( !_zones_overlay && _zones_layer ) {
+                            _groups.addOverlay(_zones_layer, '{{ _('Zones') }}');
+                        }
+                    }
+
+                    if ( zoom < 9 && _zones_loaded == true ) {
+                        _zones_loaded = false;
+                        var _actives = _zones_actives;
+                        _layers.removeLayer(_zones_layer);
+                        _groups.removeLayer(_zones_layer);
+                        map.removeControl(_legend);
+                        _zones_actives = _actives;
+                        _legend = null;
+                    }
+                }
+
+                map.on('zoomend', checkZones);
+                map.on('dragend', checkZones);
+                map.on('resize', checkZones);
+                checkZones();
+
+                map.on('overlayadd overlayremove', function(e) {
+                    if ( e.type == 'overlayremove' && e.name == '{{ _('Zones') }}' ) {
+                        _zones_actives = false;
+                        map.off('zoomend', checkZones);
+                        map.off('dragend', checkZones);
+                        map.off('resize', checkZones);
+                        map.removeControl(_legend);
+                    }
+                    if ( e.type == 'overlayadd' && e.name == '{{ _('Zones') }}' ) {
+                        _zones_actives = true;
+                        map.on('zoomend', checkZones);
+                        map.on('dragend', checkZones);
+                        map.on('resize', checkZones);
+                        checkZones();
+                        _loadLegend();
+                    }
+                });#}
+            }

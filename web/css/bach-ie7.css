@@ -31,18 +31,6 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
-#oldie {
-    text-align: center;
-    background: #b73a34;
-    z-index: 1000;
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    color: white;
-    padding: .5em 0;
-}
-
 /** IE7 does not understand inline-block on initial block elements... */
 .breadcrumb li,
 [id=navigation] li,

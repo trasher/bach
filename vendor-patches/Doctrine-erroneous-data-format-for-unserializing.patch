@@ -1,0 +1,17 @@
+diff -up vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/ClassMetadataInfo.php.patch vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/ClassMetadataInfo.php
+--- vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/ClassMetadataInfo.php.patch	2014-06-02 09:10:36.273276305 +0200
++++ vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/ClassMetadataInfo.php	2014-06-02 09:11:19.145393232 +0200
+@@ -827,7 +827,12 @@ class ClassMetadataInfo implements Class
+     public function newInstance()
+     {
+         if ($this->_prototype === null) {
+-            $this->_prototype = unserialize(sprintf('O:%d:"%s":0:{}', strlen($this->name), $this->name));
++            if (version_compare(PHP_VERSION, '5.4') >= 0) {
++                $rc = new \ReflectionClass($this->name);
++                $this->_prototype = $rc->newInstanceWithoutConstructor();
++            } else {
++                $this->_prototype = unserialize(sprintf('O:%d:"%s":0:{}', strlen($this->name), $this->name));
++            }
+         }
+ 
+         return clone $this->_prototype;

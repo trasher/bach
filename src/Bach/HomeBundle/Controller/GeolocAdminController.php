@@ -134,27 +134,6 @@ class GeolocAdminController extends Controller
             }
         }
 
-        /*$nominatim = $this->container->get('bach.indexation.Nominatim');
-        $found = array();
-
-        foreach ( $places as $orig=>$toponym ) {
-            if ( $toponym->canBeLocalized() ) {
-                $result = $nominatim->proceed($toponym);
-
-                if ( $result !== false ) {
-                    if ( !is_array($result) ) {
-                        $result = (array)$result;
-                    }
-
-                    foreach ( $result as $r ) {
-                        $ent = new Geoloc();
-                        $ent->hydrate($toponym, $result);
-                        $found[$origin][] = $ent;
-                    }
-                }
-            }
-        }*/
-
         return $this->render(
             'BachHomeBundle:Admin:geoloc_missing.html.twig',
             array(
@@ -229,16 +208,8 @@ class GeolocAdminController extends Controller
             }
         }
 
-        $factory = $this->get("bach.home.solarium_query_factory");
-        $geojson = $factory->getGeoJson(
-            $map_facets,
-            $this->getDoctrine()
-                ->getRepository('BachIndexationBundle:Geoloc')
-        );
-
         return $this->render(
-            'BachHomeBundle:Admin:geoloc_visualize.html.twig',
-            array('geojson' => $geojson)
+            'BachHomeBundle:Admin:geoloc_visualize.html.twig'
         );
     }
 }

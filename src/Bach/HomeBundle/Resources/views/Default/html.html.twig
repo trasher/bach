@@ -41,18 +41,42 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block javascripts %}
     {{ parent() }}
+
+    var _width = $(window).width() * 0.8;
+    var _height = $(window).height() * 0.8;
+
     $(function(){
-        $('#doccontrol').removeClass('hidden');
+        var _p = $('<p id="doccontrol"></p>');
+        if ( typeof _isOldIE == 'undefined' ) {
+            _p.append($('<a href="#" id="doccollapse">{{ _('Collapse all')|escape('js') }}</a> | <a href="#" id="docexpand">{{ _('Expand all')|escape('js') }}</a><br/>'));
+        }
+        _p.append($('<a href="#" id="headercollapse">{{ _('Display/Hide document informations')|escape('js') }}</a>'));
+        var _bibinfos = $('#bibinfos');
+        if ( _bibinfos.length > 0 ) {
+            _bibinfos.dialog({
+                autoOpen: false,
+                height: _height,
+                width: _width,
+                modal: true
+            });
+            _p.append($('<br/><a href="#" id="show_bibinfos">{{ _('Show bibliographic informations')|escape('js') }}</a>'));
+        }
+        $('#container > article').prepend(_p);
         $('#doccontrol a').on('click', function(){
             var _this = $(this);
-            if ( _this.attr('id') == 'doccollapse' ) {
-                $('input[type=checkbox]').prop('checked', false);
-            }
-            if ( _this.attr('id') == 'docexpand' ) {
-                $('input[type=checkbox]').prop('checked', true);
+            if ( typeof _isOldIE == 'undefined' ) {
+                if ( _this.attr('id') == 'doccollapse' ) {
+                    $('input[type=checkbox]').prop('checked', false);
+                }
+                if ( _this.attr('id') == 'docexpand' ) {
+                    $('input[type=checkbox]').prop('checked', true);
+                }
             }
             if ( _this.attr('id') == 'headercollapse' ) {
                 $('#docheader').toggle();
+            }
+            if ( _this.attr('id') == 'show_bibinfos' ) {
+                _bibinfos.dialog('open');
             }
             return false;
         });
@@ -87,9 +111,6 @@ POSSIBILITY OF SUCH DAMAGE.
         var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
         _elt.appendTo('body');
 
-        var _width = $(window).width() * 0.8;
-        var _height = $(window).height() * 0.8;
-
         $.ajax({
             url: $(this).attr('href') + '/ajax',
             data: {'nocontext': true},
@@ -114,10 +135,6 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block container %}
-    <p id="doccontrol" class="hidden">
-        <a href="#" id="doccollapse">{{ _('Collapse all') }}</a> | <a href="#" id="docexpand">{{ _('Expand all') }}</a>
-        <br/><a href="#" id="headercollapse">{{ _('Display/Hide document informations') }}</a>
-    </p>
     {{ displayHtml(docid, xml_file, expanded)|raw }}
 {% endblock %}
 

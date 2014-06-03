@@ -75,7 +75,6 @@ class Configuration implements ConfigurationInterface
 
         $default_base_path = realpath(__DIR__ . '/../../../../web/');
 
-        //TODO: validate paths are ending with a '/' to normalize values
         $rootNode->children()
             ->arrayNode('files')
             ->children()

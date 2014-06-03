@@ -51,8 +51,11 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="ead">
         <article>
             <header>
-                <xsl:apply-templates match="eadheader" mode="header"/>
+                <xsl:apply-templates select="eadheader" mode="header"/>
             </header>
+            <xsl:if test="count(archdesc/*) &gt; 1">
+                <div id="docheader">%archdesc%</div>
+            </xsl:if>
             <xsl:apply-templates select="archdesc/dsc"/>
         </article>
     </xsl:template>
@@ -61,11 +64,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <h2>
             <xsl:apply-templates select="filedesc/titlestmt/titleproper" mode="header_title"/>
         </h2>
-        <xsl:if test="filedesc or revisiondesc or profiledesc">
-            <div id="docheader">
-                <xsl:apply-templates mode="header"/>
-            </div>
-        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="archdesc" mode="header">
+        <div id="docheader">
+            <xsl:apply-templates mode="header"/>
+        </div>
     </xsl:template>
 
     <xsl:template match="titleproper" mode="header_title">
@@ -326,12 +330,15 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="dsc">
         <section class="css-treeview">
             <ul>
-                <li id="description" class="standalone">
-                    <xsl:apply-templates select="../did"/>
-                </li>
                 <xsl:apply-templates select="./c|./c01|./c02|./c03|./c04|./c05|./c06|./c07|./c08|./c09|./c10|./c11|./c12"/>
             </ul>
         </section>
+        <div id="bibinfos" class="well">
+            <xsl:attribute name="title">
+                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliographic informations')"/>
+            </xsl:attribute>
+            <xsl:apply-templates select="../../eadheader/*" mode="header"/>
+        </div>
     </xsl:template>
 
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
@@ -423,6 +430,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="unittitle/unitdate">
         <span class="date" property="dc:date">
+            <xsl:value-of select="' '"/>
             <xsl:value-of select="."/>
         </span>
     </xsl:template>

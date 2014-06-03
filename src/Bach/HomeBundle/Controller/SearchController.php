@@ -48,10 +48,8 @@ use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\ViewParams;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Service\SolariumQueryFactory;
-use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -98,10 +96,9 @@ abstract class SearchController extends Controller
      *
      * @return array
      */
-    protected function searchTemplateVariables($view_params, $page = 1)
+    protected function searchTemplateVariables(ViewParams $view_params, $page = 1)
     {
         $common_vars = $this->commonTemplateVariables();
-        $solr_fields = new Fields();
 
         $tpl_vars = array(
             'page'              => $page,
@@ -113,8 +110,7 @@ abstract class SearchController extends Controller
             'available_orders'  => $this->getOrders(),
             'available_views'   => $this->getViews(),
             'map_facets_name'   => $this->mapFacetsName(),
-            'q'                 => '',
-            'solr_fields'       => $solr_fields
+            'q'                 => ''
         );
 
         return array_merge($common_vars, $tpl_vars);
@@ -144,12 +140,11 @@ abstract class SearchController extends Controller
     /**
      * Handle geolocalization
      *
-     * @param SolariumQueryFactory $factory   Query factory
-     * @param array                &$tpl_vars Template variables
+     * @param SolariumQueryFactory $factory Query factory
      *
      * @return void
      */
-    protected function handleGeoloc(SolariumQueryFactory $factory, &$tpl_vars)
+    protected function handleGeoloc(SolariumQueryFactory $factory)
     {
         $show_maps = $this->container->getParameter('feature.maps');
         if ( $show_maps ) {
@@ -185,12 +180,6 @@ abstract class SearchController extends Controller
                 $this->mapFacetsName(),
                 $map_facets
             );
-            $geojson = $factory->getGeoJson(
-                $map_facets,
-                $this->getDoctrine()
-                    ->getRepository('BachIndexationBundle:Geoloc')
-            );
-            $tpl_vars['geojson'] = $geojson;
         }
     }
 
@@ -453,14 +442,33 @@ abstract class SearchController extends Controller
         }
 
         if ( $show_maps ) {
-            $session->set('map_facets', $map_facets);
-            $geojson = $factory->getGeoJson(
-                $map_facets,
-                $this->getDoctrine()
-                    ->getRepository('BachIndexationBundle:Geoloc')
+            $session->set(
+                $this->mapFacetsName(),
+                $map_facets
             );
-            $tpl_vars['geojson'] = $geojson;
         }
+    }
+
+    /**
+     * Loads Geojson data
+     *
+     * @return void
+     */
+    public function getGeoJsonAction()
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        $factory = $this->get($this->factoryName());
+        $map_facets = $session->get($this->mapFacetsName());
+
+        $geojson = $factory->getGeoJson(
+            $map_facets,
+            $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:Geoloc')
+        );
+
+        return new JsonResponse($geojson);
     }
 
     /**
@@ -549,9 +557,7 @@ abstract class SearchController extends Controller
             true
         );
 
-        $response = new Response($geojson);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        return new JsonResponse($geojson);
     }
 
     /**
@@ -575,7 +581,6 @@ abstract class SearchController extends Controller
         $query->setDictionary('suggest');
         $query->setOnlyMorePopular(true);
         $query->setCount(10);
-        //$query->setCollate(true);
         $terms = $this->get($this->entryPoint())->suggester($query)->getResults();
 
         $suggestions = array();
@@ -606,7 +611,7 @@ abstract class SearchController extends Controller
 
         $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
-            $view_params = new ViewParams();
+            $view_params = $this->get($this->getViewParamsServicename());
         }
         $view_params->bind($request, $this->getCookieName());
 
@@ -706,6 +711,13 @@ abstract class SearchController extends Controller
     abstract protected function getSearchUri();
 
     /**
+     * Get view params service name
+     *
+     * @return string
+     */
+    abstract protected function getViewParamsServicename();
+
+    /**
      * Get configured geolocalization fields
      *
      * @return array
@@ -749,6 +761,35 @@ abstract class SearchController extends Controller
             $tpl_vars['by_year_min'] = (int)$date_min->format('Y');
             $tpl_vars['by_year_max'] = (int)$date_max->format('Y');
         }
+    }
+
+    /**
+     * Handle view parameters
+     *
+     * @return ViewParams
+     */
+    protected function handleViewParams()
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        /** Manage view parameters */
+        $view_params = $session->get($this->getParamSessionName());
+        if ( !$view_params ) {
+            $view_params = $this->get($this->getViewParamsServicename());
+        }
+        //take care of user view params
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $view_params->bindCookie($this->getCookieName());
+        }
+
+        //set current view parameters according to request
+        $view_params->bind($request, $this->getCookieName());
+
+        //store new view parameters
+        $session->set($this->getParamSessionName(), $view_params);
+
+        return $view_params;
     }
 
     /**

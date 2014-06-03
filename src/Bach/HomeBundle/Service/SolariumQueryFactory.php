@@ -51,6 +51,7 @@ use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
 use Bach\HomeBundle\Entity\Filters;
 use Doctrine\ORM\EntityRepository;
 use Bach\HomeBundle\Entity\TagCloud;
+use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 
 /**
  * Bach Solarium query factory
@@ -492,13 +493,16 @@ class SolariumQueryFactory
         $map_facets, EntityRepository $repo, $zones = false, $merged = false
     ) {
         $result = array();
+        $labels = array();
         $values = array();
         $all_values = array();
         $parameters = array();
 
         if ( count($map_facets) > 0 ) {
+            $solr_fields = new Fields();
             foreach ( $map_facets as $field=>$facet ) {
                 $values[$field] = null;
+                $labels[$field] = $solr_fields->getFieldLabel($field);
                 foreach ( $facet as $item=>$count ) {
                     if ( !isset($values[$field][$item]) ) {
                         $values[$field][$item] = $count;
@@ -570,21 +574,24 @@ class SolariumQueryFactory
                                     //lets display a point instead
                                     $lon = $polygon->getLon();
                                     $lat = $polygon->getLat();
-                                    $geometry = str_replace(
-                                        array('%lon', '%lat'),
-                                        array($lon, $lat),
-                                        '{"type":"Point","coordinates":[%lon,%lat]}'
+                                    $geometry = array(
+                                        'type'          => 'Point',
+                                        'coordinates'   => array(
+                                            (float)$lon,
+                                            (float)$lat
+                                        )
                                     );
                                 }
 
                                 $count = $value[$name];
-                                $results[] = str_replace(
-                                    '%geometry',
-                                    $geometry,
-                                    "\n" . '{"type": "Feature", "id":"' . $id .
-                                    '", "properties":{"name": "' . $name  . 
-                                    '", "results": ' . $count .
-                                    '}, "geometry": %geometry}'
+                                $results[] = array(
+                                    'type'          => 'Feature',
+                                    'id'            => (string)$id,
+                                    'properties'    => array(
+                                        'name'      => $name,
+                                        'results'   => $count
+                                    ),
+                                    'geometry'  => $geometry
                                 );
                             }
                         }
@@ -592,10 +599,10 @@ class SolariumQueryFactory
                             if ( $merged === true ) {
                                 $result = array_merge($result, $results);
                             } else {
-                                $result[$field]
-                                    = '{"type": "FeatureCollection", "features":[' .
-                                    implode(',', $results) .
-                                    ']}';
+                                $result[$field] = array(
+                                    'type'      => 'FeatureCollection',
+                                    'features'  => $results
+                                );
                             }
                         }
                     }
@@ -604,12 +611,16 @@ class SolariumQueryFactory
         }
 
         if ( $merged === true ) {
-            $result = '{"type": "FeatureCollection", "features":[' .
-                implode(',', $result) .
-                ']}';
+            $result = array(
+                'type'      => 'FeatureCollection',
+                'features'  => $result
+            );
         }
 
-        return $result;
+        return array(
+            'labels'    => $labels,
+            'data'      => $result
+        );
     }
 
     /**

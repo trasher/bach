@@ -33,7 +33,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% extends 'BachHomeBundle:Commons:search.html.twig' %}
 
-{% block subtitle %}{{ _('Welcome to Bach\'s!') }}{% endblock %}
+{% block intro %}
+    {% if html_intro_exists('intro.html') %}
+        {{ get_html_intro('intro.html')|raw }}
+    {% else %}
+        <h2 id="welcome">{{ _('Welcome to Bach\'s!') }}</h2>
+    {% endif %}
+{% endblock %}
 
 {% block show_results %}
             {% for document in searchResults %}
@@ -133,6 +139,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block autocomplete %}
+    {% if features.autocomplete %}
     function split(val) {
         return val.split(/ +/);
     }
@@ -167,6 +174,7 @@ POSSIBILITY OF SUCH DAMAGE.
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
+    {% endif %}
 {% endblock %}
 
 {% block player %}

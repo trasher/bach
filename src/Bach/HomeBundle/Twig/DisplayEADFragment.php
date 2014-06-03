@@ -65,17 +65,20 @@ class DisplayEADFragment extends \Twig_Extension
     private $_viewer_uri;
     private $_covers_dir;
     private $_comms;
+    private $_cote_location;
 
     /**
      * Main constructor
      *
-     * @param UrlGeneratorInterface $router Router
-     * @param boolean               $comms  Comments feature enabled
+     * @param UrlGeneratorInterface $router   Router
+     * @param boolean               $comms    Comments feature enabled
+     * @param string                $cote_loc Cote location
      */
-    public function __construct(Router $router, $comms)
+    public function __construct(Router $router, $comms, $cote_loc)
     {
         $this->_router = $router;
         $this->_comms = $comms;
+        $this->_cote_location = $cote_loc;
     }
 
     /**
@@ -166,6 +169,7 @@ class DisplayEADFragment extends \Twig_Extension
         $proc->setParameter('', 'docid', $docid);
         $proc->setParameter('', 'viewer_uri', $this->_viewer_uri);
         $proc->setParameter('', 'covers_dir', $this->_covers_dir);
+        $proc->setParameter('', 'cote_location', $this->_cote_location);
         $comments_enabled = $this->_comms ? 'true' : 'false';
         $proc->setParameter('', 'comments_enabled', $comments_enabled);
 
@@ -311,6 +315,9 @@ class DisplayEADFragment extends \Twig_Extension
             break;
         case 'Comments':
             return _('Comments');
+            break;
+        case 'Bibliographic informations':
+            return _('Bibliographic informations');
             break;
         default:
             //TODO: add an alert in logs, a translation may be missing!

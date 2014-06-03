@@ -44,7 +44,7 @@ parameters:
 
     #application locale
     locale: en
-    secret: fcfe28f4f96b6167f7e541210b30616ac #Usefull?
+    secret: fcfe28f4f96b6167f7e541210b30616ac #To change
 
     #Solr parameters
     solr_ssl: false
@@ -63,6 +63,7 @@ parameters:
     #Path to files for each type
     ead_files_path: null
     matricules_files_path: null
+    html_intros_path: null
 
     ##Features activation
     #main features
@@ -74,6 +75,17 @@ parameters:
     feature.maps: true
     feature.tagcloud: true
     feature.comments: true
+    feature.autocomplete: true
+    display.show_maps: true
+    display.show_daterange: true
+    display.rows: 10
+    display.ead.rows: '%display.rows%'
+    display.ead.show_maps: '%display.show_maps%'
+    display.ead.show_daterange: '%display.show_daterange%'
+    display.matricules.rows: 20
+    display.matricules.show_maps: '%display.show_maps%'
+    display.matricules.show_daterange: '%display.show_daterange%'
+    cote_location: 'bottom' #either top or bottom
     #other
     feature.openid: false
     feature.social: false

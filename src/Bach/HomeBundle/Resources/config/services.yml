@@ -43,7 +43,7 @@ services:
 
     bach.home.display_ead_fragment:
         class: Bach\HomeBundle\Twig\DisplayEADFragment
-        arguments: [ @router, '%feature.comments%' ]
+        arguments: [ @router, '%feature.comments%', '%cote_location%' ]
         calls:
             - [setRequest, ['@?request=']]
             - [setViewer, ['%viewer_uri%']]
@@ -72,7 +72,7 @@ services:
 
     bach.home.display_html:
         class: Bach\HomeBundle\Twig\DisplayHtml
-        arguments: [ @router ]
+        arguments: [ @router, '%cote_location%' ]
         calls:
             - [setRequest, ['@?request=']]
         tags:
@@ -95,4 +95,12 @@ services:
         arguments: [ @doctrine.orm.entity_manager, @router, @service_container ]
         tags:
             - { name: sitemap.provider }
+
+    bach.home.ead_view_params:
+        class: Bach\HomeBundle\Entity\ViewParams
+        arguments: [ '%display.ead.show_maps%', '%display.ead.show_daterange%', '%display.ead.rows%' ]
+
+    bach.home.matricules_view_params:
+        class: Bach\HomeBundle\Entity\ViewParams
+        arguments: [ '%display.matricules.show_maps%', '%display.matricules.show_daterange%', '%display.matricules.rows%' ]
 

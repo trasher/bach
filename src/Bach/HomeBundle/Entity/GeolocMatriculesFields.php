@@ -84,7 +84,6 @@ class GeolocMatriculesFields extends GeolocFields
     protected function getDefaultFields()
     {
         return array('lieu_naissance', 'lieu_enregistrement');
-        //return array('cGeogname');
     }
 
     /**

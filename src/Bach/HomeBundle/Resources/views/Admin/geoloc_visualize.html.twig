@@ -50,7 +50,6 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endblock %}
 
     {% block javascripts %}
-        var allpoints;
         var current;
         var selected;
 
@@ -95,91 +94,60 @@ POSSIBILITY OF SUCH DAMAGE.
             var newHeight = Math.floor(wheight - _oSize) + "px";
             $("#map").css("height", newHeight);
 
-            var map;
+            {% include 'BachHomeBundle:Commons:maps.js.twig' with {'ajax_path': path('bach_geojson')} %}
+
             var _layers;
 
-            map = L.map('map', {
-                minZoom: 1
-            }).on('popupopen', function(e){
-                var _popup = e.popup;
-                var _container = $(_popup._container);
-                var _feature = _popup._source.feature;
-                var _content = _container.find('.leaflet-popup-content');
+            var _cb = function() {
+                map.on('popupopen', function(e){
+                    var _popup = e.popup;
+                    var _container = $(_popup._container);
+                    var _feature = _popup._source.feature;
+                    var _content = _container.find('.leaflet-popup-content');
 
-                if ( _content.find('a.remove').length == 0 ) {
-                    _content = _content.html();
-                    _content += '<ul>';
-                    _content += '<li><a class="remove" href="' + remove_href.replace('NAME', _feature.properties.name)  + '">{{ _('remove') }}</a></li>';
-                    _content += '<li><a class="edit" href="' + edit_href.replace('NAME', _feature.properties.name)  + '">{{ _('edit') }}</a></li>';
-                    _content += '</ul>';
+                    if ( _content.find('a.remove').length == 0 ) {
+                        _content = _content.html();
+                        _content += '<ul>';
+                        _content += '<li><a class="remove" href="' + remove_href.replace('NAME', _feature.properties.name)  + '">{{ _('remove') }}</a></li>';
+                        _content += '<li><a class="edit" href="' + edit_href.replace('NAME', _feature.properties.name)  + '">{{ _('edit') }}</a></li>';
+                        _content += '</ul>';
 
-                    _popup.setContent(_content);
+                        _popup.setContent(_content);
 
-                    _container = $(_container);
-                    _container.find('a.remove').on('click', function() {
-                        var _href = $(this).attr('href');
-                        $.ajax({
-                            url: _href,
-                            {% include '::loader.js.twig' with {'silent_error': true} %}
-                            success: function(data) {
-                                var _name = _feature.properties.name;
-                                allpoints.removeLayer(allpoints.getLayer(_popup._source._leaflet_id));
-                                alert('{{ _('NAME has been removed') }}'.replace('NAME', _name));
-                            }
+                        _container = $(_container);
+                        _container.find('a.remove').on('click', function() {
+                            var _href = $(this).attr('href');
+                            $.ajax({
+                                url: _href,
+                                type: 'POST',
+                                {% include '::loader.js.twig' with {'silent_error': true} %}
+                                success: function(data) {
+                                    var _name = _feature.properties.name;
+                                    var _id = _popup._source._leaflet_id;
+                                    if (allpoints.getLayer(_id) ) {
+                                        allpoints.removeLayer(allpoints.getLayer(_id));
+                                    } else {
+                                        allpoints.eachLayer(function(l){
+                                            if ( l.getLayer(_id) ) {
+                                                l.removeLayer(_id);
+                                            }
+                                        });
+                                    }
+                                    alert('{{ _('NAME has been removed') }}'.replace('NAME', _name));
+                                }
+                            });
+                            return false;
                         });
-                        return false;
-                    });
 
-                    _container.find('a.edit').on('click', function() {
-                        alert('{{ _('Not yet implemented!') }}');
-                        return false;
-                    });
-                }
-            });
+                        _container.find('a.edit').on('click', function() {
+                            alert('{{ _('Not yet implemented!') }}');
+                            return false;
+                        });
+                    }
+                });
+            }
 
-
-            {% for field, geo in geojson -%}
-            var {{ field|replace({'-': '_'}) }}_points = L.geoJson({{ geo|raw }}, {
-                onEachFeature: onEachFeature
-            });
-            var {{ field|replace({'-': '_'}) }}_layer = L.layerGroup([{{ field|replace({'-': '_'}) }}_points]);
-            {% endfor %}
-
-            var overlays = {
-            {% for field in geojson|keys -%}
-                '{{ field }}': {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
-            {% endfor %}
-            };
-            var _groups = L.control.layers({}, overlays).addTo(map);
-
-            var _layers = L.layerGroup([
-                {% for field in geojson|keys -%}
-                {{ field|replace({'-': '_'}) }}_layer{% if not loop.last %},{% endif %}
-            {% endfor %}
-            ]).addTo(map);
-
-            var allpoints = L.featureGroup([
-                {%- for field in geojson|keys -%}
-                {{ field|replace({'-': '_'}) }}_points{% if not loop.last %},{% endif %}
-            {%- endfor -%}
-            ]);
-
-            map.fitBounds(allpoints.getBounds(), {
-                padding: [50, 50],
-                maxZoom: 13
-            });
-
-            var fullScreen = new L.Control.FullScreen();
-            map.addControl(fullScreen);
-
-            L.tileLayer('{{ tiles_url }}', {
-                {% if tiles_subdomains is iterable -%}
-                subdomains: [{% for subdomain in tiles_subdomains %}'{{ subdomain }}'{% if not loop.last %}, {% endif %}{% endfor %}],
-                {% endif -%}
-                maxZoom: 18,
-                attribution: '{{ _('© Cartographic data')|escape('js') }} <a href="http://openstreetmap.org">{{ _('OpenStreetMap contributors')|escape('js') }}</a>, {{ _('© Imagery')|escape('js') }} {{ tiles_attribution|raw }}'
-            }).addTo(map);
-
+            _initMap(_cb);
         });
     {% endblock %}
 {% endembed %}

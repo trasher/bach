@@ -45,9 +45,7 @@
 namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
 
 use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
-
 use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLAttribute;
-
 use Bach\AdministrationBundle\Entity\SolrSchema\SolrXMLElement;
 
 /**
@@ -83,7 +81,7 @@ class DynamicField
             $this->type = $attr !== null ? $attr->getValue() : null;
             $attr = $fieldElt->getAttribute('indexed');
             if ( $attr !== null ) {
-                $this->indexed =$this->_toBoolean($attr->getValue());
+                $this->indexed = $this->_toBoolean($attr->getValue());
             }
             $attr = $fieldElt->getAttribute('stored');
             if ( $attr !== null ) {

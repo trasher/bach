@@ -63,15 +63,18 @@ class DisplayHtml extends \Twig_Extension
 {
     private $_router;
     private $_request;
+    private $_cote_location;
 
     /**
      * Main constructor
      *
-     * @param UrlGeneratorInterface $router Router
+     * @param UrlGeneratorInterface $router   Router
+     * @param string                $cote_loc Cote location
      */
-    public function __construct(Router $router)
+    public function __construct(Router $router, $cote_loc)
     {
         $this->_router = $router;
+        $this->_cote_location = $cote_loc;
     }
 
     /**
@@ -133,6 +136,29 @@ class DisplayHtml extends \Twig_Extension
 
         if ( !$cached_doc ) {
             $html = '';
+
+            $xml_doc = simplexml_load_file($xml_file);
+
+            $archdesc_doc = clone $xml_doc;
+            unset($archdesc_doc->archdesc->eadheader);
+            unset($archdesc_doc->archdesc->dsc);
+
+            $display = new DisplayEADFragment(
+                $this->_router,
+                false,
+                $this->_cote_location
+            );
+            $display->setRequest($this->_request);
+            $archdesc_xml = $display->display(
+                $archdesc_doc->archdesc->asXML(),
+                $docid,
+                true
+            );
+            $archdesc_xml = simplexml_load_string(
+                '<root>' . $archdesc_xml . '</root>'
+            );
+            $archdesc_html = $archdesc_xml->div->asXML();
+
             $proc = new \XsltProcessor();
             $proc->importStylesheet(
                 simplexml_load_file(__DIR__ . '/display_html.xsl')
@@ -143,9 +169,6 @@ class DisplayHtml extends \Twig_Extension
                 $proc->setParameter('', 'expanded', 'true');
             }
             $proc->registerPHPFunctions();
-
-            $xml_doc = new \DOMDocument();
-            $xml_doc->load($xml_file);
 
             $html .= $proc->transformToXml($xml_doc);
 
@@ -182,6 +205,12 @@ class DisplayHtml extends \Twig_Extension
             $html = preg_replace_callback(
                 '/link="%%%(.[^%]+)%%%"/',
                 $callback,
+                $html
+            );
+
+            $html = preg_replace(
+                '/%archdesc%/',
+                $archdesc_html,
                 $html
             );
 

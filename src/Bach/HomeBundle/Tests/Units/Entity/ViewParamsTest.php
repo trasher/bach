@@ -91,7 +91,7 @@ class ViewParams extends Units\WebTestCase
             )
         );
         $req = $client->getRequest();
-        $vp->bind($req);
+        $vp->bind($req, 'cookie_name');
 
         $res_per_page = $vp->getResultsByPage();
         $view = $vp->getView();

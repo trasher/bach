@@ -46,7 +46,6 @@ namespace Bach\HomeBundle\Controller;
 
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Bach\HomeBundle\Entity\ViewParams;
 use Bach\HomeBundle\Entity\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
@@ -79,17 +78,7 @@ class DefaultController extends SearchController
         $session = $request->getSession();
 
         /** Manage view parameters */
-        $view_params = $session->get($this->getParamSessionName());
-        if ( !$view_params ) {
-            $view_params = new ViewParams();
-        }
-        //take care of user view params
-        if ( isset($_COOKIE[$this->getCookieName()]) ) {
-            $view_params->bindCookie($this->getCookieName());
-        }
-
-        //set current view parameters according to request
-        $view_params->bind($request, $this->getCookieName());
+        $view_params = $this->handleViewParams();
 
         $tpl_vars = $this->searchTemplateVariables($view_params);
         $session->set($this->getFiltersName(), null);
@@ -112,7 +101,7 @@ class DefaultController extends SearchController
             }
         }
 
-        $this->handleGeoloc($factory, $tpl_vars);
+        $this->handleGeoloc($factory);
 
         $slider_dates = $factory->getSliderDates(new Filters());
         if ( is_array($slider_dates) ) {
@@ -196,20 +185,7 @@ class DefaultController extends SearchController
         }
 
         /** Manage view parameters */
-        $view_params = $session->get($this->getParamSessionName());
-        if ( !$view_params ) {
-            $view_params = new ViewParams();
-        }
-        //take care of user view params
-        if ( isset($_COOKIE[$this->getCookieName()]) ) {
-            $view_params->bindCookie($this->getCookieName());
-        }
-
-        //set current view parameters according to request
-        $view_params->bind($request, $this->getCookieName());
-
-        //store new view parameters
-        $session->set($this->getParamSessionName(), $view_params);
+        $view_params = $this->handleViewParams();
 
         $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
@@ -544,52 +520,50 @@ class DefaultController extends SearchController
             )
         );
 
-        if ( $with_context ) {
+        if ( isset($doc['archDescUnitTitle']) ) {
             $tplParams['archdesc'] = $doc['archDescUnitTitle'];
-            $parents = explode('/', $doc['parents']);
-            if ( count($parents) > 0 ) {
-                $pquery = $client->createSelect();
-                $query = null;
-                foreach ( $parents as $p ) {
-                    if ( $query !== null ) {
-                        $query .= ' | ';
-                    }
-                    $query .= 'fragmentid:"' . $doc['headerId'] . '_' . $p . '"';
-                }
-                $pquery->setQuery($query);
-                $pquery->setFields('fragmentid, cUnittitle');
-                $rs = $client->select($pquery);
-                $ariane  = $rs->getDocuments();
-                if ( count($ariane) > 0 ) {
-                    $tplParams['ariane'] = $ariane;
-                }
-            }
-
-            $max_results = 20;
-            $cquery = $client->createSelect();
-            $pid = substr($docid, strlen($doc['headerId']) + 1);
-
-            $query = '+headerId:"' . $doc['headerId'] . '" +parents: ';
-            if ( $pid === 'description' ) {
-                $query .= '""';
-            } else {
-                if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
-                    $pid = $doc['parents'] . '/' . $pid;
-                }
-                $query .= $pid;
-            }
-            $cquery->setQuery($query);
-            $cquery->setStart(($page - 1) * $max_results);
-            $cquery->setRows($max_results);
-            $cquery->setFields('fragmentid, cUnittitle');
-            $rs = $client->select($cquery);
-            $children  = $rs->getDocuments();
-            $count_children = $rs->getNumFound();
-
-            $tplParams['count_children'] = $count_children;
-        } else {
-            $tplParams['count_children'] = 0;
         }
+        $parents = explode('/', $doc['parents']);
+        if ( count($parents) > 0 ) {
+            $pquery = $client->createSelect();
+            $query = null;
+            foreach ( $parents as $p ) {
+                if ( $query !== null ) {
+                    $query .= ' | ';
+                }
+                $query .= 'fragmentid:"' . $doc['headerId'] . '_' . $p . '"';
+            }
+            $pquery->setQuery($query);
+            $pquery->setFields('fragmentid, cUnittitle');
+            $rs = $client->select($pquery);
+            $ariane  = $rs->getDocuments();
+            if ( count($ariane) > 0 ) {
+                $tplParams['ariane'] = $ariane;
+            }
+        }
+
+        $max_results = 20;
+        $cquery = $client->createSelect();
+        $pid = substr($docid, strlen($doc['headerId']) + 1);
+
+        $query = '+headerId:"' . $doc['headerId'] . '" +parents: ';
+        if ( $pid === 'description' ) {
+            $query .= '""';
+        } else {
+            if ( isset($doc['parents']) && trim($doc['parents'] !== '') ) {
+                $pid = $doc['parents'] . '/' . $pid;
+            }
+            $query .= $pid;
+        }
+        $cquery->setQuery($query);
+        $cquery->setStart(($page - 1) * $max_results);
+        $cquery->setRows($max_results);
+        $cquery->setFields('fragmentid, cUnittitle');
+        $rs = $client->select($cquery);
+        $children  = $rs->getDocuments();
+        $count_children = $rs->getNumFound();
+
+        $tplParams['count_children'] = $count_children;
 
         if ( count($children) > 0 ) {
             $tplParams['children'] = $children;
@@ -630,12 +604,6 @@ class DefaultController extends SearchController
                 $tplParams['comments'] = $comments;
             }
         }
-
-        /** FIXME: find a suitable comportement for the stuff to avoid loops
-        $referer = $this->getRequest()->headers->get('referer');
-        if ( $referer !== null ) {
-            $tplParams['referer'] = $referer;
-        }*/
 
         return $this->render(
             $tpl,
@@ -825,6 +793,16 @@ class DefaultController extends SearchController
     protected function getSearchUri()
     {
         return 'bach_search';
+    }
+
+    /**
+     * Get view params service name
+     *
+     * @return string
+     */
+    protected function getViewParamsServicename()
+    {
+        return ('bach.home.ead_view_params');
     }
 
     /**

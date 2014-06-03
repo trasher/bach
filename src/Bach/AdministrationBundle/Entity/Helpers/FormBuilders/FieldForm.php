@@ -44,11 +44,11 @@
 
 namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
 
-use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Bach\AdministrationBundle\Entity\SolrSchema\BachSchemaConfigReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 
 /**
  * Field form entry
@@ -127,7 +127,8 @@ class FieldForm extends AbstractType
         $attr = $reader->getAttributeByTag($bachTagType, 'multiValued');
         $builder->add(
             'multiValued',
-            'checkbox', array(
+            'checkbox',
+            array(
                 'label'    => $attr->getLabel(),
                 'required' => false
             )
