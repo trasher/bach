@@ -34,8 +34,8 @@ POSSIBILITY OF SUCH DAMAGE.
 {% extends 'BachHomeBundle:Commons:search.html.twig' %}
 
 {% block intro %}
-    {% if html_contents_exists('intro_matricules.html') %}
-        {{ get_html_contents('intro_matricules.html')|raw }}
+    {% if html_intro_exists('intro_matricules.html') %}
+        {{ get_html_intro('intro_matricules.html')|raw }}
     {% else %}
         <h2 id="welcome">{{ _('Search in matricules') }}</h2>
     {% endif %}
