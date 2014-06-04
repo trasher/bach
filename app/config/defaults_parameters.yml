@@ -56,6 +56,7 @@ parameters:
     matricules_corename: matricules
     #Default search core
     solr_search_core: '%ead_corename%'
+    solr_query_fields: ~
 
     #Path to store uploaded files (from web publication)
     upload_dir: '%kernel.root_dir%/../web/uploads/'
@@ -150,3 +151,9 @@ bach_home:
         musics: '%kernel.root_dir%/../data/musics/'
         misc: '%kernel.root_dir%/../data/files/'
         html: '%kernel.root_dir%/../data/html/'
+    search_forms: ~
+#        searchformname: #search form identifier
+#            menu_entry: 'My entry' #Will be displayed in main menu
+#            query_fields: 'descriptors^2 cUnittitle^1 parents_titles^1 fulltext^0.1' #search query with boost
+#            filter: 'headerId:MYID' #will filter query on headerId field. Query is free.
+

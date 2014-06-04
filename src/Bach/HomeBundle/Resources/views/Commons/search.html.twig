@@ -198,7 +198,7 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
     {% if form is defined %}
-    <form action="{{ path(block('do_search_path')) }}" method="post" {{ form_enctype(form) }} name="search" id="search">
+    <form action="{% if search_form is defined %}{{ path(block('do_search_path'), {'form_name': search_form}) }}{% else %}{{ path(block('do_search_path')) }}{% endif %}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
             {{ form_widget(form.query) }}
             {{ form_widget(form._token) }}
@@ -573,7 +573,11 @@ POSSIBILITY OF SUCH DAMAGE.
                 });
             }
 
-            {% include 'BachHomeBundle:Commons:maps.js.twig' with {'ajax_path': path(block('geojson_path')), 'from_search': true} %}
+            {% if search_form is defined %}
+                {% include 'BachHomeBundle:Commons:maps.js.twig' with {'ajax_path': path(block('geojson_path'), {'search_form': search_form}), 'from_search': true} %}
+            {% else %}
+                {% include 'BachHomeBundle:Commons:maps.js.twig' with {'ajax_path': path(block('geojson_path')), 'from_search': true} %}
+            {% endif %}
 
             if ( _view_params['map'] == true ) {
                 $('#map').removeClass('hidden');

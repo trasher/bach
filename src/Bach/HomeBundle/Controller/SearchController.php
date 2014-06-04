@@ -67,13 +67,16 @@ abstract class SearchController extends Controller
 {
     private $_geoloc;
     protected $date_field;
+    protected $search_form;
 
     /**
      * Default page
      *
+     * @param string $form_name Search form name
+     *
      * @return void
      */
-    abstract public function indexAction();
+    abstract public function indexAction($form_name = null);
 
     /**
      * Search page
@@ -81,11 +84,12 @@ abstract class SearchController extends Controller
      * @param string $query_terms Term(s) we search for
      * @param int    $page        Page
      * @param string $facet_name  Display more terms in suggests
+     * @param string $form_name   Search form name
      *
      * @return void
      */
     abstract public function searchAction($query_terms = null, $page = 1,
-        $facet_name = null
+        $facet_name = null, $form_name = null
     );
 
     /**
@@ -112,6 +116,10 @@ abstract class SearchController extends Controller
             'map_facets_name'   => $this->mapFacetsName(),
             'q'                 => ''
         );
+
+        if ( $this->search_form !== null ) {
+            $tpl_vars['search_form'] = $this->search_form;
+        }
 
         return array_merge($common_vars, $tpl_vars);
     }
@@ -158,6 +166,14 @@ abstract class SearchController extends Controller
             if ( $query === null ) {
                 $query = $this->get($this->entryPoint())->createSelect();
                 $query->setQuery('*:*');
+
+                if ( $this->search_form !== null ) {
+                    $search_forms = $this->container->getParameter('search_forms');
+                    $filter = $search_forms[$this->search_form]['filter'];
+                    $query->createFilterQuery('search_form')
+                        ->setQuery('+(' . $filter . ')');
+                }
+
                 $query->setStart(0)->setRows(0);
 
                 $facetSet = $query->getFacetSet();
@@ -452,10 +468,13 @@ abstract class SearchController extends Controller
     /**
      * Loads Geojson data
      *
+     * @param string $search_form Search form name
+     *
      * @return void
      */
-    public function getGeoJsonAction()
+    public function getGeoJsonAction($search_form = null)
     {
+        $this->search_form = $search_form;
         $request = $this->getRequest();
         $session = $request->getSession();
 
@@ -753,7 +772,12 @@ abstract class SearchController extends Controller
      */
     protected function handleYearlyResults($factory, &$tpl_vars)
     {
-        $by_year = $factory->getResultsByYear();
+        $params = null;
+        if ( $this->search_form !== null ) {
+            $search_forms = $this->container->getParameter('search_forms');
+            $params = $search_forms[$this->search_form];
+        }
+        $by_year = $factory->getResultsByYear($params);
         if ( count($by_year) > 0 ) {
             $tpl_vars['by_year'] = $by_year;
             $date_min = new \DateTime($by_year[0][0] . '-01-01');

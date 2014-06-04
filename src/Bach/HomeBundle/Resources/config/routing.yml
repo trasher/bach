@@ -42,9 +42,22 @@ bach_search:
         _method: GET
         page: \d+
 
+bach_search_form_homepage:
+    pattern:  /search_form/{form_name}
+    defaults: { _controller: BachHomeBundle:Default:index }
+    requirements:
+        _method: GET
+
+bach_search_form:
+    pattern: /search_form/{form_name}/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:Default:search, 'query_terms': null, 'page': 1, 'facet_name': null }
+    requirements:
+        _method: GET
+        page: \d+
+
 bach_do_search:
-    pattern:  /do-search
-    defaults: { _controller: BachHomeBundle:Default:doSearch }
+    pattern:  /do-search/{form_name}
+    defaults: { _controller: BachHomeBundle:Default:doSearch, 'form_name': null }
     requirements:
         _method: POST
 
@@ -108,8 +121,8 @@ bach_fullfacet:
         _method: GET|POST
 
 bach_geojson:
-    pattern: /geojson
-    defaults: {_controller: BachHomeBundle:Default:getGeoJson}
+    pattern: /geojson/{search_form}
+    defaults: {_controller: BachHomeBundle:Default:getGeoJson, search_form: null}
     requirements:
         _method: GET
 

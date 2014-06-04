@@ -71,12 +71,16 @@ class DefaultController extends SearchController
     /**
      * Default page
      *
+     * @param string $form_name Search form name
+     *
      * @return void
      */
-    public function indexAction()
+    public function indexAction($form_name = null)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
+
+        $this->search_form = $form_name;
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -93,9 +97,18 @@ class DefaultController extends SearchController
         $factory = $this->get($this->factoryName());
         $factory->setDateField($this->date_field);
 
+        $search_form_params = null;
+        if ( $this->search_form !== null ) {
+            $search_forms = $this->container->getParameter('search_forms');
+            $search_form_params = $search_forms[$this->search_form];
+        }
+
         $show_tagcloud = $this->container->getParameter('feature.tagcloud');
         if ( $show_tagcloud ) {
-            $tagcloud = $factory->getTagCloud($this->getDoctrine()->getManager());
+            $tagcloud = $factory->getTagCloud(
+                $this->getDoctrine()->getManager(),
+                $search_form_params
+            );
 
             if ( $tagcloud ) {
                 $tpl_vars['tagcloud'] = $tagcloud;
@@ -104,7 +117,7 @@ class DefaultController extends SearchController
 
         $this->handleGeoloc($factory);
 
-        $slider_dates = $factory->getSliderDates(new Filters());
+        $slider_dates = $factory->getSliderDates(new Filters(), $search_form_params);
         if ( is_array($slider_dates) ) {
             $tpl_vars = array_merge($tpl_vars, $slider_dates);
         }
@@ -143,7 +156,11 @@ class DefaultController extends SearchController
      */
     protected function mapFacetsName()
     {
-        return 'map_facets';
+        $name = 'map_facets';
+        if ( $this->search_form !== null ) {
+            $name .= '_form_' . $this->search_form;
+        }
+        return $name;
     }
 
     /**
@@ -172,11 +189,12 @@ class DefaultController extends SearchController
      * @param string $query_terms Term(s) we search for
      * @param int    $page        Page
      * @param string $facet_name  Display more terms in suggests
+     * @param string $form_name   Search form name
      *
      * @return void
      */
     public function searchAction($query_terms = null, $page = 1,
-        $facet_name = null
+        $facet_name = null, $form_name = null
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -184,6 +202,8 @@ class DefaultController extends SearchController
         if ( $query_terms !== null ) {
             $query_terms = urldecode($query_terms);
         }
+
+        $this->search_form = $form_name;
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -202,7 +222,17 @@ class DefaultController extends SearchController
         ) {
             $query_terms = '*:*';
         } else if ( $query_terms === null && $filters->count() == 0 ) {
-            $redirectUrl = $this->get('router')->generate('bach_homepage');
+            $redirectUrl = null;
+            if ( $this->search_form !== null ) {
+                $redirectUrl = $this->get('router')->generate(
+                    'bach_search_form_homepage',
+                    array(
+                        'form_name' => $this->search_form
+                    )
+                );
+            } else {
+                $redirectUrl = $this->get('router')->generate('bach_homepage');
+            }
             return new RedirectResponse($redirectUrl);
         }
 
@@ -231,6 +261,12 @@ class DefaultController extends SearchController
 
         $container = new SolariumQueryContainer();
         $container->setOrder($view_params->getOrder());
+
+        $search_forms = null;
+        if ( $this->search_form !== null ) {
+            $search_forms = $this->container->getParameter('search_forms');
+            $container->setSearchForm($search_forms[$this->search_form]);
+        }
 
         $container->setField(
             'show_pics',
@@ -297,7 +333,11 @@ class DefaultController extends SearchController
         }
         $templateVars['resultEnd'] = $resultEnd;
 
-        $slider_dates = $factory->getSliderDates($filters);
+        $search_form_params = null;
+        if ( $search_forms !== null ) {
+            $search_form_params = $search_forms[$this->search_form];
+        }
+        $slider_dates = $factory->getSliderDates($filters, $search_form_params);
         if ( is_array($slider_dates) ) {
             $templateVars = array_merge($templateVars, $slider_dates);
         }
@@ -321,13 +361,27 @@ class DefaultController extends SearchController
      *
      * Will take care of search terms, and reroute with proper URI
      *
+     * @param string $form_name Search form name
+     *
      * @return void
      */
-    public function doSearchAction()
+    public function doSearchAction($form_name = null)
     {
+        $this->search_form = $form_name;
         $query = new SearchQuery();
         $form = $this->createForm(new SearchQueryFormType(), $query);
-        $redirectUrl = $this->get('router')->generate('bach_homepage');
+
+        $redirectUrl = null;
+        if ( $this->search_form !== null ) {
+            $redirectUrl = $this->get('router')->generate(
+                'bach_search_form_homepage',
+                array(
+                    'form_name' => $this->search_form
+                )
+            );
+        } else {
+            $redirectUrl = $this->get('router')->generate('bach_homepage');
+        }
 
         $request = $this->getRequest();
 
@@ -348,8 +402,14 @@ class DefaultController extends SearchController
                     $url_vars['filter_value'] = $request->get('filter_value');
                 }
 
+                $route = 'bach_search';
+                if ( $this->search_form !== null ) {
+                    $route = 'bach_search_form';
+                    $url_vars['form_name'] = $this->search_form;
+                }
+
                 $redirectUrl = $this->get('router')->generate(
-                    'bach_search',
+                    $route,
                     $url_vars
                 );
             }
@@ -788,7 +848,11 @@ class DefaultController extends SearchController
      */
     protected function getFiltersName()
     {
-        return 'filters';
+        $name = 'filters';
+        if ( $this->search_form !== null ) {
+            $name .= '_form_' . $this->search_form;
+        }
+        return $name;
     }
 
 
@@ -833,7 +897,11 @@ class DefaultController extends SearchController
      */
     protected function getParamSessionName()
     {
-        return 'view_params';
+        $name = 'view_params';
+        if ( $this->search_form !== null ) {
+            $name .= '_form_' . $this->search_form;
+        }
+        return $name;
     }
 
     /**

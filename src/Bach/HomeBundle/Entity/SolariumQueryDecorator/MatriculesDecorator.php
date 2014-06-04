@@ -60,6 +60,17 @@ class MatriculesDecorator extends SolariumQueryDecoratorAbstract
     protected $targetField = 'matricules';
 
     /**
+     * Default query fields and boost
+     *
+     * @return string
+     */
+    protected function getDefaultQueryFields()
+    {
+        return 'txt_nom^2 txt_prenoms lieu_naissance ' .
+            'lieu_enregistrement fulltext^0.1';
+    }
+
+    /**
      * Decorate Query
      *
      * @param Query  $query Solarium query object to decorate
@@ -72,7 +83,7 @@ class MatriculesDecorator extends SolariumQueryDecoratorAbstract
         if ( $data !== '*:*' ) {
             $dismax = $query->getDisMax();
             $dismax->setQueryFields(
-                'txt_nom^2 txt_prenoms lieu_naissance lieu_enregistrement fulltext^0.1'
+                $this->getQueryFields()
             );
         }
         $query->setQuery($data);

@@ -77,6 +77,7 @@ class SolariumQueryFactory
         'dao',
         'cDate'
     );
+    private $_query_fields;
 
     private $_max_low_date;
     private $_max_up_date;
@@ -95,10 +96,14 @@ class SolariumQueryFactory
      * Factory constructor
      *
      * @param \Solarium\Client $client Solarium client
+     * @param string           $qf     Query fields
      */
-    public function __construct(\Solarium\Client $client)
+    public function __construct(\Solarium\Client $client, $qf = null)
     {
         $this->_client = $client;
+        if ( $qf !== null ) {
+            $this->_query_fields = $qf;
+        }
         $this->_searchQueryDecorators();
     }
 
@@ -264,9 +269,21 @@ class SolariumQueryFactory
             }
         }
 
+        $search_form = $container->getSearchForm();
+        if ( $search_form !== null ) {
+            $filter = $search_form['filter'];
+            $this->_query->createFilterQuery('search_form')
+                ->setQuery('+(' . $filter  . ')');
+        }
+
         foreach ( $container->getFields() as $name=>$value ) {
             if ( array_key_exists($name, $this->_decorators) ) {
                 //Decorate the query
+                if ( $search_form !== null && isset($search_form['query_fields']) ) {
+                    $this->_decorators[$name]->setQueryFields(
+                        $search_form['query_fields']
+                    );
+                }
                 $this->_decorators[$name]->decorate($this->_query, $value);
                 if ( method_exists($this->_decorators[$name], 'getHlFields') ) {
                     if ( trim($hl_fields) !== '' ) {
@@ -383,7 +400,9 @@ class SolariumQueryFactory
                         ->getParentClass()->getName();
                 }
                 if ( $expectedClass == $class || $expectedClass == $pclass ) {
-                    $this->_registerQueryDecorator($reflection->newInstance());
+                    $this->_registerQueryDecorator(
+                        $reflection->newInstance($this->_query_fields)
+                    );
                 }
             } catch(\RuntimeException $e) {
             }
@@ -393,18 +412,20 @@ class SolariumQueryFactory
     /**
      * Get extreme dates from index stats
      *
-     * @param array  $filters Active filters
-     * @param string $field   Date field name
+     * @param array  $filters     Active filters
+     * @param array  $search_form Search form parameters
+     * @param string $field       Date field name
      *
      * @return array
      */
-    public function getSliderDates(Filters $filters, $field = null)
-    {
+    public function getSliderDates(Filters $filters,
+        $search_form = null, $field = null
+    ) {
         if ( $field !== null ) {
             $this->_date_field = $field;
         }
 
-        list($min_date, $max_date) = $this->_loadDatesFromStats();
+        list($min_date, $max_date) = $this->_loadDatesFromStats(true, $search_form);
 
         $results = array(
             'min_date'          => null,
@@ -454,12 +475,15 @@ class SolariumQueryFactory
     /**
      * Get number of results per year, to draw plot
      *
+     * @param array $search_form Search form configuration
+     *
      * @return array
      */
-    public function getResultsByYear()
+    public function getResultsByYear($search_form = null)
     {
         if ( !isset($this->_rs) ) {
             $container = new SolariumQueryContainer();
+            $container->setSearchForm($search_form);
             $container->setFilters(new Filters());
             $this->performQuery($container, array());
         }
@@ -626,15 +650,21 @@ class SolariumQueryFactory
     /**
      * Load dates bounds from index stats
      *
-     * @param boolean $all Use *:* as a query if true, use current query if false
+     * @param boolean $all         Use *:* as a query if true,
+     *                             use current query if false
+     * @param array   $search_form Search form parameters
      *
      * @return array
      */
-    private function _loadDatesFromStats($all = true)
+    private function _loadDatesFromStats($all, $search_form = null)
     {
         $query = $this->_client->createSelect();
         if ( $all === true ) {
             $query->setQuery('*:*');
+            if ( $search_form !== null ) {
+                $query->createFilterQuery('search_form')
+                    ->setQuery('+(' . $search_form['filter'] . ')');
+            }
         } else {
             $query = clone $this->_query;
         }
@@ -805,11 +835,12 @@ class SolariumQueryFactory
     /**
      * Get tag cloud
      *
-     * @param EntityManager $em Doctrine entity manager
+     * @param EntityManager $em          Doctrine entity manager
+     * @param array         $search_form Search form parameters
      *
      * @return array
      */
-    public function getTagCloud($em)
+    public function getTagCloud($em, $search_form = null)
     {
         $tagcloud = new TagCloud();
         $tagcloud = $tagcloud->loadCloud($em);
@@ -819,6 +850,11 @@ class SolariumQueryFactory
         $query = $this->_client->createSelect();
         $query->setQuery('*:*');
         $query->setStart(0)->setRows(0);
+
+        if ( $search_form !== null ) {
+            $query->createFilterQuery('search_form')
+                ->setQuery('+(' . $search_form['filter'] . ')');
+        }
 
         $facetSet = $query->getFacetSet();
         $facetSet->setLimit($tag_max);

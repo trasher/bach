@@ -89,5 +89,7 @@ class BachHomeExtension extends Extension
             }
             $container->setParameter('bach_files_' . $name, realpath($path));
         }
+
+        $container->setParameter('search_forms', $config['search_forms']);
     }
 }
