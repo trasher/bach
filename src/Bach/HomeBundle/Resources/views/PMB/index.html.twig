@@ -46,7 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% if show_pics %}
                 <figure class="result_pic{% if document.urlimg is not defined %} no-image{% endif %}">
                     {% if document.urlimg is defined %}
-                        {% if document.urlimg|slice(0, 7) == 'http://'%}
+                        {% if document.urlimg|slice(0, 7) == 'http://' or document.urlimg|slice(0, 7) == 'https://' %}
                             <img src="{{ document.urlimg}}" alt=""/>
                         {% else %}
                             <img src="http://pmb.phpdev{{ document.urlimg}}" alt=""/>

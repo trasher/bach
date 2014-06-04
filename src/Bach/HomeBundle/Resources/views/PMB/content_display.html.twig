@@ -41,9 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
         </header>#}
 
         <section class="pmb_record">
-            <figure class="fright">
-                    {% if document.urlimg is defined %}
-                        {% if document.urlimg|slice(0, 7) == 'http://'%}
+                <figure class="result_pic{% if document.urlimg is not defined %} no-image{% endif %}">
+                    {% if document.urlimg is defined and checkStatus(document.urlimg) != false %}
+                        {% if document.urlimg|slice(0, 7) == 'http://' or document.urlimg|slice(0, 7) == 'https://' %}
                             <img src="{{ document.urlimg}}" alt=""/>
                         {% else %}
                             <img src="http://pmb.phpdev{{ document.urlimg}}" alt=""/>
@@ -51,75 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% else %}
                         <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
                     {% endif %}
-            </figure>
+                </figure>
             {{ displayFragment(document.fragment, document.uniqid, true, "1", "0", "0", ajax)|raw }}
-            {#
-                {% if document.dyndescr_authtype_primary is defined %}
-                    <tr>
-                        <th>{{ _('Primary author : ') }}</th>
-                        <td>{{ document.dyndescr_authtype_primary[0] }}</td>
-                </tr>
-                {% endif %}
-                {% if document.dyndescr_authtype_secondary is defined %}
-                    <tr>
-                        <th>{{ _('Secondary author : ') }}</th>
-                        <td>{{ document.dyndescr_authtype_secondary[0] }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.dyndescr_authtype_other is defined %}
-                    <tr>
-                        <th>{{ _('Other author : ') }}</th>
-                        <td>{{ document.dyndescr_authtype_other[0] }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.editor is defined %}
-                    <tr>
-                        <th>{{ _('Editor') }}</th>
-                        <td>{{ document.editor }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.textcontent is defined %}
-                    <tr>
-                        <th>{{ _('Note') }}</th>
-                        <td>{{ document.textcontent }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.note_general is defined %}
-                    <tr>
-                        <th>{{ _('General note') }}</th>
-                        <td>{{ document.note_general }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.extract is defined %}
-                    <tr>
-                        <th>{{ _('Extract') }}</th>
-                        <td>{{ document.extract }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.indexing_decimal is defined %}
-                    <tr>
-                        <th>{{ _('Indexing decimal decimale') }}</th>
-                        <td>{{ document.indexing_decimal }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.category is defined %}
-                    <tr>
-                        <th>{{ _('Category') }}</th>
-                        <td>{{ document.category|join(' | ') }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.language is defined %}
-                    <tr>
-                        <th>{{ _('Language') }}</th>
-                        <td>{{ document.language|join(' | ') }}</td>
-                    </tr>
-                {% endif %}
-                {% if document.keyword is defined %}
-                {% set keyword = document.keyword|split(';') %}
-                    <tr>
-                        <th>{{ _('Keyword') }}</th>
-                        <td>{{ keyword|join(' | ')  }}</td>
-                    </tr>
-                {% endif %}#}
         </section>
     </article>

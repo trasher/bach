@@ -351,6 +351,48 @@ class PMBController extends SearchController
         return new RedirectResponse($redirectUrl);
     }
     /**
+      * Function to check a website status
+      * @param string url the url of the website to test
+      * @return boolean true if the site is up, false otherwise
+    */
+     
+    function checkStatus($url){
+         $agent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; pt-pt) AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 Safari/533.20.27";
+     
+         // initializes curl session
+         $ch=curl_init();
+     
+         // sets the URL to fetch
+         curl_setopt ($ch, CURLOPT_URL,$url );
+     
+         // sets the content of the User-Agent header
+         curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+     
+         // return the transfer as a string
+         curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+     
+         // disable output verbose information
+         curl_setopt ($ch,CURLOPT_VERBOSE,false);
+     
+         // max number of seconds to allow cURL function to execute
+         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+     
+         curl_exec($ch);
+     
+         // get HTTP response code
+         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+     
+         curl_close($ch);
+     
+         if($httpcode>=200 && $httpcode<300)
+              return true;
+         else
+              return false;
+    }
+
+
+    
+    /**
      * Document display
      *
      * @param int     $docid Document unique identifier
