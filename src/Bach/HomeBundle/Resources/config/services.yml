@@ -112,6 +112,10 @@ services:
         class: Bach\HomeBundle\Entity\ViewParams
         arguments: [ '%display.ead.show_maps%', '%display.ead.show_daterange%', '%display.ead.rows%' ]
 
+    bach.home.pmb_view_params:
+        class: Bach\HomeBundle\Entity\ViewParams
+        arguments: [ '%display.pmb.show_maps%', '%display.pmb.show_daterange%', '%display.pmb.rows%' ]
+
     bach.home.matricules_view_params:
         class: Bach\HomeBundle\Entity\ViewParams
         arguments: [ '%display.matricules.show_maps%', '%display.matricules.show_daterange%', '%display.matricules.rows%' ]
