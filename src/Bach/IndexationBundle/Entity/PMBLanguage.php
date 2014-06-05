@@ -97,7 +97,51 @@ class PMBLanguage
         $this->content = $content;
         $this->type = $type;
     }
-
+    /**
+     * Parse converter Language
+     *
+     * @param string $code code language
+     *
+     * @return string
+     */
+    public static function convertCodeLanguage($code)
+    {
+        $value=null;
+        switch ($code) {
+        case 'fre':
+            $value = _('french');
+            break;
+        case 'ger':
+            $value = _('german');
+            break;
+        case 'fro':
+            $value = _('fro');
+            break;
+        case 'eng':
+            $value = _('english');
+            break;
+        case 'ame':
+            $value = _('ame');
+            break;
+        case 'bam':
+            $value = _('bam');
+            break;
+        case 'dut':
+            $value = _('dut');
+            break;
+        case 'rus':
+            $value = _('russian');
+            break;
+        case 'jpn':
+            $value = _('japan');
+            break;
+        
+        default:
+            $value=$code;
+            break;
+        }
+        return $value;
+    }
     /**
      * Get uniqid
      *
