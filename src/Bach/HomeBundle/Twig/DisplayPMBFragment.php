@@ -237,6 +237,9 @@ private $_router;
         case 'Lastname:':
             return _('Lastname:');
             break;
+        case 'Name:':
+            return _('Name:');
+            break;
         case 'Function:':
             return _('Function:');
             break;
@@ -258,14 +261,23 @@ private $_router;
         case 'Category:':
             return _('Category:');
             break;
-        case '410:':
-            return _('410:');
+        case 'Collection 410':
+            return _('Collection 410');
             break;
-        case '225:':
-            return _('225:');
+        case 'Collection 225':
+            return _('Collection 225');
             break;
-        case 'Language:: ':
+        case 'Collection:':
+            return _('Collection:');
+            break;
+        case 'Language:':
             return _('Language:');
+            break;
+        case 'Language original:':
+            return _('Language original:');
+            break;
+        case 'Language document:':
+            return _('Language document:');
             break;
         case 'Notes':
             return _('Notes');
@@ -291,9 +303,6 @@ private $_router;
         case 'Decimal indexing':
             return _('Decimal indexing');
             break;
-        case 'Decimal indexing':
-            return _('Decimal indexing');
-            break;
         case 'Zone Mother':
             return _('Zone Mother');
             break;
@@ -305,6 +314,24 @@ private $_router;
             break;
         case 'Note generale':
             return _('Note generale');
+            break;
+        case 'Titre complement:':
+            return _('Titre complement:');
+            break;
+        case 'Titre parallel:':
+            return _('Titre parallel:');
+            break;
+        case 'Title proper author different:':
+            return _('Title proper author different:');
+            break;
+        case 'Dates:':
+            return _('Dates:');
+            break;
+        case 'Sub Collection:':
+            return _('Sub Collection:');
+            break;
+        case 'ISSN:':
+            return _('ISSN:');
             break;
         default:
             //TODO: add an alert in logs, a translation may be missing!
