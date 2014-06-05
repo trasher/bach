@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <section class="pmb_record">
                 <figure class="result_pic{% if document.urlimg is not defined %} no-image{% endif %}">
-                    {% if document.urlimg is defined %}
+                    {% if document.urlimg is defined and checkStatus(document.urlimg) != false %}
                         {% if document.urlimg|slice(0, 7) == 'http://' or document.urlimg|slice(0, 7) == 'https://' %}
                             <img src="{{ document.urlimg}}" alt=""/>
                         {% else %}
