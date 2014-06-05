@@ -57,16 +57,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </figure>
             {% endif %}
             <div class="list_pmb" >
-                <h3 property="dc:title">{{ document.title_proper }}</h3>
-                <strong>{{_('Link to the notice : ')}} </strong><a href="{{ path('bach_display_pmb', {'docid': document.uniqid}) }}" class="display_doc">
-                {%- if hlSearchResults.getResult(document.uniqid).getField('titre_propre')|length > 0 -%}
-                    {{ hlSearchResults.getResult(document.uniqid).getField('titre_propre')[0]|raw }}
-                {%- elseif document.title_proper is defined -%}
-                    {{ document.title_proper }}
-                {%- else -%}
-                    {{ _('Untitled unit') }}
-                {%- endif -%}
-                </a>
+                <a href="{{ path('bach_display_pmb', {'docid': document.uniqid}) }}" class="display_doc"><h3 property="dc:title">{{ document.title_proper }}</h3></a>
                 {% if document.editor is defined %}
                     <p><strong>{{ _('Editor : ') }}</strong>
                     {% set facet = document.editor %}
