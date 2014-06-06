@@ -37,9 +37,16 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block subtitle %}{{ _('Search in pmb') }}{% endblock %}
 {% block search_path %}bach_pmb_search{% endblock %}
 {% block fullfacet_path %}bach_pmb_fullfacet{% endblock %}
-{% block do_search_path %}{{ search_path }}{% endblock %}
+{% block do_search_path %}{{ search_path }}{% endblock %} 
 {% block cookie_param_name %}bach_pmb_view_params{% endblock %}
-
+{% block intro %}
+    {% if html_intro_exists('intro_pmb.html') %}
+        {{ get_html_intro('intro_pmb.html')|raw }}
+    {% else %}
+        <h2 id="welcome">{{ _('Search Bach library like PMB') }}</h2>
+        <p align="center"><img src="/img/ibooks.png" style="width:200px; height:200px;margin-bottom:50px;"></p>
+    {% endif %}
+{% endblock %}
 {% block show_results %}
     {% for document in searchResults %}
         <article id="result_{{ document.uniqid }}" role="document" about="{{ document.uniqid }}">
