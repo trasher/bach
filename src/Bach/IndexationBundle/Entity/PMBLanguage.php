@@ -94,7 +94,7 @@ class PMBLanguage
     public function __construct($type, $content,$pmb)
     {
         $this->pmbfile = $pmb;
-        $this->content = $content;
+        $this->content = self::convertCodeLanguage($content);
         $this->type = $type;
     }
     /**
