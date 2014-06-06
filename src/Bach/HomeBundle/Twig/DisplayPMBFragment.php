@@ -60,7 +60,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DisplayPMBFragment extends \Twig_Extension
 {
-private $_router;
+    private $_router;
     private $_request;
     private $_viewer_uri;
     private $_covers_dir;

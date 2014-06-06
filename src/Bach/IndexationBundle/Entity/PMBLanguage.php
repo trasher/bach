@@ -109,33 +109,35 @@ class PMBLanguage
         $value=null;
         switch ($code) {
         case 'fre':
-            $value = _('french');
+            $value = _('French');
+            break;
+        case 'Fre':
+            $value = _('French');
             break;
         case 'ger':
-            $value = _('german');
+            $value = _('German');
             break;
         case 'fro':
-            $value = _('fro');
+            $value = _('Old French');
             break;
         case 'eng':
-            $value = _('english');
+            $value = _('English');
             break;
         case 'ame':
-            $value = _('ame');
+            $value = _('American');
             break;
         case 'bam':
-            $value = _('bam');
+            $value = _('Bambara');
             break;
         case 'dut':
-            $value = _('dut');
+            $value = _('Netherlandish');
             break;
         case 'rus':
-            $value = _('russian');
+            $value = _('Russian');
             break;
         case 'jpn':
-            $value = _('japan');
+            $value = _('Japan');
             break;
-        
         default:
             $value=$code;
             break;
