@@ -489,7 +489,8 @@ class DefaultController extends SearchController
         $query->setQuery('fragmentid:"' . $docid . '"');
         $query->setFields(
             'headerId, fragmentid, fragment, parents, ' .
-            'archDescUnitTitle, cUnittitle, cDate'
+            'archDescUnitTitle, cUnittitle, cDate, ' .
+            'previous_id, previous_title, next_id, next_title'
         );
         $query->setStart(0)->setRows(1);
 

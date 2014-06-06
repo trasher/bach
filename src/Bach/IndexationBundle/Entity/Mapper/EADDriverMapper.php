@@ -221,6 +221,16 @@ class EADDriverMapper implements DriverMapperInterface
             $mapped_data['elt_order'] = $data['c']['order'];
         }
 
+        //previous/next composants
+        if ( isset($data['c']['previous']) ) {
+            $mapped_data['previous_id'] = $data['c']['previous']['id'];
+            $mapped_data['previous_title'] = $data['c']['previous']['title'];
+        }
+        if ( isset($data['c']['next']) ) {
+            $mapped_data['next_id'] = $data['c']['next']['id'];
+            $mapped_data['next_title'] = $data['c']['next']['title'];
+        }
+
         return $mapped_data;
     }
 }
