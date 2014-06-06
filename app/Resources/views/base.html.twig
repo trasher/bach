@@ -94,6 +94,11 @@ POSSIBILITY OF SUCH DAMAGE.
                             <a href="{{ path('bach_search_form', {'form_name': name}) }}">{{ search_form.menu_entry}}</a>
                         </li>
                     {% endfor %}
+                    {% if features.pmb %}
+                    <li{% if app.request.attributes.get('_route') == 'bach_pmb' %} class="active"{% endif %}>
+                        <a href="{{ path('bach_pmb') }}">{{ _('Search PMB') }}</a>
+                    </li>
+                    {% endif %}
                     {% if features.matricules %}
                     <li{% if app.request.attributes.get('_route') == 'bach_matricules' %} class="active"{% endif %}>
                         <a href="{{ path('bach_matricules') }}">{{ _('Matricules') }}</a>

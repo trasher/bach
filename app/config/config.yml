@@ -63,6 +63,7 @@ twig:
         html_intros_path: '%html_intros_path%'
         features:
             matricules: '%feature.matricules%'
+            pmb: '%feature.pmb%'
             cdc: '%feature.cdc%'
             openid: '%feature.openid%'
             expos: '%feature.expos%'

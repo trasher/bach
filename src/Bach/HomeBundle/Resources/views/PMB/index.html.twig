@@ -95,7 +95,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </p>
                 {% endif %}
                 {% if document.language is defined %}
-                <p><strong>{{ _('Language : ') }}</strong>
+               <!-- <p><strong>{{ _('Language : ') }}</strong>
                     {% for index in document.language %}
                     {% if loop.first == false %}
                          |
@@ -104,16 +104,16 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% set index_name = "language" %}
                     <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.language[loop.index0] }}</a>
                     {% endfor %}
-                    </p>
+                    </p>-->
                 {% endif %}
                 {% if document.textcontent is defined %}
-                    <p><strong>{{ _('Note : ') }}</strong>{{ document.textcontent }}
+                    <!--<p><strong>{{ _('Note : ') }}</strong>{{ document.textcontent| truncate(240) }}</p>-->
                 {% endif %}
                 {% if document.note_general is defined %}
-                    <p><strong>{{ _('Note : ') }}</strong>{{ document.note_general }}</p>
+                    <!--<p><strong>{{ _('Note : ') }}</strong>{{ document.note_general| truncate(240) }}</p>-->
                 {% endif %}
                 {% if document.extract is defined %}
-                    <p><strong>{{ _('Extract : ') }}</strong>{{ document.extract }}</p>
+                    <p><strong>{{ _('Extract : ') }}</strong>{{ document.extract| truncate(240) }}</p>
                 {% endif %}
                 {% if document.indexing_decimal is defined %}
                     <p><strong>{{ _('Decimal indexing : ') }}</strong>
@@ -126,11 +126,6 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% set facet = document.year|date("Y") %}
                     {% set index_name = "editor" %}
                 <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ document.year|date("Y")}}</a></p>
-                {% endif %}
-                {% if document.keyword is defined %}
-                    {% set keyword = document.keyword|split(';') %}
-                    <p><strong>{{ _('Keyword : ') }}</strong>
-                        {{ keyword|join(' | ')  }}
                 {% endif %}
             </div>
         </article>

@@ -74,6 +74,7 @@ parameters:
     #main features
     feature.cdc: false
     feature.matricules: false
+    feature.pmb: true
     feature.expos: false
     feature.browse: true
     #display features

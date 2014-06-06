@@ -179,6 +179,34 @@ class BachSitemapProvider implements ProviderInterface
                 $sitemap->add($url);
             }
         }
+        //if enabled, add matricules URLs
+        if ( $this->container->getParameter('feature.pmb') === true ) {
+            $url = new Url();
+            $url->setLoc(
+                $this->router->generate('bach_pmb')
+            );
+            $sitemap->add($url);
+
+            //add matricules URLs
+            $query = $this->em->createQuery(
+                'SELECT m.id, m.updated FROM ' .
+                ' BachIndexationBundle:PMBFileFormat m'
+            );
+            $elements = $query->getResult();
+            foreach ( $elements as $elt ) {
+                $url = new Url();
+                $url->setLoc(
+                    $this->router->generate(
+                        'bach_display_pmb',
+                        array(
+                            'docid' => $elt['id']
+                        )
+                    )
+                );
+                $url->setLastmod($elt['updated']);
+                $sitemap->add($url);
+            }
+        }
 
         //if enabled, add expos URLs
         /** TODO */
