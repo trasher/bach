@@ -160,7 +160,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         {%- if hlSearchResults.getResult(document.id).getField('lieu_naissance')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('lieu_naissance')[0]|raw }}
                         {%- else -%}
-                            {{ document.lieu_naissance }}
+                            {% if document.lieu_naissance is defined %}{{ document.lieu_naissance }}{% endif %}
                         {%- endif -%}
                     </td>
                     <td>{% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}</td>
