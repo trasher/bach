@@ -301,6 +301,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <xsl:text> </xsl:text>
             <xsl:element name="a">
               <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+              <xsl:attribute name="target">_blank</xsl:attribute>
               <xsl:value-of select="."/>
             </xsl:element>
         </p>
