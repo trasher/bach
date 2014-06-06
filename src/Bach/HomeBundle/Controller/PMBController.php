@@ -74,9 +74,11 @@ class PMBController extends SearchController
     /**
      * Default page
      *
+     * @param string $form_name Search form name
+     *
      * @return void
      */
-    public function indexAction()
+    public function indexAction($form_name = null)
     {
         $redirectUrl = $this->get('router')->generate('bach_pmb_search');
         return new RedirectResponse($redirectUrl);
@@ -92,7 +94,7 @@ class PMBController extends SearchController
      * @return void
      */
     public function searchAction($query_terms = null, $page = 1,
-        $facet_name = null
+        $facet_name = null, $form_name = null
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
