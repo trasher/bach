@@ -83,6 +83,12 @@ class PopulateOaiRepoCommand extends ContainerAwareCommand
                 <<<EOF
 The <info>%command.name%</info> populates OAI repository
 EOF
+            )->addOption(
+                'max',
+                null,
+                InputOption::VALUE_REQUIRED,
+                _('Maximum results retrived from Solr.'),
+                1000000
             );
     }
 
@@ -103,12 +109,34 @@ EOF
         $logger = $container->get('oai.logger');
 
         //retrieve published fragments list
-        $repo = $doctrine->getRepository('BachIndexationBundle:EADFileFormat');
+        $client = $container->get('solarium.client.ead');
+        $query = $client->createSelect();
+        $query->setFields(
+            array(
+                'fragmentid',
+                'fragment',
+                'parents_titles',
+                'archDescUnitTitle'
+            )
+        );
+        //It is not possible to retrieve all rows with Solr...
+        $max_rows = $input->getOption('max');
+        $query->setRows($max_rows);
+        $list = $client->execute($query);
 
-        $qb = $repo->createQueryBuilder('a')
-            ->select('DISTINCT a.fragmentid, a.fragment');
-        $query = $qb->getQuery();
-        $list = $query->getResult();
+        if ( $list->getNumFound() > $max_rows ) {
+            $output->writeln(
+                '<fg=red;options=bold>' .
+                str_replace(
+                    array('%retrieved', '%found'),
+                    array($max_rows, $list->getNumFound()),
+                    _('%found components found, but only %retrieved has been retrieved!')
+                ) . "\n" . _('OAI export has failed :(') .
+                '</fg=red;options=bold>'
+            );
+            return;
+        }
+
 
         $oai_path = $this->getContainer()->getParameter('ead_oai_path');
 
@@ -159,26 +187,18 @@ EOF
             $frag = simplexml_load_string($fragment['fragment']);
             $title = (string)$frag->did->unittitle;
 
-            //get parents titles
-            $qb = $repo->createQueryBuilder('a')
-                ->select('p.title')
-                ->join('a.parents_titles', 'p')
-                ->where('a.fragmentid = :id')
-                ->setParameter('id', $fragment['fragmentid']);
-            $query = $qb->getQuery();
-            $parents_titles = $query->getArrayResult();
-            $parents_titles = array_reverse($parents_titles);
-
-            if ( count($parents_titles) > 0 ) {
-                $title .= ' (';
-
+            //handle parents titles
+            $title .= ' (';
+            if ( count($fragment['parents_titles']) > 0 ) {
+                $parents_titles = $fragment['parents_titles'];;
+                $parents_titles = array_reverse($parents_titles);
                 foreach ( $parents_titles as $parent ) {
-                    $title .= $parent['title'] . ' ; ';
+                    $title .= $parent . ' ; ';
                 }
-                $title = rtrim($title, ' ; ');
-                $title .= ')';
-                $frag->did->unittitle = $title;
             }
+            $title .= $fragment['archDescUnitTitle'];
+            $title .= ')';
+            $frag->did->unittitle = $title;
 
             if ( $contents != $frag->asXML() ) {
                 $output->writeln('<fg=green>' . $msg . '</fg=green>');
