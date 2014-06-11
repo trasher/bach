@@ -420,7 +420,9 @@ class DisplayDao extends \Twig_Extension
             true,
             $covers_dir
         );
-        $sxml = simplexml_load_string($str);
+        $sxml = simplexml_load_string(
+            str_replace('&', '&amp;', $str)
+        );
         $doc = dom_import_simplexml($sxml);
         return $doc;
     }
