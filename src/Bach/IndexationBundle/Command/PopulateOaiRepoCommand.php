@@ -156,13 +156,37 @@ EOF
                 );
             }
 
-            if ( $contents != $fragment['fragment'] ) {
+            $frag = simplexml_load_string($fragment['fragment']);
+            $title = (string)$frag->did->unittitle;
+
+            //get parents titles
+            $qb = $repo->createQueryBuilder('a')
+                ->select('p.title')
+                ->join('a.parents_titles', 'p')
+                ->where('a.fragmentid = :id')
+                ->setParameter('id', $fragment['fragmentid']);
+            $query = $qb->getQuery();
+            $parents_titles = $query->getArrayResult();
+            $parents_titles = array_reverse($parents_titles);
+
+            if ( count($parents_titles) > 0 ) {
+                $title .= ' (';
+
+                foreach ( $parents_titles as $parent ) {
+                    $title .= $parent['title'] . ' ; ';
+                }
+                $title = rtrim($title, ' ; ');
+                $title .= ')';
+                $frag->did->unittitle = $title;
+            }
+
+            if ( $contents != $frag->asXML() ) {
                 $output->writeln('<fg=green>' . $msg . '</fg=green>');
                 $logger->info($msg);
 
                 file_put_contents(
                     $path,
-                    $fragment['fragment']
+                    $frag->asXML()
                 );
             }
         }
