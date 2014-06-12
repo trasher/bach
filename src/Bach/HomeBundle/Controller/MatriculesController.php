@@ -219,21 +219,15 @@ class MatriculesController extends SearchController
             $container->setFilters($filters);
             $factory->prepareQuery($container);
 
-            $conf_facets = array();
-            $fields = array(
-                'nom'                   => 'Nom',
-                'prenoms'               => 'Prénom',
-                'classe'                => 'Classe',
-                //'annee_naissance'       => 'Année de naissance',
-                'lieu_naissance'        => 'Lieu de naissance'
-                //'lieu_enregistrement'   => 'Lieu d\'enregistrement'
-            );
-            foreach ( $fields as $field_name=>$trad ) {
-                $facet = new Facets();
-                $facet->setSolrFieldName($field_name);
-                $facet->setFrLabel($trad);
-                $conf_facets[] = $facet;
-            }
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active'    => true,
+                        'form'      => 'matricules'
+                    ),
+                    array('position' => 'ASC')
+                );
 
             $searchResults = $factory->performQuery(
                 $container,

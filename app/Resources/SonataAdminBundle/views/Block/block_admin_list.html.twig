@@ -34,7 +34,6 @@ POSSIBILITY OF SUCH DAMAGE.
 {% extends sonata_block.templates.block_base %}
 
 {% block block %}
-
     <table class="table table-condensed sonata-ba-list">
 
         {% for group in groups %}
@@ -63,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 {{ admin.label|trans({}, admin.translationdomain) }}
                             </td>
                             <td>
-                                <div class="btn-group">
+                                <div>
                                     {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
                                         {% if admin.subClasses is empty %}
                                             <a class="btn btn-link" href="{{ admin.generateUrl('create')}}">
@@ -91,7 +90,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                             {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
                                         </a>
                                     {% endif %}
-                                     {% if admin.hasroute('geoloc_visualize') and (admin.isGranted('EDIT') or admin.isGranted('DELETE')) %}
+                                    {% if admin.hasroute('geoloc_visualize') and (admin.isGranted('EDIT') or admin.isGranted('DELETE')) %}
                                         <a class="btn btn-link" href="{{ admin.generateUrl('geoloc_visualize')}}">
                                             <i class="icon-globe"></i>
                                             {{ _('Visualize') }}
@@ -138,3 +137,4 @@ POSSIBILITY OF SUCH DAMAGE.
         {% endfor %}
     </table>
 {% endblock %}
+

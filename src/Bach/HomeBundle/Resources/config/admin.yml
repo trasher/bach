@@ -43,6 +43,7 @@ services:
         calls:
             - [ setContainer, [@service_container] ]
             - [ setPositionService, [@pix_sortable_behavior.position] ]
+            - [ setRequest, ['@?request=']]
 
     sonata.admin.browsefields:
         class: Bach\HomeBundle\Admin\BrowseFieldsAdmin

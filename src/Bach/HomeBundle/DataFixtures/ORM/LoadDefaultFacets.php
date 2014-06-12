@@ -74,22 +74,56 @@ class LoadDefaultFacets implements FixtureInterface
             array(
                 'field'     => 'archDescUnitTitle',
                 'fr_label'  => 'Document',
-                'en_label'  => 'Document'
+                'en_label'  => 'Document',
+                'form'      => 'main'
             ),
             array(
                 'field'     => 'cSubject',
                 'fr_label'  => 'Sujet',
-                'en_label'  => 'Subject'
+                'en_label'  => 'Subject',
+                'form'      => 'main'
             ),
             array(
                 'field'     => 'cPersname',
                 'fr_label'  => 'Personne',
-                'en_label'  => 'People'
+                'en_label'  => 'People',
+                'form'      => 'main'
             ),
             array(
                 'field'     => 'cGeogname',
-                'fr_label'  => 'Lieux',
-                'en_label'  => 'Places'
+                'fr_label'  => 'Lieu',
+                'en_label'  => 'Place',
+                'form'      => 'main'
+            ),
+            array(
+                'field'     => 'nom',
+                'fr_label'  => 'Nom',
+                'en_label'  => 'Name',
+                'form'      => 'matricules'
+            ),
+            array(
+                'field'     => 'prenoms',
+                'fr_label'  => 'Prénom',
+                'en_label'  => 'Surname',
+                'form'      => 'matricules'
+            ),
+            array(
+                'field'     => 'classe',
+                'fr_label'  => 'Classe',
+                'en_label'  => 'Class',
+                'form'      => 'matricules'
+            ),
+            array(
+                'field'     => 'lieu_naissance',
+                'fr_label'  => 'Lieu de naissance',
+                'en_label'  => 'Place of birth',
+                'form'      => 'matricules'
+            ),
+            array(
+                'field'     => 'lieu_enregistrement',
+                'fr_label'  => 'Lieu d\'enregistrement',
+                'en_label'  => 'Place of recording',
+                'form'      => 'matricules'
             )
         );
 
@@ -100,6 +134,7 @@ class LoadDefaultFacets implements FixtureInterface
             $facet->setFrLabel($data['fr_label']);
             $facet->setEnLabel($data['en_label']);
             $facet->setActive(true);
+            $facet->setForm($data['form']);
             $facet->setPosition($i);
             $manager->persist($facet);
         }

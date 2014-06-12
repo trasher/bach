@@ -290,10 +290,22 @@ class DefaultController extends SearchController
 
         $factory->prepareQuery($container);
 
+        $search_form_params = null;
+        if ( $search_forms !== null ) {
+            $search_form_params = $search_forms[$this->search_form];
+        }
+
+        $current_form = 'main';
+        if ( $search_form_params !== null ) {
+            $current_form = $this->search_form;
+        }
         $conf_facets = $this->getDoctrine()
             ->getRepository('BachHomeBundle:Facets')
             ->findBy(
-                array('active' => true),
+                array(
+                    'active'    => true,
+                    'form'      => $current_form
+                ),
                 array('position' => 'ASC')
             );
 
@@ -333,10 +345,6 @@ class DefaultController extends SearchController
         }
         $templateVars['resultEnd'] = $resultEnd;
 
-        $search_form_params = null;
-        if ( $search_forms !== null ) {
-            $search_form_params = $search_forms[$this->search_form];
-        }
         $slider_dates = $factory->getSliderDates($filters, $search_form_params);
         if ( is_array($slider_dates) ) {
             $templateVars = array_merge($templateVars, $slider_dates);

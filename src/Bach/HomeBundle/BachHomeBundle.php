@@ -45,6 +45,8 @@
 namespace Bach\HomeBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Bach\HomeBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 
 /**
  * Bach HomeBundle
@@ -57,4 +59,21 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class BachHomeBundle extends Bundle
 {
+
+    /**
+     * Builds the bundle.
+     *
+     * It is only ever called once when the cache is empty.
+     *
+     * This method can be overridden to register compilation passes,
+     * other extensions, ...
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     *
+     * @return void
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new AddDependencyCallsCompilerPass());
+    }
 }

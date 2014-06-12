@@ -355,7 +355,15 @@ class EADFileFormat extends FileFormat
         'headerDate',
         'archDescOrigination',
         'subject_w_expanded',
-        'archDescScopeContent'
+        'archDescScopeContent',
+        'next_id',
+        'next_title',
+        'previous_id',
+        'previous_title',
+        'updated',
+        'created',
+        'spell',
+        'elt_order'
     );
 
     /**
