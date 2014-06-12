@@ -105,6 +105,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <thead>
                     <tr>
                         <th></th>
+                        <th>{{ _('Matricule') }}</th>
                         <th>{{ _('Name') }}</th>
                         <th>{{ _('Surnames') }}</th>
                         <th>{{ _('Year of birth') }}</th>
@@ -138,6 +139,9 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Show related image') }}"/>
                             </a>
                         {% endif %}
+                    </td>
+                    <td>
+                        {{ document.matricule }}
                     </td>
                     <td>
                         {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
