@@ -75,7 +75,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
                 {% endif %}
             </figure>
-            <h3{# property="dc:title"#}>
+            <h3>
                 <a href="{{ path('bach_display_matricules', {'docid': document.id}) }}" class="display_doc">
                     {% set name %}
                     {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
