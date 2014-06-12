@@ -234,6 +234,12 @@ class Fields
         case 'archDescAccessRestrict':
             return _('Archival description access restriction');
             break;
+        case 'lieu_naissance':
+            return _('Place of birth');
+            break;
+        case 'lieu_enregistrement':
+            return _('Place of recording');
+            break;
         default:
             if ( strpos($name, 'dyndescr_') === 0 ) {
                 return $this->guessDynamicFieldLabel($name);
