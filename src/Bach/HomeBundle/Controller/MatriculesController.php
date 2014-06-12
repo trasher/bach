@@ -224,8 +224,9 @@ class MatriculesController extends SearchController
                 'nom'                   => 'Nom',
                 'prenoms'               => 'Prénom',
                 'classe'                => 'Classe',
-                'lieu_naissance'        => 'Lieu de naissance',
-                'lieu_enregistrement'   => 'Lieu d\'enregistrement'
+                //'annee_naissance'       => 'Année de naissance',
+                'lieu_naissance'        => 'Lieu de naissance'
+                //'lieu_enregistrement'   => 'Lieu d\'enregistrement'
             );
             foreach ( $fields as $field_name=>$trad ) {
                 $facet = new Facets();
