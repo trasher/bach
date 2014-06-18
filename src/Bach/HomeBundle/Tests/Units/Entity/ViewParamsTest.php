@@ -67,7 +67,7 @@ class ViewParams extends Units\WebTestCase
      */
     public function testViewParams()
     {
-        $vp = new Vp();
+        $vp = new Vp(true, true, 10);
 
         //test default values
         $show_pics = $vp->showPics();
