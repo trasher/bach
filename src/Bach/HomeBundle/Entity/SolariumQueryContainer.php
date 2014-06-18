@@ -62,6 +62,7 @@ class SolariumQueryContainer
     private $_fields = array();
     private $_filters;
     private $_order = ViewParams::ORDER_RELEVANCE;
+    private $_search_form;
 
     /**
      * Set field
@@ -196,5 +197,27 @@ class SolariumQueryContainer
         } else {
             return false;
         }
+    }
+
+    /**
+     * Set search form configuration
+     *
+     * @param string $config Search form configuration
+     *
+     * @return void
+     */
+    public function setSearchForm($config)
+    {
+        $this->_search_form = $config;
+    }
+
+    /**
+     * Get search form configuration
+     *
+     * @return array
+     */
+    public function getSearchForm()
+    {
+        return $this->_search_form;
     }
 }

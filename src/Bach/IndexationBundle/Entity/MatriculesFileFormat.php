@@ -196,7 +196,14 @@ class MatriculesFileFormat extends FileFormat
         'txt_nom',
         'txt_prenoms',
         'fulltext',
-        'suggestions'
+        'suggestions',
+        'start_dao',
+        'end_dao',
+        'id',
+        'created',
+        'updated',
+        'uniqid',
+        'spell'
     );
 
     /**

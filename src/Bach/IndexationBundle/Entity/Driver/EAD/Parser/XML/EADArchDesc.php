@@ -148,27 +148,38 @@ class EADArchDesc
             $rootNode
         );
 
+        $i = 0;
+
         foreach ( $cNodes as $cNode ) {
             $nodeid = $cNode->getAttribute('id');
 
             $results[$nodeid] = $this->_parseNode($cNode, $fields, $parents);
 
             $frag = $results[$nodeid]['frag'];
-            unset($results[$nodeid]['frag']);
+            if ( $i === $cNodes->length ) {
+                unset($results[$nodeid]['frag']);
+            }
+
+            $current_title = $this->_getTitle($rootNode, $frag);
+
+            //previous and next components
+            if ( $i > 0 ) {
+                $previous = $cNodes->item($i - 1);
+                $previous_nodeid = $previous->getAttribute('id');
+                $previous_frag = $results[$previous_nodeid]['frag'];
+                unset($results[$previous_nodeid]['frag']);
+                $previous_title = $this->_getTitle($rootNode, $previous_frag);
+                $results[$nodeid]['previous'] = array(
+                    'id'    => $previous_nodeid,
+                    'title' => $previous_title
+                );
+                $results[$previous_nodeid]['next'] = array(
+                    'id'    => $nodeid,
+                    'title' => $current_title
+                );
+            }
 
             if ( $this->_xpath->query($this->_cnodes, $cNode)->length > 0 ) {
-                $current_title = '';
-                $title_xpath = $this->_xpath->query('./did/unittitle', $frag);
-                if ( $title_xpath->length == 1) {
-                    $value = strip_tags(
-                        str_replace(
-                            '<lb/>',
-                            ' ',
-                            $rootNode->ownerDocument->saveXML($title_xpath->item(0))
-                        )
-                    );
-                    $current_title = $value;
-                }
                 $results = array_merge(
                     $results,
                     $this->_recursiveCNodeSearch(
@@ -183,8 +194,34 @@ class EADArchDesc
                     )
                 );
             }
+            $i++;
         }
         return $results;
+    }
+
+    /**
+     * Get title
+     *
+     * @param DOMNode $rootNode XML root node
+     * @param DOMNode $frag     XML Fragment
+     *
+     * @return string
+     */
+    private function _getTitle(\DOMNode $rootNode, \DOMNode $frag)
+    {
+        $title = '';
+        $title_xpath = $this->_xpath->query('./did/unittitle', $frag);
+        if ( $title_xpath->length == 1) {
+            $value = strip_tags(
+                str_replace(
+                    '<lb/>',
+                    ' ',
+                    $rootNode->ownerDocument->saveXML($title_xpath->item(0))
+                )
+            );
+            $title = $value;
+        }
+        return $title;
     }
 
     /**

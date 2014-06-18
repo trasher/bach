@@ -42,9 +42,22 @@ bach_search:
         _method: GET
         page: \d+
 
+bach_search_form_homepage:
+    pattern:  /search_form/{form_name}
+    defaults: { _controller: BachHomeBundle:Default:index }
+    requirements:
+        _method: GET
+
+bach_search_form:
+    pattern: /search_form/{form_name}/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:Default:search, 'query_terms': null, 'page': 1, 'facet_name': null }
+    requirements:
+        _method: GET
+        page: \d+
+
 bach_do_search:
-    pattern:  /do-search
-    defaults: { _controller: BachHomeBundle:Default:doSearch }
+    pattern:  /do-search/{form_name}
+    defaults: { _controller: BachHomeBundle:Default:doSearch, 'form_name': null }
     requirements:
         _method: POST
 
@@ -108,8 +121,8 @@ bach_fullfacet:
         _method: GET|POST
 
 bach_geojson:
-    pattern: /geojson
-    defaults: {_controller: BachHomeBundle:Default:getGeoJson}
+    pattern: /geojson/{search_form}
+    defaults: {_controller: BachHomeBundle:Default:getGeoJson, search_form: null}
     requirements:
         _method: GET
 
@@ -195,6 +208,27 @@ bach_display_matricules:
 bach_ead_html:
     pattern: /document/{docid}/{expanded}
     defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }
+    requirements:
+        _method: GET
+
+bach_htmldoc_ext:
+    pattern: /htmldoc/{maindir}/{file}.{ext}
+    defaults: { _controller: BachHomeBundle:Default:displayHtmlDocumentExt}
+    requirements:
+        _method: GET
+        file: '.+'
+        ext: 'js|css|png|gif'
+
+bach_htmlsubdoc:
+    pattern: /htmldoc/{maindir}/{file}.{ext}
+    defaults: { _controller: BachHomeBundle:Default:displayHtmlSubDocument}
+    requirements:
+        _method: GET
+        ext: 'html|htm'
+
+bach_htmldoc:
+    pattern: /htmldoc/{docid}
+    defaults: { _controller: BachHomeBundle:Default:displayHtmlDocument}
     requirements:
         _method: GET
 

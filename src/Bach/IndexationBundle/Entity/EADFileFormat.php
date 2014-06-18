@@ -146,6 +146,26 @@ class EADFileFormat extends FileFormat
     protected $comments;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $previous_id;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=3000)
+     */
+    protected $previous_title;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $next_id;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=3000)
+     */
+    protected $next_title;
+
+    /**
      * The constructor
      *
      * @param array $data The input data
@@ -236,7 +256,11 @@ class EADFileFormat extends FileFormat
         'dao',
         'subject_w_expanded',
         'created',
-        'updated'
+        'updated',
+        'previous_id',
+        'previous_title',
+        'next_id',
+        'next_title'
     );
 
     /**
@@ -331,7 +355,15 @@ class EADFileFormat extends FileFormat
         'headerDate',
         'archDescOrigination',
         'subject_w_expanded',
-        'archDescScopeContent'
+        'archDescScopeContent',
+        'next_id',
+        'next_title',
+        'previous_id',
+        'previous_title',
+        'updated',
+        'created',
+        'spell',
+        'elt_order'
     );
 
     /**

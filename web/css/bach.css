@@ -855,6 +855,28 @@ h2.back a:hover {
     font-size: .9em;
 }
 
+.show_fragment > aside > * {
+    vertical-align: top;
+}
+
+[id=prev_comp], [id=next_comp] {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-position: top left
+    background-repeat: no-repeat;
+    text-indent: 20px;
+    overflow: hidden;
+}
+
+[id=prev_comp] {
+    background-image: url(../img/prev.png);
+}
+
+[id=next_comp] {
+    background-image: url(../img/next.png);
+}
+
 /**
  * ===== Matricule record view =====
  */

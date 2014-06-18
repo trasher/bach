@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-02 16:38+0200\n"
+"POT-Creation-Date: 2014-06-18 11:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,6 @@ msgid "Add to queue"
 msgstr ""
 
 #: src/Bach/IndexationBundle/Form/Type/DocumentType.php:113
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:853
 msgid "Publish"
 msgstr ""
 
@@ -230,14 +229,6 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:848
-msgid "Classification scheme"
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:857
-msgid "Remove"
-msgstr ""
-
 #: src/Bach/IndexationBundle/Command/ProceedQueueCommand.php:73
 msgid "Proceed publication queue"
 msgstr ""
@@ -362,6 +353,34 @@ msgstr ""
 
 #: src/Bach/IndexationBundle/Command/GeolocCommand.php:466
 msgid "Localization finished: %found% found, %fail% fail on %total entries"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:90
+msgid "Maximum results retrived from Solr."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:133
+msgid "%found components found, but only %retrieved has been retrieved!"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:134
+msgid "OAI export has failed :("
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:148
+msgid "OAI documents will be stored in %path"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:177
+msgid "Change %id"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:183
+msgid "Create %id"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:218
+msgid "Remove %id"
 msgstr ""
 
 #: src/Bach/IndexationBundle/Command/PublishCommand.php:89

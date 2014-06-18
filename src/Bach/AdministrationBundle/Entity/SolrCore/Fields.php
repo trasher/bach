@@ -95,12 +95,9 @@ class Fields
         $known_fields = $nl[0];
 
         foreach ( $known_fields->lst as $field ) {
-            $type = $field->xpath('str[@name="type"]');
-            if ( (string)$type[0] === 'string' ) {
-                $name = (string)$field['name'];
-                if ( !in_array($name, $exclude) ) {
-                    $facet_fields[$name] = $this->getFieldLabel($name);
-                }
+            $name = (string)$field['name'];
+            if ( !in_array($name, $exclude) ) {
+                $facet_fields[$name] = $this->getFieldLabel($name);
             }
         }
 
@@ -198,6 +195,12 @@ class Fields
         case 'cPersname':
             return _('Personal name');
             break;
+        case 'cFamname':
+            return _('Family name');
+            break;
+        case 'cName':
+            return _('Name');
+            break;
         case 'cSubject':
             return _('Subject');
             break;
@@ -207,8 +210,14 @@ class Fields
         case 'cUnittitle':
             return _('Unit title');
             break;
+        case 'cTitle':
+            return _('Title');
+            break;
         case 'descriptors':
-            return ('Descriptors');
+            return _('Descriptors');
+            break;
+        case 'headerTitle':
+            return _('File title');
             break;
         case 'headerAuthor':
             return _('File description author');
@@ -217,10 +226,10 @@ class Fields
             return _('Document identifier');
             break;
         case 'headerPublisher':
-            return _('Document publisher');
+            return _('File document publisher');
             break;
         case 'headerLanguage':
-            return _('Document language');
+            return _('File document language');
             break;
         case 'dao':
             return _('Digital substitute');
@@ -233,6 +242,34 @@ class Fields
             break;
         case 'archDescAccessRestrict':
             return _('Archival description access restriction');
+            break;
+        //matricules
+        case 'cote':
+            return _('Cote');
+            break;
+        case 'nom':
+            return _('Name');
+            break;
+        case 'lieu_enregistrement':
+            return _('Place of recording');
+            break;
+        case 'lieu_naissance':
+            return _('Place of birth');
+            break;
+        case 'prenoms':
+            return _('Surnames');
+            break;
+        case 'matricule':
+            return _('Matricule');
+            break;
+        case 'date_enregistrement':
+            return _('Year of recording');
+            break;
+        case 'classe':
+            return _('Class');
+            break;
+        case 'annee_naissance':
+            return _('Year of birth');
             break;
         default:
             if ( strpos($name, 'dyndescr_') === 0 ) {

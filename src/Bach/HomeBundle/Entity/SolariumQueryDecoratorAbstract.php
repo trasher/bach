@@ -57,6 +57,20 @@ use Solarium\QueryType\Select\Query\Query;
  */
 abstract class SolariumQueryDecoratorAbstract
 {
+    protected $targetField;
+    protected $qf;
+
+    /**
+     * Main constructor
+     *
+     * @param string $qf Query fields to override defaults
+     */
+    public function __construct($qf = null)
+    {
+        if ( $qf !== null ) {
+            $this->setQueryFields($qf);
+        }
+    }
 
     /**
      * Get target field
@@ -66,6 +80,42 @@ abstract class SolariumQueryDecoratorAbstract
     public function getTargetField()
     {
         return $this->targetField;
+    }
+
+    /**
+     * Return query fields
+     *
+     * @return string
+     */
+    public function getQueryFields()
+    {
+        if ( $this->qf !== null ) {
+            return $this->qf;
+        } else {
+            return $this->getDefaultQueryFields();
+        }
+    }
+
+    /**
+     * Set query fields
+     *
+     * @param string $qf Query fields and boost
+     *
+     * @return void
+     */
+    public function setQueryFields($qf)
+    {
+        $this->qf = $qf;
+    }
+
+    /**
+     * Default query fields and boost
+     *
+     * @return string
+     */
+    protected function getDefaultQueryFields()
+    {
+        //default empty
     }
 
     /**

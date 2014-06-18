@@ -35,7 +35,7 @@
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
         "egeloen/ckeditor-bundle": "2.*",
         "helios-ag/fm-elfinder-bundle": "1.*",
-        "liip/theme-bundle": "dev-master"
+        "liip/theme-bundle": "1.0.*"
     },
     "require-dev": {
         "atoum/atoum": "dev-master",

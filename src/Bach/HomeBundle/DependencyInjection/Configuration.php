@@ -86,7 +86,24 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->scalarNode('misc')
             ->defaultValue($default_base_path . 'misc/')
-            ->end();
+            ->end()
+            ->scalarNode('html')
+            ->defaultValue($default_base_path . 'html/')
+            ->end()->end()->end()
+            ->arrayNode('search_forms')
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+            ->children()
+            ->scalarNode('menu_entry')
+            ->isRequired()
+            ->cannotBeEmpty()
+            ->end()
+            ->scalarNode('query_fields')
+            ->cannotBeEmpty()
+            ->end()
+            ->scalarNode('filter')
+            ->isRequired()
+            ->cannotBeEmpty();
 
         return $treeBuilder;
     }

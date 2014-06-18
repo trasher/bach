@@ -51,6 +51,7 @@ use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
 use Bach\HomeBundle\Entity\Filters;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Bach home controller
@@ -70,12 +71,16 @@ class DefaultController extends SearchController
     /**
      * Default page
      *
+     * @param string $form_name Search form name
+     *
      * @return void
      */
-    public function indexAction()
+    public function indexAction($form_name = null)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
+
+        $this->search_form = $form_name;
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -92,9 +97,18 @@ class DefaultController extends SearchController
         $factory = $this->get($this->factoryName());
         $factory->setDateField($this->date_field);
 
+        $search_form_params = null;
+        if ( $this->search_form !== null ) {
+            $search_forms = $this->container->getParameter('search_forms');
+            $search_form_params = $search_forms[$this->search_form];
+        }
+
         $show_tagcloud = $this->container->getParameter('feature.tagcloud');
         if ( $show_tagcloud ) {
-            $tagcloud = $factory->getTagCloud($this->getDoctrine()->getManager());
+            $tagcloud = $factory->getTagCloud(
+                $this->getDoctrine()->getManager(),
+                $search_form_params
+            );
 
             if ( $tagcloud ) {
                 $tpl_vars['tagcloud'] = $tagcloud;
@@ -103,7 +117,7 @@ class DefaultController extends SearchController
 
         $this->handleGeoloc($factory);
 
-        $slider_dates = $factory->getSliderDates(new Filters());
+        $slider_dates = $factory->getSliderDates(new Filters(), $search_form_params);
         if ( is_array($slider_dates) ) {
             $tpl_vars = array_merge($tpl_vars, $slider_dates);
         }
@@ -142,7 +156,11 @@ class DefaultController extends SearchController
      */
     protected function mapFacetsName()
     {
-        return 'map_facets';
+        $name = 'map_facets';
+        if ( $this->search_form !== null ) {
+            $name .= '_form_' . $this->search_form;
+        }
+        return $name;
     }
 
     /**
@@ -171,11 +189,12 @@ class DefaultController extends SearchController
      * @param string $query_terms Term(s) we search for
      * @param int    $page        Page
      * @param string $facet_name  Display more terms in suggests
+     * @param string $form_name   Search form name
      *
      * @return void
      */
     public function searchAction($query_terms = null, $page = 1,
-        $facet_name = null
+        $facet_name = null, $form_name = null
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -183,6 +202,8 @@ class DefaultController extends SearchController
         if ( $query_terms !== null ) {
             $query_terms = urldecode($query_terms);
         }
+
+        $this->search_form = $form_name;
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -201,7 +222,17 @@ class DefaultController extends SearchController
         ) {
             $query_terms = '*:*';
         } else if ( $query_terms === null && $filters->count() == 0 ) {
-            $redirectUrl = $this->get('router')->generate('bach_homepage');
+            $redirectUrl = null;
+            if ( $this->search_form !== null ) {
+                $redirectUrl = $this->get('router')->generate(
+                    'bach_search_form_homepage',
+                    array(
+                        'form_name' => $this->search_form
+                    )
+                );
+            } else {
+                $redirectUrl = $this->get('router')->generate('bach_homepage');
+            }
             return new RedirectResponse($redirectUrl);
         }
 
@@ -231,6 +262,12 @@ class DefaultController extends SearchController
         $container = new SolariumQueryContainer();
         $container->setOrder($view_params->getOrder());
 
+        $search_forms = null;
+        if ( $this->search_form !== null ) {
+            $search_forms = $this->container->getParameter('search_forms');
+            $container->setSearchForm($search_forms[$this->search_form]);
+        }
+
         $container->setField(
             'show_pics',
             $view_params->showPics()
@@ -253,10 +290,22 @@ class DefaultController extends SearchController
 
         $factory->prepareQuery($container);
 
+        $search_form_params = null;
+        if ( $search_forms !== null ) {
+            $search_form_params = $search_forms[$this->search_form];
+        }
+
+        $current_form = 'main';
+        if ( $search_form_params !== null ) {
+            $current_form = $this->search_form;
+        }
         $conf_facets = $this->getDoctrine()
             ->getRepository('BachHomeBundle:Facets')
             ->findBy(
-                array('active' => true),
+                array(
+                    'active'    => true,
+                    'form'      => $current_form
+                ),
                 array('position' => 'ASC')
             );
 
@@ -296,7 +345,7 @@ class DefaultController extends SearchController
         }
         $templateVars['resultEnd'] = $resultEnd;
 
-        $slider_dates = $factory->getSliderDates($filters);
+        $slider_dates = $factory->getSliderDates($filters, $search_form_params);
         if ( is_array($slider_dates) ) {
             $templateVars = array_merge($templateVars, $slider_dates);
         }
@@ -320,13 +369,27 @@ class DefaultController extends SearchController
      *
      * Will take care of search terms, and reroute with proper URI
      *
+     * @param string $form_name Search form name
+     *
      * @return void
      */
-    public function doSearchAction()
+    public function doSearchAction($form_name = null)
     {
+        $this->search_form = $form_name;
         $query = new SearchQuery();
         $form = $this->createForm(new SearchQueryFormType(), $query);
-        $redirectUrl = $this->get('router')->generate('bach_homepage');
+
+        $redirectUrl = null;
+        if ( $this->search_form !== null ) {
+            $redirectUrl = $this->get('router')->generate(
+                'bach_search_form_homepage',
+                array(
+                    'form_name' => $this->search_form
+                )
+            );
+        } else {
+            $redirectUrl = $this->get('router')->generate('bach_homepage');
+        }
 
         $request = $this->getRequest();
 
@@ -347,8 +410,14 @@ class DefaultController extends SearchController
                     $url_vars['filter_value'] = $request->get('filter_value');
                 }
 
+                $route = 'bach_search';
+                if ( $this->search_form !== null ) {
+                    $route = 'bach_search_form';
+                    $url_vars['form_name'] = $this->search_form;
+                }
+
                 $redirectUrl = $this->get('router')->generate(
-                    'bach_search',
+                    $route,
                     $url_vars
                 );
             }
@@ -488,7 +557,8 @@ class DefaultController extends SearchController
         $query->setQuery('fragmentid:"' . $docid . '"');
         $query->setFields(
             'headerId, fragmentid, fragment, parents, ' .
-            'archDescUnitTitle, cUnittitle, cDate'
+            'archDescUnitTitle, cUnittitle, cDate, ' .
+            'previous_id, previous_title, next_id, next_title'
         );
         $query->setStart(0)->setRows(1);
 
@@ -604,6 +674,11 @@ class DefaultController extends SearchController
                 $tplParams['comments'] = $comments;
             }
         }
+
+        //check if HTML export do exist
+        $html_export = $this->container->getParameter('bach_files_html') .
+            '/' . $doc['headerId'] . '.html';
+        $tplParams['html_export'] = file_exists($html_export);
 
         return $this->render(
             $tpl,
@@ -781,7 +856,11 @@ class DefaultController extends SearchController
      */
     protected function getFiltersName()
     {
-        return 'filters';
+        $name = 'filters';
+        if ( $this->search_form !== null ) {
+            $name .= '_form_' . $this->search_form;
+        }
+        return $name;
     }
 
 
@@ -826,6 +905,112 @@ class DefaultController extends SearchController
      */
     protected function getParamSessionName()
     {
-        return 'view_params';
+        $name = 'view_params';
+        if ( $this->search_form !== null ) {
+            $name .= '_form_' . $this->search_form;
+        }
+        return $name;
     }
+
+    /**
+     * Display HTML version of the document
+     *
+     * @param string $docid The document ID to load
+     *
+     * @return void
+     */
+    public function displayHtmlDocumentAction($docid)
+    {
+        $path = $this->container->getParameter('bach_files_html') .
+            '/' . $docid . '.html';
+        $html_contents = file_get_contents($path);
+
+        return $this->render(
+            'BachHomeBundle:Default:html_contents.html.twig',
+            array(
+                'html_contents' => $html_contents
+            )
+        );
+
+    }
+
+    /**
+     * Display HTML sub-document
+     *
+     * @param string $maindir Main directory where resources are stored
+     * @param string $file    The file to load
+     * @param string $ext     File extension
+     *
+     * @return void
+     */
+    public function displayHtmlSubDocumentAction($maindir, $file, $ext)
+    {
+        $path = $this->container->getParameter('bach_files_html') .
+            '/' . $maindir . '/' . $file . '.' . $ext;
+        $html_contents = file_get_contents($path);
+
+        $viewer_uri = $this->container->getParameter('viewer_uri');
+
+        $callback = function ($matches) use ($viewer_uri) {
+            $img_path = str_replace('../', '', $matches[2]);
+            $href = $viewer_uri . 'viewer/' . $img_path;
+            $thumb_href = $viewer_uri . 'ajax/img/' . $img_path . '/format/medium';
+
+            return '<a href="' . $href . '"><img' . $matches[1] . ' src="' .
+                $thumb_href . '"' . $matches[3] . '/></a>';
+        };
+
+
+        $html_contents = preg_replace_callback(
+            '@<img(.*)src="(.*)"(.+)/>@',
+            $callback,
+            $html_contents
+        );
+
+        return $this->render(
+            'BachHomeBundle:Default:html_contents.html.twig',
+            array(
+                'html_contents' => $html_contents
+            )
+        );
+
+    }
+
+    /**
+     * Display scripts/css/images for HTML version of the document
+     *
+     * @param string $maindir Main directory where resources are stored
+     * @param string $file    The file to load
+     * @param string $ext     File extension
+     *
+     * @return void
+     */
+    public function displayHtmlDocumentExtAction($maindir, $file, $ext)
+    {
+        $path = $this->container->getParameter('bach_files_html') .
+            '/' . $maindir . '/' . $file . '.' . $ext;
+
+        $mime = null;
+        switch( $ext ) {
+        case 'js':
+            $mime = 'text/javascript';
+            break;
+        case 'css':
+            $mime = 'text/css';
+            break;
+        default:
+            $mime = mime_content_type($path);
+            break;
+        }
+
+        $fp = fopen($path, 'rb');
+        $contents = stream_get_contents($fp);
+        fclose($fp);
+        $headers = array(
+            'Content-Type'      => $mime
+        );
+
+        return new Response($contents, 200, $headers);
+    }
+
 }

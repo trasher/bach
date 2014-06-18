@@ -64,7 +64,7 @@ bach_indexation_add:
     pattern: /add
     defaults: { _controller: BachIndexationBundle:Default:add }
     requirements:
-        _method: GET
+        _method: GET|POST
 
 bach_eaddtd_validate:
     pattern: /validate/ead/{docid}/{ajax}

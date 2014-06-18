@@ -47,7 +47,6 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Bach\IndexationBundle\Entity\EADFileFormat;
 use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pix\SortableBehaviorBundle\Services\PositionHandler;
@@ -66,6 +65,8 @@ class FacetsAdmin extends Admin
 {
     private $_reader;
     private $_search_core;
+    private $_current_form;
+    private $_fields_class;
 
     protected $datagridValues = array(
         '_page'         => 1,
@@ -83,12 +84,16 @@ class FacetsAdmin extends Admin
      * @param string                    $baseControllerName ?
      * @param BachCoreAdminConfigReader $reader             Config reader.
      * @param string                    $search_core        Search core name
+     * @param string                    $current_form       Current form name
+     * @param string                    $fields_class       Fields class name
      */
     public function __construct($code, $class, $baseControllerName, $reader,
-        $search_core
+        $search_core, $current_form = 'main', $fields_class = 'EAD'
     ) {
         $this->_reader = $reader;
         $this->_search_core = $search_core;
+        $this->_current_form = $current_form;
+        $this->_fields_class = $fields_class;
         parent::__construct($code, $class, $baseControllerName);
     }
 
@@ -106,11 +111,13 @@ class FacetsAdmin extends Admin
             ->getEntityManager('Bach\HomeBundle\Entity\facets')
             ->createQueryBuilder()
             ->add('select', 'f.solr_field_name')
-            ->add('from', 'Bach\HomeBundle\Entity\Facets f');
+            ->add('from', 'Bach\HomeBundle\Entity\Facets f')
+            ->add('where', 'f.form = :current_form')
+            ->setParameter('current_form', $this->_current_form);
 
         if ( $this->getSubject()->getId() !== null ) {
             $qb
-                ->add('where', 'f.solr_field_name != :curfield')
+                ->andWhere('f.solr_field_name != :curfield')
                 ->setParameter('curfield', $this->getSubject()->getSolrFieldName());
         }
 
@@ -124,10 +131,12 @@ class FacetsAdmin extends Admin
         );
 
         $fields = new Fields($this->_reader);
+        $fields_class = 'Bach\IndexationBundle\Entity\\' .
+            $this->_fields_class . 'FileFormat';
         $facet_fields = $fields->getFacetFields(
             $this->_search_core,
             array_merge(
-                EADFileFormat::$facet_excluded,
+                $fields_class::$facet_excluded,
                 $used
             )
         );
@@ -184,10 +193,27 @@ class FacetsAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('solr_field_name')
-            ->add('active')
-            ->add('fr_label')
-            ->add('en_label');
+            ->add(
+                'active',
+                null,
+                array(
+                    'label' => _('Active')
+                )
+            )
+            ->add(
+                'fr_label',
+                null,
+                array(
+                    'label' => _('French label')
+                )
+            )
+            ->add(
+                'en_label',
+                null,
+                array(
+                    'label' => _('English label')
+                )
+            );
     }
 
     /**
@@ -199,9 +225,22 @@ class FacetsAdmin extends Admin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
-        $this->last_position = $this->positionService->getLastPosition(
-            $this->getRoot()->getClass()
-        );
+        $qb = $this->modelManager
+            ->getEntityManager('Bach\HomeBundle\Entity\facets')
+            ->createQueryBuilder()
+            ->add('select', 'MAX(f.position)')
+            ->add('from', 'Bach\HomeBundle\Entity\Facets f')
+            ->add('where', 'f.form = :current_form')
+            ->setParameter('current_form', $this->_current_form);
+
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+
+        if (array_key_exists(0, $result)) {
+            $this->last_position = intval($result[0][1]);
+        } else {
+            $this->last_position = 0;
+        }
 
         $listMapper
             ->addIdentifier(
@@ -244,6 +283,43 @@ class FacetsAdmin extends Admin
     }
 
     /**
+     * Create query
+     *
+     * @param string $context Context
+     *
+     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     */
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $query->andWhere(
+            $query->expr()->eq($query->getRootAlias() . '.form', ':current_form')
+        );
+        $query->setParameter(
+            'current_form',
+            $this->_current_form
+        );
+        return $query;
+    }
+
+    /**
+     * Create object instance
+     *
+     * @return Mixed
+     */
+    public function getNewInstance()
+    {
+        $object = $this->getModelManager()->getModelInstance($this->getClass());
+        $object->setForm($this->_current_form);
+        foreach ($this->getExtensions() as $extension) {
+            $extension->alterNewInstance($this, $object);
+        }
+
+        return $object;
+    }
+
+    /**
      * Container injenction
      *
      * @param ContainerInterface $container Container
@@ -278,5 +354,41 @@ class FacetsAdmin extends Admin
     {
         $fields = new Fields();
         return $fields->getFieldLabel($name);
+    }
+
+    /**
+     * Set baseRoutePattern used to generate the routing information
+     *
+     * @param string $pattern Route pattern
+     *
+     * @return void
+     */
+    public function setBaseRoutePattern($pattern)
+    {
+        $this->baseRoutePattern = $pattern;
+    }
+
+    /**
+     * Set baseRouteName used to generate the routing information
+     *
+     * @param string $name Route name
+     *
+     * @return void
+     */
+    public function setBaseRouteName($name)
+    {
+        $this->baseRouteName = $name;
+    }
+
+    /**
+     * Set class name label (for menu entries)
+     *
+     * @param string $label Label
+     *
+     * @return void
+     */
+    public function setClassnameLabel($label)
+    {
+        $this->classnameLabel = $label;
     }
 }

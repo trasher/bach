@@ -60,10 +60,26 @@
 
             var _initMap = function(callback) {
                 map = L.map('map', {
-                    minZoom: 1
+                    minZoom: 1,
+                    zoomControl: false
                 });
 
-                var fullScreen = new L.Control.FullScreen();
+                var zoomControl = new L.Control.Zoom({
+                    position: 'topleft',
+                    zoomInTitle: '{{ _('Zoom in') }}',
+                    zoomOutTitle: '{{ _('Zoom out') }}'
+                });
+                map.addControl(zoomControl);
+
+                var fullScreen = new L.Control.FullScreen({
+                    title: '{{ _('Full screen')|escape('js') }}'
+                });
+                fullScreen.onAdd = function(map){
+                    var className = 'leaflet-control-zoom-fullscreen', container;
+                    var container = zoomControl._container;
+                    this._createButton(this.options.title, className, container, this.toogleFullScreen, map);
+                    return container;
+                }
                 map.addControl(fullScreen);
 
                 {% if from_search %}

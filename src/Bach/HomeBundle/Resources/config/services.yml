@@ -35,7 +35,7 @@ parameters:
 services:
     bach.home.solarium_query_factory:
         class: "%bach.home.solarium_query_factory.class%"
-        arguments: [ @solarium.client.default ]
+        arguments: [ @solarium.client.default, '%solr_query_fields%' ]
 
     bach.matricules.solarium_query_factory:
         class: "%bach.home.solarium_query_factory.class%"
@@ -104,3 +104,8 @@ services:
         class: Bach\HomeBundle\Entity\ViewParams
         arguments: [ '%display.matricules.show_maps%', '%display.matricules.show_daterange%', '%display.matricules.rows%' ]
 
+    bach.home.search_forms:
+        class: Bach\HomeBundle\Twig\SearchForms
+        arguments: [ @service_container ]
+        tags:
+            - { name: twig.extension }

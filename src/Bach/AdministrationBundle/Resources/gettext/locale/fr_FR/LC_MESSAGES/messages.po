@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/AdministrationBundle@20131025144736\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-02 16:37+0200\n"
-"PO-Revision-Date: 2014-05-02 16:40+0100\n"
+"POT-Creation-Date: 2014-06-18 11:59+0200\n"
+"PO-Revision-Date: 2014-06-18 12:00+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr_FR\n"
@@ -82,6 +82,8 @@ msgstr "Champs dynamiques"
 #: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:677
 #: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1089
 #: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1247
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:202
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:251
 msgid "Name"
 msgstr "Nom"
 
@@ -263,6 +265,7 @@ msgstr "Types de champs"
 
 #: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1253
 #: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1846
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:269
 msgid "Class"
 msgstr "Classe"
 
@@ -384,83 +387,127 @@ msgstr ""
 msgid "Unable to unload %corename, therefore it should not be removed."
 msgstr "Impossible de décharger %corename, il ne pourra donc être supprimé."
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:178
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:175
 msgid "Document repository"
 msgstr "Dépôt du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:181
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:178
 msgid "Document date"
 msgstr "Date du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:184
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:181
 msgid "Document title"
 msgstr "Titre du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:187
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:184
 msgid "Corporate name"
 msgstr "Nom d'organisme"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:190
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:187
 msgid "Function"
 msgstr "Fonction"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:193
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:190
 msgid "Genre"
 msgstr "Type"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:196
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:193
 msgid "Geographic name"
 msgstr "Nom géographique"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:199
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:196
 msgid "Personal name"
 msgstr "Nom de personne"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:202
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:199
+msgid "Family name"
+msgstr "Nom de famille"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:205
 msgid "Subject"
 msgstr "Sujet"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:205
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:208
 msgid "Unit ID"
 msgstr "ID de l'unité"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:208
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:211
 msgid "Unit title"
 msgstr "Titre de l'unité"
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:214
+msgid "Title"
+msgstr "Titre"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:217
+msgid "Descriptors"
+msgstr "Descritpeurs"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:220
+msgid "File title"
+msgstr "Titre du fichier"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:223
 msgid "File description author"
 msgstr "Auteur de la description du fichier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:217
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:226
 msgid "Document identifier"
 msgstr "Identifiant du document"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:220
-msgid "Document publisher"
-msgstr "Éditeur du document"
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:229
+msgid "File document publisher"
+msgstr "Éditeur du document fichier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:223
-msgid "Document language"
-msgstr "Langue du document"
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:232
+msgid "File document language"
+msgstr "Langue du document fichier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:226
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:235
 msgid "Digital substitute"
 msgstr "Substitut numérique"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:229
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:238
 msgid "Dates periods"
 msgstr "Périodes de dates"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:232
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:241
 msgid "Archival description identifier"
 msgstr "Identifiant de la description du fichier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:235
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:244
 msgid "Archival description access restriction"
 msgstr "Restriction d'accès de la description du fichier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:264
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:248
+msgid "Cote"
+msgstr "Cote"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:254
+msgid "Place of recording"
+msgstr "Lieu d'enregistrement"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:257
+msgid "Place of birth"
+msgstr "Lieu de naissance"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:260
+msgid "Surnames"
+msgstr "Prénoms"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:263
+msgid "Matricule"
+msgstr "Matricule"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:266
+msgid "Year of recording"
+msgstr "Année d'enregistrement"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:272
+msgid "Year of birth"
+msgstr "Année de naissance"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:301
 msgid "without specific"
 msgstr "sans spécifiques"
 

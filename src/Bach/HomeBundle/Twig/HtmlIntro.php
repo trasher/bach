@@ -151,7 +151,7 @@ class HtmlIntro extends \Twig_Extension
 
         $router = $this->_router;
         $request = $this->_request;
-        $callback = function ($matches) use ($router, $request) {
+        $img_callback = function ($matches) use ($router, $request) {
             $img = '<img';
             $img .= $matches[1];
             $img .= ' src="';
@@ -167,9 +167,29 @@ class HtmlIntro extends \Twig_Extension
             return $img;
         };
 
+        $doclink_callback = function ($matches) use ($router, $request) {
+            if ( strpos($matches[1], 'http://') === 0 ) {
+                return $matches[0];
+            } else {
+                $href = $router->generate(
+                    'bach_ead_html',
+                    array(
+                        'docid' => $matches[1]
+                    )
+                );
+                return 'href="' . str_replace('&', '&amp;', $href) . '"';
+            }
+        };
+
         $contents = preg_replace_callback(
             '@<img(.*) src="(.[^"]+)"(.*)/>@',
-            $callback,
+            $img_callback,
+            $contents
+        );
+
+        $contents = preg_replace_callback(
+            '/href="(.[^"]+)"/',
+            $doclink_callback,
             $contents
         );
 

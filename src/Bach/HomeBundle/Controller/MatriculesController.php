@@ -70,12 +70,16 @@ class MatriculesController extends SearchController
     /**
      * Default page
      *
+     * @param string $form_name Search form name
+     *
      * @return void
      */
-    public function indexAction()
+    public function indexAction($form_name = null)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
+
+        $this->search_form = $form_name;
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -129,11 +133,12 @@ class MatriculesController extends SearchController
      * @param string $query_terms Term(s) we search for
      * @param int    $page        Page
      * @param string $facet_name  Display more terms in suggests
+     * @param string $form_name   Search form name
      *
      * @return void
      */
     public function searchAction($query_terms = null, $page = 1,
-        $facet_name = null
+        $facet_name = null, $form_name = null
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -141,6 +146,8 @@ class MatriculesController extends SearchController
         if ( $query_terms !== null ) {
             $query_terms = urldecode($query_terms);
         }
+
+        $this->search_form = $form_name;
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -212,20 +219,15 @@ class MatriculesController extends SearchController
             $container->setFilters($filters);
             $factory->prepareQuery($container);
 
-            $conf_facets = array();
-            $fields = array(
-                'nom'                   => 'Nom',
-                'prenoms'               => 'Prénom',
-                'classe'                => 'Classe',
-                'lieu_naissance'        => 'Lieu de naissance',
-                'lieu_enregistrement'   => 'Lieu d\'enregistrement'
-            );
-            foreach ( $fields as $field_name=>$trad ) {
-                $facet = new Facets();
-                $facet->setSolrFieldName($field_name);
-                $facet->setFrLabel($trad);
-                $conf_facets[] = $facet;
-            }
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active'    => true,
+                        'form'      => 'matricules'
+                    ),
+                    array('position' => 'ASC')
+                );
 
             $searchResults = $factory->performQuery(
                 $container,

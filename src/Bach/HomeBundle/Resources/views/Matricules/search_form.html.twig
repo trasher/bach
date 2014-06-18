@@ -34,8 +34,8 @@ POSSIBILITY OF SUCH DAMAGE.
 {% extends 'BachHomeBundle:Commons:search.html.twig' %}
 
 {% block intro %}
-    {% if html_contents_exists('intro_matricules.html') %}
-        {{ get_html_contents('intro_matricules.html')|raw }}
+    {% if html_intro_exists('intro_matricules.html') %}
+        {{ get_html_intro('intro_matricules.html')|raw }}
     {% else %}
         <h2 id="welcome">{{ _('Search in matricules') }}</h2>
     {% endif %}
@@ -75,7 +75,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
                 {% endif %}
             </figure>
-            <h3{# property="dc:title"#}>
+            <h3>
                 <a href="{{ path('bach_display_matricules', {'docid': document.id}) }}" class="display_doc">
                     {% set name %}
                     {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
@@ -105,6 +105,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <thead>
                     <tr>
                         <th></th>
+                        <th>{{ _('Matricule') }}</th>
                         <th>{{ _('Name') }}</th>
                         <th>{{ _('Surnames') }}</th>
                         <th>{{ _('Year of birth') }}</th>
@@ -140,6 +141,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         {% endif %}
                     </td>
                     <td>
+                        {{ document.matricule }}
+                    </td>
+                    <td>
                         {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
                         {%- else -%}
@@ -160,7 +164,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         {%- if hlSearchResults.getResult(document.id).getField('lieu_naissance')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('lieu_naissance')[0]|raw }}
                         {%- else -%}
-                            {{ document.lieu_naissance }}
+                            {% if document.lieu_naissance is defined %}{{ document.lieu_naissance }}{% endif %}
                         {%- endif -%}
                     </td>
                     <td>{% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}</td>

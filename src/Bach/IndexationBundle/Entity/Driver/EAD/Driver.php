@@ -112,16 +112,17 @@ class Driver extends FileDriver
 
         //take care of archdesc
         $results['archdesc'] = array(
-            'id'        => 'description',
-            'c'         => $archdesc['root']
+            'id'    => 'description',
+            'c'     => $archdesc['root']
         );
 
         $results['elements'] = array();
         //handle all elements
         foreach ( $archdesc['c'] as $id=>$CNode) {
             $results['elements'][] = array(
-                "id"        => $id,
-                "c"         => $CNode);
+                'id'    => $id,
+                'c'     => $CNode
+            );
         }
 
         return $results;

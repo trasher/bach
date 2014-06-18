@@ -35,14 +35,6 @@ POSSIBILITY OF SUCH DAMAGE.
         <header>
             <h2 property="dc:title">
                 {{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}
-                {#%- if document.cUnittitle is defined -%}
-                    {{ document.cUnittitle }}
-                {%- else -%}
-                    {{ _('Untitled unit') }}
-                {%- endif -%}
-                {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
-                    <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
-                {%- endif -%#}
             </h2>
             {% if features.social %}{{ socialButtons() }}{% endif %}
         </header>
@@ -85,6 +77,10 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td>{{ document.cote }}</td>
                 </tr>
                 <tr>
+                    <th>{{ _('Matricule') }}</th>
+                    <td>{{ document.matricule }}</td>
+                </tr>
+                <tr>
                     <th>{{ _('Name') }}</th>
                     <td>{{ document.nom }}</td>
                 </tr>
@@ -104,17 +100,16 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th>{{ _('Place of birth') }}</th>
                     <td>{{ document.lieu_naissance }}</td>
                 </tr>
-                <tr>
+                {#<tr>
                     <th>{{ _('Year of recording') }}</th>
                     <td>{% if document.date_enregistrement is defined %}{{document.date_enregistrement|date('Y') }}{% else %}-{% endif %}</td>
-                </tr>
+                </tr>#}
                 <tr>
                     <th>{{ _('Place of recording') }}</th>
                     <td>{{ document.lieu_enregistrement }}</td>
                 </tr>
             </table>
         </section>
-        {#{ displayFragment(document.fragment, docid, true, hasChildren, hasComments, count_children, ajax)|raw }#}
         {% if comments is defined %}
             <section id="comments">
                 <header>

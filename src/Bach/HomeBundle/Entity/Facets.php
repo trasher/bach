@@ -108,6 +108,22 @@ class Facets
     protected $position;
 
     /**
+     * @var string
+     *
+     * @Gedmo\SortableGroup
+     * @ORM\Column(name="form", type="string", length=255)
+     */
+    protected $form;
+
+    /**
+     * Main constructor
+     */
+    public function __construct()
+    {
+        $this->form = 'main';
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -207,6 +223,29 @@ class Facets
     public function getEnLabel()
     {
         return $this->en_label;
+    }
+
+    /**
+     * Set relative form
+     *
+     * @param string $form Form name
+     *
+     * @return Facets
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
+        return $this;
+    }
+
+    /**
+     * Get relative form
+     *
+     * @return string
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 
     /**

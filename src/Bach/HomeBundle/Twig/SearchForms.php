@@ -1,6 +1,6 @@
 <?php
 /**
- * Bach Solarium main decorator
+ * Specifi search forms
  *
  * PHP version 5
  *
@@ -35,66 +35,61 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Search
+ * @category Templating
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\HomeBundle\Entity\SolariumQueryDecorator;
+namespace Bach\HomeBundle\Twig;
 
-use Bach\HomeBundle\Entity\SolariumQueryDecoratorAbstract;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Bach Solarium main decorator
+ * Does asset exists
  *
- * @category Search
+ * PHP version 5
+ *
+ * @category Templating
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class MainDecorator extends SolariumQueryDecoratorAbstract
+class SearchForms extends \Twig_Extension
 {
-    protected $targetField = 'main';
+    private $_container;
 
     /**
-     * Default query fields and boost
+     * Main constructor
      *
-     * @return string
+     * @param ContainerInterface $container Container
      */
-    protected function getDefaultQueryFields()
+    public function __construct(ContainerInterface $container)
     {
-        return 'descriptors^2 cUnittitle^1 parents_titles^1 fulltext^0.1';
+        $this->_container = $container;
     }
 
     /**
-     * Decorate Query
+     * Get globals
      *
-     * @param Query  $query Solarium query object to decorate
-     * @param string $data  Query data
-     *
-     * @return void
+     * @return array
      */
-    public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data)
+    public function getGlobals()
     {
-        if ( $data !== '*:*' ) {
-            $dismax = $query->getDisMax();
-            $dismax->setQueryFields(
-                $this->getQueryFields()
-            );
-        }
-        $query->setQuery($data);
+        return array(
+            'search_forms' => $this->_container->getParameter('search_forms')
+        );
     }
 
     /**
-     * Highlithed fields
+     * Extension name
      *
      * @return string
      */
-    public function getHlFields()
+    public function getName()
     {
-        return 'cUnittitle';
+        return 'search_forms';
     }
 }

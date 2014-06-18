@@ -34,8 +34,12 @@ POSSIBILITY OF SUCH DAMAGE.
 {% extends 'BachHomeBundle:Commons:search.html.twig' %}
 
 {% block intro %}
-    {% if html_intro_exists('intro.html') %}
-        {{ get_html_intro('intro.html')|raw }}
+    {% set intro_page = 'intro.html' %}
+    {% if search_form is defined %}
+        {% set intro_page = 'intro_' ~ search_form ~ '.html' %}
+    {% endif %}
+    {% if html_intro_exists(intro_page|raw) %}
+        {{ get_html_intro(intro_page)|raw }}
     {% else %}
         <h2 id="welcome">{{ _('Welcome to Bach\'s!') }}</h2>
     {% endif %}

@@ -88,3 +88,20 @@ services:
         arguments:
             - "[%%datetime%%] %%level_name%% - %%message%%\n"
 
+    oai.logger:
+        class: Symfony\Bridge\Monolog\Logger
+        arguments: [app]
+        calls:
+            - [ pushHandler, [@oai.logger_handler] ]
+
+    oai.logger_handler:
+        class: Monolog\Handler\StreamHandler
+        arguments: [%kernel.logs_dir%/oai.log, 200]
+        calls:
+            - [ setFormatter, [@oai.formatter]]
+
+    oai.formatter:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] %%level_name%% - %%message%%\n"
+
