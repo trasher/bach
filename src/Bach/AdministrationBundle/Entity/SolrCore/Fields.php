@@ -214,7 +214,7 @@ class Fields
             return _('Title');
             break;
         case 'descriptors':
-            return ('Descriptors');
+            return _('Descriptors');
             break;
         case 'headerTitle':
             return _('File title');
@@ -269,7 +269,7 @@ class Fields
             return _('Class');
             break;
         case 'annee_naissance':
-            return ('Year of birth');
+            return _('Year of birth');
             break;
         default:
             if ( strpos($name, 'dyndescr_') === 0 ) {
