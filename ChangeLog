@@ -1,3 +1,18 @@
+0.9.3 (2014-06-18)
+
+- Configurable facets for specific search forms and matricules
+- Add OAI exports commands
+- Display existing HTML EAD existing document
+- Handle documents links from intro files
+- Fix publication interface
+- Browse previous and next components (in a same EAD file)
+- Handle missing birth places in matricules, to avoid errors
+- Add specific search forms capabilities
+- Fix invalid XML issue in DAO display, when a link contains amperstand
+- Matricule line was missing in matricules documents
+- Add some missing translations
+- Update to recent third party libs
+
 0.9.2 (2014-06-03)
 
 - Loads map points via Ajax, reduces page size
