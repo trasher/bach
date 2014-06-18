@@ -65,7 +65,11 @@ class DefaultController extends ControllerTest
      */
     public function testIndex()
     {
+
         $this->request()->GET('/search/')
+            ->hasStatus(301);
+
+        $this->request()->GET('/notfound')
             ->hasStatus(404);
 
         //a successfull request, with filtering only
