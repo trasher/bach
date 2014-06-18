@@ -26,14 +26,16 @@ web/assetic
 
 # OS generated files #
 ######################
-.*DS_Store
+*~
+.DS_Store
 .DS_Store?
+._*
 .Spotlight-V100
+.apdisk
 .Trashes
 Icon?
 ehthumbs.db
 Thumbs.db
-*~
 
 # Vim project files
 .vimfiles*
