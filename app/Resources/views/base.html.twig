@@ -95,7 +95,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         </li>
                     {% endfor %}
                     {% if features.matricules %}
-                    <li{% if app.request.attributes.get('_route') == 'bach_matricules' %} class="active"{% endif %}>
+                    <li{% if app.request.attributes.get('_route') == 'bach_matricules' or app.request.attributes.get('_route') == 'bach_matricules_search' %} class="active"{% endif %}>
                         <a href="{{ path('bach_matricules') }}">{{ _('Matricules') }}</a>
                     </li>
                     {% endif %}

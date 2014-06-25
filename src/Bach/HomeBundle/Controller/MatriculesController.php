@@ -268,7 +268,7 @@ class MatriculesController extends SearchController
             $this->handleYearlyResults($factory, $tpl_vars);
         }
 
-        $slider_dates = $factory->getSliderDates(new Filters());
+        $slider_dates = $factory->getSliderDates($filters);
 
         if ( is_array($slider_dates) ) {
             $tpl_vars = array_merge($tpl_vars, $slider_dates);
