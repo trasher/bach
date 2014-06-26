@@ -119,6 +119,8 @@ abstract class SearchController extends Controller
 
         if ( $this->search_form !== null ) {
             $tpl_vars['search_form'] = $this->search_form;
+        } else {
+            $tpl_vars['search_form'] = 'default';
         }
 
         return array_merge($common_vars, $tpl_vars);
@@ -468,13 +470,15 @@ abstract class SearchController extends Controller
     /**
      * Loads Geojson data
      *
-     * @param string $search_form Search form name
+     * @param string $form_name Search form name
      *
      * @return void
      */
-    public function getGeoJsonAction($search_form = null)
+    public function getGeoJsonAction($form_name = null)
     {
-        $this->search_form = $search_form;
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
         $request = $this->getRequest();
         $session = $request->getSession();
 

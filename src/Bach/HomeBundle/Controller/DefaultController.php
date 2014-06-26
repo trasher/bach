@@ -80,7 +80,9 @@ class DefaultController extends SearchController
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        $this->search_form = $form_name;
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -203,7 +205,9 @@ class DefaultController extends SearchController
             $query_terms = urldecode($query_terms);
         }
 
-        $this->search_form = $form_name;
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -375,7 +379,9 @@ class DefaultController extends SearchController
      */
     public function doSearchAction($form_name = null)
     {
-        $this->search_form = $form_name;
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
         $query = new SearchQuery();
         $form = $this->createForm(new SearchQueryFormType(), $query);
 
@@ -412,7 +418,6 @@ class DefaultController extends SearchController
 
                 $route = 'bach_search';
                 if ( $this->search_form !== null ) {
-                    $route = 'bach_search_form';
                     $url_vars['form_name'] = $this->search_form;
                 }
 
