@@ -212,7 +212,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </xsl:if>
     </xsl:template>
 
-    <xsl:template match="genreform|extent|physfacet|dimensions|langmaterial" mode="full">
+    <xsl:template match="genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]|extent|physfacet|dimensions|langmaterial" mode="full">
         <xsl:variable name="elt_name">
             <xsl:choose>
                 <xsl:when test="preceding-sibling::lb or following-sibling::lb">span</xsl:when>
@@ -334,65 +334,66 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template name="section_content">
         <xsl:param name="title" select="'false'"/>
-
-        <section class="{local-name()}">
-            <xsl:if test="not(head) and $title = 'true'">
-                <xsl:variable name="count" select="count(ancestor::*/head)"/>
-                <header>
-                    <xsl:element name="h{$count + 3}">
-                        <xsl:choose>
-                            <xsl:when test="local-name() = 'custodhist'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Conservation history:')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'arrangement'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Arrangement:')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'relatedmaterial'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Related material:')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'bibliography'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliography:')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'bioghist'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Biography or history:')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'acqinfo'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Acquisition information:')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'separatedmaterial'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Separated material:')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'otherfindaid'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Other finding aid:')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'physdesc'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'controlaccess'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Descriptors')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'imprint'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Publication informations')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() = 'repository'">
-                                <xsl:choose>
-                                    <xsl:when test="@label">
-                                        <xsl:value-of select="@label"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Repository:')"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:element>
-                </header>
-            </xsl:if>
-            <xsl:apply-templates mode="full"/>
-            <xsl:if test="local-name() = 'controlaccess'">
-                <xsl:call-template name="show_descriptors"/>
-            </xsl:if>
-        </section>
+        <xsl:if test="local-name() != 'controlaccess' or count(./*[local-name() != 'head' and not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')])">
+            <section class="{local-name()}">
+                <xsl:if test="not(head) and $title = 'true'">
+                    <xsl:variable name="count" select="count(ancestor::*/head)"/>
+                    <header>
+                        <xsl:element name="h{$count + 3}">
+                            <xsl:choose>
+                                <xsl:when test="local-name() = 'custodhist'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Conservation history:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'arrangement'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Arrangement:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'relatedmaterial'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Related material:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'bibliography'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliography:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'bioghist'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Biography or history:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'acqinfo'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Acquisition information:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'separatedmaterial'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Separated material:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'otherfindaid'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Other finding aid:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'physdesc'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'controlaccess'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Descriptors')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'imprint'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Publication informations')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'repository'">
+                                    <xsl:choose>
+                                        <xsl:when test="@label">
+                                            <xsl:value-of select="@label"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Repository:')"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:when>
+                            </xsl:choose>
+                        </xsl:element>
+                    </header>
+                </xsl:if>
+                <xsl:apply-templates mode="full"/>
+                <xsl:if test="local-name() = 'controlaccess'">
+                    <xsl:call-template name="show_descriptors"/>
+                </xsl:if>
+            </section>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="scopecontent" mode="specific">
@@ -525,7 +526,9 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="head" mode="full">
-        <xsl:if test="text() != ''">
+        <!-- Count *real* descriptors from controlaccess to prevent empty title display -->
+        <xsl:variable name="descriptors_count" select="count(../*[local-name() != 'head' and not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')])"/>
+        <xsl:if test="text() != '' and (local-name(parent::node()) = 'controlaccess' and $descriptors_count &gt; 0)">
             <!-- Count direct parent that have a head child. That will include current node -->
             <xsl:variable name="count" select="count(ancestor::*/head)"/>
             <header>
