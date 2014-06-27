@@ -70,12 +70,12 @@ POSSIBILITY OF SUCH DAMAGE.
         </header>
         {% if context or html_export or document.previous_id is defined or document.next_id is defined %}
             <aside>
-            {% if document.previous_id is defined %}
+            {% if context and document.previous_id is defined %}
                 <a id="prev_comp" href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ document.previous_id}) }}" title="{{ _('Display previous component (%title)')|replace({'%title': document.previous_title}) }}">
                     {{ _('Previous component') }}
                 </a>
             {% endif %}
-            {% if document.next_id is defined %}
+            {% if context and document.next_id is defined %}
                 {% if document.previous_id is defined %} {% endif %}
                 <a id="next_comp" href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ document.next_id}) }}" title="{{ _('Display next component (%title)')|replace({'%title': document.next_title}) }}">
                     {{ _('Next component') }}
