@@ -190,28 +190,30 @@ class BachSitemapProvider implements ProviderInterface
         }*/
 
         //add browse URLs, if any
-        $query = $this->em->createQuery(
-            'SELECT b.solr_field_name FROM BachHomeBundle:BrowseFields b ' .
-            'WHERE b.active=true ORDER BY b.position'
-        );
-        $elements = $query->getResult();
-        if ( count($elements) > 0) {
-            $url = new Url();
-            $url->setLoc(
-                $this->router->generate('bach_browse')
+        if ( $this->container->getParameter('feature.browse') === true ) {
+            $query = $this->em->createQuery(
+                'SELECT b.solr_field_name FROM BachHomeBundle:BrowseFields b ' .
+                'WHERE b.active=true ORDER BY b.position'
             );
-
-            foreach ( $elements as $elt ) {
+            $elements = $query->getResult();
+            if ( count($elements) > 0) {
                 $url = new Url();
                 $url->setLoc(
-                    $this->router->generate(
-                        'bach_browse',
-                        array(
-                            'part' => $elt['solr_field_name']
-                        )
-                    )
+                    $this->router->generate('bach_browse')
                 );
-                $sitemap->add($url);
+
+                foreach ( $elements as $elt ) {
+                    $url = new Url();
+                    $url->setLoc(
+                        $this->router->generate(
+                            'bach_browse',
+                            array(
+                                'part' => $elt['solr_field_name']
+                            )
+                        )
+                    );
+                    $sitemap->add($url);
+                }
             }
         }
 
