@@ -620,13 +620,18 @@ abstract class SearchController extends Controller
     /**
      * List all entries for a specific facet
      *
+     * @param string $form_name   Search form name
      * @param string $query_terms Term(s) we search for
      * @param string $name        Facet name
      *
      * @return void
      */
-    public function fullFacetAction($query_terms, $name)
+    public function fullFacetAction($form_name, $query_terms, $name)
     {
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
+
         $request = $this->getRequest();
         $session = $request->getSession();
 
@@ -696,6 +701,12 @@ abstract class SearchController extends Controller
             'facet_order'   => $request->get('facet_order'),
             'search_uri'    => $this->getSearchUri()
         );
+
+        if ( $this->search_form !== null ) {
+            $tpl_vars['search_form'] = $this->search_form;
+        } else {
+            $tpl_vars['search_form'] = 'default';
+        }
 
         return $this->render(
             'BachHomeBundle:Default:facet.html.twig',

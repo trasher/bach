@@ -108,7 +108,7 @@ bach_get_file:
         name: '.+'
 
 bach_fullfacet:
-    pattern: /fullfacet/{query_terms}/{name}
+    pattern: /fullfacet/{form_name}/{query_terms}/{name}
     defaults: { _controller: BachHomeBundle:Default:fullFacet }
     requirements:
         _method: GET|POST
@@ -182,7 +182,7 @@ bach_matricules_search:
 
 bach_matricules_fullfacet:
     pattern: /matricules/fullfacet/{query_terms}/{name}
-    defaults: { _controller: BachHomeBundle:Matricules:fullFacet }
+    defaults: { _controller: BachHomeBundle:Matricules:fullFacet, form_name: 'default' }
     requirements:
         _method: GET|POST
 

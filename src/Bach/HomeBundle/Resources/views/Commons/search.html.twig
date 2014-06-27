@@ -401,7 +401,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
                 var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page}) }}/', '');
                 _index = _index.substr(_index.lastIndexOf('/')+1);
-                var _url = '{{ path(block('fullfacet_path'), {query_terms: q, name: 'THENAME'}) }}'.replace('THENAME', _index);
+                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: q, name: 'THENAME'}) }}'.replace('THENAME', _index);
 
                 $.ajax({
                     url: _url,

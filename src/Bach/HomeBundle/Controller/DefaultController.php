@@ -834,12 +834,18 @@ class DefaultController extends SearchController
      */
     protected function getUniqueFacet($name)
     {
+        $form_name = 'main';
+        if ( $this->search_form !== null ) {
+            $form_name = $this->search_form;
+        }
+
         return $this->getDoctrine()
             ->getRepository('BachHomeBundle:Facets')
             ->findBy(
                 array(
                     'active'            => true,
-                    'solr_field_name'   => $name
+                    'solr_field_name'   => $name,
+                    'form'              => $form_name
                 )
             );
     }
