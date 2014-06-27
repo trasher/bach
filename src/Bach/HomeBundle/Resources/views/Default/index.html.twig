@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block intro %}
     {% set intro_page = 'intro.html' %}
-    {% if search_form is defined %}
+    {% if search_form is defined and search_form != 'default' %}
         {% set intro_page = 'intro_' ~ search_form ~ '.html' %}
     {% endif %}
     {% if html_intro_exists(intro_page|raw) %}
