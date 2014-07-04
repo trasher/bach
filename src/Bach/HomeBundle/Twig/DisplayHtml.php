@@ -155,7 +155,7 @@ class DisplayHtml extends \Twig_Extension
                 true
             );
             $archdesc_xml = simplexml_load_string(
-                '<root>' . $archdesc_xml . '</root>'
+                '<root>' . str_replace('<br>', '<br/>', $archdesc_xml) . '</root>'
             );
             $archdesc_html = $archdesc_xml->div->asXML();
 

@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
     xmlns:php="http://php.net/xsl"
     exclude-result-prefixes="php">
 
-    <xsl:output method="xml" omit-xml-declaration="yes"/>
+    <xsl:output method="html" omit-xml-declaration="yes"/>
 
     <xsl:param name="full" select="1"/>
     <xsl:param name="ajax" select="''"/>
