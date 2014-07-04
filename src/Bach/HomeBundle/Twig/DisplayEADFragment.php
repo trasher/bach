@@ -139,11 +139,12 @@ class DisplayEADFragment extends \Twig_Extension
      * @param boolean $hasComments Document has comments
      * @param int     $countSub    Sub units count
      * @param boolean $ajax        Called from ajax
+     * @param string  $form_name   Search form name
      *
      * @return string
      */
-    public function display($fragment, $docid, $full = false, $hasChildren = false,
-        $hasComments = false, $countSub = 0, $ajax = false
+    public function display($fragment, $docid, $form_name = 'default', $full = false,
+        $hasChildren = false, $hasComments = false, $countSub = 0, $ajax = false
     ) {
         $proc = new \XsltProcessor();
         $proc->importStylesheet(
@@ -152,13 +153,14 @@ class DisplayEADFragment extends \Twig_Extension
 
         $router = $this->_router;
         $request = $this->_request;
-        $callback = function ($matches) use ($router, $request) {
+        $callback = function ($matches) use ($router, $request, $form_name) {
             $href = $router->generate(
                 'bach_search',
                 array(
                     'query_terms'   => $request->get('query_terms'),
                     'filter_field'  => 'c' . ucwords($matches[1]),
-                    'filter_value'  => $matches[2]
+                    'filter_value'  => $matches[2],
+                    'form_name'     => $form_name
                 )
             );
             return 'href="' . str_replace('&', '&amp;', $href) . '"';

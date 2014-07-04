@@ -94,7 +94,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         </a>
                     </h3>
                     {% if view == 'list' or view == 'txtlist' %}
-                    {{ displayFragment(document.fragment, document.fragmentid)|raw }}
+                    {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}
                     {% endif %}
                     </div>
                 </article>
@@ -116,7 +116,7 @@ POSSIBILITY OF SUCH DAMAGE.
         var _height = $(window).height() * 0.8;
 
         $.ajax({
-            url: $(this).attr('href') + '/ajax',
+            url: $(this).attr('href') + '/ajax?search_form={{ search_form }}',
             {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')} %}
             success: function(data) {
                 _elt.append(data);

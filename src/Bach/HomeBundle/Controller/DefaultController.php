@@ -585,13 +585,19 @@ class DefaultController extends SearchController
 
         $tpl = '';
 
+        $form_name = 'default';
+        if ( $this->getRequest()->get('search_form') ) {
+            $form_name = $this->getRequest()->get('search_form');
+        }
+
         $tplParams = $this->commonTemplateVariables();
         $tplParams = array_merge(
             $tplParams,
             array(
                 'docid'         => $docid,
                 'document'      => $doc,
-                'context'       => $with_context
+                'context'       => $with_context,
+                'search_form'   => $form_name
             )
         );
 
