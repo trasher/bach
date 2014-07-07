@@ -136,7 +136,7 @@ class DefaultController extends ControllerTest
      */
     public function testFacetList()
     {
-        $this->request->GET('/fullfacet/*:*/cSubject')
+        $this->request->GET('/fullfacet/default/*:*/cSubject')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
