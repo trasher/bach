@@ -30,18 +30,18 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 #}
-    <form class="form-horizontal" action="{{ path('administration_coreadmin') }}" method="post">
+    <form class="form-horizontal" action="{{ path('administration_addcore') }}" method="post">
         <h3>{{ _('Add a new Solr core') }}</h3>
         <fieldset>
-            <div class="control-group">
-                <label for="coreCreationForm_core" class="control-label">{{ _('Type') }}</label>
-                <div class="controls">{{ form_widget(form.core) }}</div>
-                <label for="coreCreationForm_name" class="control-label">{{ _('Name') }}</label>
-                <div class="controls">{{ form_widget(form.name) }}</div>
+            <div>
+                <label for="coreCreationForm_core" class="control-label">{{ _('Type') }}</label><br/>
+                {{ form_widget(form.core) }}
             </div>
-            {{ form_widget(form._token) }}
+            <div>
+                <label for="coreCreationForm_name" class="control-label">{{ _('Name') }}</label><br/>
+                {{ form_widget(form.name) }}
+                {{ form_widget(form._token) }}
+            </div>
         </fieldset>
-        {% if ajax is not defined %}
-        <button name="createCoreOk" type="submit" class="jbtn">{{ _('Create core') }}</a>
-        {% endif %}
+        <button name="createCoreOk" type="submit" class="jbtn">{{ _('Create core') }}</button>
     </form>

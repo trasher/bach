@@ -35,62 +35,14 @@ administration_dashboard:
     requirements:
         _method: GET|POST
 
-administration_fields:
-    pattern: /fields
-    defaults: { _controller: AdministrationBundle:Fields:refresh }
-    requirements:
-        _method: GET
-
-administration_fieldstype:
-    pattern:  /fieldstype
-    defaults: { _controller: AdministrationBundle:Types:refresh }
-    requirements:
-        _method: GET
-
-administration_dynamicfields:
-    pattern:  /dynamicfields
-    defaults: { _controller: AdministrationBundle:DynamicFields:refresh }
-    requirements:
-        _method: GET
-
-administration_copyfields:
-    pattern: /copyfields
-    defaults: { _controller: AdministrationBundle:CopyFields:refresh }
-    requirements:
-        _method: GET
-
-administration_uniquekey:
-    pattern:  /uniquekey
-    defaults: { _controller: AdministrationBundle:UniqueKey:refresh }
-    requirements:
-        _method: GET
-
-administration_analyzers:
-    pattern:  /analyzers
-    defaults: { _controller: AdministrationBundle:Analyzers:refresh }
-    requirements:
-        _method: GET
-
-administration_performance:
-    pattern:  /performance/index
-    defaults: { _controller: AdministrationBundle:Performance:refresh }
-    requirements:
-        _method: GET
-
-administration_performance_submit:
-    pattern:  /performance/submit
-    defaults: { _controller: AdministrationBundle:Performance:submit }
-    requirements:
-        _method: GET
-
-administration_coreadmin:
-    pattern:  /coreadmin
-    defaults: { _controller: AdministrationBundle:CoreAdmin:refresh }
+administration_addcore:
+    pattern:  /core/add
+    defaults: { _controller: AdministrationBundle:CoreAdmin:add }
     requirements:
         _method: GET|POST
 
 administration_newcore:
-    pattern: /newcore
-    defaults: { _controller: AdministrationBundle:CoreAdmin:newcore }
+    pattern: /core/new/{ajax}
+    defaults: { _controller: AdministrationBundle:CoreAdmin:newcore, 'ajax': false }
     requirements:
         _method: GET
