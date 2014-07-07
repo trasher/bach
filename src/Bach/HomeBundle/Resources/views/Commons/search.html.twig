@@ -358,7 +358,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 var n = _loc.indexOf('?');
                 var _new_loc = _loc.substring(0, n != -1 ? n : _loc.lenght);
                 {% else -%}
-                var _new_loc = '{{ path(block('search_path'), {form_name: search_form}) }}';
+                var _new_loc = '{{ path(block('search_path'), {form_name: search_form})|raw }}';
                 {% endif %}
 
 
@@ -399,9 +399,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 var _width = $(window).width() * 0.8;
                 var _height = $(window).height() * 0.8;
 
-                var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page}) }}/', '');
+                var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page})|raw }}/', '');
                 _index = _index.substr(_index.lastIndexOf('/')+1);
-                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: q, name: 'THENAME'}) }}'.replace('THENAME', _index);
+                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: q, name: 'THENAME'})|raw }}'.replace('THENAME', _index);
 
                 $.ajax({
                     url: _url,
@@ -429,7 +429,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
             {% if available_orders|length > 0 %}
             $('#results_order').change(function(){
-                var _da_url = '{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: 'ORDER'}) }}';
+                var _da_url = '{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: 'ORDER'})|raw }}';
                 window.location.href  = _da_url.replace('ORDER', $('#results_order option:selected').val());
             });
             {% endif %}
@@ -561,7 +561,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $('#sh_map').on('click', _bindMapHide);
 
             function facetFeature(e) {
-                var _da_url = '{{ path(block('search_path'), {form_name: search_form, query_terms: q, filter_field: 'geoloc'}) }}';
+                var _da_url = '{{ path(block('search_path'), {form_name: search_form, query_terms: q, filter_field: 'geoloc'})|raw }}';
                 window.location.href  = _da_url + '&filter_value=' + e.target.feature.properties.name;
             }
 
