@@ -681,6 +681,10 @@ p {
     color: #4a4041;
 }
 
+td.actions {
+    white-space: nowrap;
+}
+
 .content header {
     margin-bottom: .2em;
 }
