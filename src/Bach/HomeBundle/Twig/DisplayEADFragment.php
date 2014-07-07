@@ -134,12 +134,12 @@ class DisplayEADFragment extends \Twig_Extension
      *
      * @param string  $fragment    EAD fragment as XML
      * @param string  $docid       Document unique identifier
+     * @param string  $form_name   Search form name
      * @param boolean $full        Displays full fragment, default to false
      * @param boolean $hasChildren Document has children
      * @param boolean $hasComments Document has comments
      * @param int     $countSub    Sub units count
      * @param boolean $ajax        Called from ajax
-     * @param string  $form_name   Search form name
      *
      * @return string
      */
