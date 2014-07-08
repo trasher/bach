@@ -224,6 +224,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 });
                 {{ block ('mobile_js_on') }}
             } else {
+                //tooltip on each a
+                $('a').tooltip();
                 //unbind elements and remove class when resizing
                 $('#navigation > ul').removeClass('hidden');
                 $('#navigation').unbind('click');
@@ -239,9 +241,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             $('.jbtn').button();
-
-            //tooltip on each a
-            $('a').tooltip();
 
             //global help display window
             var _help = $('#help_window');
