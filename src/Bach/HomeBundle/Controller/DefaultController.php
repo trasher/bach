@@ -683,11 +683,6 @@ class DefaultController extends SearchController
             }
         }
 
-        //check if HTML export do exist
-        $html_export = $this->container->getParameter('bach_files_html') .
-            '/' . $doc['headerId'] . '.html';
-        $tplParams['html_export'] = file_exists($html_export);
-
         return $this->render(
             $tpl,
             $tplParams

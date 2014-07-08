@@ -79,21 +79,31 @@ POSSIBILITY OF SUCH DAMAGE.
                         </ul>
                     {%- endif -%}
 
-                    <h3 property="dc:title">
-                        <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
-                        {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
-                        {%- elseif document.cUnittitle is defined -%}
-                            {{ document.cUnittitle }}
-                        {%- else -%}
-                            {{ _('Untitled unit') }}
-                        {%- endif -%}
-                        {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
-                            <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
-                        {%- endif -%}
-                        </a>
-                    </h3>
+                    <header>
+                        <h3 property="dc:title">
+                            <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
+                            {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
+                                {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
+                            {%- elseif document.cUnittitle is defined -%}
+                                {{ document.cUnittitle }}
+                            {%- else -%}
+                                {{ _('Untitled unit') }}
+                            {%- endif -%}
+                            {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
+                                <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
+                            {%- endif -%}
+                            </a>
+                        </h3>
+                    </header>
                     {% if view == 'list' or view == 'txtlist' %}
+                    <aside>
+                        {% if html_export_exists(document.headerId) %}
+                            {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                            <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('Locate in document tree') }}</a>
+                        {% else %}
+                            <a href="{{ path('bach_ead_html', {'docid': document.headerId, 'expanded': 'expanded'}) }}#{{ document.fragmentid }}">{{ _('Locate in document tree') }}</a>
+                        {% endif %}
+                    </aside>
                     {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}
                     {% endif %}
                     </div>

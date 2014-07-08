@@ -68,7 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </h2>
             {% if features.social %}{{ socialButtons() }}{% endif %}
         </header>
-        {% if context or html_export or document.previous_id is defined or document.next_id is defined %}
+        {% if context or document.previous_id is defined or document.next_id is defined %}
             <aside>
             {% if context and document.previous_id is defined %}
                 <a id="prev_comp" href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ document.previous_id}) }}" title="{{ _('Display previous component (%title)')|replace({'%title': document.previous_title}) }}">
@@ -82,12 +82,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 </a>
             {% endif %}
             {% if context == true %}
-            <a href="{{ path('bach_ead_html', {'docid': document.headerId, 'expanded': 'expanded'}) }}#{{ document.fragmentid }}">{{ _('Locate in document tree') }}</a>
-            {% endif %}
-            {% if html_export %}
-            {% if context == true %} - {% endif %}
-            {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-            <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('View in edited document') }}</a>
+                {% if html_export_exists(document.headerId) %}
+                    {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                    <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('Locate in document tree') }}</a>
+                {% else %}
+                    <a href="{{ path('bach_ead_html', {'docid': document.headerId, 'expanded': 'expanded'}) }}#{{ document.fragmentid }}">{{ _('Locate in document tree') }}</a>
+                {% endif %}
             {% endif %}
             </aside>
         {% endif %}
