@@ -317,6 +317,9 @@ abstract class SearchController extends Controller
                 if ( $facet->getSolrFieldName() !== 'dao' ) {
                     //facet order
                     $facet_order = $request->get('facet_order');
+                    if ( $facet_name !== null ) {
+                        $facet_order = 1;
+                    }
                     if ( !$facet_order || $facet_order == 0 ) {
                         arsort($values);
                     } else {
@@ -677,15 +680,18 @@ abstract class SearchController extends Controller
 
         //facet order
         $facet_order = $request->get('facet_order');
-        if ( !$facet_order || $facet_order == 0 ) {
-            arsort($values);
-        } else {
+        if ( $facet_order == null ) {
+            $facet_order = 1;
+        }
+        if ( $facet_order == 1 ) {
             if ( defined('SORT_FLAG_CASE') ) {
                 ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
             } else {
                 //fallback for PHP < 5.4
                 ksort($values, SORT_LOCALE_STRING);
             }
+        } else {
+            arsort($values);
         }
 
         $facets[$facet->getSolrFieldName()] = array(
@@ -698,7 +704,7 @@ abstract class SearchController extends Controller
             'q'             => $query_terms,
             'facets'        => $facets,
             'orig_href'     => $request->get('orig_href'),
-            'facet_order'   => $request->get('facet_order'),
+            'facet_order'   => $facet_order,
             'search_uri'    => $this->getSearchUri()
         );
 

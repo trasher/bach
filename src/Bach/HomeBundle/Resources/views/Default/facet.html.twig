@@ -41,8 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <span class="fright">
                 <label for="facet_order">{{ _('Order:') }}</label>
                 <select name="facet_order" id="facet_order">
-                    <option value="0"{% if facet_order is not defined or facet_order != '1' %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
-                    <option value="1"{% if facet_order is defined and facet_order == 1 %} selected="selected"{% endif %}>{{ _('Alphabetic') }}</option>
+                    <option value="1"{% if facet_order is not defined or facet_order == '1' %} selected="selected"{% endif %}>{{ _('Alphabetic (default)') }}</option>
+                    <option value="0"{% if facet_order is defined and facet_order != '1' %} selected="selected"{% endif %}>{{ _('Occurrence') }}</option>
                 </select>
             </span>
         </fieldset>
