@@ -696,30 +696,52 @@ class DefaultController extends SearchController
      */
     public function cdcAction()
     {
-        $tplParams = array();
+        $cdc_path = $this->container->getParameter('cdc_path');
+        $cdc_filename = basename($cdc_path, '.xml');
 
-        $client = $this->get($this->entryPoint());
-        $query = $client->createSelect();
-        $query->setQuery('fragmentid:*_description');
-        $query->setFields('cUnittitle, headerId, fragmentid');
-        $query->setStart(0)->setRows(1000);
+        //check for HTML version of the classification scheme
+        $path = $this->container->getParameter('bach_files_html') .
+            '/' . $cdc_filename . '.html';
 
-        $rs = $client->select($query);
+        if ( file_exists($path) ) {
+            $html_contents = file_get_contents($path);
+            $html_contents = str_replace(
+                'AACCSSJS3/',
+                'htmldoc/AACCSSJS3/',
+                $html_contents
+            );
+            return $this->render(
+                'BachHomeBundle:Default:html_contents.html.twig',
+                array(
+                    'html_contents' => $html_contents
+                )
+            );
+        } else {
+            $tplParams = array();
 
-        $published = new \SimpleXMLElement(
-            '<docs></docs>'
-        );
+            $client = $this->get($this->entryPoint());
+            $query = $client->createSelect();
+            $query->setQuery('fragmentid:*_description');
+            $query->setFields('cUnittitle, headerId, fragmentid');
+            $query->setStart(0)->setRows(1000);
 
-        foreach ( $rs as $doc ) {
-            $published->addChild($doc->headerId, $doc->cUnittitle);
+            $rs = $client->select($query);
+
+            $published = new \SimpleXMLElement(
+                '<docs></docs>'
+            );
+
+            foreach ( $rs as $doc ) {
+                $published->addChild($doc->headerId, $doc->cUnittitle);
+            }
+
+            $tplParams['docs'] = $published;
+
+            return $this->render(
+                'BachHomeBundle:Default:cdc.html.twig',
+                $tplParams
+            );
         }
-
-        $tplParams['docs'] = $published;
-
-        return $this->render(
-            'BachHomeBundle:Default:cdc.html.twig',
-            $tplParams
-        );
     }
 
     /**
