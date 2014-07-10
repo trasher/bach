@@ -139,25 +139,8 @@ class DisplayHtml extends \Twig_Extension
 
             $xml_doc = simplexml_load_file($xml_file);
 
-            $archdesc_doc = clone $xml_doc;
-            unset($archdesc_doc->archdesc->eadheader);
-            unset($archdesc_doc->archdesc->dsc);
-
-            $display = new DisplayEADFragment(
-                $this->_router,
-                false,
-                $this->_cote_location
-            );
-            $display->setRequest($this->_request);
-            $archdesc_xml = $display->display(
-                $archdesc_doc->archdesc->asXML(),
-                $docid,
-                true
-            );
-            $archdesc_xml = simplexml_load_string(
-                '<root>' . str_replace('<br>', '<br/>', $archdesc_xml) . '</root>'
-            );
-            $archdesc_html = $archdesc_xml->div->asXML();
+            $archdesc_html = $this->_renderArchdesc($xml_doc, $docid);
+            $contents = $this->_renderContents($xml_doc, $docid, $expanded);
 
             $proc = new \XsltProcessor();
             $proc->importStylesheet(
@@ -170,6 +153,7 @@ class DisplayHtml extends \Twig_Extension
             }
             $proc->registerPHPFunctions();
 
+            unset($xml_doc->archdesc->dsc);
             $html .= $proc->transformToXml($xml_doc);
 
             $router = $this->_router;
@@ -209,8 +193,14 @@ class DisplayHtml extends \Twig_Extension
             );
 
             $html = preg_replace(
-                '/%archdesc%/',
-                $archdesc_html,
+                array(
+                    '/%archdesc%/',
+                    '/%contents%/'
+                ),
+                array(
+                    $archdesc_html,
+                    $contents
+                ),
                 $html
             );
 
@@ -221,6 +211,71 @@ class DisplayHtml extends \Twig_Extension
         }
 
         return $html;
+    }
+
+    /**
+     * Render archdesc
+     *
+     * @param simple_xml $xml_doc XML document
+     * @param string     $docid   Document id
+     *
+     * @return string
+     */
+    private function _renderArchdesc($xml_doc, $docid)
+    {
+        $archdesc_doc = clone $xml_doc;
+        unset($archdesc_doc->archdesc->eadheader);
+        unset($archdesc_doc->archdesc->dsc);
+
+        $display = new DisplayEADFragment(
+            $this->_router,
+            false,
+            $this->_cote_location
+        );
+        $display->setRequest($this->_request);
+        $archdesc_xml = $display->display(
+            $archdesc_doc->archdesc->asXML(),
+            $docid,
+            true
+        );
+        $archdesc_xml = simplexml_load_string(
+            '<root>' . str_replace('<br>', '<br/>', $archdesc_xml) . '</root>'
+        );
+        $archdesc_html = $archdesc_xml->div->asXML();
+        return $archdesc_html;
+    }
+
+    /**
+     * Render contents
+     *
+     * @param simple_xml $xml_doc  XML document
+     * @param string     $docid    Document id
+     * @param boolean    $expanded Expand nodes by default
+     *
+     * @return string
+     */
+    private function _renderContents($xml_doc, $docid, $expanded)
+    {
+        $proc = new \XsltProcessor();
+        $proc->importStylesheet(
+            simplexml_load_file(__DIR__ . '/display_html_contents.xsl')
+        );
+
+        $proc->setParameter('', 'docid', $docid);
+        if ( $expanded === true ) {
+            $proc->setParameter('', 'expanded', 'true');
+        }
+        $proc->registerPHPFunctions();
+
+        $up_nodes = $xml_doc->xpath('/ead/archdesc/dsc/c');
+
+        $contents = '';
+        foreach ( $up_nodes as $up_node ) {
+            $contents .= $proc->transformToXml(
+                simplexml_load_string($up_node->asXML())
+            );
+        }
+        return $contents;
     }
 
     /**

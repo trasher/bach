@@ -56,7 +56,15 @@ POSSIBILITY OF SUCH DAMAGE.
             <xsl:if test="count(archdesc/*) &gt; 1">
                 <div id="docheader">%archdesc%</div>
             </xsl:if>
-            <xsl:apply-templates select="archdesc/dsc"/>
+            <section class="css-treeview">
+                <ul>%contents%</ul>
+            </section>
+            <div id="bibinfos" class="well">
+                <xsl:attribute name="title">
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliographic informations')"/>
+                </xsl:attribute>
+                <xsl:apply-templates select="eadheader/*" mode="header"/>
+            </div>
         </article>
     </xsl:template>
 
@@ -327,55 +335,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- ***** END FILEDESC ***** -->
 
     <!-- ***** CONTENTS ***** -->
-    <xsl:template match="dsc">
-        <section class="css-treeview">
-            <ul>
-                <xsl:apply-templates select="./c|./c01|./c02|./c03|./c04|./c05|./c06|./c07|./c08|./c09|./c10|./c11|./c12"/>
-            </ul>
-        </section>
-        <div id="bibinfos" class="well">
-            <xsl:attribute name="title">
-                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliographic informations')"/>
-            </xsl:attribute>
-            <xsl:apply-templates select="../../eadheader/*" mode="header"/>
-        </div>
-    </xsl:template>
-
-    <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
-        <xsl:variable name="id">
-            <xsl:choose>
-                <xsl:when test="@id">
-                    <xsl:value-of select="concat(//eadid, '_', @id)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="concat(//eadid, '_', generate-id(.))"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-
-        <li id="{$id}">
-            <xsl:choose>
-                <xsl:when test="count(child::c) &gt; 0">
-                    <input type="checkbox" id="item-{$id}">
-                        <xsl:if test="$expanded = 'true'">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                        </xsl:if>
-                    </input>
-                    <label for="item-{$id}"><xsl:apply-templates select="did"/></label>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:attribute name="class">standalone</xsl:attribute>
-                    <xsl:apply-templates select="did"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test="count(child::c) &gt; 0">
-                <ul>
-                    <xsl:apply-templates select="./c|./c01|./c02|./c03|./c04|./c05|./c06|./c07|./c08|./c09|./c10|./c11|./c12"/>
-                </ul>
-            </xsl:if>
-        </li>
-    </xsl:template>
-
     <xsl:template match="did">
         <xsl:if test="not(unittitle)">
             <h2 property="dc:title"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Untitled unit')"/></h2>
