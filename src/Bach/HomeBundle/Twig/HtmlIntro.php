@@ -170,6 +170,9 @@ class HtmlIntro extends \Twig_Extension
         $doclink_callback = function ($matches) use ($router, $request) {
             if ( strpos($matches[1], 'http://') === 0 ) {
                 return $matches[0];
+            } else if ( $matches[1] === 'cdc' ) {
+                $href = $router->generate('bach_classification');
+                return 'href="' . $href . '"';
             } else {
                 $href = $router->generate(
                     'bach_ead_html',
