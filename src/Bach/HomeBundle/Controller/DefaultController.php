@@ -706,8 +706,14 @@ class DefaultController extends SearchController
         if ( file_exists($path) ) {
             $html_contents = file_get_contents($path);
             $html_contents = str_replace(
-                'AACCSSJS3/',
-                'htmldoc/AACCSSJS3/',
+                array(
+                    'AACCSSJS3/',
+                    'SCRIPT_NAME="'
+                ),
+                array(
+                    'htmldoc/AACCSSJS3/',
+                    'SCRIPT_NAME="htmldoc/'
+                ),
                 $html_contents
             );
             return $this->render(
