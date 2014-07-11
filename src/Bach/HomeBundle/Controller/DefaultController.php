@@ -997,10 +997,31 @@ class DefaultController extends SearchController
                 $thumb_href . '"' . $matches[3] . '/></a>';
         };
 
-
         $html_contents = preg_replace_callback(
             '@<img(.*)src="(.[^"]+)"(.*)/>@',
             $callback,
+            $html_contents
+        );
+
+        $router = $this->get('router');
+        $lnk_callback = function ($matches) use ($router) {
+            $href = $router->generate(
+                'bach_htmldoc',
+                array(
+                    'docid' => $matches[2]
+                )
+            );
+            $a = '<a' . $matches[1] . 'href="' . $href .'"';
+            if ( isset($matches[4]) ) {
+                $a .= $matches[4];
+            }
+            $a .= '>';
+            return $a;
+        };
+
+        $html_contents = preg_replace_callback(
+            '@<a(.*)href="(.+)\.(htm|html)"(.[^>])?>@',
+            $lnk_callback,
             $html_contents
         );
 
