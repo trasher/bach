@@ -413,7 +413,7 @@ class DisplayDao extends \Twig_Extension
     ) {
         $str = self::proceedDao(
             $dao,
-            $title,
+            str_replace('"', '&quot;', $title),
             $viewer,
             $format,
             false,
