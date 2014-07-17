@@ -899,7 +899,14 @@ class SolariumQueryFactory
                 $i++;
             }
 
-            ksort($cloud, SORT_LOCALE_STRING);
+            if ( defined('SORT_FLAG_CASE') ) {
+                //TODO: find locale!
+                setlocale(LC_COLLATE, 'fr_FR.utf8');
+                ksort($cloud, SORT_LOCALE_STRING | SORT_FLAG_CASE);
+            } else {
+                //fallback for PHP < 5.4
+                ksort($cloud, SORT_LOCALE_STRING);
+            }
             return $cloud;
         }
     }

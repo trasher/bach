@@ -676,7 +676,31 @@ abstract class SearchController extends Controller
         $facetset = $searchResults->getFacetSet();
         $current_facet = $facetset->getFacet($name);
         $facet = $conf_facets[0];
-        $values = $current_facet->getValues();
+        $results = $current_facet->getValues();
+
+        if ( $name == 'headerId' ) {
+            //retrieve documents titles...
+            $query = $this->getDoctrine()->getManager()->createQuery(
+                'SELECT h.headerId, h.headerTitle ' .
+                'FROM BachIndexationBundle:EADHeader h INDEX BY h.headerId ' .
+                'WHERE h.headerId IN (:ids)'
+            )->setParameter('ids', array_keys($results));
+            $titles = $query->getArrayResult();
+        }
+
+        $values = array();
+        foreach ( $results as $key=>$count ) {
+            $value = array(
+                'key'   => $key,
+                'count' => $count
+            );
+
+            if ( isset($titles[$key]) ) {
+                $values[$titles[$key]['headerTitle']] = $value;
+            } else {
+                $values[$key] = $value;
+            }
+        }
 
         //facet order
         $facet_order = $request->get('facet_order');
@@ -685,6 +709,10 @@ abstract class SearchController extends Controller
         }
         if ( $facet_order == 1 ) {
             if ( defined('SORT_FLAG_CASE') ) {
+                //TODO: find a better way!
+                if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
+                    setlocale(LC_COLLATE, 'fr_FR.utf8');
+                }
                 ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
             } else {
                 //fallback for PHP < 5.4

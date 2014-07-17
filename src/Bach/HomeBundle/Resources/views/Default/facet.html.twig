@@ -55,9 +55,9 @@ POSSIBILITY OF SUCH DAMAGE.
     {% set index_name = facet.index_name %}
     {% set facet_content = facet.content %}
 
-    {% for facet,count in facet_content %}
+    {% for label,content in facet_content %}
         <li>
-            <a href="{{ path(search_uri, {form_name: search_form, query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
+            <a href="{{ path(search_uri, {form_name: search_form, query_terms: q, filter_field: index_name, filter_value: content.key}) }}">{{ label }} ({{ content.count }})</a>
         </li>
     {% endfor %}
     </ol>
