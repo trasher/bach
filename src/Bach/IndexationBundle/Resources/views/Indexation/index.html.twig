@@ -36,87 +36,69 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block container %}
 
     {# Validation results #}
-    {% if app.session.flashbag.has('documentvalidation') %}
-    <div id="flash-warnings" class="noscript">
-        <h3>{{ _('Validation results') }}</h3>
-        {% for flashMessage in app.session.flashbag.get('documentvalidation') %}
-        <div class="flash-message">
-            {{ flashMessage | raw }}
-        </div>
-        {% endfor %}
-        {% if app.session.flashbag.has('documentvalidation_errors') %}
-            <p><a href="#" id="toggleerrors">{{ _('Show/hide errors') }}</a></p>
-            <div class="flash-errors hidden">
-            {% for flashMessage in app.session.flashbag.get('documentvalidation_errors') %}
-                <p>{{ flashMessage | raw }}</p>
-            {% endfor %}
-            </div>
-        {% endif %}
-
-    </div>
-    {% endif %}
+    {% include 'BachIndexationBundle:Indexation:validation.html.twig' %}
 
     <form id="published_documents" class="list" action="{{ path("bach_indexation_deletedocuments") }}" method="POST">
-    <fieldset>
-        <legend>
-            {{ _('Published documents') }}
-            <span>
-                <a id="empty" href="{{ path("bach_indexation_empty") }}" class="btn btn-delete" title="{{ _('Remove all published documents') }}">{{ _('Remove all') }}</a>
-                <a href="{{ path('bach_indexation_homepage') }}" id="refresh" class="btn btn-refresh" title="{{ _('Refresh list') }}">{{ _('Refresh') }}</a>
-            </span>
-        </legend>
+    <ul>
+    {% for type in known_types %}
+        <li{% if current_type == type %} class="active"{% endif %}><a href="{% if current_type == type %}#type_{{ current_type }}{% else %}{{ path('bach_indexation_homepage', {type: type, 'page': 1}) }}{% endif %}">{{ type }}</a></li>
+    {% endfor %}
+    </ul>
+    <div id="type_{{ current_type }}">
+        {% include 'BachIndexationBundle:Indexation:published_documents.html.twig' with {'current_type': current_type, 'documents': documents, 'currentPage': currentPage, 'lastPage': lastPage} %}
+    </div>
 
-        {% if documents is defined and documents|length > 0 %}
-        <table>
-            <thead>
-                <th>#</th>
-                <th>{{ _('Identifier') }}</th>
-                <th>{{ _('Type') }}</th>
-                <th>{{ _('File') }}</th>
-                <th>{{ _('Creation') }}</th>
-                <th>{{ _('Modification') }}</th>
-                <th></th>
-            </thead>
-            <tfoot>
-                <tr>
-                    <td colspan="7">
-                        <button type="submit" id="delete_documents" class="btn btn-delete" title="{{ _('Remove selected documents') }}">{{ _('Remove selected') }}</button>
-                        {% include 'pagination.html.twig' with {
-                            currentFilters: { },
-                            currentPage: currentPage,
-                            paginationPath: 'bach_indexation_homepage',
-                            lastPage: lastPage
-                        } only %}
-                    </td>
-                </tr>
-            </tfoot>
-            <tbody>
-                {% for document in documents %}
-                <tr>
-                    <td>
-                        <input type="checkbox" name="documents[]" id="document_{{ document.getId }}" value="{{ document.getExtension }}::{{ document.getId }}"/>
-                        <label for="document_{{ document.getId }}">{{ document.getId }}</label>
-                    </td>
-                    <td>{{ document.getDocId }}</td>
-                    <td>{{ document.getExtension }}</td>
-                    <td>{{ document.getName }}</td>
-                    <td>{{ document.getCreated|date(_('Y-m-d h:i:s A')) }}</td>
-                    <td>{{ document.getUpdated|date(_('Y-m-d h:i:s A')) }}</td>
-                    <td>{% if document.getExtension == 'ead' %}<a href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}" title="{{ _('Validate against EAD DTD') }}"><img src="{{ asset('img/validate.png') }}" alt="{{ _('Validate against EAD DTD') }}"/></a>{% endif %}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-            <p>{{ _('No documents published yet.') }}</p>
-        {% endif %}
-    </fieldset>
+    <div id="allcores_actions">
+        <a id="empty" href="{{ path("bach_indexation_empty") }}" class="btn btn-delete" title="{{ _('Remove all published documents on all cores') }}">{{ _('Remove all') }}</a>
+        <a href="{{ path('bach_indexation_homepage') }}" id="refresh" class="btn btn-refresh" title="{{ _('Refresh all cores list') }}">{{ _('Refresh') }}</a>
+    </div>
     </form>
+{% endblock %}
+
+{% block js_calls %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery-ui/jquery.ui.tabs.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     $(document).ready(function(){
+        $('.btn-delete').tooltip();
+
+        $('#published_documents > ul a').each(function(){
+            var _this = $(this);
+            var _href = _this.attr('href') + '/ajax';
+            if ( !_href.match(/^#.*/) ) {
+                _this.attr('href', _href);
+            }
+        });
+
+        $('#published_documents').tabs({
+            active: $('#published_documents li.active').index(),
+            beforeLoad: function( event, ui ) {
+                if ( ui.tab.data( "loaded" ) ) {
+                    event.preventDefault();
+                    return;
+                }
+
+                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{{ _('Loading...') }}"/><br/>{{ _('Currently loading...') }}</p></figure>');
+                $('body').append(_img);
+
+                ui.jqXHR.done(function() {
+                    ui.tab.data( "loaded", true );
+
+                });
+                ui.jqXHR.fail(function(){
+                    alert('{{ _('An error occured loading tab :(')|escape('js') }}');
+                    $('#loading').remove();
+                });
+            },
+            load: function(event, ui){
+                $('#loading').remove();
+                $('.btn-delete').tooltip()
+            }
+        });
+
         $('#empty').click(function(){
             return confirm('{{ _('Do you really want to remove all published document?\n\nThis can not be undone!')|escape('js') }}');
         });

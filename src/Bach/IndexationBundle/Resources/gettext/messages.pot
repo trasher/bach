@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-18 11:50+0200\n"
+"POT-Creation-Date: 2014-07-18 15:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,39 +33,39 @@ msgstr ""
 msgid "Publish"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:334
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:344
 msgid "Document %doc successfully deleted from Solr in %time"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:342
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:352
 #, php-format
 msgid "Solr failed to remove document %doc!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:430
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:440
 msgid "%core core has been truncated in %time"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:438
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:447
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:448
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:457
 #, php-format
 msgid "Solr failed to empty %core core!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:473
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:483
 msgid "Could not validate non EAD documents (for now)."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:494
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:504
 #, php-format
 msgid "Corresponding file for %docid document no longer exists on disk."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:522
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:532
 msgid "Document %docid% is valid and DTD compliant!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:528
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:538
 msgid "%type% document %docid% is not valid!"
 msgstr ""
 
@@ -82,7 +82,7 @@ msgid "Remove finished"
 msgstr ""
 
 #: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:131
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:534
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:567
 msgid "Refresh"
 msgstr ""
 
@@ -103,7 +103,7 @@ msgid "No publication in queue"
 msgstr ""
 
 #: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:204
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:824
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:960
 msgid "Publication queue"
 msgstr ""
 
@@ -130,102 +130,113 @@ msgid ""
 "publication (used for bg files)."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:457
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:458
 msgid "Validation results"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:481
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:482
 msgid "Show/hide errors"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:517
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:814
-msgid "Published documents"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:557
+msgid "Remove all published documents on all cores"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:524
-msgid "Remove all published documents"
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:526
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:559
 msgid "Remove all"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:532
-msgid "Refresh list"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:565
+msgid "Refresh all cores list"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:548
-msgid "Identifier"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:618
+msgid "Loading..."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:552
-msgid "Type"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:620
+msgid "Currently loading..."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:556
-msgid "File"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:631
+msgid "An error occured loading tab :("
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:560
-msgid "Creation"
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:564
-msgid "Modification"
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:573
-msgid "Remove selected documents"
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:575
-msgid "Remove selected"
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:622
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:626
-msgid "Y-m-d h:i:s A"
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:634
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:638
-msgid "Validate against EAD DTD"
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:655
-msgid "No documents published yet."
-msgstr ""
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:676
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:645
 msgid ""
 "Do you really want to remove all published document?\n"
 "\n"
 "This can not be undone!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:687
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:656
 msgid "Please select at least one document."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:694
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:663
 msgid "Do you want to remove selected document?"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:699
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:668
 #, php-format
 msgid "Do you want to remove all %count selected documents?"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:803
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:775
+msgid "Published \"%type\" documents"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:790
+msgid "Remove selected documents"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:792
+msgid "Remove selected"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:798
+msgid "Identifier"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:802
+msgid "File"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:806
+msgid "Creation"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:810
+msgid "Modification"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:858
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:862
+msgid "Y-m-d h:i:s A"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:870
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:874
+msgid "Validate against EAD DTD"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:891
+msgid "No documents published yet."
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:939
 msgid "Manage publishing"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:835
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:950
+msgid "Published documents"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:971
 msgid "Publish new file"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:840
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:976
 msgid "Help"
 msgstr ""
 

@@ -1,0 +1,79 @@
+    <fieldset>
+        <legend>
+            {{ _('Published "%type" documents')|replace({'%type': current_type}) }}
+            <a id="empty_{{ current_type }}" href="{{ path("bach_indexation_empty", {type: current_type}) }}" class="btn btn-delete" title="{{ _('Remove all published documents for "%type"')|replace({'%type': current_type}) }}">{{ _('Remove all') }}</a>
+        </legend>
+
+        {% if documents is defined and documents|length > 0 %}
+        <table>
+            <thead>
+                <th>
+                    <button type="submit" id="delete_documents_{{ current_type }}" class="btn btn-delete" title="{{ _('Remove selected documents') }}">{{ _('Remove selected') }}</button>
+                    #
+                </th>
+                <th>{{ _('Identifier') }}</th>
+                <th>{{ _('File') }}</th>
+                <th>{{ _('Creation') }}</th>
+                <th>{{ _('Modification') }}</th>
+                <th></th>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="7">
+                        {% include 'pagination.html.twig' with {
+                            currentFilters: { type: current_type },
+                            currentPage: currentPage,
+                            paginationPath: 'bach_indexation_homepage',
+                            lastPage: lastPage
+                        } only %}
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for document in documents %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="documents[]" id="document_{{ document.getId }}" value="{{ document.getExtension }}::{{ document.getId }}"/>
+                        <label for="document_{{ document.getId }}">{{ document.getId }}</label>
+                    </td>
+                    <td>{{ document.getDocId }}</td>
+                    <td>{{ document.getName }}</td>
+                    <td>{{ document.getCreated|date(_('Y-m-d h:i:s A')) }}</td>
+                    <td>{{ document.getUpdated|date(_('Y-m-d h:i:s A')) }}</td>
+                    <td>{% if document.getExtension == 'ead' %}<a class="validate" href="{{ path('bach_eaddtd_validate', {docid: document.getDocId}) }}" title="{{ _('Validate against EAD DTD') }}"><img src="{{ asset('img/validate.png') }}" alt="{{ _('Validate against EAD DTD') }}"/></a>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>{{ _('No documents published yet.') }}</p>
+        {% endif %}
+    </fieldset>
+
+    <script stype="text/javascript">
+        $(document).ready(function(){
+            $('.validate').unbind('click').click(function(){
+
+                var _elt = $('<div id="validation_result" title="{{ _('Document validation')|escape('js') }}"></div>');
+                _elt.appendTo('body');
+
+                $.ajax({
+                    url: $(this).attr('href') + '/ajax',
+                    {% include '::loader.js.twig' with {'error_message': _('An error occured trying to validate document :(')} %}
+                    success: function(data) {
+                        _elt.append(data);
+                        _elt.dialog({
+                            height: 150,
+                            width: 500,
+                            modal: true,
+                            close: function(event, ui){
+                                _elt.remove();
+                            }
+                        });
+                    }
+                });
+
+                return false;
+            });
+        });
+    </script>

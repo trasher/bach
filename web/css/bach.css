@@ -1226,10 +1226,10 @@ form > footer {
     height: 24px;
     padding: .2em;
     border: none;
-    text-indent: 30px;
-    line-height: 24px;
+    text-indent: -5000px;
     overflow: hidden;
     padding: 0;
+    cursor: pointer;
 }
 
 .btn-delete {
@@ -1260,6 +1260,10 @@ legend > span {
     padding: .2em 0;
 }
 
+.list th:first-child {
+    text-align: left;
+}
+
 .list tbody tr:nth-child(even) {
     background-color: #d1c6c0;
 }
@@ -1274,6 +1278,12 @@ tr.task_error td {
 
 tr.task_warning td {
     background-color: #fcf8e3;
+}
+
+[id=allcores_actions] {
+    position: absolute;
+    top: .6em;
+    right: .6em;
 }
 
 /**
