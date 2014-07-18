@@ -212,7 +212,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </xsl:if>
     </xsl:template>
 
-    <xsl:template match="genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]|extent|physfacet|dimensions|langmaterial" mode="full">
+    <xsl:template match="genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir') and not(parent::controlaccess)]|extent|physfacet|dimensions|langmaterial" mode="full">
         <xsl:variable name="elt_name">
             <xsl:choose>
                 <xsl:when test="preceding-sibling::lb or following-sibling::lb">span</xsl:when>
@@ -252,41 +252,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <xsl:text> </xsl:text>
             <xsl:value-of select="."/>
         </xsl:element>
-    </xsl:template>
-
-    <xsl:key name="indexing" match="subject|geogname|persname|corpname|name|function" use="concat(generate-id(..), '_', local-name())"/>
-    <xsl:template name="show_descriptors">
-        <xsl:for-each select="*[generate-id() = generate-id(key('indexing', concat(generate-id(..), '_', local-name()))[1])]">
-            <xsl:sort select="local-name()" data-type="text"/>
-            <xsl:variable name="elt" select="local-name()"/>
-            <div>
-                <strong>
-                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', concat($elt, ':'))"/>
-                    <xsl:text> </xsl:text>
-                </strong>
-                <xsl:for-each select="../*[local-name() = $elt]">
-                    <!-- URL cannot ben generated from here. Let's build a specific value to be replaced -->
-                    <a link="{concat('%%%', $elt, '::', string(.), '%%%')}" about="{$docid}">
-                        <xsl:if test="not(local-name() = 'function')">
-                            <xsl:attribute name="property">
-                                <xsl:choose>
-                                    <xsl:when test="local-name() = 'subject'">dc:subject</xsl:when>
-                                    <xsl:when test="local-name() = 'geogname'">gn:name</xsl:when>
-                                    <xsl:otherwise>foaf:name</xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:attribute>
-                            <xsl:attribute name="content">
-                                <xsl:value-of select="."/>
-                            </xsl:attribute>
-                        </xsl:if>
-                        <xsl:value-of select="."/>
-                    </a>
-                    <xsl:if test="following-sibling::*[local-name() = $elt]">
-                        <xsl:text>, </xsl:text>
-                    </xsl:if>
-                </xsl:for-each>
-            </div>
-        </xsl:for-each>
     </xsl:template>
 
     <xsl:template match="title" mode="full">
@@ -390,7 +355,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 </xsl:if>
                 <xsl:apply-templates mode="full"/>
                 <xsl:if test="local-name() = 'controlaccess'">
-                    <xsl:call-template name="show_descriptors"/>
+                    <xsl:variable name="nodes" select="subject|geogname|persname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
+                    <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::showDescriptors', $nodes, $docid)"/>
                 </xsl:if>
             </section>
         </xsl:if>
@@ -649,7 +615,8 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="controlaccess" mode="resume">
-        <xsl:call-template name="show_descriptors"/>
+        <xsl:variable name="nodes" select="subject|geogname|persname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
+        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::showDescriptors', $nodes, $docid)"/>
     </xsl:template>
 
     <!-- Per default, display nothing -->
