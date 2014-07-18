@@ -173,6 +173,14 @@ class HtmlIntro extends \Twig_Extension
             } else if ( $matches[1] === 'cdc' ) {
                 $href = $router->generate('bach_classification');
                 return 'href="' . $href . '"';
+            } else if ( substr($matches[1], -strlen('.html')) === '.html' ) {
+                $href = $router->generate(
+                    'bach_htmldoc',
+                    array(
+                        'docid' => str_replace('.html', '', $matches[1])
+                    )
+                );
+                return 'href="' . str_replace('&', '&amp;', $href) . '"';
             } else {
                 $href = $router->generate(
                     'bach_ead_html',
