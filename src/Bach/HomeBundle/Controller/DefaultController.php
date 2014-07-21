@@ -821,8 +821,8 @@ class DefaultController extends SearchController
     protected function getOrders()
     {
         $orders = array(
-            _('Alphabetic'),
-            _('Document logic')
+            _('Inventory logic'),
+            _('Alphabetic')
         );
         return $orders;
     }
