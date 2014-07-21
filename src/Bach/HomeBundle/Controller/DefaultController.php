@@ -50,6 +50,7 @@ use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
 use Bach\HomeBundle\Entity\Filters;
+use Bach\HomeBundle\Entity\ViewParams;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -821,8 +822,8 @@ class DefaultController extends SearchController
     protected function getOrders()
     {
         $orders = array(
-            _('Inventory logic'),
-            _('Alphabetic')
+            ViewParams::ORDER_DOC_LOGIC => _('Inventory logic'),
+            ViewParams::ORDER_TITLE     => _('Alphabetic')
         );
         return $orders;
     }

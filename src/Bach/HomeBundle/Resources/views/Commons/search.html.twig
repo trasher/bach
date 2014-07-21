@@ -255,9 +255,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <label for="results_order">{{ _('Order:') }}</label>
                 <div class="select_container">
                     <select name="results_order" id="results_order">
-                        <option value="0"{% if results_order == 0 %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
-                        {% for order in available_orders %}
-                        <option value="{{ loop.index }}"{% if results_order == loop.index %} selected="selected"{% endif %}>{{ order }}</option>
+                        <option value="{{ constant('Bach\\HomeBundle\\Entity\\ViewParams::ORDER_RELEVANCE') }}"{% if results_order is constant('Bach\\HomeBundle\\Entity\\ViewParams::ORDER_RELEVANCE') %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
+                        {% for key,order in available_orders %}
+                        <option value="{{ key }}"{% if results_order == key %} selected="selected"{% endif %}>{{ order }}</option>
                         {% endfor %}
                     </select>
                 </div>
