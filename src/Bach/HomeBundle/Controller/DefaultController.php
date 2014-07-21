@@ -46,7 +46,7 @@ namespace Bach\HomeBundle\Controller;
 
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Bach\HomeBundle\Entity\SearchQueryFormType;
+use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
 use Bach\HomeBundle\Entity\Filters;

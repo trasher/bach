@@ -42,10 +42,9 @@
  * @link     http://anaphore.eu
  */
 
-namespace Bach\HomeBundle\Entity;
+namespace Bach\HomeBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**

@@ -49,7 +49,7 @@ use Bach\HomeBundle\Form\Type\MatriculesType;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\Facets;
-use Bach\HomeBundle\Entity\SearchQueryFormType;
+use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 
 /**
