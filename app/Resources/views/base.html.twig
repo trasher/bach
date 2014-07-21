@@ -224,8 +224,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 });
                 {{ block ('mobile_js_on') }}
             } else {
-                //tooltip on each a
-                $('a').tooltip();
+                //tooltip on each a and input search
+                $('a, input[type=text]').tooltip();
                 //unbind elements and remove class when resizing
                 $('#navigation > ul').removeClass('hidden');
                 $('#navigation').unbind('click');
