@@ -418,16 +418,23 @@ class DefaultController extends Controller
             $connection->executeUpdate(
                 $platform->getTruncateTableSQL('integration_task', true)
             );
-
-
-        } else {
-            //TODO: specific type removal
         }
 
         try {
             $connection->query('SET FOREIGN_KEY_CHECKS=1');
         } catch (\Exception $e) {
             //database does not support that. it is ok.
+        }
+
+        if ( $type !== 'all' ) {
+            //TODO: specific type removal
+            $connection->query(
+                str_replace(
+                    '%ext',
+                    $type,
+                    'DELETE FROM documents WHERE extension="%ext"'
+                )
+            );
         }
 
         //remove solr indexed documents
