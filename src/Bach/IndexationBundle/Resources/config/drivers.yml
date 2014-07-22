@@ -68,7 +68,7 @@ drivers:
                 root:
                     - did/unitid
                     - did/unittitle
-                    - did/unitdate
+                    - did/unitdate|did/unittitle/unitdate
                     - did/physdesc
                     - did/repository
                     - did/langmaterial
@@ -88,7 +88,7 @@ drivers:
                 c:
                     - did/unitid
                     - did/unittitle
-                    - did/unitdate
+                    - did/unitdate|did/unittitle/unitdate
                     - did/physdesc
                     - did/repository
                     - did/langmaterial
@@ -103,8 +103,6 @@ drivers:
                     - .//name
                     - .//persname
                     - .//subject
-                    - .//unitdate
-                    - .//date
                     - .//title
                     - .//function
                     - accessrestrict//legalstatus[1]

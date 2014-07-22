@@ -119,7 +119,7 @@ class EADDriverMapper implements DriverMapperInterface
         $archdesc_elements = array(
             'cUnitId'           => 'did/unitid',
             'cUnitTitle'        => 'did/unittitle',
-            'cUnitDate'         => 'did/unitdate',
+            'cDate'             => 'did/unitdate|did/unittitle/unitdate',
             'cScopeContent'     => 'scopecontent',
             'cControlacces'     => 'controlacces',
             'fragment'          => 'fragment'
@@ -196,8 +196,7 @@ class EADDriverMapper implements DriverMapperInterface
             'cName'        => './/name',
             'cPersname'    => './/persname',
             'cSubject'     => './/subject',
-            'cUnitDate'    => './/unitdate',
-            'cDate'        => './/date',
+            'cDate'        => 'did/unitdate|did/unittitle/unitdate',
             'fragment'     => 'fragment',
             'daolist'      => './/daoloc|.//dao|.//archref[not(contains(@href, \'http://\')) and contains(@href, \'.pdf\')]',
             'cTitle'       => './/title',

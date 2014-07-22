@@ -230,10 +230,6 @@ class EADFileFormat extends FileFormat
         'cName',
         'cPersname',
         'cSubject',
-        'cDate',
-        'cDateNormal',
-        'cDateBegin',
-        'cDateEnd',
         'subject_w_expanded',
         'parents_titles',
         'cTitle',
@@ -407,7 +403,7 @@ class EADFileFormat extends FileFormat
                     $this->onPropertyChanged($key, $this->$key, $value);
                     $this->$key = $value;
                 }
-            } elseif ($key === 'cUnitDate' || $key === 'cDate') {
+            } elseif ($key === 'cDate') {
                 $this->parseDates($value);
             } elseif ( $key == 'daolist' ) {
                 $this->parseDaos($value);

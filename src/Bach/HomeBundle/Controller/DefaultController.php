@@ -823,7 +823,8 @@ class DefaultController extends SearchController
     {
         $orders = array(
             ViewParams::ORDER_DOC_LOGIC => _('Inventory logic'),
-            ViewParams::ORDER_TITLE     => _('Alphabetic')
+            ViewParams::ORDER_CHRONO    => _('Chronological'),
+            ViewParams::ORDER_TITLE     => _('Alphabetical')
         );
         return $orders;
     }

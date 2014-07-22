@@ -174,9 +174,6 @@ class Fields
         case 'archDescRepository':
             return _('Document repository');
             break;
-        case 'archDescUnitDate':
-            return _('Document date');
-            break;
         case 'archDescUnitTitle':
             return _('Document title');
             break;

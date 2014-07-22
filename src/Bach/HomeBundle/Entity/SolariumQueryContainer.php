@@ -171,6 +171,9 @@ class SolariumQueryContainer
         case ViewParams::ORDER_DOC_LOGIC:
             return array('archDescUnitTitle', 'elt_order');
             break;
+        case ViewParams::ORDER_CHRONO:
+            return 'cDateBegin';
+            break;
         }
         return $this->_order;
     }
