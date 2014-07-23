@@ -72,11 +72,21 @@ class DocumentRepository extends EntityRepository
      */
     public function getPublishedDocuments($page = 1, $show = 30, $type='ead')
     {
-        $sql = 'SELECT d from BachIndexationBundle:Document d '.
-            'LEFT JOIN BachIndexationBundle:IntegrationTask t ' .
-            'WHERE (t.taskId IS NULL or t.status=1) ' .
-            'AND d.extension=:type ORDER BY d.extension, d.id';
-        $query = $this->getEntityManager()->createQuery($sql)
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('d')
+            ->from('BachIndexationBundle:Document', 'd')
+            ->leftJoin(
+                'BachIndexationBundle:IntegrationTask',
+                't',
+                \Doctrine\ORM\Query\Expr\Join::WITH,
+                't.document = d.id'
+            )
+            ->where('d.extension = :type')
+            ->andWhere('t.status=1 OR t.taskId IS NULL')
+            ->orderBy('d.id')
+            ->setParameter('type', $type);
+
+        $query = $qb->getQuery()
             ->setFirstResult(($page - 1) * $show)
             ->setMaxResults($show)
             ->setParameter('type', $type);
