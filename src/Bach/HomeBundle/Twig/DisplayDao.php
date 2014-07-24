@@ -457,7 +457,7 @@ class DisplayDao extends \Twig_Extension
         );
         switch ( self::_getType($dao) ) {
         case self::SERIES:
-            $ret = '<a href="' . $viewer . 'series/' . $dao . '">';
+            $ret = '<a href="' . $viewer . 'series/' . $dao . '" target="_blank">';
             $ret .= '<img src="' . $viewer . 'ajax/representative/' .
                 rtrim($dao, '/') .  '/format/' . $format  . '" alt="' . $dao . '"/>';
             if ( $daotitle !== null ) {
@@ -466,7 +466,7 @@ class DisplayDao extends \Twig_Extension
             $ret .= '</a>';
             break;
         case self::IMAGE:
-            $ret = '<a href="' . $viewer . 'viewer/' . $dao . '">';
+            $ret = '<a href="' . $viewer . 'viewer/' . $dao . '" target="_blank">';
             $ret .= '<img src="' . $viewer . 'ajax/img/' . $dao .
                 '/format/' . $format . '" alt="' . $dao .'"/>';
             if ( $daotitle !== null ) {
@@ -485,7 +485,8 @@ class DisplayDao extends \Twig_Extension
             $ret = '<div class="htmlplayer standalone">';
             $ret .= '<video controls="controls" width="300" height="300">';
             $ret .= '<source src="' . $href  . '"/>';
-            $ret .= '<a href="' . $href . '">' . _('Your browser does not support this video format, you may want to download file and watch it offline') . '</a>';
+            $ret .= '<a href="' . $href . '" target="_blank">' .
+                _('Your browser does not support this video format, you may want to download file and watch it offline') . '</a>';
             $ret .= '</video>';
             if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
@@ -504,7 +505,7 @@ class DisplayDao extends \Twig_Extension
             }
             $ret = '<div' . $class . ' id ="' .  self::_getRandomId() . '">';
             $ret .= '<a href="' . $href . '" title="' .
-                $title  . '">';
+                $title  . '" target="_blank">';
             if ( $standalone === true ) {
                 if ( $covers_dir !== null ) {
                     //check if a cover exists
@@ -561,7 +562,7 @@ class DisplayDao extends \Twig_Extension
             }
             $href = '/file/music/' . $dao;
             $ret .= '<a' . $class . ' href="' . $href . '" title="' .
-                $title  . '">';
+                $title  . '" target="_blank">';
             if ( $all === false ) {
                 if ( $covers_dir !== null ) {
                     //check if a cover exists
@@ -616,7 +617,8 @@ class DisplayDao extends \Twig_Extension
             );
 
             $href = '/file/misc/' . $dao;
-            $ret = '<a href="' . $href . '" title="' . $title  . '">';
+            $ret = '<a href="' . $href . '" title="' . $title  .
+                '" target="_blank">';
             if ( $covers_dir !== null ) {
                 //check if a cover exists
                 $name_wo_ext = str_replace(
@@ -661,7 +663,7 @@ class DisplayDao extends \Twig_Extension
                 _("Display '%name%'")
             );
 
-            $ret = '<a href="' . $dao . '" title="' . $title  . '">';
+            $ret = '<a href="' . $dao . '" title="' . $title  . '" target="_blank">';
             if ( $daotitle ) {
                 $ret .= $daotitle;
             } else {
