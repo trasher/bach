@@ -78,7 +78,7 @@ drivers:
                     - accruals
                     - arrangement
                     - accessrestrict
-                    - accessrestrict/legalstatus
+                    - accessrestrict//legalstatus[1]
                     - userestrict
                     - originalsloc
                     - relatedmaterial
@@ -107,4 +107,5 @@ drivers:
                     - .//date
                     - .//title
                     - .//function
+                    - accessrestrict//legalstatus[1]
 

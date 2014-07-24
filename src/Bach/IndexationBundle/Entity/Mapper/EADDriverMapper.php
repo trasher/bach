@@ -163,7 +163,8 @@ class EADDriverMapper implements DriverMapperInterface
             'cUnitid'       => 'did/unitid',
             'cUnittitle'    => 'did/unittitle',
             'cScopcontent'  => 'scopecontent',
-            'cControlacces' => 'controlacces'
+            'cControlacces' => 'controlacces',
+            'cLegalstatus'   => 'accessrestrict//legalstatus[1]'
         );
 
         if ( array_key_exists('parents', $data['c']) ) {

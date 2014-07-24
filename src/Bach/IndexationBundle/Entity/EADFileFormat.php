@@ -94,6 +94,11 @@ class EADFileFormat extends FileFormat
     protected $cControlacces;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $cLegalstatus;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $fragment;
