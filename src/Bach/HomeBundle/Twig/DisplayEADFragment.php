@@ -165,7 +165,7 @@ class DisplayEADFragment extends \Twig_Extension
                 array(
                     'query_terms'   => $request->get('query_terms'),
                     'filter_field'  => $filter_field,
-                    'filter_value'  => $matches[2],
+                    'filter_value'  => str_replace('|quot|', '"', $matches[2]),
                     'form_name'     => $form_name
                 )
             );
@@ -431,12 +431,12 @@ class DisplayEADFragment extends \Twig_Extension
             $count = 0;
             foreach ( $out['values'] as $value ) {
                 $count++;
-                $ret .= '<a link="%%%' . $elt . '::' . $value . '%%%"';
+                $ret .= '<a link="%%%' . $elt . '::' . str_replace('"', '|quot|', $value) . '%%%"';
                 $ret .= ' about="' . $docid . '"';
 
                 if ( isset($out['property']) ) {
                     $ret .= ' property="' . $out['property'] .
-                        '" content="' . $value . '"';
+                        '" content="' . htmlspecialchars($value) . '"';
                 }
                 $ret .= '>' . $value . '</a>';
 

@@ -226,7 +226,8 @@ class SolariumQueryFactory
                 foreach ( $value as $v ) {
                     $query .= '+(';
                     foreach ( $this->_geoloc as $field ) {
-                        $query .= ' ' . $field . ':"' . $v . '"';
+                        $query .= ' ' . $field . ':"' .
+                            str_replace('"', '\"', $v) . '"';
                     }
                     $query .= ')';
                 }
@@ -238,7 +239,9 @@ class SolariumQueryFactory
                 $i = 0;
                 foreach ( $value as $v ) {
                     $this->_query->createFilterQuery($name . $i)
-                        ->setQuery('+' . $name . ':"' . $v . '"');
+                        ->setQuery(
+                            '+' . $name . ':"' . str_replace('"', '\"', $v) . '"'
+                        );
                     $i++;
                 }
                 break;
