@@ -156,6 +156,18 @@ class DisplayHtml extends \Twig_Extension
             unset($xml_doc->archdesc->dsc);
             $html .= $proc->transformToXml($xml_doc);
 
+            $html = preg_replace(
+                array(
+                    '/%archdesc%/',
+                    '/%contents%/'
+                ),
+                array(
+                    $archdesc_html,
+                    $contents
+                ),
+                $html
+            );
+
             $router = $this->_router;
             $request = $this->_request;
             $callback = function ($matches) use ($router, $request) {
@@ -189,18 +201,6 @@ class DisplayHtml extends \Twig_Extension
             $html = preg_replace_callback(
                 '/link="%%%(.[^%]+)%%%"/',
                 $callback,
-                $html
-            );
-
-            $html = preg_replace(
-                array(
-                    '/%archdesc%/',
-                    '/%contents%/'
-                ),
-                array(
-                    $archdesc_html,
-                    $contents
-                ),
                 $html
             );
 
