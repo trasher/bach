@@ -178,12 +178,14 @@ class FileDriverManager
                     )
                 );
                 $archdesc->setEadheader($eadheader);
+                $archdesc->setDocument($doc);
             } else {
                 $archdesc->hydrate(
                     $mapper->translate(
                         $results['archdesc']
                     )
                 );
+                $archdesc->setDocument($doc);
             }
             $this->_entityManager->persist($archdesc);
 
