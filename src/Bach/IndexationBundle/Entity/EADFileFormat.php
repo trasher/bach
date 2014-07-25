@@ -260,7 +260,8 @@ class EADFileFormat extends FileFormat
         'previous_id',
         'previous_title',
         'next_id',
-        'next_title'
+        'next_title',
+        'cLegalstatus'
     );
 
     /**
