@@ -792,7 +792,7 @@ class DefaultController extends SearchController
                     str_replace(
                         '%docid',
                         $docid,
-                        _('Corresponding file for %docid document no longer exists on disk.')
+                        _('File for %docid document no longer exists on disk.')
                     )
                 );
             } else {
@@ -991,11 +991,21 @@ class DefaultController extends SearchController
 
         $callback = function ($matches) use ($viewer_uri) {
             $img_path = str_replace('../', '', $matches[2]);
-            $href = $viewer_uri . 'viewer/' . $img_path;
-            $thumb_href = $viewer_uri . 'ajax/img/' . $img_path . '/format/medium';
 
-            return '<a href="' . $href . '"><img' . $matches[1] . ' src="' .
-                $thumb_href . '"' . $matches[3] . '/></a>';
+            $href = $viewer_uri . 'viewer/' . $img_path;
+            $thumb_href = $viewer_uri . 'ajax/img/' . $img_path;
+
+            //handle series case
+            if ( strpos($img_path, 'series/') === 0 ) {
+                $href = $viewer_uri . $img_path;
+                $thumb_href = $viewer_uri . 'ajax/representative/' .
+                    str_replace('series/', '', $img_path);
+            }
+
+            $thumb_href .= '/format/medium';
+
+            return '<a href="' . $href . '" target="_blank"><img' . $matches[1] .
+                ' src="' . $thumb_href . '"' . $matches[3] . '/></a>';
         };
 
         $html_contents = preg_replace_callback(
