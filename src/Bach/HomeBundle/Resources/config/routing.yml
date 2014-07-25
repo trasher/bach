@@ -199,8 +199,8 @@ bach_display_matricules:
         _method: GET
 
 bach_ead_html:
-    pattern: /document/{docid}/{expanded}
-    defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }
+    pattern: /document/{docid}
+    defaults: { _controller: BachHomeBundle:Default:eadHtml }
     requirements:
         _method: GET
 

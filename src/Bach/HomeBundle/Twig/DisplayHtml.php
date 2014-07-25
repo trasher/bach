@@ -47,6 +47,7 @@ namespace Bach\HomeBundle\Twig;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
 Use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Twig extension to display an EAD document as HTML
@@ -64,16 +65,23 @@ class DisplayHtml extends \Twig_Extension
     private $_router;
     private $_request;
     private $_cote_location;
+    private $_prod;
 
     /**
      * Main constructor
      *
      * @param UrlGeneratorInterface $router   Router
+     * @param Kernel                $kernel   App kernel
      * @param string                $cote_loc Cote location
      */
-    public function __construct(Router $router, $cote_loc)
+    public function __construct(Router $router, Kernel $kernel, $cote_loc)
     {
         $this->_router = $router;
+        if ( $kernel->getEnvironment() !== 'dev' ) {
+            $this->_prod = true;
+        } else {
+            $this->_prod = false;
+        }
         $this->_cote_location = $cote_loc;
     }
 
@@ -97,41 +105,45 @@ class DisplayHtml extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'displayHtml' => new \Twig_Function_Method($this, 'display')
+            'displayHtml'       => new \Twig_Function_Method($this, 'display'),
+            'displayHtmlScheme' => new \Twig_Function_Method($this, 'scheme')
         );
     }
 
     /**
      * Displays an EAD document as HTML with XSLT
      *
-     * @param string  $docid    Document id
-     * @param string  $xml_file Document
-     * @param boolean $expanded Expand tree on load
+     * @param string $docid    Document id
+     * @param string $xml_file Document
      *
      * @return string
      */
-    public function display($docid, $xml_file, $expanded)
+    public function display($docid, $xml_file)
     {
-        $cache = new \Doctrine\Common\Cache\ApcCache();
         $cached_doc = null;
-        $cached_doc_date = $cache->fetch('html_date_' . $docid);
+        //do not use cache when not in prod
+        if ( $this->_prod === true ) {
+            $cache = new \Doctrine\Common\Cache\ApcCache();
+            $cached_doc = null;
+            $cached_doc_date = $cache->fetch('html_date_' . $docid);
 
-        $redo = true;
-        if ( $cached_doc_date ) {
-            //check if document is newer than cache
-            $f = new File($xml_file);
+            $redo = true;
+            if ( $cached_doc_date ) {
+                //check if document is newer than cache
+                $f = new File($xml_file);
 
-            $change_date = new \DateTime();
-            $last_file_change = $f->getMTime();
-            $change_date->setTimestamp($last_file_change);
+                $change_date = new \DateTime();
+                $last_file_change = $f->getMTime();
+                $change_date->setTimestamp($last_file_change);
 
-            if ( $cached_doc_date > $change_date ) {
-                $redo = false;
+                if ( $cached_doc_date > $change_date ) {
+                    $redo = false;
+                }
             }
-        }
 
-        if ( !$redo ) {
-            $cached_doc = $cache->fetch('html_' . $docid);
+            if ( !$redo ) {
+                $cached_doc = $cache->fetch('html_' . $docid);
+            }
         }
 
         if ( !$cached_doc ) {
@@ -140,7 +152,7 @@ class DisplayHtml extends \Twig_Extension
             $xml_doc = simplexml_load_file($xml_file);
 
             $archdesc_html = $this->_renderArchdesc($xml_doc, $docid);
-            $contents = $this->_renderContents($xml_doc, $docid, $expanded);
+            $contents = $this->_renderContents($xml_doc, $docid);
 
             $proc = new \XsltProcessor();
             $proc->importStylesheet(
@@ -148,9 +160,6 @@ class DisplayHtml extends \Twig_Extension
             );
 
             $proc->setParameter('', 'docid', $docid);
-            if ( $expanded === true ) {
-                $proc->setParameter('', 'expanded', 'true');
-            }
             $proc->registerPHPFunctions();
 
             unset($xml_doc->archdesc->dsc);
@@ -204,8 +213,10 @@ class DisplayHtml extends \Twig_Extension
                 $html
             );
 
-            $cache->save('html_' . $docid, $html);
-            $cache->save('html_date_' . $docid, new \DateTime());
+            if ( $this->_prod === true ) {
+                $cache->save('html_' . $docid, $html);
+                $cache->save('html_date_' . $docid, new \DateTime());
+            }
         } else {
             $html = $cached_doc;
         }
@@ -248,13 +259,12 @@ class DisplayHtml extends \Twig_Extension
     /**
      * Render contents
      *
-     * @param simple_xml $xml_doc  XML document
-     * @param string     $docid    Document id
-     * @param boolean    $expanded Expand nodes by default
+     * @param simple_xml $xml_doc XML document
+     * @param string     $docid   Document id
      *
      * @return string
      */
-    private function _renderContents($xml_doc, $docid, $expanded)
+    private function _renderContents($xml_doc, $docid)
     {
         $proc = new \XsltProcessor();
         $proc->importStylesheet(
@@ -262,9 +272,37 @@ class DisplayHtml extends \Twig_Extension
         );
 
         $proc->setParameter('', 'docid', $docid);
-        if ( $expanded === true ) {
-            $proc->setParameter('', 'expanded', 'true');
+        $proc->registerPHPFunctions();
+
+        $up_nodes = $xml_doc->xpath('/ead/archdesc/dsc/c');
+
+        $contents = '';
+        foreach ( $up_nodes as $up_node ) {
+            $contents .= $proc->transformToXml(
+                simplexml_load_string($up_node->asXML())
+            );
         }
+        return $contents;
+    }
+
+    /**
+     * Displays an EAD document scheme as HTML with XSLT
+     *
+     * @param string $docid    Document id
+     * @param string $xml_file Document
+     *
+     * @return string
+     */
+    public function scheme($docid, $xml_file)
+    {
+        $xml_doc = simplexml_load_file($xml_file);
+
+        $proc = new \XsltProcessor();
+        $proc->importStylesheet(
+            simplexml_load_file(__DIR__ . '/display_html_scheme.xsl')
+        );
+
+        $proc->setParameter('', 'docid', $docid);
         $proc->registerPHPFunctions();
 
         $up_nodes = $xml_doc->xpath('/ead/archdesc/dsc/c');

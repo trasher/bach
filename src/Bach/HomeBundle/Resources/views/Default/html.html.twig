@@ -82,6 +82,21 @@ POSSIBILITY OF SUCH DAMAGE.
         });
     });
 
+
+    $('#inventory_scheme, .accordion').accordion({
+        icons: {
+            header: 'ui-icon-circle-plus',
+            activeHeader: 'ui-icon-circle-minus'
+        },
+        heightStyle: 'content',
+        collapsible: true,
+        active: false
+    });
+
+    $('#inventory_scheme .ui-accordion-header a').on('click', function(){
+        window.location.href = $(this).attr('href');
+    });
+
     {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
 {% endblock %}
 
@@ -135,7 +150,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block container %}
-    {{ displayHtml(docid, xml_file, expanded)|raw }}
+    {{ displayHtml(docid, xml_file)|raw }}
 {% endblock %}
 
 {% block menu %}
@@ -149,5 +164,9 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </form>
     <p>{{ _('Search against current document') }}</p>
+    <h2>{{ _('Inventory scheme') }}</h2>
+    <div id="inventory_scheme">
+        {{ displayHtmlScheme(docid, xml_file)|raw }}
+    </div>
 {% endblock %}
 

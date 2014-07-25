@@ -881,6 +881,38 @@ h2.back a:hover {
     background-image: url(../img/next.png);
 }
 
+[id=inventory_scheme] h3 a {
+    color: white!important;
+}
+
+[id=inventory_scheme] .ui-accordion-content h3 a {
+    color: #968c82!important;
+}
+[id=inventory_scheme] .ui-accordion-content h3 a:hover {
+    color: white!important;
+}
+[id=inventory_scheme] div.ui-accordion-content {
+    padding-left: 0;
+}
+
+[id=inventory_scheme] div.ui-accordion-content li {
+    padding-left: 2.7em;
+}
+
+[id=inventory_scheme] div.ui-accordion-content li.accordion {
+    padding-left: 1.3em;
+}
+
+[id=inventory_scheme] div.ui-accordion-content li.accordion h3 {
+    font-size: 100%;
+    font-weight: normal;
+    font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;
+}
+
+[id=inventory_scheme] .standalone .ui-icon {
+    display: none;
+}
+
 /**
  * ===== Matricule record view =====
  */

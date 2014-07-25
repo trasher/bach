@@ -46,17 +46,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
     <xsl:param name="docid" select="''"/>
-    <xsl:param name="expanded" select="'false'"/>
 
     <!-- ***** CONTENTS ***** -->
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
         <xsl:variable name="id">
             <xsl:choose>
                 <xsl:when test="@id">
-                    <xsl:value-of select="concat(//eadid, '_', @id)"/>
+                    <xsl:value-of select="@id"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="concat(//eadid, '_', generate-id(.))"/>
+                    <xsl:value-of select="generate-id(.)"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -64,11 +63,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <li id="{$id}">
             <xsl:choose>
                 <xsl:when test="count(child::c) &gt; 0">
-                    <input type="checkbox" id="item-{$id}">
-                        <xsl:if test="$expanded = 'true'">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                        </xsl:if>
-                    </input>
+                    <input type="checkbox" id="item-{$id}" checked="checked" />
                     <label for="item-{$id}"><xsl:apply-templates select="did"/></label>
                 </xsl:when>
                 <xsl:otherwise>

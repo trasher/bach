@@ -754,12 +754,11 @@ class DefaultController extends SearchController
     /**
      * Displays an EAD document as HTML
      *
-     * @param string  $docid    Document id
-     * @param boolean $expanded Expand tree on load
+     * @param string $docid Document id
      *
      * @return void
      */
-    public function eadHtmlAction($docid, $expanded = false)
+    public function eadHtmlAction($docid)
     {
         $tpl_vars = $this->commonTemplateVariables();
 
@@ -798,7 +797,6 @@ class DefaultController extends SearchController
             } else {
                 $tpl_vars['docid'] = $docid;
                 $tpl_vars['xml_file'] = $xml_file;
-                $tpl_vars['expanded'] = ($expanded !== false);
 
                 $form = $this->createForm(
                     new SearchQueryFormType(),
