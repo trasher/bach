@@ -1418,6 +1418,11 @@ div.sonata-bc .btn-primary:hover {
     background-color: #e6e6e6;
 }
 
+.sonata-link-identifier > span {
+    font-size: .9em;
+    font-weight: normal;
+}
+
 /**
  * ===== Sonata sortable =====
  */
