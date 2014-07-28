@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-28 12:19+0200\n"
-"PO-Revision-Date: 2014-07-28 12:19+0100\n"
+"POT-Creation-Date: 2014-07-28 16:34+0200\n"
+"PO-Revision-Date: 2014-07-28 16:34+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: en_US\n"
@@ -296,11 +296,7 @@ msgstr "An error occured loading terms :("
 msgid "View document %doc"
 msgstr "View document %doc"
 
-#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:1152
-msgid "Display/Hide document informations"
-msgstr "Display/Hide document informations"
-
-#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:1164
+#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:1160
 msgid "Show bibliographic informations"
 msgstr "Show bibliographic informations"
 
@@ -770,6 +766,7 @@ msgid "Publication informations"
 msgstr "Publication informations"
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:235
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:405
 msgid "Physical description"
 msgstr "Physical description"
 
@@ -970,6 +967,43 @@ msgstr "Note statement"
 msgid "Revision description"
 msgstr "Revision description"
 
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:390
+msgid "Title"
+msgstr "Title"
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:393
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:202
+msgid "Date"
+msgstr "Date"
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:396
+msgid "Class number"
+msgstr "Class number"
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:399
+msgid "Presentation"
+msgstr "Presentation"
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:402
+msgid "Contents"
+msgstr "Contents"
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:408
+msgid "Extent"
+msgstr "Extent"
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:411
+msgid "Custodial history"
+msgstr "Custodial history"
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:414
+msgid "Acquisition information"
+msgstr "Acquisition information"
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:417
+msgid "Legal status"
+msgstr "Legal status"
+
 #: src/Bach/HomeBundle/Admin/GeolocAdmin.php:104
 msgid "Bounding box"
 msgstr "Bounding box"
@@ -1056,10 +1090,6 @@ msgstr "From"
 msgid "State"
 msgstr "State"
 
-#: src/Bach/HomeBundle/Admin/CommentAdmin.php:202
-msgid "Date"
-msgstr "Date"
-
 #: src/Bach/HomeBundle/Admin/CommentAdmin.php:225
 msgid "Publish comments"
 msgstr "Publish comments"
@@ -1123,6 +1153,9 @@ msgstr "Yes"
 #: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:340
 msgid "No"
 msgstr "No"
+
+#~ msgid "Display/Hide document informations"
+#~ msgstr "Display/Hide document informations"
 
 #~ msgid "View in edited document"
 #~ msgstr "View in edited document"

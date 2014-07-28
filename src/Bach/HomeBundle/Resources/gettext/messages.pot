@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-28 12:19+0200\n"
+"POT-Creation-Date: 2014-07-28 16:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -294,11 +294,7 @@ msgstr ""
 msgid "View document %doc"
 msgstr ""
 
-#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:1152
-msgid "Display/Hide document informations"
-msgstr ""
-
-#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:1164
+#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:1160
 msgid "Show bibliographic informations"
 msgstr ""
 
@@ -766,6 +762,7 @@ msgid "Publication informations"
 msgstr ""
 
 #: src/Bach/HomeBundle/Twig/DisplayEADFragment.php:235
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:405
 msgid "Physical description"
 msgstr ""
 
@@ -966,6 +963,43 @@ msgstr ""
 msgid "Revision description"
 msgstr ""
 
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:390
+msgid "Title"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:393
+#: src/Bach/HomeBundle/Admin/CommentAdmin.php:202
+msgid "Date"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:396
+msgid "Class number"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:399
+msgid "Presentation"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:402
+msgid "Contents"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:408
+msgid "Extent"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:411
+msgid "Custodial history"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:414
+msgid "Acquisition information"
+msgstr ""
+
+#: src/Bach/HomeBundle/Twig/DisplayHtml.php:417
+msgid "Legal status"
+msgstr ""
+
 #: src/Bach/HomeBundle/Admin/GeolocAdmin.php:104
 msgid "Bounding box"
 msgstr ""
@@ -1050,10 +1084,6 @@ msgstr ""
 #: src/Bach/HomeBundle/Admin/CommentAdmin.php:150
 #: src/Bach/HomeBundle/Admin/CommentAdmin.php:209
 msgid "State"
-msgstr ""
-
-#: src/Bach/HomeBundle/Admin/CommentAdmin.php:202
-msgid "Date"
 msgstr ""
 
 #: src/Bach/HomeBundle/Admin/CommentAdmin.php:225
