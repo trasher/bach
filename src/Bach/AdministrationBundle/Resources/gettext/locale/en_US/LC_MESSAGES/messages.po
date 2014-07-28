@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/AdministrationBundle@20131025144736\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-18 11:59+0200\n"
-"PO-Revision-Date: 2014-06-18 11:59+0100\n"
+"POT-Creation-Date: 2014-07-28 09:25+0200\n"
+"PO-Revision-Date: 2014-07-28 09:26+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_US\n"
@@ -17,156 +17,76 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: src/Bach/AdministrationBundle/Controller/CoreAdminController.php:151
+#: src/Bach/AdministrationBundle/Controller/CoreAdminController.php:137
 #: src/Bach/AdministrationBundle/Command/CreatecoreCommand.php:129
 msgid "Unkwown type %type"
 msgstr "Unkwown type %type"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:43
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1681
-msgid "Copy fields"
-msgstr "Copy fields"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:48
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:182
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1220
-msgid "Select all"
-msgstr "Select all"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:52
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:186
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1224
-msgid "Unselect all"
-msgstr "Unselect all"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:56
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:190
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1228
-msgid "Add"
-msgstr "Add"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:60
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:194
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1232
-msgid "Delete"
-msgstr "Delete"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:76
-msgid "Source:"
-msgstr "Source:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:82
-msgid "Destination:"
-msgstr "Destination:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:88
-msgid "Max Chars:"
-msgstr "Max Chars:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:105
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:279
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1008
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1152
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1296
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1370
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1862
-msgid "Validate"
-msgstr "Validate"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:169
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1668
-msgid "Dynamic fields"
-msgstr "Dynamic fields"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:213
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:677
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1089
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1247
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:202
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:251
-msgid "Name"
-msgstr "Name"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:219
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:669
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1095
-msgid "Type"
-msgstr "Type"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:225
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1101
-msgid "Default"
-msgstr "Default"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:234
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1110
-msgid "Indexed"
-msgstr "Indexed"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:249
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1121
-msgid "Stored"
-msgstr "Stored"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:256
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1128
-msgid "Multivalued"
-msgstr "Multivalued"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:263
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1135
-msgid "Required"
-msgstr "Required"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:350
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:49
 msgid "Solr server informations"
 msgstr "Solr server informations"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:355
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:54
 msgid "Solr version:"
 msgstr "Solr version:"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:361
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:60
 msgid "JVM:"
 msgstr "JVM:"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:367
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:66
 msgid "System:"
 msgstr "System:"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:373
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:72
 msgid "Load average:"
 msgstr "Load average:"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:381
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:80
 msgid "System memory"
 msgstr "System memory"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:388
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:87
 msgid "Swap"
 msgstr "Swap"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:395
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:94
 msgid "JVM memory"
 msgstr "JVM memory"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:403
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:102
 msgid "Active Solr cores"
 msgstr "Active Solr cores"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:441
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:131
+msgid "Add new core"
+msgstr "Add new core"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:149
 msgid "Documents count:"
 msgstr "Documents count:"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:447
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:155
 msgid "Index size (Kb)"
 msgstr "Index size (Kb)"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:468
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:161
+msgid "Up since:"
+msgstr "Up since:"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:169
+msgid "Core directory:"
+msgstr "Core directory:"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:175
+msgid "Data directory:"
+msgstr "Data directory:"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:197
 msgid "Temporary Solr cores"
 msgstr "Temporary Solr cores"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:472
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:201
 msgid ""
 "Above list should be a list of temporary created Solr cores, that has not "
 "been copied because of a lack of permissions. A warning message should have "
@@ -176,164 +96,35 @@ msgstr ""
 "been copied because of a lack of permissions. A warning message should have "
 "been displayed at core creation about this issue."
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:663
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:271
+msgid "Loading..."
+msgstr "Loading..."
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:273
+msgid "Currently loading..."
+msgstr "Currently loading..."
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:283
+msgid "An error occured loading tab :("
+msgstr "An error occured loading tab :("
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:431
 msgid "Add a new Solr core"
 msgstr "Add a new Solr core"
 
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:694
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:437
+msgid "Type"
+msgstr "Type"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:447
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:199
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:248
+msgid "Name"
+msgstr "Name"
+
+#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:461
 msgid "Create core"
 msgstr "Create core"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:754
-msgid "Core"
-msgstr "Core"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:758
-msgid "Reload"
-msgstr "Reload"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:762
-msgid "Remove"
-msgstr "Remove"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:768
-msgid "Up since:"
-msgstr "Up since:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:774
-msgid "Core directory:"
-msgstr "Core directory:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:780
-msgid "Data directory:"
-msgstr "Data directory:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:789
-msgid "Index"
-msgstr "Index"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:794
-msgid "Indexed documents:"
-msgstr "Indexed documents:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:911
-msgid "Cache"
-msgstr "Cache"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:918
-msgid "Query result windows size:"
-msgstr "Query result windows size:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:928
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:938
-msgid "Document cache size:"
-msgstr "Document cache size:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:948
-msgid "Document cache initial size:"
-msgstr "Document cache initial size:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:959
-msgid "Query result max docs cached:"
-msgstr "Query result max docs cached:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:969
-msgid "Query result cache size:"
-msgstr "Query result cache size:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:979
-msgid "Query result initial cache size:"
-msgstr "Query result initial cache size:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:989
-msgid "Query result class size:"
-msgstr "Query result class size:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:999
-msgid "Query result Autowarm count:"
-msgstr "Query result Autowarm count:"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1076
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1655
-msgid "Fields"
-msgstr "Fields"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1215
-msgid "Fields types"
-msgstr "Fields types"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1253
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1846
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:269
-msgid "Class"
-msgstr "Class"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1259
-msgid "Increment Gap"
-msgstr "Increment Gap"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1269
-msgid "Sort Missing Last"
-msgstr "Sort Missing Last"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1275
-msgid "Sort Missing First"
-msgstr "Sort Missing First"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1281
-msgid "Autogenerate phrase queries"
-msgstr "Autogenerate phrase queries"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1359
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1720
-msgid "Unique key"
-msgstr "Unique key"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1578
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1727
-msgid "Administration"
-msgstr "Administration"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1591
-msgid "Dashboard"
-msgstr "Dashboard"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1602
-msgid "Select a core"
-msgstr "Select a core"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1633
-msgid "Add new core"
-msgstr "Add new core"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1642
-msgid "Schema"
-msgstr "Schema"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1694
-msgid "Fields type"
-msgstr "Fields type"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1707
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1827
-msgid "Analyzers"
-msgstr "Analyzers"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1740
-msgid "Core admin"
-msgstr "Core admin"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1747
-msgid "Performance"
-msgstr "Performance"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1760
-msgid "Performance admin"
-msgstr "Performance admin"
-
-#: src/Bach/AdministrationBundle/Resources/gettext/twig.cache.php:1840
-msgid "Field type name"
-msgstr "Field type name"
 
 #: src/Bach/AdministrationBundle/Command/CreatecoreCommand.php:84
 msgid "Core name"
@@ -347,10 +138,6 @@ msgstr "Core type"
 #, php-format
 msgid "Core %corename has been created and loaded :)"
 msgstr "Core %corename has been created and loaded :)"
-
-#: src/Bach/AdministrationBundle/Entity/Helpers/FormBuilders/AnalyzerForm.php:92
-msgid "(none)"
-msgstr "(none)"
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/SolrCoreAdmin.php:176
 #, php-format
@@ -391,124 +178,272 @@ msgid "Document repository"
 msgstr "Document repository"
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:178
-msgid "Document date"
-msgstr "Document date"
-
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:181
 msgid "Document title"
 msgstr "Document title"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:184
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:181
 msgid "Corporate name"
 msgstr "Corporate name"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:187
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:184
 msgid "Function"
 msgstr "Function"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:190
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:187
 msgid "Genre"
 msgstr "Genre"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:193
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:190
 msgid "Geographic name"
 msgstr "Geographic name"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:196
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:193
 msgid "Personal name"
 msgstr "Personal name"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:199
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:196
 msgid "Family name"
 msgstr "Family name"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:205
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:202
 msgid "Subject"
 msgstr "Subject"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:208
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:205
 msgid "Unit ID"
 msgstr "Unit ID"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:211
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:208
 msgid "Unit title"
 msgstr "Unit title"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:214
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:211
 msgid "Title"
 msgstr "Title"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:217
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:214
 msgid "Descriptors"
 msgstr "Descriptors"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:220
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:217
 msgid "File title"
 msgstr "File title"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:223
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:220
 msgid "File description author"
 msgstr "File description author"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:226
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:223
 msgid "Document identifier"
 msgstr "Document identifier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:229
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:226
 msgid "File document publisher"
 msgstr "File document publisher"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:232
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:229
 msgid "File document language"
 msgstr "File document language"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:235
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:232
 msgid "Digital substitute"
 msgstr "Digital substitute"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:238
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:235
 msgid "Dates periods"
 msgstr "Dates periods"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:241
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:238
 msgid "Archival description identifier"
 msgstr "Archival description identifier"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:244
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:241
 msgid "Archival description access restriction"
 msgstr "Archival description access restriction"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:248
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:245
 msgid "Cote"
 msgstr "Cote"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:254
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:251
 msgid "Place of recording"
 msgstr "Place of recording"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:257
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:254
 msgid "Place of birth"
 msgstr "Place of birth"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:260
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:257
 msgid "Surnames"
 msgstr "Surnames"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:263
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:260
 msgid "Matricule"
 msgstr "Matricule"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:266
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:263
 msgid "Year of recording"
 msgstr "Year of recording"
 
-#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:272
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:266
+msgid "Class"
+msgstr "Class"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:269
 msgid "Year of birth"
 msgstr "Year of birth"
+
+#: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:272
+msgid "Legal status"
+msgstr "Legal status"
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:301
 msgid "without specific"
 msgstr "without specific"
+
+#~ msgid "Copy fields"
+#~ msgstr "Copy fields"
+
+#~ msgid "Select all"
+#~ msgstr "Select all"
+
+#~ msgid "Unselect all"
+#~ msgstr "Unselect all"
+
+#~ msgid "Add"
+#~ msgstr "Add"
+
+#~ msgid "Delete"
+#~ msgstr "Delete"
+
+#~ msgid "Source:"
+#~ msgstr "Source:"
+
+#~ msgid "Destination:"
+#~ msgstr "Destination:"
+
+#~ msgid "Max Chars:"
+#~ msgstr "Max Chars:"
+
+#~ msgid "Validate"
+#~ msgstr "Validate"
+
+#~ msgid "Dynamic fields"
+#~ msgstr "Dynamic fields"
+
+#~ msgid "Default"
+#~ msgstr "Default"
+
+#~ msgid "Indexed"
+#~ msgstr "Indexed"
+
+#~ msgid "Stored"
+#~ msgstr "Stored"
+
+#~ msgid "Multivalued"
+#~ msgstr "Multivalued"
+
+#~ msgid "Required"
+#~ msgstr "Required"
+
+#~ msgid "Core"
+#~ msgstr "Core"
+
+#~ msgid "Reload"
+#~ msgstr "Reload"
+
+#~ msgid "Remove"
+#~ msgstr "Remove"
+
+#~ msgid "Index"
+#~ msgstr "Index"
+
+#~ msgid "Indexed documents:"
+#~ msgstr "Indexed documents:"
+
+#~ msgid "Cache"
+#~ msgstr "Cache"
+
+#~ msgid "Query result windows size:"
+#~ msgstr "Query result windows size:"
+
+#~ msgid "Document cache size:"
+#~ msgstr "Document cache size:"
+
+#~ msgid "Document cache initial size:"
+#~ msgstr "Document cache initial size:"
+
+#~ msgid "Query result max docs cached:"
+#~ msgstr "Query result max docs cached:"
+
+#~ msgid "Query result cache size:"
+#~ msgstr "Query result cache size:"
+
+#~ msgid "Query result initial cache size:"
+#~ msgstr "Query result initial cache size:"
+
+#~ msgid "Query result class size:"
+#~ msgstr "Query result class size:"
+
+#~ msgid "Query result Autowarm count:"
+#~ msgstr "Query result Autowarm count:"
+
+#~ msgid "Fields"
+#~ msgstr "Fields"
+
+#~ msgid "Fields types"
+#~ msgstr "Fields types"
+
+#~ msgid "Increment Gap"
+#~ msgstr "Increment Gap"
+
+#~ msgid "Sort Missing Last"
+#~ msgstr "Sort Missing Last"
+
+#~ msgid "Sort Missing First"
+#~ msgstr "Sort Missing First"
+
+#~ msgid "Autogenerate phrase queries"
+#~ msgstr "Autogenerate phrase queries"
+
+#~ msgid "Unique key"
+#~ msgstr "Unique key"
+
+#~ msgid "Administration"
+#~ msgstr "Administration"
+
+#~ msgid "Dashboard"
+#~ msgstr "Dashboard"
+
+#~ msgid "Select a core"
+#~ msgstr "Select a core"
+
+#~ msgid "Schema"
+#~ msgstr "Schema"
+
+#~ msgid "Fields type"
+#~ msgstr "Fields type"
+
+#~ msgid "Analyzers"
+#~ msgstr "Analyzers"
+
+#~ msgid "Core admin"
+#~ msgstr "Core admin"
+
+#~ msgid "Performance"
+#~ msgstr "Performance"
+
+#~ msgid "Performance admin"
+#~ msgstr "Performance admin"
+
+#~ msgid "Field type name"
+#~ msgstr "Field type name"
+
+#~ msgid "(none)"
+#~ msgstr "(none)"
+
+#~ msgid "Document date"
+#~ msgstr "Document date"
 
 #~ msgid "Dynamic Fields"
 #~ msgstr "Dynamic Fields"

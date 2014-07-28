@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-21 12:45+0200\n"
-"PO-Revision-Date: 2014-07-21 12:46+0100\n"
+"POT-Creation-Date: 2014-07-28 09:22+0200\n"
+"PO-Revision-Date: 2014-07-28 09:23+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: en_US\n"
@@ -109,12 +109,12 @@ msgid "Send your comment"
 msgstr "Send your comment"
 
 #: src/Bach/HomeBundle/Controller/MatriculesController.php:329
-#: src/Bach/HomeBundle/Controller/DefaultController.php:574
+#: src/Bach/HomeBundle/Controller/DefaultController.php:575
 msgid "%count% results found, 1 expected."
 msgstr "%count% results found, 1 expected."
 
 #: src/Bach/HomeBundle/Controller/MatriculesController.php:464
-#: src/Bach/HomeBundle/Controller/DefaultController.php:839
+#: src/Bach/HomeBundle/Controller/DefaultController.php:841
 msgid "List"
 msgstr "List"
 
@@ -123,12 +123,12 @@ msgid "View search results as a list"
 msgstr "View search results as a list"
 
 #: src/Bach/HomeBundle/Controller/MatriculesController.php:468
-#: src/Bach/HomeBundle/Controller/DefaultController.php:847
+#: src/Bach/HomeBundle/Controller/DefaultController.php:849
 msgid "Thumbnails"
 msgstr "Thumbnails"
 
 #: src/Bach/HomeBundle/Controller/MatriculesController.php:469
-#: src/Bach/HomeBundle/Controller/DefaultController.php:848
+#: src/Bach/HomeBundle/Controller/DefaultController.php:850
 msgid "View search results as thumbnails"
 msgstr "View search results as thumbnails"
 
@@ -178,33 +178,37 @@ msgstr "An error occured trying to publish comments :("
 msgid "Selected comments have been published"
 msgstr "Selected comments have been published"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:774
+#: src/Bach/HomeBundle/Controller/DefaultController.php:775
 #, php-format
 msgid "Document \"%docid\" does not exists."
 msgstr "Document \"%docid\" does not exists."
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:794
+#: src/Bach/HomeBundle/Controller/DefaultController.php:795
 #, php-format
-msgid "Corresponding file for %docid document no longer exists on disk."
-msgstr "Corresponding file for %docid document no longer exists on disk."
+msgid "File for %docid document no longer exists on disk."
+msgstr "File for %docid document no longer exists on disk."
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:824
+#: src/Bach/HomeBundle/Controller/DefaultController.php:825
 msgid "Inventory logic"
 msgstr "Inventory logic"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:825
-msgid "Alphabetic"
-msgstr "Alphabetic"
+#: src/Bach/HomeBundle/Controller/DefaultController.php:826
+msgid "Chronological"
+msgstr "Chronological"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:840
+#: src/Bach/HomeBundle/Controller/DefaultController.php:827
+msgid "Alphabetical"
+msgstr "Alphabetical"
+
+#: src/Bach/HomeBundle/Controller/DefaultController.php:842
 msgid "View search results as a list, with images"
 msgstr "View search results as a list, with images"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:843
+#: src/Bach/HomeBundle/Controller/DefaultController.php:845
 msgid "Text only list"
 msgstr "Text only list"
 
-#: src/Bach/HomeBundle/Controller/DefaultController.php:844
+#: src/Bach/HomeBundle/Controller/DefaultController.php:846
 msgid "View search results as a list, without images"
 msgstr "View search results as a list, without images"
 
@@ -283,7 +287,7 @@ msgid "%count filtered results"
 msgstr "%count filtered results"
 
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:1045
-#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:6381
+#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:6362
 msgid "An error occured loading terms :("
 msgstr "An error occured loading terms :("
 
@@ -699,15 +703,15 @@ msgstr "1 result"
 msgid "Results %resultStart% to %resultEnd% on %resultCount%"
 msgstr "Results %resultStart% to %resultEnd% on %resultCount%"
 
-#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:5898
+#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:5900
 msgid "Relevance (default)"
 msgstr "Relevance (default)"
 
-#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:6016
+#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:5997
 msgid "No result found."
 msgstr "No result found."
 
-#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:6025
+#: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:6006
 msgid "Spelling suggestions:"
 msgstr "Spelling suggestions:"
 
@@ -743,7 +747,7 @@ msgstr "Miscellaneous documents"
 msgid "Play '%name%'"
 msgstr "Play '%name%'"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:488
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:489
 msgid ""
 "Your browser does not support this video format, you may want to download "
 "file and watch it offline"
@@ -751,8 +755,8 @@ msgstr ""
 "Your browser does not support this video format, you may want to download "
 "file and watch it offline"
 
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:615
-#: src/Bach/HomeBundle/Twig/DisplayDao.php:661
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:616
+#: src/Bach/HomeBundle/Twig/DisplayDao.php:663
 msgid "Display '%name%'"
 msgstr "Display '%name%'"
 
@@ -1081,12 +1085,12 @@ msgstr "Tag cloud"
 msgid "New browsing field"
 msgstr "New browsing field"
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:217
+#: src/Bach/HomeBundle/Entity/ViewParams.php:218
 #, php-format
 msgid "View %s is not known!"
 msgstr "View %s is not known!"
 
-#: src/Bach/HomeBundle/Entity/ViewParams.php:252
+#: src/Bach/HomeBundle/Entity/ViewParams.php:254
 #, php-format
 msgid "Order %s is not known!"
 msgstr "Order %s is not known!"
@@ -1108,11 +1112,11 @@ msgid "Rejected"
 msgstr "Rejected"
 
 #: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:216
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:336
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:339
 msgid "Yes"
 msgstr "Yes"
 
-#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:337
+#: src/Bach/HomeBundle/Service/SolariumQueryFactory.php:340
 msgid "No"
 msgstr "No"
 
