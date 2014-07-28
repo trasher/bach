@@ -50,7 +50,6 @@ POSSIBILITY OF SUCH DAMAGE.
         if ( typeof _isOldIE == 'undefined' ) {
             _p.append($('<a href="#" id="doccollapse">{{ _('Collapse all')|escape('js') }}</a> | <a href="#" id="docexpand">{{ _('Expand all')|escape('js') }}</a><br/>'));
         }
-        _p.append($('<a href="#" id="headercollapse">{{ _('Display/Hide document informations')|escape('js') }}</a>'));
         var _bibinfos = $('#bibinfos');
         if ( _bibinfos.length > 0 ) {
             _bibinfos.dialog({
@@ -61,7 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
             _p.append($('<br/><a href="#" id="show_bibinfos">{{ _('Show bibliographic informations')|escape('js') }}</a>'));
         }
-        $('#container > article').prepend(_p);
+        $('.css-treeview').prepend(_p);
         $('#doccontrol a').on('click', function(){
             var _this = $(this);
             if ( typeof _isOldIE == 'undefined' ) {
@@ -71,9 +70,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 if ( _this.attr('id') == 'docexpand' ) {
                     $('input[type=checkbox]').prop('checked', true);
                 }
-            }
-            if ( _this.attr('id') == 'headercollapse' ) {
-                $('#docheader').toggle();
             }
             if ( _this.attr('id') == 'show_bibinfos' ) {
                 _bibinfos.dialog('open');
@@ -91,6 +87,13 @@ POSSIBILITY OF SUCH DAMAGE.
         heightStyle: 'content',
         collapsible: true,
         active: false
+    });
+
+    $('#inventory_contents').accordion({
+        heightStyle: 'content',
+        collapsible: true,
+        animate: false,
+        active: 1
     });
 
     $('#inventory_scheme .ui-accordion-header a').on('click', function(){

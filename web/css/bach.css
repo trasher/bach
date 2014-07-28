@@ -913,6 +913,37 @@ h2.back a:hover {
     display: none;
 }
 
+[id=inventory_contents] {
+    margin-top: 1em;
+}
+
+[id=inventory_contents] h3, [id=inventory_contents] h3.ui-accordion-header {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+[id=inventory_contents].ui-accordion .ui-accordion-content {
+    padding: .5em;
+}
+
+
+[id=inventory_contents].ui-accordion #inventory_presentation.ui-accordion-content {
+    padding: 0 0 .5em 0;
+}
+
+[id=inventory_contents] table {
+    width: 100%;
+    background: white;
+}
+
+[id=inventory_contents] th,
+[id=inventory_contents] td
+{
+    text-align: left;
+    padding: .2em;
+    border: 1px solid #d1c6c0;
+}
+
 /**
  * ===== Matricule record view =====
  */

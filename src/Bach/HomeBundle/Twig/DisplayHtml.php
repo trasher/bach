@@ -386,6 +386,36 @@ class DisplayHtml extends \Twig_Extension
         case 'Revision description':
             return _('Revision description');
             break;
+        case 'Title':
+            return _('Title');
+            break;
+        case 'Date':
+            return _('Date');
+            break;
+        case 'Class number':
+            return _('Class number');
+            break;
+        case 'Presentation':
+            return _('Presentation');
+            break;
+        case 'Contents':
+            return _('Contents');
+            break;
+        case 'Physical description':
+            return _('Physical description');
+            break;
+        case 'Extent':
+            return _('Extent');
+            break;
+        case 'Custodial history':
+            return _('Custodial history');
+            break;
+        case 'Acquisition information':
+            return _('Acquisition information');
+            break;
+        case 'Legal status':
+            return _('Legal status');
+            break;
         default:
             //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?
@@ -396,6 +426,83 @@ class DisplayHtml extends \Twig_Extension
         }
     }
 
+    /**
+     * Display grouped descriptors
+     *
+     * @param DOMElement $nodes Nodes
+     * @param string     $docid Document id
+     *
+     * @return string
+     */
+    public static function showDescriptors($nodes, $docid)
+    {
+        $output = array();
+
+        foreach ( $nodes as $node ) {
+            $n = simplexml_import_dom($node);
+
+            $name = null;
+            if ( isset($n['source']) ) {
+                $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['source'];
+            } else if ( isset($n['role']) ) {
+                $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['role'];
+            } else {
+                $name = $n->getName();
+            }
+
+            if ( isset($n['rules']) ) {
+                $output[$name]['label'] = $n['rules'] . ' :';
+            } else {
+                $output[$name]['label'] = self::i18nFromXsl($name . ':');
+            }
+
+            switch ( $n->getName() ) {
+            case 'subject':
+                $output[$name]['property'] = 'dc:subject';
+                break;
+            case 'geogname':
+                $output[$name]['property'] = 'gn:name';
+                break;
+            case 'name':
+            case 'persname':
+            case 'corpname':
+                $output[$name]['property'] = 'foaf:name';
+                break;
+            }
+
+            $output[$name]['values'][] = (string)$n;
+        }
+
+        $ret = '<descriptors>';
+        foreach ( $output as $elt=>$out) {
+            $ret .= '<tr>';
+            $ret .= '<th>' . $out['label'] . '</th> ';
+            $ret .= '<td>';
+            $count = 0;
+            foreach ( $out['values'] as $value ) {
+                $count++;
+                $ret .= '<a link="%%%' . $elt . '::' . str_replace('"', '|quot|', $value) . '%%%"';
+                $ret .= ' about="' . $docid . '"';
+
+                if ( isset($out['property']) ) {
+                    $ret .= ' property="' . $out['property'] .
+                        '" content="' . htmlspecialchars($value) . '"';
+                }
+                $ret .= '>' . $value . '</a>';
+
+                if ( $count < count($out['values']) ) {
+                    $ret .= ', ';
+                }
+            }
+            $ret .= '</td>';
+            $ret .='</tr>';
+        }
+        $ret .='</descriptors>';
+
+        $doc = new \DOMDocument();
+        $doc->loadXML($ret);
+        return $doc;
+    }
     /**
      * Extension name
      *
