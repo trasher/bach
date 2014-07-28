@@ -101,7 +101,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
                             <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('Locate in document tree') }}</a>
                         {% else %}
-                            <a href="{{ path('bach_ead_html', {'docid': document.headerId, 'expanded': 'expanded'}) }}#{{ document.fragmentid }}">{{ _('Locate in document tree') }}</a>
+                            <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ document.fragmentid }}">{{ _('Locate in document tree') }}</a>
                         {% endif %}
                     </aside>
                     {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}

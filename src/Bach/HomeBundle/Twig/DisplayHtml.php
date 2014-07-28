@@ -453,7 +453,7 @@ class DisplayHtml extends \Twig_Extension
             if ( isset($n['rules']) ) {
                 $output[$name]['label'] = $n['rules'] . ' :';
             } else {
-                $output[$name]['label'] = self::i18nFromXsl($name . ':');
+                $output[$name]['label'] = DisplayEADFragment::i18nFromXsl($name . ':');
             }
 
             switch ( $n->getName() ) {
