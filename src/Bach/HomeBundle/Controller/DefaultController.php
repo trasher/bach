@@ -1008,7 +1008,7 @@ class DefaultController extends SearchController
         };
 
         $html_contents = preg_replace_callback(
-            '@<img(.*)src="(.[^"]+)"(.*)/>@',
+            '@<img(.[^src]*)src="(.[^"]+)"(.[^>]*) />@',
             $callback,
             $html_contents
         );
