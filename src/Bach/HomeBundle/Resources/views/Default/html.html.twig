@@ -76,30 +76,43 @@ POSSIBILITY OF SUCH DAMAGE.
             }
             return false;
         });
+
+        $('#inventory_scheme, .accordion').accordion({
+            icons: {
+                header: 'ui-icon-circle-plus',
+                activeHeader: 'ui-icon-circle-minus'
+            },
+            heightStyle: 'content',
+            collapsible: true,
+            active: false
+        });
+
+        $('#inventory_contents').accordion({
+            heightStyle: 'content',
+            collapsible: true,
+            animate: false,
+            active: 1
+        });
+
+        $('#inventory_scheme .ui-accordion-header a').on('click', function(){
+            if ( $('#inventory_contents').accordion('option', 'active') != 1 ) {
+                $('#inventory_contents').accordion('option', 'active', 1)
+            }
+            window.location.href = $(this).attr('href');
+        });
+
+        if ($(this).scrollTop()) {
+            $('#back2top').fadeOut();
+        }
+        $('#wrapper').scroll(function() {
+            if ($(this).scrollTop()) {
+                $('#back2top').fadeIn();
+            } else {
+                $('#back2top').fadeOut();
+            }
+        });
+
     });
-
-
-    $('#inventory_scheme, .accordion').accordion({
-        icons: {
-            header: 'ui-icon-circle-plus',
-            activeHeader: 'ui-icon-circle-minus'
-        },
-        heightStyle: 'content',
-        collapsible: true,
-        active: false
-    });
-
-    $('#inventory_contents').accordion({
-        heightStyle: 'content',
-        collapsible: true,
-        animate: false,
-        active: 1
-    });
-
-    $('#inventory_scheme .ui-accordion-header a').on('click', function(){
-        window.location.href = $(this).attr('href');
-    });
-
     {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
 {% endblock %}
 
@@ -154,6 +167,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block container %}
     {{ displayHtml(docid, xml_file)|raw }}
+    <a href="#container" id="back2top">{{ _('Back to top') }}</a>
 {% endblock %}
 
 {% block menu %}

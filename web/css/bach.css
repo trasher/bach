@@ -944,6 +944,16 @@ h2.back a:hover {
     border: 1px solid #d1c6c0;
 }
 
+[id=back2top] {
+    background: black;
+    background: rgba(0,0,0,.8);
+    color: white;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: .2em .5em;
+}
+
 /**
  * ===== Matricule record view =====
  */
