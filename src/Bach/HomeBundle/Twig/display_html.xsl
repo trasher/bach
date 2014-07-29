@@ -54,7 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <xsl:apply-templates select="eadheader" mode="header"/>
             </header>
             <div id="inventory_contents">
-                <h3>
+                <h3 id="presentation">
                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Presentation')"/>
                 </h3>
                 <div id="inventory_presentation">
@@ -62,13 +62,13 @@ POSSIBILITY OF SUCH DAMAGE.
                         <xsl:apply-templates mode="presentation"/>
                     </table>
                 </div>
-                <h3>
+                <h3 id="contents">
                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Contents')"/>
                 </h3>
                 <div class="css-treeview">
                     <ul>%contents%</ul>
                 </div>
-                <h3>
+                <h3 id="biblioinfos">
                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliographic informations')"/>
                 </h3>
                 <div>

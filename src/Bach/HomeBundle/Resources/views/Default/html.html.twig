@@ -50,16 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
         if ( typeof _isOldIE == 'undefined' ) {
             _p.append($('<a href="#" id="doccollapse">{{ _('Collapse all')|escape('js') }}</a> | <a href="#" id="docexpand">{{ _('Expand all')|escape('js') }}</a><br/>'));
         }
-        var _bibinfos = $('#bibinfos');
-        if ( _bibinfos.length > 0 ) {
-            _bibinfos.dialog({
-                autoOpen: false,
-                height: _height,
-                width: _width,
-                modal: true
-            });
-            _p.append($('<br/><a href="#" id="show_bibinfos">{{ _('Show bibliographic informations')|escape('js') }}</a>'));
-        }
+
         $('.css-treeview').prepend(_p);
         $('#doccontrol a').on('click', function(){
             var _this = $(this);
@@ -70,9 +61,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 if ( _this.attr('id') == 'docexpand' ) {
                     $('input[type=checkbox]').prop('checked', true);
                 }
-            }
-            if ( _this.attr('id') == 'show_bibinfos' ) {
-                _bibinfos.dialog('open');
             }
             return false;
         });
@@ -110,6 +98,23 @@ POSSIBILITY OF SUCH DAMAGE.
             } else {
                 $('#back2top').fadeOut();
             }
+        });
+
+        $('#inventory_summary_mnu a').on('click', function(){
+            var _index = null;
+            var _attr = $(this).attr('href').replace('#', '');
+
+            if ( _attr == 'presentation' ) {
+                _index = 0;
+            } else if ( _attr == 'contents' ) {
+                _index = 1;
+            } else if ( _attr == 'biblioinfos' ) {
+                _index = 2;
+            }
+
+            $('#inventory_contents').accordion('option', 'active', _index);
+
+            return false;
         });
 
     });
@@ -181,6 +186,18 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </form>
     <p>{{ _('Search against current document') }}</p>
+    <h2>{{ _('Summary') }}</h2>
+    <ul id="inventory_summary_mnu">
+        <li>
+            <a href="#presentation">{{ _('Presentation') }}</a>
+        </li>
+        <li>
+            <a href="#contents">{{ _('Contents') }}</a>
+        </li>
+        <li>
+            <a href="#biblioinfos">{{ _('Bibliographic informations') }}</a>
+        </li>
+    </ul>
     <h2>{{ _('Inventory scheme') }}</h2>
     <div id="inventory_scheme">
         {{ displayHtmlScheme(docid, xml_file)|raw }}
