@@ -308,7 +308,8 @@ class EADFileFormat extends FileFormat
         'subject_w_expanded'    => 'skosLabel',
         'parents_titles'        => 'text',
         'cDateBegin'            => 'date',
-        'cDateEnd'              => 'date'
+        'cDateEnd'              => 'date',
+        'dao'                   => 'ancestor_path'
     );
 
     /**

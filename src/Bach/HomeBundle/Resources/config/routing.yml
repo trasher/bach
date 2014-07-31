@@ -230,3 +230,23 @@ dynamic_css:
     defaults: { _controller: BachHomeBundle:Default:dynamicCss, _format: css }
     requirements:
         _method: GET
+
+remote_image_infos_nopath:
+    pattern: /infosimage/{img}.{ext}
+    defaults: { _controller: BachHomeBundle:Default:infosImage, path: null}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+remote_image_infos:
+    pattern: /infosimage/{path}/{img}.{ext}
+    defaults: { _controller: BachHomeBundle:Default:infosImage}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+remote_image_infos_noimg:
+    pattern: /infosimage/{path}
+    defaults: { _controller: BachHomeBundle:Default:infosImage, img: null, ext: null}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+

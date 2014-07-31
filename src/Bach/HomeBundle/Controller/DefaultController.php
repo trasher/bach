@@ -1081,4 +1081,88 @@ class DefaultController extends SearchController
         return new Response($contents, 200, $headers);
     }
 
+    /**
+     * Retrieve fragment informations from image
+     *
+     * @param string $path Image path
+     * @param string $img  Image name
+     * @param string $ext  Image extension
+     *
+     * @return void
+     */
+    public function infosImageAction($path, $img, $ext)
+    {
+        $qry_string = null;
+        if ( $img !== null && $ext !== null ) {
+            $qry_string = $img . '.' . $ext;
+        }
+        if ( $path !== null ) {
+            $qry_string = $path . '/' . $qry_string;
+        }
+
+        $client = $this->get($this->entryPoint());
+        $query = $client->createSelect();
+        $query->setQuery('dao:' . $qry_string);
+        $query->setFields(
+            'headerId, fragmentid, parents, archDescUnitTitle, cUnittitle'
+        );
+        $query->setStart(0)->setRows(1);
+
+        $rs = $client->select($query);
+        $docs  = $rs->getDocuments();
+        $doc = $docs[0];
+        $parents_docs = null;
+
+        if ( $docs) {
+            $parents = explode('/', $doc['parents']);
+            if ( count($parents) > 0 ) {
+                $pquery = $client->createSelect();
+                $query = null;
+                foreach ( $parents as $p ) {
+                    if ( $query !== null ) {
+                        $query .= ' | ';
+                    }
+                    $query .= 'fragmentid:"' . $doc['headerId'] . '_' . $p . '"';
+                }
+                $pquery->setQuery($query);
+                $pquery->setFields('fragmentid, cUnittitle');
+                $rs = $client->select($pquery);
+                $parents_docs = $rs->getDocuments();
+            }
+        }
+
+        //link to main document
+        $doc_url = $this->get('router')->generate(
+            'bach_ead_html',
+            array(
+                'docid' => $doc['headerId']
+            )
+        );
+        $response = '<a href="' . $doc_url . '">' .
+            $doc['archDescUnitTitle'] . '</a>';
+
+        //links to parents
+        foreach ( $parents_docs as $pdoc ) {
+            $doc_url = $this->get('router')->generate(
+                'bach_display_document',
+                array(
+                    'docid' => $pdoc['fragmentid']
+                )
+            );
+            $response .= ' » <a href="' . $doc_url . '">' .
+                $pdoc['cUnittitle'] . '</a>';
+        }
+
+        //link to document itself
+        $doc_url = $this->get('router')->generate(
+            'bach_display_document',
+            array(
+                'docid' => $doc['fragmentid']
+            )
+        );
+        $response .= ' » <a href="' . $doc_url . '">' .
+            $doc['cUnittitle'] . '</a>';
+
+        return new Response($response, 200);
+    }
 }
