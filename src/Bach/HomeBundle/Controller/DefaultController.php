@@ -1113,7 +1113,7 @@ class DefaultController extends SearchController
         $doc = $docs[0];
         $parents_docs = null;
 
-        if ( $docs) {
+        if ( $doc ) {
             $parents = explode('/', $doc['parents']);
             if ( count($parents) > 0 ) {
                 $pquery = $client->createSelect();
@@ -1129,39 +1129,39 @@ class DefaultController extends SearchController
                 $rs = $client->select($pquery);
                 $parents_docs = $rs->getDocuments();
             }
-        }
 
-        //link to main document
-        $doc_url = $this->get('router')->generate(
-            'bach_ead_html',
-            array(
-                'docid' => $doc['headerId']
-            )
-        );
-        $response = '<a href="' . $doc_url . '">' .
-            $doc['archDescUnitTitle'] . '</a>';
+            //link to main document
+            $doc_url = $this->get('router')->generate(
+                'bach_ead_html',
+                array(
+                    'docid' => $doc['headerId']
+                )
+            );
+            $response = '<a href="' . $doc_url . '">' .
+                $doc['archDescUnitTitle'] . '</a>';
 
-        //links to parents
-        foreach ( $parents_docs as $pdoc ) {
+            //links to parents
+            foreach ( $parents_docs as $pdoc ) {
+                $doc_url = $this->get('router')->generate(
+                    'bach_display_document',
+                    array(
+                        'docid' => $pdoc['fragmentid']
+                    )
+                );
+                $response .= ' » <a href="' . $doc_url . '">' .
+                    $pdoc['cUnittitle'] . '</a>';
+            }
+
+            //link to document itself
             $doc_url = $this->get('router')->generate(
                 'bach_display_document',
                 array(
-                    'docid' => $pdoc['fragmentid']
+                    'docid' => $doc['fragmentid']
                 )
             );
             $response .= ' » <a href="' . $doc_url . '">' .
-                $pdoc['cUnittitle'] . '</a>';
+                $doc['cUnittitle'] . '</a>';
         }
-
-        //link to document itself
-        $doc_url = $this->get('router')->generate(
-            'bach_display_document',
-            array(
-                'docid' => $doc['fragmentid']
-            )
-        );
-        $response .= ' » <a href="' . $doc_url . '">' .
-            $doc['cUnittitle'] . '</a>';
 
         return new Response($response, 200);
     }
