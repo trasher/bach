@@ -131,9 +131,7 @@ class DisplayCdc extends DisplayHtml
         //find not published documents
         $this->_setNotMatched($xml_doc);
 
-        $contents = $proc->transformToXml(
-            simplexml_load_string($xml_doc->asXML())
-        );
+        $contents = $proc->transformToXml($xml_doc);
 
         $up_nodes = $xml_doc->xpath('/ead/archdesc/dsc/c');
 
