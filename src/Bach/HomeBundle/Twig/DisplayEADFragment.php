@@ -202,16 +202,19 @@ class DisplayEADFragment extends \Twig_Extension
             $text
         );
 
-        $add_comment_path = $router->generate(
-            'bach_add_comment',
-            array('docid' => $docid)
-        );
+        if ( $docid !== '' ) {
+            $add_comment_path = $router->generate(
+                'bach_add_comment',
+                array('docid' => $docid)
+            );
 
-        $text = str_replace(
-            '__path_add_comment__',
-            $add_comment_path,
-            $text
-        );
+            $text = str_replace(
+                '__path_add_comment__',
+                $add_comment_path,
+                $text
+            );
+        }
+
         return $text;
     }
 

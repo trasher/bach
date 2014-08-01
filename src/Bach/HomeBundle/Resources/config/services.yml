@@ -64,7 +64,7 @@ services:
 
     bach.home.display_cdc:
         class: Bach\HomeBundle\Twig\DisplayCdc
-        arguments: [ @router, '%cdc_path%' ]
+        arguments: [ @router, @kernel, '%cote_location%', '%cdc_path%' ]
         calls:
             - [setRequest, ['@?request=']]
         tags:

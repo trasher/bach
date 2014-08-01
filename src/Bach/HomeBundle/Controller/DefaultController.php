@@ -724,7 +724,7 @@ class DefaultController extends SearchController
                 )
             );
         } else {
-            $tplParams = array();
+            $tpl_vars = $this->commonTemplateVariables();
 
             $client = $this->get($this->entryPoint());
             $query = $client->createSelect();
@@ -742,11 +742,14 @@ class DefaultController extends SearchController
                 $published->addChild($doc->headerId, $doc->cUnittitle);
             }
 
-            $tplParams['docs'] = $published;
+            $tpl_vars['docs'] = $published;
+            $tpl_vars['docid'] = '';
+            $tpl_vars['xml_file'] = $cdc_path;
+            $tpl_vars['cdc'] = true;
 
             return $this->render(
-                'BachHomeBundle:Default:cdc.html.twig',
-                $tplParams
+                'BachHomeBundle:Default:html.html.twig',
+                $tpl_vars
             );
         }
     }

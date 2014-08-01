@@ -62,10 +62,10 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class DisplayHtml extends \Twig_Extension
 {
-    private $_router;
-    private $_request;
-    private $_cote_location;
-    private $_prod;
+    protected $router;
+    protected $request;
+    protected $cote_location;
+    protected $prod;
 
     /**
      * Main constructor
@@ -76,13 +76,13 @@ class DisplayHtml extends \Twig_Extension
      */
     public function __construct(Router $router, Kernel $kernel, $cote_loc)
     {
-        $this->_router = $router;
+        $this->router = $router;
         if ( $kernel->getEnvironment() !== 'dev' ) {
-            $this->_prod = true;
+            $this->prod = true;
         } else {
-            $this->_prod = false;
+            $this->prod = false;
         }
-        $this->_cote_location = $cote_loc;
+        $this->cote_location = $cote_loc;
     }
 
     /**
@@ -94,7 +94,7 @@ class DisplayHtml extends \Twig_Extension
      */
     public function setRequest(Request $request = null)
     {
-        $this->_request = $request;
+        $this->request = $request;
     }
 
     /**
@@ -122,7 +122,7 @@ class DisplayHtml extends \Twig_Extension
     {
         $cached_doc = null;
         //do not use cache when not in prod
-        if ( $this->_prod === true ) {
+        if ( $this->prod === true ) {
             $cache = new \Doctrine\Common\Cache\ApcCache();
             $cached_doc = null;
             $cached_doc_date = $cache->fetch('html_date_' . $docid);
@@ -152,7 +152,7 @@ class DisplayHtml extends \Twig_Extension
             $xml_doc = simplexml_load_file($xml_file);
 
             $archdesc_html = $this->_renderArchdesc($xml_doc, $docid);
-            $contents = $this->_renderContents($xml_doc, $docid);
+            $contents = $this->renderContents($xml_doc, $docid);
 
             $proc = new \XsltProcessor();
             $proc->importStylesheet(
@@ -177,8 +177,8 @@ class DisplayHtml extends \Twig_Extension
                 $html
             );
 
-            $router = $this->_router;
-            $request = $this->_request;
+            $router = $this->router;
+            $request = $this->request;
             $callback = function ($matches) use ($router, $request) {
                 $href = '';
                 if ( count($matches) > 2 ) {
@@ -213,7 +213,7 @@ class DisplayHtml extends \Twig_Extension
                 $html
             );
 
-            if ( $this->_prod === true ) {
+            if ( $this->prod === true ) {
                 $cache->save('html_' . $docid, $html);
                 $cache->save('html_date_' . $docid, new \DateTime());
             }
@@ -239,11 +239,11 @@ class DisplayHtml extends \Twig_Extension
         unset($archdesc_doc->archdesc->dsc);
 
         $display = new DisplayEADFragment(
-            $this->_router,
+            $this->router,
             false,
-            $this->_cote_location
+            $this->cote_location
         );
-        $display->setRequest($this->_request);
+        $display->setRequest($this->request);
         $archdesc_xml = $display->display(
             $archdesc_doc->archdesc->asXML(),
             $docid,
@@ -264,7 +264,7 @@ class DisplayHtml extends \Twig_Extension
      *
      * @return string
      */
-    private function _renderContents($xml_doc, $docid)
+    protected function renderContents($xml_doc, $docid)
     {
         $proc = new \XsltProcessor();
         $proc->importStylesheet(

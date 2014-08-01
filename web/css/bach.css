@@ -1610,6 +1610,10 @@ div.sonata-bc .btn-primary:hover {
     text-align: right;
 }
 
+h3.no-accordion span {
+    visibility: hidden;
+}
+
 /** Old design */
 #flash-warnings, #flash-errors, #flash-success {
     padding: .2em 1em .2em 80px;

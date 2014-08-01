@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% extends '::base.html.twig' %}
 
-{% block title_extend %} - {{ _('View document %doc')|replace({'%doc': docid}) }}{% endblock %}
+{% block title_extend %} - {% if cdc is not defined %}{{ _('View document %doc')|replace({'%doc': docid}) }}{% else %}{{ _('Classification scheme') }}{% endif %}{% endblock %}
 
 {% block css %}
     <link href="{{ asset('css/treeview.css') }}" type="text/css" rel="stylesheet" media="screen" />
@@ -117,6 +117,17 @@ POSSIBILITY OF SUCH DAMAGE.
             return false;
         });
 
+        $('.extended_informations').each(function(){
+            var _this = $(this);
+            _this.hide();
+            var _parent = _this.parent('li');
+            var _expand = $('<a class="expand" href="#' + _parent.attr('id') + '" title="{{ _('Expand/Hide informations') }}">{{ _('Informations') }}</a>');
+            _expand.on('click', function(){
+                $(this).toggleClass('expanded').nextAll('.extended_informations').toggle();
+                return false;
+            });
+            _parent.prepend(_expand);
+        });
     });
     {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
 {% endblock %}
@@ -171,11 +182,16 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block container %}
-    {{ displayHtml(docid, xml_file)|raw }}
+    {% if cdc is not defined %}
+        {{ displayHtml(docid, xml_file)|raw }}
+    {% else %}
+        {{ displayCdc(docs)|raw }}
+    {% endif %}
     <a href="#container" id="back2top">{{ _('Back to top') }}</a>
 {% endblock %}
 
 {% block menu %}
+    {% if cdc is not defined %}
     <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
             {{ form_widget(form.query) }}
@@ -186,6 +202,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </form>
     <p>{{ _('Search against current document') }}</p>
+    {% endif %}
     <h2>{{ _('Summary') }}</h2>
     <ul id="inventory_summary_mnu">
         <li>
@@ -200,7 +217,11 @@ POSSIBILITY OF SUCH DAMAGE.
     </ul>
     <h2>{{ _('Inventory scheme') }}</h2>
     <div id="inventory_scheme">
+    {% if cdc is not defined %}
         {{ displayHtmlScheme(docid, xml_file)|raw }}
+    {% else %}
+        {{ displayCdcScheme(docid, xml_file, docs)|raw }}
+    {% endif %}
     </div>
 {% endblock %}
 
