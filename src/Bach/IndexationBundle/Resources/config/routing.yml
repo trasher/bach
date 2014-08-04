@@ -29,13 +29,6 @@
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-bach_indexation_homepage:
-    pattern:  /{page}
-    defaults: { _controller: BachIndexationBundle:Default:index, page: 1 }
-    requirements:
-        _method: GET
-        page: \d+
-
 bach_indexation_queue:
     pattern:  /queue
     defaults: { _controller: BachIndexationBundle:Default:queue }
@@ -55,8 +48,8 @@ bach_indexation_deletedocuments:
         _method: POST
 
 bach_indexation_empty:
-    pattern:  /empty
-    defaults: { _controller: BachIndexationBundle:Default:empty }
+    pattern:  /empty/{type}
+    defaults: { _controller: BachIndexationBundle:Default:empty, type: 'all' }
     requirements:
         _method: GET
 
@@ -71,3 +64,12 @@ bach_eaddtd_validate:
     defaults: { _controller BachIndexationBundle:Default:validateDocument, ajax: false, type: 'ead' }
     requirements:
         _method: GET
+
+bach_indexation_homepage:
+    pattern: /{type}/{page}/{ajax}
+    defaults: { _controller: BachIndexationBundle:Default:index, type: 'ead', page: 0, 'ajax': false }
+    requirements:
+        _method: GET
+        page: \d+
+
+

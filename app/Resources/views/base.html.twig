@@ -86,16 +86,16 @@ POSSIBILITY OF SUCH DAMAGE.
             <nav role="navigation" id="navigation" class="nav-opened">
             {% spaceless %}
                 <ul>
-                    <li{% if app.request.attributes.get('_route') == 'bach_homepage' or app.request.attributes.get('_route') == 'bach_search' %} class="active"{% endif %}>
+                    <li{% if (app.request.attributes.get('_route') == 'bach_homepage' or app.request.attributes.get('_route') == 'bach_search') and (app.request.attributes.get('_route_params').form_name is not defined or app.request.attributes.get('_route_params').form_name == 'default') %} class="active"{% endif %}>
                         <a href="{{ path('bach_search') }}">{{ _('Search') }}</a>
                     </li>
                     {% for name, search_form in search_forms %}
-                        <li{% if (app.request.attributes.get('_route') == 'bach_search_form' or  app.request.attributes.get('_route') == 'bach_search_form_homepage') and app.request.attributes.get('_route_params').form_name == name %} class="active"{% endif %}>
-                            <a href="{{ path('bach_search_form', {'form_name': name}) }}">{{ search_form.menu_entry}}</a>
+                        <li{% if (app.request.attributes.get('_route') == 'bach_search' or  app.request.attributes.get('_route') == 'bach_search_form_homepage') and app.request.attributes.get('_route_params').form_name == name %} class="active"{% endif %}>
+                            <a href="{{ path('bach_search_form_homepage', {'form_name': name}) }}">{{ search_form.menu_entry}}</a>
                         </li>
                     {% endfor %}
                     {% if features.matricules %}
-                    <li{% if app.request.attributes.get('_route') == 'bach_matricules' %} class="active"{% endif %}>
+                    <li{% if app.request.attributes.get('_route') == 'bach_matricules' or app.request.attributes.get('_route') == 'bach_matricules_search' %} class="active"{% endif %}>
                         <a href="{{ path('bach_matricules') }}">{{ _('Matricules') }}</a>
                     </li>
                     {% endif %}
@@ -224,6 +224,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 });
                 {{ block ('mobile_js_on') }}
             } else {
+                //tooltip on each a and input search
+                $('a, input[type=text]').tooltip();
                 //unbind elements and remove class when resizing
                 $('#navigation > ul').removeClass('hidden');
                 $('#navigation').unbind('click');
@@ -239,9 +241,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             $('.jbtn').button();
-
-            //tooltip on each a
-            $('a').tooltip();
 
             //global help display window
             var _help = $('#help_window');

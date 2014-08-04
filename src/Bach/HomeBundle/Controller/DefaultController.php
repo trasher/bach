@@ -46,10 +46,11 @@ namespace Bach\HomeBundle\Controller;
 
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Bach\HomeBundle\Entity\SearchQueryFormType;
+use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\Comment;
 use Bach\HomeBundle\Entity\Filters;
+use Bach\HomeBundle\Entity\ViewParams;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -80,7 +81,9 @@ class DefaultController extends SearchController
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        $this->search_form = $form_name;
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -203,7 +206,9 @@ class DefaultController extends SearchController
             $query_terms = urldecode($query_terms);
         }
 
-        $this->search_form = $form_name;
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
 
         /** Manage view parameters */
         $view_params = $this->handleViewParams();
@@ -375,7 +380,9 @@ class DefaultController extends SearchController
      */
     public function doSearchAction($form_name = null)
     {
-        $this->search_form = $form_name;
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
         $query = new SearchQuery();
         $form = $this->createForm(new SearchQueryFormType(), $query);
 
@@ -412,7 +419,6 @@ class DefaultController extends SearchController
 
                 $route = 'bach_search';
                 if ( $this->search_form !== null ) {
-                    $route = 'bach_search_form';
                     $url_vars['form_name'] = $this->search_form;
                 }
 
@@ -428,13 +434,12 @@ class DefaultController extends SearchController
     /**
      * Browse contents
      *
-     * @param string  $part     Part to browse
-     * @param boolean $show_all Show all results
-     * @param boolean $ajax     If we were called from ajax
+     * @param string  $part Part to browse
+     * @param boolean $ajax If we were called from ajax
      *
      * @return void
      */
-    public function browseAction($part = '', $show_all = false, $ajax = false)
+    public function browseAction($part = '', $ajax = false)
     {
         $fields = $this->getDoctrine()
             ->getRepository('BachHomeBundle:BrowseFields')
@@ -464,60 +469,58 @@ class DefaultController extends SearchController
 
         $lists = array();
 
-        $limit = 20;
-        if ( $show_all === 'show_all' ) {
-            $limit = -1;
-            $templateVars['show_all'] = true;
-        } else {
-            $templateVars['show_all'] = 'false';
-        }
-
         if ( $part !== '' ) {
             $client = $this->get($this->entryPoint());
-            // get a terms query instance
-            $query = $client->createTerms();
 
-            $query->setLimit($limit);
-            $query->setFields($part);
+            $query = $client->createSelect();
+            $query->setQuery('*:*');
+            $query->setRows(0);
+            $facetSet = $query->getFacetSet();
+            $facetSet->setLimit(-1);
+            $facetSet->setMinCount(1);
 
-            $found_terms = $client->terms($query);
-            foreach ( $found_terms as $field=>$terms ) {
-                $lists[$field] = array();
-                $current_values = array();
-                foreach ( $terms as $term=>$count ) {
-                    $current_values[$term] = array(
-                        'term'  => $term,
-                        'count' => $count
-                    );
-                }
-                if ( $show_all === 'show_all' ) {
-                    if ( defined('SORT_FLAG_CASE') ) {
-                        //TODO: find a better way!
-                        if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
-                            setlocale(LC_COLLATE, 'fr_FR.utf8');
-                        }
-                        ksort($current_values, SORT_LOCALE_STRING | SORT_FLAG_CASE);
-                    } else {
-                        //fallback for PHP < 5.4
-                        ksort($current_values, SORT_LOCALE_STRING);
-                    }
-                }
-                if ( $field == 'headerId' ) {
-                    //retrieve documents titles...
-                    $ids = array();
-                    foreach ( $current_values as $v ) {
-                        $ids[] = $v['term'] . '_description';
-                    }
+            $facetSet->createFacetField($part)
+                ->setField($part);
 
-                    $query = $this->getDoctrine()->getManager()->createQuery(
-                        'SELECT h.headerId, h.headerTitle ' .
-                        'FROM BachIndexationBundle:EADFileFormat e ' .
-                        'JOIN e.eadheader h WHERE e.fragmentid IN (:ids)'
-                    )->setParameter('ids', $ids);
-                    $lists[$field] = $query->getResult();
-                } else {
-                    $lists[$field] = $current_values;
+            $rs = $client->select($query);
+            $facetSet = $rs->getFacetSet();
+            $facets = $facetSet->getFacet($part);
+
+            $lists[$part] = array();
+            $current_values = array();
+            foreach ( $facets as $term=>$count ) {
+                $current_values[$term] = array(
+                    'term'  => $term,
+                    'count' => $count
+                );
+            }
+
+            if ( defined('SORT_FLAG_CASE') ) {
+                //TODO: find a better way!
+                if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
+                    setlocale(LC_COLLATE, 'fr_FR.utf8');
                 }
+                ksort($current_values, SORT_LOCALE_STRING | SORT_FLAG_CASE);
+            } else {
+                //fallback for PHP < 5.4
+                ksort($current_values, SORT_LOCALE_STRING);
+            }
+
+            if ( $part == 'headerId' ) {
+                //retrieve documents titles...
+                $ids = array();
+                foreach ( $current_values as $v ) {
+                    $ids[] = $v['term'] . '_description';
+                }
+
+                $query = $this->getDoctrine()->getManager()->createQuery(
+                    'SELECT h.headerId, h.headerTitle ' .
+                    'FROM BachIndexationBundle:EADFileFormat e ' .
+                    'JOIN e.eadheader h WHERE e.fragmentid IN (:ids)'
+                )->setParameter('ids', $ids);
+                $lists[$part] = $query->getResult();
+            } else {
+                $lists[$part] = $current_values;
             }
         }
 
@@ -580,13 +583,19 @@ class DefaultController extends SearchController
 
         $tpl = '';
 
+        $form_name = 'default';
+        if ( $this->getRequest()->get('search_form') ) {
+            $form_name = $this->getRequest()->get('search_form');
+        }
+
         $tplParams = $this->commonTemplateVariables();
         $tplParams = array_merge(
             $tplParams,
             array(
                 'docid'         => $docid,
                 'document'      => $doc,
-                'context'       => $with_context
+                'context'       => $with_context,
+                'search_form'   => $form_name
             )
         );
 
@@ -675,11 +684,6 @@ class DefaultController extends SearchController
             }
         }
 
-        //check if HTML export do exist
-        $html_export = $this->container->getParameter('bach_files_html') .
-            '/' . $doc['headerId'] . '.html';
-        $tplParams['html_export'] = file_exists($html_export);
-
         return $this->render(
             $tpl,
             $tplParams
@@ -693,41 +697,71 @@ class DefaultController extends SearchController
      */
     public function cdcAction()
     {
-        $tplParams = array();
+        $cdc_path = $this->container->getParameter('cdc_path');
+        $cdc_filename = basename($cdc_path, '.xml');
 
-        $client = $this->get($this->entryPoint());
-        $query = $client->createSelect();
-        $query->setQuery('fragmentid:*_description');
-        $query->setFields('cUnittitle, headerId, fragmentid');
-        $query->setStart(0)->setRows(1000);
+        //check for HTML version of the classification scheme
+        $path = $this->container->getParameter('bach_files_html') .
+            '/' . $cdc_filename . '.html';
 
-        $rs = $client->select($query);
+        if ( file_exists($path) ) {
+            $html_contents = file_get_contents($path);
+            $html_contents = str_replace(
+                array(
+                    'AACCSSJS3/',
+                    'SCRIPT_NAME="'
+                ),
+                array(
+                    'htmldoc/AACCSSJS3/',
+                    'SCRIPT_NAME="htmldoc/'
+                ),
+                $html_contents
+            );
+            return $this->render(
+                'BachHomeBundle:Default:html_contents.html.twig',
+                array(
+                    'html_contents' => $html_contents
+                )
+            );
+        } else {
+            $tpl_vars = $this->commonTemplateVariables();
 
-        $published = new \SimpleXMLElement(
-            '<docs></docs>'
-        );
+            $client = $this->get($this->entryPoint());
+            $query = $client->createSelect();
+            $query->setQuery('fragmentid:*_description');
+            $query->setFields('cUnittitle, headerId, fragmentid');
+            $query->setStart(0)->setRows(1000);
 
-        foreach ( $rs as $doc ) {
-            $published->addChild($doc->headerId, $doc->cUnittitle);
+            $rs = $client->select($query);
+
+            $published = new \SimpleXMLElement(
+                '<docs></docs>'
+            );
+
+            foreach ( $rs as $doc ) {
+                $published->addChild($doc->headerId, $doc->cUnittitle);
+            }
+
+            $tpl_vars['docs'] = $published;
+            $tpl_vars['docid'] = '';
+            $tpl_vars['xml_file'] = $cdc_path;
+            $tpl_vars['cdc'] = true;
+
+            return $this->render(
+                'BachHomeBundle:Default:html.html.twig',
+                $tpl_vars
+            );
         }
-
-        $tplParams['docs'] = $published;
-
-        return $this->render(
-            'BachHomeBundle:Default:cdc.html.twig',
-            $tplParams
-        );
     }
 
     /**
      * Displays an EAD document as HTML
      *
-     * @param string  $docid    Document id
-     * @param boolean $expanded Expand tree on load
+     * @param string $docid Document id
      *
      * @return void
      */
-    public function eadHtmlAction($docid, $expanded = false)
+    public function eadHtmlAction($docid)
     {
         $tpl_vars = $this->commonTemplateVariables();
 
@@ -760,13 +794,12 @@ class DefaultController extends SearchController
                     str_replace(
                         '%docid',
                         $docid,
-                        _('Corresponding file for %docid document no longer exists on disk.')
+                        _('File for %docid document no longer exists on disk.')
                     )
                 );
             } else {
                 $tpl_vars['docid'] = $docid;
                 $tpl_vars['xml_file'] = $xml_file;
-                $tpl_vars['expanded'] = ($expanded !== false);
 
                 $form = $this->createForm(
                     new SearchQueryFormType(),
@@ -790,8 +823,9 @@ class DefaultController extends SearchController
     protected function getOrders()
     {
         $orders = array(
-            _('Alphabetic'),
-            _('Document logic')
+            ViewParams::ORDER_DOC_LOGIC => _('Inventory logic'),
+            ViewParams::ORDER_CHRONO    => _('Chronological'),
+            ViewParams::ORDER_TITLE     => _('Alphabetical')
         );
         return $orders;
     }
@@ -829,12 +863,18 @@ class DefaultController extends SearchController
      */
     protected function getUniqueFacet($name)
     {
+        $form_name = 'main';
+        if ( $this->search_form !== null ) {
+            $form_name = $this->search_form;
+        }
+
         return $this->getDoctrine()
             ->getRepository('BachHomeBundle:Facets')
             ->findBy(
                 array(
                     'active'            => true,
-                    'solr_field_name'   => $name
+                    'solr_field_name'   => $name,
+                    'form'              => $form_name
                 )
             );
     }
@@ -953,17 +993,48 @@ class DefaultController extends SearchController
 
         $callback = function ($matches) use ($viewer_uri) {
             $img_path = str_replace('../', '', $matches[2]);
-            $href = $viewer_uri . 'viewer/' . $img_path;
-            $thumb_href = $viewer_uri . 'ajax/img/' . $img_path . '/format/medium';
 
-            return '<a href="' . $href . '"><img' . $matches[1] . ' src="' .
-                $thumb_href . '"' . $matches[3] . '/></a>';
+            $href = $viewer_uri . 'viewer/' . $img_path;
+            $thumb_href = $viewer_uri . 'ajax/img/' . $img_path;
+
+            //handle series case
+            if ( strpos($img_path, 'series/') === 0 ) {
+                $href = $viewer_uri . $img_path;
+                $thumb_href = $viewer_uri . 'ajax/representative/' .
+                    str_replace('series/', '', $img_path);
+            }
+
+            $thumb_href .= '/format/medium';
+
+            return '<a href="' . $href . '" target="_blank"><img' . $matches[1] .
+                ' src="' . $thumb_href . '"' . $matches[3] . '/></a>';
         };
 
+        $html_contents = preg_replace_callback(
+            '@<img(.[^src]*)src="(.[^"]+)"(.[^>]*) />@',
+            $callback,
+            $html_contents
+        );
+
+        $router = $this->get('router');
+        $lnk_callback = function ($matches) use ($router) {
+            $href = $router->generate(
+                'bach_htmldoc',
+                array(
+                    'docid' => $matches[2]
+                )
+            );
+            $a = '<a' . $matches[1] . 'href="' . $href .'"';
+            if ( isset($matches[4]) ) {
+                $a .= $matches[4];
+            }
+            $a .= '>';
+            return $a;
+        };
 
         $html_contents = preg_replace_callback(
-            '@<img(.*)src="(.*)"(.+)/>@',
-            $callback,
+            '@<a(.*)href="(.+)\.(htm|html)"(.[^>])?>@',
+            $lnk_callback,
             $html_contents
         );
 
@@ -1013,4 +1084,88 @@ class DefaultController extends SearchController
         return new Response($contents, 200, $headers);
     }
 
+    /**
+     * Retrieve fragment informations from image
+     *
+     * @param string $path Image path
+     * @param string $img  Image name
+     * @param string $ext  Image extension
+     *
+     * @return void
+     */
+    public function infosImageAction($path, $img, $ext)
+    {
+        $qry_string = null;
+        if ( $img !== null && $ext !== null ) {
+            $qry_string = $img . '.' . $ext;
+        }
+        if ( $path !== null ) {
+            $qry_string = $path . '/' . $qry_string;
+        }
+
+        $client = $this->get($this->entryPoint());
+        $query = $client->createSelect();
+        $query->setQuery('dao:' . $qry_string);
+        $query->setFields(
+            'headerId, fragmentid, parents, archDescUnitTitle, cUnittitle'
+        );
+        $query->setStart(0)->setRows(1);
+
+        $rs = $client->select($query);
+        $docs  = $rs->getDocuments();
+        $doc = $docs[0];
+        $parents_docs = null;
+
+        if ( $doc ) {
+            $parents = explode('/', $doc['parents']);
+            if ( count($parents) > 0 ) {
+                $pquery = $client->createSelect();
+                $query = null;
+                foreach ( $parents as $p ) {
+                    if ( $query !== null ) {
+                        $query .= ' | ';
+                    }
+                    $query .= 'fragmentid:"' . $doc['headerId'] . '_' . $p . '"';
+                }
+                $pquery->setQuery($query);
+                $pquery->setFields('fragmentid, cUnittitle');
+                $rs = $client->select($pquery);
+                $parents_docs = $rs->getDocuments();
+            }
+
+            //link to main document
+            $doc_url = $this->get('router')->generate(
+                'bach_ead_html',
+                array(
+                    'docid' => $doc['headerId']
+                )
+            );
+            $response = '<a href="' . $doc_url . '">' .
+                $doc['archDescUnitTitle'] . '</a>';
+
+            //links to parents
+            foreach ( $parents_docs as $pdoc ) {
+                $doc_url = $this->get('router')->generate(
+                    'bach_display_document',
+                    array(
+                        'docid' => $pdoc['fragmentid']
+                    )
+                );
+                $response .= ' » <a href="' . $doc_url . '">' .
+                    $pdoc['cUnittitle'] . '</a>';
+            }
+
+            //link to document itself
+            $doc_url = $this->get('router')->generate(
+                'bach_display_document',
+                array(
+                    'docid' => $doc['fragmentid']
+                )
+            );
+            $response .= ' » <a href="' . $doc_url . '">' .
+                $doc['cUnittitle'] . '</a>';
+        }
+
+        return new Response($response, 200);
+    }
 }

@@ -104,11 +104,6 @@ class Document
     protected $corename;
 
     /**
-     * @ORM\OneToOne(targetEntity="IntegrationTask", mappedBy="document")
-     */
-    protected $task;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     protected $uploaded = false;

@@ -119,7 +119,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- ======================= -->
     <target name="patch-vendors">
         <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Solarium-complex-range.patch" escape="false" />
-        <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Doctrine-erroneous-data-format-for-unserializing.patch" escape="false" />
     </target>
 
     <!-- ================================ -->
@@ -183,6 +182,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- Main QA task -->
     <!-- ============ -->
     <target name="qa" description="Quality Assurance tasks" depends="prepare">
+        <phingcall target="phplint" />
         <phingcall target="pdepend" />
         <phingcall target="phpmd" />
         <phingcall target="phpcpd" />
@@ -197,7 +197,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- Coding standards check -->
     <!-- ====================== -->
     <target name="phpcs">
-        <phpcodesniffer standard="PEAR">
+        <phpcodesniffer standard="PEAR" showWarnings="false">
             <fileset dir="${project.basedir}/${source}">
                 <include name="**/*.php"/>
             </fileset>
@@ -251,6 +251,14 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- ===================== -->
     <target name="phpcb" depends="prepare">
         <exec logoutput="true" command="phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}' --output '${project.basedir}/build/code-browser'" escape="false" />
+    </target>
+
+    <target name="phplint">
+        <phplint haltonfailure="true">
+            <fileset dir=".">
+                <include name="classes/**/*.php" />
+            </fileset>
+        </phplint>
     </target>
 
     <!-- ================ -->

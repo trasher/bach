@@ -64,7 +64,7 @@ services:
 
     bach.home.display_cdc:
         class: Bach\HomeBundle\Twig\DisplayCdc
-        arguments: [ @router, '%cdc_path%' ]
+        arguments: [ @router, @kernel, '%cote_location%', '%cdc_path%' ]
         calls:
             - [setRequest, ['@?request=']]
         tags:
@@ -72,7 +72,7 @@ services:
 
     bach.home.display_html:
         class: Bach\HomeBundle\Twig\DisplayHtml
-        arguments: [ @router, '%cote_location%' ]
+        arguments: [ @router, @kernel, '%cote_location%' ]
         calls:
             - [setRequest, ['@?request=']]
         tags:

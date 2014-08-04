@@ -1,3 +1,30 @@
+0.9.4 (2014-08-04)
+
+- Hide non descriptors tags
+- Fix specific search facets, ordering, etc
+- Prevent to generate browse links in sitemap if browse feature is not enabled
+- Fix intro on default search form
+- Fix accentued characters in attributes
+- Order alphabetically browsed terms and full facets list
+- Use facets instead of term component for browsed fields
+- Remove Solr configuration interfaces, Solr UI can be used to achieve that
+- Disable tooltips in mobile mode
+- Fix date filter from main search pages
+- Fix some fields lenght
+- Fix issue with quotes in various attributes
+- No longer do manual flush since it cause issues in some cases
+- Get titles in full factes list instead of eadids
+- Fix accentued characters search
+- Remove header informations that are not relevant and make noise in search results
+- Group specific descriptors
+- Add a republish command
+- Add legalstatus EAD elements to facets capabilities
+- Fix archdesc missing reference at publication time
+- Add chronological oder for search results
+- Review classification scheme and html documents presentation
+- Add a route to retrieve informations from an image path
+- Update translations
+
 0.9.3 (2014-06-18)
 
 - Configurable facets for specific search forms and matricules

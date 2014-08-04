@@ -29,7 +29,6 @@
 
   ]]></script>
   <document>
-    <entity name="SolrXMLFile" query="">
-    </entity>
+    <entity name="SolrXMLFile" query=""></entity>
   </document>
 </dataConfig>

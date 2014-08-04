@@ -53,10 +53,28 @@ POSSIBILITY OF SUCH DAMAGE.
             <header>
                 <xsl:apply-templates select="eadheader" mode="header"/>
             </header>
-            <xsl:if test="count(archdesc/*) &gt; 1">
-                <div id="docheader">%archdesc%</div>
-            </xsl:if>
-            <xsl:apply-templates select="archdesc/dsc"/>
+            <div id="inventory_contents">
+                <h3 id="presentation">
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Presentation')"/>
+                </h3>
+                <div id="inventory_presentation">
+                    <table>
+                        <xsl:apply-templates mode="presentation"/>
+                    </table>
+                </div>
+                <h3 id="contents">
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Contents')"/>
+                </h3>
+                <div class="css-treeview">
+                    <ul>%contents%</ul>
+                </div>
+                <h3 id="biblioinfos">
+                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliographic informations')"/>
+                </h3>
+                <div>
+                    <xsl:apply-templates select="eadheader/*" mode="header"/>
+                </div>
+            </div>
         </article>
     </xsl:template>
 
@@ -64,17 +82,139 @@ POSSIBILITY OF SUCH DAMAGE.
         <h2>
             <xsl:apply-templates select="filedesc/titlestmt/titleproper" mode="header_title"/>
         </h2>
-    </xsl:template>
-
-    <xsl:template match="archdesc" mode="header">
-        <div id="docheader">
-            <xsl:apply-templates mode="header"/>
-        </div>
+        <xsl:apply-templates select="filedesc/titlestmt/author" mode="header_title"/>
     </xsl:template>
 
     <xsl:template match="titleproper" mode="header_title">
         <xsl:apply-templates/>
     </xsl:template>
+
+    <xsl:template match="author" mode="header_title">
+        <div class="inventory_author">
+            <xsl:apply-templates/>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="archdesc" mode="presentation">
+        <xsl:apply-templates mode="presentation"/>
+    </xsl:template>
+
+    <xsl:template match="did" mode="presentation">
+        <xsl:apply-templates mode="presentation"/>
+    </xsl:template>
+
+    <xsl:template match="unitid|unittitle|unitdate|extent" mode="presentation">
+        <tr>
+            <th>
+                <xsl:choose>
+                    <xsl:when test="@label">
+                        <xsl:value-of select="@label"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="local-name() = 'unittitle'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Title')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'unitdate'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Date')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'unitid'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Class number')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() = 'extent'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Extent')"/>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </th>
+            <td>
+                <xsl:value-of select="."/>
+            </td>
+        </tr>
+    </xsl:template>
+
+    <xsl:template match="physdesc" mode="presentation">
+        <tr>
+            <th>
+                <xsl:choose>
+                    <xsl:when test="@label">
+                        <xsl:value-of select="@label"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Physical description')"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </th>
+            <td>
+                <xsl:apply-templates mode="contents"/>
+            </td>
+        </tr>
+        <xsl:apply-templates mode="presentation"/>
+    </xsl:template>
+
+    <xsl:template match="custodhist|acqinfo" mode="presentation">
+        <tr>
+            <th>
+                <xsl:choose>
+                    <xsl:when test="head">
+                        <xsl:value-of select="head"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="local-name() ='custodhist'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Custodial history')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() ='acqinfo'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Acquisition information')"/>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </th>
+            <td>
+                <xsl:apply-templates mode="contents"/>
+            </td>
+        </tr>
+    </xsl:template>
+
+    <xsl:template match="accessrestrict" mode="presentation">
+        <xsl:choose>
+            <xsl:when test="legalstatus">
+                <tr>
+                    <th>
+                        <xsl:choose>
+                            <xsl:when test="head">
+                                <xsl:value-of select="head"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Legal status')"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </th>
+                    <td><xsl:value-of select="legalstatus"/></td>
+                </tr>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="presentation"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="controlaccess" mode="presentation">
+        <xsl:variable name="nodes" select="subject|geogname|persname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
+        <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::showDescriptors', $nodes, $docid)/descriptors/*"/>
+    </xsl:template>
+
+    <xsl:template match="genreform[@source = 'liste-typedocAC']" mode="contents"/>
+    <xsl:template match="physdesc/extent" mode="contents"/>
+    <xsl:template match="custodhist/head|acqinfo/head" mode="contents"/>
+
+    <!--<xsl:template match="archdesc" mode="header">
+        <div id="docheader">
+            <xsl:apply-templates mode="header"/>
+        </div>
+    </xsl:template>-->
 
     <!-- ***** FILEDESC ***** -->
     <xsl:template match="filedesc" mode="header">
@@ -327,55 +467,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- ***** END FILEDESC ***** -->
 
     <!-- ***** CONTENTS ***** -->
-    <xsl:template match="dsc">
-        <section class="css-treeview">
-            <ul>
-                <xsl:apply-templates select="./c|./c01|./c02|./c03|./c04|./c05|./c06|./c07|./c08|./c09|./c10|./c11|./c12"/>
-            </ul>
-        </section>
-        <div id="bibinfos" class="well">
-            <xsl:attribute name="title">
-                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliographic informations')"/>
-            </xsl:attribute>
-            <xsl:apply-templates select="../../eadheader/*" mode="header"/>
-        </div>
-    </xsl:template>
-
-    <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
-        <xsl:variable name="id">
-            <xsl:choose>
-                <xsl:when test="@id">
-                    <xsl:value-of select="concat(//eadid, '_', @id)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="concat(//eadid, '_', generate-id(.))"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-
-        <li id="{$id}">
-            <xsl:choose>
-                <xsl:when test="count(child::c) &gt; 0">
-                    <input type="checkbox" id="item-{$id}">
-                        <xsl:if test="$expanded = 'true'">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                        </xsl:if>
-                    </input>
-                    <label for="item-{$id}"><xsl:apply-templates select="did"/></label>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:attribute name="class">standalone</xsl:attribute>
-                    <xsl:apply-templates select="did"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test="count(child::c) &gt; 0">
-                <ul>
-                    <xsl:apply-templates select="./c|./c01|./c02|./c03|./c04|./c05|./c06|./c07|./c08|./c09|./c10|./c11|./c12"/>
-                </ul>
-            </xsl:if>
-        </li>
-    </xsl:template>
-
     <xsl:template match="did">
         <xsl:if test="not(unittitle)">
             <h2 property="dc:title"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Untitled unit')"/></h2>
@@ -465,5 +556,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- Per default, display nothing -->
     <xsl:template match="*|@*|node()"/>
     <xsl:template match="*|@*|node()" mode="header"/>
+    <xsl:template match="*|@*|node()" mode="presentation"/>
 
 </xsl:stylesheet>

@@ -69,22 +69,32 @@ class DefaultController extends Controller
     /**
      * Displays current indexed documents
      *
-     * @param int $page Current page
+     * @param string  $type Documents type
+     * @param int     $page Current page
+     * @param boolean $ajax Ajax request
      *
      * @return void
      */
-    public function indexAction($page = 1)
+    public function indexAction($type = 'ead', $page = 1, $ajax = false)
     {
         $show = 30;
+        if ( $page === 0 ) {
+            $page = 1;
+        }
         $repo = $this->getDoctrine()->getRepository('BachIndexationBundle:Document');
-        $documents = $repo->getPublishedDocuments($page, $show);
+
+        $known_types = $this->container->getParameter('bach.types');
+        $documents = $repo->getPublishedDocuments($page, $show, $type);
+        $template = ($ajax === false) ? 'index' : 'published_documents';
 
         return $this->render(
-            'BachIndexationBundle:Indexation:index.html.twig',
+            'BachIndexationBundle:Indexation:' . $template  . '.html.twig',
             array(
+                'current_type'  => $type,
                 'documents'     => $documents,
                 'currentPage'   => $page,
-                'lastPage'      => ceil(count($documents) / $show)
+                'lastPage'      => ceil(count($documents) / $show),
+                'known_types'   => $known_types
             )
         );
     }
@@ -355,9 +365,11 @@ class DefaultController extends Controller
     /**
      * Remove all indexed documents, in both database and Solr
      *
+     * @param string $type Type to remove
+     *
      * @return void
      */
-    public function emptyAction()
+    public function emptyAction($type = 'all')
     {
         $logger = $this->get('logger');
         //first, remove from database
@@ -371,39 +383,42 @@ class DefaultController extends Controller
             //database does not support that. it is ok.
         }
 
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('ead_header', true)
-        );
+        if ( $type == 'ead' or $type == 'all' ) {
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('ead_header', true)
+            );
 
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('ead_dates', true)
-        );
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('ead_indexes', true)
-        );
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('ead_daos', true)
-        );
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('ead_parent_title', true)
-        );
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('ead_file_format', true)
-        );
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('ead_dates', true)
+            );
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('ead_indexes', true)
+            );
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('ead_daos', true)
+            );
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('ead_parent_title', true)
+            );
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('ead_file_format', true)
+            );
+        }
 
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('matricules_file_format', true)
-        );
+        if ( $type == 'matricules' or $type == 'all' ) {
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('matricules_file_format', true)
+            );
+        }
 
-        //FIXME: remove integration task as well?
-        //FIXME: are files not deleted this way?
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('documents', true)
-        );
-
-        $connection->executeUpdate(
-            $platform->getTruncateTableSQL('integration_task', true)
-        );
+        if ( $type == 'all' ) {
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('documents', true)
+            );
+            $connection->executeUpdate(
+                $platform->getTruncateTableSQL('integration_task', true)
+            );
+        }
 
         try {
             $connection->query('SET FOREIGN_KEY_CHECKS=1');
@@ -411,8 +426,22 @@ class DefaultController extends Controller
             //database does not support that. it is ok.
         }
 
+        if ( $type !== 'all' ) {
+            //TODO: specific type removal
+            $connection->query(
+                str_replace(
+                    '%ext',
+                    $type,
+                    'DELETE FROM documents WHERE extension="%ext"'
+                )
+            );
+        }
+
         //remove solr indexed documents
         $known_types = $this->container->getParameter('bach.types');
+        if ( $type !== 'all' ) {
+            $known_types = array($type);
+        }
         foreach ( $known_types as $type ) {
             $client = $this->get('solarium.client.' . $type);
             $update = $client->createUpdate();
@@ -548,7 +577,10 @@ class DefaultController extends Controller
             return new RedirectResponse(
                 $this->get("router")->generate("bach_indexation_homepage")
             );
+        } else {
+            return $this->render(
+                'BachIndexationBundle:Indexation:validation.html.twig'
+            );
         }
-
     }
 }

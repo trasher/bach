@@ -169,6 +169,9 @@ abstract class FileFormat implements NotifyPropertyChanged
      */
     public function setDocument(Document $document = null)
     {
+        if ( $this->document === null ) {
+            $this->onPropertyChanged('document', $this->document, $document);
+        }
         $this->document = $document;
         return $this;
     }

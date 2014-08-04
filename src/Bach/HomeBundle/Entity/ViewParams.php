@@ -60,6 +60,7 @@ class ViewParams
     const ORDER_RELEVANCE = 0;
     const ORDER_TITLE = 1;
     const ORDER_DOC_LOGIC = 2;
+    const ORDER_CHRONO = 3;
 
     const ORDER_ASC = 0;
     const ORDER_DESC = 1;
@@ -242,6 +243,7 @@ class ViewParams
         if ( $order === self::ORDER_RELEVANCE
             || $order === self::ORDER_TITLE
             || $order === self::ORDER_DOC_LOGIC
+            || $order === self::ORDER_CHRONO
         ) {
             $this->_order = $order;
         } else {

@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block intro %}
     {% set intro_page = 'intro.html' %}
-    {% if search_form is defined %}
+    {% if search_form is defined and search_form != 'default' %}
         {% set intro_page = 'intro_' ~ search_form ~ '.html' %}
     {% endif %}
     {% if html_intro_exists(intro_page|raw) %}
@@ -79,22 +79,32 @@ POSSIBILITY OF SUCH DAMAGE.
                         </ul>
                     {%- endif -%}
 
-                    <h3 property="dc:title">
-                        <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
-                        {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
-                            {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
-                        {%- elseif document.cUnittitle is defined -%}
-                            {{ document.cUnittitle }}
-                        {%- else -%}
-                            {{ _('Untitled unit') }}
-                        {%- endif -%}
-                        {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
-                            <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
-                        {%- endif -%}
-                        </a>
-                    </h3>
+                    <header>
+                        <h3 property="dc:title">
+                            <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
+                            {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
+                                {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
+                            {%- elseif document.cUnittitle is defined -%}
+                                {{ document.cUnittitle }}
+                            {%- else -%}
+                                {{ _('Untitled unit') }}
+                            {%- endif -%}
+                            {%- if document.cDate is defined and document.cDate[0] is defined and document.cDate[0] != '' -%}
+                                <span class="date" property="dc:date"> • {{ document.cDate[0] }}</span>
+                            {%- endif -%}
+                            </a>
+                        </h3>
+                    </header>
                     {% if view == 'list' or view == 'txtlist' %}
-                    {{ displayFragment(document.fragment, document.fragmentid)|raw }}
+                    <aside>
+                        {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                        {% if html_export_exists(document.headerId) %}
+                            <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('Locate in document tree') }}</a>
+                        {% else %}
+                            <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
+                        {% endif %}
+                    </aside>
+                    {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}
                     {% endif %}
                     </div>
                 </article>
@@ -116,7 +126,7 @@ POSSIBILITY OF SUCH DAMAGE.
         var _height = $(window).height() * 0.8;
 
         $.ajax({
-            url: $(this).attr('href') + '/ajax',
+            url: $(this).attr('href') + '/ajax?search_form={{ search_form }}',
             {% include '::loader.js.twig' with {'error_message': _('An error occured loading document :(')} %}
             success: function(data) {
                 _elt.append(data);

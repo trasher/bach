@@ -47,6 +47,7 @@ namespace Bach\HomeBundle\Twig;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
 Use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Twig extension to display an EAD document as HTML
@@ -61,20 +62,27 @@ Use Symfony\Component\HttpFoundation\File\File;
  */
 class DisplayHtml extends \Twig_Extension
 {
-    private $_router;
-    private $_request;
-    private $_cote_location;
+    protected $router;
+    protected $request;
+    protected $cote_location;
+    protected $prod;
 
     /**
      * Main constructor
      *
      * @param UrlGeneratorInterface $router   Router
+     * @param Kernel                $kernel   App kernel
      * @param string                $cote_loc Cote location
      */
-    public function __construct(Router $router, $cote_loc)
+    public function __construct(Router $router, Kernel $kernel, $cote_loc)
     {
-        $this->_router = $router;
-        $this->_cote_location = $cote_loc;
+        $this->router = $router;
+        if ( $kernel->getEnvironment() !== 'dev' ) {
+            $this->prod = true;
+        } else {
+            $this->prod = false;
+        }
+        $this->cote_location = $cote_loc;
     }
 
     /**
@@ -86,7 +94,7 @@ class DisplayHtml extends \Twig_Extension
      */
     public function setRequest(Request $request = null)
     {
-        $this->_request = $request;
+        $this->request = $request;
     }
 
     /**
@@ -97,41 +105,45 @@ class DisplayHtml extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'displayHtml' => new \Twig_Function_Method($this, 'display')
+            'displayHtml'       => new \Twig_Function_Method($this, 'display'),
+            'displayHtmlScheme' => new \Twig_Function_Method($this, 'scheme')
         );
     }
 
     /**
      * Displays an EAD document as HTML with XSLT
      *
-     * @param string  $docid    Document id
-     * @param string  $xml_file Document
-     * @param boolean $expanded Expand tree on load
+     * @param string $docid    Document id
+     * @param string $xml_file Document
      *
      * @return string
      */
-    public function display($docid, $xml_file, $expanded)
+    public function display($docid, $xml_file)
     {
-        $cache = new \Doctrine\Common\Cache\ApcCache();
         $cached_doc = null;
-        $cached_doc_date = $cache->fetch('html_date_' . $docid);
+        //do not use cache when not in prod
+        if ( $this->prod === true ) {
+            $cache = new \Doctrine\Common\Cache\ApcCache();
+            $cached_doc = null;
+            $cached_doc_date = $cache->fetch('html_date_' . $docid);
 
-        $redo = true;
-        if ( $cached_doc_date ) {
-            //check if document is newer than cache
-            $f = new File($xml_file);
+            $redo = true;
+            if ( $cached_doc_date ) {
+                //check if document is newer than cache
+                $f = new File($xml_file);
 
-            $change_date = new \DateTime();
-            $last_file_change = $f->getMTime();
-            $change_date->setTimestamp($last_file_change);
+                $change_date = new \DateTime();
+                $last_file_change = $f->getMTime();
+                $change_date->setTimestamp($last_file_change);
 
-            if ( $cached_doc_date > $change_date ) {
-                $redo = false;
+                if ( $cached_doc_date > $change_date ) {
+                    $redo = false;
+                }
             }
-        }
 
-        if ( !$redo ) {
-            $cached_doc = $cache->fetch('html_' . $docid);
+            if ( !$redo ) {
+                $cached_doc = $cache->fetch('html_' . $docid);
+            }
         }
 
         if ( !$cached_doc ) {
@@ -139,25 +151,8 @@ class DisplayHtml extends \Twig_Extension
 
             $xml_doc = simplexml_load_file($xml_file);
 
-            $archdesc_doc = clone $xml_doc;
-            unset($archdesc_doc->archdesc->eadheader);
-            unset($archdesc_doc->archdesc->dsc);
-
-            $display = new DisplayEADFragment(
-                $this->_router,
-                false,
-                $this->_cote_location
-            );
-            $display->setRequest($this->_request);
-            $archdesc_xml = $display->display(
-                $archdesc_doc->archdesc->asXML(),
-                $docid,
-                true
-            );
-            $archdesc_xml = simplexml_load_string(
-                '<root>' . $archdesc_xml . '</root>'
-            );
-            $archdesc_html = $archdesc_xml->div->asXML();
+            $archdesc_html = $this->_renderArchdesc($xml_doc, $docid);
+            $contents = $this->renderContents($xml_doc, $docid);
 
             $proc = new \XsltProcessor();
             $proc->importStylesheet(
@@ -165,15 +160,25 @@ class DisplayHtml extends \Twig_Extension
             );
 
             $proc->setParameter('', 'docid', $docid);
-            if ( $expanded === true ) {
-                $proc->setParameter('', 'expanded', 'true');
-            }
             $proc->registerPHPFunctions();
 
+            unset($xml_doc->archdesc->dsc);
             $html .= $proc->transformToXml($xml_doc);
 
-            $router = $this->_router;
-            $request = $this->_request;
+            $html = preg_replace(
+                array(
+                    '/%archdesc%/',
+                    '/%contents%/'
+                ),
+                array(
+                    $archdesc_html,
+                    $contents
+                ),
+                $html
+            );
+
+            $router = $this->router;
+            $request = $this->request;
             $callback = function ($matches) use ($router, $request) {
                 $href = '';
                 if ( count($matches) > 2 ) {
@@ -208,19 +213,107 @@ class DisplayHtml extends \Twig_Extension
                 $html
             );
 
-            $html = preg_replace(
-                '/%archdesc%/',
-                $archdesc_html,
-                $html
-            );
-
-            $cache->save('html_' . $docid, $html);
-            $cache->save('html_date_' . $docid, new \DateTime());
+            if ( $this->prod === true ) {
+                $cache->save('html_' . $docid, $html);
+                $cache->save('html_date_' . $docid, new \DateTime());
+            }
         } else {
             $html = $cached_doc;
         }
 
         return $html;
+    }
+
+    /**
+     * Render archdesc
+     *
+     * @param simple_xml $xml_doc XML document
+     * @param string     $docid   Document id
+     *
+     * @return string
+     */
+    private function _renderArchdesc($xml_doc, $docid)
+    {
+        $archdesc_doc = clone $xml_doc;
+        unset($archdesc_doc->archdesc->eadheader);
+        unset($archdesc_doc->archdesc->dsc);
+
+        $display = new DisplayEADFragment(
+            $this->router,
+            false,
+            $this->cote_location
+        );
+        $display->setRequest($this->request);
+        $archdesc_xml = $display->display(
+            $archdesc_doc->archdesc->asXML(),
+            $docid,
+            true
+        );
+        $archdesc_xml = simplexml_load_string(
+            '<root>' . str_replace('<br>', '<br/>', $archdesc_xml) . '</root>'
+        );
+        $archdesc_html = $archdesc_xml->div->asXML();
+        return $archdesc_html;
+    }
+
+    /**
+     * Render contents
+     *
+     * @param simple_xml $xml_doc XML document
+     * @param string     $docid   Document id
+     *
+     * @return string
+     */
+    protected function renderContents($xml_doc, $docid)
+    {
+        $proc = new \XsltProcessor();
+        $proc->importStylesheet(
+            simplexml_load_file(__DIR__ . '/display_html_contents.xsl')
+        );
+
+        $proc->setParameter('', 'docid', $docid);
+        $proc->registerPHPFunctions();
+
+        $up_nodes = $xml_doc->xpath('/ead/archdesc/dsc/c');
+
+        $contents = '';
+        foreach ( $up_nodes as $up_node ) {
+            $contents .= $proc->transformToXml(
+                simplexml_load_string($up_node->asXML())
+            );
+        }
+        return $contents;
+    }
+
+    /**
+     * Displays an EAD document scheme as HTML with XSLT
+     *
+     * @param string $docid    Document id
+     * @param string $xml_file Document
+     *
+     * @return string
+     */
+    public function scheme($docid, $xml_file)
+    {
+        $xml_doc = simplexml_load_file($xml_file);
+
+        $proc = new \XsltProcessor();
+        $proc->importStylesheet(
+            simplexml_load_file(__DIR__ . '/display_html_scheme.xsl')
+        );
+
+        $proc->setParameter('', 'docid', $docid);
+        $proc->registerPHPFunctions();
+
+        $up_nodes = $xml_doc->xpath('/ead/archdesc/dsc/c');
+
+        $contents = '';
+        foreach ( $up_nodes as $up_node ) {
+            $contents .= $proc->transformToXml(
+                simplexml_load_string($up_node->asXML())
+            );
+        }
+        return $contents;
     }
 
     /**
@@ -293,6 +386,36 @@ class DisplayHtml extends \Twig_Extension
         case 'Revision description':
             return _('Revision description');
             break;
+        case 'Title':
+            return _('Title');
+            break;
+        case 'Date':
+            return _('Date');
+            break;
+        case 'Class number':
+            return _('Class number');
+            break;
+        case 'Presentation':
+            return _('Presentation');
+            break;
+        case 'Contents':
+            return _('Contents');
+            break;
+        case 'Physical description':
+            return _('Physical description');
+            break;
+        case 'Extent':
+            return _('Extent');
+            break;
+        case 'Custodial history':
+            return _('Custodial history');
+            break;
+        case 'Acquisition information':
+            return _('Acquisition information');
+            break;
+        case 'Legal status':
+            return _('Legal status');
+            break;
         default:
             //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?
@@ -303,6 +426,83 @@ class DisplayHtml extends \Twig_Extension
         }
     }
 
+    /**
+     * Display grouped descriptors
+     *
+     * @param DOMElement $nodes Nodes
+     * @param string     $docid Document id
+     *
+     * @return string
+     */
+    public static function showDescriptors($nodes, $docid)
+    {
+        $output = array();
+
+        foreach ( $nodes as $node ) {
+            $n = simplexml_import_dom($node);
+
+            $name = null;
+            if ( isset($n['source']) ) {
+                $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['source'];
+            } else if ( isset($n['role']) ) {
+                $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['role'];
+            } else {
+                $name = $n->getName();
+            }
+
+            if ( isset($n['rules']) ) {
+                $output[$name]['label'] = $n['rules'] . ' :';
+            } else {
+                $output[$name]['label'] = DisplayEADFragment::i18nFromXsl($name . ':');
+            }
+
+            switch ( $n->getName() ) {
+            case 'subject':
+                $output[$name]['property'] = 'dc:subject';
+                break;
+            case 'geogname':
+                $output[$name]['property'] = 'gn:name';
+                break;
+            case 'name':
+            case 'persname':
+            case 'corpname':
+                $output[$name]['property'] = 'foaf:name';
+                break;
+            }
+
+            $output[$name]['values'][] = (string)$n;
+        }
+
+        $ret = '<descriptors>';
+        foreach ( $output as $elt=>$out) {
+            $ret .= '<tr>';
+            $ret .= '<th>' . $out['label'] . '</th> ';
+            $ret .= '<td>';
+            $count = 0;
+            foreach ( $out['values'] as $value ) {
+                $count++;
+                $ret .= '<a link="%%%' . $elt . '::' . str_replace('"', '|quot|', $value) . '%%%"';
+                $ret .= ' about="' . $docid . '"';
+
+                if ( isset($out['property']) ) {
+                    $ret .= ' property="' . $out['property'] .
+                        '" content="' . htmlspecialchars($value) . '"';
+                }
+                $ret .= '>' . $value . '</a>';
+
+                if ( $count < count($out['values']) ) {
+                    $ret .= ', ';
+                }
+            }
+            $ret .= '</td>';
+            $ret .='</tr>';
+        }
+        $ret .='</descriptors>';
+
+        $doc = new \DOMDocument();
+        $doc->loadXML($ret);
+        return $doc;
+    }
     /**
      * Extension name
      *

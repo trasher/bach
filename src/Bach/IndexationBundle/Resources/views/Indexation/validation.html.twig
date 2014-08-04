@@ -1,0 +1,18 @@
+    {% if app.session.flashbag.has('documentvalidation') %}
+    <div id="flash-warnings" class="noscript">
+        <h3>{{ _('Validation results') }}</h3>
+        {% for flashMessage in app.session.flashbag.get('documentvalidation') %}
+        <div class="flash-message">
+            {{ flashMessage | raw }}
+        </div>
+        {% endfor %}
+        {% if app.session.flashbag.has('documentvalidation_errors') %}
+            <p><a href="#" id="toggleerrors">{{ _('Show/hide errors') }}</a></p>
+            <div class="flash-errors hidden">
+            {% for flashMessage in app.session.flashbag.get('documentvalidation_errors') %}
+                <p>{{ flashMessage | raw }}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}

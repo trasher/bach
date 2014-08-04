@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% extends '::base.html.twig' %}
 
-{% block title_extend %} - {{ _('View document %doc')|replace({'%doc': docid}) }}{% endblock %}
+{% block title_extend %} - {% if cdc is not defined %}{{ _('View document %doc')|replace({'%doc': docid}) }}{% else %}{{ _('Classification scheme') }}{% endif %}{% endblock %}
 
 {% block css %}
     <link href="{{ asset('css/treeview.css') }}" type="text/css" rel="stylesheet" media="screen" />
@@ -50,18 +50,8 @@ POSSIBILITY OF SUCH DAMAGE.
         if ( typeof _isOldIE == 'undefined' ) {
             _p.append($('<a href="#" id="doccollapse">{{ _('Collapse all')|escape('js') }}</a> | <a href="#" id="docexpand">{{ _('Expand all')|escape('js') }}</a><br/>'));
         }
-        _p.append($('<a href="#" id="headercollapse">{{ _('Display/Hide document informations')|escape('js') }}</a>'));
-        var _bibinfos = $('#bibinfos');
-        if ( _bibinfos.length > 0 ) {
-            _bibinfos.dialog({
-                autoOpen: false,
-                height: _height,
-                width: _width,
-                modal: true
-            });
-            _p.append($('<br/><a href="#" id="show_bibinfos">{{ _('Show bibliographic informations')|escape('js') }}</a>'));
-        }
-        $('#container > article').prepend(_p);
+
+        $('.css-treeview').prepend(_p);
         $('#doccontrol a').on('click', function(){
             var _this = $(this);
             if ( typeof _isOldIE == 'undefined' ) {
@@ -72,16 +62,73 @@ POSSIBILITY OF SUCH DAMAGE.
                     $('input[type=checkbox]').prop('checked', true);
                 }
             }
-            if ( _this.attr('id') == 'headercollapse' ) {
-                $('#docheader').toggle();
-            }
-            if ( _this.attr('id') == 'show_bibinfos' ) {
-                _bibinfos.dialog('open');
-            }
             return false;
         });
-    });
 
+        $('#inventory_scheme, .accordion').accordion({
+            icons: {
+                header: 'ui-icon-circle-plus',
+                activeHeader: 'ui-icon-circle-minus'
+            },
+            heightStyle: 'content',
+            collapsible: true,
+            active: false
+        });
+
+        $('#inventory_contents').accordion({
+            heightStyle: 'content',
+            collapsible: true,
+            animate: false,
+            active: 1
+        });
+
+        $('#inventory_scheme .ui-accordion-header a').on('click', function(){
+            if ( $('#inventory_contents').accordion('option', 'active') != 1 ) {
+                $('#inventory_contents').accordion('option', 'active', 1)
+            }
+            window.location.href = $(this).attr('href');
+        });
+
+        if ($(this).scrollTop()) {
+            $('#back2top').fadeOut();
+        }
+        $('#wrapper').scroll(function() {
+            if ($(this).scrollTop()) {
+                $('#back2top').fadeIn();
+            } else {
+                $('#back2top').fadeOut();
+            }
+        });
+
+        $('#inventory_summary_mnu a').on('click', function(){
+            var _index = null;
+            var _attr = $(this).attr('href').replace('#', '');
+
+            if ( _attr == 'presentation' ) {
+                _index = 0;
+            } else if ( _attr == 'contents' ) {
+                _index = 1;
+            } else if ( _attr == 'biblioinfos' ) {
+                _index = 2;
+            }
+
+            $('#inventory_contents').accordion('option', 'active', _index);
+
+            return false;
+        });
+
+        $('.extended_informations').each(function(){
+            var _this = $(this);
+            _this.hide();
+            var _parent = _this.parent('li');
+            var _expand = $('<a class="expand" href="#' + _parent.attr('id') + '" title="{{ _('Expand/Hide informations') }}">{{ _('Informations') }}</a>');
+            _expand.on('click', function(){
+                $(this).toggleClass('expanded').nextAll('.extended_informations').toggle();
+                return false;
+            });
+            _parent.prepend(_expand);
+        });
+    });
     {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
 {% endblock %}
 
@@ -135,10 +182,16 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block container %}
-    {{ displayHtml(docid, xml_file, expanded)|raw }}
+    {% if cdc is not defined %}
+        {{ displayHtml(docid, xml_file)|raw }}
+    {% else %}
+        {{ displayCdc(docs)|raw }}
+    {% endif %}
+    <a href="#container" id="back2top">{{ _('Back to top') }}</a>
 {% endblock %}
 
 {% block menu %}
+    {% if cdc is not defined %}
     <form action="{{ path('bach_do_search') }}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
             {{ form_widget(form.query) }}
@@ -149,5 +202,26 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </form>
     <p>{{ _('Search against current document') }}</p>
+    {% endif %}
+    <h2>{{ _('Summary') }}</h2>
+    <ul id="inventory_summary_mnu">
+        <li>
+            <a href="#presentation">{{ _('Presentation') }}</a>
+        </li>
+        <li>
+            <a href="#contents">{{ _('Contents') }}</a>
+        </li>
+        <li>
+            <a href="#biblioinfos">{{ _('Bibliographic informations') }}</a>
+        </li>
+    </ul>
+    <h2>{{ _('Inventory scheme') }}</h2>
+    <div id="inventory_scheme">
+    {% if cdc is not defined %}
+        {{ displayHtmlScheme(docid, xml_file)|raw }}
+    {% else %}
+        {{ displayCdcScheme(docid, xml_file, docs)|raw }}
+    {% endif %}
+    </div>
 {% endblock %}
 

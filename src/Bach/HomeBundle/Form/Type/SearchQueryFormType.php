@@ -1,6 +1,6 @@
 <?php
 /**
- * Bach solr XML attribute
+ * Bach search form type
  *
  * PHP version 5
  *
@@ -35,46 +35,74 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Administration
+ * @category Search
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\AdministrationBundle\Entity\SolrSchema;
+namespace Bach\HomeBundle\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Bach solr XML attribute
+ * Bach search form type
  *
- * @category Administration
+ * PHP version 5
+ *
+ * @category Search
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class SolrXMLAttribute
+class SearchQueryFormType extends AbstractType
 {
-    protected $name;
-    protected $value;
+    private $_value = "";
 
     /**
-     * Instanciate XML Attribute
+     * Instanciate search form
      *
-     * @param string $name  Attribute name
-     * @param string $value Attribute value
+     * @param string $value Search term (default to empty string)
+     */
+    public function __construct($value = '')
+    {
+        $this->_value = $value;
+    }
+
+    /**
+     * Builds form
+     *
+     * @param FormBuilderInterface $builder Builder
+     * @param array                $options Options
      *
      * @return void
      */
-    public function __construct($name, $value = null)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ( $name == null ) {
-            throw new \RuntimeException(
-                'SolrXMLAttribute must be instanciated with a name!'
-            );
-        }
-        $this->name = $name;
-        $this->value = $value;
+        $builder->add(
+            'query',
+            'text',
+            array(
+                'attr'  => array(
+                    'placeholder'   => _('Enter your search'),
+                     'value'        => $this->_value,
+                     'autocomplete' => 'off',
+                     'title'        => _('Type one or more terms; you can use AND, OR, NOT operators or quoted expressions')
+                )
+            )
+        )->add(
+            'perform_search',
+            'submit',
+            array(
+                'label' => _('Search'),
+                'attr'  => array(
+                    'class' => 'btn btn-primary'
+                )
+            )
+        );
     }
 
     /**
@@ -84,29 +112,6 @@ class SolrXMLAttribute
      */
     public function getName()
     {
-        return $this->name;
-    }
-
-    /**
-     * Set attribute's value
-     *
-     * @param string $value Value
-     *
-     * @return SolrXMLAttribute
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-        return $this;
-    }
-
-    /**
-     * Get attribute's value
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->value;
+        return 'searchQuery';
     }
 }

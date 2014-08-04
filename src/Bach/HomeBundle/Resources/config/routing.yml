@@ -36,8 +36,8 @@ bach_homepage:
         _method: GET
 
 bach_search:
-    pattern: /search/{query_terms}/{page}/{facet_name}
-    defaults: { _controller: BachHomeBundle:Default:search, 'query_terms': null, 'page': 1, 'facet_name': null }
+    pattern: /search/{form_name}/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:Default:search, 'form_name': 'default', 'query_terms': null, 'page': 1, 'facet_name': null }
     requirements:
         _method: GET
         page: \d+
@@ -48,13 +48,6 @@ bach_search_form_homepage:
     requirements:
         _method: GET
 
-bach_search_form:
-    pattern: /search_form/{form_name}/{query_terms}/{page}/{facet_name}
-    defaults: { _controller: BachHomeBundle:Default:search, 'query_terms': null, 'page': 1, 'facet_name': null }
-    requirements:
-        _method: GET
-        page: \d+
-
 bach_do_search:
     pattern:  /do-search/{form_name}
     defaults: { _controller: BachHomeBundle:Default:doSearch, 'form_name': null }
@@ -62,8 +55,8 @@ bach_do_search:
         _method: POST
 
 bach_browse:
-    pattern: /browse/{part}/{show_all}/{ajax}
-    defaults: { _controller: BachHomeBundle:Default:browse, part: '', 'show_all': false, 'ajax': false }
+    pattern: /browse/{part}/{ajax}
+    defaults: { _controller: BachHomeBundle:Default:browse, part: '', 'ajax': false }
     requirements:
         _method: GET
 
@@ -115,14 +108,14 @@ bach_get_file:
         name: '.+'
 
 bach_fullfacet:
-    pattern: /fullfacet/{query_terms}/{name}
+    pattern: /fullfacet/{form_name}/{query_terms}/{name}
     defaults: { _controller: BachHomeBundle:Default:fullFacet }
     requirements:
         _method: GET|POST
 
 bach_geojson:
-    pattern: /geojson/{search_form}
-    defaults: {_controller: BachHomeBundle:Default:getGeoJson, search_form: null}
+    pattern: /geojson/{form_name}
+    defaults: {_controller: BachHomeBundle:Default:getGeoJson, form_name: null}
     requirements:
         _method: GET
 
@@ -189,7 +182,7 @@ bach_matricules_search:
 
 bach_matricules_fullfacet:
     pattern: /matricules/fullfacet/{query_terms}/{name}
-    defaults: { _controller: BachHomeBundle:Matricules:fullFacet }
+    defaults: { _controller: BachHomeBundle:Matricules:fullFacet, form_name: 'default' }
     requirements:
         _method: GET|POST
 
@@ -206,8 +199,8 @@ bach_display_matricules:
         _method: GET
 
 bach_ead_html:
-    pattern: /document/{docid}/{expanded}
-    defaults: { _controller: BachHomeBundle:Default:eadHtml, 'expanded': false }
+    pattern: /document/{docid}
+    defaults: { _controller: BachHomeBundle:Default:eadHtml }
     requirements:
         _method: GET
 
@@ -237,3 +230,23 @@ dynamic_css:
     defaults: { _controller: BachHomeBundle:Default:dynamicCss, _format: css }
     requirements:
         _method: GET
+
+remote_image_infos_nopath:
+    pattern: /infosimage/{img}.{ext}
+    defaults: { _controller: BachHomeBundle:Default:infosImage, path: null}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+remote_image_infos:
+    pattern: /infosimage/{path}/{img}.{ext}
+    defaults: { _controller: BachHomeBundle:Default:infosImage}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+remote_image_infos_noimg:
+    pattern: /infosimage/{path}
+    defaults: { _controller: BachHomeBundle:Default:infosImage, img: null, ext: null}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+

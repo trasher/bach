@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/IndexationBundle@20131025143701\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-18 11:50+0200\n"
-"PO-Revision-Date: 2014-06-18 11:52+0100\n"
+"POT-Creation-Date: 2014-07-28 09:23+0200\n"
+"PO-Revision-Date: 2014-07-28 09:24+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_US\n"
@@ -33,178 +33,144 @@ msgstr "Add to queue"
 msgid "Publish"
 msgstr "Publish"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:334
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:344
 msgid "Document %doc successfully deleted from Solr in %time"
 msgstr "Document %doc successfully deleted from Solr in %time"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:342
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:352
 #, php-format
 msgid "Solr failed to remove document %doc!"
 msgstr "Solr failed to remove document %doc!"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:430
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:459
 msgid "%core core has been truncated in %time"
 msgstr "%core core has been truncated in %time"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:438
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:447
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:467
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:476
 #, php-format
 msgid "Solr failed to empty %core core!"
 msgstr "Solr failed to empty %core core!"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:473
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:502
 msgid "Could not validate non EAD documents (for now)."
 msgstr "Could not validate non EAD documents (for now)."
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:494
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:523
 #, php-format
 msgid "Corresponding file for %docid document no longer exists on disk."
 msgstr "Corresponding file for %docid document no longer exists on disk."
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:522
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:551
 msgid "Document %docid% is valid and DTD compliant!"
 msgstr "Document %docid% is valid and DTD compliant!"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:528
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:557
 msgid "%type% document %docid% is not valid!"
 msgstr "%type% document %docid% is not valid!"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:118
-msgid "Publication tasks"
-msgstr "Publication tasks"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:125
-msgid "Remove all finished tasks"
-msgstr "Remove all finished tasks"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:127
-msgid "Remove finished"
-msgstr "Remove finished"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:131
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:534
-msgid "Refresh"
-msgstr "Refresh"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:141
-msgid "File name"
-msgstr "File name"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:145
-msgid "Format"
-msgstr "Format"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:149
-msgid "Size"
-msgstr "Size"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:191
-msgid "No publication in queue"
-msgstr "No publication in queue"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:204
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:824
-msgid "Publication queue"
-msgstr "Publication queue"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:209
-msgid ""
-"Publication queue list all documents that are waiting to be published. "
-"Publication happens depending on server parameters. Line color will inform "
-"you about publication success or failure."
-msgstr ""
-"Publication queue list all documents that are waiting to be published. "
-"Publication happens depending on server parameters. Line color will inform "
-"you about publication success or failure."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:318
-msgid "Send a new file"
-msgstr "Send a new file"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:362
-msgid "Publication help"
-msgstr "Publication help"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:367
-msgid ""
-"Publication process will extract all useful informations from a file. Select "
-"file you want to publish and its format.<br/>Then you will choose either to "
-"proceed publication, or to add the job to the queue for a further "
-"publication (used for bg files)."
-msgstr ""
-"Publication process will extract all useful informations from a file. Select "
-"file you want to publish and its format.<br/>Then you will choose either to "
-"proceed publication, or to add the job to the queue for a further "
-"publication (used for bg files)."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:457
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:107
 msgid "Validation results"
 msgstr "Validation results"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:481
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:131
 msgid "Show/hide errors"
 msgstr "Show/hide errors"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:517
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:814
-msgid "Published documents"
-msgstr "Published documents"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:211
+msgid "Publication tasks"
+msgstr "Publication tasks"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:524
-msgid "Remove all published documents"
-msgstr "Remove all published documents"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:218
+msgid "Remove all finished tasks"
+msgstr "Remove all finished tasks"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:526
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:220
+msgid "Remove finished"
+msgstr "Remove finished"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:224
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:606
+msgid "Refresh"
+msgstr "Refresh"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:234
+msgid "File name"
+msgstr "File name"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:238
+msgid "Format"
+msgstr "Format"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:242
+msgid "Size"
+msgstr "Size"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:284
+msgid "No publication in queue"
+msgstr "No publication in queue"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:297
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1041
+msgid "Publication queue"
+msgstr "Publication queue"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:302
+msgid ""
+"Publication queue list all documents that are waiting to be published. "
+"Publication happens depending on server parameters. Line color will inform "
+"you about publication success or failure."
+msgstr ""
+"Publication queue list all documents that are waiting to be published. "
+"Publication happens depending on server parameters. Line color will inform "
+"you about publication success or failure."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:411
+msgid "Send a new file"
+msgstr "Send a new file"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:455
+msgid "Publication help"
+msgstr "Publication help"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:460
+msgid ""
+"Publication process will extract all useful informations from a file. Select "
+"file you want to publish and its format.<br/>Then you will choose either to "
+"proceed publication, or to add the job to the queue for a further "
+"publication (used for bg files)."
+msgstr ""
+"Publication process will extract all useful informations from a file. Select "
+"file you want to publish and its format.<br/>Then you will choose either to "
+"proceed publication, or to add the job to the queue for a further "
+"publication (used for bg files)."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:596
+msgid "Remove all published documents on all cores"
+msgstr "Remove all published documents on all cores"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:598
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:822
 msgid "Remove all"
 msgstr "Remove all"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:532
-msgid "Refresh list"
-msgstr "Refresh list"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:604
+msgid "Refresh all cores list"
+msgstr "Refresh all cores list"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:548
-msgid "Identifier"
-msgstr "Identifier"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:657
+msgid "Loading..."
+msgstr "Loading..."
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:552
-msgid "Type"
-msgstr "Type"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:659
+msgid "Currently loading..."
+msgstr "Currently loading..."
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:556
-msgid "File"
-msgstr "File"
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:670
+msgid "An error occured loading tab :("
+msgstr "An error occured loading tab :("
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:560
-msgid "Creation"
-msgstr "Creation"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:564
-msgid "Modification"
-msgstr "Modification"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:573
-msgid "Remove selected documents"
-msgstr "Remove selected documents"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:575
-msgid "Remove selected"
-msgstr "Remove selected"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:622
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:626
-msgid "Y-m-d h:i:s A"
-msgstr "Y-m-d h:i:s A"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:634
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:638
-msgid "Validate against EAD DTD"
-msgstr "Validate against EAD DTD"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:655
-msgid "No documents published yet."
-msgstr "No documents published yet."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:676
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:684
 msgid ""
 "Do you really want to remove all published document?\n"
 "\n"
@@ -214,28 +180,86 @@ msgstr ""
 "\n"
 "This can not be undone!"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:687
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:695
 msgid "Please select at least one document."
 msgstr "Please select at least one document."
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:694
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:702
 msgid "Do you want to remove selected document?"
 msgstr "Do you want to remove selected document?"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:699
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:707
 #, php-format
 msgid "Do you want to remove all %count selected documents?"
 msgstr "Do you want to remove all %count selected documents?"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:803
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:812
+msgid "Published \"%type\" documents"
+msgstr "Published \"%type\" documents"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:820
+msgid "Remove all published documents for \"%type\""
+msgstr "Remove all published documents for \"%type\""
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:837
+msgid "Remove selected documents"
+msgstr "Remove selected documents"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:839
+msgid "Remove selected"
+msgstr "Remove selected"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:845
+msgid "Identifier"
+msgstr "Identifier"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:849
+msgid "File"
+msgstr "File"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:853
+msgid "Creation"
+msgstr "Creation"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:857
+msgid "Modification"
+msgstr "Modification"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:905
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:909
+msgid "Y-m-d h:i:s A"
+msgstr "Y-m-d h:i:s A"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:917
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:921
+msgid "Validate against EAD DTD"
+msgstr "Validate against EAD DTD"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:938
+msgid "No documents published yet."
+msgstr "No documents published yet."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:951
+msgid "Document validation"
+msgstr "Document validation"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:959
+msgid "An error occured trying to validate document :("
+msgstr "An error occured trying to validate document :("
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1020
 msgid "Manage publishing"
 msgstr "Manage publishing"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:835
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1031
+msgid "Published documents"
+msgstr "Published documents"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1052
 msgid "Publish new file"
 msgstr "Publish new file"
 
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:840
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1057
 msgid "Help"
 msgstr "Help"
 
@@ -244,6 +268,7 @@ msgid "Proceed publication queue"
 msgstr "Proceed publication queue"
 
 #: src/Bach/IndexationBundle/Command/ListCommand.php:109
+#: src/Bach/IndexationBundle/Command/RepublishCommand.php:109
 #: src/Bach/IndexationBundle/Command/PublishCommand.php:152
 msgid "Unknown type! Please choose one of:"
 msgstr "Unknown type! Please choose one of:"
@@ -455,7 +480,7 @@ msgstr "Document %doc has been successfully published."
 msgid "Command canceled by user."
 msgstr "Command canceled by user."
 
-#: src/Bach/IndexationBundle/Entity/Document.php:175
+#: src/Bach/IndexationBundle/Entity/Document.php:170
 #, php-format
 msgid "Cannot create upload directory %dir"
 msgstr "Cannot create upload directory %dir"
@@ -467,6 +492,9 @@ msgstr "New geoloc entry"
 #: src/Bach/IndexationBundle/Service/TypesFiles.php:145
 msgid "File or directory %path does not exists!"
 msgstr "File or directory %path does not exists!"
+
+#~ msgid "Type"
+#~ msgstr "Type"
 
 #~ msgid "Classification scheme"
 #~ msgstr "Classification scheme"

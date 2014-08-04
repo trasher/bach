@@ -134,6 +134,7 @@ class DisplayEADFragment extends \Twig_Extension
      *
      * @param string  $fragment    EAD fragment as XML
      * @param string  $docid       Document unique identifier
+     * @param string  $form_name   Search form name
      * @param boolean $full        Displays full fragment, default to false
      * @param boolean $hasChildren Document has children
      * @param boolean $hasComments Document has comments
@@ -142,8 +143,8 @@ class DisplayEADFragment extends \Twig_Extension
      *
      * @return string
      */
-    public function display($fragment, $docid, $full = false, $hasChildren = false,
-        $hasComments = false, $countSub = 0, $ajax = false
+    public function display($fragment, $docid, $form_name = 'default', $full = false,
+        $hasChildren = false, $hasComments = false, $countSub = 0, $ajax = false
     ) {
         $proc = new \XsltProcessor();
         $proc->importStylesheet(
@@ -152,13 +153,20 @@ class DisplayEADFragment extends \Twig_Extension
 
         $router = $this->_router;
         $request = $this->_request;
-        $callback = function ($matches) use ($router, $request) {
+        $callback = function ($matches) use ($router, $request, $form_name) {
+            $filter_field = null;
+            if ( strpos($matches[1], 'dyndescr_') === 0 ) {
+                $filter_field = $matches[1];
+            } else {
+                $filter_field = 'c' . ucwords($matches[1]);
+            }
             $href = $router->generate(
                 'bach_search',
                 array(
                     'query_terms'   => $request->get('query_terms'),
-                    'filter_field'  => 'c' . ucwords($matches[1]),
-                    'filter_value'  => $matches[2]
+                    'filter_field'  => $filter_field,
+                    'filter_value'  => str_replace('|quot|', '"', $matches[2]),
+                    'form_name'     => $form_name
                 )
             );
             return 'href="' . str_replace('&', '&amp;', $href) . '"';
@@ -194,16 +202,19 @@ class DisplayEADFragment extends \Twig_Extension
             $text
         );
 
-        $add_comment_path = $router->generate(
-            'bach_add_comment',
-            array('docid' => $docid)
-        );
+        if ( $docid !== '' ) {
+            $add_comment_path = $router->generate(
+                'bach_add_comment',
+                array('docid' => $docid)
+            );
 
-        $text = str_replace(
-            '__path_add_comment__',
-            $add_comment_path,
-            $text
-        );
+            $text = str_replace(
+                '__path_add_comment__',
+                $add_comment_path,
+                $text
+            );
+        }
+
         return $text;
     }
 
@@ -320,6 +331,9 @@ class DisplayEADFragment extends \Twig_Extension
             return _('Bibliographic informations');
             break;
         default:
+            if ( strpos($ref, 'dyndescr_') === 0 ) {
+                return self::guessDynamicFieldLabel($ref);
+            }
             //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?
             //return _($ref);
@@ -327,6 +341,119 @@ class DisplayEADFragment extends \Twig_Extension
                 'Translation from XSL reference "' . $ref . '" is not known!'
             );
         }
+    }
+
+    /**
+     * Guess dynamic field label
+     *
+     * @param string $name Field name
+     *
+     * @return string
+     */
+    public static function guessDynamicFieldLabel($name)
+    {
+        $exploded = explode(
+            '_',
+            str_replace('dyndescr_', '', $name)
+        );
+        $field_label = self::i18nFromXsl(strtolower(substr($exploded[0], 1)) . ':');
+        $dynamic_name = str_replace(
+            array(
+                'dyndescr_' . $exploded[0] . '_',
+                ':'
+            ),
+            '',
+            $name
+        );
+        if ( $dynamic_name === 'none' ) {
+            $dynamic_name = _('without specific');
+        }
+
+        if ( strpos($field_label, ':') !== 0 ) {
+            return preg_replace(
+                '/(\s:)/',
+                ' (' . $dynamic_name . ')$1',
+                $field_label
+            );
+        } else {
+            return $field_label . ' (' . $dynamic_name . ')';
+        }
+    }
+
+    /**
+     * Display grouped descriptors
+     *
+     * @param DOMElement $nodes Nodes
+     * @param string     $docid Document id
+     *
+     * @return string
+     */
+    public static function showDescriptors($nodes, $docid)
+    {
+        $output = array();
+
+        foreach ( $nodes as $node ) {
+            $n = simplexml_import_dom($node);
+
+            $name = null;
+            if ( isset($n['source']) ) {
+                $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['source'];
+            } else if ( isset($n['role']) ) {
+                $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['role'];
+            } else {
+                $name = $n->getName();
+            }
+
+            if ( isset($n['rules']) ) {
+                $output[$name]['label'] = $n['rules'] . ' :';
+            } else {
+                $output[$name]['label'] = self::i18nFromXsl($name . ':');
+            }
+
+            switch ( $n->getName() ) {
+            case 'subject':
+                $output[$name]['property'] = 'dc:subject';
+                break;
+            case 'geogname':
+                $output[$name]['property'] = 'gn:name';
+                break;
+            case 'name':
+            case 'persname':
+            case 'corpname':
+                $output[$name]['property'] = 'foaf:name';
+                break;
+            }
+
+            $output[$name]['values'][] = (string)$n;
+        }
+
+        $ret = '<div>';
+        foreach ( $output as $elt=>$out) {
+            $ret .= '<div>';
+            $ret .= '<strong>' . $out['label'] . '</strong> ';
+            $count = 0;
+            foreach ( $out['values'] as $value ) {
+                $count++;
+                $ret .= '<a link="%%%' . $elt . '::' . str_replace('"', '|quot|', $value) . '%%%"';
+                $ret .= ' about="' . $docid . '"';
+
+                if ( isset($out['property']) ) {
+                    $ret .= ' property="' . $out['property'] .
+                        '" content="' . htmlspecialchars($value) . '"';
+                }
+                $ret .= '>' . $value . '</a>';
+
+                if ( $count < count($out['values']) ) {
+                    $ret .= ', ';
+                }
+            }
+            $ret .='</div>';
+        }
+        $ret .='</div>';
+
+        $doc = new \DOMDocument();
+        $doc->loadXML($ret);
+        return $doc;
     }
 
     /**

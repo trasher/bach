@@ -279,6 +279,11 @@ services:
         arguments: [ @kernel ]
         tags:
             - { name: twig.extension }
+    bach.twig.html_export:
+        class: Bach\HomeBundle\Twig\HtmlExportExists
+        arguments: [ '%bach_files_html%'  ]
+        tags:
+            - { name: twig.extension }
     bach.twig.html_intro:
         class: Bach\HomeBundle\Twig\HtmlIntro
         arguments: [ @router ]

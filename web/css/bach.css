@@ -681,6 +681,10 @@ p {
     color: #4a4041;
 }
 
+td.actions {
+    white-space: nowrap;
+}
+
 .content header {
     margin-bottom: .2em;
 }
@@ -875,6 +879,79 @@ h2.back a:hover {
 
 [id=next_comp] {
     background-image: url(../img/next.png);
+}
+
+[id=inventory_scheme] h3 a {
+    color: white!important;
+}
+
+[id=inventory_scheme] .ui-accordion-content h3 a {
+    color: #968c82!important;
+}
+[id=inventory_scheme] .ui-accordion-content h3 a:hover {
+    color: white!important;
+}
+[id=inventory_scheme] div.ui-accordion-content {
+    padding-left: 0;
+}
+
+[id=inventory_scheme] div.ui-accordion-content li {
+    padding-left: 2.7em;
+}
+
+[id=inventory_scheme] div.ui-accordion-content li.accordion {
+    padding-left: 1.3em;
+}
+
+[id=inventory_scheme] div.ui-accordion-content li.accordion h3 {
+    font-size: 100%;
+    font-weight: normal;
+    font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;
+}
+
+[id=inventory_scheme] .standalone .ui-icon {
+    display: none;
+}
+
+[id=inventory_contents] {
+    margin-top: 1em;
+}
+
+[id=inventory_contents] h3, [id=inventory_contents] h3.ui-accordion-header {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+[id=inventory_contents].ui-accordion .ui-accordion-content {
+    padding: .5em;
+}
+
+
+[id=inventory_contents].ui-accordion #inventory_presentation.ui-accordion-content {
+    padding: 0 0 .5em 0;
+}
+
+[id=inventory_contents] table {
+    width: 100%;
+    background: white;
+}
+
+[id=inventory_contents] th,
+[id=inventory_contents] td
+{
+    text-align: left;
+    padding: .2em;
+    border: 1px solid #d1c6c0;
+}
+
+[id=back2top] {
+    background: black;
+    background: rgba(0,0,0,.8);
+    color: white;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: .2em .5em;
 }
 
 /**
@@ -1211,10 +1288,6 @@ form > footer {
     list-style-type: disc;
 }
 
-.show_all {
-    font-size: 0.85em;
-}
-
 /**
  * ===== Buttons =====
  */
@@ -1226,10 +1299,10 @@ form > footer {
     height: 24px;
     padding: .2em;
     border: none;
-    text-indent: 30px;
-    line-height: 24px;
+    text-indent: -5000px;
     overflow: hidden;
     padding: 0;
+    cursor: pointer;
 }
 
 .btn-delete {
@@ -1260,6 +1333,10 @@ legend > span {
     padding: .2em 0;
 }
 
+.list th:first-child {
+    text-align: left;
+}
+
 .list tbody tr:nth-child(even) {
     background-color: #d1c6c0;
 }
@@ -1274,6 +1351,12 @@ tr.task_error td {
 
 tr.task_warning td {
     background-color: #fcf8e3;
+}
+
+[id=allcores_actions] {
+    position: absolute;
+    top: .6em;
+    right: .6em;
 }
 
 /**
@@ -1408,6 +1491,11 @@ div.sonata-bc .btn-primary:hover {
     background-color: #e6e6e6;
 }
 
+.sonata-link-identifier > span {
+    font-size: .9em;
+    font-weight: normal;
+}
+
 /**
  * ===== Sonata sortable =====
  */
@@ -1520,6 +1608,10 @@ div.sonata-bc .btn-primary:hover {
     float: right;
     margin-right: .5em;
     text-align: right;
+}
+
+h3.no-accordion span {
+    visibility: hidden;
 }
 
 /** Old design */

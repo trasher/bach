@@ -72,7 +72,7 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
     {% if filters is defined %}
-        <h2>{{ _('Active filters') }} <a href="{{ path(block('search_path'), {query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{{ _('Clear refined query') }}">{{ _('Clear') }}</a></h2>
+        <h2>{{ _('Active filters') }} <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, clear_filters: true}) }}" class="clear-btn" title="{{ _('Clear refined query') }}">{{ _('Clear') }}</a></h2>
         <div id="active_filters">
             {% for filter_name,values in filters %}
                 {% if values is not iterable %}
@@ -82,7 +82,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <ul>
                 {% for value in values %}
                 <li>
-                    <a href="{{ path(block('search_path'), {query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{{ _('Remove filter on \'%value%\'')|replace({'%value%': value}) }}">
+                    <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, rm_filter_field: filter_name, rm_filter_value: value}) }}" class="remove_filter" title="{{ _('Remove filter on \'%value%\'')|replace({'%value%': value}) }}">
                         {% if facet_labels[filter_name] is defined %}
                             {{ facet_labels[filter_name][value] -}}
                         {% else %}
@@ -162,7 +162,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% endif %}
                     {% for facet,count in facet_content %}
                         <li>
-                            <a href="{{ path(block('search_path'), {query_terms: q, filter_field: index_name, filter_value: facet}) }}">
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, filter_field: index_name, filter_value: facet}) }}">
                             {% if facet_labels[index_name] is defined %}
                                 {{ facet_labels[index_name][facet] }} ({{ count }})
                             {% else %}
@@ -172,7 +172,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         </li>
                     {% endfor %}
                     {% if facet.content|length > 10 and not (facet_name is defined and facet_name == index_name) %}
-                        <li class="show_more"><a href="{{ path(block('search_path'), {query_terms: q, page: page, facet_name: index_name}) }}">{{ _('Show more (%count left)')|replace({'%count': facet.content|length-10}) }}</a></li>
+                        <li class="show_more"><a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page, facet_name: index_name}) }}">{{ _('Show more (%count left)')|replace({'%count': facet.content|length-10}) }}</a></li>
                     {% endif %}
                     </ol>
                 </div>
@@ -184,7 +184,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <ul id="tagcloud">
             {% for tag,weight in tagcloud %}
                 <li>
-                    <a href="{{ path(block('search_path'), {query_terms: tag|url_encode}) }}" class="tag{{ weight }}">{{ tag }}</a>
+                    <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: tag|url_encode}) }}" class="tag{{ weight }}">{{ tag }}</a>
                 </li>
             {% endfor %}
             </ul>
@@ -198,7 +198,7 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
     {% if form is defined %}
-    <form action="{% if search_form is defined %}{{ path(block('do_search_path'), {'form_name': search_form}) }}{% else %}{{ path(block('do_search_path')) }}{% endif %}" method="post" {{ form_enctype(form) }} name="search" id="search">
+    <form action="{{ path(block('do_search_path'), {'form_name': search_form}) }}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
             {{ form_widget(form.query) }}
             {{ form_widget(form._token) }}
@@ -222,7 +222,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {% for term,termResult in suggestions %}
             {% if termResult|length > 0 %}
                 {% for suggest in termResult %}
-                    <a href="{{ path(block('search_path'), {query_terms: suggest}) }}">{{ suggest }}</a>
+                    <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: suggest}) }}">{{ suggest }}</a>
                 {% endfor %}
             {% endif %}
         {% endfor %}
@@ -255,16 +255,16 @@ POSSIBILITY OF SUCH DAMAGE.
                 <label for="results_order">{{ _('Order:') }}</label>
                 <div class="select_container">
                     <select name="results_order" id="results_order">
-                        <option value="0"{% if results_order == 0 %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
-                        {% for order in available_orders %}
-                        <option value="{{ loop.index }}"{% if results_order == loop.index %} selected="selected"{% endif %}>{{ order }}</option>
+                        <option value="{{ constant('Bach\\HomeBundle\\Entity\\ViewParams::ORDER_RELEVANCE') }}"{% if results_order is constant('Bach\\HomeBundle\\Entity\\ViewParams::ORDER_RELEVANCE') %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
+                        {% for key,order in available_orders %}
+                        <option value="{{ key }}"{% if results_order == key %} selected="selected"{% endif %}>{{ order }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 {% endif %}
                 {% if available_views|length > 0 %}
                     {% for key,values in available_views %}
-                <a href="{{ path(block('search_path'), {query_terms: q, view: key}) }}" class="btn-{{ key }}{% if view == key %} selected{% endif %}" title="{{ values.title }}">{{ values.text }}</a>
+                <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, view: key}) }}" class="btn-{{ key }}{% if view == key %} selected{% endif %}" title="{{ values.title }}">{{ values.text }}</a>
                     {% endfor %}
                 {% endif %}
             </nav>
@@ -273,7 +273,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
             {% block show_results %}{% endblock %}
             {% include 'pagination.html.twig' with {
-                currentFilters: { query_terms: q },
+                currentFilters: { form_name: search_form, query_terms: q },
                 currentPage: page,
                 paginationPath: block('search_path'),
                 lastPage: totalPages
@@ -285,7 +285,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {{ _('Spelling suggestions:') }}
                 {% for suggestion in scSearchResults %}
                     {% for word in suggestion.getWords() %}
-                        <a href="{{ path(block('search_path'), {query_terms: word.word}) }}">{{ word.word }}</a>
+                        <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: word.word}) }}">{{ word.word }}</a>
                     {% endfor %}
                 {% endfor %}
             </aside>
@@ -354,13 +354,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             function filterOnDate(min_date, max_date) {
                 {% if q is defined and q != '' -%}
-                var _loc = document.location.href;
-                var n = _loc.indexOf('?');
-                var _new_loc = _loc.substring(0, n != -1 ? n : _loc.lenght);
+                var _new_loc = document.location.href;
                 {% else -%}
-                var _new_loc = '{{ path('bach_search') }}';
+                var _new_loc = '{{ path(block('search_path'), {form_name: search_form})|raw }}';
                 {% endif %}
-
+                var n = _new_loc.indexOf('?');
+                var _new_loc = _new_loc.substring(0, n != -1 ? n : _new_loc.lenght);
 
     {% if selected_min_date is defined and selected_max_date is defined %}
                 if ( min_date == '{{ selected_min_date }}'
@@ -399,9 +398,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 var _width = $(window).width() * 0.8;
                 var _height = $(window).height() * 0.8;
 
-                var _index = _this.attr('href').replace('{{ path(block('search_path'), {query_terms: q, page: page}) }}/', '');
+                var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page})|raw }}/', '');
                 _index = _index.substr(_index.lastIndexOf('/')+1);
-                var _url = '{{ path(block('fullfacet_path'), {query_terms: q, name: 'THENAME'}) }}'.replace('THENAME', _index);
+                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: q, name: 'THENAME'})|raw }}'.replace('THENAME', _index);
 
                 $.ajax({
                     url: _url,
@@ -429,7 +428,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
             {% if available_orders|length > 0 %}
             $('#results_order').change(function(){
-                var _da_url = '{{ path(block('search_path'), {query_terms: q, results_order: 'ORDER'}) }}';
+                var _da_url = '{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: 'ORDER'})|raw }}';
                 window.location.href  = _da_url.replace('ORDER', $('#results_order option:selected').val());
             });
             {% endif %}
@@ -561,7 +560,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $('#sh_map').on('click', _bindMapHide);
 
             function facetFeature(e) {
-                var _da_url = '{{ path(block('search_path'), {query_terms: q, filter_field: 'geoloc'}) }}';
+                var _da_url = '{{ path(block('search_path'), {form_name: search_form, query_terms: q, filter_field: 'geoloc'})|raw }}';
                 window.location.href  = _da_url + '&filter_value=' + e.target.feature.properties.name;
             }
 
@@ -573,11 +572,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 });
             }
 
-            {% if search_form is defined %}
-                {% include 'BachHomeBundle:Commons:maps.js.twig' with {'ajax_path': path(block('geojson_path'), {'search_form': search_form}), 'from_search': true} %}
-            {% else %}
-                {% include 'BachHomeBundle:Commons:maps.js.twig' with {'ajax_path': path(block('geojson_path')), 'from_search': true} %}
-            {% endif %}
+            {% include 'BachHomeBundle:Commons:maps.js.twig' with {'ajax_path': path(block('geojson_path'), {form_name: search_form}), 'from_search': true} %}
 
             if ( _view_params['map'] == true ) {
                 $('#map').removeClass('hidden');

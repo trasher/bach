@@ -41,8 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <span class="fright">
                 <label for="facet_order">{{ _('Order:') }}</label>
                 <select name="facet_order" id="facet_order">
-                    <option value="0"{% if facet_order is not defined or facet_order != '1' %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
-                    <option value="1"{% if facet_order is defined and facet_order == 1 %} selected="selected"{% endif %}>{{ _('Alphabetic') }}</option>
+                    <option value="1"{% if facet_order is not defined or facet_order == '1' %} selected="selected"{% endif %}>{{ _('Alphabetic (default)') }}</option>
+                    <option value="0"{% if facet_order is defined and facet_order != '1' %} selected="selected"{% endif %}>{{ _('Occurrence') }}</option>
                 </select>
             </span>
         </fieldset>
@@ -55,9 +55,9 @@ POSSIBILITY OF SUCH DAMAGE.
     {% set index_name = facet.index_name %}
     {% set facet_content = facet.content %}
 
-    {% for facet,count in facet_content %}
+    {% for label,content in facet_content %}
         <li>
-            <a href="{{ path(search_uri, {query_terms: q, filter_field: index_name, filter_value: facet}) }}">{{ facet }} ({{ count }})</a>
+            <a href="{{ path(search_uri, {form_name: search_form, query_terms: q, filter_field: index_name, filter_value: content.key}) }}">{{ label }} ({{ content.count }})</a>
         </li>
     {% endfor %}
     </ol>

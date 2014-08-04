@@ -46,6 +46,7 @@ namespace Bach\HomeBundle\Twig;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Twig extension to display an EAD fragment
@@ -58,34 +59,23 @@ use Symfony\Component\HttpFoundation\Request;
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class DisplayCdc extends \Twig_Extension
+class DisplayCdc extends DisplayHtml
 {
-    private $_router;
-    private $_request;
     private $_cdc_uri;
+    private $_docs;
 
     /**
      * Main constructor
      *
-     * @param UrlGeneratorInterface $router Router
-     * @param string                $path   Classification scheme URL
+     * @param UrlGeneratorInterface $router   Router
+     * @param Kernel                $kernel   App kernel
+     * @param string                $cote_loc Cote location
+     * @param string                $path     Classification scheme URL
      */
-    public function __construct(Router $router, $path)
+    public function __construct(Router $router, Kernel $kernel, $cote_loc, $path)
     {
-        $this->_router = $router;
+        parent::__construct($router, $kernel, $cote_loc);
         $this->_cdc_uri = $path;
-    }
-
-    /**
-     * Set Request
-     *
-     * @param Request $request The Request
-     *
-     * @return void
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->_request = $request;
     }
 
     /**
@@ -96,7 +86,8 @@ class DisplayCdc extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'displayCdc' => new \Twig_Function_Method($this, 'display')
+            'displayCdc' => new \Twig_Function_Method($this, 'displayCdc'),
+            'displayCdcScheme' => new \Twig_Function_Method($this, 'cdcScheme')
         );
     }
 
@@ -107,99 +98,117 @@ class DisplayCdc extends \Twig_Extension
      *
      * @return string
      */
-    public function display(\SimpleXMLElement $docs)
+    public function displayCdc(\SimpleXMLElement $docs)
     {
-        $text = '';
-        $xml = simplexml_load_file($this->_cdc_uri);
+        $this->_docs = $docs;
+        return $this->display('', $this->_cdc_uri);
+    }
 
-        //display archdesc informations
-        $archdesc = clone $xml->archdesc;
-        unset($archdesc->dsc);
-
+    /**
+     * Render contents
+     *
+     * @param simple_xml $xml_doc XML document
+     * @param string     $docid   Document id
+     *
+     * @return string
+     */
+    protected function renderContents($xml_doc, $docid)
+    {
         $proc = new \XsltProcessor();
-        $proc->importStylesheet(
-            simplexml_load_file(__DIR__ . '/display_fragment.xsl')
-        );
 
-        $proc->setParameter('', 'cdc', 'true');
-        $proc->registerPHPFunctions();
-
-        // trying to send $archdesc to transformation will in facts
-        // send the whole XML document!
-        $dom = new \DOMDocument();
-        $dom->loadXML($archdesc->asXML());
-        $text = '<div class="cdcarchdesc well">' . $proc->transformToXml($dom)
-            . '</div>';
-
-        //display classification scheme itself
-        $proc = new \XsltProcessor();
         $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_cdc.xsl')
         );
 
-        $dadocs = $xml->addChild('dadocs');
-        foreach ( $docs as $doc ) {
+        $proc->setParameter('', 'docid', $docid);
+        $proc->registerPHPFunctions();
+
+        $dadocs = $xml_doc->addChild('dadocs');
+        foreach ( $this->_docs as $doc ) {
             $dadocs->addChild($doc->getName(), $doc);
         }
 
         //find not published documents
-        $this->_setNotMatched($xml, $docs);
+        $this->_setNotMatched($xml_doc);
 
-        $proc->registerPHPFunctions();
-        $text .= '<div class="css-treeview">' .
-            $proc->transformToXml($xml) . '</div>';
+        $contents = $proc->transformToXml($xml_doc);
 
-        $router = $this->_router;
-        $request = $this->_request;
+        $up_nodes = $xml_doc->xpath('/ead/archdesc/dsc/c');
+
+        $router = $this->router;
+        $request = $this->request;
         $callback = function ($matches) use ($router, $request) {
-            $href = '';
-            if ( count($matches) > 2 ) {
-                $href = $router->generate(
-                    'bach_search',
-                    array(
-                        'query_terms'   => $request->get('query_terms'),
-                        'filter_field'  => 'c' . ucwords($matches[1]),
-                        'filter_value'  => $matches[2]
-                    )
-                );
-            } else {
-                $href = $router->generate(
-                    'bach_ead_html',
-                    array(
-                        'docid' => $matches[1]
-                    )
-                );
-            }
+            $href = $router->generate(
+                'bach_ead_html',
+                array(
+                    'docid' => $matches[1]
+                )
+            );
             return 'href="' . str_replace('&', '&amp;', $href) . '"';
         };
 
-        $text = preg_replace_callback(
-            '/link="%%%(.[^:]+)::(.[^%]*)%%%"/',
-            $callback,
-            $text
-        );
-
-        $text = preg_replace_callback(
+        $contents = preg_replace_callback(
             '/link="%%%(.[^%]+)%%%"/',
             $callback,
-            $text
+            $contents
         );
 
-        return $text;
+
+        return $contents;
+    }
+
+    /**
+     * Displays an EAD document scheme as HTML with XSLT
+     *
+     * @param string           $docid    Document id
+     * @param string           $xml_file Document
+     * @param SimpleXMLElement $docs     Published documents
+     *
+     * @return string
+     */
+    public function cdcScheme($docid, $xml_file, $docs)
+    {
+        $contents = parent::scheme($docid, $xml_file);
+
+        $this->_docs = $docs;
+        if (count($this->_getNotMatched(simplexml_load_file($xml_file))) > 0 ) {
+            $contents .= '<h3 class="no-accordion"><a href="#not-classified">' .
+                _('Not classified') . '</a></h3>';
+        }
+
+        return $contents;
     }
 
     /**
      * Set documents not matched in classification shceme
      *
-     * @param SimpleXMLElement $xml  XML classification shceme
-     * @param SimpleXMLElement $docs Published documents
+     * @param SimpleXMLElement $xml XML classification shceme
      *
      * @return void
      */
-    private function _setNotMatched(\SimpleXMLElement $xml, \SimpleXMLElement $docs)
+    private function _setNotMatched(\SimpleXMLElement $xml)
+    {
+        $docs = $this->_getNotMatched($xml);
+
+        if ( count($docs) > 0 ) {
+            $not_matched = $xml->addChild('not_matched');
+            foreach ( $docs as $doc_id=>$doc_name ) {
+                $not_matched->addChild($doc_id, $doc_name);
+            }
+        }
+    }
+
+    /**
+     * Get documents not matched in classification shceme
+     *
+     * @param SimpleXMLElement $xml XML classification shceme
+     *
+     * @return array
+     */
+    private function _getNotMatched(\SimpleXMLElement $xml)
     {
         $alllinks = $xml->xpath('//*[@href]');
-        $docs = (array)$docs;
+        $docs = (array)$this->_docs;
         $docs_id = array_keys($docs);
 
         foreach ( $alllinks as $link ) {
@@ -209,12 +218,7 @@ class DisplayCdc extends \Twig_Extension
             }
         }
 
-        if ( count($docs) > 0 ) {
-            $not_matched = $xml->addChild('not_matched');
-            foreach ( $docs as $doc_id=>$doc_name ) {
-                $not_matched->addChild($doc_id, $doc_name);
-            }
-        }
+        return $docs;
     }
 
     /**

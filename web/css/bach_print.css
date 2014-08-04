@@ -87,7 +87,7 @@ img[longdesc]:after {
 
 
 /** Hide elements we do not want to print */
-.header, [id=navigation], .access {
+.header, [id=navigation], .access, [id=user_login], .show_fragment > aside, .show_fragment > ul, .interactions  {
     display: none;
 }
 
@@ -120,3 +120,7 @@ figure  span.title {
     content: "";
 }
 
+/** Hide Symfony stuff */
+.sf-toolbar {
+    display: none!important;
+}

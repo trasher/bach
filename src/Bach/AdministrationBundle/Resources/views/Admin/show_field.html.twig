@@ -33,4 +33,4 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% extends admin.getTemplate('base_list_field') %}
 
-{%- block field %}{{ admin.getFieldLabel(value) }}{% endblock -%}
+{%- block field %}{{ admin.getFieldLabel(value) }} <span>({{ value }})</span>{% endblock -%}

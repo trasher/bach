@@ -119,6 +119,8 @@ abstract class SearchController extends Controller
 
         if ( $this->search_form !== null ) {
             $tpl_vars['search_form'] = $this->search_form;
+        } else {
+            $tpl_vars['search_form'] = 'default';
         }
 
         return array_merge($common_vars, $tpl_vars);
@@ -315,6 +317,9 @@ abstract class SearchController extends Controller
                 if ( $facet->getSolrFieldName() !== 'dao' ) {
                     //facet order
                     $facet_order = $request->get('facet_order');
+                    if ( $facet_name !== null ) {
+                        $facet_order = 1;
+                    }
                     if ( !$facet_order || $facet_order == 0 ) {
                         arsort($values);
                     } else {
@@ -468,13 +473,15 @@ abstract class SearchController extends Controller
     /**
      * Loads Geojson data
      *
-     * @param string $search_form Search form name
+     * @param string $form_name Search form name
      *
      * @return void
      */
-    public function getGeoJsonAction($search_form = null)
+    public function getGeoJsonAction($form_name = null)
     {
-        $this->search_form = $search_form;
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
         $request = $this->getRequest();
         $session = $request->getSession();
 
@@ -616,13 +623,18 @@ abstract class SearchController extends Controller
     /**
      * List all entries for a specific facet
      *
+     * @param string $form_name   Search form name
      * @param string $query_terms Term(s) we search for
      * @param string $name        Facet name
      *
      * @return void
      */
-    public function fullFacetAction($query_terms, $name)
+    public function fullFacetAction($form_name, $query_terms, $name)
     {
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
+
         $request = $this->getRequest();
         $session = $request->getSession();
 
@@ -664,19 +676,50 @@ abstract class SearchController extends Controller
         $facetset = $searchResults->getFacetSet();
         $current_facet = $facetset->getFacet($name);
         $facet = $conf_facets[0];
-        $values = $current_facet->getValues();
+        $results = $current_facet->getValues();
+
+        if ( $name == 'headerId' ) {
+            //retrieve documents titles...
+            $query = $this->getDoctrine()->getManager()->createQuery(
+                'SELECT h.headerId, h.headerTitle ' .
+                'FROM BachIndexationBundle:EADHeader h INDEX BY h.headerId ' .
+                'WHERE h.headerId IN (:ids)'
+            )->setParameter('ids', array_keys($results));
+            $titles = $query->getArrayResult();
+        }
+
+        $values = array();
+        foreach ( $results as $key=>$count ) {
+            $value = array(
+                'key'   => $key,
+                'count' => $count
+            );
+
+            if ( isset($titles[$key]) ) {
+                $values[$titles[$key]['headerTitle']] = $value;
+            } else {
+                $values[$key] = $value;
+            }
+        }
 
         //facet order
         $facet_order = $request->get('facet_order');
-        if ( !$facet_order || $facet_order == 0 ) {
-            arsort($values);
-        } else {
+        if ( $facet_order == null ) {
+            $facet_order = 1;
+        }
+        if ( $facet_order == 1 ) {
             if ( defined('SORT_FLAG_CASE') ) {
+                //TODO: find a better way!
+                if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
+                    setlocale(LC_COLLATE, 'fr_FR.utf8');
+                }
                 ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
             } else {
                 //fallback for PHP < 5.4
                 ksort($values, SORT_LOCALE_STRING);
             }
+        } else {
+            arsort($values);
         }
 
         $facets[$facet->getSolrFieldName()] = array(
@@ -689,9 +732,15 @@ abstract class SearchController extends Controller
             'q'             => $query_terms,
             'facets'        => $facets,
             'orig_href'     => $request->get('orig_href'),
-            'facet_order'   => $request->get('facet_order'),
+            'facet_order'   => $facet_order,
             'search_uri'    => $this->getSearchUri()
         );
+
+        if ( $this->search_form !== null ) {
+            $tpl_vars['search_form'] = $this->search_form;
+        } else {
+            $tpl_vars['search_form'] = 'default';
+        }
 
         return $this->render(
             'BachHomeBundle:Default:facet.html.twig',

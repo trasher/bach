@@ -84,7 +84,7 @@ class IntegrationTask
     protected $status;
 
     /**
-     * @ORM\OneToOne(targetEntity="Document", inversedBy="task")
+     * @ORM\OneToOne(targetEntity="Document")
      * @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $document;

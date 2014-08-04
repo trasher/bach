@@ -215,7 +215,7 @@
                     if ( zoom >= 9 && _zones_actives ) {
                         //if we've just zoomed, or if we drag map, reload zones
                         _zones_loaded = true;
-                        var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX', facets_name: map_facets_name}) }}';
+                        var _da_url = '{{ path('bach_geozones', {bbox: 'BBOX', facets_name: map_facets_name})|raw }}';
 
                         $.ajax({
                             url: _da_url.replace('BBOX', map.getBounds().toBBoxString()),

@@ -865,12 +865,6 @@ class SolrCoreAdmin
     private function _createDataConfigFile($coreInstanceDirPath,
         $orm_name, $db_params
     ) {
-        $meta = $this->_em->getClassMetadata($orm_name);
-        //table name from entity
-        $table_name = $meta->getTablename();
-        //main fields from entity
-        $fields = $meta->getFieldNames();
-
         $dataConfigFilePath = $coreInstanceDirPath . '/' .
             $this->_reader->getDefaultConfigDir() . '/' .
             $this->_reader->getDefaultDataConfigFileName();
@@ -879,6 +873,12 @@ class SolrCoreAdmin
         $doc->formatOutput = true;
         $doc->preserveWhiteSpace = false;
         $doc->load($dataConfigFilePath);
+
+        $meta = $this->_em->getClassMetadata($orm_name);
+        //table name from entity
+        $table_name = $meta->getTablename();
+        //main fields from entity
+        $fields = $meta->getFieldNames();
 
         $elt = $doc->getElementsByTagName('dataSource')->item(0);
         $elt->setAttribute('type', 'JdbcDataSource');

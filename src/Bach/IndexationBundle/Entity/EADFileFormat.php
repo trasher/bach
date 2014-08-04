@@ -74,7 +74,7 @@ class EADFileFormat extends FileFormat
     protected $parents;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=500)
      */
     protected $cUnitid;
 
@@ -92,6 +92,11 @@ class EADFileFormat extends FileFormat
      * @ORM\Column(type="string", nullable=true, length=100)
      */
     protected $cControlacces;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    protected $cLegalstatus;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -208,11 +213,6 @@ class EADFileFormat extends FileFormat
         'headerId',
         'headerTitle',
         'headerSubtitle',
-        'headerAuthor',
-        'headerDate',
-        'headerPublisher',
-        'headerAddress',
-        'headerLanguage',
         'archDescUnitId',
         'archDescUnitTitle',
         'archDescScopeContent'
@@ -230,10 +230,6 @@ class EADFileFormat extends FileFormat
         'cName',
         'cPersname',
         'cSubject',
-        'cDate',
-        'cDateNormal',
-        'cDateBegin',
-        'cDateEnd',
         'subject_w_expanded',
         'parents_titles',
         'cTitle',
@@ -260,7 +256,8 @@ class EADFileFormat extends FileFormat
         'previous_id',
         'previous_title',
         'next_id',
-        'next_title'
+        'next_title',
+        'cLegalstatus'
     );
 
     /**
@@ -311,7 +308,8 @@ class EADFileFormat extends FileFormat
         'subject_w_expanded'    => 'skosLabel',
         'parents_titles'        => 'text',
         'cDateBegin'            => 'date',
-        'cDateEnd'              => 'date'
+        'cDateEnd'              => 'date',
+        'dao'                   => 'ancestor_path'
     );
 
     /**
@@ -351,8 +349,6 @@ class EADFileFormat extends FileFormat
         'cDateNormal',
         'cDateBegin',
         'cDateEnd',
-        'headerAddress',
-        'headerDate',
         'archDescOrigination',
         'subject_w_expanded',
         'archDescScopeContent',
@@ -408,7 +404,7 @@ class EADFileFormat extends FileFormat
                     $this->onPropertyChanged($key, $this->$key, $value);
                     $this->$key = $value;
                 }
-            } elseif ($key === 'cUnitDate' || $key === 'cDate') {
+            } elseif ($key === 'cDate') {
                 $this->parseDates($value);
             } elseif ( $key == 'daolist' ) {
                 $this->parseDaos($value);

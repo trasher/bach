@@ -174,9 +174,6 @@ class Fields
         case 'archDescRepository':
             return _('Document repository');
             break;
-        case 'archDescUnitDate':
-            return _('Document date');
-            break;
         case 'archDescUnitTitle':
             return _('Document title');
             break;
@@ -270,6 +267,9 @@ class Fields
             break;
         case 'annee_naissance':
             return _('Year of birth');
+            break;
+        case 'cLegalstatus':
+            return _('Legal status');
             break;
         default:
             if ( strpos($name, 'dyndescr_') === 0 ) {

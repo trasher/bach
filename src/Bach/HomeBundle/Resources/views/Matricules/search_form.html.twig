@@ -117,7 +117,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tbody>
             {% for document in searchResults %}
                 <tr>
-                    <td>
+                    <td class="actions">
                         <a class="display_doc" title="{{ _('Show record') }}" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Show record') }}</a>
                         {% if document.start_dao is defined %}
                             {% set series_name %}

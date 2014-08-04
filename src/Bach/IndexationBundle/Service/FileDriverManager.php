@@ -178,12 +178,14 @@ class FileDriverManager
                     )
                 );
                 $archdesc->setEadheader($eadheader);
+                $archdesc->setDocument($doc);
             } else {
                 $archdesc->hydrate(
                     $mapper->translate(
                         $results['archdesc']
                     )
                 );
+                $archdesc->setDocument($doc);
             }
             $this->_entityManager->persist($archdesc);
 
@@ -225,7 +227,7 @@ class FileDriverManager
 
             $count++;
 
-            if ( $count % 100 === 0 && $flush ) {
+            /*if ( $count % 100 === 0 && $flush ) {
                 $this->_entityManager->flush();
                 $this->_entityManager->clear();
 
@@ -239,7 +241,7 @@ class FileDriverManager
                     }
                     $archdesc = $this->_entityManager->merge($archdesc);
                 }
-                $doc = $this->_entityManager->merge($doc);
+                $doc = $this->_entityManager->merge($doc);*/
                 /*echo sprintf(
                     '%8d: ',
                     $count
@@ -247,7 +249,7 @@ class FileDriverManager
                     (memory_get_usage() - $baseMemory)/1048576,
                     2
                 ) . "\n";*/
-            }
+            /*}*/
         }
 
         if ( $flush ) {

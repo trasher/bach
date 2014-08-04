@@ -31,7 +31,7 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 #}
 
-{% extends 'AdministrationBundle:Default:main.html.twig' %}
+{% extends '::base.html.twig' %}
 
 {% block css %}
     <link href="{{ asset('css/jqplot/jquery.jqplot.min.css') }}" type="text/css" rel="stylesheet" />
@@ -60,20 +60,30 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <section id="cores">
         <h4>{{ _('Active Solr cores') }}</h4>
-        <div id="cores_accordion">
+        <div id="cores_list">
             <ul>
         {% for core in coreNames %}
                 <li>
                     <a  href="#core_{{ core }}">{{ core }} </a>
                 </li>
         {% endfor %}
+                <li>
+                    <a href="{{ path('administration_newcore') }}">{{ _('Add new core') }}</a>
+                </li>
             </ul>
 
         {% for core in coreNames %}
             <div id="core_{{ core }}">
                 <div class="accordion-inner">
-                    <strong>{{ _('Documents count:') }}</strong> {{ coresInfo[core].numDocs }}<br/>
-                    <strong>{{ _('Index size (Kb)') }}</strong> {{ coresInfo[core].size }}
+                    <p>
+                        <strong>{{ _('Documents count:') }}</strong> {{ coresInfo[core].numDocs }}<br/>
+                        <strong>{{ _('Index size (Kb)') }}</strong> {{ coresInfo[core].size }}<br/>
+                        <strong>{{ _('Up since:') }}</strong> {{ coresInfo[core].startTime }}
+                    </p>
+                    <p>
+                        <strong>{{ _('Core directory:') }}</strong> {{ coresInfo[core].coreDir }}<br/>
+                        <strong>{{ _('Data directory:') }}</strong> {{ coresInfo[core].dataDir }}
+                    </p>
                 </div>
             </div>
         {% endfor %}
@@ -101,7 +111,36 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block javascripts %}
     $(function(){
-        $('#cores_accordion').tabs();
+        $('#cores_list > ul a').each(function(){
+            var _this = $(this);
+            var _href = _this.attr('href') + '/ajax';
+            if ( !_href.match(/^#.*/) ) {
+                _this.attr('href', _href);
+            }
+        });
+
+        $('#cores_list').tabs({
+            beforeLoad: function( event, ui ) {
+                if ( ui.tab.data( "loaded" ) ) {
+                    event.preventDefault();
+                    return;
+                }
+
+                var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{{ _('Loading...') }}"/><br/>{{ _('Currently loading...') }}</p></figure>');
+                $('body').append(_img);
+
+                ui.jqXHR.done(function() {
+                    ui.tab.data( "loaded", true );
+                });
+                ui.jqXHR.fail(function(){
+                    alert('{{ _('An error occured loading tab :(')|escape('js') }}');
+                    $('#loading').remove();
+                });
+            },
+            load: function(event, ui){
+                $('#loading').remove();
+            }
+        });
 
         var _total_memory = {{ total_virt_mem }};
         var _memory_hlimit = {{ total_virt_mem /8 * 7 }};

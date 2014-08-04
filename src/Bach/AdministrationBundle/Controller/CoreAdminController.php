@@ -44,7 +44,6 @@
 
 namespace Bach\AdministrationBundle\Controller;
 
-use Bach\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
 use Symfony\Component\HttpFoundation\Request;
 use Bach\AdministrationBundle\Entity\Helpers\FormObjects\CoreCreation;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
@@ -65,54 +64,41 @@ class CoreAdminController extends Controller
     /**
      * New Solr core creation page
      *
+     * @param boolean $ajax Display from ajax call
+     *
      * @return void
      */
-    public function newCoreAction()
+    public function newCoreAction($ajax = false)
     {
         $session = $this->getRequest()->getSession();
         $form = $this->createForm('corecreation');
+
+        $template = 'newcore';
+        if ( $ajax !== false ) {
+            $template = 'newcore-content';
+        }
+
         return $this->render(
-            'AdministrationBundle:Default:newcore.html.twig',
+            'AdministrationBundle:Default:' . $template . '.html.twig',
             array(
                 'form'      => $form->createView(),
-                'coreName'  => $session->get('coreName'),
                 'coreNames' => $session->get('coreNames')
             )
         );
     }
 
     /**
-     * Refresh core informations
+     * Adds new core
      *
      * @param Request $request Request
      *
      * @return void
      */
-    public function refreshAction(Request $request)
+    public function addAction(Request $request)
     {
-        $session = $request->getSession();
-        $configreader = $this->container->get('bach.administration.configreader');
-        $sca = new SolrCoreAdmin($configreader);
-
-        if (!$request->isMethod('GET')) {
-            $btn = $request->request->get('createCoreOk');
-            if (isset($btn)) {
-                $this->_createCore($request);
-            }
-            return $this->redirect(
-                $this->generateUrl('administration_dashboard')
-            );
-        }
-        return $this->render(
-            'AdministrationBundle:Default:coreadmin.html.twig',
-            array(
-                'coreName' => $session->get('coreName'),
-                'coreNames' => $session->get('coreNames'),
-                'coreStatus' => new CoreStatus(
-                    $sca,
-                    $session->get('coreName')
-                )
-            )
+        $this->_createCore($request);
+        return $this->redirect(
+            $this->generateUrl('administration_dashboard')
         );
     }
 

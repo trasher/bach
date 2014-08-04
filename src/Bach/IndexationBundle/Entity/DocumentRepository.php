@@ -64,19 +64,32 @@ class DocumentRepository extends EntityRepository
     /**
      * Retrieve published document list
      *
-     * @param int $page Requested page
-     * @param int $show Rows to display
+     * @param int    $page Requested page
+     * @param int    $show Rows to display
+     * @param string $type Document type to retrieve
      *
      * @return array
      */
-    public function getPublishedDocuments($page = 1, $show = 30)
+    public function getPublishedDocuments($page = 1, $show = 30, $type='ead')
     {
-        $sql = 'SELECT d from BachIndexationBundle:Document d '.
-            'LEFT JOIN d.task t WHERE t.taskId IS NULL or t.status=1 ' .
-            'ORDER BY d.extension, d.id';
-        $query = $this->getEntityManager()->createQuery($sql)
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('d')
+            ->from('BachIndexationBundle:Document', 'd')
+            ->leftJoin(
+                'BachIndexationBundle:IntegrationTask',
+                't',
+                \Doctrine\ORM\Query\Expr\Join::WITH,
+                't.document = d.id'
+            )
+            ->where('d.extension = :type')
+            ->andWhere('t.status=1 OR t.taskId IS NULL')
+            ->orderBy('d.id')
+            ->setParameter('type', $type);
+
+        $query = $qb->getQuery()
             ->setFirstResult(($page - 1) * $show)
-            ->setMaxResults($show);
+            ->setMaxResults($show)
+            ->setParameter('type', $type);
 
         $paginator = new Paginator($query, $fetchJoinCollection = false);
         return $paginator;

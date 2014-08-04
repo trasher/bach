@@ -1,6 +1,6 @@
 <?php
 /**
- * Unique key form object
+ * Does HTML export exists
  *
  * PHP version 5
  *
@@ -35,58 +35,74 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Administration
+ * @category Templating
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\AdministrationBundle\Entity\Helpers\FormObjects;
+namespace Bach\HomeBundle\Twig;
 
-use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * unique key form object
+ * Does HTML export exists
  *
  * PHP version 5
  *
- * @category Administration
+ * @category Templating
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class UniqueKey
+class HtmlExportExists extends \Twig_Extension
 {
-    public $uniqueKey;
+    private $_exports_path;
 
     /**
-     * Constructor
+     * Main constructor
      *
-     * @param XMLProcess $xmlP XMLProcess instance
+     * @param string $exports_path Exports path
      */
-    public function __construct(XMLProcess $xmlP = null)
+    public function __construct($exports_path)
     {
-        if ($xmlP != null) {
-            $element = $xmlP->getElementsByName('uniqueKey');
-            $element = $element[0];
-            $this->uniqueKey = $element->getValue();
-        }
+        $this->_exports_path = $exports_path;
     }
 
     /**
-     * Save
+     * Get provided functions
      *
-     * @param XMLProcess $xmlP XMLProcess instance
-     *
-     * @return void
+     * @return array
      */
-    public function save(XMLProcess $xmlP)
+    public function getFunctions()
     {
-        $elt = $xmlP->getElementsByName('uniqueKey');
-        $elt = $elt[0];
-        $elt->setValue($this->uniqueKey);
-        $xmlP->saveXML();
+        return array(
+            'html_export_exists' => new \Twig_Function_Method($this, 'exportExists')
+        );
+    }
+
+    /**
+     * Checks if HTML export exists
+     *
+     * @param string $docid Document identifier
+     *
+     * @return boolean
+     */
+    public function exportExists($docid)
+    {
+        $html_export = $this->_exports_path . '/' . $docid . '.html';
+        return is_file($html_export);
+    }
+
+    /**
+     * Extension name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'html_export_exists';
     }
 }

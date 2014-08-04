@@ -47,7 +47,6 @@ namespace Bach\AdministrationBundle\Controller;
 use Bach\AdministrationBundle\Entity\Helpers\ViewObjects\CoreStatus;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use Bach\AdministrationBundle\Entity\SolrAdmin\Infos;
-use Bach\AdministrationBundle\Entity\SolrSchema\XMLProcess;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -61,36 +60,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class DefaultController extends Controller
 {
-    /**
-     * Administration index
-     *
-     * @return void
-     */
-    public function indexAction()
-    {
-        return $this->render('AdministrationBundle:Default:index.html.twig');
-    }
-
-    /**
-     * Solr cores administration interface
-     *
-     * @return void
-     */
-    public function coreadminAction()
-    {
-        return $this->render('AdministrationBundle:Default:coreadmin.html.twig');
-    }
-
-    /**
-     * Solr performance interface
-     *
-     * @return void
-     */
-    public function performanceAction()
-    {
-        return $this->render('AdministrationBundle:Default:performance.html.twig');
-    }
-
     /**
      * Displays dashboard
      *
@@ -107,10 +76,6 @@ class DefaultController extends Controller
 
         $solr_infos->loadSystemInfos();
 
-        $coreName = $this->getRequest()->request->get('selectedCore');
-        if (!isset($coreName)) {
-            $coreName = 'none';
-        }
         $configreader = $this->container->get('bach.administration.configreader');
         $sca = new SolrCoreAdmin($configreader);
         $coreNames = $sca->getStatus()->getCoreNames();
@@ -120,19 +85,12 @@ class DefaultController extends Controller
         }
         $session = $this->getRequest()->getSession();
         $session->set('coreNames', $coreNames);
-        $session->set('coreName', $coreName);
-        if ($coreName == 'none') {
-            $session->set('xmlP', null);
-        } else {
-            $session->set('xmlP', new XMLProcess($sca, $coreName));
-        }
 
         $tmpCoreNames = $sca->getTempCoresNames();
 
         return $this->render(
             'AdministrationBundle:Default:dashboard.html.twig',
             array(
-                'coreName'          => $coreName,
                 'coreNames'         => $coreNames,
                 'tmpCoresNames'     => $tmpCoreNames,
                 'coresInfo'         => $coresInfo,

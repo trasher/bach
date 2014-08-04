@@ -49,7 +49,7 @@ use Bach\HomeBundle\Form\Type\MatriculesType;
 use Bach\HomeBundle\Entity\SolariumQueryContainer;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\Facets;
-use Bach\HomeBundle\Entity\SearchQueryFormType;
+use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 
 /**
@@ -268,7 +268,7 @@ class MatriculesController extends SearchController
             $this->handleYearlyResults($factory, $tpl_vars);
         }
 
-        $slider_dates = $factory->getSliderDates(new Filters());
+        $slider_dates = $factory->getSliderDates($filters);
 
         if ( is_array($slider_dates) ) {
             $tpl_vars = array_merge($tpl_vars, $slider_dates);
