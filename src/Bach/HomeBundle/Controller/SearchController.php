@@ -719,7 +719,7 @@ abstract class SearchController extends Controller
                 ksort($values, SORT_LOCALE_STRING);
             }
         } else {
-            arsort($values);
+            uasort($values, array($this, '_orderFacetsByOccurences'));
         }
 
         $facets[$facet->getSolrFieldName()] = array(
@@ -746,6 +746,22 @@ abstract class SearchController extends Controller
             'BachHomeBundle:Default:facet.html.twig',
             $tpl_vars
         );
+    }
+
+    /**
+     * Order facets by number of ocurences
+     *
+     * @param array $a First entry
+     * @param array $b Second entry
+     *
+     * @return int
+     */
+    private function _orderFacetsByOccurences($a, $b)
+    {
+        if ( $a['count'] == $b['count'] ) {
+            return 0;
+        }
+        return ($a['count'] > $b['count']) ? -1 : 1;
     }
 
     /**
