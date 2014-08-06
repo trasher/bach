@@ -89,12 +89,17 @@ POSSIBILITY OF SUCH DAMAGE.
         <phingcall target="clean-vendors" />
     </target>
 
+    <target name="deploy" depends="install-deps,patch-vendors,build-classmap,proceed-assets,proceed-translations">
+        <echo msg="Deployed."/>
+    </target>
+
     <!-- ============== -->
     <!-- Install assets -->
     <!-- ============== -->
     <target name="proceed-assets">
         <SymfonyConsole console="php app/console" command="assetic:dump">
             <arg name="no-debug"/>
+            <arg name="env" value="prod"/>
         </SymfonyConsole>
     </target>
 
