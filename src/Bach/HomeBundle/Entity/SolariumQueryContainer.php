@@ -175,6 +175,27 @@ class SolariumQueryContainer
         case ViewParams::ORDER_CHRONO:
             return 'cDateBegin';
             break;
+        case MatriculesViewParams::ORDER_MATRICULE:
+            return 'matricule';
+            break;
+        case MatriculesViewParams::ORDER_NAME:
+            return 'oNom';
+            break;
+        case MatriculesViewParams::ORDER_SURNAME:
+            return 'oTxt_prenoms';
+            break;
+        case MatriculesViewParams::ORDER_BIRTHYEAR:
+            return 'annee_naissance';
+            break;
+        case MatriculesViewParams::ORDER_BIRTHPLACE:
+            return 'oLieu_naissance';
+            break;
+        case MatriculesViewParams::ORDER_CLASS:
+            return 'classe';
+            break;
+        case MatriculesViewParams::ORDER_RECORDPLACE:
+            return 'oLieu_enregistrement';
+            break;
         }
         return $this->_order;
     }

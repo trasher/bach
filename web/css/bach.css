@@ -1333,6 +1333,10 @@ legend > span {
     padding: .2em 0;
 }
 
+.list th a {
+    color: white;
+}
+
 .list th:first-child {
     text-align: left;
 }

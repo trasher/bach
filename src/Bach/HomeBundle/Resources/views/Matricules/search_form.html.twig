@@ -105,13 +105,27 @@ POSSIBILITY OF SUCH DAMAGE.
                 <thead>
                     <tr>
                         <th></th>
-                        <th>{{ _('Matricule') }}</th>
-                        <th>{{ _('Name') }}</th>
-                        <th>{{ _('Surnames') }}</th>
-                        <th>{{ _('Year of birth') }}</th>
-                        <th>{{ _('Place of birth') }}</th>
-                        <th>{{ _('Class') }}</th>
-                        <th>{{ _('Place of recording') }}</th>
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_MATRICULE') })|raw }}">{{ _('Matricule') }}</a>
+                        </th>
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_NAME')})|raw }}">{{ _('Name') }}</a>
+                        </th>
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_SURNAME')})|raw }}">{{ _('Surnames') }}</a>
+                        </th>
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_BIRTHYEAR')})|raw }}">{{ _('Year of birth') }}</a>
+                        </th>
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_BIRTHPLACE')})|raw }}">{{ _('Place of birth') }}</a>
+                        </th>
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_CLASS')})|raw }}">{{ _('Class') }}</a>
+                        </th>
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_RECORDPLACE')})|raw }}">{{ _('Place of recording') }}</a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

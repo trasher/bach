@@ -185,7 +185,11 @@ class MatriculesFileFormat extends FileFormat
         'date_enregistrement'   => 'date',
         'annee_naissance'       => 'date',
         'classe'                => 'date',
-        'txt_prenoms'           => 'text_names'
+        'txt_prenoms'           => 'text_names',
+        'oNom'                  => 'alphaOnlySort',
+        'oTxt_prenoms'          => 'alphaOnlySort',
+        'oLieu_naissance'       => 'alphaOnlySort',
+        'oLieu_enregistrement'  => 'alphaOnlySort'
     );
 
     /**
@@ -203,7 +207,11 @@ class MatriculesFileFormat extends FileFormat
         'created',
         'updated',
         'uniqid',
-        'spell'
+        'spell',
+        'oNom',
+        'oTxt_prenoms',
+        'oLieu_naissance',
+        'oLieu_enregistrement'
     );
 
     /**
@@ -217,6 +225,38 @@ class MatriculesFileFormat extends FileFormat
             'multivalued'   => 'false',
             'indexed'       => 'true',
             'stored'        => 'true'
+        ),
+        array(
+            'source'        => 'nom',
+            'dest'          => 'oNom',
+            'type'          => 'alphaOnlySort',
+            'multivalued'   => 'false',
+            'indexed'       => 'true',
+            'stored'        => 'false'
+        ),
+        array(
+            'source'        => 'txt_prenoms',
+            'dest'          => 'oTxt_prenoms',
+            'type'          => 'alphaOnlySort',
+            'multivalued'   => 'false',
+            'indexed'       => 'true',
+            'stored'        => 'false'
+        ),
+        array(
+            'source'        => 'lieu_naissance',
+            'dest'          => 'oLieu_naissance',
+            'type'          => 'alphaOnlySort',
+            'multivalued'   => 'false',
+            'indexed'       => 'true',
+            'stored'        => 'false'
+        ),
+        array(
+            'source'        => 'lieu_enregistrement',
+            'dest'          => 'oLieu_enregistrement',
+            'type'          => 'alphaOnlySort',
+            'multivalued'   => 'false',
+            'indexed'       => 'true',
+            'stored'        => 'false'
         )
     );
 

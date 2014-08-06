@@ -51,6 +51,7 @@ use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\Facets;
 use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
+use Bach\HomeBundle\Entity\MatriculesViewParams;
 
 /**
  * Bach matricules controller
@@ -201,6 +202,7 @@ class MatriculesController extends SearchController
             || !$view_params->advancedSearch() && $query_terms !== null
         ) {
             $container = new SolariumQueryContainer();
+            $container->setOrder($view_params->getOrder());
 
             if ( $view_params->advancedSearch() ) {
                 $container->setField($this->getContainerFieldName(), $data);
@@ -448,7 +450,15 @@ class MatriculesController extends SearchController
      */
     protected function getOrders()
     {
-        $orders = array();
+        $orders = array(
+            MatriculesViewParams::ORDER_MATRICULE   => _('Matricule'),
+            MatriculesViewParams::ORDER_NAME        => _('Name'),
+            MatriculesViewParams::ORDER_SURNAME     => _('Surname'),
+            MatriculesViewParams::ORDER_BIRTHYEAR   => _('Year of birth'),
+            MatriculesViewParams::ORDER_BIRTHPLACE  => _('Place of birth'),
+            MatriculesViewParams::ORDER_CLASS       => _('Class'),
+            MatriculesViewParams::ORDER_RECORDPLACE => _('Place of recording')
+        );
         return $orders;
     }
 
