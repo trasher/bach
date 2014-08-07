@@ -134,7 +134,10 @@ class SolariumQueryFactory
             $this->_buildQuery($container);
         }
 
-        $this->setDatesBounds();
+        if ( isset($this->_date_field) ) {
+            $this->setDatesBounds();
+        }
+
         //dynamically create facets
         $this->_addFacets($facets);
 
@@ -151,20 +154,22 @@ class SolariumQueryFactory
                 ' f.' . $this->_date_field . '.facet.range.gap=+1YEARS'
             );
             $fr->setField($this->_date_field);
-        }
 
-        $stats = $this->_query->getStats();
-        $stats->createField($this->_date_field);
+            $stats = $this->_query->getStats();
+            $stats->createField($this->_date_field);
+        }
 
         $this->_request = $this->_client->createRequest($this->_query);
         $rs = $this->_client->select($this->_query);
 
         $rsStats = $rs->getStats();
-        $stats = $rsStats->getResults();
+        if ( $rsStats ) {
+            $stats = $rsStats->getResults();
 
-        if ( isset($stats[$this->_date_field]) ) {
-            $this->_qry_low_date = $stats[$this->_date_field]->getMin();
-            $this->_qry_up_date = $stats[$this->_date_field]->getMax();
+            if ( isset($stats[$this->_date_field]) ) {
+                $this->_qry_low_date = $stats[$this->_date_field]->getMin();
+                $this->_qry_up_date = $stats[$this->_date_field]->getMax();
+            }
         }
 
         $this->_highlitght = $rs->getHighlighting();
@@ -302,6 +307,10 @@ class SolariumQueryFactory
         if ( strpos($hl_fields, 'cUnittitle') !== false ) {
             //on highlithed unititles, we always want the full string
             $hl->getField('cUnittitle')->setFragSize(0);
+        }
+
+        if ( $container->noResults() ) {
+            $this->_query->setRows(0);
         }
     }
 

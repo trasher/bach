@@ -646,10 +646,13 @@ abstract class SearchController extends Controller
         }
         $view_params->bind($request, $this->getCookieName());
 
-        $geoloc = $this->getGeolocFields();
 
         $factory = $this->get($this->factoryName());
-        $factory->setGeolocFields($geoloc);
+
+        $geoloc = $this->getGeolocFields();
+        if ( in_array($name, $geoloc) ) {
+            $factory->setGeolocFields(array($name));
+        }
 
         $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters ) {
@@ -664,7 +667,11 @@ abstract class SearchController extends Controller
 
         //Add filters to container
         $container->setFilters($filters);
-        $factory->setDateField($this->date_field);
+        if ( $name === $this->date_field ) {
+            $factory->setDateField($this->date_field);
+        }
+
+        $container->setNoResults();
         $factory->prepareQuery($container);
 
         $searchResults = $factory->performQuery(

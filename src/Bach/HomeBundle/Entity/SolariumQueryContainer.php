@@ -63,6 +63,7 @@ class SolariumQueryContainer
     private $_filters;
     private $_order = ViewParams::ORDER_RELEVANCE;
     private $_search_form;
+    private $_no_results;
 
     /**
      * Set field
@@ -222,5 +223,25 @@ class SolariumQueryContainer
     public function getSearchForm()
     {
         return $this->_search_form;
+    }
+
+    /**
+     * Explicitely retrieve no results rows
+     *
+     * @return void
+     */
+    public function setNoResults()
+    {
+        $this->_no_results = true;
+    }
+
+    /**
+     * Do query should retrieve results rows or not
+     *
+     * @return boolean
+     */
+    public function noResults()
+    {
+        return $this->_no_results;
     }
 }
