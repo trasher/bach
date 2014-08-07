@@ -68,6 +68,12 @@ class MatriculesDriverMapper implements DriverMapperInterface
      */
     public function translate($data)
     {
+        //replace double spaces in surnames with simple space
+        $data['prenoms'][0]['value'] = str_replace(
+            '  ',
+            ' ',
+            $data['prenoms'][0]['value']
+        );
         return $data;
     }
 }
