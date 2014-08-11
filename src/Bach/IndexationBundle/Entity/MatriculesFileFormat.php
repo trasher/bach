@@ -155,7 +155,8 @@ class MatriculesFileFormat extends FileFormat
         'end_dao',
         'txt_prenoms',
         'created',
-        'updated'
+        'updated',
+        'txt_nomprenoms'
     );
 
     /**
@@ -255,6 +256,17 @@ class MatriculesFileFormat extends FileFormat
             'dest'          => 'oLieu_enregistrement',
             'type'          => 'alphaOnlySort',
             'multivalued'   => 'false',
+            'indexed'       => 'true',
+            'stored'        => 'false'
+        ),
+        array(
+            'source'        => array(
+                'prenoms',
+                'nom'
+            ),
+            'dest'          => 'txt_nomprenoms',
+            'type'          => 'text_names',
+            'multivalued'   => 'true',
             'indexed'       => 'true',
             'stored'        => 'false'
         )
