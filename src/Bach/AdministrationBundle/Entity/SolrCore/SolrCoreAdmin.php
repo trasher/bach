@@ -661,13 +661,15 @@ class SolrCoreAdmin
             $expanded_mappings = $orm_name::$expanded_mappings;
 
             foreach ( $expanded_mappings as $f ) {
-                $expanded = $doc->createElement('field');
-                $expanded->setAttribute('name', $f['dest']);
-                $expanded->setAttribute('type', $f['type']);
-                $expanded->setAttribute('multiValued', $f['multivalued']);
-                $expanded->setAttribute('indexed', $f['indexed']);
-                $expanded->setAttribute('stored', $f['stored']);
-                $elt->appendChild($expanded);
+                if ( in_array($f['source'], $fields) ) {
+                    $expanded = $doc->createElement('field');
+                    $expanded->setAttribute('name', $f['dest']);
+                    $expanded->setAttribute('type', $f['type']);
+                    $expanded->setAttribute('multiValued', $f['multivalued']);
+                    $expanded->setAttribute('indexed', $f['indexed']);
+                    $expanded->setAttribute('stored', $f['stored']);
+                    $elt->appendChild($expanded);
+                }
             }
         }
 
@@ -745,20 +747,11 @@ class SolrCoreAdmin
             $expanded_mappings = $orm_name::$expanded_mappings;
 
             foreach ( $expanded_mappings as $f ) {
-                $sources = null;
-                if ( !is_array($f['source']) ) {
-                    $sources = array($f['source']);
-                } else {
-                    $sources = $f['source'];
-                }
-
-                foreach ( $sources as $source ) {
-                    if ( in_array($source, $fields) ) {
-                        $cf = $doc->createElement('copyField');
-                        $cf->setAttribute('source', $source);
-                        $cf->setAttribute('dest', $f['dest']);
-                        $doc->documentElement->appendChild($cf);
-                    }
+                if ( in_array($f['source'], $fields) ) {
+                    $cf = $doc->createElement('copyField');
+                    $cf->setAttribute('source', $f['source']);
+                    $cf->setAttribute('dest', $f['dest']);
+                    $doc->documentElement->appendChild($cf);
                 }
             }
         }
