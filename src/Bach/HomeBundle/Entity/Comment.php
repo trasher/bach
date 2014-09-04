@@ -63,6 +63,11 @@ use Bach\IndexationBundle\Entity\EADFileFormat;
  */
 class Comment
 {
+    //related
+    const REL_ARCHIVES = 0;
+    const REL_MATRICULES = 1;
+    const REL_IMAGES = 2;
+
     //priorities
     const COMMENT = 0;
     const IMPROVEMENT = 1;
@@ -138,9 +143,14 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="\Bach\IndexationBundle\Entity\EADFileFormat", inversedBy="comments")
-     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid")
+     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid", nullable=true)
      */
     protected $eadfile;
+
+    /**
+     * @ORM\Column(name="related", type="integer", length=1)
+     */
+    protected $related;
 
     /**
      * Get id
