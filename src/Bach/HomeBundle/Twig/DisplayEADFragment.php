@@ -404,8 +404,8 @@ class DisplayEADFragment extends \Twig_Extension
                 $name = $n->getName();
             }
 
-            if ( isset($n['rules']) ) {
-                $output[$name]['label'] = $n['rules'] . ' :';
+            if ( isset($n['label']) ) {
+                $output[$name]['label'] = $n['label'] . ' :';
             } else {
                 $output[$name]['label'] = self::i18nFromXsl($name . ':');
             }
