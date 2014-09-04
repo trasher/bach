@@ -1,3 +1,7 @@
+0.9.4.2 (2014-09-04)
+
+- No longer use @rules to display specific label on descriptors (use non EAD @label instead)
+
 0.9.4.1 (2014-08-06)
 
 - Fix factes occurences ordering
