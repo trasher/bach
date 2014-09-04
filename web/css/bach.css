@@ -405,6 +405,7 @@ p {
 .ui-autocomplete.ui-widget-content {
     background: #332928;
     color: white;
+    z-index: 10000!important;
 }
 
 .ui-autocomplete.ui-widget-content a {
