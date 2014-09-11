@@ -39,6 +39,7 @@ Thumbs.db
 .vimfiles*
 *.vimentry
 quick_gen_project_*.sh
+*.exvim*
 
 #test generatedrated files
 tests-results/
