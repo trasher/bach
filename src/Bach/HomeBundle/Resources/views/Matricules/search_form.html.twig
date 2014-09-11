@@ -68,7 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             viewer/{{ document.start_dao }}
                         {%- endif -%}
                     {% endset %}
-                    <a href="{{ viewer_uri ~ images_link }}">
+                    <a href="{{ viewer_uri ~ images_link }}" target="_blank" >
                         <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ _('Show related image') }}"/>
                     </a>
                 {% else %}
@@ -149,7 +149,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                     viewer/{{ document.start_dao }}
                                 {%- endif -%}
                             {% endset %}
-                            <a href="{{ viewer_uri ~ images_link }}">
+                            <a href="{{ viewer_uri ~ images_link }}" target="_blank">
                                 <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Show related image') }}"/>
                             </a>
                         {% endif %}
