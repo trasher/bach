@@ -273,10 +273,10 @@
     -->
     <fieldType name="descendent_path" class="solr.TextField">
       <analyzer type="index">
-        <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/"/>
+	<tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
       </analyzer>
       <analyzer type="query">
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
+	<tokenizer class="solr.KeywordTokenizerFactory" />
       </analyzer>
     </fieldType>
     <!-- 
@@ -285,10 +285,10 @@
     -->
     <fieldType name="ancestor_path" class="solr.TextField">
       <analyzer type="index">
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
+	<tokenizer class="solr.KeywordTokenizerFactory" />
       </analyzer>
       <analyzer type="query">
-        <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/"/>
+	<tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
       </analyzer>
     </fieldType>
 
