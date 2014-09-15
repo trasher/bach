@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-29 10:21+0200\n"
-"PO-Revision-Date: 2014-07-29 10:22+0100\n"
+"PO-Revision-Date: 2014-09-15 10:32+0100\n"
 "Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: fr_FR.utf8\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: src/Bach/HomeBundle/DependencyInjection/Compiler/AddDependencyCallsCompilerPass.php:247
 #: src/Bach/HomeBundle/DependencyInjection/Compiler/AddDependencyCallsCompilerPass.php:251
 msgid "Facets"
-msgstr "Fecettes"
+msgstr "Facettes"
 
 #: src/Bach/HomeBundle/DependencyInjection/Compiler/AddDependencyCallsCompilerPass.php:247
 #: src/Bach/HomeBundle/DependencyInjection/Compiler/AddDependencyCallsCompilerPass.php:251
