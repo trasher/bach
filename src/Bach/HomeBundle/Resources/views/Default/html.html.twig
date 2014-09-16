@@ -89,7 +89,7 @@ POSSIBILITY OF SUCH DAMAGE.
             window.location.href = $(this).attr('href');
         });
 
-        if ($(this).scrollTop()) {
+        if (!$('#wrapper').scrollTop()) {
             $('#back2top').fadeOut();
         }
         $('#wrapper').scroll(function() {
