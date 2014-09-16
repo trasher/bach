@@ -48,6 +48,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Bach\HomeBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 
+use Presta\SitemapBundle\Event\SitemapPopulateEvent;
+use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
+
 /**
  * Bach HomeBundle
  *
@@ -75,5 +78,196 @@ class BachHomeBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
+    }
+
+    /**
+     * Boots the bundle
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $router = $this->container->get('router');
+        $event = $this->container->get('event_dispatcher');
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        //listen presta_sitemap.populate event
+        $event->addListener(
+            SitemapPopulateEvent::ON_SITEMAP_POPULATE,
+            function (SitemapPopulateEvent $event) use ($router, $em) {
+                //get absolute homepage url
+                $url = $router->generate('bach_homepage');
+
+                //add homepage url to the urlset named default
+                $event->getGenerator()->addUrl(
+                    new UrlConcrete(
+                        $url,
+                        new \DateTime(),
+                        UrlConcrete::CHANGEFREQ_WEEKLY,
+                        1
+                    ),
+                    'default'
+                );
+
+
+                //if enabled, add classification scheme URL
+                if ( $this->container->getParameter('feature.cdc') === true ) {
+                    $url = $router->generate('bach_classification');
+                    $event->getGenerator()->addUrl(
+                        new UrlConcrete(
+                            $url,
+                            new \DateTime(),
+                            UrlConcrete::CHANGEFREQ_WEEKLY,
+                            1
+                        ),
+                        'default'
+                    );
+                }
+
+                //ead HTML documents
+                $query = $em->createQuery(
+                    'SELECT h.headerId, h.updated '.
+                    'FROM BachIndexationBundle:EADHeader h'
+                );
+                $elements = $query->getResult();
+
+                foreach ( $elements as $elt ) {
+                    $url = $router->generate(
+                        'bach_ead_html',
+                        array(
+                            'docid' => $elt['headerId']
+                        )
+                    );
+
+                    $event->getGenerator()->addUrl(
+                        new UrlConcrete(
+                            $url,
+                            new \DateTime(),
+                            UrlConcrete::CHANGEFREQ_WEEKLY,
+                            1
+                        ),
+                        'archives'
+                    );
+                }
+
+                //add archives URLs
+                $query = $em->createQuery(
+                    'SELECT f.fragmentid, f.updated FROM ' .
+                    'BachIndexationBundle:EADFileFormat f'
+                );
+                $elements = $query->getResult();
+
+                foreach ( $elements as $elt ) {
+                    $url = $router->generate(
+                        'bach_display_document',
+                        array(
+                            'docid' => $elt['fragmentid']
+                        )
+                    );
+
+                    $event->getGenerator()->addUrl(
+                        new UrlConcrete(
+                            $url,
+                            new \DateTime(),
+                            UrlConcrete::CHANGEFREQ_WEEKLY,
+                            1
+                        ),
+                        'archives'
+                    );
+                }
+
+                //if enabled, add matricules URLs
+                if ( $this->container->getParameter('feature.matricules') === true ) {
+                    $url = $router->generate('bach_matricules');
+
+                    $event->getGenerator()->addUrl(
+                        new UrlConcrete(
+                            $url,
+                            new \DateTime(),
+                            UrlConcrete::CHANGEFREQ_WEEKLY,
+                            1
+                        ),
+                        'matricules'
+                    );
+
+                    //add matricules URLs
+                    $query = $em->createQuery(
+                        'SELECT m.id, m.updated FROM ' .
+                        ' BachIndexationBundle:MatriculesFileFormat m'
+                    );
+                    $elements = $query->getResult();
+                    foreach ( $elements as $elt ) {
+                        $url = $router->generate(
+                            'bach_display_matricules',
+                            array(
+                                'docid' => $elt['id']
+                            )
+                        );
+
+                        $event->getGenerator()->addUrl(
+                            new UrlConcrete(
+                                $url,
+                                new \DateTime(),
+                                UrlConcrete::CHANGEFREQ_WEEKLY,
+                                1
+                            ),
+                            'matricules'
+                        );
+                    }
+                }
+
+                //if enabled, add expos URLs
+                /** TODO */
+                /*if ( $this->container->getParameter('feature.expos') === true ) {
+                    $url = new Url();
+                    $url->setLoc(
+                        $this->router->generate('expos_homepage')
+                    );
+                }*/
+
+                //add browse URLs, if any
+                if ( $this->container->getParameter('feature.browse') === true ) {
+                    $query = $em->createQuery(
+                        'SELECT b.solr_field_name ' .
+                        'FROM BachHomeBundle:BrowseFields b ' .
+                        'WHERE b.active=true ORDER BY b.position'
+                    );
+                    $elements = $query->getResult();
+                    if ( count($elements) > 0) {
+                        /*$url = $this->router->generate('bach_browse');
+                        $event->getGenerator()->addUrl(
+                            new UrlConcrete(
+                                $url,
+                                new \DateTime(),
+                                UrlConcrete::CHANGEFREQ_WEEKLY,
+                                1
+                            ),
+                            'descriptors'
+                        );*/
+
+                        foreach ( $elements as $elt ) {
+                            $url = $router->generate(
+                                'bach_browse',
+                                array(
+                                    'part' => $elt['solr_field_name']
+                                )
+                            );
+
+                            $event->getGenerator()->addUrl(
+                                new UrlConcrete(
+                                    $url,
+                                    new \DateTime(),
+                                    UrlConcrete::CHANGEFREQ_WEEKLY,
+                                    1
+                                ),
+                                'descriptors'
+                            );
+                        }
+                    }
+                }
+
+                //What else?
+            }
+        );
     }
 }

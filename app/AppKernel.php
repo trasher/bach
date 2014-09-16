@@ -105,7 +105,7 @@ class AppKernel extends Kernel
             new Bach\ExposBundle\ExposBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new FM\ElfinderBundle\FMElfinderBundle(),
-            new KPhoen\SitemapBundle\KPhoenSitemapBundle(),
+            new Presta\SitemapBundle\PrestaSitemapBundle(),
             new Liip\ThemeBundle\LiipThemeBundle()
         );
 

@@ -293,10 +293,9 @@ services:
             - [setRequest, ['@?request=']]
             - [setHtmlContentsPath, ['%html_intros_path%']]
 
-k_phoen_sitemap:
-    base_host: '%bach_url%'
-    base_host_sitemap: '%bach_url%'
-    limit: 50000
+presta_sitemap:
+    dumper_base_url: '%bach_url%'
+    route_annotation_listener: false
 
 liip_theme:
     themes: %bach_themes%
