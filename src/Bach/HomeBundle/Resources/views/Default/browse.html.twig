@@ -48,6 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% else %}
     <p>{{ _('There are no configured fields for browsing.') }}</p>
 {% endif %}
+<a href="#container" id="back2top">{{ _('Back to top') }}</a>
 {% endblock %}
 
 {% block js_calls %}
@@ -86,6 +87,17 @@ POSSIBILITY OF SUCH DAMAGE.
                 },
                 load: function(event, ui){
                     $('#loading').remove();
+                }
+            });
+
+            if (!$('#wrapper').scrollTop()) {
+                $('#back2top').fadeOut();
+            }
+            $('#wrapper').scroll(function() {
+                if ($(this).scrollTop()) {
+                    $('#back2top').fadeIn();
+                } else {
+                    $('#back2top').fadeOut();
                 }
             });
         });

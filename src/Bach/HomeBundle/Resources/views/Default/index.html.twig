@@ -109,6 +109,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     </div>
                 </article>
             {% endfor %}
+<a href="#container" id="back2top">{{ _('Back to top') }}</a>
 {% endblock %}
 
 {# Binded when not in mobile mode #}
@@ -205,4 +206,18 @@ POSSIBILITY OF SUCH DAMAGE.
         return false;
     });
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    if (!$('#wrapper').scrollTop()) {
+        $('#back2top').fadeOut();
+     }
+     $('#wrapper').scroll(function() {
+         if ($(this).scrollTop()) {
+             $('#back2top').fadeIn();
+         } else {
+             $('#back2top').fadeOut();
+         }
+     });
 {% endblock %}
