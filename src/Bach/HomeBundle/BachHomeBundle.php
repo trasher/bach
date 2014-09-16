@@ -95,8 +95,9 @@ class BachHomeBundle extends Bundle
         $event->addListener(
             SitemapPopulateEvent::ON_SITEMAP_POPULATE,
             function (SitemapPopulateEvent $event) use ($router, $em) {
+                $bach_url = $this->container->getParameter('bach_url');
                 //get absolute homepage url
-                $url = $router->generate('bach_homepage');
+                $url = $bach_url . $router->generate('bach_homepage');
 
                 //add homepage url to the urlset named default
                 $event->getGenerator()->addUrl(
@@ -112,7 +113,7 @@ class BachHomeBundle extends Bundle
 
                 //if enabled, add classification scheme URL
                 if ( $this->container->getParameter('feature.cdc') === true ) {
-                    $url = $router->generate('bach_classification');
+                    $url = $bach_url . $router->generate('bach_classification');
                     $event->getGenerator()->addUrl(
                         new UrlConcrete(
                             $url,
@@ -132,7 +133,7 @@ class BachHomeBundle extends Bundle
                 $elements = $query->getResult();
 
                 foreach ( $elements as $elt ) {
-                    $url = $router->generate(
+                    $url = $bach_url . $router->generate(
                         'bach_ead_html',
                         array(
                             'docid' => $elt['headerId']
@@ -158,7 +159,7 @@ class BachHomeBundle extends Bundle
                 $elements = $query->getResult();
 
                 foreach ( $elements as $elt ) {
-                    $url = $router->generate(
+                    $url = $bach_url . $router->generate(
                         'bach_display_document',
                         array(
                             'docid' => $elt['fragmentid']
@@ -178,7 +179,7 @@ class BachHomeBundle extends Bundle
 
                 //if enabled, add matricules URLs
                 if ( $this->container->getParameter('feature.matricules') === true ) {
-                    $url = $router->generate('bach_matricules');
+                    $url = $bach_url . $router->generate('bach_matricules');
 
                     $event->getGenerator()->addUrl(
                         new UrlConcrete(
@@ -197,7 +198,7 @@ class BachHomeBundle extends Bundle
                     );
                     $elements = $query->getResult();
                     foreach ( $elements as $elt ) {
-                        $url = $router->generate(
+                        $url = $bach_url . $router->generate(
                             'bach_display_matricules',
                             array(
                                 'docid' => $elt['id']
@@ -234,7 +235,7 @@ class BachHomeBundle extends Bundle
                     );
                     $elements = $query->getResult();
                     if ( count($elements) > 0) {
-                        /*$url = $this->router->generate('bach_browse');
+                        /*$url = $bach_url . $this->router->generate('bach_browse');
                         $event->getGenerator()->addUrl(
                             new UrlConcrete(
                                 $url,
@@ -246,7 +247,7 @@ class BachHomeBundle extends Bundle
                         );*/
 
                         foreach ( $elements as $elt ) {
-                            $url = $router->generate(
+                            $url = $bach_url . $router->generate(
                                 'bach_browse',
                                 array(
                                     'part' => $elt['solr_field_name']
