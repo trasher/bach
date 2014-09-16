@@ -106,6 +106,7 @@ class AppKernel extends Kernel
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new FM\ElfinderBundle\FMElfinderBundle(),
             new Presta\SitemapBundle\PrestaSitemapBundle(),
+            new Liip\DoctrineCacheBundle\LiipDoctrineCacheBundle(),
             new Liip\ThemeBundle\LiipThemeBundle()
         );
 

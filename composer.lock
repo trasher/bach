@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "13206a95e4b12d24b2f5ddc0626162c0",
+    "hash": "a9a698286ecaa4fd39a2f47002c2899f",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1994,6 +1994,54 @@
                 "translation"
             ],
             "time": "2014-03-12 10:19:20"
+        },
+        {
+            "name": "liip/doctrine-cache-bundle",
+            "version": "dev-master",
+            "target-dir": "Liip/DoctrineCacheBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liip/LiipDoctrineCacheBundle.git",
+                "reference": "5b4f7d509f27b69474286faf53633ef4c5c318a6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liip/LiipDoctrineCacheBundle/zipball/5b4f7d509f27b69474286faf53633ef4c5c318a6",
+                "reference": "5b4f7d509f27b69474286faf53633ef4c5c318a6",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": ">=2.2",
+                "php": ">=5.3.0",
+                "symfony/symfony": ">=2.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Liip\\DoctrineCacheBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Liip AG",
+                    "homepage": "http://www.liip.ch/"
+                }
+            ],
+            "description": "This Bundle provides integration into Symfony2 with the Doctrine Common Cache layer.",
+            "keywords": [
+                "Symfony2",
+                "cache"
+            ],
+            "time": "2014-03-24 22:22:17"
         },
         {
             "name": "liip/theme-bundle",
@@ -4349,6 +4397,7 @@
         "stof/doctrine-extensions-bundle": 20,
         "pixassociates/sortable-behavior-bundle": 20,
         "presta/sitemap-bundle": 20,
+        "liip/doctrine-cache-bundle": 20,
         "atoum/atoum": 20,
         "atoum/atoum-bundle": 20,
         "jns/xhprof-bundle": 20,
