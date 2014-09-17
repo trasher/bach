@@ -73,14 +73,32 @@ class Version100 extends BachMigration
         $this->checkDbPlatform();
 
         $table = $schema->getTable('comments');
+
+        $fkeys = $table->getForeignKeys();
+        foreach ( $fkeys as $fkey ) {
+            if ( $fkey->getColumns()[0] == 'eadfile_id' ) {
+                $table->removeForeignKey($fkey->getName());
+            }
+        }
+
         $table->addColumn('related', 'integer', array('nullable' => true));
+        $table->addColumn('docid', 'string', array('nullable' => true));
+        $table->dropColumn('eadfile_id');
+        //FIXME: before dropping column, we should copy its data to docid
     }
 
+    /**
+     * Post up instructions
+     *
+     * @param Schema $schema Database schema
+     *
+     * @return void
+     */
     public function postUp(Schema $schema)
     {
         $this->checkDbPlatform();
         $this->connection->executeQuery(
-            'UPDATE comments SET related = ' . Comment::REL_IMAGES
+            'UPDATE comments SET related = ' . Comment::REL_ARCHIVES
         );
     }
 
@@ -97,6 +115,10 @@ class Version100 extends BachMigration
 
         $table = $schema->getTable('comments');
         $table->dropColumn('related');
+        $table->dropColumn('docid');
+        $table->addColumn('eadfile_id', 'integer');
+        //FIXME: we should get index eadfile_id back but...
+        //We should also bring back data from docid column to eadfile_id
     }
 
 }

@@ -146,11 +146,6 @@ class EADFileFormat extends FileFormat
     protected $archdesc;
 
     /**
-     * @ORM\OneToMany(targetEntity="\Bach\HomeBundle\Entity\Comment", mappedBy="eadfile", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
-     */
-    protected $comments;
-
-    /**
      * @ORM\Column(type="string", nullable=true, length=100)
      */
     protected $previous_id;
@@ -181,7 +176,6 @@ class EADFileFormat extends FileFormat
         $this->dates = new ArrayCollection();
         $this->daos = new ArrayCollection();
         $this->parents_titles = new ArrayCollection();
-        $this->comments = new ArrayCollection();
         parent::__construct($data);
     }
 
@@ -1064,40 +1058,5 @@ class EADFileFormat extends FileFormat
     public function getArchdesc()
     {
         return $this->archdesc;
-    }
-
-    /**
-     * Add comments
-     *
-     * @param Comment $comment Comment
-     *
-     * @return EADFileFormat
-     */
-    public function addComment(Comment $comment)
-    {
-        $this->comments[] = $comment;
-        return $this;
-    }
-
-    /**
-     * Remove comment
-     *
-     * @param \Bach\HomeBundle\Entity\Comment $comment Comment
-     *
-     * @return void
-     */
-    public function removeComment(Comment $comment)
-    {
-        $this->comments->removeElement($comment);
-    }
-
-    /**
-     * Get comments
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getComments()
-    {
-        return $this->comments;
     }
 }
