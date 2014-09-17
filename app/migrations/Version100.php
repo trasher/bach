@@ -47,6 +47,7 @@ namespace Bach\Migrations;
 require_once 'BachMigration.php';
 
 use Doctrine\DBAL\Schema\Schema;
+use Bach\HomeBundle\Entity\Comment;
 
 /**
  * Bach 1.0.0 migration file
@@ -73,6 +74,14 @@ class Version100 extends BachMigration
 
         $table = $schema->getTable('comments');
         $table->addColumn('related', 'integer', array('nullable' => true));
+    }
+
+    public function postUp(Schema $schema)
+    {
+        $this->checkDbPlatform();
+        $this->connection->executeQuery(
+            'UPDATE comments SET related = ' . Comment::REL_IMAGES
+        );
     }
 
     /**
