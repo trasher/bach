@@ -81,8 +81,9 @@ class Version100 extends BachMigration
             }
         }
 
-        $table->addColumn('related', 'integer', array('nullable' => true));
         $table->addColumn('docid', 'string', array('nullable' => true));
+        //comment is required here to prevent Doctrine to change eadfile_id to related!!
+        $table->addColumn('related', 'integer', array('comment' => 'Related document type'));
         $table->dropColumn('eadfile_id');
         //FIXME: before dropping column, we should copy its data to docid
     }
@@ -114,11 +115,16 @@ class Version100 extends BachMigration
         $this->checkDbPlatform();
 
         $table = $schema->getTable('comments');
+
         $table->dropColumn('related');
         $table->dropColumn('docid');
         $table->addColumn('eadfile_id', 'integer');
-        //FIXME: we should get index eadfile_id back but...
-        //We should also bring back data from docid column to eadfile_id
+        $table->addForeignKeyConstraint(
+            $schema->getTable('ead_file_format'),
+            array('eadfile_id'),
+            array('uniqid')
+        );
+        //FIXME: we should bring back data from docid column to eadfile_id
     }
 
 }
