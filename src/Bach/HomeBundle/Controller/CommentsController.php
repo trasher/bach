@@ -103,6 +103,28 @@ class CommentsController extends Controller
             )
         );
 
+        $tpl_vars = array(
+            'docid' => $docid,
+            'form'  => $form->createView(),
+            'type'  => $type
+        );
+
+        //retrieve related document
+        switch ( $type ) {
+        case 'archives':
+            $repo = $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:EADFileFormat');
+            $eadfile = $repo->findOneByFragmentid($docid);
+            $tpl_vars['eadfile'] = $eadfile;
+            break;
+        case 'matricules':
+            $repo = $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:MatriculesFileFormat');
+            $matricule = $repo->findOneById($docid);
+            $tpl_vars['matricule'] = $matricule;
+            break;
+        }
+
         $form->handleRequest($request);
         if ( $form->isValid() ) {
             $em = $this->getDoctrine()->getManager();
@@ -137,10 +159,7 @@ class CommentsController extends Controller
             }
             return $this->render(
                 'BachHomeBundle:Comment:' . $template,
-                array(
-                    'docid'     => $docid,
-                    'form'      => $form->createView()
-                )
+                $tpl_vars
             );
         }
     }
