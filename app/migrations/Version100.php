@@ -81,7 +81,7 @@ class Version100 extends BachMigration
             }
         }
 
-        $table->addColumn('docid', 'string', array('nullable' => true));
+        $table->addColumn('docid', 'string', array('nullable' => true, 'length' => 500));
         //comment is required here to prevent Doctrine to change eadfile_id to related!!
         $table->addColumn('related', 'integer', array('comment' => 'Related document type'));
         $table->dropColumn('eadfile_id');
