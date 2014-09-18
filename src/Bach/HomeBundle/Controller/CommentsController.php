@@ -134,7 +134,6 @@ class CommentsController extends Controller
             $template = 'add.html.twig';
             if ( $ajax === 'ajax' ) {
                 $template = 'add_form.html.twig';
-            } else {
             }
             return $this->render(
                 'BachHomeBundle:Comment:' . $template,

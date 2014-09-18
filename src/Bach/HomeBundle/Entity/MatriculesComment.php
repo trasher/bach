@@ -67,6 +67,6 @@ class MatriculesComment extends Comment
      */
     protected function setDefaultRelated()
     {
-        $this->related = self::REL_ARCHIVES;
+        $this->related = self::REL_MATRICULES;
     }
 }
