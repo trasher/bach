@@ -65,20 +65,23 @@ class CommentsController extends Controller
      * Add a comment
      *
      * @param string  $docid Document id
+     * @param string  $type  Document type
      * @param boolean $ajax  Ajax render
      *
      * @return void
      */
-    public function addAction($docid, $ajax = false)
+    public function addAction($docid, $type, $ajax = false)
     {
         $request = $this->getRequest();
 
-        $comment = new Comment();
+        $class = 'Comment';
+        if ( $type != 'archives' ) {
+            $class = ucfirst($type) . $class;
+        }
+        $class = 'Bach\HomeBundle\Entity\\' . $class;
+        $comment = new $class();
 
-        $repo = $this->getDoctrine()
-            ->getRepository('BachIndexationBundle:EADFileFormat');
-        $eadfile = $repo->findOneByFragmentid($docid);
-        $comment->setEadfile($eadfile);
+        $comment->setDocId($docid);
 
         //get user, if any
         $user = $this->getUser();
@@ -92,7 +95,10 @@ class CommentsController extends Controller
             array(
                 'action' => $this->generateUrl(
                     'bach_add_comment',
-                    array('docid' => $docid)
+                    array(
+                        'type'  => $type,
+                        'docid' => $docid
+                    )
                 )
             )
         );
@@ -106,14 +112,24 @@ class CommentsController extends Controller
                 'success',
                 _('Your comment has been stored. Thank you!')
             );
-            return $this->redirect(
-                $this->generateUrl(
-                    'bach_display_document',
-                    array(
-                        'docid' => $docid
+
+            if ( $type === 'images' ) {
+                //TODO
+            } else {
+                $path = 'bach_display_document';
+                if ( $type === 'matricules' ) {
+                    $path = 'bach_display_matricules';
+                }
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        $path,
+                        array(
+                            'docid' => $docid
+                        )
                     )
-                )
-            );
+                );
+            }
         } else {
             $template = 'add.html.twig';
             if ( $ajax === 'ajax' ) {
@@ -124,8 +140,7 @@ class CommentsController extends Controller
                 'BachHomeBundle:Comment:' . $template,
                 array(
                     'docid'     => $docid,
-                    'form'      => $form->createView(),
-                    'eadfile'   => $eadfile
+                    'form'      => $form->createView()
                 )
             );
         }

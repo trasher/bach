@@ -667,10 +667,9 @@ class DefaultController extends SearchController
         if ( $show_comments ) {
             $query = $this->getDoctrine()->getManager()
                 ->createQuery(
-                    'SELECT c, d FROM BachHomeBundle:Comment c
-                    JOIN c.eadfile d
+                    'SELECT c FROM BachHomeBundle:Comment c
                     WHERE c.state = :state
-                    AND d.fragmentid = :docid
+                    AND c.docid = :docid
                     ORDER BY c.creation_date DESC, c.id DESC'
                 )->setParameters(
                     array(

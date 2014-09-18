@@ -55,6 +55,7 @@ use Application\Sonata\UserBundle\Entity\User;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="related", type="integer")
+ * @ORM\DiscriminatorMap({"0" = "Comment", "1" = "MatriculesComment"})
  *
  * @category Search
  * @package  Bach
@@ -382,7 +383,7 @@ class Comment
      */
     public function setDocId($docid=null)
     {
-        $this->$docid = $docid;
+        $this->docid = $docid;
         return $this;
     }
 

@@ -52,6 +52,7 @@ use Bach\HomeBundle\Entity\Facets;
 use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\MatriculesViewParams;
+use Bach\HomeBundle\Entity\Comment;
 
 /**
  * Bach matricules controller
@@ -346,6 +347,27 @@ class MatriculesController extends SearchController
                 'document'      => $doc
             )
         );
+
+        //retrieve comments
+        $show_comments = $this->container->getParameter('feature.comments');
+        if ( $show_comments ) {
+            $query = $this->getDoctrine()->getManager()
+                ->createQuery(
+                    'SELECT c FROM BachHomeBundle:MatriculesComment c
+                    WHERE c.state = :state
+                    AND c.docid = :docid
+                    ORDER BY c.creation_date DESC'
+                )->setParameters(
+                    array(
+                        'state'     => Comment::PUBLISHED,
+                        'docid'     => $docid
+                    )
+                );
+            $comments = $query->getResult();
+            if ( count($comments) > 0 ) {
+                $tplParams['comments'] = $comments;
+            }
+        }
 
         if ( $ajax === 'ajax' ) {
             $tpl = 'BachHomeBundle:Matricules:content_display.html.twig';

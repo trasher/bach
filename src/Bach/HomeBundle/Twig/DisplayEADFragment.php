@@ -205,7 +205,10 @@ class DisplayEADFragment extends \Twig_Extension
         if ( $docid !== '' ) {
             $add_comment_path = $router->generate(
                 'bach_add_comment',
-                array('docid' => $docid)
+                array(
+                    'docid' => $docid,
+                    'type'  => 'archives'
+                )
             );
 
             $text = str_replace(
