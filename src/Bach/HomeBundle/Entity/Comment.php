@@ -55,7 +55,7 @@ use Application\Sonata\UserBundle\Entity\User;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="related", type="integer")
- * @ORM\DiscriminatorMap({"0" = "Comment", "1" = "MatriculesComment"})
+ * @ORM\DiscriminatorMap({"0" = "Comment", "1" = "MatriculesComment", "2" = "ImagesComment"})
  *
  * @category Search
  * @package  Bach

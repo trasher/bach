@@ -138,6 +138,13 @@ bach_add_comment:
         _method: GET|POST
         type: 'archives|matricules|images'
 
+bach_get_comment:
+    pattern: /comment/{type}/{docid}/get
+    defaults: { _controller: BachHomeBundle:Comments:get }
+    requirements:
+        _method: GET
+        type: 'archives|matricules|images'
+
 bach_classification:
     pattern: /classification-scheme
     defaults: { _controller: BachHomeBundle:Default:cdc }
