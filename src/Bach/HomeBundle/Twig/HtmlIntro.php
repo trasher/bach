@@ -197,7 +197,7 @@ class HtmlIntro extends \Twig_Extension
                 'bach_search',
                 array(
                     'query_terms'   => $request->get('query_terms'),
-                    'filter_field'  => 'c' . ucwords($matches[1]),
+                    'filter_field'  => $matches[1],
                     'filter_value'  => $matches[2]
                 )
             );
