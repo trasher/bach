@@ -192,6 +192,18 @@ class HtmlIntro extends \Twig_Extension
             }
         };
 
+        $filters_callback = function ($matches) use ($router, $request) {
+            $href = $router->generate(
+                'bach_search',
+                array(
+                    'query_terms'   => $request->get('query_terms'),
+                    'filter_field'  => 'c' . ucwords($matches[1]),
+                    'filter_value'  => $matches[2]
+                )
+            );
+            return 'href="' . str_replace('&', '&amp;', $href) . '"';
+        };
+
         $contents = preg_replace_callback(
             '@<img(.*) src="(.[^"]+)"(.*)/>@',
             $img_callback,
@@ -201,6 +213,12 @@ class HtmlIntro extends \Twig_Extension
         $contents = preg_replace_callback(
             '/href="(.[^"]+)"/',
             $doclink_callback,
+            $contents
+        );
+
+        $contents = preg_replace_callback(
+            '/link="%%%(.[^:]+)::(.[^%]*)%%%"/',
+            $filters_callback,
             $contents
         );
 
