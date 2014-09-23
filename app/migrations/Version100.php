@@ -48,6 +48,9 @@ require_once 'BachMigration.php';
 
 use Doctrine\DBAL\Schema\Schema;
 use Bach\HomeBundle\Entity\Comment;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * Bach 1.0.0 migration file
@@ -58,8 +61,43 @@ use Bach\HomeBundle\Entity\Comment;
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class Version100 extends BachMigration
+class Version100 extends BachMigration implements ContainerAwareInterface
 {
+    private $_container;
+    private $_values = null;
+
+    /**
+     * Sets container
+     *
+     * @param ContainerInterface $container Container
+     *
+     * @return void
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->_container = $container;
+    }
+
+    /**
+     * Pre up instructions
+     *
+     * @param Schema $schema Database schema
+     *
+     * @return void
+     */
+    public function preUp(Schema $schema)
+    {
+        $this->_values = array();
+        $em = $this->_container->get('doctrine.orm.entity_manager');
+        $sql = 'SELECT c.id, d.fragmentid FROM comments c ' .
+            'LEFT JOIN ead_file_format d ON c.eadfile_id = d.uniqid';
+        $stmt = $em->getConnection()->prepare($sql);;
+        $stmt->execute();
+        $comments = $stmt->fetchAll();
+        foreach ( $comments as $comment ) {
+            $this->_values[$comment['id']] = $comment['fragmentid'];
+        }
+    }
 
     /**
      * Ups database schema
@@ -81,9 +119,18 @@ class Version100 extends BachMigration
             }
         }
 
-        $table->addColumn('docid', 'string', array('nullable' => true, 'length' => 500));
-        //comment is required here to prevent Doctrine to change eadfile_id to related!!
-        $table->addColumn('related', 'integer', array('comment' => 'Related document type'));
+        $table->addColumn(
+            'docid',
+            'string',
+            array('nullable' => true, 'length' => 500)
+        );
+        //comment is required here to prevent Doctrine to
+        //change eadfile_id to related!!
+        $table->addColumn(
+            'related',
+            'integer',
+            array('comment' => 'Related document type')
+        );
         $table->dropColumn('eadfile_id');
         //FIXME: before dropping column, we should copy its data to docid
     }
@@ -98,9 +145,20 @@ class Version100 extends BachMigration
     public function postUp(Schema $schema)
     {
         $this->checkDbPlatform();
+
         $this->connection->executeQuery(
             'UPDATE comments SET related = ' . Comment::REL_ARCHIVES
         );
+
+        $em = $this->_container->get('doctrine.orm.entity_manager');
+        $sql = 'UPDATE comments SET docid = :docid WHERE id = :id';
+        $stmt = $em->getConnection()->prepare($sql);;
+
+        foreach ( $this->_values as $id=>$docid ) {
+            $stmt->bindValue(':id', $id);
+            $stmt->bindValue(':docid', $docid);
+            $stmt->execute();
+        }
     }
 
     /**
@@ -118,13 +176,62 @@ class Version100 extends BachMigration
 
         $table->dropColumn('related');
         $table->dropColumn('docid');
-        $table->addColumn('eadfile_id', 'integer');
+        $table->addColumn(
+            'eadfile_id',
+            'integer',
+            array(
+                'notnull'   => false
+            )
+        );
         $table->addForeignKeyConstraint(
             $schema->getTable('ead_file_format'),
             array('eadfile_id'),
             array('uniqid')
         );
         //FIXME: we should bring back data from docid column to eadfile_id
+    }
+
+    /**
+     * Pre down instructions
+     *
+     * @param Schema $schema Database schema
+     *
+     * @return void
+     */
+    public function preDown(Schema $schema)
+    {
+        $this->_values = array();
+        $em = $this->_container->get('doctrine.orm.entity_manager');
+        $sql = 'SELECT c.id, d.uniqid FROM comments c ' .
+            'LEFT JOIN ead_file_format d ON c.docid = d.fragmentid';
+        $stmt = $em->getConnection()->prepare($sql);;
+        $stmt->execute();
+        $comments = $stmt->fetchAll();
+        foreach ( $comments as $comment ) {
+            $this->_values[$comment['id']] = $comment['uniqid'];
+        }
+    }
+
+    /**
+     * Post down instructions
+     *
+     * @param Schema $schema Database schema
+     *
+     * @return void
+     */
+    public function postDown(Schema $schema)
+    {
+        $this->checkDbPlatform();
+
+        $em = $this->_container->get('doctrine.orm.entity_manager');
+        $sql = 'UPDATE comments SET eadfile_id = :uniqid WHERE id = :id';
+        $stmt = $em->getConnection()->prepare($sql);
+
+        foreach ( $this->_values as $id=>$uniqid ) {
+            $stmt->bindValue(':id', $id);
+            $stmt->bindValue(':uniqid', (int)$uniqid);
+            $stmt->execute();
+        }
     }
 
 }
