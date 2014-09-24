@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block container %}
 {% if fields | length > 0 %}
-<div id="tabs">
+<div id="browse_tabs">
     <ul>
     {% for field in fields %}
         <li{% if part == field.getSolrFieldName %} class="active"{% endif %}><a href="{% if part == field.getSolrFieldName %}#{{ field.getSolrFieldName }}{% else %}{{ path('bach_browse', {part: field.getSolrFieldName}) }}{% endif %}">{{ field.getLabel(lang) }}</a></li>
@@ -58,7 +58,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block javascripts %}
         $(function() {
-            $('#tabs > ul a').each(function(){
+            $('#browse_tabs > ul a').each(function(){
                 var _this = $(this);
                 var _href = _this.attr('href') + '/ajax';
                 if ( !_href.match(/^#.*/) ) {
@@ -66,8 +66,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
 
-            $('#tabs').tabs({
-                active: $('#tabs li.active').index(),
+            $('#browse_tabs').tabs({
+                active: $('#browse_tabs li.active').index(),
                 beforeLoad: function( event, ui ) {
                     if ( ui.tab.data( "loaded" ) ) {
                         event.preventDefault();
