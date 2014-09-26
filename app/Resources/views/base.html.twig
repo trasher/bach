@@ -76,7 +76,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block header %}
     <aside id="menu" role="search">
         <header class="header">
-            <h1><a href="{{ path('bach_homepage') }}"><img src="{{ asset('img/logo.png') }}" alt="Bach"/></a></h1>
+            <h1><a href="{{ path('bach_homepage') }}"><img src="{% include '::images/logo.html.twig' %}" alt="Bach"/></a></h1>
         </header>
         {{ block('menu') }}
     </aside>
