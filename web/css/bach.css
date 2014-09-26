@@ -920,6 +920,7 @@ h2.back a:hover {
 
 [id=inventory_contents] h3, [id=inventory_contents] h3.ui-accordion-header {
     font-size: 1.4em;
+    line-height: 1.4em;
     font-weight: bold;
     overflow: auto;
 }
