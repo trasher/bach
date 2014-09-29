@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a9a698286ecaa4fd39a2f47002c2899f",
+    "hash": "5e36b9617b9cb87f4ef0b71e9ea264b2",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3115,16 +3115,16 @@
         },
         {
             "name": "sonata-project/easy-extends-bundle",
-            "version": "2.1.8",
+            "version": "2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataEasyExtendsBundle.git",
-                "reference": "86e6daa00da960d81c620503969cd6b50309ea35"
+                "reference": "fb8c1335e3fcf4791fffd13d63b80741445c5665"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/86e6daa00da960d81c620503969cd6b50309ea35",
-                "reference": "86e6daa00da960d81c620503969cd6b50309ea35",
+                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/fb8c1335e3fcf4791fffd13d63b80741445c5665",
+                "reference": "fb8c1335e3fcf4791fffd13d63b80741445c5665",
                 "shasum": ""
             },
             "require": {
@@ -3168,7 +3168,7 @@
                 "Easy Extends",
                 "sonata"
             ],
-            "time": "2014-09-15 17:05:11"
+            "time": "2014-09-29 09:36:23"
         },
         {
             "name": "sonata-project/exporter",
@@ -3741,16 +3741,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.20",
+            "version": "v2.3.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "5ef0ea8414fd61df090f6aa60a3d78bfb4d8bd1c"
+                "reference": "1fc05758044fa1cf54460d7d4aff5f55b0f1b0db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/5ef0ea8414fd61df090f6aa60a3d78bfb4d8bd1c",
-                "reference": "5ef0ea8414fd61df090f6aa60a3d78bfb4d8bd1c",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/1fc05758044fa1cf54460d7d4aff5f55b0f1b0db",
+                "reference": "1fc05758044fa1cf54460d7d4aff5f55b0f1b0db",
                 "shasum": ""
             },
             "require": {
@@ -3845,7 +3845,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-09-28 16:24:47"
+            "time": "2014-09-03 09:45:27"
         },
         {
             "name": "twig/extensions",
