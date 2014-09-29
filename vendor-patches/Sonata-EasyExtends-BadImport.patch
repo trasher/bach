@@ -1,0 +1,12 @@
+diff -up vendor/sonata-project/easy-extends-bundle/Mapper/DoctrineORMMapper.php.patch vendor/sonata-project/easy-extends-bundle/Mapper/DoctrineORMMapper.php
+--- vendor/sonata-project/easy-extends-bundle/Mapper/DoctrineORMMapper.php.patch	2014-09-29 10:29:05.222168865 +0200
++++ vendor/sonata-project/easy-extends-bundle/Mapper/DoctrineORMMapper.php	2014-09-29 10:29:18.856499524 +0200
+@@ -12,7 +12,7 @@ namespace Sonata\EasyExtendsBundle\Mappe
+ 
+ use Doctrine\Common\Persistence\ManagerRegistry;
+ use Doctrine\Common\EventSubscriber;
+-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
++use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+ use Doctrine\ORM\Mapping\ClassMetadataInfo;
+ 
+ class DoctrineORMMapper implements EventSubscriber
