@@ -152,7 +152,7 @@ class Version100 extends BachMigration implements ContainerAwareInterface
 
         $em = $this->_container->get('doctrine.orm.entity_manager');
         $sql = 'UPDATE comments SET docid = :docid WHERE id = :id';
-        $stmt = $em->getConnection()->prepare($sql);;
+        $stmt = $em->getConnection()->prepare($sql);
 
         foreach ( $this->_values as $id=>$docid ) {
             $stmt->bindValue(':id', $id);
