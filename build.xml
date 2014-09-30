@@ -125,6 +125,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <target name="patch-vendors">
         <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Solarium-complex-range.patch" escape="false" />
         <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Sonata-EasyExtends-BadImport.patch" escape="false" />
+        <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Doctrine-php56.patch" escape="false" />
     </target>
 
     <!-- ================================ -->
