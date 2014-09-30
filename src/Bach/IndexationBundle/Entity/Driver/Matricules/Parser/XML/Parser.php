@@ -69,14 +69,12 @@ class Parser implements ParserInterface
     /**
      * The constructor
      *
-     * @param DataBag $bag           The bag of data
-     * @param array   $configuration The caller driver configuration
+     * @param array $configuration The caller driver configuration
      */
-    public function __construct(DataBag $bag, $configuration)
+    public function __construct($configuration)
     {
         $this->_configuration = $configuration;
         $this->_tree = new ObjectTree("root");
-        $this->parse($bag);
     }
 
     /**

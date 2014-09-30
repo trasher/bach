@@ -71,6 +71,7 @@ class FileDriverManager
     private $_fileFormatFactory;
     private $_preProcessorFactory;
     private $_entityManager;
+    private $_heritage;
 
     /**
      * Constructor
@@ -78,15 +79,18 @@ class FileDriverManager
      * @param FileFormatFactory   $fileFormatFactory   File format Factory
      * @param PreProcessorFactory $preProcessorFactory Pre processor factory
      * @param EntityManager       $entityManager       The entity manager
+     * @param boolean             $heritage            Heritage status
      */
     public function __construct(FileFormatFactory $fileFormatFactory,
-        PreProcessorFactory $preProcessorFactory, EntityManager $entityManager
+        PreProcessorFactory $preProcessorFactory, EntityManager $entityManager,
+        $heritage
     ) {
         $this->_importConfiguration();
         $this->_searchDrivers();
         $this->_fileFormatFactory = $fileFormatFactory;
         $this->_preProcessorFactory = $preProcessorFactory;
         $this->_entityManager = $entityManager;
+        $this->_heritage = $heritage;
     }
 
     /**
@@ -126,6 +130,11 @@ class FileDriverManager
                 $bag,
                 $preprocessor
             );
+        }
+
+        //EAD specific
+        if ( $format === 'ead' ) {
+            $driver->setHeritage($this->_heritage);
         }
 
         $results = $driver->process($bag);

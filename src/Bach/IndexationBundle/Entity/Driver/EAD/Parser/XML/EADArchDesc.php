@@ -45,6 +45,7 @@
 
 namespace Bach\IndexationBundle\Entity\Driver\EAD\Parser\XML;
 
+use Bach\IndexationBundle\Entity\EADFileFormat;
 /**
  * EAD archdesc processing
  *
@@ -62,6 +63,7 @@ class EADArchDesc
     private $_xpath;
     private $_values = array();
     private $_cnodes = 'c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12|dsc';
+    private $_heritage;
 
     /**
      * Constructor
@@ -69,10 +71,13 @@ class EADArchDesc
      * @param DOMXPath $xpath        XPath
      * @param DOMNode  $archDescNode XML archdesc node
      * @param array    $fields       Known fields
+     * @param boolean  $heritage     Heritage status
      */
-    public function __construct(\DOMXPath $xpath, \DOMNode $archDescNode, $fields)
-    {
+    public function __construct(\DOMXPath $xpath, \DOMNode $archDescNode, $fields,
+        $heritage
+    ) {
         $this->_xpath = $xpath;
+        $this->_heritage = $heritage;
         $this->_parse($archDescNode, $fields);
     }
 
@@ -112,21 +117,20 @@ class EADArchDesc
      */
     private function _parse(\DOMNode $archDescNode, $fields)
     {
-        $results = array();
-
-        $results['root'] = $this->_parseNode(
+        $this->_values = array();
+        $result = $this->_parseNode(
             $archDescNode,
             array_merge($fields['root'], $fields['c'])
         );
-        unset($results['root']['frag']);
+        unset($result['frag']);
+        $this->_values['root'] = $result;
 
         // Let's go parsing C node recursively
-        $results['c'] = $this->_recursiveCNodeSearch(
+        $this->_values['c'] = array();
+        $this->_recursiveCNodeSearch(
             $archDescNode->getElementsByTagName('dsc')->item(0),
             $fields['c']
         );
-
-        $this->_values = $results;
     }
 
     /**
@@ -136,19 +140,21 @@ class EADArchDesc
      * @param array   $fields   Known fields
      * @param array   $parents  Node parents
      *
-     * @return array
+     * @return void
      */
     private function _recursiveCNodeSearch(\DOMNode $rootNode,
         $fields, $parents = array()
     ) {
-        $results = array();
-
         $cNodes = $this->_xpath->query(
             $this->_cnodes,
             $rootNode
         );
 
         $i = 0;
+        $descriptors = EADFileFormat::$descriptors;
+        foreach ($descriptors as &$descriptor) {
+            $descriptor = './/controlaccess//' . strtolower(ltrim($descriptor, 'c'));
+        }
 
         foreach ( $cNodes as $cNode ) {
             if ( !$cNode->hasAttribute('id') ) {
@@ -158,50 +164,114 @@ class EADArchDesc
             }
             $nodeid = $cNode->getAttribute('id');
 
-            $results[$nodeid] = $this->_parseNode($cNode, $fields, $parents);
+            $result = $this->_parseNode($cNode, $fields, $parents);
 
-            $frag = $results[$nodeid]['frag'];
+            $frag = $result['frag'];
             if ( $i === $cNodes->length ) {
-                unset($results[$nodeid]['frag']);
+                unset($result['frag']);
             }
 
             $current_title = $this->_getTitle($rootNode, $frag);
+
+            // inherit from parents
+            if ( $this->_heritage === true && count($parents) > 0 ) {
+                $parentid = array_keys($parents)[count($parents) - 1];
+
+                if ( isset($this->_values['c'][$parentid]) ) {
+                    $parent = $this->_values['c'][$parentid];
+                    foreach ($descriptors as $descriptor) {
+                        if ( isset($parent[$descriptor]) ) {
+                            if ( !isset($result[$descriptor]) ) {
+                                $result[$descriptor] = array();
+                            }
+                            $topcopy = array();
+                            foreach ( $parent[$descriptor] as $pdesc ) {
+                                if ( !in_array($pdesc, $result[$descriptor]) ) {
+                                    $topcopy[] = $pdesc;
+                                    $xpath_qry = $descriptor;
+                                    foreach ( $pdesc['attributes'] as
+                                        $key => $attribute
+                                    ) {
+                                        $xpath_qry .= '[@' . $key . '="' .
+                                            $attribute .'"]';
+                                    }
+                                    $xpath_qry .= '[text() = "' .
+                                        $pdesc['value'] . '"][1]';
+
+                                    $pfrag = clone $parent['frag'];
+                                    $desc_xpath = $this->_xpath->query(
+                                        $xpath_qry,
+                                        $pfrag
+                                    )->item(0);
+
+                                    $ca_xpath = $this->_xpath->query(
+                                        './/controlaccess[1]',
+                                        $frag
+                                    );
+                                    $ca = null;
+                                    $dom = $frag->ownerDocument;
+                                    if ( $ca_xpath->length === 0 ) {
+                                        $ca = $dom->createElement(
+                                            'controlaccess'
+                                        );
+                                        $frag->appendChild($ca);
+                                    } else {
+                                        $ca = $ca_xpath->item(0);
+                                    }
+                                    $ca->appendChild(
+                                        $dom->importNode(
+                                            $desc_xpath,
+                                            true
+                                        )
+                                    );
+                                    $result['frag'] = $frag;
+                                    $result['fragment'] = $dom->saveXML($frag);
+                                }
+                            }
+
+                            $result[$descriptor] = array_merge(
+                                $result[$descriptor],
+                                $topcopy
+                            );
+                        }
+                    }
+                }
+            }
 
             //previous and next components
             if ( $i > 0 ) {
                 $previous = $cNodes->item($i - 1);
                 $previous_nodeid = $previous->getAttribute('id');
-                $previous_frag = $results[$previous_nodeid]['frag'];
-                unset($results[$previous_nodeid]['frag']);
-                $previous_title = $this->_getTitle($rootNode, $previous_frag);
-                $results[$nodeid]['previous'] = array(
-                    'id'    => $previous_nodeid,
-                    'title' => $previous_title
-                );
-                $results[$previous_nodeid]['next'] = array(
-                    'id'    => $nodeid,
-                    'title' => $current_title
-                );
+                if ( isset($this->_values['c'][$previous_nodeid]) ) {
+                    $previous_frag = $this->_values['c'][$previous_nodeid]['frag'];
+                    unset($this->_values['c'][$previous_nodeid]['frag']);
+                    $previous_title = $this->_getTitle($rootNode, $previous_frag);
+                    $result['previous'] = array(
+                        'id'    => $previous_nodeid,
+                        'title' => $previous_title
+                    );
+                    $this->_values['c'][$previous_nodeid]['next'] = array(
+                        'id'    => $nodeid,
+                        'title' => $current_title
+                    );
+                }
             }
 
+            $this->_values['c'][$nodeid] = $result;
             if ( $this->_xpath->query($this->_cnodes, $cNode)->length > 0 ) {
-                $results = array_merge(
-                    $results,
-                    $this->_recursiveCNodeSearch(
-                        $cNode,
-                        $fields,
-                        array_merge(
-                            $parents,
-                            array(
-                                $nodeid => $current_title
-                            )
+                $this->_recursiveCNodeSearch(
+                    $cNode,
+                    $fields,
+                    array_merge(
+                        $parents,
+                        array(
+                            $nodeid => $current_title
                         )
                     )
                 );
             }
             $i++;
         }
-        return $results;
     }
 
     /**

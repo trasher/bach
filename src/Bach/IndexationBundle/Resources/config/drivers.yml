@@ -96,14 +96,14 @@ drivers:
                     - scopecontent
                     - controlacces
                     - .//daoloc|.//dao|.//archref[not(contains(@href, 'http://')) and contains(@href, '.pdf')]
-                    - .//corpname
-                    - .//famname
-                    - .//genreform
-                    - .//geogname
-                    - .//name
-                    - .//persname
-                    - .//subject
-                    - .//title
-                    - .//function
+                    - .//controlaccess//corpname
+                    - .//controlaccess//famname
+                    - .//controlaccess//genreform
+                    - .//controlaccess//geogname
+                    - .//controlaccess//name
+                    - .//controlaccess//persname
+                    - .//controlaccess//subject
+                    - .//controlaccess//title
+                    - .//controlaccess//function
                     - accessrestrict//legalstatus[1]
 

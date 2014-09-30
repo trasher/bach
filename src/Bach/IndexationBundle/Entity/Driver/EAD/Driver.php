@@ -62,6 +62,19 @@ use Bach\IndexationBundle\Exception\UnknownDriverParserException;
  */
 class Driver extends FileDriver
 {
+    private $_heritage;
+
+    /**
+     * Store heritage status
+     *
+     * @param boolean $heritage Heritage status
+     *
+     * @return void
+     */
+    public function setHeritage($heritage)
+    {
+        $this->_heritage = $heritage;
+    }
 
     /**
      * Perform the parsing of the DataBag
@@ -79,7 +92,9 @@ class Driver extends FileDriver
             throw new UnknownDriverParserException(strtoupper($bag->getType()));
         }
 
-        $parser = new $parserClass($bag, $this->configuration);
+        $parser = new $parserClass($this->configuration);
+        $parser->setHeritage($this->_heritage);
+        $parser->parse($bag);
         $tree = $parser->getTree();
         return $this->_processTree($tree);
     }

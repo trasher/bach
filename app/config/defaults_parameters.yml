@@ -92,6 +92,7 @@ parameters:
     feature.openid: false
     feature.social: true
     feature.register: false
+    feature.heritage: true
 
     #UI parameters
     viewer_uri: http://viewer.localhost/
