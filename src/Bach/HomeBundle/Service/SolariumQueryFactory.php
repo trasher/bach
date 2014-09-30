@@ -898,6 +898,9 @@ class SolariumQueryFactory
 
             //5 levels
             $range = ($max - $min) / 5;
+            if ( $range === 0 ) {
+                $range = 5;
+            }
 
             $cloud = array();
             $i = 0;
