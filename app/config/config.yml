@@ -202,9 +202,13 @@ sonata_user:
         user: Application\Sonata\UserBundle\Entity\User
         group: Application\Sonata\UserBundle\Entity\Group
 
+    admin:
+        user:
+            class: Application\Sonata\UserBundle\Admin\UserAdmin
+
     profile:
         form:
-            type: sonata_user_profile
+            type: application_sonata_user_profile
             #handler: sonata_user.profile.form.handler.default
             name: sonata_user_profile_form
             validation_groups: [Profile]
@@ -298,6 +302,13 @@ services:
         calls:
             - [setRequest, ['@?request=']]
             - [setHtmlContentsPath, ['%html_intros_path%']]
+
+    sonata_user.profile.form.type:
+        class: Application\Sonata\UserBundle\Form\Type\ProfileType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: application_sonata_user_profile }
+
 
 presta_sitemap:
     dumper_base_url: '%bach_url%'
