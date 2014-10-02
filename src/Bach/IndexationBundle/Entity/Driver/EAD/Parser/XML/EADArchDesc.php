@@ -151,6 +151,11 @@ class EADArchDesc
         $i = 0;
 
         foreach ( $cNodes as $cNode ) {
+            if ( !$cNode->hasAttribute('id') ) {
+                throw new \RuntimeException(
+                    'c nodes *must* have a *unique* id to be published.'
+                );
+            }
             $nodeid = $cNode->getAttribute('id');
 
             $results[$nodeid] = $this->_parseNode($cNode, $fields, $parents);
