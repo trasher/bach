@@ -62,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         };
         $(function() {
-            if (!$('#wrapper,html').scrollTop()) {
+            if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
                 $('#back2top').fadeOut();
             }
             $('#wrapper').scroll(function() {
