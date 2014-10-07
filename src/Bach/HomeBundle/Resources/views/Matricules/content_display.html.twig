@@ -36,8 +36,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <h2 property="dc:title">
                 {{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}
             </h2>
-            {% if features.social %}{{ socialButtons() }}{% endif %}
         </header>
+        {% if features.social %}{{ socialButtons() }}{% endif %}
         {% if comments is defined %}
             {% set hasComments = true %}
         {% else %}

@@ -66,7 +66,6 @@ POSSIBILITY OF SUCH DAMAGE.
                     <span class="date" property="dc:date"> • {{ document.cDate }}</span>
                 {%- endif -%}
             </h2>
-            {% if features.social %}{{ socialButtons() }}{% endif %}
         </header>
         {% if context or document.previous_id is defined or document.next_id is defined %}
             <aside>
@@ -91,6 +90,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% endif %}
             </aside>
         {% endif %}
+        {% if features.social %}{{ socialButtons() }}{% endif %}
         {% if children == false %}
             {% set hasChildren = false %}
         {% else %}
