@@ -57,6 +57,14 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block javascripts %}
+        var _scrolled = function(elt){
+            if (elt.scrollTop()) {
+                $('#back2top').fadeIn();
+            } else {
+                $('#back2top').fadeOut();
+            }
+        };
+
         $(function() {
             $('#browse_tabs > ul a').each(function(){
                 var _this = $(this);
@@ -90,15 +98,14 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
 
-            if (!$('#wrapper').scrollTop()) {
+            if (!$('#wrapper,html').scrollTop()) {
                 $('#back2top').fadeOut();
             }
             $('#wrapper').scroll(function() {
-                if ($(this).scrollTop()) {
-                    $('#back2top').fadeIn();
-                } else {
-                    $('#back2top').fadeOut();
-                }
+                _scrolled($(this));
+            });
+            $(window).scroll(function() {
+                _scrolled($(this));
             });
         });
 {% endblock %}

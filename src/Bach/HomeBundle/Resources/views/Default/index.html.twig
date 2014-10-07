@@ -210,14 +210,22 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block javascripts %}
     {{ parent() }}
-    if (!$('#wrapper').scrollTop()) {
+
+    var _scrolled = function(elt){
+        if (elt.scrollTop()) {
+            $('#back2top').fadeIn();
+        } else {
+            $('#back2top').fadeOut();
+        }
+    };
+
+    if (!$('#wrapper,html').scrollTop()) {
         $('#back2top').fadeOut();
-     }
-     $('#wrapper').scroll(function() {
-         if ($(this).scrollTop()) {
-             $('#back2top').fadeIn();
-         } else {
-             $('#back2top').fadeOut();
-         }
-     });
+    }
+    $('#wrapper').scroll(function() {
+        _scrolled($(this));
+    });
+    $(window).scroll(function() {
+        _scrolled($(this));
+    });
 {% endblock %}
