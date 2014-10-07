@@ -160,28 +160,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </section>
         {% endif %}
     </article>
-    <a href="#container" id="back2top">{{ _('Back to top') }}</a>
 
     <script type="text/javascript">
-        var _scrolled = function(elt){
-            if (elt.scrollTop()) {
-                $('#back2top').fadeIn();
-            } else {
-                $('#back2top').fadeOut();
-            }
-        };
-
         $(function() {
-            if (!$('#wrapper,html').scrollTop()) {
-                $('#back2top').fadeOut();
-            }
-            $('#wrapper').scroll(function() {
-                _scrolled($(this));
-            });
-            $(window).scroll(function() {
-                _scrolled($(this));
-            });
-
             $('article.show_fragment > ul a').each(function(){
                 var _this = $(this);
                 var _href = _this.attr('href') + '/ajax';
