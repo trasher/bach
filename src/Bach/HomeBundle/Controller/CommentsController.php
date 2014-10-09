@@ -136,9 +136,10 @@ class CommentsController extends Controller
                 _('Your comment has been stored. Thank you!')
             );
             if ( $type === 'images' ) {
-                $response = new JsonResponse();
-                $response->setData(array('response' => true));
-                return $response;
+                $template = 'confirmAddComment.html.twig';
+                return $this->render(
+                    'BachHomeBundle:Comment:' . $template
+                );
             } else {
                 $path = 'bach_display_document';
                 if ( $type === 'matricules' ) {
@@ -155,30 +156,14 @@ class CommentsController extends Controller
                 );
             }
         } else {
-            if ( $type === 'images' && $request->getMethod() == 'POST' ) {
-                $form_errors = $this->get('validator')->validate($form);
-                $errors = array();
-                foreach ( $form_errors as $err ) {
-                    $errors[] = $err->getPropertyPath() . ': ' . $err->getMessage();
-                }
-                $response = new JsonResponse();
-                $response->setData(
-                    array(
-                        'response'  => false,
-                        'errors'    => $errors
-                    )
-                );
-                return $response;
-            } else {
-                $template = 'add.html.twig';
-                if ( $ajax === 'ajax' ) {
-                    $template = 'add_form.html.twig';
-                }
-                return $this->render(
-                    'BachHomeBundle:Comment:' . $template,
-                    $tpl_vars
-                );
+            $template = 'add.html.twig';
+            if ( $ajax === 'ajax' ) {
+                $template = 'add_form.html.twig';
             }
+            return $this->render(
+                'BachHomeBundle:Comment:' . $template,
+                $tpl_vars
+            );
         }
     }
 
