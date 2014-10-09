@@ -352,7 +352,6 @@ class EADFileFormat extends FileFormat
         'previous_title',
         'updated',
         'created',
-        'spell',
         'elt_order'
     );
 
