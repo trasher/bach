@@ -117,3 +117,8 @@ services:
             - [setRequest, ['@?request=']]
             - [setHtmlContentsPath, ['%html_intros_path%']]
 
+    bach.home.advanced_search:
+        class:      Bach\HomeBundle\Form\Type\MatriculesType
+        arguments:  ['@bach.administration.configreader', '%matricules_corename%','Bach\IndexationBundle\Entity\MatriculesFileFormat' ]
+        tags:
+            - { name: form.type, alias: adv_matricules }

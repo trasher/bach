@@ -41,6 +41,11 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 {% endblock %}
 
+{% block css %}
+ {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/select2/select2.css') }}" media="all">
+{% endblock %}
+
 {% block title_extend %} - {{ _('Matricules search') }}{% endblock %}
 {% block search_path %}bach_matricules_search{% endblock %}
 {% block fullfacet_path %}bach_matricules_fullfacet{% endblock %}
@@ -197,7 +202,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block autocomplete %}
-    {% if features.autocomplete %}
+    {% if features.autocomplete and has_advanced is not defined %}
     $('#searchQuery_query').autocomplete({
         source: function(request, response) {
             $.getJSON(
@@ -253,9 +258,17 @@ POSSIBILITY OF SUCH DAMAGE.
 
         return false;
     });
+    $("select").select2({
+        width: 'resolve'
+    });
 {% endblock %}
 
 {# Binded when in mobile mode #}
 {% block mobile_js_on %}
     $('.display_doc').unbind('click');
 {% endblock %}
+
+{% block js_calls %}
+{{ parent() }}
+<script src="{{ asset('bundles/sonataadmin/select2/select2.min.js') }}"></script>
+{% endblock%}

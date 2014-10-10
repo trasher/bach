@@ -173,7 +173,7 @@ class MatriculesController extends SearchController
 
         if ( $view_params->advancedSearch() ) {
             $form = $this->createForm(
-                new MatriculesType(),
+                'adv_matricules',
                 null
             );
             $tpl_vars['search_path'] = 'bach_matricules_search';
@@ -283,7 +283,7 @@ class MatriculesController extends SearchController
             $tpl_vars['form'] = $form->createView();
         }
 
-        //$tpl_vars['has_advanced'] = true;
+        $tpl_vars['has_advanced'] = true;
 
         $tpl_vars['resultStart'] = ($page - 1)
             * $view_params->getResultsbyPage() + 1;

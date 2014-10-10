@@ -46,6 +46,7 @@ namespace Bach\HomeBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 
 /**
  * Matricules search form
@@ -58,6 +59,22 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class MatriculesType extends AbstractType
 {
+    private $_reader;
+    private $_search_core;
+    private $_data_class;
+
+    /**
+     * Constructor
+     *
+     * @param BachCoreAdminConfigReader $reader             Config reader.
+     *
+     */
+    public function __construct( $reader= null, $search_core='', $data_class ) {
+        $this->_reader = $reader;
+        $this->_search_core = $search_core;
+        $this->_data_class = $data_class;
+        //parent::__construct($code, $class, $baseControllerName);
+    }
 
     /**
      * Builds the form
@@ -69,52 +86,77 @@ class MatriculesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add(
-                'nom',
+                'type1',
+                'choice',
+                array(
+                    'choices' => $this->getFields(),
+                    'required'    => false,
+                    'label'     => false,
+                    'empty_value' => 'Choisissez une option'
+                    )
+            )
+            ->add(
+                'search1',
                 null,
                 array(
-                    'label'     => _('Name'),
+                    'label'     => false,
                     'required'  => false
                 )
             )
             ->add(
-                'prenoms',
+                'type2',
+                'choice',
+                array(
+                    'choices' => $this->getFields(),
+                    'required'    => false,
+                    'label'     => false,
+                    'empty_value' => 'Choisissez une option'
+                    )
+            )
+            ->add(
+                'search2',
                 null,
                 array(
-                    'label'     => _('Surname'),
+                    'label'     => false,
                     'required'  => false
                 )
             )
             ->add(
-                'annee_naissance',
+                'type3',
+                'choice',
+                array(
+                    'choices' => $this->getFields(),
+                    'required'    => false,
+                    'label'     => false,
+                    'empty_value' => 'Choisissez une option'
+                    )
+            )
+            ->add(
+                'search3',
                 null,
                 array(
-                    'label'     => ('Year of birth'),
+                    'label'     => false,
                     'required'  => false
                 )
             )
             ->add(
-                'lieu_naissance',
-                null,
+                'type4',
+                'choice',
                 array(
-                    'label'     => _('Place of birth'),
-                    'required'  => false
-                )
+                    'choices' => $this->getFields(),
+                    'required'    => false,
+                    'label'     => false,
+                    'empty_value' => 'Choisissez une option'
+                    )
             )
             ->add(
-                'date_enregistrement',
+                'search4',
                 null,
                 array(
-                    'label'     =>_('Place of recording'),
-                    'required'  => false
-                )
-            )
-            ->add(
-                'lieu_enregistrement',
-                null,
-                array(
-                    'label'     => _('Place of recording'),
+                    'label'     => false,
                     'required'  => false
                 )
             )
@@ -128,12 +170,65 @@ class MatriculesType extends AbstractType
     }
 
     /**
+     * Return fields list
+     *
+     * @return array
+     */
+    protected function getFields()
+    {
+        $fields = new Fields($this->_reader);
+        $solr_fields = $fields->getFacetFields(
+            $this->_search_core,
+            $this->getExcludedFields()
+        );
+        return $solr_fields;
+    }
+
+    /**
+     * Get excluded fields
+     *
+     * @return array
+     */
+    protected function getExcludedFields()
+    {
+        $class = $this->_data_class;
+        return $class::$facet_excluded;
+    }
+
+    /**
+     * Container injenction
+     *
+     * @param ContainerInterface $container Container
+     *
+     * @return void
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * Retrieve localized label for field
+     *
+     * @param string $name Field name
+     *
+     * @return string
+     */
+    public function getFieldLabel($name)
+    {
+        $fields = new Fields();
+        return $fields->getFieldLabel($name);
+    }
+
+
+
+    /**
      * Get form name
      *
      * @return string
      */
     public function getName()
     {
-        return 'matricules_search_form';
+        return 'adv_matricules';
     }
 }
