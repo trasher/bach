@@ -118,6 +118,7 @@ class MatriculesController extends SearchController
             $tpl_vars['form'] = $form->createView();
         }
 
+        $tpl_vars['has_advanced'] = true;
 
         $this->handleGeoloc($factory);
 
