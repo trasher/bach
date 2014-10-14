@@ -89,77 +89,128 @@ class MatriculesType extends AbstractType
 
         $builder
             ->add(
-                'type1',
+                'fieldAdvSearch',
+                'collection',
+                array(
+                    'type'    => 'input',
+                    'options' => array(
+                        'required' => false,
+                        'attr'     => array('class' => 'fieldAdvSearchBox')
+                    )
+                )
+            );
+
+        $builder
+            ->add(
+                'selectFields1',
                 'choice',
                 array(
-                    'choices' => $this->getFields(),
-                    'required'    => false,
-                    'label'     => false,
+                    'choices'     => $this->getFields(),
+                    'required'    => true,
+                    'label'       => 'Première option',
+                    'label_attr'  => array (
+                        'class'     => 'labelMatriculesForm'
+                    ),
                     'empty_value' => 'Choisissez une option'
                     )
             )
             ->add(
-                'search1',
+                'inputSearch1',
                 null,
                 array(
-                    'label'     => false,
-                    'required'  => false
+                    'required'  => true,
+                    'label'     => 'champ de recherche',
+                    'label_attr'=> array (
+                        'entrez votre requête'
+                    ),
+                    'attr'      => array(
+                        'class' => 'inputMatriculesForm',
+                    ),
                 )
             )
-            ->add(
-                'type2',
+            /*->add(
+                'selectFields2',
                 'choice',
                 array(
                     'choices' => $this->getFields(),
                     'required'    => false,
-                    'label'     => false,
+                    'label'     => 'Seconde option',
+                    'label_attr'  => array (
+                        'class'     => 'labelMatriculesForm'
+                    ),
                     'empty_value' => 'Choisissez une option'
                     )
             )
             ->add(
-                'search2',
+                'inputSearch2',
                 null,
                 array(
                     'label'     => false,
+                    'attr'      => array(
+                        'class' => 'inputMatriculesForm',
+                    ),
                     'required'  => false
                 )
             )
             ->add(
-                'type3',
+                'selectFields3',
                 'choice',
                 array(
                     'choices' => $this->getFields(),
                     'required'    => false,
-                    'label'     => false,
+                    'label'     => 'Troisième option',
+                    'label_attr'  => array (
+                        'class'     => 'labelMatriculesForm'
+                    ),
                     'empty_value' => 'Choisissez une option'
                     )
             )
             ->add(
-                'search3',
+                'inputSearch3',
                 null,
                 array(
                     'label'     => false,
+                    'attr'      => array(
+                        'class' => 'inputMatriculesForm',
+                    ),
                     'required'  => false
                 )
             )
             ->add(
-                'type4',
+                'selectFields4',
                 'choice',
                 array(
                     'choices' => $this->getFields(),
                     'required'    => false,
-                    'label'     => false,
+                    'label'     => 'Quatrième option',
+                    'label_attr'  => array (
+                        'class'     => 'labelMatriculesForm'
+                    ),
                     'empty_value' => 'Choisissez une option'
-                    )
+                )
             )
             ->add(
-                'search4',
+                'inputSearch4',
                 null,
                 array(
                     'label'     => false,
+                    'attr'      => array(
+                        'class' => 'inputMatriculesForm',
+                    ),
                     'required'  => false
                 )
             )
+            ->add(
+                'operator1',
+                'choice',
+                array(
+                    'choices'    => array (
+                        'and' => 'et', 'or' => 'ou', 'not' => 'sauf'
+                    ),
+                    'required'   => false,
+                    'empty_value'=> 'Choisissez un opérateur'
+                )
+            )*/
             ->add(
                 'perform',
                 'submit',
