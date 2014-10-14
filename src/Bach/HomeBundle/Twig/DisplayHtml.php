@@ -413,11 +413,16 @@ class DisplayHtml extends \Twig_Extension
         case 'Acquisition information':
             return _('Acquisition information');
             break;
+        case 'Biography or history':
+            return _('Biography or history');
+            break;
         case 'Legal status':
             return _('Legal status');
             break;
+        case 'Language':
+            return _('Language');
+            break;
         default:
-            //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?
             //return _($ref);
             throw new \RuntimeException(

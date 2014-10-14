@@ -134,16 +134,22 @@ POSSIBILITY OF SUCH DAMAGE.
         </tr>
     </xsl:template>
 
-    <xsl:template match="physdesc" mode="presentation">
+    <xsl:template match="physdesc|origination|langmaterial" mode="presentation">
         <tr>
             <th>
                 <xsl:choose>
                     <xsl:when test="@label">
                         <xsl:value-of select="@label"/>
                     </xsl:when>
-                    <xsl:otherwise>
+                    <xsl:when test="local-name() ='physdesc'">
                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Physical description')"/>
-                    </xsl:otherwise>
+                    </xsl:when>
+                    <xsl:when test="local-name() ='origination'">
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Origination')"/>
+                    </xsl:when>
+                    <xsl:when test="local-name() ='langmaterial'">
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Language')"/>
+                    </xsl:when>
                 </xsl:choose>
             </th>
             <td>
@@ -153,7 +159,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <xsl:apply-templates mode="presentation"/>
     </xsl:template>
 
-    <xsl:template match="custodhist|acqinfo" mode="presentation">
+    <xsl:template match="custodhist|acqinfo|bioghist" mode="presentation">
         <tr>
             <th>
                 <xsl:choose>
@@ -167,6 +173,9 @@ POSSIBILITY OF SUCH DAMAGE.
                             </xsl:when>
                             <xsl:when test="local-name() ='acqinfo'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Acquisition information')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() ='bioghist'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Biography or history')"/>
                             </xsl:when>
                         </xsl:choose>
                     </xsl:otherwise>
@@ -208,7 +217,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="genreform[@source = 'liste-typedocAC']" mode="contents"/>
     <xsl:template match="physdesc/extent" mode="contents"/>
-    <xsl:template match="custodhist/head|acqinfo/head" mode="contents"/>
+    <xsl:template match="custodhist/head|acqinfo/head|bioghist/head" mode="contents"/>
 
     <!--<xsl:template match="archdesc" mode="header">
         <div id="docheader">
