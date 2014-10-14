@@ -76,9 +76,7 @@ class CommentsController extends Controller
         $request = $this->getRequest();
 
         $class = 'Comment';
-        if ( $type != 'archives' ) {
-            $class = ucfirst($type) . $class;
-        }
+        $class = ucfirst($type) . $class;
         $class = 'Bach\HomeBundle\Entity\\' . $class;
         $comment = new $class();
 
@@ -181,9 +179,7 @@ class CommentsController extends Controller
         if ( $show_comments ) {
 
             $class = 'Comment';
-            if ( $type != 'archives' ) {
-                $class = ucfirst($type) . $class;
-            }
+            $class = ucfirst($type) . $class;
 
             $query = $this->getDoctrine()->getManager()
                 ->createQuery(

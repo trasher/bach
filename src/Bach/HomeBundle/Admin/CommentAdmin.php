@@ -60,8 +60,6 @@ use Bach\HomeBundle\Entity\Comment;
  */
 class CommentAdmin extends Admin
 {
-    protected $baseRouteName = 'admin_bach_homebundle_commentadmin';
-    protected $baseRoutePattern = 'comment';
 
     /**
      * Fields to be shown on create/edit forms

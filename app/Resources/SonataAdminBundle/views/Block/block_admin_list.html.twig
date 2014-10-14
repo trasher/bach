@@ -44,6 +44,15 @@ POSSIBILITY OF SUCH DAMAGE.
             {% if group.label == 'Virtual expositions' and not features.expos %}
                 {% set display = false %}
             {% endif %}
+            {% if group.label == 'Matricules' and not features.matricules %}
+                {% set display = false %}
+            {% endif %}
+            {% if group.label == 'Global' and not features.maps %}
+                {% set display = false %}
+            {% endif %}
+            {% if group.label == 'Images' and not features.comments %}
+                {% set display = false %}
+            {% endif %}
 
             {% if display %}
                 <tr>
@@ -51,10 +60,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
 
                 {% for admin in group.items %}
-                    {% if admin.getCode == 'sonata.admin.browsefields' and features.browse
-                        or admin.getCode == 'sonata.admin.geoloc' and features.maps
-                        or admin.getCode == 'sonata.admin.comment' and features.comments
-                        or admin.getCode != 'sonata.admin.browsefields' and admin.getCode != 'sonata.admin.geoloc' and admin.getCode != 'sonata.admin.comment'
+                    {% if admin.getCode == 'sonata.admin.archives.browsefields' and features.browse
+                        or admin.getCode == 'sonata.admin.archives.geoloc' and features.maps
+                        or admin.getCode == 'sonata.admin.archives.comment' and features.comments
+                        or admin.getCode == 'sonata.admin.matricules.comment' and features.comments
+                        or admin.getCode == 'sonata.admin.images.comment' and features.comments
+                        or admin.getCode != 'sonata.admin.archives.browsefields' and admin.getCode != 'sonata.admin.archives.geoloc' and admin.getCode != 'sonata.admin.archives.comment' and admin.getCode != 'sonata.admin.matricules.comment' and admin.getCode != 'sonata.admin.images.comment'
                     %}
                     {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
                         <tr>
@@ -105,7 +116,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 </div>
                             </td>
                         </tr>
-                    {% elseif features.tagcloud and admin.getCode == 'sonata.admin.tagcloud' and admin.isGranted('EDIT') %}
+                    {% elseif features.tagcloud and admin.getCode == 'sonata.admin.archives.tagcloud' and admin.isGranted('EDIT') %}
                         <tr>
                             <td class="sonata-ba-list-label">
                                 {{ admin.label|trans({}, admin.translationdomain) }}
@@ -117,7 +128,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 </a>
                             </td>
                         </tr>
-                    {% elseif features.maps and (admin.getCode == 'sonata.admin.geolocfields' or admin.getCode == 'sonata.admin.matricules.geolocfields' and features.matricules ) and admin.isGranted('EDIT') %}
+                    {% elseif features.maps and (admin.getCode == 'sonata.admin.archives.geolocfields' or admin.getCode == 'sonata.admin.matricules.geolocfields' ) and admin.isGranted('EDIT') %}
                         <tr>
                             <td class="sonata-ba-list-label">
                                 {{ admin.label|trans({}, admin.translationdomain) }}
