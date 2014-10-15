@@ -88,6 +88,8 @@ POSSIBILITY OF SUCH DAMAGE.
     var allpoints;
     var current;
     var selected;
+    var map;
+    var _da_url = '{{ path('bach_toponym_geoloc', {name: 'NAME'}) }}';
 
     /**
      * Returns element height, including margins
@@ -116,36 +118,27 @@ POSSIBILITY OF SUCH DAMAGE.
 
     var _layers;
 
-    $(function(){
-        $('.geoloc').on('click', function(){
-            var _this = $(this);
-            _this.closest('div').addClass('hidden');
+    var _populate_list = function(_list, _url, _current, _free = false) {
+        $.ajax({
+            url: _url,
+            {% include '::loader.js.twig' with {'parent_elt': '#sidebar', 'error_message': _('Unable to propose positions :(')} %}
+            success: function(data) {
+                if ( data.length > 0 ) {
+                    var _ul = $('<ul></ul>');
 
-            current = _this.html();
-            var _proposal = $('#proposal');
+                    if ( _layers ) {
+                        _layers.clearLayers();
+                    }
+                    var _features = [];
+                    _features_stored = [];
 
-            _proposal.removeClass('hidden')
-                .find('.placename').html(current);
-            var _list = _proposal.find('.list');
+                    var _indexed_name = $('em.placename').text();
 
-            var _da_url = '{{ path('bach_toponym_geoloc', {name: 'NAME'}) }}';
-
-            _list.empty();
-            $.ajax({
-                url: _da_url.replace('NAME', _this.html()),
-                {% include '::loader.js.twig' with {'parent_elt': '#sidebar', 'error_message': _('Unable to propose positions :(')} %}
-                success: function(data) {
-                    if ( data.length > 0 ) {
-                        var _ul = $('<ul></ul>');
-
-                        if ( _layers ) {
-                            _layers.clearLayers();
-                        }
-                        var _features = [];
-                        _features_stored = [];
-
-                        data.forEach(function(elt) {
+                    data.forEach(function(elt) {
+                        if ( elt.geojson != '' ) {
                             var _a = $('<a href="#" id="id_' + elt.osm_id  + '">' + elt.name + ' (' + elt.osm_id + ')'  + '</a>');
+
+                            elt.indexed_name = _indexed_name;
 
                             _feature = JSON.parse(elt.geojson);
                             _feature['properties'] = {
@@ -175,8 +168,17 @@ POSSIBILITY OF SUCH DAMAGE.
                             var _li = $('<li></li>');
                             _a.appendTo(_li);
                             _li.appendTo(_ul);
-                        });
+                        }
+                    });
 
+                    if ( _features.length == 0 ) {
+                        var _res = '<p>{{ _('No results found :/')|escape('js') }}</p>';
+                        if ( !_free ) {
+                            _list.append(_res);
+                        } else {
+                            _list.prepend(_res)
+                        }
+                    } else {
                         var _geojson = {
                             "type": "FeatureCollection",
                             "features": _features
@@ -226,15 +228,58 @@ POSSIBILITY OF SUCH DAMAGE.
                                 return false;
                             });
                         });
-                        _list.append(_ul);
-                    } else {
-                        _list.append('<p>{{ _('No results found :/')|escape('js') }}</p>');
+                        if ( !_free ) {
+                            _list.append(_ul);
+                        } else {
+                            _list.prepend(_ul);
+                        }
                     }
-
-                    var _free_search = $('<p>{{ _('No satisfying matches? Enter you own search:')|escape('js') }}</p><input type="text" id="free_search" value="'+ _this.html() +'"/>');
-                    _list.append(_free_search);
+                } else {
+                    var _res = '<p>{{ _('No results found :/')|escape('js') }}</p>';
+                    if ( !_free ) {
+                        _list.append(_res);
+                    } else {
+                        _list.prepend(_res)
+                    }
                 }
-            });
+
+                if ( !_free ) {
+                    var _free_search = $('<form><p>{{ _('No satisfying matches?<br/>Enter you own search:')|escape('js') }}</p><input type="text" id="free_search" value="'+ _current +'"/><input type="submit" value="Search"/></form>');
+                    _list.append(_free_search);
+                    _list.find('form').submit(function(ev){
+                        ev.preventDefault();
+                        _current = $('#free_search').val();
+                        _list.find('ul,p').remove();
+                        _populate_list(
+                            _list,
+                            _da_url.replace('NAME', _current),
+                            _current,
+                            true
+                        );
+                    });
+                }
+            }
+        });
+    };
+
+    $(function(){
+        $('.geoloc').on('click', function(){
+            var _this = $(this);
+            _this.closest('div').addClass('hidden');
+
+            current = _this.html();
+            var _proposal = $('#proposal');
+
+            _proposal.removeClass('hidden')
+                .find('.placename').html(current);
+            var _list = _proposal.find('.list');
+
+            _list.empty();
+            _populate_list(
+                _list,
+                _da_url.replace('NAME', _this.html()),
+                current
+            );
 
             return false;
         });
@@ -264,8 +309,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
         var newHeight = Math.floor(wheight - _oSize) + "px";
         $("#map").css("height", newHeight);
-
-        var map;
 
         map = L.map('map', {
             minZoom: 1
