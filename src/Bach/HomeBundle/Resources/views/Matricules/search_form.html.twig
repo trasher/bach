@@ -32,15 +32,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 {% extends 'BachHomeBundle:Commons:search.html.twig' %}
-{% form_theme adv_form _self %}
-{% block form_row %}
-{{ parent() }}
-    <div class="form_row">
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
-        {{ form_widget(form) }}
-    </div>
-{% endblock form_row %}
 
 {% block intro %}
     {% if html_intro_exists('intro_matricules.html') %}
