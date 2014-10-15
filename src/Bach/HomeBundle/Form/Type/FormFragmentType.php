@@ -37,7 +37,7 @@
  *
  * @category Search
  * @package  Bach
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Sebastien Chaptal <sebastien.chaptal@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
@@ -48,40 +48,33 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Bach\HomeBundle\Entity\FormFragment;
 
 /**
- * Matricules search form
+ * fragment of advanced search form
  *
  * @category Search
  * @package  Bach
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Sebastien Chaptal  <sebastien.chaptal@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class MatriculesType extends AbstractType
+class FormFragmentType extends AbstractType
 {
     private $_reader;
     private $_search_core;
     private $_data_class;
-    protected $formsFragment;
 
     /**
      * Constructor
      *
-     * @param BachCoreAdminConfigReader $reader             Config reader.
+     * @param BachCoreAdminConfigReader $reader Config reader
      *
      */
-    public function __construct( $reader= null, $search_core='', $data_class ) {
+    /*public function __construct( $reader= null, $search_core='', $data_class ) {
         $this->_reader = $reader;
         $this->_search_core = $search_core;
         $this->_data_class = $data_class;
-        //parent::__construct($code, $class, $baseControllerName);
-        $this->formsFragment = new ArrayCollection();
-        $formFragment = new FormFragment();
-        $this->getFormsFragment()->add($formFragment);
-    }
+    }*/
 
     /**
      * Builds the form
@@ -96,116 +89,52 @@ class MatriculesType extends AbstractType
 
         $builder
             ->add(
-                'fragments',
-                'collection',
+                'selectFields',
+                'choice',
                 array(
-                    'type' => new FormFragmentType(),
-                    'data' => array (
-                        array('label' => 'toto'),
-                        array('sequence' => 2, 'title' => 'Bar'),
-                    )
+                    'choices'     => null,//$this->getFields(),
+                    'required'    => false,
+                    'label'       => 'Première option',
+                    'label_attr'  => array (
+                        'class'     => 'labelMatriculesForm'
+                    ),
+                    'empty_value' => 'Choisissez une option'
                 )
-            )->add(
-                'perform',
-                'submit',
+            )
+            ->add(
+                'inputSearch',
+                null,
                 array(
-                    'label' => _("Search"),
+                    'required'  => true,
+                    'label'     => 'champ de recherche',
+                    'label_attr'=> array (
+                        'entrez votre requête'
+                    ),
+                    'attr'      => array(
+                        'class' => 'inputMatriculesForm',
+                    ),
                 )
             );
     }
 
-    /**
-     * Return fields list
-     *
-     * @return array
-     */
-    protected function getFields()
-    {
-        $fields = new Fields($this->_reader);
-        $solr_fields = $fields->getFacetFields(
-            $this->_search_core,
-            $this->getExcludedFields()
-        );
-        return $solr_fields;
-    }
 
     /**
-     * Get excluded fields
      *
-     * @return array
      */
-    protected function getExcludedFields()
-    {
-        $class = $this->_data_class;
-        return $class::$facet_excluded;
-    }
-
-    /**
-     * Container injenction
-     *
-     * @param ContainerInterface $container Container
-     *
-     * @return void
-     */
-    public function setContainer(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * Retrieve localized label for field
-     *
-     * @param string $name Field name
-     *
-     * @return string
-     */
-    public function getFieldLabel($name)
-    {
-        $fields = new Fields();
-        return $fields->getFieldLabel($name);
-    }
-
-    /**
-     * Set the class value for the matricule form
-     *
-     * @param OptionsResolverInterface $resolver
-     *
-     * @return void
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    /*public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array (
-                'data-class' => 'Bach\HomeBundle\Entity\FormMatricules',
+            array(
+                'data_class' => 'Bach\HomeBundle\Entity\formFragment'
             )
         );
-    }
+    }*/
 
     /**
      *
      *
      */
-    public function getFormsFragment()
-    {
-        return $this->formsFragment;
-    }
-
-    /**
-     *
-     *
-     */
-    public function setFormsFragment(ArrayCollection $formsFragment)
-    {
-        $this->formsFragment = $formsFragment;
-    }
-
-    /**
-     * Get form name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'adv_matricules';
+    public function getName(){
+        return 'formFragment';
     }
 }

@@ -122,3 +122,8 @@ services:
         arguments:  ['@bach.administration.configreader', '%matricules_corename%','Bach\IndexationBundle\Entity\MatriculesFileFormat' ]
         tags:
             - { name: form.type, alias: adv_matricules }
+#    bach.home.form_fragment:
+#        class:      Bach\HomeBundle\Form\Type\FormFragmentType
+#        arguments:  ['@bach.administration.configreader', '%matricules_corename%','Bach\IndexationBundle\Entity\MatriculesFileFormat' ]
+#        tags:
+#            - { name: form.type, alias: form_fragment }

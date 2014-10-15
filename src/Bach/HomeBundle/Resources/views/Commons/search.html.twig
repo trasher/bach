@@ -221,7 +221,17 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
     {% if adv_form is defined %}
-        {{ form(adv_form) }}
+        <form action="" method="POST" {{ form_enctype(adv_form) }}>
+        <h3>Ligne formulaire</h3>
+        {% for fragment in adv_form.fragments %}
+            {#{ form_row(fragment.selectFields) }#}
+        {% endfor %}
+    </ul>
+
+    {{ form_rest(adv_form) }}
+    {# ... #}
+</form>
+
         <span id="adv_link"><a href="?adv_search=false" title="{{ _('Switch to simple search form') }}">{{ _('Simple search') }}</a></span>
     {% endif  %}
 

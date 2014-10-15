@@ -53,6 +53,8 @@ use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\MatriculesViewParams;
 use Bach\HomeBundle\Entity\Comment;
+use Bach\HomeBundle\Entity\FormFragment;
+use Bach\HomeBundle\Entity\FormMatricules;
 
 /**
  * Bach matricules controller
