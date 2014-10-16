@@ -222,9 +222,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
     {% if adv_form is defined %}
         <form action="" method="POST" {{ form_enctype(adv_form) }}>
-        <h3>Ligne formulaire</h3>
         {% for fragment in adv_form.fragments %}
-            {#{ form_row(fragment.selectFields) }#}
+            {{ form_row(fragment.selectOperator) }}
+            {{ form_row(fragment.selectFields) }}
+            {{ form_row(fragment.inputSearch) }}
+            {{ form_row(fragment.addButton) }}
+            {{ form_row(fragment.deleteButton) }}
         {% endfor %}
     </ul>
 

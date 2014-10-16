@@ -60,21 +60,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class FormFragmentType extends AbstractType
 {
-    private $_reader;
-    private $_search_core;
-    private $_data_class;
+    private $_fields;
 
     /**
      * Constructor
      *
-     * @param BachCoreAdminConfigReader $reader Config reader
-     *
+     * @param array $fields List of fields
      */
-    /*public function __construct( $reader= null, $search_core='', $data_class ) {
-        $this->_reader = $reader;
-        $this->_search_core = $search_core;
-        $this->_data_class = $data_class;
-    }*/
+    public function __construct( $fields )
+    {
+        $this->_fields = $fields;
+    }
 
     /**
      * Builds the form
@@ -86,7 +82,6 @@ class FormFragmentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add(
                 'selectFields',
@@ -117,24 +112,13 @@ class FormFragmentType extends AbstractType
             );
     }
 
-
     /**
+     * Get form name
      *
+     * @return string
      */
-    /*public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function getName()
     {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'Bach\HomeBundle\Entity\formFragment'
-            )
-        );
-    }*/
-
-    /**
-     *
-     *
-     */
-    public function getName(){
         return 'formFragment';
     }
 }

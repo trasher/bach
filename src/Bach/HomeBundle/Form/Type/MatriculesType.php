@@ -49,7 +49,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Bach\AdministrationBundle\Entity\SolrCore\Fields;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Bach\HomeBundle\Entity\FormFragment;
 
 /**
  * Matricules search form
@@ -70,17 +69,16 @@ class MatriculesType extends AbstractType
     /**
      * Constructor
      *
-     * @param BachCoreAdminConfigReader $reader             Config reader.
-     *
+     * @param FileFormat                $data_class  FileFormat
+     * @param Corename                  $search_core Core name
+     * @param BachCoreAdminConfigReader $reader      Config reader
      */
-    public function __construct( $reader= null, $search_core='', $data_class ) {
+    public function __construct( $data_class, $search_core='', $reader=null )
+    {
         $this->_reader = $reader;
         $this->_search_core = $search_core;
         $this->_data_class = $data_class;
-        //parent::__construct($code, $class, $baseControllerName);
         $this->formsFragment = new ArrayCollection();
-        $formFragment = new FormFragment();
-        $this->getFormsFragment()->add($formFragment);
     }
 
     /**
@@ -168,7 +166,7 @@ class MatriculesType extends AbstractType
     /**
      * Set the class value for the matricule form
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolverInterface $resolver resolver instance
      *
      * @return void
      */
@@ -182,8 +180,9 @@ class MatriculesType extends AbstractType
     }
 
     /**
+     * Get form fragments
      *
-     *
+     * @return ArrayCollection
      */
     public function getFormsFragment()
     {
@@ -191,8 +190,11 @@ class MatriculesType extends AbstractType
     }
 
     /**
+     * Set the ArrayCollection formsFragment
      *
+     * @param ArrayCollection $formsFragment the new collection
      *
+     * @return ArrayCollection
      */
     public function setFormsFragment(ArrayCollection $formsFragment)
     {
