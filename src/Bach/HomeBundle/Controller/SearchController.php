@@ -51,6 +51,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Service\SolariumQueryFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Bach search controller
@@ -70,13 +71,26 @@ abstract class SearchController extends Controller
     protected $search_form;
 
     /**
+     * Index page, will redirect to default_url
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+        $url = $this->get('router')->generate(
+            $this->container->getParameter('default_url')
+        );
+        return new RedirectResponse($url);
+    }
+
+    /**
      * Default page
      *
      * @param string $form_name Search form name
      *
      * @return void
      */
-    abstract public function indexAction($form_name = null);
+    abstract public function mainAction($form_name = null);
 
     /**
      * Search page

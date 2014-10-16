@@ -76,7 +76,7 @@ class MatriculesController extends SearchController
      *
      * @return void
      */
-    public function indexAction($form_name = null)
+    public function mainAction($form_name = null)
     {
         $request = $this->getRequest();
         $session = $request->getSession();

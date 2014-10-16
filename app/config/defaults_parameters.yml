@@ -139,7 +139,7 @@ parameters:
     bach_themes: ['web', 'phone']
     bach_default_theme: 'web'
 
-    default_url: bach_homepage
+    default_url: bach_archives
     logo_url: %default_url%
 
     #mail parameters (not used for now)

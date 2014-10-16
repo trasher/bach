@@ -99,6 +99,9 @@ class BachHomeBundle extends Bundle
                 //get absolute homepage url
                 $url = $bach_url . $router->generate('bach_homepage');
 
+                //main search URL
+                $url = $bach_url . $router->generate('bach_archives');
+
                 //add homepage url to the urlset named default
                 $event->getGenerator()->addUrl(
                     new UrlConcrete(

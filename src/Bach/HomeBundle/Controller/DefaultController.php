@@ -70,13 +70,13 @@ class DefaultController extends SearchController
     protected $date_field = 'cDateBegin';
 
     /**
-     * Default page
+     * Default page for archives
      *
      * @param string $form_name Search form name
      *
      * @return void
      */
-    public function indexAction($form_name = null)
+    public function mainAction($form_name = null)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -236,7 +236,7 @@ class DefaultController extends SearchController
                     )
                 );
             } else {
-                $redirectUrl = $this->get('router')->generate('bach_homepage');
+                $redirectUrl = $this->get('router')->generate('bach_archives');
             }
             return new RedirectResponse($redirectUrl);
         }
@@ -395,7 +395,7 @@ class DefaultController extends SearchController
                 )
             );
         } else {
-            $redirectUrl = $this->get('router')->generate('bach_homepage');
+            $redirectUrl = $this->get('router')->generate('bach_archives');
         }
 
         $request = $this->getRequest();

@@ -35,52 +35,53 @@ bach_homepage:
     requirements:
         _method: GET
 
+bach_archives:
+    pattern:  /archives
+    defaults: { _controller: BachHomeBundle:Default:main }
+    requirements:
+        _method: GET
+
+
 bach_search:
-    pattern: /search/{form_name}/{query_terms}/{page}/{facet_name}
+    pattern: /archives/search/{form_name}/{query_terms}/{page}/{facet_name}
     defaults: { _controller: BachHomeBundle:Default:search, 'form_name': 'default', 'query_terms': null, 'page': 1, 'facet_name': null }
     requirements:
         _method: GET
         page: \d+
 
 bach_search_form_homepage:
-    pattern:  /search_form/{form_name}
-    defaults: { _controller: BachHomeBundle:Default:index }
+    pattern:  /archives/search_form/{form_name}
+    defaults: { _controller: BachHomeBundle:Default:main }
     requirements:
         _method: GET
 
 bach_do_search:
-    pattern:  /do-search/{form_name}
+    pattern:  /archives/do-search/{form_name}
     defaults: { _controller: BachHomeBundle:Default:doSearch, 'form_name': null }
     requirements:
         _method: POST
 
 bach_browse:
-    pattern: /browse/{part}/{ajax}
+    pattern: /archives/browse/{part}/{ajax}
     defaults: { _controller: BachHomeBundle:Default:browse, part: '', 'ajax': false }
     requirements:
         _method: GET
 
 bach_suggest:
-    pattern: /suggest
+    pattern: /archives/suggest
     defaults: { _controller: BachHomeBundle:Default:doSuggest }
     requirements:
         _method: GET
 
-bach_matricules_suggest:
-    pattern: /matricules/suggest
-    defaults: { _controller: BachHomeBundle:Matricules:doSuggest }
-    requirements:
-        _method: GET
-
 bach_display_document_paginate:
-    pattern: /show/{docid}/{page}/{ajax}
+    pattern: /archives//show/{docid}/{page}/{ajax}
     defaults: { _controller BachHomeBundle:Default:displayDocument, page: 1, ajax: false }
     requirements:
         _method: GET
         page: \d+
 
 bach_display_document:
-    pattern: /show/{docid}/{ajax}
+    pattern: /archives/show/{docid}/{ajax}
     defaults: { _controller BachHomeBundle:Default:displayDocument, ajax: false }
     requirements:
         _method: GET
@@ -108,13 +109,13 @@ bach_get_file:
         name: '.+'
 
 bach_fullfacet:
-    pattern: /fullfacet/{form_name}/{query_terms}/{name}
+    pattern: /archives/fullfacet/{form_name}/{query_terms}/{name}
     defaults: { _controller: BachHomeBundle:Default:fullFacet }
     requirements:
         _method: GET|POST
 
 bach_geojson:
-    pattern: /geojson/{form_name}
+    pattern: /archives/geojson/{form_name}
     defaults: {_controller: BachHomeBundle:Default:getGeoJson, form_name: null}
     requirements:
         _method: GET
@@ -146,7 +147,7 @@ bach_get_comment:
         type: 'archives|matricules|images'
 
 bach_classification:
-    pattern: /classification-scheme
+    pattern: /archives/classification-scheme
     defaults: { _controller: BachHomeBundle:Default:cdc }
     requirements:
         _method: GET
@@ -178,7 +179,7 @@ bach_remove_geoloc:
 
 bach_matricules:
     pattern:  /matricules
-    defaults: { _controller: BachHomeBundle:Matricules:index }
+    defaults: { _controller: BachHomeBundle:Matricules:main }
     requirements:
         _method: GET
 
@@ -201,6 +202,12 @@ bach_matricules_do_search:
     requirements:
         _method: POST
 
+bach_matricules_suggest:
+    pattern: /matricules/suggest
+    defaults: { _controller: BachHomeBundle:Matricules:doSuggest }
+    requirements:
+        _method: GET
+
 bach_display_matricules:
     pattern: /matricules/show/{docid}/{ajax}
     defaults: { _controller BachHomeBundle:Matricules:displayDocument, ajax: false }
@@ -214,7 +221,7 @@ bach_ead_html:
         _method: GET
 
 bach_htmldoc_ext:
-    pattern: /htmldoc/{maindir}/{file}.{ext}
+    pattern: /archives/htmldoc/{maindir}/{file}.{ext}
     defaults: { _controller: BachHomeBundle:Default:displayHtmlDocumentExt}
     requirements:
         _method: GET
@@ -222,14 +229,14 @@ bach_htmldoc_ext:
         ext: 'js|css|png|gif'
 
 bach_htmlsubdoc:
-    pattern: /htmldoc/{maindir}/{file}.{ext}
+    pattern: /archives/htmldoc/{maindir}/{file}.{ext}
     defaults: { _controller: BachHomeBundle:Default:displayHtmlSubDocument}
     requirements:
         _method: GET
         ext: 'html|htm'
 
 bach_htmldoc:
-    pattern: /htmldoc/{docid}
+    pattern: /archives/htmldoc/{docid}
     defaults: { _controller: BachHomeBundle:Default:displayHtmlDocument}
     requirements:
         _method: GET
