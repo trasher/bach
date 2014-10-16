@@ -222,13 +222,17 @@ POSSIBILITY OF SUCH DAMAGE.
 
     {% if adv_form is defined %}
         <form action="" method="POST" {{ form_enctype(adv_form) }}>
+        <div id="listFragments">
         {% for fragment in adv_form.fragments %}
+            <div class="fragmentForm">
             {{ form_row(fragment.selectOperator) }}
             {{ form_row(fragment.selectFields) }}
             {{ form_row(fragment.inputSearch) }}
-            {{ form_row(fragment.addButton) }}
-            {{ form_row(fragment.deleteButton) }}
+            <a href="#" class="addLine">{{ _('Add another line') }}</a>
+            <a href="#" class="deleteLine">{{ _('Delete this line') }}</a>
+            </div>
         {% endfor %}
+        </div>
     </ul>
 
     {{ form_rest(adv_form) }}
@@ -361,6 +365,30 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block javascripts %}
+
+            $('.addLine').click(function() {
+                var newLine = $(this).parent().clone(true);
+                newLine.find(':input').each(function() {
+                    switch(this.type) {
+                        case 'text':
+                            console.log(this.type + ' : ' + $(this).val());
+                            $(this).val('');
+                            break;
+                        case 'select-one':
+                            $(this).select2("val",$("option:first",this).val());
+                            console.debug($(this));
+                            break;
+                    }
+                });
+                newLine.insertAfter($(this).parent());
+            });
+
+            $('.deleteLine').click(function () {
+                if( $(".fragmentForm").length > 1 ) {
+                    $(this).parent().remove();
+                }
+            });
+
             $.cookie.json = true;
             var _view_params = $.cookie('{{ cookie_param_name }}');
 
