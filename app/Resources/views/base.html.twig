@@ -76,7 +76,11 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block header %}
     <aside id="menu" role="search">
         <header class="header">
-            <h1><a href="{{ path('bach_homepage') }}"><img src="{% include '::images/logo.html.twig' %}" alt="Bach"/></a></h1>
+            <h1>
+                <a href="{% if logo_url|slice(0,7) == 'http://' %}{{ logo_url }}{% else %}{{  path(logo_url) }}{% endif %}">
+                    <img src="{% include '::images/logo.html.twig' %}" alt="Bach"/>
+                </a>
+            </h1>
         </header>
         {{ block('menu') }}
     </aside>

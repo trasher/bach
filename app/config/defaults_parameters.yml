@@ -139,6 +139,9 @@ parameters:
     bach_themes: ['web', 'phone']
     bach_default_theme: 'web'
 
+    default_url: bach_homepage
+    logo_url: %default_url%
+
     #mail parameters (not used for now)
     #mailer_transport: smtp
     #mailer_host: localhost
