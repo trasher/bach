@@ -119,11 +119,6 @@ services:
 
     bach.home.advanced_search:
         class:      Bach\HomeBundle\Form\Type\MatriculesType
-        arguments:  ['@bach.administration.configreader', '%matricules_corename%','Bach\IndexationBundle\Entity\MatriculesFileFormat' ]
+        arguments:  ['Bach\IndexationBundle\Entity\MatriculesFileFormat','%matricules_corename%','@bach.administration.configreader']
         tags:
             - { name: form.type, alias: adv_matricules }
-#    bach.home.form_fragment:
-#        class:      Bach\HomeBundle\Form\Type\FormFragmentType
-#        arguments:  ['@bach.administration.configreader', '%matricules_corename%','Bach\IndexationBundle\Entity\MatriculesFileFormat' ]
-#        tags:
-#            - { name: form.type, alias: form_fragment }

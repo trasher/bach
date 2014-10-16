@@ -97,11 +97,12 @@ class MatriculesType extends AbstractType
                 'fragments',
                 'collection',
                 array(
-                    'type' => new FormFragmentType(),
+                    'label'=> false,
+                    'type' => new FormFragmentType($this->getFields()),
                     'data' => array (
-                        array('label' => 'toto'),
-                        array('sequence' => 2, 'title' => 'Bar'),
-                    )
+                        array($this->getFields()),
+                        array(),
+                    ),
                 )
             )->add(
                 'perform',

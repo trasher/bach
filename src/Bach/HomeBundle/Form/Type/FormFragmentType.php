@@ -84,30 +84,60 @@ class FormFragmentType extends AbstractType
     {
         $builder
             ->add(
+                'selectOperator',
+                'choice',
+                array(
+                    'choices' => array(
+                        'sauf' => 'not',
+                        'ou'   => 'or',
+                        'et'   => 'and'
+                    ),
+                    'label' => _('operator'),
+                    'empty_value' => _('Choice an operator')
+                )
+            )
+            ->add(
                 'selectFields',
                 'choice',
                 array(
-                    'choices'     => null,//$this->getFields(),
+                    'choices'     => $this->_fields,
                     'required'    => false,
-                    'label'       => 'Première option',
+                    'label'       => 'option',
                     'label_attr'  => array (
                         'class'     => 'labelMatriculesForm'
                     ),
-                    'empty_value' => 'Choisissez une option'
+                    'empty_value' => _('Choice an option')
                 )
             )
             ->add(
                 'inputSearch',
                 null,
                 array(
-                    'required'  => true,
-                    'label'     => 'champ de recherche',
-                    'label_attr'=> array (
-                        'entrez votre requête'
-                    ),
-                    'attr'      => array(
+                    'required'   => true,
+                    'label'      => _('search field'),
+                    'label_attr' => array(
                         'class' => 'inputMatriculesForm',
                     ),
+                )
+            )
+            ->add(
+                'addButton',
+                'button',
+                array(
+                    'label' => _('add a form line'),
+                    'attr'  => array (
+                        'class' => 'addLineButton'
+                    )
+                )
+            )
+            ->add(
+                'deleteButton',
+                'button',
+                array(
+                    'label' => _('delete this form line'),
+                    'attr'  => array (
+                        'class' => 'deleteLineButton'
+                    )
                 )
             );
     }
