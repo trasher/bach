@@ -156,6 +156,7 @@ bach_toponym_geoloc:
     defaults: { _controller: BachHomeBundle:Geoloc:toponym }
     requirements:
         _method: GET
+        name: '.+'
 
 bach_raw_geoloc:
     pattern: /geoloc/raw/{name}
