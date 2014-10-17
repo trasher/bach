@@ -119,26 +119,6 @@ class FormFragmentType extends AbstractType
                         'class' => 'inputMatriculesForm',
                     ),
                 )
-            )
-            ->add(
-                'addButton',
-                'button',
-                array(
-                    'label' => _('add a form line'),
-                    'attr'  => array (
-                        'class' => 'addLineButton'
-                    )
-                )
-            )
-            ->add(
-                'deleteButton',
-                'button',
-                array(
-                    'label' => _('delete this form line'),
-                    'attr'  => array (
-                        'class' => 'deleteLineButton'
-                    )
-                )
             );
     }
 
