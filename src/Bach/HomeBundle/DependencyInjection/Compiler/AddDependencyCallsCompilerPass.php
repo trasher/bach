@@ -131,11 +131,13 @@ class AddDependencyCallsCompilerPass extends CPass
 
                 //Bach: handle facets for other parts
                 if ( $id === 'sonata.admin.archives.facets' ) {
-                    foreach ( $search_forms as $name=>$search_form ) {
-                        $newid = 'sonata.admin.archives.' . $name . 'facets';
-                        $admins[] = $newid;
-                        $classes[$arguments[1]][] = $newid;
-                        $groupDefaults[$resolvedGroupName]['items'][] = $newid;
+                    if ( $container->getParameter('feature.archives') == true ) {
+                        foreach ( $search_forms as $name=>$search_form ) {
+                            $newid = 'sonata.admin.archives.' . $name . 'facets';
+                            $admins[] = $newid;
+                            $classes[$arguments[1]][] = $newid;
+                            $groupDefaults[$resolvedGroupName]['items'][] = $newid;
+                        }
                     }
                 }
                 if ( $id === 'sonata.admin.matricules.geolocfields' ) {
@@ -207,32 +209,35 @@ class AddDependencyCallsCompilerPass extends CPass
         $facets_definition = $container->getDefinition(
             'sonata.admin.archives.facets'
         );
-        foreach ( $search_forms as $name=>$search_form ) {
-            $newid = 'sonata.admin.' . $name . 'facets';
-            $definition = clone $facets_definition;
-            $definition->replaceArgument(0, $newid);
-            $definition->addArgument($name); //current form
-            $definition->addMethodCall(
-                'setBaseCodeRoute',
-                array($newid)
-            );
-            $definition->addMethodCall(
-                'setBaseRoutePattern',
-                array('bach/home/' . $name . 'facets')
-            );
-            $definition->addMethodCall(
-                'setBaseRouteName',
-                array('admin_bach_home_' . $name . 'facets')
-            );
-            $definition->addMethodCall(
-                'setClassnameLabel',
-                array(_('Facets') . ' (' . $search_form['menu_entry'] . ')')
-            );
-            $definition->addMethodCall(
-                'setLabel',
-                array(_('Facets') . ' (' . $search_form['menu_entry'] . ')')
-            );
-            $container->setDefinition($newid, $definition);
+
+        if ( $container->getParameter('feature.archives') == true ) {
+            foreach ( $search_forms as $name=>$search_form ) {
+                $newid = 'sonata.admin.' . $name . 'facets';
+                $definition = clone $facets_definition;
+                $definition->replaceArgument(0, $newid);
+                $definition->addArgument($name); //current form
+                $definition->addMethodCall(
+                    'setBaseCodeRoute',
+                    array($newid)
+                );
+                $definition->addMethodCall(
+                    'setBaseRoutePattern',
+                    array('bach/home/' . $name . 'facets')
+                );
+                $definition->addMethodCall(
+                    'setBaseRouteName',
+                    array('admin_bach_home_' . $name . 'facets')
+                );
+                $definition->addMethodCall(
+                    'setClassnameLabel',
+                    array(_('Facets') . ' (' . $search_form['menu_entry'] . ')')
+                );
+                $definition->addMethodCall(
+                    'setLabel',
+                    array(_('Facets') . ' (' . $search_form['menu_entry'] . ')')
+                );
+                $container->setDefinition($newid, $definition);
+            }
         }
 
         if ( $container->getParameter('feature.matricules') == true ) {

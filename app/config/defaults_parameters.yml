@@ -69,6 +69,7 @@ parameters:
 
     ##Features activation
     #main features
+    feature.archives: true
     feature.cdc: false
     feature.matricules: false
     feature.expos: false

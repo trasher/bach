@@ -99,24 +99,11 @@ class BachHomeBundle extends Bundle
                 //get absolute homepage url
                 $url = $bach_url . $router->generate('bach_homepage');
 
-                //main search URL
-                $url = $bach_url . $router->generate('bach_archives');
+                if ( $this->container->getParameter('feature.archives') === true ) {
+                    //main search URL
+                    $url = $bach_url . $router->generate('bach_archives');
 
-                //add homepage url to the urlset named default
-                $event->getGenerator()->addUrl(
-                    new UrlConcrete(
-                        $url,
-                        new \DateTime(),
-                        UrlConcrete::CHANGEFREQ_WEEKLY,
-                        1
-                    ),
-                    'default'
-                );
-
-
-                //if enabled, add classification scheme URL
-                if ( $this->container->getParameter('feature.cdc') === true ) {
-                    $url = $bach_url . $router->generate('bach_classification');
+                    //add homepage url to the urlset named default
                     $event->getGenerator()->addUrl(
                         new UrlConcrete(
                             $url,
@@ -126,58 +113,72 @@ class BachHomeBundle extends Bundle
                         ),
                         'default'
                     );
-                }
 
-                //ead HTML documents
-                $query = $em->createQuery(
-                    'SELECT h.headerId, h.updated '.
-                    'FROM BachIndexationBundle:EADHeader h'
-                );
-                $elements = $query->getResult();
+                    //if enabled, add classification scheme URL
+                    if ( $this->container->getParameter('feature.cdc') === true ) {
+                        $url = $bach_url . $router->generate('bach_classification');
+                        $event->getGenerator()->addUrl(
+                            new UrlConcrete(
+                                $url,
+                                new \DateTime(),
+                                UrlConcrete::CHANGEFREQ_WEEKLY,
+                                1
+                            ),
+                            'default'
+                        );
+                    }
 
-                foreach ( $elements as $elt ) {
-                    $url = $bach_url . $router->generate(
-                        'bach_ead_html',
-                        array(
-                            'docid' => $elt['headerId']
-                        )
+                    //ead HTML documents
+                    $query = $em->createQuery(
+                        'SELECT h.headerId, h.updated '.
+                        'FROM BachIndexationBundle:EADHeader h'
                     );
+                    $elements = $query->getResult();
 
-                    $event->getGenerator()->addUrl(
-                        new UrlConcrete(
-                            $url,
-                            new \DateTime(),
-                            UrlConcrete::CHANGEFREQ_WEEKLY,
-                            1
-                        ),
-                        'archives'
+                    foreach ( $elements as $elt ) {
+                        $url = $bach_url . $router->generate(
+                            'bach_ead_html',
+                            array(
+                                'docid' => $elt['headerId']
+                            )
+                        );
+
+                        $event->getGenerator()->addUrl(
+                            new UrlConcrete(
+                                $url,
+                                new \DateTime(),
+                                UrlConcrete::CHANGEFREQ_WEEKLY,
+                                1
+                            ),
+                            'archives'
+                        );
+                    }
+
+                    //add archives URLs
+                    $query = $em->createQuery(
+                        'SELECT f.fragmentid, f.updated FROM ' .
+                        'BachIndexationBundle:EADFileFormat f'
                     );
-                }
+                    $elements = $query->getResult();
 
-                //add archives URLs
-                $query = $em->createQuery(
-                    'SELECT f.fragmentid, f.updated FROM ' .
-                    'BachIndexationBundle:EADFileFormat f'
-                );
-                $elements = $query->getResult();
+                    foreach ( $elements as $elt ) {
+                        $url = $bach_url . $router->generate(
+                            'bach_display_document',
+                            array(
+                                'docid' => $elt['fragmentid']
+                            )
+                        );
 
-                foreach ( $elements as $elt ) {
-                    $url = $bach_url . $router->generate(
-                        'bach_display_document',
-                        array(
-                            'docid' => $elt['fragmentid']
-                        )
-                    );
-
-                    $event->getGenerator()->addUrl(
-                        new UrlConcrete(
-                            $url,
-                            new \DateTime(),
-                            UrlConcrete::CHANGEFREQ_WEEKLY,
-                            1
-                        ),
-                        'archives'
-                    );
+                        $event->getGenerator()->addUrl(
+                            new UrlConcrete(
+                                $url,
+                                new \DateTime(),
+                                UrlConcrete::CHANGEFREQ_WEEKLY,
+                                1
+                            ),
+                            'archives'
+                        );
+                    }
                 }
 
                 //if enabled, add matricules URLs
@@ -230,7 +231,9 @@ class BachHomeBundle extends Bundle
                 }*/
 
                 //add browse URLs, if any
-                if ( $this->container->getParameter('feature.browse') === true ) {
+                if ( $this->container->getParameter('feature.archives') === true
+                    && $this->container->getParameter('feature.browse') === true
+                ) {
                     $query = $em->createQuery(
                         'SELECT b.solr_field_name ' .
                         'FROM BachHomeBundle:BrowseFields b ' .

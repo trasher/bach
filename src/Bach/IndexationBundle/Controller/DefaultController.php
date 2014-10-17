@@ -84,6 +84,14 @@ class DefaultController extends Controller
         $repo = $this->getDoctrine()->getRepository('BachIndexationBundle:Document');
 
         $known_types = $this->container->getParameter('bach.types');
+
+        if ( !in_array($type, $known_types) ) {
+            foreach ( $known_types as $known_type ) {
+                $type = $known_type;
+                break;
+            }
+        }
+
         $documents = $repo->getPublishedDocuments($page, $show, $type);
         $template = ($ajax === false) ? 'index' : 'published_documents';
 

@@ -62,6 +62,7 @@ twig:
         tiles_subdomains: '%tiles_subdomains%'
         html_intros_path: '%html_intros_path%'
         features:
+            archives: '%feature.archives%'
             matricules: '%feature.matricules%'
             cdc: '%feature.cdc%'
             openid: '%feature.openid%'
