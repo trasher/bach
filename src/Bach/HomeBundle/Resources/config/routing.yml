@@ -189,7 +189,7 @@ bach_matricules_search:
     pattern: /matricules/search/{query_terms}/{page}/{facet_name}
     defaults: { _controller: BachHomeBundle:Matricules:search, 'query_terms': null, 'page': 1, 'facet_name': null }
     requirements:
-        _method: GET
+        _method: GET|POST
         page: \d+
 
 bach_matricules_fullfacet:
