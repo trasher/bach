@@ -67,7 +67,7 @@ class MatriculesDecorator extends SolariumQueryDecoratorAbstract
     protected function getDefaultQueryFields()
     {
         return 'txt_nom^2 txt_prenoms lieu_naissance ' .
-            'lieu_enregistrement fulltext^0.1';
+            'lieu_enregistrement matricule fulltext^0.1';
     }
 
     /**
