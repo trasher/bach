@@ -74,7 +74,7 @@ bach_suggest:
         _method: GET
 
 bach_display_document_paginate:
-    pattern: /archives//show/{docid}/{page}/{ajax}
+    pattern: /archives/show/{docid}/{page}/{ajax}
     defaults: { _controller BachHomeBundle:Default:displayDocument, page: 1, ajax: false }
     requirements:
         _method: GET
