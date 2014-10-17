@@ -41,14 +41,12 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block title_extend %}{% if q is defined and q|trim != '' %} - {{ _('Search on "%term"')|replace({'%term': q}) }}{% endif %}{% endblock %}
 
 {% form_theme adv_form _self %}
-{#% block form_row %}
-{{ parent() }}
-    <div class="form_row">
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
-        {{ form_widget(form) }}
-    </div>
-{% endblock form_row %#}
+{% block form_row %}
+    {{ parent() }}
+    {{ form_label(form) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+{% endblock form_row %}
 
 {% block css %}
     {% if min_date is defined and max_date is defined -%}
