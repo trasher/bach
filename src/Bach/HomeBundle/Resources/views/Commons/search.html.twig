@@ -40,7 +40,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block title_extend %}{% if q is defined and q|trim != '' %} - {{ _('Search on "%term"')|replace({'%term': q}) }}{% endif %}{% endblock %}
 
-{% form_theme adv_form _self %}
 {% block form_row %}
     {{ parent() }}
     {{ form_label(form) }}
@@ -219,6 +218,7 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
     {% if adv_form is defined %}
+        {% form_theme adv_form _self %}
         <form action="" method="POST" {{ form_enctype(adv_form) }}>
         <div id="listFragments">
         {% for fragment in adv_form.fragments %}
