@@ -113,7 +113,7 @@ class FormFragmentType extends AbstractType
                 'inputSearch',
                 null,
                 array(
-                    'required'   => true,
+                    'required'   => false,
                     'label'      => _('search field'),
                     'label_attr' => array(
                         'class' => 'inputMatriculesForm',

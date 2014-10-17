@@ -364,24 +364,41 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block javascripts %}
 
-            $('.addLine').click(function() {
+            $('.addLine').click(function(event) {
+                event.preventDefault();
+                var currentLine = $(this).parent();
+                currentLine.find(':input').each(function(){
+                    switch(this.type) {
+                        case 'select-one':
+                        $(this).select2('destroy');
+                    }
+                });
                 var newLine = $(this).parent().clone(true);
+                initSelect2(currentLine);
                 newLine.find(':input').each(function() {
                     switch(this.type) {
                         case 'text':
-                            console.log(this.type + ' : ' + $(this).val());
                             $(this).val('');
-                            break;
-                        case 'select-one':
-                            $(this).select2("val",$("option:first",this).val());
-                            console.debug($(this));
                             break;
                     }
                 });
+                initSelect2(newLine);
                 newLine.insertAfter($(this).parent());
             });
 
-            $('.deleteLine').click(function () {
+            function initSelect2($elem) {
+                $elem.find(':input').each(function(){
+                    switch(this.type) {
+                        case 'select-one':
+                        $(this).select2({
+                            width: '15%'
+                        });
+                    }
+                });
+            }
+
+            $('.deleteLine').click(function (event) {
+                event.preventDefault();
                 if( $(".fragmentForm").length > 1 ) {
                     $(this).parent().remove();
                 }
