@@ -138,6 +138,7 @@ bach_add_comment:
     requirements:
         _method: GET|POST
         type: 'archives|matricules|images'
+        docid: '.+'
 
 bach_get_comment:
     pattern: /comment/{type}/{docid}/get
@@ -145,6 +146,7 @@ bach_get_comment:
     requirements:
         _method: GET
         type: 'archives|matricules|images'
+        docid: '.+'
 
 bach_classification:
     pattern: /archives/classification-scheme
