@@ -435,7 +435,6 @@ class DefaultController extends Controller
         }
 
         if ( $type !== 'all' ) {
-            //TODO: specific type removal
             $connection->query(
                 str_replace(
                     '%ext',

@@ -253,7 +253,6 @@ class DisplayCdc extends DisplayHtml
             return _('Not classified');
             break;
         default:
-            //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?
             //return _($ref);
             throw new \RuntimeException(

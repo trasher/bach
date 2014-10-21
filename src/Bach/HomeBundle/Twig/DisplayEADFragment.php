@@ -337,7 +337,6 @@ class DisplayEADFragment extends \Twig_Extension
             if ( strpos($ref, 'dyndescr_') === 0 ) {
                 return self::guessDynamicFieldLabel($ref);
             }
-            //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?
             //return _($ref);
             throw new \RuntimeException(
