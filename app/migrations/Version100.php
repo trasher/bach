@@ -132,7 +132,6 @@ class Version100 extends BachMigration implements ContainerAwareInterface
             array('comment' => 'Related document type')
         );
         $table->dropColumn('eadfile_id');
-        //FIXME: before dropping column, we should copy its data to docid
     }
 
     /**
@@ -188,7 +187,6 @@ class Version100 extends BachMigration implements ContainerAwareInterface
             array('eadfile_id'),
             array('uniqid')
         );
-        //FIXME: we should bring back data from docid column to eadfile_id
     }
 
     /**
