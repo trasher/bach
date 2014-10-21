@@ -159,7 +159,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <xsl:apply-templates mode="presentation"/>
     </xsl:template>
 
-    <xsl:template match="custodhist|acqinfo|bioghist" mode="presentation">
+    <xsl:template match="custodhist|acqinfo|bioghist|scopecontent|processinfoi|otherfindaid" mode="presentation">
         <tr>
             <th>
                 <xsl:choose>
@@ -176,6 +176,15 @@ POSSIBILITY OF SUCH DAMAGE.
                             </xsl:when>
                             <xsl:when test="local-name() ='bioghist'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Biography or history')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() ='scopecontent'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Scope and content')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() ='processinfo'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Processing information')"/>
+                            </xsl:when>
+                            <xsl:when test="local-name() ='otherfindaid'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Other finding aid')"/>
                             </xsl:when>
                         </xsl:choose>
                     </xsl:otherwise>
@@ -217,13 +226,72 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="genreform[@source = 'liste-typedocAC']" mode="contents"/>
     <xsl:template match="physdesc/extent" mode="contents"/>
-    <xsl:template match="custodhist/head|acqinfo/head|bioghist/head" mode="contents"/>
+    <xsl:template match="custodhist/head|acqinfo/head|bioghist/head|scopecontent/head|processinfo/head|otherfindaid/head" mode="contents"/>
 
-    <!--<xsl:template match="archdesc" mode="header">
-        <div id="docheader">
-            <xsl:apply-templates mode="header"/>
-        </div>
-    </xsl:template>-->
+    <xsl:template match="p" mode="contents">
+        <p>
+            <xsl:apply-templates/>
+        </p>
+    </xsl:template>
+
+    <xsl:template match="list" mode="contents">
+        <ul>
+            <xsl:apply-templates mode="contents"/>
+        </ul>
+    </xsl:template>
+
+    <xsl:template match="defitem|change" mode="contents">
+        <dl>
+            <xsl:apply-templates mode="contents"/>
+        </dl>
+    </xsl:template>
+
+    <xsl:template match="label" mode="contents">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'defitem'">
+                <dt>
+                    <xsl:apply-templates/>
+                </dt>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="date" mode="contents">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'change'">
+                <dt>
+                    <xsl:apply-templates/>
+                </dt>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="item" mode="contents">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'list'">
+                <li>
+                    <xsl:apply-templates/>
+                </li>
+            </xsl:when>
+            <xsl:when test="$parent-name = 'defitem' or $parent-name = 'change'">
+                <dd>
+                    <xsl:apply-templates/>
+                </dd>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
     <!-- ***** FILEDESC ***** -->
     <xsl:template match="filedesc" mode="header">

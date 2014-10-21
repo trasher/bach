@@ -422,6 +422,15 @@ class DisplayHtml extends \Twig_Extension
         case 'Language':
             return _('Language');
             break;
+        case 'Scope and content':
+            return _('Scope and content');
+            break;
+        case 'Processing information':
+            return _('Processing information');
+            break;
+        case 'Other finding aid':
+            return _('Other finding aid');
+            break;
         default:
             //Should we really throw an exception here?
             //return _($ref);
