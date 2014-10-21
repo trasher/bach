@@ -221,14 +221,9 @@ class BachHomeBundle extends Bundle
                     }
                 }
 
-                //if enabled, add expos URLs
-                /** TODO */
-                /*if ( $this->container->getParameter('feature.expos') === true ) {
-                    $url = new Url();
-                    $url->setLoc(
-                        $this->router->generate('expos_homepage')
-                    );
-                }*/
+                if ( $this->container->getParameter('feature.expos') === true ) {
+                    //TODO: if enabled, add expos URLs
+                }
 
                 //add browse URLs, if any
                 if ( $this->container->getParameter('feature.archives') === true
@@ -241,17 +236,6 @@ class BachHomeBundle extends Bundle
                     );
                     $elements = $query->getResult();
                     if ( count($elements) > 0) {
-                        /*$url = $bach_url . $this->router->generate('bach_browse');
-                        $event->getGenerator()->addUrl(
-                            new UrlConcrete(
-                                $url,
-                                new \DateTime(),
-                                UrlConcrete::CHANGEFREQ_WEEKLY,
-                                1
-                            ),
-                            'descriptors'
-                        );*/
-
                         foreach ( $elements as $elt ) {
                             $url = $bach_url . $router->generate(
                                 'bach_browse',
