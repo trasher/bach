@@ -47,14 +47,9 @@ namespace Bach\IndexationBundle\Command;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-Use Symfony\Component\HttpFoundation\File\File;
-use Bach\IndexationBundle\Entity\Document;
-use Bach\IndexationBundle\Entity\IntegrationTask;
-use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 
 /**
  * OAI repository population command

@@ -45,7 +45,6 @@
 namespace Bach\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
-use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Bach Migration abstract class

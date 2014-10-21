@@ -44,8 +44,6 @@
 
 namespace Bach\HomeBundle\Entity;
 
-use Symfony\Component\HttpFoundation\Request;
-
 /**
  * Search view parameters for matricules
  *

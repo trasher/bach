@@ -45,7 +45,6 @@
 namespace Bach\HomeBundle\Twig;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**

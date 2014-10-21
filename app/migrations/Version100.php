@@ -50,7 +50,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Bach\HomeBundle\Entity\Comment;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * Bach 1.0.0 migration file

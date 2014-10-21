@@ -44,8 +44,6 @@
 
 namespace Bach\HomeBundle\Twig;
 
-use Symfony\Component\HttpKernel\KernelInterface;
-
 /**
  * Does HTML export exists
  *

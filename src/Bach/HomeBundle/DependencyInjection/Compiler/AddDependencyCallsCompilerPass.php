@@ -46,12 +46,7 @@
 
 namespace Bach\HomeBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass as CPass;
 
 /**
