@@ -117,7 +117,7 @@ EOF
      */
     protected function getGenerator($name)
     {
-        if (null == $this->generator) {
+        if (null === $this->generator) {
             $this->generator = new FileDriverGenerator(
                 $this->getContainer()->get('filesystem'),
                 __DIR__.'/../Resources/skeleton/driver'

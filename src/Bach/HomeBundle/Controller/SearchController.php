@@ -725,7 +725,7 @@ abstract class SearchController extends Controller
 
         //facet order
         $facet_order = $request->get('facet_order');
-        if ( $facet_order == null ) {
+        if ( $facet_order === null ) {
             $facet_order = 1;
         }
         if ( $facet_order == 1 ) {

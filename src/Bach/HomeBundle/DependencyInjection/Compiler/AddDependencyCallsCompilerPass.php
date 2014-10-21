@@ -131,7 +131,7 @@ class AddDependencyCallsCompilerPass extends CPass
 
                 //Bach: handle facets for other parts
                 if ( $id === 'sonata.admin.archives.facets' ) {
-                    if ( $container->getParameter('feature.archives') == true ) {
+                    if ( $container->getParameter('feature.archives') === true ) {
                         foreach ( $search_forms as $name=>$search_form ) {
                             $newid = 'sonata.admin.archives.' . $name . 'facets';
                             $admins[] = $newid;
@@ -141,7 +141,7 @@ class AddDependencyCallsCompilerPass extends CPass
                     }
                 }
                 if ( $id === 'sonata.admin.matricules.geolocfields' ) {
-                    if ( $container->getParameter('feature.matricules') == true ) {
+                    if ( $container->getParameter('feature.matricules') === true ) {
                         $newid = 'sonata.admin.matricules.facets';
                         array_unshift($admins, $newid);
                         array_unshift($classes[$arguments[1]], $newid);
@@ -210,7 +210,7 @@ class AddDependencyCallsCompilerPass extends CPass
             'sonata.admin.archives.facets'
         );
 
-        if ( $container->getParameter('feature.archives') == true ) {
+        if ( $container->getParameter('feature.archives') === true ) {
             foreach ( $search_forms as $name=>$search_form ) {
                 $newid = 'sonata.admin.' . $name . 'facets';
                 $definition = clone $facets_definition;
@@ -240,7 +240,7 @@ class AddDependencyCallsCompilerPass extends CPass
             }
         }
 
-        if ( $container->getParameter('feature.matricules') == true ) {
+        if ( $container->getParameter('feature.matricules') === true ) {
             $name = 'matricules';
             $newid = 'sonata.admin.' . $name . '.facets';
             $definition = clone $facets_definition;

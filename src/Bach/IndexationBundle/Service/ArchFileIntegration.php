@@ -46,6 +46,7 @@ namespace Bach\IndexationBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Bach\IndexationBundle\Entity\IntegrationTask;
+use Symfony\Component\Console\Helper\ProgressHelper;
 
 /**
  * Archival file integration in database
@@ -132,12 +133,12 @@ class ArchFileIntegration
     /**
      * Integrate multiple tasks at once
      *
-     * @param array       $tasks    Tasks to integrate
-     * @param progressbar $progress Progress bar
+     * @param array          $tasks    Tasks to integrate
+     * @param ProgressHelper $progress Progress bar
      *
      * @return void
      */
-    public function integrateAll($tasks, $progress)
+    public function integrateAll($tasks, ProgressHelper $progress)
     {
         $count = 0;
         $cleared = false;

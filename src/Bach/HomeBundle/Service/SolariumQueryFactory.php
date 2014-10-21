@@ -185,7 +185,7 @@ class SolariumQueryFactory
      *
      * @return void
      */
-    private function _buildQuery($container)
+    private function _buildQuery(SolariumQueryContainer $container)
     {
         $this->_query = $this->_client->createSelect();
 
@@ -560,7 +560,7 @@ class SolariumQueryFactory
                     ->andWhere('g.found = true');
                 $parameters['names'] = array_keys($all_values);
 
-                if ( $zones != false ) {
+                if ( $zones !== false ) {
                     list($swest_lon, $swest_lat, $neast_lon, $neast_lat)
                         = explode(',', $zones);
                     $qb
@@ -787,7 +787,7 @@ class SolariumQueryFactory
      *
      * @return int
      */
-    private function _getGap($start, $end, $maxdiff = 10)
+    private function _getGap(\DateTime $start, \DateTime $end, $maxdiff = 10)
     {
         $diff = $start->diff($end);
         $gap = 1;

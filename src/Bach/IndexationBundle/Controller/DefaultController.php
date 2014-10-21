@@ -391,7 +391,7 @@ class DefaultController extends Controller
             //database does not support that. it is ok.
         }
 
-        if ( $type == 'ead' or $type == 'all' ) {
+        if ( $type == 'ead' || $type == 'all' ) {
             $connection->executeUpdate(
                 $platform->getTruncateTableSQL('ead_header', true)
             );
@@ -413,7 +413,7 @@ class DefaultController extends Controller
             );
         }
 
-        if ( $type == 'matricules' or $type == 'all' ) {
+        if ( $type == 'matricules' || $type == 'all' ) {
             $connection->executeUpdate(
                 $platform->getTruncateTableSQL('matricules_file_format', true)
             );

@@ -45,6 +45,7 @@
 namespace Bach\HomeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Bach geolocalization fields management
@@ -119,7 +120,7 @@ abstract class GeolocFields
      *
      * @return GeolocFields
      */
-    public function loadDefaults($em)
+    public function loadDefaults(EntityManager $em)
     {
         $qb = $this->getQueryBuilder($em);
         $query = $qb->getQuery();
@@ -142,7 +143,7 @@ abstract class GeolocFields
      *
      * @return QueryBuilder
      */
-    abstract protected function getQueryBuilder($em);
+    abstract protected function getQueryBuilder(EntityManager $em);
 
     /**
      * Get default fields
