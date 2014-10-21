@@ -88,9 +88,9 @@ class FormFragmentType extends AbstractType
                 'choice',
                 array(
                     'choices' => array(
-                        'sauf' => 'not',
-                        'ou'   => 'or',
-                        'et'   => 'and'
+                        'not' => _('not'),
+                        'or'   => _('or'),
+                        'and'   => _('and')
                     ),
                     'label' => _('operator'),
                     'empty_value' => _('Choice an operator')

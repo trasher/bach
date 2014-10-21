@@ -146,7 +146,18 @@ class MatriculesController extends SearchController
     ) {
         $request = $this->getRequest();
         $session = $request->getSession();
-
+        $requestAdv = '';
+        if ($this->getRequest()->isMethod('POST')) {
+            foreach ( $_POST['adv_matricules'] as $key => $searchLine ) {
+                foreach ( $searchLine as $searchFragment ) {
+                    foreach ( $searchFragment as $searchOP  ) {
+                        $requestAdv .= $searchOP;
+                        $requestAdv .= ' ';
+                    }
+                }
+                var_dump($requestAdv);
+            }
+        }
         if ( $query_terms !== null ) {
             $query_terms = urldecode($query_terms);
         }
