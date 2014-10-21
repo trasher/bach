@@ -70,9 +70,14 @@ class AdvMatriculesDecorator extends MatriculesDecorator
         $qry = '';
         foreach ( $data as $key=>$value ) {
             if ( $value !== null && trim($value !== '') ) {
-                $qry .= '+' . $key . ':' . $value;
+                //foreach( ){
+                    //$qry .= '+' . $key . ':' . $value;
+                $qry .= '+' . $value['selectFields'] .
+                         ':' . $value['inputSearch'];
+                    //}
             }
         }
+        var_dump($qry);
         $query->setQuery($qry);
     }
 }
