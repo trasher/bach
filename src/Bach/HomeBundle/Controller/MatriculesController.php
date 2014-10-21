@@ -91,7 +91,6 @@ class MatriculesController extends SearchController
 
         if ( $view_params->advancedSearch() ) {
             $form = $this->createForm(
-                //new MatriculesType(),
                 'adv_matricules',
                 null
             );

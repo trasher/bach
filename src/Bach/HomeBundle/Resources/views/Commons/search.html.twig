@@ -220,23 +220,19 @@ POSSIBILITY OF SUCH DAMAGE.
     {% if adv_form is defined %}
         {% form_theme adv_form _self %}
         <form action="" method="POST" {{ form_enctype(adv_form) }}>
-        <div id="listFragments">
-        {% for fragment in adv_form.fragments %}
-            <div class="fragmentForm">
-            {{ form_row(fragment.selectOperator) }}
-            {{ form_row(fragment.selectFields) }}
-            {{ form_row(fragment.inputSearch) }}
-            <a href="#" class="addLine">{{ _('Add another line') }}</a>
-            <a href="#" class="deleteLine">{{ _('Delete this line') }}</a>
+            <div id="listFragments">
+            {% for fragment in adv_form.fragments %}
+                <div class="fragmentForm">
+                    {{ form_row(fragment.selectOperator) }}
+                    {{ form_row(fragment.selectFields) }}
+                    {{ form_row(fragment.inputSearch) }}
+                    <a href="#" class="addLine">{{ _('Add another line') }}</a>
+                    <a href="#" class="deleteLine">{{ _('Delete this line') }}</a>
+                </div>
+            {% endfor %}
             </div>
-        {% endfor %}
-        </div>
-    </ul>
-
-    {{ form_rest(adv_form) }}
-    {# ... #}
-</form>
-
+            {{ form_rest(adv_form) }}
+        </form>
         <span id="adv_link"><a href="?adv_search=false" title="{{ _('Switch to simple search form') }}">{{ _('Simple search') }}</a></span>
     {% endif  %}
 
