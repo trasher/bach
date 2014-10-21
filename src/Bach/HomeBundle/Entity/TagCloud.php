@@ -45,6 +45,7 @@
 namespace Bach\HomeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Bach tag cloud management
@@ -147,7 +148,7 @@ class TagCloud
      *
      * @return TagCloud
      */
-    public function loadCloud($em)
+    public function loadCloud(EntityManager $em)
     {
         $qb = $em->createQueryBuilder()
             ->add('select', 't')
