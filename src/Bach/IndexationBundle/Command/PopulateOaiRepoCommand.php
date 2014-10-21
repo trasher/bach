@@ -99,7 +99,6 @@ EOF
     {
         $container = $this->getContainer();
         $doctrine = $container->get('doctrine');
-        $em = $doctrine->getManager();
 
         $logger = $container->get('oai.logger');
 

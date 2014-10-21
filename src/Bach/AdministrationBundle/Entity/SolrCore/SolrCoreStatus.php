@@ -61,7 +61,6 @@ class SolrCoreStatus
     const STATUS_XPATH = '/response/lst[@name="status"]';
 
     private $_xpath;
-    private $_coreName;
     private $_coreXpath;
 
     /**
@@ -73,7 +72,6 @@ class SolrCoreStatus
     public function __construct($xpath, $coreName)
     {
         $this->_xpath = $xpath;
-        $this->_coreName = $coreName;
         $this->_coreXpath = SolrCoreStatus::STATUS_XPATH .
             '/lst[@name="' . $coreName . '"]';
     }

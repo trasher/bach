@@ -121,7 +121,6 @@ EOF
         }
 
         $doctrine = $this->getContainer()->get('doctrine');
-        $em = $doctrine->getManager();
         $repo = $doctrine->getRepository('BachIndexationBundle:Document');
 
         $documents = array();
@@ -161,7 +160,7 @@ EOF
                 'document'          => $list
             );
             $publish_input = new ArrayInput($arguments);
-            $code = $command->run($publish_input, $output);
+            $command->run($publish_input, $output);
         }
     }
 }

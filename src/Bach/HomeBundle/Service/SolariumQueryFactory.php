@@ -79,11 +79,6 @@ class SolariumQueryFactory
     );
     private $_query_fields;
 
-    private $_max_low_date;
-    private $_max_up_date;
-    private $_qry_low_date;
-    private $_qry_up_date;
-
     private $_low_date;
     private $_up_date;
     private $_date_gap;
@@ -165,11 +160,6 @@ class SolariumQueryFactory
         $rsStats = $rs->getStats();
         if ( $rsStats ) {
             $stats = $rsStats->getResults();
-
-            if ( isset($stats[$this->_date_field]) ) {
-                $this->_qry_low_date = $stats[$this->_date_field]->getMin();
-                $this->_qry_up_date = $stats[$this->_date_field]->getMax();
-            }
         }
 
         $this->_highlitght = $rs->getHighlighting();
@@ -476,9 +466,6 @@ class SolariumQueryFactory
             } else {
                 $results['selected_max_date'] = $results['max_date'];
             }
-
-            $this->_max_low_date = $php_min_date;
-            $this->_max_up_date = $php_max_date;
 
             return $results;
         }
