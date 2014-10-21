@@ -695,7 +695,7 @@ td.actions {
     line-height: 1.1em;
 }
 
-[id=inventory_contents] ul,
+[id=inventory_presentation] ul,
 .content ul {
     margin: .2em 0 .2em 1.5em;
     list-style-type: disc;
