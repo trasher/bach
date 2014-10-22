@@ -103,7 +103,7 @@ class FormFragmentType extends AbstractType
                     'choices'     => $this->_fields,
                     'required'    => false,
                     'attr'        => array(
-                        'class'   => 'selectOp'
+                        'class'   => 'selectFlds'
                     ),
                     'label'       => 'option',
                     'label_attr'  => array (
