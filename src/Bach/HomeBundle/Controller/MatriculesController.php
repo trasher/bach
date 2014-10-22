@@ -197,7 +197,7 @@ class MatriculesController extends SearchController
         }
 
         $form->handleRequest($request);
-        $data = $form->getData();
+        //$data = $form->getData();
         $data = $requestData;
         $resultCount = null;
         $searchResults = null;
@@ -270,7 +270,7 @@ class MatriculesController extends SearchController
 
             $suggestions = null;
             if ( $view_params->advancedSearch() ) {
-                $suggestions = $factory->getSuggestions(implode(' ', $data));
+                $suggestions = $factory->getSuggestions($query_terms/*$data*/);
             } else {
                 $suggestions = $factory->getSuggestions($query_terms);
             }
@@ -304,7 +304,7 @@ class MatriculesController extends SearchController
             $resultEnd = $resultCount;
         }
         $tpl_vars['resultEnd'] = $resultEnd;
-
+        //var_dump($tpl_vars['searchResults']);
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(

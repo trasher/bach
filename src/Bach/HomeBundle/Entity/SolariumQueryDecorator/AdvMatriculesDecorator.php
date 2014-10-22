@@ -67,17 +67,19 @@ class AdvMatriculesDecorator extends MatriculesDecorator
      */
     public function decorate(\Solarium\QueryType\Select\Query\Query $query, $data)
     {
+        $concord = array(
+            'or'  => ' ',
+            'and' => '+',
+            'not' => '-'
+        );
         $qry = '';
-        foreach ( $data as $key=>$value ) {
+        foreach ( $data as $value ) {
             if ( $value !== null && trim($value !== '') ) {
-                //foreach( ){
-                    //$qry .= '+' . $key . ':' . $value;
-                $qry .= '+' . $value['selectFields'] .
-                         ':' . $value['inputSearch'];
-                    //}
+                $qry .= $concord[$value['selectOperator']] . $value['selectFields'] .
+                    ':' . $value['inputSearch'] . ' ';
             }
         }
-        var_dump($qry);
+        //var_dump($qry);
         $query->setQuery($qry);
     }
 }

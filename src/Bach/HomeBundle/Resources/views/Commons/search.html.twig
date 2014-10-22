@@ -457,7 +457,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
                 var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page})|raw }}/', '');
                 _index = _index.substr(_index.lastIndexOf('/')+1);
-                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: q, name: 'THENAME'})|raw }}'.replace('THENAME', _index);
+                // mettre q à la place de toto qui n'est là que pour outrepasser une erreur
+                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: 'toto', name: 'THENAME'})|raw }}'.replace('THENAME', _index);
 
                 $.ajax({
                     url: _url,
