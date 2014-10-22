@@ -384,8 +384,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
             function initSelect2($elem) {
                 $elem.find(':input').each(function(){
-                    switch(this.type) {
-                        case 'select-one':
+                    if(this.type=='select-one' && $(this).hasClass("selectOp")) {
                         $(this).select2({
                             width: '15%'
                         });
