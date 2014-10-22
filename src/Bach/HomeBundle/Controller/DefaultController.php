@@ -699,60 +699,34 @@ class DefaultController extends SearchController
     public function cdcAction()
     {
         $cdc_path = $this->container->getParameter('cdc_path');
-        $cdc_filename = basename($cdc_path, '.xml');
 
-        //check for HTML version of the classification scheme
-        $path = $this->container->getParameter('bach_files_html') .
-            '/' . $cdc_filename . '.html';
+        $tpl_vars = $this->commonTemplateVariables();
 
-        if ( file_exists($path) ) {
-            $html_contents = file_get_contents($path);
-            $html_contents = str_replace(
-                array(
-                    'AACCSSJS3/',
-                    'SCRIPT_NAME="'
-                ),
-                array(
-                    'htmldoc/AACCSSJS3/',
-                    'SCRIPT_NAME="htmldoc/'
-                ),
-                $html_contents
-            );
-            return $this->render(
-                'BachHomeBundle:Default:html_contents.html.twig',
-                array(
-                    'html_contents' => $html_contents
-                )
-            );
-        } else {
-            $tpl_vars = $this->commonTemplateVariables();
+        $client = $this->get($this->entryPoint());
+        $query = $client->createSelect();
+        $query->setQuery('fragmentid:*_description');
+        $query->setFields('cUnittitle, headerId, fragmentid');
+        $query->setStart(0)->setRows(1000);
 
-            $client = $this->get($this->entryPoint());
-            $query = $client->createSelect();
-            $query->setQuery('fragmentid:*_description');
-            $query->setFields('cUnittitle, headerId, fragmentid');
-            $query->setStart(0)->setRows(1000);
+        $results = $client->select($query);
 
-            $rs = $client->select($query);
+        $published = new \SimpleXMLElement(
+            '<docs></docs>'
+        );
 
-            $published = new \SimpleXMLElement(
-                '<docs></docs>'
-            );
-
-            foreach ( $rs as $doc ) {
-                $published->addChild($doc->headerId, $doc->cUnittitle);
-            }
-
-            $tpl_vars['docs'] = $published;
-            $tpl_vars['docid'] = '';
-            $tpl_vars['xml_file'] = $cdc_path;
-            $tpl_vars['cdc'] = true;
-
-            return $this->render(
-                'BachHomeBundle:Default:html.html.twig',
-                $tpl_vars
-            );
+        foreach ( $results as $doc ) {
+            $published->addChild($doc->headerId, $doc->cUnittitle);
         }
+
+        $tpl_vars['docs'] = $published;
+        $tpl_vars['docid'] = '';
+        $tpl_vars['xml_file'] = $cdc_path;
+        $tpl_vars['cdc'] = true;
+
+        return $this->render(
+            'BachHomeBundle:Default:html.html.twig',
+            $tpl_vars
+        );
     }
 
     /**
@@ -951,138 +925,6 @@ class DefaultController extends SearchController
             $name .= '_form_' . $this->search_form;
         }
         return $name;
-    }
-
-    /**
-     * Display HTML version of the document
-     *
-     * @param string $docid The document ID to load
-     *
-     * @return void
-     */
-    public function displayHtmlDocumentAction($docid)
-    {
-        $path = $this->container->getParameter('bach_files_html') .
-            '/' . $docid . '.html';
-        $html_contents = file_get_contents($path);
-
-        return $this->render(
-            'BachHomeBundle:Default:html_contents.html.twig',
-            array(
-                'html_contents' => $html_contents
-            )
-        );
-
-    }
-
-    /**
-     * Display HTML sub-document
-     *
-     * @param string $maindir Main directory where resources are stored
-     * @param string $file    The file to load
-     * @param string $ext     File extension
-     *
-     * @return void
-     */
-    public function displayHtmlSubDocumentAction($maindir, $file, $ext)
-    {
-        $path = $this->container->getParameter('bach_files_html') .
-            '/' . $maindir . '/' . $file . '.' . $ext;
-        $html_contents = file_get_contents($path);
-
-        $viewer_uri = $this->container->getParameter('viewer_uri');
-
-        $callback = function ($matches) use ($viewer_uri) {
-            $img_path = str_replace('../', '', $matches[2]);
-
-            $href = $viewer_uri . 'viewer/' . $img_path;
-            $thumb_href = $viewer_uri . 'ajax/img/' . $img_path;
-
-            //handle series case
-            if ( strpos($img_path, 'series/') === 0 ) {
-                $href = $viewer_uri . $img_path;
-                $thumb_href = $viewer_uri . 'ajax/representative/' .
-                    str_replace('series/', '', $img_path);
-            }
-
-            $thumb_href .= '/format/medium';
-
-            return '<a href="' . $href . '" target="_blank"><img' . $matches[1] .
-                ' src="' . $thumb_href . '"' . $matches[3] . '/></a>';
-        };
-
-        $html_contents = preg_replace_callback(
-            '@<img(.[^src]*)src="(.[^"]+)"(.[^>]*) />@',
-            $callback,
-            $html_contents
-        );
-
-        $router = $this->get('router');
-        $lnk_callback = function ($matches) use ($router) {
-            $href = $router->generate(
-                'bach_htmldoc',
-                array(
-                    'docid' => $matches[2]
-                )
-            );
-            $a = '<a' . $matches[1] . 'href="' . $href .'"';
-            if ( isset($matches[4]) ) {
-                $a .= $matches[4];
-            }
-            $a .= '>';
-            return $a;
-        };
-
-        $html_contents = preg_replace_callback(
-            '@<a(.*)href="(.+)\.(htm|html)"(.[^>])?>@',
-            $lnk_callback,
-            $html_contents
-        );
-
-        return $this->render(
-            'BachHomeBundle:Default:html_contents.html.twig',
-            array(
-                'html_contents' => $html_contents
-            )
-        );
-
-    }
-
-    /**
-     * Display scripts/css/images for HTML version of the document
-     *
-     * @param string $maindir Main directory where resources are stored
-     * @param string $file    The file to load
-     * @param string $ext     File extension
-     *
-     * @return void
-     */
-    public function displayHtmlDocumentExtAction($maindir, $file, $ext)
-    {
-        $path = $this->container->getParameter('bach_files_html') .
-            '/' . $maindir . '/' . $file . '.' . $ext;
-
-        $mime = null;
-        switch( $ext ) {
-        case 'js':
-            $mime = 'text/javascript';
-            break;
-        case 'css':
-            $mime = 'text/css';
-            break;
-        default:
-            $mime = mime_content_type($path);
-            break;
-        }
-
-        $fp = fopen($path, 'rb');
-        $contents = stream_get_contents($fp);
-        fclose($fp);
-        $headers = array(
-            'Content-Type'      => $mime
-        );
-
-        return new Response($contents, 200, $headers);
     }
 
     /**

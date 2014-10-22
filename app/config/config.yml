@@ -292,11 +292,6 @@ services:
         arguments: [ @kernel ]
         tags:
             - { name: twig.extension }
-    bach.twig.html_export:
-        class: Bach\HomeBundle\Twig\HtmlExportExists
-        arguments: [ '%bach_files_html%'  ]
-        tags:
-            - { name: twig.extension }
     sonata_user.profile.form.type:
         class: Application\Sonata\UserBundle\Form\Type\ProfileType
         arguments: [%fos_user.model.user.class%]

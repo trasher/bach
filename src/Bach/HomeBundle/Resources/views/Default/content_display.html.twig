@@ -82,11 +82,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% endif %}
             {% if context == true %}
                 {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-                {% if html_export_exists(document.headerId) %}
-                    <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('Locate in document tree') }}</a>
-                {% else %}
-                    <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
-                {% endif %}
+                <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
             {% endif %}
             </aside>
         {% endif %}
