@@ -151,7 +151,7 @@ class HtmlIntro extends \Twig_Extension
 
         $router = $this->_router;
         $request = $this->_request;
-        $img_callback = function ($matches) use ($router, $request) {
+        $img_callback = function ($matches) use ($router) {
             $img = '<img';
             $img .= $matches[1];
             $img .= ' src="';
@@ -167,7 +167,7 @@ class HtmlIntro extends \Twig_Extension
             return $img;
         };
 
-        $doclink_callback = function ($matches) use ($router, $request) {
+        $doclink_callback = function ($matches) use ($router) {
             if ( strpos($matches[1], 'http://') === 0 ) {
                 return $matches[0];
             } else if ( $matches[1] === 'cdc' ) {
