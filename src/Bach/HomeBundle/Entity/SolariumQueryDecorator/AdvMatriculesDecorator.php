@@ -76,10 +76,9 @@ class AdvMatriculesDecorator extends MatriculesDecorator
         foreach ( $data as $value ) {
             if ( $value !== null && trim($value !== '') ) {
                 $qry .= $concord[$value['selectOperator']] . $value['selectFields'] .
-                    ':' . $value['inputSearch'] . ' ';
+                    ':(' . $value['inputSearch'] . ') ';
             }
         }
-        //var_dump($qry);
         $query->setQuery($qry);
     }
 }
