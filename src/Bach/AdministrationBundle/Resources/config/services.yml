@@ -31,7 +31,7 @@
 
 parameters:
     administration.configreader.class: Bach\AdministrationBundle\Entity\SolrCore\BachCoreAdminConfigReader
-    bach_administration_corecreationform.class: Bach\AdministrationBundle\Entity\Helpers\FormBuilders\CoreCreationForm
+    bach_administration_corecreationform.class: Bach\AdministrationBundle\Form\Type\CoreCreationForm
 
 services:
     bach.administration.configreader:

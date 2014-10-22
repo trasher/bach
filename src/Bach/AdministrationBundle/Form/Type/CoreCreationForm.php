@@ -42,7 +42,7 @@
  * @link     http://anaphore.eu
  */
 
-namespace Bach\AdministrationBundle\Entity\Helpers\FormBuilders;
+namespace Bach\AdministrationBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
