@@ -109,3 +109,13 @@ services:
         arguments: [ @service_container ]
         tags:
             - { name: twig.extension }
+
+    bach.twig.html_intro:
+        class: Bach\HomeBundle\Twig\HtmlIntro
+        arguments: [ @router ]
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [setRequest, ['@?request=']]
+            - [setHtmlContentsPath, ['%html_intros_path%']]
+
