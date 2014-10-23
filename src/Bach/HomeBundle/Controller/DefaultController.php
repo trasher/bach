@@ -241,9 +241,9 @@ class DefaultController extends SearchController
             return new RedirectResponse($redirectUrl);
         }
 
-        $templateVars = $this->searchTemplateVariables($view_params, $page);
-        $templateVars = array_merge(
-            $templateVars,
+        $tpl_vars = $this->searchTemplateVariables($view_params, $page);
+        $tpl_vars = array_merge(
+            $tpl_vars,
             array(
                 'q'             => urlencode($query_terms),
                 'show_pics'     => $view_params->showPics(),
@@ -290,7 +290,7 @@ class DefaultController extends SearchController
         //Add filters to container
         $container->setFilters($filters);
         if ( $filters->count() > 0 ) {
-            $templateVars['filters'] = $filters;
+            $tpl_vars['filters'] = $filters;
         }
 
         $factory->prepareQuery($container);
@@ -329,43 +329,43 @@ class DefaultController extends SearchController
             $searchResults,
             $filters,
             $facet_name,
-            $templateVars
+            $tpl_vars
         );
         $suggestions = $factory->getSuggestions($query_terms);
 
-        $templateVars['resultCount'] = $resultCount;
-        $templateVars['resultByPage'] = $view_params->getResultsbyPage();
-        $templateVars['totalPages'] = ceil(
+        $tpl_vars['resultCount'] = $resultCount;
+        $tpl_vars['resultByPage'] = $view_params->getResultsbyPage();
+        $tpl_vars['totalPages'] = ceil(
             $resultCount/$view_params->getResultsbyPage()
         );
-        $templateVars['searchResults'] = $searchResults;
-        $templateVars['hlSearchResults'] = $hlSearchResults;
-        $templateVars['scSearchResults'] = $scSearchResults;
-        $templateVars['resultStart'] = ($page - 1)
+        $tpl_vars['searchResults'] = $searchResults;
+        $tpl_vars['hlSearchResults'] = $hlSearchResults;
+        $tpl_vars['scSearchResults'] = $scSearchResults;
+        $tpl_vars['resultStart'] = ($page - 1)
             * $view_params->getResultsbyPage() + 1;
         $resultEnd = ($page - 1) * $view_params->getResultsbyPage()
             + $view_params->getResultsbyPage();
         if ( $resultEnd > $resultCount ) {
             $resultEnd = $resultCount;
         }
-        $templateVars['resultEnd'] = $resultEnd;
+        $tpl_vars['resultEnd'] = $resultEnd;
 
         $slider_dates = $factory->getSliderDates($filters, $search_form_params);
         if ( is_array($slider_dates) ) {
-            $templateVars = array_merge($templateVars, $slider_dates);
+            $tpl_vars = array_merge($tpl_vars, $slider_dates);
         }
 
-        $this->handleYearlyResults($factory, $templateVars);
+        $this->handleYearlyResults($factory, $tpl_vars);
 
-        $templateVars['form'] = $form->createView();
+        $tpl_vars['form'] = $form->createView();
 
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
-            $templateVars['suggestions'] = $suggestions;
+            $tpl_vars['suggestions'] = $suggestions;
         }
 
         return $this->render(
             'BachHomeBundle:Default:index.html.twig',
-            $templateVars
+            $tpl_vars
         );
     }
 
@@ -463,7 +463,7 @@ class DefaultController extends SearchController
             }
         }
 
-        $templateVars = array(
+        $tpl_vars = array(
             'fields'        => $fields,
             'current_field' => $field,
             'part'          => $part
@@ -526,7 +526,7 @@ class DefaultController extends SearchController
             }
         }
 
-        $templateVars['lists'] = $lists;
+        $tpl_vars['lists'] = $lists;
 
         if ( $ajax === false ) {
             $tpl_name = 'browse';
@@ -536,7 +536,7 @@ class DefaultController extends SearchController
 
         return $this->render(
             'BachHomeBundle:Default:' . $tpl_name  . '.html.twig',
-            $templateVars
+            $tpl_vars
         );
     }
 
@@ -590,9 +590,9 @@ class DefaultController extends SearchController
             $form_name = $this->getRequest()->get('search_form');
         }
 
-        $tplParams = $this->commonTemplateVariables();
-        $tplParams = array_merge(
-            $tplParams,
+        $tpl_vars = $this->commonTemplateVariables();
+        $tpl_vars = array_merge(
+            $tpl_vars,
             array(
                 'docid'         => $docid,
                 'document'      => $doc,
@@ -602,7 +602,7 @@ class DefaultController extends SearchController
         );
 
         if ( isset($doc['archDescUnitTitle']) ) {
-            $tplParams['archdesc'] = $doc['archDescUnitTitle'];
+            $tpl_vars['archdesc'] = $doc['archDescUnitTitle'];
         }
         $parents = explode('/', $doc['parents']);
         if ( count($parents) > 0 ) {
@@ -619,7 +619,7 @@ class DefaultController extends SearchController
             $rs = $client->select($pquery);
             $ariane  = $rs->getDocuments();
             if ( count($ariane) > 0 ) {
-                $tplParams['ariane'] = $ariane;
+                $tpl_vars['ariane'] = $ariane;
             }
         }
 
@@ -644,24 +644,24 @@ class DefaultController extends SearchController
         $children  = $rs->getDocuments();
         $count_children = $rs->getNumFound();
 
-        $tplParams['count_children'] = $count_children;
+        $tpl_vars['count_children'] = $count_children;
 
         if ( count($children) > 0 ) {
-            $tplParams['children'] = $children;
+            $tpl_vars['children'] = $children;
             if ( count($children) < $count_children ) {
-                $tplParams['totalPages'] = ceil($count_children/$max_results);
-                $tplParams['page'] = $page;
+                $tpl_vars['totalPages'] = ceil($count_children/$max_results);
+                $tpl_vars['page'] = $page;
             }
         } else {
-            $tplParams['children'] = false;
+            $tpl_vars['children'] = false;
         }
 
         if ( $ajax === 'ajax' ) {
             $tpl = 'BachHomeBundle:Default:content_display.html.twig';
-            $tplParams['ajax'] = true;
+            $tpl_vars['ajax'] = true;
         } else {
             $tpl = 'BachHomeBundle:Default:display.html.twig';
-            $tplParams['ajax'] = false;
+            $tpl_vars['ajax'] = false;
         }
 
         //retrieve comments
@@ -681,13 +681,13 @@ class DefaultController extends SearchController
                 );
             $comments = $query->getResult();
             if ( count($comments) > 0 ) {
-                $tplParams['comments'] = $comments;
+                $tpl_vars['comments'] = $comments;
             }
         }
 
         return $this->render(
             $tpl,
-            $tplParams
+            $tpl_vars
         );
     }
 
