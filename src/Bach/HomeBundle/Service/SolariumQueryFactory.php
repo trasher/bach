@@ -507,14 +507,11 @@ class SolariumQueryFactory
      *
      * @param array            $map_facets Map facets
      * @param EntityRepository $repo       Entity repository
-     * @param boolean          $zones      Load zones when possible
-     * @param boolean          $merged     Return merged results
      *
      * @return array
      */
-    public function getGeoJson(
-        $map_facets, EntityRepository $repo, $zones = false, $merged = false
-    ) {
+    public function getGeoJson($map_facets, EntityRepository $repo)
+    {
         $result = array();
         $labels = array();
         $values = array();
@@ -547,24 +544,6 @@ class SolariumQueryFactory
                     ->andWhere('g.found = true');
                 $parameters['names'] = array_keys($all_values);
 
-                if ( $zones !== false ) {
-                    list($swest_lon, $swest_lat, $neast_lon, $neast_lat)
-                        = explode(',', $zones);
-                    $qb
-                        ->andWhere('g.lon BETWEEN :west_lon AND :east_lon')
-                        ->andWhere('g.lat BETWEEN :north_lat AND :south_lat');
-
-                    $parameters = array_merge(
-                        $parameters,
-                        array(
-                            'west_lon'  => (float)$swest_lon,
-                            'east_lon'  => (float)$neast_lon,
-                            'north_lat' => (float)$swest_lat,
-                            'south_lat' => (float)$neast_lat
-                        )
-                    );
-                }
-
                 $qb->setParameters($parameters);
 
                 $query = $qb->getQuery();
@@ -585,26 +564,15 @@ class SolariumQueryFactory
                                     continue;
                                 }
 
-                                $json = $polygon->getGeojson();
-
-                                $geometry = null;
-                                if ( $zones !== false
-                                    && strlen($json) < 50000
-                                ) {
-                                    $geometry = $json;
-                                } else {
-                                    //polygon are too heavy,
-                                    //lets display a point instead
-                                    $lon = $polygon->getLon();
-                                    $lat = $polygon->getLat();
-                                    $geometry = array(
-                                        'type'          => 'Point',
-                                        'coordinates'   => array(
-                                            (float)$lon,
-                                            (float)$lat
-                                        )
-                                    );
-                                }
+                                $lon = $polygon->getLon();
+                                $lat = $polygon->getLat();
+                                $geometry = array(
+                                    'type'          => 'Point',
+                                    'coordinates'   => array(
+                                        (float)$lon,
+                                        (float)$lat
+                                    )
+                                );
 
                                 $count = $value[$name];
                                 $results[] = array(
@@ -619,25 +587,14 @@ class SolariumQueryFactory
                             }
                         }
                         if ( count($results) > 0 ) {
-                            if ( $merged === true ) {
-                                $result = array_merge($result, $results);
-                            } else {
-                                $result[$field] = array(
-                                    'type'      => 'FeatureCollection',
-                                    'features'  => $results
-                                );
-                            }
+                            $result[$field] = array(
+                                'type'      => 'FeatureCollection',
+                                'features'  => $results
+                            );
                         }
                     }
                 }
             }
-        }
-
-        if ( $merged === true ) {
-            $result = array(
-                'type'      => 'FeatureCollection',
-                'features'  => $result
-            );
         }
 
         return array(

@@ -121,14 +121,8 @@ bach_geojson:
         _method: GET
 
 bach_matricules_geojson:
-    pattern: /matricules/geojson
-    defaults: {_controller: BachHomeBundle:Matricules:getGeoJson}
-    requirements:
-        _method: GET
-
-bach_geozones:
-    pattern: /geo/zones/{bbox}
-    defaults: {_controller: BachHomeBundle:Default:getZones}
+    pattern: /matricules/geojson/{form_name}
+    defaults: {_controller: BachHomeBundle:Matricules:getGeoJson, form_name: null}
     requirements:
         _method: GET
 

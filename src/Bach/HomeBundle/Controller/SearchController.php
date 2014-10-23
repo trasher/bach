@@ -571,36 +571,6 @@ abstract class SearchController extends Controller
     }
 
     /**
-     * Get geographical zones
-     *
-     * @param stirng $bbox Bounding box
-     *
-     * @return json
-     */
-    public function getZonesAction($bbox)
-    {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-        $factory = $this->get($this->factoryName());
-
-        $facets_name = $request->get('facets_name');
-
-        if ( !$facets_name ) {
-            $facets_name = 'map_facets';
-        }
-
-        $geojson = $factory->getGeoJson(
-            $session->get($facets_name),
-            $this->getDoctrine()
-                ->getRepository('BachIndexationBundle:Geoloc'),
-            $bbox,
-            true
-        );
-
-        return new JsonResponse($geojson);
-    }
-
-    /**
      * POST search destination for main form.
      *
      * Will take care of search terms, and reroute with proper URI
