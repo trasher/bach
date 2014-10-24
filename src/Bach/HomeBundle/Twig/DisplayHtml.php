@@ -66,6 +66,8 @@ class DisplayHtml extends \Twig_Extension
     protected $request;
     protected $cote_location;
     protected $prod;
+    protected $kernel_root_dir;
+    protected $cache_key_prefix = 'html';
 
     /**
      * Main constructor
@@ -77,6 +79,7 @@ class DisplayHtml extends \Twig_Extension
     public function __construct(Router $router, Kernel $kernel, $cote_loc)
     {
         $this->router = $router;
+        $this->kernel_root_dir = $kernel->getRootDir();
         if ( $kernel->getEnvironment() !== 'dev' ) {
             $this->prod = true;
         } else {
@@ -125,7 +128,9 @@ class DisplayHtml extends \Twig_Extension
         if ( $this->prod === true ) {
             $cache = new \Doctrine\Common\Cache\ApcCache();
             $cached_doc = null;
-            $cached_doc_date = $cache->fetch('html_date_' . $docid);
+            $cached_doc_date = $cache->fetch(
+                $this->getCacheKeyName('date_' . $docid)
+            );
 
             $redo = true;
             if ( $cached_doc_date ) {
@@ -142,7 +147,9 @@ class DisplayHtml extends \Twig_Extension
             }
 
             if ( !$redo ) {
-                $cached_doc = $cache->fetch('html_' . $docid);
+                $cached_doc = $cache->fetch(
+                    $this->getCacheKeyName($docid)
+                );
             }
         }
 
@@ -214,14 +221,33 @@ class DisplayHtml extends \Twig_Extension
             );
 
             if ( $this->prod === true ) {
-                $cache->save('html_' . $docid, $html);
-                $cache->save('html_date_' . $docid, new \DateTime());
+                $cache->save(
+                    $this->getCacheKeyName($docid),
+                    $html
+                );
+                $cache->save(
+                    $this->getCacheKeyName('date_' . $docid),
+                    new \DateTime()
+                );
             }
         } else {
             $html = $cached_doc;
         }
 
         return $html;
+    }
+
+    /**
+     * Get cache key name, unique for this app
+     *
+     * @param string $key Key name
+     *
+     * @return string
+     */
+    protected function getCacheKeyName($key)
+    {
+        return $this->kernel_root_dir . '_' . $this->cache_key_prefix
+            . '_' . $key;
     }
 
     /**

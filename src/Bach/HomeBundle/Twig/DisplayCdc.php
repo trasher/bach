@@ -62,6 +62,7 @@ class DisplayCdc extends DisplayHtml
 {
     private $_cdc_uri;
     private $_docs;
+    protected $cache_key_prefix = 'cdc';
 
     /**
      * Main constructor
