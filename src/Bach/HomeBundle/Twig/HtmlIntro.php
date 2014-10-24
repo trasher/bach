@@ -194,7 +194,7 @@ class HtmlIntro extends \Twig_Extension
 
         $filters_callback = function ($matches) use ($router, $request) {
             $href = $router->generate(
-                'bach_search',
+                'bach_archives',
                 array(
                     'query_terms'   => $request->get('query_terms'),
                     'filter_field'  => $matches[1],

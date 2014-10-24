@@ -36,17 +36,10 @@ bach_homepage:
         _method: GET
 
 bach_archives:
-    pattern:  /archives
-    defaults: { _controller: BachHomeBundle:Default:main }
-    requirements:
-        _method: GET
-
-
-bach_search:
     pattern: /archives/search/{form_name}/{query_terms}/{page}/{facet_name}
     defaults: { _controller: BachHomeBundle:Default:search, 'form_name': 'default', 'query_terms': null, 'page': 1, 'facet_name': null }
     requirements:
-        _method: GET
+        _method: GET|POST
         page: \d+
 
 bach_search_form_homepage:
@@ -174,16 +167,10 @@ bach_remove_geoloc:
         _method: POST
 
 bach_matricules:
-    pattern:  /matricules
-    defaults: { _controller: BachHomeBundle:Matricules:main }
-    requirements:
-        _method: GET
-
-bach_matricules_search:
     pattern: /matricules/search/{query_terms}/{page}/{facet_name}
     defaults: { _controller: BachHomeBundle:Matricules:search, 'query_terms': null, 'page': 1, 'facet_name': null }
     requirements:
-        _method: GET
+        _method: GET|POST
         page: \d+
 
 bach_matricules_fullfacet:

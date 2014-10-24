@@ -139,7 +139,7 @@ class DisplayCdc extends DisplayHtml
             $href = '';
             if ( count($matches) > 2 ) {
                 $href = $router->generate(
-                    'bach_search',
+                    'bach_archives',
                     array(
                         'query_terms'   => $request->get('query_terms'),
                         'filter_field'  => 'c' . ucwords($matches[1]),

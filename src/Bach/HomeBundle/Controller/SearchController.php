@@ -84,15 +84,6 @@ abstract class SearchController extends Controller
     }
 
     /**
-     * Default page
-     *
-     * @param string $form_name Search form name
-     *
-     * @return void
-     */
-    abstract public function mainAction($form_name = null);
-
-    /**
      * Search page
      *
      * @param string $query_terms Term(s) we search for

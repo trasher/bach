@@ -70,66 +70,6 @@ class MatriculesController extends SearchController
     protected $date_field = 'date_enregistrement';
 
     /**
-     * Default page
-     *
-     * @param string $form_name Search form name
-     *
-     * @return void
-     */
-    public function mainAction($form_name = null)
-    {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-
-        $this->search_form = $form_name;
-
-        /** Manage view parameters */
-        $view_params = $this->handleViewParams();
-
-        $tpl_vars = $this->searchTemplateVariables($view_params);
-        $session->set($this->getFiltersName(), null);
-
-        if ( $view_params->advancedSearch() ) {
-            $form = $this->createForm(
-                new MatriculesType(),
-                null
-            );
-            $tpl_vars['search_path'] = 'bach_matricules_search';
-        } else {
-            $form = $this->createForm(
-                new SearchQueryFormType(),
-                null
-            );
-            $tpl_vars['search_path'] = 'bach_matricules_do_search';
-        }
-
-        $factory = $this->get($this->factoryName());
-        $factory->setDateField($this->date_field);
-
-        $slider_dates = $factory->getSliderDates(new Filters());
-
-        if ( is_array($slider_dates) ) {
-            $tpl_vars = array_merge($tpl_vars, $slider_dates);
-        }
-
-        if ( $view_params->advancedSearch() ) {
-            $tpl_vars['adv_form'] = $form->createView();
-        } else {
-            $tpl_vars['form'] = $form->createView();
-        }
-
-
-        $this->handleGeoloc($factory);
-
-        $this->handleYearlyResults($factory, $tpl_vars);
-
-        return $this->render(
-            'BachHomeBundle:Matricules:search_form.html.twig',
-            $tpl_vars
-        );
-    }
-
-    /**
      * Search page
      *
      * @param string $query_terms Term(s) we search for
@@ -176,7 +116,7 @@ class MatriculesController extends SearchController
                 new MatriculesType(),
                 null
             );
-            $tpl_vars['search_path'] = 'bach_matricules_search';
+            $tpl_vars['search_path'] = 'bach_matricules';
         } else {
             $form = $this->createForm(
                 new SearchQueryFormType($query_terms),
@@ -454,7 +394,7 @@ class MatriculesController extends SearchController
             if ($form->isValid()) {
                 $q = $query->getQuery();
                 $redirectUrl = $this->get('router')->generate(
-                    'bach_matricules_search',
+                    'bach_matricules',
                     array('query_terms' => $q)
                 );
 
@@ -518,22 +458,20 @@ class MatriculesController extends SearchController
      */
     protected function getUniqueFacet($name)
     {
-        $conf_facets = array();
+        $form_name = 'matricules';
+        if ( $this->search_form !== null ) {
+            $form_name = $this->search_form;
+        }
 
-        $fields = array(
-            'nom'                   => 'Nom',
-            'prenoms'               => 'Prénom',
-            'classe'                => 'Classe',
-            'lieu_naissance'        => 'Lieu de naissance',
-            'lieu_enregistrement'   => 'Lieu d\'enregistrement'
-        );
-
-        $facet = new Facets();
-        $facet->setSolrFieldName($name);
-        $facet->setFrLabel($fields[$name]);
-        $conf_facets[] = $facet;
-
-        return $conf_facets;
+        return $this->getDoctrine()
+            ->getRepository('BachHomeBundle:Facets')
+            ->findBy(
+                array(
+                    'active'            => true,
+                    'solr_field_name'   => $name,
+                    'form'              => $form_name
+                )
+            );
     }
 
     /**
@@ -571,7 +509,7 @@ class MatriculesController extends SearchController
      */
     protected function getSearchUri()
     {
-        return 'bach_matricules_search';
+        return 'bach_matricules';
     }
 
     /**

@@ -70,69 +70,6 @@ class DefaultController extends SearchController
     protected $date_field = 'cDateBegin';
 
     /**
-     * Default page for archives
-     *
-     * @param string $form_name Search form name
-     *
-     * @return void
-     */
-    public function mainAction($form_name = null)
-    {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-
-        if ( $form_name !== 'default' ) {
-            $this->search_form = $form_name;
-        }
-
-        /** Manage view parameters */
-        $view_params = $this->handleViewParams();
-
-        $tpl_vars = $this->searchTemplateVariables($view_params);
-        $session->set($this->getFiltersName(), null);
-
-        $form = $this->createForm(
-            new SearchQueryFormType(),
-            new SearchQuery()
-        );
-        $tpl_vars['form'] = $form->createView();
-
-        $factory = $this->get($this->factoryName());
-        $factory->setDateField($this->date_field);
-
-        $search_form_params = null;
-        if ( $this->search_form !== null ) {
-            $search_forms = $this->container->getParameter('search_forms');
-            $search_form_params = $search_forms[$this->search_form];
-        }
-
-        $show_tagcloud = $this->container->getParameter('feature.tagcloud');
-        if ( $show_tagcloud ) {
-            $tagcloud = $factory->getTagCloud(
-                $this->getDoctrine()->getManager(),
-                $search_form_params
-            );
-
-            if ( $tagcloud ) {
-                $tpl_vars['tagcloud'] = $tagcloud;
-            }
-        }
-
-        $this->handleGeoloc($factory);
-
-        $slider_dates = $factory->getSliderDates(new Filters(), $search_form_params);
-        if ( is_array($slider_dates) ) {
-            $tpl_vars = array_merge($tpl_vars, $slider_dates);
-        }
-        $this->handleYearlyResults($factory, $tpl_vars);
-
-        return $this->render(
-            'BachHomeBundle:Default:index.html.twig',
-            $tpl_vars
-        );
-    }
-
-    /**
      * Get Solarium EntryPoint
      *
      * @return string
@@ -226,33 +163,10 @@ class DefaultController extends SearchController
             && is_null($query_terms)
         ) {
             $query_terms = '*:*';
-        } else if ( $query_terms === null && $filters->count() == 0 ) {
-            $redirectUrl = null;
-            if ( $this->search_form !== null ) {
-                $redirectUrl = $this->get('router')->generate(
-                    'bach_search_form_homepage',
-                    array(
-                        'form_name' => $this->search_form
-                    )
-                );
-            } else {
-                $redirectUrl = $this->get('router')->generate('bach_archives');
-            }
-            return new RedirectResponse($redirectUrl);
         }
 
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
-        $tpl_vars = array_merge(
-            $tpl_vars,
-            array(
-                'q'             => urlencode($query_terms),
-                'show_pics'     => $view_params->showPics(),
-                'show_map'      => $view_params->showMap(),
-                'show_daterange'=> $view_params->showDaterange(),
-                'view'          => $view_params->getView(),
-                'results_order' => $view_params->getOrder()
-            )
-        );
+        $tpl_vars['q'] = urlencode($query_terms);
 
         $factory = $this->get($this->factoryName());
         $factory->setGeolocFields($this->getGeolocFields());
@@ -264,36 +178,10 @@ class DefaultController extends SearchController
             new SearchQuery()
         );
 
-        $container = new SolariumQueryContainer();
-        $container->setOrder($view_params->getOrder());
-
         $search_forms = null;
         if ( $this->search_form !== null ) {
             $search_forms = $this->container->getParameter('search_forms');
-            $container->setSearchForm($search_forms[$this->search_form]);
         }
-
-        $container->setField(
-            'show_pics',
-            $view_params->showPics()
-        );
-        $container->setField($this->getContainerFieldName(), $query_terms);
-
-        $container->setField(
-            "pager",
-            array(
-                "start"     => ($page - 1) * $view_params->getResultsbyPage(),
-                "offset"    => $view_params->getResultsbyPage()
-            )
-        );
-
-        //Add filters to container
-        $container->setFilters($filters);
-        if ( $filters->count() > 0 ) {
-            $tpl_vars['filters'] = $filters;
-        }
-
-        $factory->prepareQuery($container);
 
         $search_form_params = null;
         if ( $search_forms !== null ) {
@@ -304,51 +192,96 @@ class DefaultController extends SearchController
         if ( $search_form_params !== null ) {
             $current_form = $this->search_form;
         }
-        $conf_facets = $this->getDoctrine()
-            ->getRepository('BachHomeBundle:Facets')
-            ->findBy(
+
+        if ( !is_null($query_terms) ) {
+            $container = new SolariumQueryContainer();
+            $container->setOrder($view_params->getOrder());
+
+            if ( $this->search_form !== null ) {
+                $container->setSearchForm($search_forms[$this->search_form]);
+            }
+
+            $container->setField(
+                'show_pics',
+                $view_params->showPics()
+            );
+            $container->setField($this->getContainerFieldName(), $query_terms);
+
+            $container->setField(
+                "pager",
                 array(
-                    'active'    => true,
-                    'form'      => $current_form
-                ),
-                array('position' => 'ASC')
+                    "start"     => ($page - 1) * $view_params->getResultsbyPage(),
+                    "offset"    => $view_params->getResultsbyPage()
+                )
             );
 
-        $searchResults = $factory->performQuery(
-            $container,
-            $conf_facets
-        );
+            //Add filters to container
+            $container->setFilters($filters);
+            if ( $filters->count() > 0 ) {
+                $tpl_vars['filters'] = $filters;
+            }
 
-        $hlSearchResults = $factory->getHighlighting();
-        $scSearchResults = $factory->getSpellcheck();
-        $resultCount = $searchResults->getNumFound();
+            $factory->prepareQuery($container);
 
-        $this->handleFacets(
-            $factory,
-            $conf_facets,
-            $searchResults,
-            $filters,
-            $facet_name,
-            $tpl_vars
-        );
-        $suggestions = $factory->getSuggestions($query_terms);
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active'    => true,
+                        'form'      => $current_form
+                    ),
+                    array('position' => 'ASC')
+                );
 
-        $tpl_vars['resultCount'] = $resultCount;
-        $tpl_vars['resultByPage'] = $view_params->getResultsbyPage();
-        $tpl_vars['totalPages'] = ceil(
-            $resultCount/$view_params->getResultsbyPage()
-        );
-        $tpl_vars['searchResults'] = $searchResults;
-        $tpl_vars['hlSearchResults'] = $hlSearchResults;
-        $tpl_vars['scSearchResults'] = $scSearchResults;
-        $tpl_vars['resultStart'] = ($page - 1)
-            * $view_params->getResultsbyPage() + 1;
-        $resultEnd = ($page - 1) * $view_params->getResultsbyPage()
-            + $view_params->getResultsbyPage();
-        if ( $resultEnd > $resultCount ) {
-            $resultEnd = $resultCount;
+            $searchResults = $factory->performQuery(
+                $container,
+                $conf_facets
+            );
+
+            $hlSearchResults = $factory->getHighlighting();
+            $scSearchResults = $factory->getSpellcheck();
+            $resultCount = $searchResults->getNumFound();
+
+            $this->handleFacets(
+                $factory,
+                $conf_facets,
+                $searchResults,
+                $filters,
+                $facet_name,
+                $tpl_vars
+            );
+            $suggestions = $factory->getSuggestions($query_terms);
+
+            $tpl_vars['resultCount'] = $resultCount;
+            $tpl_vars['resultByPage'] = $view_params->getResultsbyPage();
+            $tpl_vars['totalPages'] = ceil(
+                $resultCount/$view_params->getResultsbyPage()
+            );
+            $tpl_vars['searchResults'] = $searchResults;
+            $tpl_vars['hlSearchResults'] = $hlSearchResults;
+            $tpl_vars['scSearchResults'] = $scSearchResults;
+            $tpl_vars['resultStart'] = ($page - 1)
+                * $view_params->getResultsbyPage() + 1;
+            $resultEnd = ($page - 1) * $view_params->getResultsbyPage()
+                + $view_params->getResultsbyPage();
+            if ( $resultEnd > $resultCount ) {
+                $resultEnd = $resultCount;
+            }
+            $tpl_vars['resultEnd'] = $resultEnd;
+        } else {
+            $this->handleGeoloc($factory);
+            $show_tagcloud = $this->container->getParameter('feature.tagcloud');
+            if ( $show_tagcloud ) {
+                $tagcloud = $factory->getTagCloud(
+                    $this->getDoctrine()->getManager(),
+                    $search_form_params
+                );
+
+                if ( $tagcloud ) {
+                    $tpl_vars['tagcloud'] = $tagcloud;
+                }
+            }
         }
-        $tpl_vars['resultEnd'] = $resultEnd;
 
         $slider_dates = $factory->getSliderDates($filters, $search_form_params);
         if ( is_array($slider_dates) ) {
@@ -419,7 +352,7 @@ class DefaultController extends SearchController
                     $url_vars['filter_value'] = $request->get('filter_value');
                 }
 
-                $route = 'bach_search';
+                $route = 'bach_archives';
                 if ( $this->search_form !== null ) {
                     $url_vars['form_name'] = $this->search_form;
                 }
@@ -886,7 +819,7 @@ class DefaultController extends SearchController
      */
     protected function getSearchUri()
     {
-        return 'bach_search';
+        return 'bach_archives';
     }
 
     /**
