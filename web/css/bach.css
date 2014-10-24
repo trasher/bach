@@ -938,6 +938,7 @@ h2.back a:hover {
 [id=inventory_contents] table {
     width: 100%;
     background: white;
+    word-wrap: break-word;
 }
 
 [id=inventory_contents] th,
@@ -946,6 +947,10 @@ h2.back a:hover {
     text-align: left;
     padding: .2em;
     border: 1px solid #d1c6c0;
+}
+
+[id=inventory_contents] th {
+    width: 10em;
 }
 
 [id=back2top] {
