@@ -42,8 +42,10 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block css %}
- {{ parent() }}
+     {{ parent() }}
+    {% if has_advanced is defined %}
     <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/select2/select2.css') }}" media="all">
+    {% endif %}
 {% endblock %}
 
 {% block title_extend %} - {{ _('Matricules search') }}{% endblock %}
@@ -258,9 +260,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         return false;
     });
+    {% if has_advanced is defined %}
     $('#listFragments .selectFlds').select2({
         width: '15%'
     });
+    {% endif %}
 {% endblock %}
 
 {# Binded when in mobile mode #}
@@ -269,6 +273,8 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block js_calls %}
-{{ parent() }}
-<script src="{{ asset('bundles/sonataadmin/select2/select2.min.js') }}"></script>
+    {{ parent() }}
+    {% if has_advanced is defined %}
+    <script src="{{ asset('bundles/sonataadmin/select2/select2.min.js') }}"></script>
+    {% endif %}
 {% endblock%}
