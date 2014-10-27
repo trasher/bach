@@ -253,14 +253,12 @@ POSSIBILITY OF SUCH DAMAGE.
             <nav id="change_view">
                 {% if available_orders|length > 0 %}
                 <label for="results_order">{{ _('Order:') }}</label>
-                <div class="select_container">
-                    <select name="results_order" id="results_order">
-                        <option value="{{ constant('Bach\\HomeBundle\\Entity\\ViewParams::ORDER_RELEVANCE') }}"{% if results_order is constant('Bach\\HomeBundle\\Entity\\ViewParams::ORDER_RELEVANCE') %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
-                        {% for key,order in available_orders %}
-                        <option value="{{ key }}"{% if results_order == key %} selected="selected"{% endif %}>{{ order }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                <select name="results_order" id="results_order">
+                    <option value="{{ constant('Bach\\HomeBundle\\Entity\\ViewParams::ORDER_RELEVANCE') }}"{% if results_order is constant('Bach\\HomeBundle\\Entity\\ViewParams::ORDER_RELEVANCE') %} selected="selected"{% endif %}>{{ _('Relevance (default)') }}</option>
+                    {% for key,order in available_orders %}
+                    <option value="{{ key }}"{% if results_order == key %} selected="selected"{% endif %}>{{ order }}</option>
+                    {% endfor %}
+                </select>
                 {% endif %}
                 {% if available_views|length > 0 %}
                     {% for key,values in available_views %}

@@ -491,36 +491,16 @@ p {
     vertical-align: top;
 }
 
-[id=change_view] .select_container {
-    line-height: 22px;
-    margin-top: 3px;
-}
-
-/*[id=change_view] label {
-    vertical-align: 70%;
-}*/
-
-.select_container {
-    display: inline-block;
-    background: transparent url(../img/select_arrow.png) 100% 50% no-repeat;
+[id=results_order] {
+    background: #a3968d;
+    height: 22px;
     border: 1px solid #d1c6c0;
-    overflow: hidden;
-    width: 15em;
-    margin: 0 .1em;
-    line-height: auto;
-}
-
-.select_container select {
-    background: none;
-    border: none;
-    width: 16.5em;
     display: inline-block;
     color: #fff;
-    -webkit-appearance: none;
-    margin: 0;
+    margin: 4px .5em 0 .2em;
 }
 
-.select_container select option {
+[id=results_order] option {
     background-color: #a3968d;
 }
 
