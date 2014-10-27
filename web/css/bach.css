@@ -520,6 +520,10 @@ p {
     margin: 0;
 }
 
+.select_container select option {
+    background-color: #a3968d;
+}
+
 .btn-list, .btn-thumbs, .btn-txtlist {
     background: transparent url(../img/sprite.png) 0 0 no-repeat;
     display: inline-block;
