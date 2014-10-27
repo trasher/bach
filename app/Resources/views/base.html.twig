@@ -37,6 +37,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% extends ['::layout.html.twig'] %}
 
+{% block favicon %}
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" />
+{% endblock %}
+
 {% block html_headers %}
     <meta charset="utf-8">
     <title>Bach{% block title_extend %}{% endblock %}</title>
@@ -70,7 +74,6 @@ POSSIBILITY OF SUCH DAMAGE.
         <link href="{{ asset('css/bach-ie7.css') }}" type="text/css" rel="stylesheet" media="screen" />
         {% block client_ie7 %}{% endblock %}
     <![endif]-->
-    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" />
 {% endblock %}
 
 {% block header %}
