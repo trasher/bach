@@ -87,13 +87,13 @@ class FormFragmentType extends AbstractType
                 'selectOperator',
                 'choice',
                 array(
-                    'choices' => array(
-                        'or'   => _('or'),
+                    'choices'   => array(
+                        'or'    => _('or'),
                         'and'   => _('and'),
-                        'not' => _('not')
+                        'not'   => _('not')
                     ),
-                    'label' => _('operator'),
-                    'empty_value' => _('Choice an operator')
+                    'label'     => _('operator'),
+                    'empty_value' => _('Choose an operator')
                 )
             )
             ->add(
@@ -103,13 +103,13 @@ class FormFragmentType extends AbstractType
                     'choices'     => $this->_fields,
                     'required'    => false,
                     'attr'        => array(
-                        'class'   => 'selectFlds'
+                        'class' => 'selectFlds'
                     ),
                     'label'       => 'option',
                     'label_attr'  => array (
-                        'class'     => 'labelMatriculesForm'
+                        'class' => 'labelMatriculesForm'
                     ),
-                    'empty_value' => _('Choice an option')
+                    'empty_value' => _('Choose an option')
                 )
             )
             ->add(
