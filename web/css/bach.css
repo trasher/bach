@@ -378,7 +378,6 @@ p {
     border: none;
     padding: 0;
     height: 32px;
-    line-height: 32px;
 }
 
 [id=search] > div {

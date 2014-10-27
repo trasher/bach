@@ -81,3 +81,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #cdccontrol {
     display: none;
 }
+
+
+[id=search] input[type=text] {
+    line-height: 32px;
+}
