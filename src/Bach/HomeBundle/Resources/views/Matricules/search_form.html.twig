@@ -225,6 +225,7 @@ POSSIBILITY OF SUCH DAMAGE.
     {{ parent() }}
 
     $('.display_doc').click(function(event){
+        $(this).blur();
         event.stopImmediatePropagation();
         event.preventDefault();
 
