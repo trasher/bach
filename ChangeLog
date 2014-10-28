@@ -1,3 +1,23 @@
+1.0.0 (2014-10-28)
+- Prevent full facets to load extra data
+- Order matricules
+- Upgrade to Solr 4.10.0
+- Update to latest 3rd party libs
+- Fix Sitemap
+- Add a back to top button
+- Rework administration interface
+- Add comments on matricules and images
+- Use doctrine migrations to handle database updates
+- Take care of missing elements in ead/html view, some minor fixes
+- Compatible PHP 5.6
+- Throw an error when @id are missing in EAD
+- Fix social buttons
+- Improve geoloc administration UI
+- Fix cache issue on cdc and ead/html
+- Various CSS fixes for chrome and IE
+- Add feature.archives so main search can be disabled
+- Fix browse links when a filter already exists
+
 0.9.4.4 (2014-09-15)
 
 - Date was no longer displayed in search results or popup
