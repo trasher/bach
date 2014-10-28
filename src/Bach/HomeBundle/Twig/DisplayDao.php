@@ -44,8 +44,6 @@
 
 namespace Bach\HomeBundle\Twig;
 
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Twig extension to display numeric documents
@@ -60,7 +58,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DisplayDao extends \Twig_Extension
 {
-    private $_router;
     private $_viewer;
 
     private static $_images_extensions = array('jpeg', 'jpg', 'png', 'gif');
@@ -81,30 +78,16 @@ class DisplayDao extends \Twig_Extension
     /**
      * Main constructor
      *
-     * @param UrlGeneratorInterface $router     Router
-     * @param string                $viewer_uri Viewer URI
-     * @param string                $covers_dir Covers directory
+     * @param string $viewer_uri Viewer URI
+     * @param string $covers_dir Covers directory
      */
-    public function __construct(Router $router, $viewer_uri, $covers_dir)
+    public function __construct($viewer_uri, $covers_dir)
     {
-        $this->_router = $router;
         if ( !(substr($viewer_uri, -1) === '/') ) {
             $viewer_uri .= '/';
         }
         $this->_viewer = $viewer_uri;
         $this->_covers_dir = $covers_dir;
-    }
-
-    /**
-     * Set Request
-     *
-     * @param Request $request The Request
-     *
-     * @return void
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->_request = $request;
     }
 
     /**

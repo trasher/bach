@@ -62,6 +62,7 @@ twig:
         tiles_subdomains: '%tiles_subdomains%'
         html_intros_path: '%html_intros_path%'
         features:
+            archives: '%feature.archives%'
             matricules: '%feature.matricules%'
             cdc: '%feature.cdc%'
             openid: '%feature.openid%'
@@ -73,6 +74,8 @@ twig:
             register: '%feature.register%'
             comments: '%feature.comments%'
             autocomplete: '%feature.autocomplete%'
+        default_url: '%default_url%'
+        logo_url: '%logo_url%'
 
 # Assetic Configuration
 assetic:
@@ -104,6 +107,12 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+
+doctrine_migrations:
+    dir_name: %kernel.root_dir%/migrations
+    namespace: Bach\Migrations
+    table_name: migration_versions
+    name: Bach Database Migrations
 
 # Swiftmailer Configuration
 #swiftmailer:
@@ -196,9 +205,13 @@ sonata_user:
         user: Application\Sonata\UserBundle\Entity\User
         group: Application\Sonata\UserBundle\Entity\Group
 
+    admin:
+        user:
+            class: Application\Sonata\UserBundle\Admin\UserAdmin
+
     profile:
         form:
-            type: sonata_user_profile
+            type: application_sonata_user_profile
             #handler: sonata_user.profile.form.handler.default
             name: sonata_user_profile_form
             validation_groups: [Profile]
@@ -284,19 +297,16 @@ services:
         arguments: [ '%bach_files_html%'  ]
         tags:
             - { name: twig.extension }
-    bach.twig.html_intro:
-        class: Bach\HomeBundle\Twig\HtmlIntro
-        arguments: [ @router ]
+    sonata_user.profile.form.type:
+        class: Application\Sonata\UserBundle\Form\Type\ProfileType
+        arguments: [%fos_user.model.user.class%]
         tags:
-            - { name: twig.extension }
-        calls:
-            - [setRequest, ['@?request=']]
-            - [setHtmlContentsPath, ['%html_intros_path%']]
+            - { name: form.type, alias: application_sonata_user_profile }
 
-k_phoen_sitemap:
-    base_host: '%bach_url%'
-    base_host_sitemap: '%bach_url%'
-    limit: 50000
+
+presta_sitemap:
+    dumper_base_url: '%bach_url%'
+    route_annotation_listener: false
 
 liip_theme:
     themes: %bach_themes%

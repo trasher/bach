@@ -46,12 +46,7 @@
 
 namespace Bach\HomeBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass as CPass;
 
 /**
@@ -130,24 +125,33 @@ class AddDependencyCallsCompilerPass extends CPass
                 $groupDefaults[$resolvedGroupName]['items'][] = $id;
 
                 //Bach: handle facets for other parts
-                if ( $id === 'sonata.admin.facets' ) {
-                    foreach ( $search_forms as $name=>$search_form ) {
-                        $newid = 'sonata.admin.' . $name . 'facets';
-                        $admins[] = $newid;
-                        $classes[$arguments[1]][] = $newid;
-                        $groupDefaults[$resolvedGroupName]['items'][] = $newid;
+                if ( $id === 'sonata.admin.archives.facets' ) {
+                    if ( $container->getParameter('feature.archives') === true ) {
+                        foreach ( $search_forms as $name=>$search_form ) {
+                            $newid = 'sonata.admin.archives.' . $name . 'facets';
+                            $admins[] = $newid;
+                            $classes[$arguments[1]][] = $newid;
+                            $groupDefaults[$resolvedGroupName]['items'][] = $newid;
+                        }
                     }
-                    if ( $container->getParameter('feature.matricules') == true ) {
-                        $newid = 'sonata.admin.matriculesfacets';
-                        $admins[] = $newid;
-                        $classes[$arguments[1]][] = $newid;
-                        $groupDefaults[$resolvedGroupName]['items'][] = $newid;
+                }
+                if ( $id === 'sonata.admin.matricules.geolocfields' ) {
+                    if ( $container->getParameter('feature.matricules') === true ) {
+                        $newid = 'sonata.admin.matricules.facets';
+                        array_unshift($admins, $newid);
+                        array_unshift($classes[$arguments[1]], $newid);
+                        array_unshift(
+                            $groupDefaults[$resolvedGroupName]['items'],
+                            $newid
+                        );
                     }
                 }
             }
         }
 
-        $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
+        $dashboardGroupsSettings = $container->getParameter(
+            'sonata.admin.configuration.dashboard_groups'
+        );
         if (!empty($dashboardGroupsSettings)) {
             $groups = $dashboardGroupsSettings;
 
@@ -162,23 +166,30 @@ class AddDependencyCallsCompilerPass extends CPass
                 }
 
                 if (empty($group['items'])) {
-                    $groups[$resolvedGroupName]['items'] = $groupDefaults[$resolvedGroupName]['items'];
+                    $groups[$resolvedGroupName]['items']
+                        = $groupDefaults[$resolvedGroupName]['items'];
                 }
 
                 if (empty($group['label'])) {
-                    $groups[$resolvedGroupName]['label'] = $groupDefaults[$resolvedGroupName]['label'];
+                    $groups[$resolvedGroupName]['label']
+                        = $groupDefaults[$resolvedGroupName]['label'];
                 }
 
                 if (empty($group['label_catalogue'])) {
-                    $groups[$resolvedGroupName]['label_catalogue'] = 'SonataAdminBundle';
+                    $groups[$resolvedGroupName]['label_catalogue']
+                        = 'SonataAdminBundle';
                 }
 
                 if (!empty($group['item_adds'])) {
-                    $groups[$resolvedGroupName]['items'] = array_merge($groups[$resolvedGroupName]['items'], $group['item_adds']);
+                    $groups[$resolvedGroupName]['items'] = array_merge(
+                        $groups[$resolvedGroupName]['items'],
+                        $group['item_adds']
+                    );
                 }
 
                 if (empty($group['roles'])) {
-                    $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
+                    $groups[$resolvedGroupName]['roles']
+                        = $groupDefaults[$resolvedGroupName]['roles'];
                 }
             }
         } else {
@@ -190,38 +201,43 @@ class AddDependencyCallsCompilerPass extends CPass
         $pool->addMethodCall('setAdminClasses', array($classes));
 
         //sets services
-        $facets_definition = $container->getDefinition('sonata.admin.facets');
-        foreach ( $search_forms as $name=>$search_form ) {
-            $newid = 'sonata.admin.' . $name . 'facets';
-            $definition = clone $facets_definition;
-            $definition->replaceArgument(0, $newid);
-            $definition->addArgument($name); //current form
-            $definition->addMethodCall(
-                'setBaseCodeRoute',
-                array($newid)
-            );
-            $definition->addMethodCall(
-                'setBaseRoutePattern',
-                array('bach/home/' . $name . 'facets')
-            );
-            $definition->addMethodCall(
-                'setBaseRouteName',
-                array('admin_bach_home_' . $name . 'facets')
-            );
-            $definition->addMethodCall(
-                'setClassnameLabel',
-                array(_('Facets') . ' (' . $search_form['menu_entry'] . ')')
-            );
-            $definition->addMethodCall(
-                'setLabel',
-                array(_('Facets') . ' (' . $search_form['menu_entry'] . ')')
-            );
-            $container->setDefinition($newid, $definition);
+        $facets_definition = $container->getDefinition(
+            'sonata.admin.archives.facets'
+        );
+
+        if ( $container->getParameter('feature.archives') === true ) {
+            foreach ( $search_forms as $name=>$search_form ) {
+                $newid = 'sonata.admin.' . $name . 'facets';
+                $definition = clone $facets_definition;
+                $definition->replaceArgument(0, $newid);
+                $definition->addArgument($name); //current form
+                $definition->addMethodCall(
+                    'setBaseCodeRoute',
+                    array($newid)
+                );
+                $definition->addMethodCall(
+                    'setBaseRoutePattern',
+                    array('bach/home/' . $name . 'facets')
+                );
+                $definition->addMethodCall(
+                    'setBaseRouteName',
+                    array('admin_bach_home_' . $name . 'facets')
+                );
+                $definition->addMethodCall(
+                    'setClassnameLabel',
+                    array(_('Facets') . ' (' . $search_form['menu_entry'] . ')')
+                );
+                $definition->addMethodCall(
+                    'setLabel',
+                    array(_('Facets') . ' (' . $search_form['menu_entry'] . ')')
+                );
+                $container->setDefinition($newid, $definition);
+            }
         }
 
-        if ( $container->getParameter('feature.matricules') == true ) {
+        if ( $container->getParameter('feature.matricules') === true ) {
             $name = 'matricules';
-            $newid = 'sonata.admin.' . $name . 'facets';
+            $newid = 'sonata.admin.' . $name . '.facets';
             $definition = clone $facets_definition;
             $definition->replaceArgument(0, $newid);
             $definition->replaceArgument(
@@ -244,11 +260,11 @@ class AddDependencyCallsCompilerPass extends CPass
             );
             $definition->addMethodCall(
                 'setClassnameLabel',
-                array(_('Facets') . ' (' . _('Matricules') . ')')
+                array(_('Facets'))
             );
             $definition->addMethodCall(
                 'setLabel',
-                array(_('Facets') . ' (' . _('Matricules') . ')')
+                array(_('Facets'))
             );
             $container->setDefinition($newid, $definition);
         }

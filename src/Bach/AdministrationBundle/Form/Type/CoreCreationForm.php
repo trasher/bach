@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Create new driver mapper from command line
+ * Bach core creation form
  *
  * PHP version 5
  *
@@ -36,89 +35,96 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Indexation
+ * @category Administration
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\IndexationBundle\Command;
+namespace Bach\AdministrationBundle\Form\Type;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Bach\IndexationBundle\Generator\DriverMapperGenerator;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\AbstractType;
 
 /**
- * Create new driver mapper from command line
+ * Bach core creation form
  *
- * @category Indexation
+ * PHP version 5
+ *
+ * @category Administration
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class DriverMapperCommand extends ContainerAwareCommand
+class CoreCreationForm extends AbstractType
 {
-    protected $generator = null;
+    private $_files_types;
 
     /**
-     * Configures command
+     * Main constructor
      *
-     * @return void
+     * @param array $files_types Known files types
      */
-    protected function configure()
+    public function __construct(array $files_types)
     {
-        $this
-            ->setName('bach:generate:drivermapper')
-            ->setDescription('Create a new driver mapper for indexation')
-            ->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'What is the name of the mapper?'
-            )->setHelp(
-                <<<EOF
-The <info>%command.name%</info> command create a new driver mapper in order to allow name translation during the import of a file
-EOF
-            );
-    }
-
-    /**
-     * Executes the command
-     *
-     * @param InputInterface  $input  Stdin
-     * @param OutputInterface $output Stdout
-     *
-     * @return void
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $name = $input->getArgument('name');
-
-        $generator = $this->getGenerator();
-        $namespace = 'Bach\IndexationBundle\Entity\Mapper';
-        $mapper = strtoupper($name).'DriverMapper';
-        $generator->generate($namespace, $mapper);
-
-        $output->writeln('Generating the mapper driver code: <info>OK</info>');
-    }
-
-    /**
-     * Get generator
-     *
-     * @return DriverMapperGenerator
-     */
-    protected function getGenerator()
-    {
-        if (null === $this->generator) {
-            $this->generator = new DriverMapperGenerator(
-                $this->getContainer()->get('filesystem'),
-                __DIR__.'/../Resources/skeleton/mapper'
-            );
+        foreach ( $files_types as $ftype ) {
+            $this->_files_types[$ftype] = strtoupper($ftype);
         }
+    }
 
-        return $this->generator;
+    /**
+     * Build the form
+     *
+     * @param FormBuilderInterface $builder Builder interface
+     * @param array                $options Options
+     *
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            'core',
+            'choice',
+            array(
+                'required' => true,
+                'choices'  => $this->_files_types
+            )
+        )->add(
+            'name',
+            'text',
+            array(
+                'required'  => true
+            )
+        );
+    }
+
+    /**
+     * Set default options
+     *
+     * @param OptionsResolverInterface $resolver Resolver
+     *
+     * @return void
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Bach\AdministrationBundle\Entity' .
+                '\Helpers\FormObjects\CoreCreation',
+            )
+        );
+    }
+
+    /**
+     * Get form name
+     *
+     * @return String
+     */
+    public function getName()
+    {
+        return 'corecreation';
     }
 }

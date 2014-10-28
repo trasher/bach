@@ -79,7 +79,8 @@ class Driver extends FileDriver
             throw new UnknownDriverParserException(strtoupper($bag->getType()));
         }
 
-        $parser = new $parserClass($bag, $this->configuration);
+        $parser = new $parserClass($this->configuration);
+        $parser->parse($bag);
         $tree = $parser->getTree();
         return $this->_processTree($tree);
     }

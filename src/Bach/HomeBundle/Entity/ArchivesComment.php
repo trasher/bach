@@ -1,6 +1,6 @@
 <?php
 /**
- * Parser
+ * Bach matricules comments
  *
  * PHP version 5
  *
@@ -35,70 +35,38 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Indexation
+ * @category Search
  * @package  Bach
- * @author   Anaphore PI Team <uknown@unknown.com>
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\IndexationBundle\Entity\Driver\FORMAT\Parser\TYPE;
+namespace Bach\HomeBundle\Entity;
 
-use Bach\IndexationBundle\Entity\ObjectTree;
-use Bach\IndexationBundle\Entity\ObjectSheet;
-use Bach\IndexationBundle\Entity\DataBag;
-use Bach\IndexationBundle\ParserInterface;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Parser
+ * Bach matricules comments
  *
- * @category Indexation
+ * @ORM\Entity
+ *
+ * @category Search
  * @package  Bach
- * @author   Anaphore PI Team <uknown@unknown.com>
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class Parser implements ParserInterface
+class ArchivesComment extends Comment
 {
 
-    private $_tree;
-    private $_configuration;
-
     /**
-     * The constructor
-     *
-     * @param DataBag $bag           The bag of data
-     * @param array   $configuration The caller driver configuration
-     */
-    public function __construct(DataBag $bag, $configuration)
-    {
-        $this->_configuration = $configuration;
-        $this->_tree = new ObjectTree("root");
-        $this->parse($bag);
-    }
-
-    /**
-     * Parse the input data
-     *
-     * @param DataBag $bag The bag of data
+     * Set default related field for current entity
      *
      * @return void
      */
-    public function parse(DataBag $bag)
+    protected function setDefaultRelated()
     {
-        //TODO
+        $this->related = self::REL_ARCHIVES;
     }
-
-    /**
-     * Return the parser's ObjectTree
-     *
-     * @return ObjectTree The parser's tree
-     */
-    public function getTree()
-    {
-        return $this->_tree;
-    }
-
 }

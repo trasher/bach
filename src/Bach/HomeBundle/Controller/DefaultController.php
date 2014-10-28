@@ -70,13 +70,13 @@ class DefaultController extends SearchController
     protected $date_field = 'cDateBegin';
 
     /**
-     * Default page
+     * Default page for archives
      *
      * @param string $form_name Search form name
      *
      * @return void
      */
-    public function indexAction($form_name = null)
+    public function mainAction($form_name = null)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -236,7 +236,7 @@ class DefaultController extends SearchController
                     )
                 );
             } else {
-                $redirectUrl = $this->get('router')->generate('bach_homepage');
+                $redirectUrl = $this->get('router')->generate('bach_archives');
             }
             return new RedirectResponse($redirectUrl);
         }
@@ -395,7 +395,7 @@ class DefaultController extends SearchController
                 )
             );
         } else {
-            $redirectUrl = $this->get('router')->generate('bach_homepage');
+            $redirectUrl = $this->get('router')->generate('bach_archives');
         }
 
         $request = $this->getRequest();
@@ -667,10 +667,9 @@ class DefaultController extends SearchController
         if ( $show_comments ) {
             $query = $this->getDoctrine()->getManager()
                 ->createQuery(
-                    'SELECT c, d FROM BachHomeBundle:Comment c
-                    JOIN c.eadfile d
+                    'SELECT c FROM BachHomeBundle:Comment c
                     WHERE c.state = :state
-                    AND d.fragmentid = :docid
+                    AND c.docid = :docid
                     ORDER BY c.creation_date DESC, c.id DESC'
                 )->setParameters(
                     array(

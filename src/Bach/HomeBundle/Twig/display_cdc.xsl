@@ -366,7 +366,9 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="lb">
-        <br/>
+        <xsl:if test="not(preceding-sibling::lb)">
+            <br/>
+        </xsl:if>
     </xsl:template>
 
     <!-- Per default, display nothing -->

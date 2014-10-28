@@ -63,6 +63,7 @@ class SolariumQueryContainer
     private $_filters;
     private $_order = ViewParams::ORDER_RELEVANCE;
     private $_search_form;
+    private $_no_results;
 
     /**
      * Set field
@@ -174,6 +175,27 @@ class SolariumQueryContainer
         case ViewParams::ORDER_CHRONO:
             return 'cDateBegin';
             break;
+        case MatriculesViewParams::ORDER_MATRICULE:
+            return 'matricule';
+            break;
+        case MatriculesViewParams::ORDER_NAME:
+            return 'oNom';
+            break;
+        case MatriculesViewParams::ORDER_SURNAME:
+            return 'oTxt_prenoms';
+            break;
+        case MatriculesViewParams::ORDER_BIRTHYEAR:
+            return 'annee_naissance';
+            break;
+        case MatriculesViewParams::ORDER_BIRTHPLACE:
+            return 'oLieu_naissance';
+            break;
+        case MatriculesViewParams::ORDER_CLASS:
+            return 'classe';
+            break;
+        case MatriculesViewParams::ORDER_RECORDPLACE:
+            return 'oLieu_enregistrement';
+            break;
         }
         return $this->_order;
     }
@@ -222,5 +244,25 @@ class SolariumQueryContainer
     public function getSearchForm()
     {
         return $this->_search_form;
+    }
+
+    /**
+     * Explicitely retrieve no results rows
+     *
+     * @return void
+     */
+    public function setNoResults()
+    {
+        $this->_no_results = true;
+    }
+
+    /**
+     * Do query should retrieve results rows or not
+     *
+     * @return boolean
+     */
+    public function noResults()
+    {
+        return $this->_no_results;
     }
 }

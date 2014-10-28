@@ -1,6 +1,6 @@
 <?php
 /**
- * Mapper for FORMAT data
+ * Search view parameters for matricules
  *
  * PHP version 5
  *
@@ -35,39 +35,61 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Indexation
+ * @category Parameters
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\IndexationBundle\Entity\Mapper;
-
-use Bach\IndexationBundle\DriverMapperInterface;
+namespace Bach\HomeBundle\Entity;
 
 /**
- * Mapper for FORMAT data
+ * Search view parameters for matricules
  *
- * PHP version 5
- *
- * @category Indexation
+ * @category Parameters
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class FORMATDriverMapper implements DriverMapperInterface
+class MatriculesViewParams extends ViewParams
 {
+    const ORDER_MATRICULE = 10;
+    const ORDER_NAME = 11;
+    const ORDER_SURNAME = 12;
+    const ORDER_BIRTHYEAR = 13;
+    const ORDER_BIRTHPLACE = 14;
+    const ORDER_CLASS = 15;
+    const ORDER_RECORDPLACE = 16;
+
     /**
-     * Translate elements
+     * Set order
      *
-     * @param arrya $data Document data
+     * @param int $order New order
      *
-     * @return array
+     * @return void
      */
-    public function translate($data)
+    public function setOrder($order)
     {
-        return $data;
+        if ( $order === self::ORDER_RELEVANCE
+            || $order === self::ORDER_MATRICULE
+            || $order === self::ORDER_NAME
+            || $order === self::ORDER_SURNAME
+            || $order === self:: ORDER_BIRTHYEAR
+            || $order === self:: ORDER_BIRTHPLACE
+            || $order === self:: ORDER_CLASS
+            || $order === self::ORDER_RECORDPLACE
+        ) {
+            $this->order = $order;
+        } else {
+            throw new \RuntimeException(
+                str_replace(
+                    '%s',
+                    $order,
+                    _('Order %s is not known!')
+                )
+            );
+        }
     }
 }

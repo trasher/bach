@@ -134,16 +134,22 @@ POSSIBILITY OF SUCH DAMAGE.
         </tr>
     </xsl:template>
 
-    <xsl:template match="physdesc" mode="presentation">
+    <xsl:template match="physdesc|origination|langmaterial" mode="presentation">
         <tr>
             <th>
                 <xsl:choose>
                     <xsl:when test="@label">
                         <xsl:value-of select="@label"/>
                     </xsl:when>
-                    <xsl:otherwise>
+                    <xsl:when test="local-name() ='physdesc'">
                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Physical description')"/>
-                    </xsl:otherwise>
+                    </xsl:when>
+                    <xsl:when test="local-name() ='origination'">
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Origination')"/>
+                    </xsl:when>
+                    <xsl:when test="local-name() ='langmaterial'">
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Language')"/>
+                    </xsl:when>
                 </xsl:choose>
             </th>
             <td>
@@ -153,34 +159,24 @@ POSSIBILITY OF SUCH DAMAGE.
         <xsl:apply-templates mode="presentation"/>
     </xsl:template>
 
-    <xsl:template match="custodhist|acqinfo" mode="presentation">
-        <tr>
-            <th>
-                <xsl:choose>
-                    <xsl:when test="head">
-                        <xsl:value-of select="head"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:choose>
-                            <xsl:when test="local-name() ='custodhist'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Custodial history')"/>
-                            </xsl:when>
-                            <xsl:when test="local-name() ='acqinfo'">
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Acquisition information')"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </th>
-            <td>
-                <xsl:apply-templates mode="contents"/>
-            </td>
-        </tr>
-    </xsl:template>
-
-    <xsl:template match="accessrestrict" mode="presentation">
+    <!-- head elements are handled from their parents -->
+    <xsl:template match="custodhist/head|acqinfo/head|bioghist/head|scopecontent/head|processinfo/head|otherfindaid/head|accessrestrict/head" mode="contents"/>
+    <xsl:template match="custodhist|acqinfo|bioghist|scopecontent|processinfo|otherfindaid|accessrestrict" mode="presentation">
+        <xsl:variable name="current" select="local-name()"/>
         <xsl:choose>
-            <xsl:when test="legalstatus">
+            <xsl:when test="./*[local-name() = $current]">
+                <!-- Until now, if an element contains an element with the same name,
+                     the first one is empty (or has just a header); we can ignore it -->
+                <xsl:if test="head">
+                    <tr>
+                        <th colspan="2">
+                            <xsl:value-of select="head"/>
+                        </th>
+                    </tr>
+                </xsl:if>
+                <xsl:apply-templates mode="presentation"/>
+            </xsl:when>
+            <xsl:otherwise>
                 <tr>
                     <th>
                         <xsl:choose>
@@ -188,15 +184,36 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <xsl:value-of select="head"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Legal status')"/>
+                                <xsl:choose>
+                                    <xsl:when test="local-name() ='accessrestrict'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Legal status')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='custodhist'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Custodial history')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='acqinfo'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Acquisition information')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='bioghist'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Biography or history')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='scopecontent'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Scope and content')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='processinfo'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Processing information')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='otherfindaid'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Other finding aid')"/>
+                                    </xsl:when>
+                                </xsl:choose>
                             </xsl:otherwise>
                         </xsl:choose>
                     </th>
-                    <td><xsl:value-of select="legalstatus"/></td>
+                    <td>
+                        <xsl:apply-templates mode="contents"/>
+                    </td>
                 </tr>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:apply-templates mode="presentation"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -208,13 +225,71 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="genreform[@source = 'liste-typedocAC']" mode="contents"/>
     <xsl:template match="physdesc/extent" mode="contents"/>
-    <xsl:template match="custodhist/head|acqinfo/head" mode="contents"/>
 
-    <!--<xsl:template match="archdesc" mode="header">
-        <div id="docheader">
-            <xsl:apply-templates mode="header"/>
-        </div>
-    </xsl:template>-->
+    <xsl:template match="p" mode="contents">
+        <p>
+            <xsl:apply-templates mode="contents"/>
+        </p>
+    </xsl:template>
+
+    <xsl:template match="list" mode="contents">
+        <ul>
+            <xsl:apply-templates mode="contents"/>
+        </ul>
+    </xsl:template>
+
+    <xsl:template match="defitem|change" mode="contents">
+        <dl>
+            <xsl:apply-templates mode="contents"/>
+        </dl>
+    </xsl:template>
+
+    <xsl:template match="label" mode="contents">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'defitem'">
+                <dt>
+                    <xsl:apply-templates mode="contents"/>
+                </dt>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="contents"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="date" mode="contents">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'change'">
+                <dt>
+                    <xsl:apply-templates mode="contents"/>
+                </dt>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="contents"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="item" mode="contents">
+        <xsl:variable name="parent-name" select="local-name(parent::node())"/>
+        <xsl:choose>
+            <xsl:when test="$parent-name = 'list'">
+                <li>
+                    <xsl:apply-templates mode="contents"/>
+                </li>
+            </xsl:when>
+            <xsl:when test="$parent-name = 'defitem' or $parent-name = 'change'">
+                <dd>
+                    <xsl:apply-templates mode="contents"/>
+                </dd>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates mode="contents"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
     <!-- ***** FILEDESC ***** -->
     <xsl:template match="filedesc" mode="header">
@@ -509,16 +584,25 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- ***** END CONTENTS ***** -->
 
     <!-- ***** GENERIC TAGS ***** -->
+    <xsl:template match="date|language" mode="contents">
+        <xsl:apply-templates select="."/>
+    </xsl:template>
     <xsl:template match="date|language">
         <xsl:value-of select="' '"/>
         <xsl:apply-templates/>
         <xsl:value-of select="' '"/>
     </xsl:template>
 
+    <xsl:template match="titleproper|author|sponsor|addressline|subtitle" mode="contents">
+        <xsl:apply-templates select="."/>
+    </xsl:template>
     <xsl:template match="titleproper|author|sponsor|addressline|subtitle">
         <xsl:apply-templates/>
     </xsl:template>
 
+    <xsl:template match="unittitle/unitdate" mode="contents">
+        <xsl:apply-templates select="."/>
+    </xsl:template>
     <xsl:template match="unittitle/unitdate">
         <span class="date" property="dc:date">
             <xsl:value-of select="' '"/>
@@ -526,6 +610,9 @@ POSSIBILITY OF SUCH DAMAGE.
         </span>
     </xsl:template>
 
+    <xsl:template match="emph" mode="contents">
+        <xsl:apply-templates select="."/>
+    </xsl:template>
     <xsl:template match="emph">
         <xsl:choose>
             <xsl:when test="@render='bold'">
@@ -544,12 +631,20 @@ POSSIBILITY OF SUCH DAMAGE.
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="text()" mode="contents">
+        <xsl:apply-templates select="."/>
+    </xsl:template>
     <xsl:template match="text()">
         <xsl:copy-of select="normalize-space(.)"/>
     </xsl:template>
 
+    <xsl:template match="lb" mode="contents">
+        <xsl:apply-templates select="."/>
+    </xsl:template>
     <xsl:template match="lb">
-        <br/>
+        <xsl:if test="not(preceding-sibling::lb)">
+            <br/>
+        </xsl:if>
     </xsl:template>
     <!-- ***** END GENERIC TAGS ***** -->
 

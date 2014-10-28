@@ -72,7 +72,7 @@ class ViewParams
     private $_show_pics = true;
     private $_results_by_page = 10;
     private $_view = self::VIEW_LIST;
-    private $_order = self::ORDER_RELEVANCE;
+    protected $order = self::ORDER_RELEVANCE;
     private $_show_map = true;
     private $_show_daterange = true;
     private $_advanced_search = false;
@@ -228,7 +228,7 @@ class ViewParams
      */
     public function getOrder()
     {
-        return $this->_order;
+        return $this->order;
     }
 
     /**
@@ -245,7 +245,7 @@ class ViewParams
             || $order === self::ORDER_DOC_LOGIC
             || $order === self::ORDER_CHRONO
         ) {
-            $this->_order = $order;
+            $this->order = $order;
         } else {
             throw new \RuntimeException(
                 str_replace(

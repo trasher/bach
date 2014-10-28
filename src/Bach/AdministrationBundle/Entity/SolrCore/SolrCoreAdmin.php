@@ -247,7 +247,7 @@ class SolrCoreAdmin
         $options = array(
             'action' => 'STATUS'
         );
-        if ($coreName != null) {
+        if ($coreName !== null) {
             $options['core'] = $coreName;
         }
         return $this->_send(

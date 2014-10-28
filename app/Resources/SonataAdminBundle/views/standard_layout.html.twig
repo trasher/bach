@@ -128,6 +128,15 @@ POSSIBILITY OF SUCH DAMAGE.
                                                     {% for role in group.roles if not display %}
                                                         {% set display = is_granted(role) %}
                                                     {% endfor %}
+                                                    {% if group.label == 'Virtual expositions' and not features.expos %}
+                                                        {% set display = false %}
+                                                    {% endif %}
+                                                    {% if group.label == 'Matricules' and not features.matricules %}
+                                                        {% set display = false %}
+                                                    {% endif %}
+                                                    {% if group.label == 'Archives' and not features.archives %}
+                                                        {% set display = false %}
+                                                    {% endif %}
 
                                                     {# Do not display the group label if no item in group is available #}
                                                     {% set item_count = 0 %}

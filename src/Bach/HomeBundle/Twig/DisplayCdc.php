@@ -45,7 +45,6 @@
 namespace Bach\HomeBundle\Twig;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
@@ -63,6 +62,7 @@ class DisplayCdc extends DisplayHtml
 {
     private $_cdc_uri;
     private $_docs;
+    protected $cache_key_prefix = 'cdc';
 
     /**
      * Main constructor
@@ -133,19 +133,35 @@ class DisplayCdc extends DisplayHtml
 
         $contents = $proc->transformToXml($xml_doc);
 
-        $up_nodes = $xml_doc->xpath('/ead/archdesc/dsc/c');
-
         $router = $this->router;
         $request = $this->request;
         $callback = function ($matches) use ($router, $request) {
-            $href = $router->generate(
-                'bach_ead_html',
-                array(
-                    'docid' => $matches[1]
-                )
-            );
+            $href = '';
+            if ( count($matches) > 2 ) {
+                $href = $router->generate(
+                    'bach_search',
+                    array(
+                        'query_terms'   => $request->get('query_terms'),
+                        'filter_field'  => 'c' . ucwords($matches[1]),
+                        'filter_value'  => $matches[2]
+                    )
+                );
+            } else {
+                $href = $router->generate(
+                    'bach_ead_html',
+                    array(
+                        'docid' => $matches[1]
+                    )
+                );
+            }
             return 'href="' . str_replace('&', '&amp;', $href) . '"';
         };
+
+        $contents = preg_replace_callback(
+            '/link="%%%(.[^:]+)::(.[^%]*)%%%"/',
+            $callback,
+            $contents
+        );
 
         $contents = preg_replace_callback(
             '/link="%%%(.[^%]+)%%%"/',
@@ -238,7 +254,6 @@ class DisplayCdc extends DisplayHtml
             return _('Not classified');
             break;
         default:
-            //TODO: add an alert in logs, a translation may be missing!
             //Should we really throw an exception here?
             //return _($ref);
             throw new \RuntimeException(

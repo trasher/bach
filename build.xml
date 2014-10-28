@@ -89,12 +89,17 @@ POSSIBILITY OF SUCH DAMAGE.
         <phingcall target="clean-vendors" />
     </target>
 
+    <target name="deploy" depends="install-deps,patch-vendors,build-classmap,proceed-assets,proceed-translations">
+        <echo msg="Deployed."/>
+    </target>
+
     <!-- ============== -->
     <!-- Install assets -->
     <!-- ============== -->
     <target name="proceed-assets">
         <SymfonyConsole console="php app/console" command="assetic:dump">
             <arg name="no-debug"/>
+            <arg name="env" value="prod"/>
         </SymfonyConsole>
     </target>
 
@@ -119,6 +124,8 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- ======================= -->
     <target name="patch-vendors">
         <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Solarium-complex-range.patch" escape="false" />
+        <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Sonata-EasyExtends-BadImport.patch" escape="false" />
+        <exec logoutput="true" dir="${project.basedir}" command="patch -p0 &lt; vendor-patches/Doctrine-php56.patch" escape="false" />
     </target>
 
     <!-- ================================ -->

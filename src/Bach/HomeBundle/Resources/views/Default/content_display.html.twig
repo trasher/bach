@@ -66,7 +66,6 @@ POSSIBILITY OF SUCH DAMAGE.
                     <span class="date" property="dc:date"> • {{ document.cDate }}</span>
                 {%- endif -%}
             </h2>
-            {% if features.social %}{{ socialButtons() }}{% endif %}
         </header>
         {% if context or document.previous_id is defined or document.next_id is defined %}
             <aside>
@@ -82,15 +81,16 @@ POSSIBILITY OF SUCH DAMAGE.
                 </a>
             {% endif %}
             {% if context == true %}
+                {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
                 {% if html_export_exists(document.headerId) %}
-                    {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
                     <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('Locate in document tree') }}</a>
                 {% else %}
-                    <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ document.fragmentid }}">{{ _('Locate in document tree') }}</a>
+                    <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
                 {% endif %}
             {% endif %}
             </aside>
         {% endif %}
+        {% if features.social %}{{ socialButtons() }}{% endif %}
         {% if children == false %}
             {% set hasChildren = false %}
         {% else %}

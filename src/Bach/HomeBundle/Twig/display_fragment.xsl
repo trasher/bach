@@ -607,11 +607,15 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="lb" mode="full">
-        <br/>
+        <xsl:if test="not(preceding-sibling::lb)">
+            <br/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="lb" mode="resume">
-        <br/>
+        <xsl:if test="not(preceding-sibling::lb)">
+            <br/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="controlaccess" mode="resume">

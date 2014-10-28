@@ -45,6 +45,7 @@
 namespace Bach\HomeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Bach geolocalization fields management for main
@@ -68,7 +69,7 @@ class GeolocMainFields extends GeolocFields
      *
      * @return QueryBuilder
      */
-    protected function getQueryBuilder($em)
+    protected function getQueryBuilder(EntityManager $em)
     {
         $qb = $em->createQueryBuilder()
             ->add('select', 'gf')

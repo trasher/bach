@@ -1,6 +1,6 @@
 <?php
 /**
- * Bach driver mapper generator
+ * Bach Migration abstract class
  *
  * PHP version 5
  *
@@ -35,66 +35,45 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Indexation
+ * @category Migrations
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\IndexationBundle\Generator;
+namespace Bach\Migrations;
 
-use Symfony\Component\Filesystem\Filesystem;
-use Sensio\Bundle\GeneratorBundle\Generator\Generator;
+use Doctrine\DBAL\Migrations\AbstractMigration;
 
 /**
- * Bach driver mapper generator
+ * Bach Migration abstract class
  *
- * @category Indexation
+ * @category Migrations
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class DriverMapperGenerator extends Generator
+abstract class BachMigration extends AbstractMigration
 {
-    private $_filesystem;
-    private $_skeletonDir;
+    private $_known_dbs = array(
+        'mysql',
+        'postgresql'
+    );
 
     /**
-     * Constructor
+     * Checks if database engine is known
      *
-     * @param Filesystem $filesystem  ?
-     * @param string     $skeletonDir Skeleton storage directory
+     * @return boolean
      */
-    public function __construct(Filesystem $filesystem, $skeletonDir)
+    protected function checkDbPlatform()
     {
-        $this->_filesystem = $filesystem;
-        $this->_skeletonDir = $skeletonDir;
-    }
-
-    /**
-     * Generate driver mapper
-     *
-     * @param string $namespace Namespace
-     * @param string $mapper    Mapper name
-     *
-     * @return void
-     */
-    public function generate($namespace, $mapper)
-    {
-        $dir = __DIR__.'/../Entity/Mapper';
-
-        $parameters = array(
-            'namespace' => $namespace,
-            'mapper'    => $mapper
-        );
-
-        $this->renderFile(
-            $this->_skeletonDir,
-            'DriverMapper.php',
-            $dir.'/'.$mapper.'.php',
-            $parameters
+        $db_platform = $this->connection->getDatabasePlatform()->getName();
+        $this->abortIf(
+            !in_array($db_platform, $this->_known_dbs),
+            'Migration can only be executed safely on ' .
+            implode(', ', $this->_known_dbs) . '.'
         );
     }
 }

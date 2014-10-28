@@ -91,7 +91,7 @@ class Infos
                 '%path'
             ),
             array(
-                ($this->_ssl == true) ? 's' : '',
+                ($this->_ssl === true) ? 's' : '',
                 $this->_host,
                 $this->_port,
                 $this->_path

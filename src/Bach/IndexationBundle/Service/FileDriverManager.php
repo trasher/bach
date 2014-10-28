@@ -71,6 +71,7 @@ class FileDriverManager
     private $_fileFormatFactory;
     private $_preProcessorFactory;
     private $_entityManager;
+    private $_heritage;
 
     /**
      * Constructor
@@ -78,15 +79,18 @@ class FileDriverManager
      * @param FileFormatFactory   $fileFormatFactory   File format Factory
      * @param PreProcessorFactory $preProcessorFactory Pre processor factory
      * @param EntityManager       $entityManager       The entity manager
+     * @param boolean             $heritage            Heritage status
      */
     public function __construct(FileFormatFactory $fileFormatFactory,
-        PreProcessorFactory $preProcessorFactory, EntityManager $entityManager
+        PreProcessorFactory $preProcessorFactory, EntityManager $entityManager,
+        $heritage
     ) {
         $this->_importConfiguration();
         $this->_searchDrivers();
         $this->_fileFormatFactory = $fileFormatFactory;
         $this->_preProcessorFactory = $preProcessorFactory;
         $this->_entityManager = $entityManager;
+        $this->_heritage = $heritage;
     }
 
     /**
@@ -128,6 +132,11 @@ class FileDriverManager
             );
         }
 
+        //EAD specific
+        if ( $format === 'ead' ) {
+            $driver->setHeritage($this->_heritage);
+        }
+
         $results = $driver->process($bag);
 
         $eadheader = null;
@@ -137,8 +146,6 @@ class FileDriverManager
         //disable SQL Logger...
         $this->_entityManager->getConnection()->getConfiguration()
             ->setSQLLogger(null);
-
-        //$baseMemory = memory_get_usage();
 
         $repo = $this->_entityManager->getRepository($doctrine_entity);
 
@@ -226,47 +233,22 @@ class FileDriverManager
             $this->_entityManager->persist($out);
 
             $count++;
-
-            /*if ( $count % 100 === 0 && $flush ) {
-                $this->_entityManager->flush();
-                $this->_entityManager->clear();
-
-                if ( $eadheader !== null ) {
-                    $eadheader = $this->_entityManager->merge($eadheader);
-                }
-
-                if ( $archdesc !== null ) {
-                    if ( $eadheader !== null ) {
-                        $archdesc->setEadheader($eadheader);
-                    }
-                    $archdesc = $this->_entityManager->merge($archdesc);
-                }
-                $doc = $this->_entityManager->merge($doc);*/
-                /*echo sprintf(
-                    '%8d: ',
-                    $count
-                ) . round(
-                    (memory_get_usage() - $baseMemory)/1048576,
-                    2
-                ) . "\n";*/
-            /*}*/
         }
 
         if ( $flush ) {
             $this->_entityManager->flush();
             $this->_entityManager->clear();
         }
-        //echo round(memory_get_peak_usage()/1048576, 2) . "\n";
     }
 
     /**
      * Load driver configuration
      *
-     * @param string $format            Data type
-     * @param string &$mapper           Mapper name
-     * @param string &$fileformat_class File format class
-     * @param string &$doctrine_entity  Doctrine entity name
-     * @param string &$preprocessor     Preprocessor
+     * @param string $format           Data type
+     * @param string $mapper           Mapper name
+     * @param string $fileformat_class File format class
+     * @param string $doctrine_entity  Doctrine entity name
+     * @param string $preprocessor     Preprocessor
      *
      * @return void
      */

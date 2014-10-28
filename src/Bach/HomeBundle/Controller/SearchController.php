@@ -51,6 +51,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Service\SolariumQueryFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Bach search controller
@@ -70,13 +71,26 @@ abstract class SearchController extends Controller
     protected $search_form;
 
     /**
+     * Index page, will redirect to default_url
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+        $url = $this->get('router')->generate(
+            $this->container->getParameter('default_url')
+        );
+        return new RedirectResponse($url);
+    }
+
+    /**
      * Default page
      *
      * @param string $form_name Search form name
      *
      * @return void
      */
-    abstract public function indexAction($form_name = null);
+    abstract public function mainAction($form_name = null);
 
     /**
      * Search page
@@ -646,10 +660,13 @@ abstract class SearchController extends Controller
         }
         $view_params->bind($request, $this->getCookieName());
 
-        $geoloc = $this->getGeolocFields();
 
         $factory = $this->get($this->factoryName());
-        $factory->setGeolocFields($geoloc);
+
+        $geoloc = $this->getGeolocFields();
+        if ( in_array($name, $geoloc) ) {
+            $factory->setGeolocFields(array($name));
+        }
 
         $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters ) {
@@ -664,7 +681,11 @@ abstract class SearchController extends Controller
 
         //Add filters to container
         $container->setFilters($filters);
-        $factory->setDateField($this->date_field);
+        if ( $name === $this->date_field ) {
+            $factory->setDateField($this->date_field);
+        }
+
+        $container->setNoResults();
         $factory->prepareQuery($container);
 
         $searchResults = $factory->performQuery(
@@ -704,7 +725,7 @@ abstract class SearchController extends Controller
 
         //facet order
         $facet_order = $request->get('facet_order');
-        if ( $facet_order == null ) {
+        if ( $facet_order === null ) {
             $facet_order = 1;
         }
         if ( $facet_order == 1 ) {

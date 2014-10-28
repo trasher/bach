@@ -120,6 +120,7 @@ abstract class FileFormat implements NotifyPropertyChanged
     {
         foreach ($data as $key=>$datum) {
             if (property_exists($this, $key)) {
+                $this->onPropertyChanged($key, $this->$key, $datum);
                 $this->$key = $datum;
             }
         }

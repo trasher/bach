@@ -8,7 +8,7 @@ In order to run Bach, you have to ensure requirements are met:
 
 * PHP version 5.3 or above (5.4 recommended for better performances)
 * One of the PostgreSQL or MySQL database server,
-* an available Solr 4.1 instance,
+* an available Solr 4.10 instance,
 * apache httpd server with mod_rewrite enabled
 
 Installation
@@ -23,11 +23,11 @@ Then, check your PHP parameters and modules, running::
 
 You'll then have to install vendors dependencies.
 
-In a terminal, run the following command to retrieve composer::
+In a terminal, run the following command to retrieve composer:
 
     $ curl -s https://getcomposer.org/installer | php
 
-Ask composer to download and install all dependencies::
+Ask composer to download and install all dependencies:
 
     $ php -d date.timezone=UTC composer.phar install
 
@@ -47,7 +47,7 @@ Create database schema::
 
     $ php app/console doctrine:schema:update --force
 
-Give your apache user write access on relevant directories::
+Give your apache user write access on relevant directories:
 
     $ sudo chown -R apache:apache app/cache app/logs
 
@@ -59,7 +59,7 @@ That page will display all problems and some recommendations you should
 follow in order to optimize Bach runtime.
 
 Finally, enable apache rewrite module and put the following lines in
-your virtual host configuration (or in `bach/web/.htaccess`)::
+your virtual host configuration (or in `bach/web/.htaccess`):
 
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -73,7 +73,7 @@ Bach, and enjoy!
 From Git
 --------
 
-If you're installing from Gti repository, you'll have to run some extra commands:
+If you're installing from Git repository, you'll have to run some extra commands:
 
 * generate compiled language files, running :
   $ php app/console gettext:combine en_US,fr_FR

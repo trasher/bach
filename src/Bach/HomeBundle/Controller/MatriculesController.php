@@ -51,6 +51,8 @@ use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\Facets;
 use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
+use Bach\HomeBundle\Entity\MatriculesViewParams;
+use Bach\HomeBundle\Entity\Comment;
 
 /**
  * Bach matricules controller
@@ -74,7 +76,7 @@ class MatriculesController extends SearchController
      *
      * @return void
      */
-    public function indexAction($form_name = null)
+    public function mainAction($form_name = null)
     {
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -201,6 +203,7 @@ class MatriculesController extends SearchController
             || !$view_params->advancedSearch() && $query_terms !== null
         ) {
             $container = new SolariumQueryContainer();
+            $container->setOrder($view_params->getOrder());
 
             if ( $view_params->advancedSearch() ) {
                 $container->setField($this->getContainerFieldName(), $data);
@@ -345,6 +348,27 @@ class MatriculesController extends SearchController
             )
         );
 
+        //retrieve comments
+        $show_comments = $this->container->getParameter('feature.comments');
+        if ( $show_comments ) {
+            $query = $this->getDoctrine()->getManager()
+                ->createQuery(
+                    'SELECT c FROM BachHomeBundle:MatriculesComment c
+                    WHERE c.state = :state
+                    AND c.docid = :docid
+                    ORDER BY c.creation_date DESC'
+                )->setParameters(
+                    array(
+                        'state'     => Comment::PUBLISHED,
+                        'docid'     => $docid
+                    )
+                );
+            $comments = $query->getResult();
+            if ( count($comments) > 0 ) {
+                $tplParams['comments'] = $comments;
+            }
+        }
+
         if ( $ajax === 'ajax' ) {
             $tpl = 'BachHomeBundle:Matricules:content_display.html.twig';
             $tplParams['ajax'] = true;
@@ -448,7 +472,15 @@ class MatriculesController extends SearchController
      */
     protected function getOrders()
     {
-        $orders = array();
+        $orders = array(
+            MatriculesViewParams::ORDER_MATRICULE   => _('Matricule'),
+            MatriculesViewParams::ORDER_NAME        => _('Name'),
+            MatriculesViewParams::ORDER_SURNAME     => _('Surname'),
+            MatriculesViewParams::ORDER_BIRTHYEAR   => _('Year of birth'),
+            MatriculesViewParams::ORDER_BIRTHPLACE  => _('Place of birth'),
+            MatriculesViewParams::ORDER_CLASS       => _('Class'),
+            MatriculesViewParams::ORDER_RECORDPLACE => _('Place of recording')
+        );
         return $orders;
     }
 

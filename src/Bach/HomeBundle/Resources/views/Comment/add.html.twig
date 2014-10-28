@@ -37,15 +37,27 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block container %}
     <h2 property="dc:title">
+    {% if eadfile is defined  %}
         {% for ptitle in eadfile.getParentsTitles %}
-            {{ ptitle.getTitle }} > 
+            {{ ptitle.getTitle }} >
         {% endfor %}
         {{ eadfile.getCUnittitle  }}
+    {% endif %}
+    {% if matricule is defined %}
+        {{ matricule.nom ~ ' ' ~ matricule.prenoms|join(' ') }}
+    {% endif %}
     </h2>
     <h3>{{ _('New comment') }}</h3>
     {% include 'BachHomeBundle:Comment:add_form.html.twig' with {'docid': docid, 'form': form} %}
 {% endblock %}
 
 {% block menu %}
-    <h2 class="back"><a href="{{ path('bach_display_document', {docid: docid}) }}">{{ _('Back to document') }}</a></h2>
+    {% set display_path %}
+        {%- if type == 'archives' -%}
+            {{ path('bach_display_document', {docid: docid}) }}
+        {%- elseif type == 'matricules' -%}
+            {{ path('bach_display_matricules', {docid: docid}) }}
+        {%- endif -%}
+    {% endset %}
+    <h2 class="back"><a href="{{ display_path }}">{{ _('Back to document') }}</a></h2>
 {% endblock %}

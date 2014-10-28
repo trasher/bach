@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block container %}
 {% if fields | length > 0 %}
-<div id="tabs">
+<div id="browse_tabs">
     <ul>
     {% for field in fields %}
         <li{% if part == field.getSolrFieldName %} class="active"{% endif %}><a href="{% if part == field.getSolrFieldName %}#{{ field.getSolrFieldName }}{% else %}{{ path('bach_browse', {part: field.getSolrFieldName}) }}{% endif %}">{{ field.getLabel(lang) }}</a></li>
@@ -48,6 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% else %}
     <p>{{ _('There are no configured fields for browsing.') }}</p>
 {% endif %}
+<a href="#container" id="back2top">{{ _('Back to top') }}</a>
 {% endblock %}
 
 {% block js_calls %}
@@ -56,8 +57,16 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block javascripts %}
+        var _scrolled = function(elt){
+            if (elt.scrollTop()) {
+                $('#back2top').fadeIn();
+            } else {
+                $('#back2top').fadeOut();
+            }
+        };
+
         $(function() {
-            $('#tabs > ul a').each(function(){
+            $('#browse_tabs > ul a').each(function(){
                 var _this = $(this);
                 var _href = _this.attr('href') + '/ajax';
                 if ( !_href.match(/^#.*/) ) {
@@ -65,8 +74,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
 
-            $('#tabs').tabs({
-                active: $('#tabs li.active').index(),
+            $('#browse_tabs').tabs({
+                active: $('#browse_tabs li.active').index(),
                 beforeLoad: function( event, ui ) {
                     if ( ui.tab.data( "loaded" ) ) {
                         event.preventDefault();
@@ -87,6 +96,16 @@ POSSIBILITY OF SUCH DAMAGE.
                 load: function(event, ui){
                     $('#loading').remove();
                 }
+            });
+
+            if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
+                $('#back2top').fadeOut();
+            }
+            $('#wrapper').scroll(function() {
+                _scrolled($(this));
+            });
+            $(window).scroll(function() {
+                _scrolled($(this));
             });
         });
 {% endblock %}

@@ -189,18 +189,18 @@ class EADDriverMapper implements DriverMapperInterface
         }
 
         $ead_mulitple_elements = array(
-            'cCorpname'    => './/corpname',
-            'cFamname'     => './/famname',
-            'cGenreform'   => './/genreform',
-            'cGeogname'    => './/geogname',
-            'cName'        => './/name',
-            'cPersname'    => './/persname',
-            'cSubject'     => './/subject',
+            'cCorpname'    => './/controlaccess//corpname',
+            'cFamname'     => './/controlaccess//famname',
+            'cGenreform'   => './/controlaccess//genreform',
+            'cGeogname'    => './/controlaccess//geogname',
+            'cName'        => './/controlaccess//name',
+            'cPersname'    => './/controlaccess//persname',
+            'cSubject'     => './/controlaccess//subject',
             'cDate'        => 'did/unitdate|did/unittitle/unitdate',
             'fragment'     => 'fragment',
             'daolist'      => './/daoloc|.//dao|.//archref[not(contains(@href, \'http://\')) and contains(@href, \'.pdf\')]',
-            'cTitle'       => './/title',
-            'cFunction'     => './/function'
+            'cTitle'       => './/controlaccess//title',
+            'cFunction'    => './/controlaccess//function'
         );
         $descriptors = EADFileFormat::$descriptors;
 

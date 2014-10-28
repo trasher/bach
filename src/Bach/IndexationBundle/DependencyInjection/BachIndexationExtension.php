@@ -79,6 +79,11 @@ class BachIndexationExtension extends Extension
         $types = $config['types'];
         $types_paths = $config['paths'];
 
+        if ( $container->getParameter('feature.archives') === false ) {
+            unset($types[array_search('ead', $types)]);
+            unset($types_paths['ead']);
+        }
+
         if ( $container->getParameter('feature.matricules') === false ) {
             unset($types[array_search('matricules', $types)]);
             unset($types_paths['matricules']);

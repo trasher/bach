@@ -33,6 +33,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% extends '::base.html.twig' %}
 
+{% block js_calls %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery-ui/jquery.ui.tabs.min.js') }}" type="text/javascript"></script>
+{% endblock %}
+
 {% block container %}
     {% include 'BachHomeBundle:Matricules:content_display.html.twig' with {'docid': docid, 'document': document} %}
 {% endblock %}

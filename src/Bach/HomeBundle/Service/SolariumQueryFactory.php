@@ -79,11 +79,6 @@ class SolariumQueryFactory
     );
     private $_query_fields;
 
-    private $_max_low_date;
-    private $_max_up_date;
-    private $_qry_low_date;
-    private $_qry_up_date;
-
     private $_low_date;
     private $_up_date;
     private $_date_gap;
@@ -134,7 +129,10 @@ class SolariumQueryFactory
             $this->_buildQuery($container);
         }
 
-        $this->setDatesBounds();
+        if ( isset($this->_date_field) ) {
+            $this->setDatesBounds();
+        }
+
         //dynamically create facets
         $this->_addFacets($facets);
 
@@ -151,20 +149,17 @@ class SolariumQueryFactory
                 ' f.' . $this->_date_field . '.facet.range.gap=+1YEARS'
             );
             $fr->setField($this->_date_field);
-        }
 
-        $stats = $this->_query->getStats();
-        $stats->createField($this->_date_field);
+            $stats = $this->_query->getStats();
+            $stats->createField($this->_date_field);
+        }
 
         $this->_request = $this->_client->createRequest($this->_query);
         $rs = $this->_client->select($this->_query);
 
         $rsStats = $rs->getStats();
-        $stats = $rsStats->getResults();
-
-        if ( isset($stats[$this->_date_field]) ) {
-            $this->_qry_low_date = $stats[$this->_date_field]->getMin();
-            $this->_qry_up_date = $stats[$this->_date_field]->getMax();
+        if ( $rsStats ) {
+            $stats = $rsStats->getResults();
         }
 
         $this->_highlitght = $rs->getHighlighting();
@@ -180,7 +175,7 @@ class SolariumQueryFactory
      *
      * @return void
      */
-    private function _buildQuery($container)
+    private function _buildQuery(SolariumQueryContainer $container)
     {
         $this->_query = $this->_client->createSelect();
 
@@ -302,6 +297,10 @@ class SolariumQueryFactory
         if ( strpos($hl_fields, 'cUnittitle') !== false ) {
             //on highlithed unititles, we always want the full string
             $hl->getField('cUnittitle')->setFragSize(0);
+        }
+
+        if ( $container->noResults() ) {
+            $this->_query->setRows(0);
         }
     }
 
@@ -468,9 +467,6 @@ class SolariumQueryFactory
                 $results['selected_max_date'] = $results['max_date'];
             }
 
-            $this->_max_low_date = $php_min_date;
-            $this->_max_up_date = $php_max_date;
-
             return $results;
         }
     }
@@ -551,7 +547,7 @@ class SolariumQueryFactory
                     ->andWhere('g.found = true');
                 $parameters['names'] = array_keys($all_values);
 
-                if ( $zones != false ) {
+                if ( $zones !== false ) {
                     list($swest_lon, $swest_lat, $neast_lon, $neast_lat)
                         = explode(',', $zones);
                     $qb
@@ -778,7 +774,7 @@ class SolariumQueryFactory
      *
      * @return int
      */
-    private function _getGap($start, $end, $maxdiff = 10)
+    private function _getGap(\DateTime $start, \DateTime $end, $maxdiff = 10)
     {
         $diff = $start->diff($end);
         $gap = 1;
@@ -889,6 +885,9 @@ class SolariumQueryFactory
 
             //5 levels
             $range = ($max - $min) / 5;
+            if ( $range === 0 ) {
+                $range = 5;
+            }
 
             $cloud = array();
             $i = 0;

@@ -47,6 +47,7 @@ namespace Bach\HomeBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bach\HomeBundle\Entity\Comment;
 use Bach\HomeBundle\Form\Type\CommentType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Bach comments controller
@@ -65,20 +66,21 @@ class CommentsController extends Controller
      * Add a comment
      *
      * @param string  $docid Document id
+     * @param string  $type  Document type
      * @param boolean $ajax  Ajax render
      *
      * @return void
      */
-    public function addAction($docid, $ajax = false)
+    public function addAction($docid, $type, $ajax = false)
     {
         $request = $this->getRequest();
 
-        $comment = new Comment();
+        $class = 'Comment';
+        $class = ucfirst($type) . $class;
+        $class = 'Bach\HomeBundle\Entity\\' . $class;
+        $comment = new $class();
 
-        $repo = $this->getDoctrine()
-            ->getRepository('BachIndexationBundle:EADFileFormat');
-        $eadfile = $repo->findOneByFragmentid($docid);
-        $comment->setEadfile($eadfile);
+        $comment->setDocId($docid);
 
         //get user, if any
         $user = $this->getUser();
@@ -92,10 +94,35 @@ class CommentsController extends Controller
             array(
                 'action' => $this->generateUrl(
                     'bach_add_comment',
-                    array('docid' => $docid)
+                    array(
+                        'type'  => $type,
+                        'docid' => $docid
+                    )
                 )
             )
         );
+
+        $tpl_vars = array(
+            'docid' => $docid,
+            'form'  => $form->createView(),
+            'type'  => $type
+        );
+
+        //retrieve related document
+        switch ( $type ) {
+        case 'archives':
+            $repo = $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:EADFileFormat');
+            $eadfile = $repo->findOneByFragmentid($docid);
+            $tpl_vars['eadfile'] = $eadfile;
+            break;
+        case 'matricules':
+            $repo = $this->getDoctrine()
+                ->getRepository('BachIndexationBundle:MatriculesFileFormat');
+            $matricule = $repo->findOneById($docid);
+            $tpl_vars['matricule'] = $matricule;
+            break;
+        }
 
         $form->handleRequest($request);
         if ( $form->isValid() ) {
@@ -106,28 +133,78 @@ class CommentsController extends Controller
                 'success',
                 _('Your comment has been stored. Thank you!')
             );
-            return $this->redirect(
-                $this->generateUrl(
-                    'bach_display_document',
-                    array(
-                        'docid' => $docid
+            if ( $type === 'images' ) {
+                $template = 'confirmAddComment.html.twig';
+                return $this->render(
+                    'BachHomeBundle:Comment:' . $template
+                );
+            } else {
+                $path = 'bach_display_document';
+                if ( $type === 'matricules' ) {
+                    $path = 'bach_display_matricules';
+                }
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        $path,
+                        array(
+                            'docid' => $docid
+                        )
                     )
-                )
-            );
+                );
+            }
         } else {
             $template = 'add.html.twig';
             if ( $ajax === 'ajax' ) {
                 $template = 'add_form.html.twig';
-            } else {
             }
             return $this->render(
                 'BachHomeBundle:Comment:' . $template,
-                array(
-                    'docid'     => $docid,
-                    'form'      => $form->createView(),
-                    'eadfile'   => $eadfile
-                )
+                $tpl_vars
             );
+        }
+    }
+
+    /**
+     * Default page
+     *
+     * @param int    $docid Document Unique Identifier
+     * @param string $type  Document type
+     *
+     * @return JsonResponse
+     */
+    public function getAction($docid, $type)
+    {
+        $show_comments = $this->container->getParameter('feature.comments');
+        if ( $show_comments ) {
+
+            $class = 'Comment';
+            $class = ucfirst($type) . $class;
+
+            $query = $this->getDoctrine()->getManager()
+                ->createQuery(
+                    'SELECT c FROM BachHomeBundle:' . $class . ' c
+                    WHERE c.state = :state
+                    AND c.docid = :docid
+                    ORDER BY c.creation_date DESC'
+                )->setParameters(
+                    array(
+                        'state'=> Comment::PUBLISHED,
+                        'docid'=> $docid
+                    )
+                );
+            $results = $query->getResult();
+            $comments = array();
+            foreach ( $results as $comment ) {
+                $comments[] = array(
+                    'subject'   => $comment->getSubject(),
+                    'message'   => $comment->getMessage()
+                );
+            }
+
+            $response = new JsonResponse();
+            $response->setData($comments);
+            return $response;
         }
     }
 }

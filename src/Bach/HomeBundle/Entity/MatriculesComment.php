@@ -1,6 +1,6 @@
 <?php
 /**
- * FORMAT file format driver
+ * Bach matricules comments
  *
  * PHP version 5
  *
@@ -35,79 +35,38 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Indexation
+ * @category Search
  * @package  Bach
- * @author   Anaphore PI Team <uknown@unknown.com>
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\IndexationBundle\Entity\Driver\FORMAT;
+namespace Bach\HomeBundle\Entity;
 
-use Bach\IndexationBundle\Entity\FileDriver;
-use Bach\IndexationBundle\Entity\DataBag;
-use Bach\IndexationBundle\Entity\ObjectTree;
-use Bach\IndexationBundle\Exception\UnknownDriverParserException;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FORMAT file format driver
+ * Bach matricules comments
  *
- * @category Indexation
+ * @ORM\Entity
+ *
+ * @category Search
  * @package  Bach
- * @author   Anaphore PI Team <uknown@unknown.com>
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class Driver extends FileDriver
+class MatriculesComment extends Comment
 {
 
     /**
-     * Perform the parsing of the DataBag
+     * Set default related field for current entity
      *
-     * @param DataBag $bag The data
-     *
-     * @return array
+     * @return void
      */
-    public function process(DataBag $bag)
+    protected function setDefaultRelated()
     {
-        $parserClass = 'Bach\IndexationBundle\Entity\Driver\FORMAT_UPPERCASE\Parser\\'.
-            strtoupper($bag->getType()) . '\Parser';
-
-        if (!class_exists($parserClass)) {
-            throw new UnknownDriverParserException(strtoupper($bag->getType()));
-        }
-
-        $parser = new $parserClass($bag, $this->configuration);
-        $tree = $parser->getTree();
-        return $this->_processTree($tree);
+        $this->related = self::REL_MATRICULES;
     }
-
-    /**
-     * Get driver format name
-     *
-     * @return string $format The format of the driver
-     *
-     * @return stirng
-     */
-    public function getFileFormatName()
-    {
-        return "FORMAT";
-    }
-
-    /**
-     * Process the object tree returned by the parser
-     *
-     * @param ObjectTree $tree The parser's tree
-     *
-     * @return array Data parsed
-     */
-    private function _processTree(ObjectTree $tree)
-    {
-        $results = array();
-
-        return $results;
-    }
-
 }

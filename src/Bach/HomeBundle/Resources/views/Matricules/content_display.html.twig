@@ -36,14 +36,23 @@ POSSIBILITY OF SUCH DAMAGE.
             <h2 property="dc:title">
                 {{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}
             </h2>
-            {% if features.social %}{{ socialButtons() }}{% endif %}
         </header>
+        {% if features.social %}{{ socialButtons() }}{% endif %}
         {% if comments is defined %}
             {% set hasComments = true %}
         {% else %}
             {% set hasComments = false %}
         {% endif %}
-        <section class="matricule_record">
+        <ul>
+            <li><a href="#matricule_record">{{ _('Record') }}</a></li>
+            {%- if features.comments -%}
+            {%- if comments is defined -%}
+            <li><a href="#comments">{{ _('Comments') }}</a></li>
+            {%- endif -%}
+            <li><a href="{{ path('bach_add_comment', {type: 'matricules',docid: docid}) }}">{{ _('Add comment') }}</a></li>
+            {%- endif -%}
+        </ul>
+        <section id="matricule_record">
             {% if document.start_dao is defined %}
                 <figure class="fright">
                     {% set series_name %}
@@ -139,3 +148,40 @@ POSSIBILITY OF SUCH DAMAGE.
             </section>
         {% endif %}
     </article>
+
+    <script type="text/javascript">
+        $(function() {
+            $('article.show_fragment > ul a').each(function(){
+                var _this = $(this);
+                var _href = _this.attr('href') + '/ajax';
+                if ( !_href.match(/^#.*/) ) {
+                    _this.attr('href', _href);
+                }
+            });
+
+            $('article.show_fragment').tabs({
+                //active: $('#tabs li.active').index(),
+                beforeLoad: function( event, ui ) {
+                    if ( ui.tab.data( "loaded" ) ) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{{ _('Loading...') }}"/><br/>{{ _('Currently loading...') }}</p></figure>');
+                    $('body').append(_img);
+ 
+                    ui.jqXHR.done(function() {
+                        ui.tab.data( "loaded", true );
+                    });
+                    ui.jqXHR.fail(function(){
+                        alert('{{ _('An error occured loading tab :(')|escape('js') }}');
+                        $('#loading').remove();
+                    });
+                },
+                load: function(event, ui){
+                    $('#loading').remove();
+                }
+            });
+        });
+    </script>
+

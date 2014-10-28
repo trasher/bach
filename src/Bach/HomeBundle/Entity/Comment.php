@@ -46,7 +46,6 @@ namespace Bach\HomeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Application\Sonata\UserBundle\Entity\User;
-use Bach\IndexationBundle\Entity\EADFileFormat;
 
 /**
  * Bach comments management
@@ -54,6 +53,9 @@ use Bach\IndexationBundle\Entity\EADFileFormat;
  * @ORM\Entity
  * @ORM\Table(name="comments")
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="related", type="integer")
+ * @ORM\DiscriminatorMap({"0" = "ArchivesComment", "1" = "MatriculesComment", "2" = "ImagesComment"})
  *
  * @category Search
  * @package  Bach
@@ -63,6 +65,11 @@ use Bach\IndexationBundle\Entity\EADFileFormat;
  */
 class Comment
 {
+    //related
+    const REL_ARCHIVES = 0;
+    const REL_MATRICULES = 1;
+    const REL_IMAGES = 2;
+
     //priorities
     const COMMENT = 0;
     const IMPROVEMENT = 1;
@@ -137,10 +144,29 @@ class Comment
     protected $state;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Bach\IndexationBundle\Entity\EADFileFormat", inversedBy="comments")
-     * @ORM\JoinColumn(name="eadfile_id", referencedColumnName="uniqid")
+     * @var string
+     *
+     * @ORM\Column(name="docid", type="string", length=500)
      */
-    protected $eadfile;
+    protected $docid;
+
+    /**
+     * Main constructor
+     */
+    public function __construct()
+    {
+        $this->setDefaultRelated();
+    }
+
+    /**
+     * Set default related field for current entity
+     *
+     * @return void
+     */
+    protected function setDefaultRelated()
+    {
+        $this->related = self::REL_ARCHIVES;
+    }
 
     /**
      * Get id
@@ -252,7 +278,7 @@ class Comment
      */
     public function getMessage()
     {
-        return $this->message;
+        return nl2br($this->message);
     }
 
     /**
@@ -349,26 +375,26 @@ class Comment
     }
 
     /**
-     * Set eadfile
+     * Set docid
      *
-     * @param EADFileFormat $eadfile Related EAD file
+     * @param string $docid Related document ID
      *
      * @return Comment
      */
-    public function setEadfile(EADFileFormat $eadfile = null)
+    public function setDocId($docid=null)
     {
-        $this->eadfile = $eadfile;
+        $this->docid = $docid;
         return $this;
     }
 
     /**
-     * Get eadfile
+     * Get docid
      *
-     * @return EADFileFormat
+     * @return string
      */
-    public function getEadfile()
+    public function getDocId()
     {
-        return $this->eadfile;
+        return $this->docid;
     }
 
     /**

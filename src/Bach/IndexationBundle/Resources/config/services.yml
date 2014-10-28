@@ -42,7 +42,7 @@ parameters:
 services:
     bach.indexation.file_driver_manager:
         class: "%bach_indexation_file_driver_manager.class%"
-        arguments: [ @bach.indexation.file_format_factory, @bach.indexation.pre_processor_factory, @doctrine.orm.entity_manager ]
+        arguments: [ @bach.indexation.file_format_factory, @bach.indexation.pre_processor_factory, @doctrine.orm.entity_manager, '%feature.heritage%' ]
 
     bach.indexation.data_bag_factory:
         class: "%bach_indexation_data_bag_factory.class%"

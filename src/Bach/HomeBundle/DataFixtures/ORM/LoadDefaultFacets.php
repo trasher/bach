@@ -96,6 +96,12 @@ class LoadDefaultFacets implements FixtureInterface
                 'form'      => 'main'
             ),
             array(
+                'field'     => 'dyndescr_cGenreform_liste-niveau',
+                'fr_label'  => 'Niveau',
+                'en_label'  => 'Level',
+                'form'      => 'main'
+            ),
+            array(
                 'field'     => 'nom',
                 'fr_label'  => 'Nom',
                 'en_label'  => 'Name',

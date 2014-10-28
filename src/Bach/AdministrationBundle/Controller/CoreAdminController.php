@@ -169,7 +169,7 @@ class CoreAdminController extends Controller
             }
         }
 
-        if ($result != false && $result->isOk()) {
+        if ($result !== false && $result->isOk()) {
             $coreNames = $sca->getStatus()->getCoreNames();
             $session->set('coreNames', $coreNames);
         }
