@@ -13,10 +13,14 @@
 - Throw an error when @id are missing in EAD
 - Fix social buttons
 - Improve geoloc administration UI
-- Fix cache issue on cdc and ead/html
+- Fix cache issue on classification-scheme and ead/html
 - Various CSS fixes for chrome and IE
 - Add feature.archives so main search can be disabled
 - Fix browse links when a filter already exists
+- Inhérit descriptors from parents levels at publication
+- Fix descriptors links from classification-scheme
+- Add filter links from intro files
+- Fix division by zero on tagcloud on some cases
 
 0.9.4.4 (2014-09-15)
 
