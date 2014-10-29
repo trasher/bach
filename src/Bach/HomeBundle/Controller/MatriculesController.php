@@ -459,7 +459,7 @@ class MatriculesController extends SearchController
                 );
 
                 $session = $this->getRequest()->getSession();
-                $session->set('filters', null);
+                $session->set($this->getFiltersName(), null);
             }
         }
         return new RedirectResponse($redirectUrl);
