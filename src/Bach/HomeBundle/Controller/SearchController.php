@@ -664,9 +664,8 @@ abstract class SearchController extends Controller
         $factory = $this->get($this->factoryName());
 
         $geoloc = $this->getGeolocFields();
-        if ( in_array($name, $geoloc) ) {
-            $factory->setGeolocFields(array($name));
-        }
+        $factory->setGeolocFields($this->getGeolocFields());
+        $factory->setDateField($this->date_field);
 
         $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters ) {
@@ -681,9 +680,6 @@ abstract class SearchController extends Controller
 
         //Add filters to container
         $container->setFilters($filters);
-        if ( $name === $this->date_field ) {
-            $factory->setDateField($this->date_field);
-        }
 
         $container->setNoResults();
         $factory->prepareQuery($container);
