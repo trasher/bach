@@ -408,7 +408,9 @@ class DefaultController extends SearchController
 
                 $session = $request->getSession();
                 $session->set($this->getFiltersName(), null);
-
+                $view_params = $session->get($this->getParamSessionName());
+                $view_params->setOrder((int)$request->get('results_order'));
+                $session->set($this->getParamSessionName(), $view_params);
                 //check for filtering informations
                 if ( $request->get('filter_field')
                     && $request->get('filter_value')
