@@ -985,11 +985,6 @@ h2.back a:hover {
     overflow: hidden;
 }
 
-#dates_range.hidden {
-    padding: 0;
-    margin: 0;
-}
-
 #dates_plot {
     height: 100px;
     width: 100%;
