@@ -90,7 +90,6 @@ class SearchQueryFormType extends AbstractType
                     'placeholder'   => _('Enter your search'),
                      'value'        => $this->_value,
                      'autocomplete' => 'off',
-                     'title'        => _('Type one or more terms; you can use AND, OR, NOT operators or quoted expressions')
                 )
             )
         )->add(
