@@ -1,3 +1,10 @@
+1.0.1 (2014-10-31)
+- Clear filters and sort when a new search is performed
+- Open matricules images in a new tab
+- Fix a show more facet issues with existing filters
+- Remove title on search bar
+- Remove date slider
+
 1.0.0 (2014-10-28)
 - Prevent full facets to load extra data
 - Order matricules
