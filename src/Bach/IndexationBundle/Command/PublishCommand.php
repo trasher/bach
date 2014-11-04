@@ -325,7 +325,7 @@ EOF
                 $integrationService->integrateAll($tasks, $progress);
             }
 
-            $this->_solrFullImport($output, $type, $progress, $dry);
+            //$this->_solrFullImport($output, $type, $progress, $dry);
 
             $progress->finish();
         } else {

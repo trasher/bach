@@ -42,7 +42,7 @@ parameters:
 services:
     bach.indexation.file_driver_manager:
         class: "%bach_indexation_file_driver_manager.class%"
-        arguments: [ @bach.indexation.file_format_factory, @bach.indexation.pre_processor_factory, @doctrine.orm.entity_manager, '%feature.heritage%' ]
+        arguments: [ @bach.indexation.file_format_factory, @bach.indexation.pre_processor_factory, @doctrine.orm.entity_manager, '%feature.heritage%', @zend_db ]
 
     bach.indexation.data_bag_factory:
         class: "%bach_indexation_data_bag_factory.class%"
@@ -104,4 +104,8 @@ services:
         class: Monolog\Formatter\LineFormatter
         arguments:
             - "[%%datetime%%] %%level_name%% - %%message%%\n"
+
+    zend_db:
+        class: Bach\IndexationBundle\Service\ZendDb
+        arguments: [ "%database_driver%", "%database_host%", "%database_port%", "%database_name%", "%database_user%", "%database_password%" ]
 

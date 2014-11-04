@@ -51,6 +51,7 @@ use Symfony\Component\Yaml\Yaml;
 use Doctrine\ORM\EntityManager;
 use Bach\IndexationBundle\Entity\FileFormat;
 use Bach\IndexationBundle\Entity\DataBag;
+use Bach\IndexationBundle\Service\ZendDb;
 
 /**
  * Convert an input file into a FileFormat object
@@ -72,6 +73,7 @@ class FileDriverManager
     private $_preProcessorFactory;
     private $_entityManager;
     private $_heritage;
+    private $_zdb;
 
     /**
      * Constructor
@@ -80,10 +82,11 @@ class FileDriverManager
      * @param PreProcessorFactory $preProcessorFactory Pre processor factory
      * @param EntityManager       $entityManager       The entity manager
      * @param boolean             $heritage            Heritage status
+     * @param ZendDb              $zdb                 Zend database wrapper
      */
     public function __construct(FileFormatFactory $fileFormatFactory,
         PreProcessorFactory $preProcessorFactory, EntityManager $entityManager,
-        $heritage
+        $heritage, ZendDb $zdb
     ) {
         $this->_importConfiguration();
         $this->_searchDrivers();
@@ -91,6 +94,7 @@ class FileDriverManager
         $this->_preProcessorFactory = $preProcessorFactory;
         $this->_entityManager = $entityManager;
         $this->_heritage = $heritage;
+        $this->_zdb = $zdb;
     }
 
     /**
@@ -143,8 +147,42 @@ class FileDriverManager
         $archdesc = null;
 
         $count = 0;
+
+        //Zend test
+        var_dump('Test ZDB');
+
+        if ( $format === 'ead' ) {
+            $eadheader = $mapper->translateHeader(
+                $results['eadheader']
+            );
+
+            $select = $this->_zdb->select('ead_header')
+                ->limit(1)
+                ->columns(['headerId'])
+                ->where('headerId', $eadheader['headerId']);
+            $eadh_results = $this->_zdb->execute($select);
+            $eadh = $results->current();
+
+            if ( $eadh === false ) {
+                //EAD header does not exists yet. Store it.
+                $insert = $this->_zdb->insert('ead_header')
+                    ->values($eadheader);
+                $add = $this->_zdb->execute($insert);
+                if ( !$add->count() > 0 ) {
+                    throw new \RuntimeException(
+                        'An error occured storing EAD header ' .
+                        $eadheader['headerId']
+                    );
+                }
+            }
+        }
+
+
+        var_dump($result);
+        //End Zend test
+
         //disable SQL Logger...
-        $this->_entityManager->getConnection()->getConfiguration()
+        /*$this->_entityManager->getConnection()->getConfiguration()
             ->setSQLLogger(null);
 
         $repo = $this->_entityManager->getRepository($doctrine_entity);
@@ -238,7 +276,7 @@ class FileDriverManager
         if ( $flush ) {
             $this->_entityManager->flush();
             $this->_entityManager->clear();
-        }
+        }*/
     }
 
     /**
