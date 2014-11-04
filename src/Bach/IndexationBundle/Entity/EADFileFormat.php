@@ -1057,4 +1057,32 @@ class EADFileFormat extends FileFormat
     {
         return $this->archdesc;
     }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+        foreach ( $vars as &$var ) {
+            if ( $var instanceof ArrayCollection ) {
+                $subvars = array();
+                foreach ( $var as $subvar ) {
+                    $subvars[] = $subvar->toArray();
+                }
+                $var = $subvars;
+            }
+
+            if ( $var instanceof \DateTime ) {
+                $var = $var->format('Y-m-d H:m:s');
+            }
+        }
+        unset($vars['eadheader']);
+        unset($vars['archdesc']);
+        unset($vars['document']);
+        unset($vars['removed']);
+        return $vars;
+    }
 }

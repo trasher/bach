@@ -206,28 +206,25 @@ class ZendDb
     /**
      * Execute query string
      *
-     * @param SqlInterface $sql SQL object
+     * @param SqlInterface $sql     SQL object
+     * @param boolean      $verbose Show executed queries
      *
      * @return Stmt
      */
-    public function execute($sql)
+    public function execute($sql, $verbose = false)
     {
         try {
             $query_string = $this->_sql->getSqlStringForSqlObject($sql);
             $this->_last_query = $query_string;
-            /*Analog::log(
-                'Executing query: ' . $query_string,
-                Analog::DEBUG
-            );*/
+
+            if ( $verbose === true ) {
+                echo 'Executing query: ' . $query_string;
+            }
             return $this->_db->query(
                 $query_string,
                 Adapter::QUERY_MODE_EXECUTE
             );
         } catch ( \Exception $e ) {
-            /*Analog::log(
-                'Query error: ' . $query_string . ' ' . $e->__toString(),
-                Analog::ERROR
-            );*/
             throw $e;
         }
     }
@@ -263,6 +260,22 @@ class ZendDb
         case 'type_db':
             return $this->_type_db;
             break;
+        }
+    }
+
+    /**
+     * Get last autoincrement
+     *
+     * @param string $table Table name
+     *
+     * @return int
+     */
+    public function getAutoIncrement($table)
+    {
+        if ( $this->isPostgres() ) {
+            return $this->driver->getLastGeneratedValue($table . '_id_seq');
+        } else {
+            return $this->driver->getLastGeneratedValue();
         }
     }
 }

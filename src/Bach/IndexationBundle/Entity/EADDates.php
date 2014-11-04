@@ -469,4 +469,27 @@ class EADDates
     {
         return $this->_is_valid;
     }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+
+        foreach ( $vars as &$var ) {
+            if ( $var instanceof \DateTime ) {
+                $var = $var->format('Y-m-d H:m:s');
+            }
+        }
+
+        $vars['dend'] = $vars['end'];
+        unset($vars['end']);
+
+        unset($vars['eadfile']);
+        unset($vars['_is_valid']);
+        return $vars;
+    }
 }

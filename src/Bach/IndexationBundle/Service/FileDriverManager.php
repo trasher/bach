@@ -144,41 +144,143 @@ class FileDriverManager
         $results = $driver->process($bag);
 
         $eadheader = null;
+        $headerid = null;
         $archdesc = null;
 
         $count = 0;
 
         //Zend test
-        var_dump('Test ZDB');
+        try {
+            $this->_zdb->connection->beginTransaction();
 
-        if ( $format === 'ead' ) {
-            $eadheader = $mapper->translateHeader(
-                $results['eadheader']
-            );
+            if ( $format === 'ead' ) {
+                //handle eadheader
+                $eadheader = $mapper->translateHeader(
+                    $results['eadheader']
+                );
 
-            $select = $this->_zdb->select('ead_header')
-                ->limit(1)
-                ->columns(['headerId'])
-                ->where('headerId', $eadheader['headerId']);
-            $eadh_results = $this->_zdb->execute($select);
-            $eadh = $results->current();
-
-            if ( $eadh === false ) {
-                //EAD header does not exists yet. Store it.
-                $insert = $this->_zdb->insert('ead_header')
-                    ->values($eadheader);
-                $add = $this->_zdb->execute($insert);
-                if ( !$add->count() > 0 ) {
-                    throw new \RuntimeException(
-                        'An error occured storing EAD header ' .
-                        $eadheader['headerId']
+                $select = $this->_zdb->select('ead_header')
+                    ->limit(1)
+                    ->columns(['id'])
+                    ->where(
+                        array(
+                            'headerId' => $eadheader['headerId']
+                        )
                     );
+                $eadh_results = $this->_zdb->execute($select);
+                $eadh = $eadh_results->current();
+
+                if ( $eadh === false ) {
+                    //EAD header does not exists yet. Store it.
+                    $now = new \DateTime();
+                    $eadheader['created'] = $now->format('Y-m-d h:m:s');
+                    $eadheader['updated'] = $now->format('Y-m-d h:m:s');
+                    $insert = $this->_zdb->insert('ead_header')
+                        ->values($eadheader);
+                    $add = $this->_zdb->execute($insert, true);
+                    if ( !$add->count() > 0 ) {
+                        throw new \RuntimeException(
+                            'An error occured storing EAD header ' .
+                            $eadheader['headerId']
+                        );
+                    }
+                    $headerid = $this->_zdb->getAutoIncrement('ead_header');
+                } else {
+                    $headerid = $eadh->id;
                 }
+
+                //handle archdesc
+                $mapper->setEadId($eadheader['headerId']);
+                $archdesc = new \Bach\IndexationBundle\Entity\EADFileFormat(
+                    $mapper->translate(
+                        $results['archdesc']
+                    )
+                );
+                $archdesc = $archdesc->toArray();
+
+                $select = $this->_zdb->select('ead_file_format')
+                    ->limit(1)
+                    ->columns(['uniqid'])
+                    ->where(
+                        array(
+                            'fragmentid' => $eadheader['headerId'] . '_description'
+                        )
+                    );
+                $archdesc_results = $this->_zdb->execute($select);
+                $eada = $archdesc_results->current();
+
+                if ( $eada === false ) {
+                    //EAD archdesc does not exists yet. Store it.
+                    $indexes = $archdesc['indexes'];
+                    unset($archdesc['indexes']);
+                    $dates = $archdesc['dates'];
+                    unset($archdesc['dates']);
+                    $daos = $archdesc['daos'];
+                    unset($archdesc['daos']);
+                    $parents_titles = $archdesc['parents_titles'];
+                    unset($archdesc['parents_titles']);
+                    $archdesc['eadheader_id'] = $headerid;
+                    var_dump($archdesc);
+
+                    $insert = $this->_zdb->insert('ead_file_format')
+                        ->values($archdesc);
+                    $add = $this->_zdb->execute($insert);
+                    if ( !$add->count() > 0 ) {
+                        throw new \RuntimeException(
+                            'An error occured storing EAD archdesc ' .
+                            $eadheader['headerId'] . '_description'
+                        );
+                    }
+                    $archdescid = $this->_zdb->getAutoIncrement('ead_file_format');
+
+                    if ( count($indexes) > 0 ) {
+                        //handle indexes
+                    }
+
+                    if ( count($dates) > 0 ) {
+                        $insert = $this->_zdb->insert('ead_dates');
+                        $insert->values(
+                            array(
+                                'id'            => ':id',
+                                'date'          => ':date',
+                                'normal'        => ':normal',
+                                'label'         => ':label',
+                                'calendar'      => ':calendar',
+                                'type'          => ':type',
+                                'begin'         => ':begin',
+                                'dend'          => ':dend',
+                                'eadfile_id'    => ':eadfile_id'
+                            )
+                        );
+                        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                            $insert
+                        );
+
+                        foreach ( $dates as $date ) {
+                            $date['eadfile_id'] = $archdescid;
+                            $stmt->execute($date);
+                        }
+                    }
+
+                    if ( count($daos) > 0 ) {
+                        //handle daos
+                    }
+
+                    if ( count($parents_titles) > 0 ) {
+                        //handle parents_titles
+                    }
+
+                } else {
+                    $archdescid = $eada->uniqid;
+                }
+
             }
+            //$this->_zdb->commit();
+            $this->_zdb->connection->rollBack();
+        } catch ( \Exception $e ) {
+            $this->_zdb->connection->rollBack();
+            throw $e;
         }
-
-
-        var_dump($result);
         //End Zend test
 
         //disable SQL Logger...
