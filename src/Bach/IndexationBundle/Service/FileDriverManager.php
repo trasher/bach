@@ -150,7 +150,6 @@ class FileDriverManager
 
         $count = 0;
 
-        //Zend test
         try {
             $this->_zdb->connection->beginTransaction();
 
@@ -227,14 +226,7 @@ class FileDriverManager
                 $results = $results['elements'];
             }
 
-            //var_dump($results);
             foreach ($results as &$result) {
-                /*if ( $count > 1 ) {
-                    break;
-                }*/
-                //$result = $mapper->translate($result);
-                //var_dump($result);
-
                 $fragment = new \Bach\IndexationBundle\Entity\EADFileFormat(
                     $mapper->translate(
                         $result
@@ -267,10 +259,6 @@ class FileDriverManager
                 }
 
                 $count++;
-
-                /*if ( $count % 100 === 0 && $flush ) {
-                    $this->_zdb->connection->commit();
-                }*/
             }
 
             $this->_zdb->connection->commit();
@@ -278,104 +266,6 @@ class FileDriverManager
             $this->_zdb->connection->rollBack();
             throw $e;
         }
-        //End Zend test
-
-        //disable SQL Logger...
-        /*$this->_entityManager->getConnection()->getConfiguration()
-            ->setSQLLogger(null);
-
-        $repo = $this->_entityManager->getRepository($doctrine_entity);
-
-        //EAD specific
-        if ( $format === 'ead' ) {
-            $headerrepo = $this->_entityManager
-                ->getRepository('BachIndexationBundle:EADHeader');
-
-            $results['eadheader'] = $mapper->translateHeader(
-                $results['eadheader']
-            );
-
-            $eadheader = $headerrepo->findOneByHeaderId(
-                $results['eadheader']['headerId']
-            );
-
-            if ( $eadheader === null ) {
-                $eadheader = new \Bach\IndexationBundle\Entity\EADHeader(
-                    $results['eadheader']
-                );
-            } else {
-                $eadheader->hydrate($results['eadheader']);
-            }
-
-            $mapper->setEadId($eadheader->getHeaderId());
-            $this->_entityManager->persist($eadheader);
-            unset($headerrepo);
-
-            $archdesc = $repo->findOneByFragmentid(
-                $eadheader->getHeaderId() . '_description'
-            );
-
-            if ( $archdesc === null ) {
-                $archdesc = new \Bach\IndexationBundle\Entity\EADFileFormat(
-                    $mapper->translate(
-                        $results['archdesc']
-                    )
-                );
-                $archdesc->setEadheader($eadheader);
-                $archdesc->setDocument($doc);
-            } else {
-                $archdesc->hydrate(
-                    $mapper->translate(
-                        $results['archdesc']
-                    )
-                );
-                $archdesc->setDocument($doc);
-            }
-            $this->_entityManager->persist($archdesc);
-
-            $results = $results['elements'];
-        }
-
-        foreach ($results as &$result) {
-            $result = $mapper->translate($result);
-
-            $exists = null;
-            if ( isset($result['fragmentid']) ) {
-                $exists = $repo->findOneByFragmentid($result['fragmentid']);
-            } else {
-                $exists = $repo->findOneById($result['id'][0]['value']);
-            }
-
-            $out = $this->_fileFormatFactory->build(
-                $result,
-                $fileformat_class,
-                $exists
-            );
-
-            if ( $eadheader !== null ) {
-                $out->setEadheader($eadheader);
-            }
-            if ( $archdesc !== null ) {
-                $out->setArchdesc($archdesc);
-            }
-
-            $removed = $out->getRemoved();
-            if ( count($removed) > 0 ) {
-                foreach ( $removed as $r ) {
-                    $this->_entityManager->remove($r);
-                }
-            }
-
-            $out->setDocument($doc);
-            $this->_entityManager->persist($out);
-
-            $count++;
-        }
-
-        if ( $flush ) {
-            $this->_entityManager->flush();
-            $this->_entityManager->clear();
-        }*/
     }
 
     /**
