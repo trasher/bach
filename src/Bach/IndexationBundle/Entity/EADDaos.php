@@ -252,4 +252,16 @@ class EADDaos
     {
         return $this->eadfile;
     }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+        unset($vars['eadfile']);
+        return $vars;
+    }
 }

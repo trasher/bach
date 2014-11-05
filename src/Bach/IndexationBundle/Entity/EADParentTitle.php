@@ -151,4 +151,18 @@ class EADParentTitle
     {
         return $this->eadfile;
     }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+        $vars['unittitle'] = $vars['title'];
+        unset($vars['title']);
+        unset($vars['eadfile']);
+        return $vars;
+    }
 }

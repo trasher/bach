@@ -118,6 +118,7 @@ class FileDriverManager
         $mapper = null;
         $fileformat_class = null;
         $doctrine_entity = null;
+        $docid = $doc->getId();
 
         $this->_getConfiguration(
             $format,
@@ -177,7 +178,7 @@ class FileDriverManager
                     $eadheader['updated'] = $now->format('Y-m-d h:m:s');
                     $insert = $this->_zdb->insert('ead_header')
                         ->values($eadheader);
-                    $add = $this->_zdb->execute($insert, true);
+                    $add = $this->_zdb->execute($insert);
                     if ( !$add->count() > 0 ) {
                         throw new \RuntimeException(
                             'An error occured storing EAD header ' .
@@ -187,6 +188,7 @@ class FileDriverManager
                     $headerid = $this->_zdb->getAutoIncrement('ead_header');
                 } else {
                     $headerid = $eadh->id;
+                    //TODO: update record
                 }
 
                 //handle archdesc
@@ -203,7 +205,7 @@ class FileDriverManager
                     ->columns(['uniqid'])
                     ->where(
                         array(
-                            'fragmentid' => $eadheader['headerId'] . '_description'
+                            'fragmentid' => $archdesc['fragmentid']
                         )
                     );
                 $archdesc_results = $this->_zdb->execute($select);
@@ -211,72 +213,67 @@ class FileDriverManager
 
                 if ( $eada === false ) {
                     //EAD archdesc does not exists yet. Store it.
-                    $indexes = $archdesc['indexes'];
-                    unset($archdesc['indexes']);
-                    $dates = $archdesc['dates'];
-                    unset($archdesc['dates']);
-                    $daos = $archdesc['daos'];
-                    unset($archdesc['daos']);
-                    $parents_titles = $archdesc['parents_titles'];
-                    unset($archdesc['parents_titles']);
-                    $archdesc['eadheader_id'] = $headerid;
-                    var_dump($archdesc);
-
-                    $insert = $this->_zdb->insert('ead_file_format')
-                        ->values($archdesc);
-                    $add = $this->_zdb->execute($insert);
-                    if ( !$add->count() > 0 ) {
-                        throw new \RuntimeException(
-                            'An error occured storing EAD archdesc ' .
-                            $eadheader['headerId'] . '_description'
-                        );
-                    }
-                    $archdescid = $this->_zdb->getAutoIncrement('ead_file_format');
-
-                    if ( count($indexes) > 0 ) {
-                        //handle indexes
-                    }
-
-                    if ( count($dates) > 0 ) {
-                        $insert = $this->_zdb->insert('ead_dates');
-                        $insert->values(
-                            array(
-                                'id'            => ':id',
-                                'date'          => ':date',
-                                'normal'        => ':normal',
-                                'label'         => ':label',
-                                'calendar'      => ':calendar',
-                                'type'          => ':type',
-                                'begin'         => ':begin',
-                                'dend'          => ':dend',
-                                'eadfile_id'    => ':eadfile_id'
-                            )
-                        );
-                        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                            $insert
-                        );
-
-                        foreach ( $dates as $date ) {
-                            $date['eadfile_id'] = $archdescid;
-                            $stmt->execute($date);
-                        }
-                    }
-
-                    if ( count($daos) > 0 ) {
-                        //handle daos
-                    }
-
-                    if ( count($parents_titles) > 0 ) {
-                        //handle parents_titles
-                    }
-
+                    $archdescid = $this->_storeFragment(
+                        $archdesc,
+                        $headerid,
+                        null,
+                        $docid
+                    );
                 } else {
                     $archdescid = $eada->uniqid;
+                    //TODO: update record
                 }
 
+                $results = $results['elements'];
             }
-            //$this->_zdb->commit();
-            $this->_zdb->connection->rollBack();
+
+            //var_dump($results);
+            foreach ($results as &$result) {
+                /*if ( $count > 1 ) {
+                    break;
+                }*/
+                //$result = $mapper->translate($result);
+                //var_dump($result);
+
+                $fragment = new \Bach\IndexationBundle\Entity\EADFileFormat(
+                    $mapper->translate(
+                        $result
+                    )
+                );
+                $fragment = $fragment->toArray();
+
+                $select = $this->_zdb->select('ead_file_format')
+                    ->limit(1)
+                    ->columns(['uniqid'])
+                    ->where(
+                        array(
+                            'fragmentid' => $fragment['fragmentid']
+                        )
+                    );
+                $fragment_results = $this->_zdb->execute($select);
+                $eadf = $fragment_results->current();
+
+                if ( $eadf === false ) {
+                    //EAD fragment does not exists yet. Store it.
+                    $fragmentid = $this->_storeFragment(
+                        $fragment,
+                        $headerid,
+                        $archdescid,
+                        $docid
+                    );
+                } else {
+                    $fragmentid = $eadf->uniqid;
+                    //TODO: update record
+                }
+
+                $count++;
+
+                /*if ( $count % 100 === 0 && $flush ) {
+                    $this->_zdb->connection->commit();
+                }*/
+            }
+
+            $this->_zdb->connection->commit();
         } catch ( \Exception $e ) {
             $this->_zdb->connection->rollBack();
             throw $e;
@@ -379,6 +376,111 @@ class FileDriverManager
             $this->_entityManager->flush();
             $this->_entityManager->clear();
         }*/
+    }
+
+    /**
+     * Stores a fragment in database
+     *
+     * @param EADFileFormat $fragment   Fragment to store
+     * @param int           $headerid   eadheader db id
+     * @param int           $archdescid archdesc db id
+     * @param int           $docid      Document db id
+     *
+     * @return int
+     */
+    private function _storeFragment($fragment, $headerid, $archdescid, $docid)
+    {
+        $indexes = $fragment['indexes'];
+        unset($fragment['indexes']);
+        $dates = $fragment['dates'];
+        unset($fragment['dates']);
+        $daos = $fragment['daos'];
+        unset($fragment['daos']);
+        $parents_titles = $fragment['parents_titles'];
+        unset($fragment['parents_titles']);
+
+        $fragment['eadheader_id'] = $headerid;
+        $fragment['archdesc_id'] = $archdescid;
+        $fragment['doc_id'] = $docid;
+
+        $insert = $this->_zdb->insert('ead_file_format')
+            ->values($fragment);
+        $add = $this->_zdb->execute($insert);
+        if ( !$add->count() > 0 ) {
+            throw new \RuntimeException(
+                'An error occured storing EAD fragment ' .
+                $fragment['fragmentid']
+            );
+        }
+        $fragid = $this->_zdb->getAutoIncrement('ead_file_format');
+
+        if ( count($indexes) > 0 ) {
+            //handle indexes
+            $this->_storeSubElements(
+                'ead_indexes',
+                $indexes,
+                $fragid
+            );
+        }
+
+        if ( count($dates) > 0 ) {
+            //handle dates
+            $this->_storeSubElements(
+                'ead_dates',
+                $dates,
+                $fragid
+            );
+        }
+
+        if ( count($daos) > 0 ) {
+            //handle daos
+            $this->_storeSubElements(
+                'ead_daos',
+                $daos,
+                $fragid
+            );
+        }
+
+        if ( count($parents_titles) > 0 ) {
+            //handle parents_titles
+            $this->_storeSubElements(
+                'ead_parent_title',
+                $parents_titles,
+                $fragid
+            );
+        }
+
+        return $fragid;
+    }
+
+    /**
+     * Store fragment sub elements
+     *
+     * @param string $table    Table name
+     * @param array  $elements Elements to store
+     * @param int    $fragid   Fragment ID
+     *
+     * @return void
+     */
+    private function _storeSubElements($table, $elements, $fragid)
+    {
+        $insert = $this->_zdb->insert($table);
+        $fields = array_keys($elements[0]);
+        $insert_fields = array();
+        foreach ( $fields as $field ) {
+            $insert_fields[$field] = ':' . $field;
+        }
+        $insert_fields['eadfile_id'] = ':eadfile_id';
+
+        $insert->values($insert_fields);
+        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+            $insert
+        );
+
+        foreach ( $elements as $element ) {
+            $element['eadfile_id'] = $fragid;
+            $stmt->execute($element);
+        }
     }
 
     /**
