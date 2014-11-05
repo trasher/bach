@@ -111,6 +111,8 @@ class FileDriverManager
     public function convert(DataBag $bag, $format, $doc, $flush,
         $preprocessor = null
     ) {
+        $baseMemory = memory_get_usage();
+
         if ( !array_key_exists($format, $this->_drivers) ) {
             throw new \DomainException('Unsupported file format: ' . $format);
         }
@@ -266,6 +268,16 @@ class FileDriverManager
             $this->_zdb->connection->rollBack();
             throw $e;
         }
+
+        $size = memory_get_usage() - $baseMemory;
+        $unit = array('b','kb','mb','gb','tb','pb');
+        $consumed = @round($size/pow(1024, ($i=floor(log($size, 1024)))), 2) .
+            ' ' . $unit[$i];
+        $size = memory_get_peak_usage();
+        $peak = @round($size/pow(1024, ($i=floor(log($size, 1024)))), 2) .
+            ' ' . $unit[$i];
+
+        echo "\nConsumed memory: " . $consumed . ' - Peak: ' . $peak . "\n";
     }
 
     /**
