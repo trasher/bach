@@ -163,7 +163,6 @@ class FileDriverManager
 
                 $select = $this->_zdb->select('ead_header')
                     ->limit(1)
-                    ->columns(['id'])
                     ->where(
                         array(
                             'headerId' => $eadheader['headerId']
@@ -190,6 +189,22 @@ class FileDriverManager
                 } else {
                     $headerid = $eadh->id;
                     //TODO: update record
+                    $header_obj = new \Bach\IndexationBundle\Entity\EADHeader(
+                        $eadh,
+                        false
+                    );
+                    $header_obj->hydrate(
+                        $eadheader
+                    );
+                    if ( $header_obj->hasChanges() ) {
+                        echo "eadheader has changed, let's store it again";
+                        $values = $header_obj->toArray();
+                        unset($values['id']);
+                        $update = $this->_zdb->update('ead_header')
+                            ->set($header_obj->toArray())
+                            ->where(array('id' => $headerid));
+                        $add = $this->_zdb->execute($update);
+                    }
                 }
 
                 //handle archdesc
