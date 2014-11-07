@@ -167,15 +167,16 @@ class EADFileFormat extends FileFormat
     /**
      * The constructor
      *
-     * @param array $data The input data
+     * @param array   $data    The input data
+     * @param boolean $changes Take care of changes
      */
-    public function __construct($data)
+    public function __construct($data, $changes = true)
     {
         $this->indexes = new ArrayCollection();
         $this->dates = new ArrayCollection();
         $this->daos = new ArrayCollection();
         $this->parents_titles = new ArrayCollection();
-        parent::__construct($data);
+        parent::__construct($data, $changes);
     }
 
     /**
@@ -379,14 +380,15 @@ class EADFileFormat extends FileFormat
     /**
      * Proceed data parsing
      *
-     * @param array $data Data
+     * @param array   $data    Data
+     * @param boolean $changes Take care of changes
      *
      * @return void
      */
-    protected function parseData($data)
+    protected function parseData($data, $changes = true)
     {
+        $this->check_changes = $changes;
         foreach ($data as $key=>$value) {
-            /*if ( in_array($key, self::$known_indexes) ) {*/
             if ( $key === 'descriptors' ) {
                 $this->parseIndexes($value);
             } else if ( $key === 'parents_titles' ) {
@@ -1083,6 +1085,8 @@ class EADFileFormat extends FileFormat
         unset($vars['archdesc']);
         unset($vars['document']);
         unset($vars['removed']);
+        unset($vars['has_changes']);
+        unset($vars['check_changes']);
         return $vars;
     }
 }

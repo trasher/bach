@@ -188,7 +188,6 @@ class FileDriverManager
                     $headerid = $this->_zdb->getAutoIncrement('ead_header');
                 } else {
                     $headerid = $eadh->id;
-                    //TODO: update record
                     $header_obj = new \Bach\IndexationBundle\Entity\EADHeader(
                         $eadh,
                         false
@@ -197,9 +196,6 @@ class FileDriverManager
                         $eadheader
                     );
                     if ( $header_obj->hasChanges() ) {
-                        echo "eadheader has changed, let's store it again";
-                        $values = $header_obj->toArray();
-                        unset($values['id']);
                         $update = $this->_zdb->update('ead_header')
                             ->set($header_obj->toArray())
                             ->where(array('id' => $headerid));
@@ -209,16 +205,10 @@ class FileDriverManager
 
                 //handle archdesc
                 $mapper->setEadId($eadheader['headerId']);
-                $archdesc = new \Bach\IndexationBundle\Entity\EADFileFormat(
-                    $mapper->translate(
-                        $results['archdesc']
-                    )
-                );
-                $archdesc = $archdesc->toArray();
+                $archdesc = $mapper->translate($results['archdesc']);
 
                 $select = $this->_zdb->select('ead_file_format')
                     ->limit(1)
-                    ->columns(['uniqid'])
                     ->where(
                         array(
                             'fragmentid' => $archdesc['fragmentid']
@@ -228,6 +218,10 @@ class FileDriverManager
                 $eada = $archdesc_results->current();
 
                 if ( $eada === false ) {
+                    $archdesc_obj = new \Bach\IndexationBundle\Entity\EADFileFormat(
+                        $archdesc
+                    );
+                    $archdesc = $archdesc_obj->toArray();
                     //EAD archdesc does not exists yet. Store it.
                     $archdescid = $this->_storeFragment(
                         $archdesc,
@@ -237,23 +231,26 @@ class FileDriverManager
                     );
                 } else {
                     $archdescid = $eada->uniqid;
-                    //TODO: update record
+
+                    $archdesc_obj = $this->_updateFragment(
+                        $eada,
+                        $archdesc,
+                        $header_obj,
+                        null,
+                        $doc
+                    );
                 }
 
                 $results = $results['elements'];
             }
 
             foreach ($results as &$result) {
-                $fragment = new \Bach\IndexationBundle\Entity\EADFileFormat(
-                    $mapper->translate(
-                        $result
-                    )
+                $fragment = $mapper->translate(
+                    $result
                 );
-                $fragment = $fragment->toArray();
 
                 $select = $this->_zdb->select('ead_file_format')
                     ->limit(1)
-                    ->columns(['uniqid'])
                     ->where(
                         array(
                             'fragmentid' => $fragment['fragmentid']
@@ -263,16 +260,28 @@ class FileDriverManager
                 $eadf = $fragment_results->current();
 
                 if ( $eadf === false ) {
+                    $fragment = new \Bach\IndexationBundle\Entity\EADFileFormat(
+                        $mapper->translate(
+                            $result
+                        )
+                    );
+                    $fragment = $fragment->toArray();
+
                     //EAD fragment does not exists yet. Store it.
-                    $fragmentid = $this->_storeFragment(
+                    $this->_storeFragment(
                         $fragment,
                         $headerid,
                         $archdescid,
                         $docid
                     );
                 } else {
-                    $fragmentid = $eadf->uniqid;
-                    //TODO: update record
+                    $this->_updateFragment(
+                        $eadf,
+                        $archdesc,
+                        $header_obj,
+                        $archdesc_obj,
+                        $doc
+                    );
                 }
 
                 $count++;
@@ -289,6 +298,52 @@ class FileDriverManager
         $peak = $this->formatBytes(memory_get_peak_usage());
 
         echo "\nConsumed memory: " . $consumed . ' - Peak: ' . $peak . "\n";
+    }
+
+    /**
+     * Converts elements from database to a compatible translated array
+     *
+     * @param array  $entries        Db entries
+     * @param string $value_prop     Name for value property
+     * @param array  $not_attributes Db columns that are not attributes
+     * @param bool   $descriptors    If we're working on descriptors
+     *
+     * @return array
+     */
+    private function _elementsAsArray($entries, $value_prop, $not_attributes,
+        $descriptors = false
+    ) {
+        $elements = array();
+        $not_attributes = array_merge(
+            $not_attributes,
+            array(
+                'id',
+                'eadfile_id',
+            )
+        );
+        foreach ( $entries as $entry ) {
+            $attributes = array();
+            foreach ( $entry as $name=>$value ) {
+                if ( !in_array($name, $not_attributes)
+                    && $value !== null
+                ) {
+                    $attributes[$name] = $value;
+                }
+            }
+
+            if ( $descriptors === true ) {
+                $elements[$entry->type][] = array(
+                    'value'         => $entry->$value_prop,
+                    'attributes'    => $attributes
+                );
+            } else {
+                 $elements[] = array(
+                    'value'         => $entry->$value_prop,
+                    'attributes'    => $attributes
+                );
+            }
+        }
+        return $elements;
     }
 
     /**
@@ -380,6 +435,91 @@ class FileDriverManager
 
         return $fragid;
     }
+
+    /**
+     * Updates a fragment in database
+     *
+     * @param array         $fragment Fragment to store
+     * @param array         $newvals  New values from conversion
+     * @param EADHeader     $header   eadheader element
+     * @param EADFileFormat $archdesc archdesc element
+     * @param Document      $doc      document element
+     *
+     * @return EADFileFormat
+     */
+    private function _updateFragment($fragment, $newvals,
+        \Bach\IndexationBundle\Entity\EADHeader $header,
+        $archdesc,
+        \Bach\IndexationBundle\Entity\Document $doc
+    ) {
+        unset($fragment['doc_id']);
+        $fragment['document'] = $doc;
+        unset($fragment['eadheader_id']);
+        $fragment['eadheader'] = $header;
+
+        unset($fragment['archdesc_id']);
+        if ( $archdesc !== null ) {
+            $fragment['archdesc'] = $archdesc;
+        }
+
+        //handle indexes
+        $select = $this->_zdb->select('ead_indexes')
+            ->where(
+                array(
+                    'eadfile_id' => $fragment['uniqid']
+                )
+            );
+        $indexes = $this->_zdb->execute($select);
+        $fragment['descriptors'] = $this->_elementsAsArray(
+            $indexes,
+            'name',
+            array('type', 'name'),
+            true
+        );
+
+        //handle dates
+        $select = $this->_zdb->select('ead_dates')
+            ->where(
+                array(
+                    'eadfile_id' => $fragment['uniqid']
+                )
+            );
+        $dates = $this->_zdb->execute($select);
+        $fragment['cDate'] = $this->_elementsAsArray(
+            $dates,
+            'date',
+            array('date', 'begin', 'end')
+        );
+
+        $obj = new \Bach\IndexationBundle\Entity\EADFileFormat(
+            $fragment,
+            false
+        );
+        $obj->hydrate($newvals);
+
+        if ( $obj->hasChanges() ) {
+            $values = $obj->toArray();
+
+            $indexes = $values['indexes'];
+            unset($values['indexes']);
+            $dates = $values['dates'];
+            unset($values['dates']);
+            $daos = $values['daos'];
+            unset($values['daos']);
+            $parents_titles = $values['parents_titles'];
+            unset($values['parents_titles']);
+
+            $update = $this->_zdb->update('ead_file_format')
+                ->set($values)
+                ->where(array('uniqid' => $fragment['uniqid']));
+            $add = $this->_zdb->execute($update);
+
+            //TODO: handle indexes, dates, etc.
+        }
+
+        return $obj;
+    }
+
 
     /**
      * Store fragment sub elements

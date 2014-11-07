@@ -62,6 +62,8 @@ use Bach\IndexationBundle\Entity\Document;
  */
 abstract class FileFormat implements NotifyPropertyChanged
 {
+    use PublishTrait;
+
     private $_listeners = array();
 
     /**
@@ -88,13 +90,14 @@ abstract class FileFormat implements NotifyPropertyChanged
     /**
       * The constructor
       *
-      * @param array $data The input data
+      * @param array   $data    The input data
+      * @param boolean $changes Take care of changes
       */
-    public function __construct($data)
+    public function __construct($data, $changes = true)
     {
         $this->created = new \DateTime('NOW', new \DateTimeZone('UTC'));
         $this->updated = new \DateTime('NOW', new \DateTimeZone('UTC'));
-        $this->parseData($data);
+        $this->parseData($data, $changes);
     }
 
     /**
@@ -112,53 +115,20 @@ abstract class FileFormat implements NotifyPropertyChanged
     /**
      * Proceed data parsing
      *
-     * @param array $data Data to parse
+     * @param array   $data    Data to parse
+     * @param boolean $changes Take care of changes
      *
      * @return void
      */
-    protected function parseData($data)
+    protected function parseData($data, $changes = true)
     {
+        $this->check_changes = $changes;
         foreach ($data as $key=>$datum) {
             if (property_exists($this, $key)) {
                 $this->onPropertyChanged($key, $this->$key, $datum);
                 $this->$key = $datum;
             }
         }
-    }
-
-    /**
-     * Notifies a property change
-     *
-     * @param string $propName Property name
-     * @param string $oldValue Old value of property
-     * @param string $newValue New value of property
-     *
-     * @return void
-     */
-    protected function onPropertyChanged($propName, $oldValue, $newValue)
-    {
-        if ( $this->_listeners) {
-            foreach ( $this->_listeners as $listener ) {
-                $listener->propertyChanged($this, $propName, $oldValue, $newValue);
-            }
-        }
-        if ( $propName !== 'updated' ) {
-            $now = new \DateTime('NOW', new \DateTimeZone('UTC'));
-            $this->onPropertyChanged('updated', $this->updated, $now);
-            $this->updated = $now;
-        }
-    }
-
-    /**
-     * Hydrate existing entity
-     *
-     * @param array $data Data
-     *
-     * @return void
-     */
-    public function hydrate($data)
-    {
-        $this->parseData($data);
     }
 
     /**
