@@ -285,14 +285,25 @@ class FileDriverManager
         }
 
         $size = memory_get_usage() - $baseMemory;
-        $unit = array('b','kb','mb','gb','tb','pb');
-        $consumed = @round($size/pow(1024, ($i=floor(log($size, 1024)))), 2) .
-            ' ' . $unit[$i];
-        $size = memory_get_peak_usage();
-        $peak = @round($size/pow(1024, ($i=floor(log($size, 1024)))), 2) .
-            ' ' . $unit[$i];
+        $consumed = $this->formatBytes(memory_get_usage() - $baseMemory);
+        $peak = $this->formatBytes(memory_get_peak_usage());
 
         echo "\nConsumed memory: " . $consumed . ' - Peak: ' . $peak . "\n";
+    }
+
+    /**
+     * Format bytes to human readable value
+     *
+     * @param int $bytes Bytes
+     *
+     * @return string
+     */
+    public function formatBytes($bytes)
+    {
+        $unit = array('b','kb','mb','gb','tb','pb');
+        $fmt = @round($bytes/pow(1024, ($i=floor(log($bytes, 1024)))), 2) .
+            ' ' . $unit[$i];
+        return $fmt;
     }
 
     /**
