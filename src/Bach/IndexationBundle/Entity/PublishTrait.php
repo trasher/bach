@@ -96,6 +96,16 @@ trait PublishTrait
     protected function onPropertyChanged($propName, $oldValue, $newValue)
     {
         if ( $this->check_changes === true ) {
+            /*$old = $oldValue;
+            if ( $old instanceof \DateTime ) {
+                $old = $oldValue->format('c');
+            }
+            $new = $newValue;
+            if ( $newValue instanceof \DateTime ) {
+                $new = $newValue->format('c');
+            }
+            echo 'Property ' . $propName . ' changed from ' .
+                $old . ' to ' . $new . "\n";*/
             if ( $this->_listeners) {
                 foreach ( $this->_listeners as $listener ) {
                     $listener->propertyChanged(

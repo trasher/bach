@@ -276,12 +276,14 @@ class MatriculesFileFormat extends FileFormat
     /**
      * Proceed data parsing
      *
-     * @param array $data Data
+     * @param array   $data    Data to parse
+     * @param boolean $changes Take care of changes
      *
      * @return void
      */
-    protected function parseData($data)
+    protected function parseData($data, $changes = true)
     {
+        $this->check_changes = $changes;
         foreach ($data as $key=>$datum) {
             $has_changed = false;
             if (property_exists($this, $key)) {
@@ -614,5 +616,4 @@ class MatriculesFileFormat extends FileFormat
     {
         return $this->lieu_naissance;
     }
-
 }

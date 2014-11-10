@@ -50,6 +50,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\ORM\EntityManager;
 use Bach\IndexationBundle\Entity\FileFormat;
+use Bach\IndexationBundle\Entity;
 use Bach\IndexationBundle\Entity\DataBag;
 use Bach\IndexationBundle\Service\ZendDb;
 
@@ -188,7 +189,7 @@ class FileDriverManager
                     $headerid = $this->_zdb->getAutoIncrement('ead_header');
                 } else {
                     $headerid = $eadh->id;
-                    $header_obj = new \Bach\IndexationBundle\Entity\EADHeader(
+                    $header_obj = new Entity\EADHeader(
                         $eadh,
                         false
                     );
@@ -218,12 +219,12 @@ class FileDriverManager
                 $eada = $archdesc_results->current();
 
                 if ( $eada === false ) {
-                    $archdesc_obj = new \Bach\IndexationBundle\Entity\EADFileFormat(
+                    $archdesc_obj = new Entity\EADFileFormat(
                         $archdesc
                     );
                     $archdesc = $archdesc_obj->toArray();
                     //EAD archdesc does not exists yet. Store it.
-                    $archdescid = $this->_storeFragment(
+                    $archdescid = $this->_storeEadFragment(
                         $archdesc,
                         $headerid,
                         null,
@@ -232,7 +233,7 @@ class FileDriverManager
                 } else {
                     $archdescid = $eada->uniqid;
 
-                    $archdesc_obj = $this->_updateFragment(
+                    $archdesc_obj = $this->_updateEadFragment(
                         $eada,
                         $archdesc,
                         $header_obj,
@@ -242,49 +243,83 @@ class FileDriverManager
                 }
 
                 $results = $results['elements'];
-            }
 
-            foreach ($results as &$result) {
-                $fragment = $mapper->translate(
-                    $result
-                );
+                foreach ($results as &$result) {
+                    $fragment = $mapper->translate(
+                        $result
+                    );
 
-                $select = $this->_zdb->select('ead_file_format')
-                    ->limit(1)
-                    ->where(
-                        array(
-                            'fragmentid' => $fragment['fragmentid']
-                        )
-                    );
-                $fragment_results = $this->_zdb->execute($select);
-                $eadf = $fragment_results->current();
+                    $select = $this->_zdb->select('ead_file_format')
+                        ->limit(1)
+                        ->where(
+                            array(
+                                'fragmentid' => $fragment['fragmentid']
+                            )
+                        );
+                    $fragment_results = $this->_zdb->execute($select);
+                    $eadf = $fragment_results->current();
 
-                if ( $eadf === false ) {
-                    $fragment = new \Bach\IndexationBundle\Entity\EADFileFormat(
-                        $mapper->translate(
-                            $result
-                        )
-                    );
-                    $fragment = $fragment->toArray();
+                    if ( $eadf === false ) {
+                        $fragment = new Entity\EADFileFormat(
+                            $fragment
+                        );
+                        $fragment = $fragment->toArray();
 
-                    //EAD fragment does not exists yet. Store it.
-                    $this->_storeFragment(
-                        $fragment,
-                        $headerid,
-                        $archdescid,
-                        $docid
-                    );
-                } else {
-                    $this->_updateFragment(
-                        $eadf,
-                        $archdesc,
-                        $header_obj,
-                        $archdesc_obj,
-                        $doc
-                    );
+                        //EAD fragment does not exists yet. Store it.
+                        $this->_storeEadFragment(
+                            $fragment,
+                            $headerid,
+                            $archdescid,
+                            $docid
+                        );
+                    } else {
+                        $this->_updateEadFragment(
+                            $eadf,
+                            $archdesc,
+                            $header_obj,
+                            $archdesc_obj,
+                            $doc
+                        );
+                    }
+
+                    $count++;
                 }
+            } elseif ( $format === 'matricules' ) {
+                foreach ($results as &$result) {
+                    $record = $mapper->translate(
+                        $result
+                    );
 
-                $count++;
+                    $select = $this->_zdb->select('matricules_file_format')
+                        ->limit(1)
+                        ->where(
+                            array(
+                                'id' => $record['id'][0]['value']
+                            )
+                        );
+                    $db_records = $this->_zdb->execute($select);
+                    $db_record = $db_records->current();
+
+                    if ( $db_record === false ) {
+                        $record = new Entity\MatriculesFileFormat(
+                            $record
+                        );
+                        $record = $record->toArray();
+
+                        //record does not exists yet. Store it.
+                        $this->_storeRecord(
+                            'matricules_file_format',
+                            $record,
+                            $docid
+                        );
+                    } else {
+                        $this->_updateMatRecord(
+                            $db_record,
+                            $record,
+                            $doc
+                        );
+                    }
+                }
             }
 
             $this->_zdb->connection->commit();
@@ -362,7 +397,80 @@ class FileDriverManager
     }
 
     /**
-     * Stores a fragment in database
+     * Stores a record in database
+     *
+     * @param string $table Database table name
+     * @param array  $data  Data to store
+     * @param int    $docid Document db id
+     *
+     * @return int
+     */
+    private function _storeRecord($table, $data ,$docid)
+    {
+        $data['doc_id'] = $docid;
+        $insert = $this->_zdb->insert($table)
+            ->values($data);
+        $add = $this->_zdb->execute($insert);
+        if ( !$add->count() > 0 ) {
+            throw new \RuntimeException(
+                'An error occured storing record!'
+            );
+        }
+        $fragid = $this->_zdb->getAutoIncrement($table);
+        return $fragid;
+    }
+
+    /**
+     * Updates a matricule record in database
+     *
+     * @param array    $data    Data to store
+     * @param array    $newvals New values fom conversion
+     * @param Document $doc     Document element
+     *
+     * @return EADFileFormat
+     */
+    private function _updateMatRecord($data, $newvals,
+        Entity\Document $doc
+    ) {
+        unset($data['doc_id']);
+
+        $converted_data = array();
+        foreach ( $data as $k=>$v ) {
+            //converts dates from yyyy-mm-dd to yyyy
+            $reg = '/^(\d{3,4})-?(\d{2})?-?(\d{2})?$/';
+            if ( preg_match($reg, $v, $matches) ) {
+                $v = $matches[1];
+            }
+
+            $converted_data[$k][] = array(
+                'value'         => $v,
+                'attributes'    => array()
+            );
+
+        }
+
+        $obj = new Entity\MatriculesFileFormat(
+            $converted_data,
+            false
+        );
+        $obj->setDocument($doc);
+        $obj->hydrate($newvals);
+
+        if ( $obj->hasChanges() ) {
+            $values = $obj->toArray();
+
+            $update = $this->_zdb->update('matricules_file_format')
+                ->set($values)
+                ->where(array('uniqid' => $data['uniqid']));
+            $add = $this->_zdb->execute($update);
+        }
+
+        return $obj;
+    }
+
+
+    /**
+     * Stores an EAD fragment in database
      *
      * @param EADFileFormat $fragment   Fragment to store
      * @param int           $headerid   eadheader db id
@@ -371,7 +479,7 @@ class FileDriverManager
      *
      * @return int
      */
-    private function _storeFragment($fragment, $headerid, $archdescid, $docid)
+    private function _storeEadFragment($fragment, $headerid, $archdescid, $docid)
     {
         $indexes = $fragment['indexes'];
         unset($fragment['indexes']);
@@ -384,18 +492,19 @@ class FileDriverManager
 
         $fragment['eadheader_id'] = $headerid;
         $fragment['archdesc_id'] = $archdescid;
-        $fragment['doc_id'] = $docid;
 
-        $insert = $this->_zdb->insert('ead_file_format')
-            ->values($fragment);
-        $add = $this->_zdb->execute($insert);
-        if ( !$add->count() > 0 ) {
+        try {
+            $fragid = $this->_storeRecord(
+                'ead_file_format',
+                $framgent,
+                $docid
+            );
+        } catch ( \RuntimeException $e) {
             throw new \RuntimeException(
                 'An error occured storing EAD fragment ' .
                 $fragment['fragmentid']
             );
         }
-        $fragid = $this->_zdb->getAutoIncrement('ead_file_format');
 
         if ( count($indexes) > 0 ) {
             //handle indexes
@@ -447,10 +556,8 @@ class FileDriverManager
      *
      * @return EADFileFormat
      */
-    private function _updateFragment($fragment, $newvals,
-        \Bach\IndexationBundle\Entity\EADHeader $header,
-        $archdesc,
-        \Bach\IndexationBundle\Entity\Document $doc
+    private function _updateEadFragment($fragment, $newvals,
+        Entity\EADHeader $header, $archdesc, Entity\Document $doc
     ) {
         unset($fragment['doc_id']);
         $fragment['document'] = $doc;
@@ -491,7 +598,9 @@ class FileDriverManager
             array('date', 'begin', 'end')
         );
 
-        $obj = new \Bach\IndexationBundle\Entity\EADFileFormat(
+        //TODO: take care of other linked elements!
+
+        $obj = new Entity\EADFileFormat(
             $fragment,
             false
         );
@@ -514,7 +623,7 @@ class FileDriverManager
                 ->where(array('uniqid' => $fragment['uniqid']));
             $add = $this->_zdb->execute($update);
 
-            //TODO: handle indexes, dates, etc.
+            //TODO: take care of removals!
         }
 
         return $obj;

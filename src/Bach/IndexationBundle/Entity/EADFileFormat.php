@@ -1067,7 +1067,8 @@ class EADFileFormat extends FileFormat
      */
     public function toArray()
     {
-        $vars = get_object_vars($this);
+        $vars = parent::toArray();
+        /*$vars = get_object_vars($this);
         foreach ( $vars as &$var ) {
             if ( $var instanceof ArrayCollection ) {
                 $subvars = array();
@@ -1080,13 +1081,13 @@ class EADFileFormat extends FileFormat
             if ( $var instanceof \DateTime ) {
                 $var = $var->format('Y-m-d H:m:s');
             }
-        }
+        }*/
         unset($vars['eadheader']);
         unset($vars['archdesc']);
-        unset($vars['document']);
+        /*unset($vars['document']);
         unset($vars['removed']);
         unset($vars['has_changes']);
-        unset($vars['check_changes']);
+        unset($vars['check_changes']);*/
         return $vars;
     }
 }
