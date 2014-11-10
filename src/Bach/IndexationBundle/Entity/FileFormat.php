@@ -47,6 +47,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\NotifyPropertyChanged;
 use Doctrine\Common\PropertyChangedListener;
 use Bach\IndexationBundle\Entity\Document;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Bach abstract file format

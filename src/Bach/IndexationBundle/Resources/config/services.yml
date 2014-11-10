@@ -56,7 +56,7 @@ services:
 
     bach.indexation.process.arch_file_integration:
         class: "%bach_indexation_process_arch_file_integration.class%"
-        arguments: [ @bach.indexation.file_driver_manager, @bach.indexation.data_bag_factory, @doctrine.orm.entity_manager ]
+        arguments: [ @bach.indexation.file_driver_manager, @bach.indexation.data_bag_factory, @doctrine.orm.entity_manager, @zend_db ]
 
     bach.indexation.typesfiles:
         class: '%bach_indexation_typesfiles.class%'

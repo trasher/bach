@@ -501,4 +501,25 @@ class Document
     {
         $this->uploaded = $uploaded;
     }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $this->preUpload();
+        $vars = get_object_vars($this);
+        foreach ( $vars as &$var ) {
+            if ( $var instanceof \DateTime ) {
+                $var = $var->format('Y-m-d H:m:s');
+            }
+        }
+        unset($vars['file']);
+        unset($vars['_store_dir']);
+        unset($vars['_upload_dir']);
+        unset($vars['_upload_done']);
+        return $vars;
+    }
 }

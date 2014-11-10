@@ -75,6 +75,7 @@ class FileDriverManager
     private $_entityManager;
     private $_heritage;
     private $_zdb;
+    private $_updaterecord_stmt;
 
     /**
      * Constructor
@@ -104,12 +105,12 @@ class FileDriverManager
      * @param DataBag  $bag          Data bag
      * @param string   $format       File format
      * @param Document $doc          Document
-     * @param boolean  $flush        Whether to flush
+     * @param boolean  $transaction  Whether to use DB transaction or not
      * @param string   $preprocessor Preprocessor, if any (defaults to null)
      *
      * @return FileFormat the normalized file object
      */
-    public function convert(DataBag $bag, $format, $doc, $flush,
+    public function convert(DataBag $bag, $format, $doc, $transaction = true,
         $preprocessor = null
     ) {
         $baseMemory = memory_get_usage();
@@ -154,7 +155,9 @@ class FileDriverManager
         $count = 0;
 
         try {
-            $this->_zdb->connection->beginTransaction();
+            if ( $transaction ) {
+                $this->_zdb->connection->beginTransaction();
+            }
 
             if ( $format === 'ead' ) {
                 //handle eadheader
@@ -322,9 +325,13 @@ class FileDriverManager
                 }
             }
 
-            $this->_zdb->connection->commit();
+            if ( $transaction ) {
+                $this->_zdb->connection->commit();
+            }
         } catch ( \Exception $e ) {
-            $this->_zdb->connection->rollBack();
+            if ( $transaction ) {
+                $this->_zdb->connection->rollBack();
+            }
             throw $e;
         }
 
@@ -390,9 +397,14 @@ class FileDriverManager
      */
     public function formatBytes($bytes)
     {
+        $multiplicator = 1;
+        if ( $bytes < 0 ) {
+            $multiplicator = -1;
+            $bytes = $bytes * $multiplicator;
+        }
         $unit = array('b','kb','mb','gb','tb','pb');
-        $fmt = @round($bytes/pow(1024, ($i=floor(log($bytes, 1024)))), 2) .
-            ' ' . $unit[$i];
+        $fmt = @round($bytes/pow(1024, ($i=floor(log($bytes, 1024)))), 2)
+            * $multiplicator . ' ' . $unit[$i];
         return $fmt;
     }
 
@@ -408,9 +420,24 @@ class FileDriverManager
     private function _storeRecord($table, $data ,$docid)
     {
         $data['doc_id'] = $docid;
-        $insert = $this->_zdb->insert($table)
-            ->values($data);
-        $add = $this->_zdb->execute($insert);
+
+        $stmt = null;
+        if ( $this->_updaterecord_stmt !== null ) {
+            $stmt = $this->_updaterecord_stmt;
+        } else {
+            $insert_fields = array();
+            foreach ( array_keys($data) as $field ) {
+                $insert_fields[$field] = ':' . $field;
+            }
+            $insert = $this->_zdb->insert($table)
+                ->values($insert_fields);
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                $insert
+            );
+            $this->_updaterecord_stmt = $stmt;
+        }
+
+        $add = $stmt->execute($data);
         if ( !$add->count() > 0 ) {
             throw new \RuntimeException(
                 'An error occured storing record!'
@@ -496,7 +523,7 @@ class FileDriverManager
         try {
             $fragid = $this->_storeRecord(
                 'ead_file_format',
-                $framgent,
+                $fragment,
                 $docid
             );
         } catch ( \RuntimeException $e) {

@@ -68,6 +68,9 @@ use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
  */
 class PublishCommand extends ContainerAwareCommand
 {
+    private $_insert_doc_stmt;
+    private $_update_doc_stmt;
+
     /**
      * Configures command
      *
@@ -280,8 +283,56 @@ EOF
                     if ( $type !== 'matricules' ) {
                         $progress->advance();
                         if ( $dry === false ) {
-                            $em->persist($document);
-                            $em->flush();
+                            $zdb = $this->getContainer()->get('zend_db');
+                            try {
+                                $zdb->connection->beginTransaction();
+
+                                $fields = array();
+                                $values = $document->toArray();
+                                foreach ( array_keys($values) as $field ) {
+                                    $fields[$field] = ':' . $field;
+                                }
+
+                                $stmt = null;
+                                if ( $document->getId() === null ) {
+                                    if ( $this->_insert_doc_stmt === null ) {
+                                        var_dump('CREATE INSERT STMT');
+                                        $insert = $zdb->insert('documents')
+                                            ->values($fields);
+                                        $stmt = $zdb->sql->prepareStatementForSqlObject(
+                                            $insert
+                                        );
+                                        $this->_insert_doc_stmt = $stmt;
+                                    } else {
+                                        $stmt = $this->_insert_doc_stmt;
+                                    }
+                                } else {
+                                    if ( $this->_update_doc_stmt === null ) {
+                                        var_dump('CREATE UPDATE STMT');
+                                        $update = $zdb->update('documents')
+                                            ->set($fields)
+                                            ->where(
+                                                array(
+                                                    'id' => ':id'
+                                                )
+                                            );
+                                        $stmt = $zdb->sql->prepareStatementForSqlObject(
+                                            $update
+                                        );
+                                        $this->_update_doc_stmt = $stmt;
+                                    } else {
+                                        $stmt = $this->_update_doc_stmt;
+                                    }
+
+                                    $values['where1'] = $values['id'];
+                                }
+
+                                $stmt->execute($values);
+                                $zdb->connection->commit();
+                            } catch ( \Exception $e ) {
+                                $zdb->connection->rollBack();
+                                throw $e;
+                            }
                         }
 
                         //create a new task
@@ -310,18 +361,35 @@ EOF
             if ( $type === 'matricules' && count($docs) > 0 ) {
                 $tasks = array();
                 $count = 0;
-                foreach ( $docs as $document ) {
-                    $count++;
-                    if ( $dry === false ) {
-                        $em->persist($document);
-                        if ( $count % 20000 === 0 ) {
-                            $em->flush();
-                        }
+
+                $zdb = $this->getContainer()->get('zend_db');
+                try {
+                    $zdb->connection->beginTransaction();
+
+                    $insert_fields = array();
+                    foreach ( array_keys($docs[0]->toArray()) as $field ) {
+                        $insert_fields[$field] = ':' . $field;
                     }
-                    $task = new IntegrationTask($document);
-                    $tasks[] = $task;
+
+                    $insert = $zdb->insert('documents')
+                        ->values($insert_fields);
+                    $stmt = $zdb->sql->prepareStatementForSqlObject(
+                        $insert
+                    );
+
+                    foreach ( $docs as $document ) {
+                        $values = $document->toArray();
+                        $stmt->execute($values);
+                        $task = new IntegrationTask($document);
+                        $tasks[] = $task;
+                        $count++;
+                    }
+                    $zdb->connection->commit();
+                } catch ( \Exception $e ) {
+                    $zdb->connection->rollBack();
+                    throw $e;
                 }
-                $em->flush();
+
                 $integrationService->integrateAll($tasks, $progress);
             }
 
