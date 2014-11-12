@@ -81,20 +81,20 @@ POSSIBILITY OF SUCH DAMAGE.
                     {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
                         {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
                     {%- else -%}
-                        {{ document.nom }}
+                        {{ document.nom|trim }}
                     {%- endif -%}
                     {% endset %}
                     {% set surname %}
                     {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
                         {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
                     {%- else -%}
-                        {% for prenom in document.prenoms %}
-                        {{ prenom }}
-                        {% endfor %}
+                        {%- for prenom in document.prenoms -%}
+                        {{ prenom ~ ' ' }}
+                        {%- endfor -%}
                     {%- endif -%}
                     {% endset %}
                     {% set birth_date = document.annee_naissance|date('Y') %}
-                    {% set full = name ~ ' ' ~ surname ~ ', ' ~ birth_date %}
+                    {% set full = name ~ ' ' ~ surname|trim ~ ', ' ~ birth_date %}
                     {{ full |raw }}
                 </a>
             </h3>

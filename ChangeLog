@@ -1,3 +1,6 @@
+1.0.2 (2014-11-12)
+- Remove additionnal spaces showing matricules as thumbnails
+
 1.0.1 (2014-10-31)
 - Clear filters and sort when a new search is performed
 - Open matricules images in a new tab
