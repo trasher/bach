@@ -286,48 +286,7 @@ EOF
                             $zdb = $this->getContainer()->get('zend_db');
                             try {
                                 $zdb->connection->beginTransaction();
-
-                                $fields = array();
-                                $values = $document->toArray();
-                                foreach ( array_keys($values) as $field ) {
-                                    $fields[$field] = ':' . $field;
-                                }
-
-                                $stmt = null;
-                                if ( $document->getId() === null ) {
-                                    if ( $this->_insert_doc_stmt === null ) {
-                                        var_dump('CREATE INSERT STMT');
-                                        $insert = $zdb->insert('documents')
-                                            ->values($fields);
-                                        $stmt = $zdb->sql->prepareStatementForSqlObject(
-                                            $insert
-                                        );
-                                        $this->_insert_doc_stmt = $stmt;
-                                    } else {
-                                        $stmt = $this->_insert_doc_stmt;
-                                    }
-                                } else {
-                                    if ( $this->_update_doc_stmt === null ) {
-                                        var_dump('CREATE UPDATE STMT');
-                                        $update = $zdb->update('documents')
-                                            ->set($fields)
-                                            ->where(
-                                                array(
-                                                    'id' => ':id'
-                                                )
-                                            );
-                                        $stmt = $zdb->sql->prepareStatementForSqlObject(
-                                            $update
-                                        );
-                                        $this->_update_doc_stmt = $stmt;
-                                    } else {
-                                        $stmt = $this->_update_doc_stmt;
-                                    }
-
-                                    $values['where1'] = $values['id'];
-                                }
-
-                                $stmt->execute($values);
+                                $this->_storeDocument($document);
                                 $zdb->connection->commit();
                             } catch ( \Exception $e ) {
                                 $zdb->connection->rollBack();
@@ -366,24 +325,18 @@ EOF
                 try {
                     $zdb->connection->beginTransaction();
 
-                    $insert_fields = array();
+                    $fields = array();
                     foreach ( array_keys($docs[0]->toArray()) as $field ) {
-                        $insert_fields[$field] = ':' . $field;
+                        $fields[$field] = ':' . $field;
                     }
 
-                    $insert = $zdb->insert('documents')
-                        ->values($insert_fields);
-                    $stmt = $zdb->sql->prepareStatementForSqlObject(
-                        $insert
-                    );
-
                     foreach ( $docs as $document ) {
-                        $values = $document->toArray();
-                        $stmt->execute($values);
+                        $this->_storeDocument($document);
                         $task = new IntegrationTask($document);
                         $tasks[] = $task;
                         $count++;
                     }
+                    unset($docs);
                     $zdb->connection->commit();
                 } catch ( \Exception $e ) {
                     $zdb->connection->rollBack();
@@ -431,6 +384,56 @@ EOF
             $output->writeln('Time elapsed: ' . $elapsed);
             $output->writeln('Memory peak: ' . $peak);
         }
+    }
+
+    /**
+     * Store document
+     *
+     * @param Document $document Document to store
+     *
+     * @return void
+     */
+    private function _storeDocument(Document $document)
+    {
+        $fields = array();
+        $values = $document->toArray();
+        foreach ( array_keys($values) as $field ) {
+            $fields[$field] = ':' . $field;
+        }
+
+        $stmt = null;
+        if ( $document->getId() === null ) {
+            if ( $this->_insert_doc_stmt === null ) {
+                $insert = $zdb->insert('documents')
+                    ->values($fields);
+                $stmt = $zdb->sql->prepareStatementForSqlObject(
+                    $insert
+                );
+                $this->_insert_doc_stmt = $stmt;
+            } else {
+                $stmt = $this->_insert_doc_stmt;
+            }
+        } else {
+            if ( $this->_update_doc_stmt === null ) {
+                $update = $zdb->update('documents')
+                    ->set($fields)
+                    ->where(
+                        array(
+                            'id' => ':id'
+                        )
+                    );
+                $stmt = $zdb->sql->prepareStatementForSqlObject(
+                    $update
+                );
+                $this->_update_doc_stmt = $stmt;
+            } else {
+                $stmt = $this->_update_doc_stmt;
+            }
+
+            $values['where1'] = $values['id'];
+        }
+
+        $stmt->execute($values);
     }
 
     /**
