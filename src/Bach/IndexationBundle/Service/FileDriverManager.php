@@ -75,7 +75,7 @@ class FileDriverManager
     private $_entityManager;
     private $_heritage;
     private $_zdb;
-    private $_updaterecord_stmt;
+    private $_stmts = array();
     public $used_mem = array();
 
     /**
@@ -166,14 +166,28 @@ class FileDriverManager
                     $results['eadheader']
                 );
 
-                $select = $this->_zdb->select('ead_header')
-                    ->limit(1)
-                    ->where(
-                        array(
-                            'headerId' => $eadheader['headerId']
-                        )
+                $stmt = null;
+                if ( isset($this->_stmts['select_eadheader']) ) {
+                    $stmt = $this->_stmts['select_eadheader'];
+                } else {
+                    $select = $this->_zdb->select('ead_header')
+                        ->limit(1)
+                        ->where(
+                            array(
+                                'headerId' => ':headerId'
+                            )
+                        );
+                    $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                        $select
                     );
-                $eadh_results = $this->_zdb->execute($select);
+                    $this->_stmts['select_eadheader'] = $stmt;
+                }
+
+                $eadh_results = $stmt->execute(
+                    array(
+                        'where1' => $eadheader['headerId']
+                    )
+                );
                 $eadh = $eadh_results->current();
 
                 if ( $eadh === false ) {
@@ -181,9 +195,24 @@ class FileDriverManager
                     $now = new \DateTime();
                     $eadheader['created'] = $now->format('Y-m-d h:m:s');
                     $eadheader['updated'] = $now->format('Y-m-d h:m:s');
-                    $insert = $this->_zdb->insert('ead_header')
-                        ->values($eadheader);
-                    $add = $this->_zdb->execute($insert);
+
+                    $stmt = null;
+                    if ( isset($this->_stmts['insert_header']) ) {
+                        $stmt = $this->_stmts['insert_header'];
+                    } else {
+                        $insert_fields = array();
+                        foreach ( array_keys($eadheader) as $field ) {
+                            $insert_fields[$field] = ':' . $field;
+                        }
+                        $insert = $this->_zdb->insert('ead_header')
+                            ->values($insert_fields);
+                        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                            $insert
+                        );
+                        $this->_stmts['insert_header'] = $stmt;
+                    }
+                    $add = $stmt->execute($eadheader);
+
                     if ( !$add->count() > 0 ) {
                         throw new \RuntimeException(
                             'An error occured storing EAD header ' .
@@ -192,7 +221,7 @@ class FileDriverManager
                     }
                     $headerid = $this->_zdb->getAutoIncrement('ead_header');
                 } else {
-                    $headerid = $eadh->id;
+                    $headerid = $eadh['id'];
                     $header_obj = new Entity\EADHeader(
                         $eadh,
                         false
@@ -201,10 +230,26 @@ class FileDriverManager
                         $eadheader
                     );
                     if ( $header_obj->hasChanges() ) {
-                        $update = $this->_zdb->update('ead_header')
-                            ->set($header_obj->toArray())
-                            ->where(array('id' => $headerid));
-                        $add = $this->_zdb->execute($update);
+                        $stmt = null;
+                        if ( isset($this->_stmts['update_header']) ) {
+                            $stmt = $this->_stmts['update_header'];
+                        } else {
+                            $values = $header_obj->toArray();
+                            $update_fields = array();
+                            foreach ( array_keys($values) as $field ) {
+                                $update_fields[$field] = ':' . $field;
+                            }
+                            $update = $this->_zdb->update('ead_header')
+                                ->set($update_fields)
+                                ->where(array('id' => ':id'));
+                            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                                $update
+                            );
+                            $this->_stmts['update_header'] = $stmt;
+                        }
+
+                        $values['where1'] = $headerid;
+                        $add = $stmt->execute($values);
                     }
                 }
 
@@ -212,14 +257,28 @@ class FileDriverManager
                 $mapper->setEadId($eadheader['headerId']);
                 $archdesc = $mapper->translate($results['archdesc']);
 
-                $select = $this->_zdb->select('ead_file_format')
-                    ->limit(1)
-                    ->where(
-                        array(
-                            'fragmentid' => $archdesc['fragmentid']
-                        )
+                $stmt = null;
+                if ( isset($this->_stmts['select_record']) ) {
+                    $stmt = $this->_stmts['select_record'];
+                } else {
+                    $select = $this->_zdb->select('ead_file_format')
+                        ->limit(1)
+                        ->where(
+                            array(
+                                'fragmentid' => ':fragmentid'
+                            )
+                        );
+                    $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                        $select
                     );
-                $archdesc_results = $this->_zdb->execute($select);
+                    $this->_stmts['select_record'] = $stmt;
+                }
+
+                $archdesc_results = $stmt->execute(
+                    array(
+                        'where1' => $archdesc['fragmentid']
+                    )
+                );
                 $eada = $archdesc_results->current();
 
                 if ( $eada === false ) {
@@ -235,7 +294,7 @@ class FileDriverManager
                         $docid
                     );
                 } else {
-                    $archdescid = $eada->uniqid;
+                    $archdescid = $eada['uniqid'];
 
                     $archdesc_obj = $this->_updateEadFragment(
                         $eada,
@@ -253,14 +312,28 @@ class FileDriverManager
                         $result
                     );
 
-                    $select = $this->_zdb->select('ead_file_format')
-                        ->limit(1)
-                        ->where(
-                            array(
-                                'fragmentid' => $fragment['fragmentid']
-                            )
+                    $stmt = null;
+                    if ( isset($this->_stmts['select_record']) ) {
+                        $stmt = $this->_stmts['select_record'];
+                    } else {
+                        $select = $this->_zdb->select('ead_file_format')
+                            ->limit(1)
+                            ->where(
+                                array(
+                                    'fragmentid' => ':fragmentid'
+                                )
+                            );
+                        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                            $select
                         );
-                    $fragment_results = $this->_zdb->execute($select);
+                        $this->_stmts['select_record'] = $stmt;
+                    }
+
+                    $fragment_results = $stmt->execute(
+                        array(
+                            'where1' => $fragment['fragmentid']
+                        )
+                    );
                     $eadf = $fragment_results->current();
 
                     if ( $eadf === false ) {
@@ -294,14 +367,28 @@ class FileDriverManager
                         $result
                     );
 
-                    $select = $this->_zdb->select('matricules_file_format')
-                        ->limit(1)
-                        ->where(
-                            array(
-                                'id' => $record['id'][0]['value']
-                            )
+                    $stmt = null;
+                    if ( isset($this->_stmts['select_record']) ) {
+                        $stmt = $this->_stmts['select_record'];
+                    } else {
+                        $select = $this->_zdb->select('matricules_file_format')
+                            ->limit(1)
+                            ->where(
+                                array(
+                                    'id' => ':id'
+                                )
+                            );
+                        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                            $select
                         );
-                    $db_records = $this->_zdb->execute($select);
+                        $this->_stmts['select_record'] = $stmt;
+                    }
+
+                    $db_records = $stmt->execute(
+                        array(
+                            'where1' => $record['id'][0]['value']
+                        )
+                    );
                     $db_record = $db_records->current();
 
                     if ( $db_record === false ) {
@@ -371,14 +458,14 @@ class FileDriverManager
             }
 
             if ( $descriptors === true ) {
-                $elements[$entry->type][] = array(
-                    'value'         => $entry->$value_prop,
+                $elements[$entry['type']][] = array(
+                    'value'         => $entry[$value_prop],
                     'attributes'    => $attributes
                 );
             } else {
                 $value = null;
                 if ( $value_prop !== null ) {
-                    $value = $entry->$value_prop;
+                    $value = $entry[$value_prop];
                 }
                 $elements[] = array(
                     'value'         => $value,
@@ -403,8 +490,8 @@ class FileDriverManager
         $data['doc_id'] = $docid;
 
         $stmt = null;
-        if ( $this->_updaterecord_stmt !== null ) {
-            $stmt = $this->_updaterecord_stmt;
+        if ( isset($this->_stmts['insert_record']) ) {
+            $stmt = $this->_stmts['insert_record'];
         } else {
             $insert_fields = array();
             foreach ( array_keys($data) as $field ) {
@@ -415,7 +502,7 @@ class FileDriverManager
             $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
                 $insert
             );
-            $this->_updaterecord_stmt = $stmt;
+            $this->_stmts['insert_record'] = $stmt;
         }
 
         $add = $stmt->execute($data);
@@ -467,10 +554,25 @@ class FileDriverManager
         if ( $obj->hasChanges() ) {
             $values = $obj->toArray();
 
-            $update = $this->_zdb->update('matricules_file_format')
-                ->set($values)
-                ->where(array('uniqid' => $data['uniqid']));
-            $add = $this->_zdb->execute($update);
+            $stmt = null;
+            if ( isset($this->_stmts['update_record']) ) {
+                $stmt = $this->_stmts['update_record'];
+            } else {
+                $update_fields = array();
+                foreach ( array_keys($values) as $field ) {
+                    $update_fields[$field] = ':' . $field;
+                }
+                $update = $this->_zdb->update('matricules_file_format')
+                    ->set($update_fields)
+                    ->where(array('uniqid' => ':uniqid'));
+                $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                    $update
+                );
+                $this->_stmts['update_record'] = $stmt;
+            }
+
+            $values['where1'] = $data['uniqid'];
+            $add = $stmt->execute($values);
         }
 
         return $obj;
@@ -577,14 +679,27 @@ class FileDriverManager
             $fragment['archdesc'] = $archdesc;
         }
 
+        $where = array(
+            'where1' => $fragment['uniqid']
+        );
+
         //handle indexes
-        $select = $this->_zdb->select('ead_indexes')
-            ->where(
-                array(
-                    'eadfile_id' => $fragment['uniqid']
-                )
+        $stmt = null;
+        if ( isset($this->_stmts['select_indexes']) ) {
+            $stmt = $this->_stmts['select_indexes'];
+        } else {
+            $select = $this->_zdb->select('ead_indexes')
+                ->where(
+                    array(
+                        'eadfile_id' => ':eadfile_id'
+                    )
+                );
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                $select
             );
-        $indexes = $this->_zdb->execute($select);
+            $this->_stmts['select_indexes'] = $stmt;
+        }
+        $indexes = $stmt->execute($where);
         $fragment['descriptors'] = $this->_elementsAsArray(
             $indexes,
             'name',
@@ -593,13 +708,22 @@ class FileDriverManager
         );
 
         //handle dates
-        $select = $this->_zdb->select('ead_dates')
-            ->where(
-                array(
-                    'eadfile_id' => $fragment['uniqid']
-                )
+        $stmt = null;
+        if ( isset($this->_stmts['select_dates']) ) {
+            $stmt = $this->_stmts['select_dates'];
+        } else {
+            $select = $this->_zdb->select('ead_dates')
+                ->where(
+                    array(
+                        'eadfile_id' => ':eadfile_id'
+                    )
+                );
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                $select
             );
-        $dates = $this->_zdb->execute($select);
+            $this->_stmts['select_dates'] = $stmt;
+        }
+        $dates = $stmt->execute($where);
         $fragment['cDate'] = $this->_elementsAsArray(
             $dates,
             'date',
@@ -607,13 +731,22 @@ class FileDriverManager
         );
 
         //handle daos
-        $select = $this->_zdb->select('ead_daos')
-            ->where(
-                array(
-                    'eadfile_id' => $fragment['uniqid']
-                )
+        $stmt = null;
+        if ( isset($this->_stmts['select_daos']) ) {
+            $stmt = $this->_stmts['select_daos'];
+        } else {
+            $select = $this->_zdb->select('ead_daos')
+                ->where(
+                    array(
+                        'eadfile_id' => ':eadfile_id'
+                    )
+                );
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                $select
             );
-        $daos = $this->_zdb->execute($select);
+            $this->_stmts['select_daos'] = $stmt;
+        }
+        $daos = $stmt->execute($where);
         $fragment['daolist'] = $this->_elementsAsArray(
             $daos,
             null,
@@ -621,13 +754,22 @@ class FileDriverManager
         );
 
         if ( $fragment['parents'] ) {
-            $select = $this->_zdb->select('ead_parent_title')
-                ->where(
-                    array(
-                        'eadfile_id' => $fragment['uniqid']
-                    )
+            $stmt = null;
+            if ( isset($this->_stmts['select_ptitles']) ) {
+                $stmt = $this->_stmts['select_ptitles'];
+            } else {
+                $select = $this->_zdb->select('ead_parent_title')
+                    ->where(
+                        array(
+                            'eadfile_id' => ':eadfile_id'
+                        )
+                    );
+                $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                    $select
                 );
-            $parents_titles = $this->_zdb->execute($select);
+                $this->_stmts['select_ptitles'] = $stmt;
+            }
+            $parents_titles = $stmt->execute($where);
             $pids = explode('/', $fragment['parents']);
             $i = 0;
             foreach ( $parents_titles as $ptitle ) {
@@ -655,10 +797,25 @@ class FileDriverManager
             $parents_titles = $values['parents_titles'];
             unset($values['parents_titles']);
 
-            $update = $this->_zdb->update('ead_file_format')
-                ->set($values)
-                ->where(array('uniqid' => $fragment['uniqid']));
-            $add = $this->_zdb->execute($update);
+            $stmt = null;
+            if ( isset($this->_stmts['update_record']) ) {
+                $stmt = $this->_stmts['update_record'];
+            } else {
+                $update_fields = array();
+                foreach ( array_keys($values) as $field ) {
+                    $update_fields[$field] = ':' . $field;
+                }
+                $update = $this->_zdb->update('ead_file_format')
+                    ->set($update_fields)
+                    ->where(array('uniqid' => ':uniqid'));
+                $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                    $update
+                );
+                $this->_stmts['update_record'] = $stmt;
+            }
+
+            $values['where1'] = $fragment['uniqid'];
+            $add = $stmt->execute($values);
 
             //TODO: take care of removals!
         }
@@ -678,18 +835,24 @@ class FileDriverManager
      */
     private function _storeSubElements($table, $elements, $fragid)
     {
-        $insert = $this->_zdb->insert($table);
-        $fields = array_keys($elements[0]);
-        $insert_fields = array();
-        foreach ( $fields as $field ) {
-            $insert_fields[$field] = ':' . $field;
-        }
-        $insert_fields['eadfile_id'] = ':eadfile_id';
+        $stmt = null;
+        if ( isset($this->_stmts['store_subs_' . $table]) ) {
+            $stmt = $this->_stmts['store_subs_' . $table];
+        } else {
+            $insert = $this->_zdb->insert($table);
+            $fields = array_keys($elements[0]);
+            $insert_fields = array();
+            foreach ( $fields as $field ) {
+                $insert_fields[$field] = ':' . $field;
+            }
+            $insert_fields['eadfile_id'] = ':eadfile_id';
 
-        $insert->values($insert_fields);
-        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-            $insert
-        );
+            $insert->values($insert_fields);
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                $insert
+            );
+            $this->_stmts['store_subs_' . $table] = $stmt;
+        }
 
         foreach ( $elements as $element ) {
             $element['eadfile_id'] = $fragid;
