@@ -278,7 +278,7 @@ class FileDriverManager
                     } else {
                         $this->_updateEadFragment(
                             $eadf,
-                            $archdesc,
+                            $fragment,
                             $header_obj,
                             $archdesc_obj,
                             $doc
@@ -379,8 +379,12 @@ class FileDriverManager
                     'attributes'    => $attributes
                 );
             } else {
-                 $elements[] = array(
-                    'value'         => $entry->$value_prop,
+                $value = null;
+                if ( $value_prop !== null ) {
+                    $value = $entry->$value_prop;
+                }
+                $elements[] = array(
+                    'value'         => $value,
                     'attributes'    => $attributes
                 );
             }
@@ -625,7 +629,36 @@ class FileDriverManager
             array('date', 'begin', 'end')
         );
 
-        //TODO: take care of other linked elements!
+        //handle daos
+        $select = $this->_zdb->select('ead_daos')
+            ->where(
+                array(
+                    'eadfile_id' => $fragment['uniqid']
+                )
+            );
+        $daos = $this->_zdb->execute($select);
+        $fragment['daolist'] = $this->_elementsAsArray(
+            $daos,
+            null,
+            array()
+        );
+
+        if ( $fragment['parents'] ) {
+            $select = $this->_zdb->select('ead_parent_title')
+                ->where(
+                    array(
+                        'eadfile_id' => $fragment['uniqid']
+                    )
+                );
+            $parents_titles = $this->_zdb->execute($select);
+            $pids = explode('/', $fragment['parents']);
+            $i = 0;
+            foreach ( $parents_titles as $ptitle ) {
+                $pid = $pids[$i];
+                $fragment['parents_titles'][$pid] = $ptitle['unittitle'];
+                $i++;
+            }
+        }
 
         $obj = new Entity\EADFileFormat(
             $fragment,
