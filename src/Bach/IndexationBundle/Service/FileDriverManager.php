@@ -76,6 +76,7 @@ class FileDriverManager
     private $_heritage;
     private $_zdb;
     private $_updaterecord_stmt;
+    public $used_mem = array();
 
     /**
      * Constructor
@@ -113,7 +114,7 @@ class FileDriverManager
     public function convert(DataBag $bag, $format, $doc, $transaction = true,
         $preprocessor = null
     ) {
-        $baseMemory = memory_get_usage();
+        $start_memory = memory_get_usage();
 
         if ( !array_key_exists($format, $this->_drivers) ) {
             throw new \DomainException('Unsupported file format: ' . $format);
@@ -335,11 +336,7 @@ class FileDriverManager
             throw $e;
         }
 
-        $size = memory_get_usage() - $baseMemory;
-        $consumed = $this->formatBytes(memory_get_usage() - $baseMemory);
-        $peak = $this->formatBytes(memory_get_peak_usage());
-
-        echo "\nConsumed memory: " . $consumed . ' - Peak: ' . $peak . "\n";
+        $this->used_mem[$docid] = memory_get_usage() - $start_memory;
     }
 
     /**
@@ -390,26 +387,6 @@ class FileDriverManager
             }
         }
         return $elements;
-    }
-
-    /**
-     * Format bytes to human readable value
-     *
-     * @param int $bytes Bytes
-     *
-     * @return string
-     */
-    public function formatBytes($bytes)
-    {
-        $multiplicator = 1;
-        if ( $bytes < 0 ) {
-            $multiplicator = -1;
-            $bytes = $bytes * $multiplicator;
-        }
-        $unit = array('b','kb','mb','gb','tb','pb');
-        $fmt = @round($bytes/pow(1024, ($i=floor(log($bytes, 1024)))), 2)
-            * $multiplicator . ' ' . $unit[$i];
-        return $fmt;
     }
 
     /**
