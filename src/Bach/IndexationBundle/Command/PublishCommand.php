@@ -54,6 +54,7 @@ Use Symfony\Component\HttpFoundation\File\File;
 use Bach\IndexationBundle\Entity\Document;
 use Bach\IndexationBundle\Entity\IntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\IndexationBundle\Service\ZendDb;
 
 /**
  * Publication command
@@ -286,7 +287,7 @@ EOF
                             $zdb = $this->getContainer()->get('zend_db');
                             try {
                                 $zdb->connection->beginTransaction();
-                                $this->_storeDocument($document);
+                                $this->_storeDocument($zdb, $document);
                                 $zdb->connection->commit();
                             } catch ( \Exception $e ) {
                                 $zdb->connection->rollBack();
@@ -331,7 +332,7 @@ EOF
                     }
 
                     foreach ( $docs as $document ) {
-                        $this->_storeDocument($document);
+                        $this->_storeDocument($zdb, $document);
                         $task = new IntegrationTask($document);
                         $tasks[] = $task;
                         $count++;
@@ -389,11 +390,12 @@ EOF
     /**
      * Store document
      *
+     * @param ZendDb   $zdb      ZDB instance
      * @param Document $document Document to store
      *
      * @return void
      */
-    private function _storeDocument(Document $document)
+    private function _storeDocument(ZendDb $zdb, Document $document)
     {
         $fields = array();
         $values = $document->toArray();
