@@ -1572,6 +1572,10 @@ div.sonata-bc .btn-primary:hover {
     margin-bottom: .2em;
 }
 
+#saveFilters {
+    padding: 0.5em 0;
+}
+
 /**
  * ===== CDC =====
  */

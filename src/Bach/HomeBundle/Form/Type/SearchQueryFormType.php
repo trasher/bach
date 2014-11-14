@@ -93,6 +93,14 @@ class SearchQueryFormType extends AbstractType
                 )
             )
         )->add(
+            'saveFilters',
+            'checkbox',
+            array(
+                'data'      => true,
+                'label'     => _('Save all filters'),
+                'required'  => false
+            )
+        )->add(
             'perform_search',
             'submit',
             array(

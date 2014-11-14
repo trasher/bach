@@ -201,6 +201,10 @@ POSSIBILITY OF SUCH DAMAGE.
     <form action="{{ path(block('do_search_path'), {'form_name': search_form}) }}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
             {{ form_widget(form.query) }}
+            <div id="saveFilters">
+                {{ form_label(form.saveFilters) }}
+                {{ form_widget(form.saveFilters) }}
+            </div>
             {{ form_widget(form._token) }}
             {{ form_widget(form.perform_search) }}
             {% if has_advanced is defined %}

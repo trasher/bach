@@ -340,7 +340,6 @@ class DefaultController extends SearchController
                 $url_vars = array('query_terms' => $q);
 
                 $session = $request->getSession();
-                $session->set($this->getFiltersName(), null);
                 $view_params = $session->get($this->getParamSessionName());
                 $view_params->setOrder((int)$request->get('results_order'));
                 $session->set($this->getParamSessionName(), $view_params);
@@ -350,6 +349,9 @@ class DefaultController extends SearchController
                 ) {
                     $url_vars['filter_field'] = $request->get('filter_field');
                     $url_vars['filter_value'] = $request->get('filter_value');
+                }
+                if ( $form->getData()->isSaveFilters() != 1 ) {
+                    $session->set($this->getFiltersName(), null);
                 }
 
                 $route = 'bach_archives';
