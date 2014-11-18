@@ -119,7 +119,10 @@ class MatriculesController extends SearchController
             $tpl_vars['search_path'] = 'bach_matricules';
         } else {
             $form = $this->createForm(
-                new SearchQueryFormType($query_terms),
+                new SearchQueryFormType(
+                    $query_terms,
+                    !is_null($query_terms)
+                ),
                 null
             );
             $tpl_vars['search_path'] = 'bach_matricules_do_search';
@@ -399,7 +402,7 @@ class MatriculesController extends SearchController
                 );
 
                 $session = $this->getRequest()->getSession();
-                if ( $form->getData()->isSaveFilters() != 1 ) {
+                if ( $form->getData()->keep_filters != 1 ) {
                     $session->set($this->getFiltersName(), null);
                 }
                 $view_params = $session->get($this->getParamSessionName());

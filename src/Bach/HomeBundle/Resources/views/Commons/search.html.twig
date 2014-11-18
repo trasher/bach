@@ -201,10 +201,12 @@ POSSIBILITY OF SUCH DAMAGE.
     <form action="{{ path(block('do_search_path'), {'form_name': search_form}) }}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
             {{ form_widget(form.query) }}
-            <div id="saveFilters">
-                {{ form_label(form.saveFilters) }}
-                {{ form_widget(form.saveFilters) }}
+            {% if form.keep_filters is defined %}
+            <div id="keepFilters" title="{{ _('Unckeck if you do not want to keep existing filters with your new search') }}">
+                {{ form_label(form.keep_filters) }}
+                {{ form_widget(form.keep_filters) }}
             </div>
+            {% endif %}
             {{ form_widget(form._token) }}
             {{ form_widget(form.perform_search) }}
             {% if has_advanced is defined %}
@@ -339,6 +341,10 @@ POSSIBILITY OF SUCH DAMAGE.
     {% if searchResults is defined and searchResults|length > 0 %}
     $('.show_more a').unbind('click');
     {% endif %}
+{% endblock %}
+
+{% block mobile_js_off %}
+    $('#keepFilters').tooltip();
 {% endblock %}
 
 {% block javascripts %}

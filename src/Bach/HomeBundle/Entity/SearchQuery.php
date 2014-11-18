@@ -58,7 +58,7 @@ namespace Bach\HomeBundle\Entity;
 class SearchQuery
 {
     protected $query;
-    protected $saveFilters;
+    public $keep_filters;
 
     /**
      * Set query
@@ -81,28 +81,5 @@ class SearchQuery
     public function getQuery()
     {
         return $this->query;
-    }
-
-    /**
-     * Set saveFilters
-     *
-     * @param boolean $saveFilters saveFilters
-     *
-     * @return SearchQuery
-     */
-    public function setSaveFilters($saveFilters)
-    {
-        $this->saveFilters = $saveFilters;
-        return $this;
-    }
-
-    /**
-     * Get saveFilters
-     *
-     * @return boolean
-     */
-    public function isSaveFilters()
-    {
-        return $this->saveFilters;
     }
 }

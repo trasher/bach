@@ -988,6 +988,7 @@ h2.back a:hover {
 #dates_plot {
     height: 100px;
     width: 100%;
+    clear: right;
 }
 
 [id=map] {
@@ -1572,8 +1573,10 @@ div.sonata-bc .btn-primary:hover {
     margin-bottom: .2em;
 }
 
-#saveFilters {
-    padding: 0.5em 0;
+#keepFilters {
+    padding: 0.5em;
+    text-align: right;
+    float: right
 }
 
 /**

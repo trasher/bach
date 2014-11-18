@@ -146,6 +146,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {# Binded when in mobile mode #}
 {% block mobile_js_on %}
+    {{ parent() }}
     $('.display_doc').unbind('click');
 {% endblock %}
 

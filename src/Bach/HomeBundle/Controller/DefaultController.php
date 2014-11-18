@@ -174,7 +174,10 @@ class DefaultController extends SearchController
 
         // On effectue une recherche
         $form = $this->createForm(
-            new SearchQueryFormType($query_terms),
+            new SearchQueryFormType(
+                $query_terms,
+                !is_null($query_terms)
+            ),
             new SearchQuery()
         );
 
@@ -350,7 +353,7 @@ class DefaultController extends SearchController
                     $url_vars['filter_field'] = $request->get('filter_field');
                     $url_vars['filter_value'] = $request->get('filter_value');
                 }
-                if ( $form->getData()->isSaveFilters() != 1 ) {
+                if ( $form->getData()->keep_filters != 1 ) {
                     $session->set($this->getFiltersName(), null);
                 }
 
