@@ -1,3 +1,7 @@
+1.0.3 (2014-11-20)
+- Fix missing translation
+- Fix ACLs in administration UI
+
 1.0.2 (2014-11-12)
 - Remove additionnal spaces showing matricules as thumbnails
 
