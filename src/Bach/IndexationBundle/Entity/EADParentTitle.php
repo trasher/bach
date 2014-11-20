@@ -107,6 +107,19 @@ class EADParentTitle
     }
 
     /**
+     * Set id
+     *
+     * @param int $id Id
+     *
+     * @return EADParentTitle
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * Set title
      *
      * @param string $title Title

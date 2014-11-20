@@ -596,7 +596,16 @@ class EADFileFormat extends FileFormat
                 }
 
                 if ( $unique === true ) {
-                    $this->addIndex(new EADIndexes($this, $type, $index));
+                    $id = null;
+                    if ( isset($index['id']) ) {
+                        $id = $index['id'];
+                        unset($index['id']);
+                    }
+                    $idx = new EADIndexes($this, $type, $index);
+                    if ( $id !== null ) {
+                        $idx->setId($id);
+                    }
+                    $this->addIndex($idx);
                     $has_changed = true;
                 }
             }
@@ -711,6 +720,10 @@ class EADFileFormat extends FileFormat
                 }
 
                 if ( $unique === true ) {
+                    $id = null;
+                    if ( isset($date['id']) ) {
+                        $odate->setId($date['id']);
+                    }
                     $this->addDate($odate);
                     $has_changed = true;
                 }
@@ -798,7 +811,16 @@ class EADFileFormat extends FileFormat
             }
 
             if ( $unique === true ) {
-                $this->addDao(new EADDaos($this, $dao));
+                $id = null;
+                if ( isset($dao['id']) ) {
+                    $id = $dao['id'];
+                    unset($dao['id']);
+                }
+                $ndao = new EADDaos($this, $dao);
+                if ( $id !== null ) {
+                    $ndao->setId($id);
+                }
+                $this->addDao($ndao);
                 $has_changed = true;
             }
         }
@@ -885,7 +907,16 @@ class EADFileFormat extends FileFormat
             }
 
             if ( $unique === true ) {
-                $this->addParentTitle(new EADParentTitle($this, $ptitle));
+                $id = null;
+                if ( isset($ptitle['id']) ) {
+                    $id = $ptitle['id'];
+                    unset($ptitle['id']);
+                }
+                $parent_title = new EADParentTitle($this, $ptitle);
+                if ( $id !== null ) {
+                    $parent_title->setId($id);
+                }
+                $this->addParentTitle($parent_title);
                 $has_changed = true;
             }
         }

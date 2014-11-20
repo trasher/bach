@@ -460,6 +460,7 @@ class FileDriverManager
             if ( $descriptors === true ) {
                 $elements[$entry['type']][] = array(
                     'value'         => $entry[$value_prop],
+                    'id'            => $entry['id'],
                     'attributes'    => $attributes
                 );
             } else {
@@ -469,6 +470,7 @@ class FileDriverManager
                 }
                 $elements[] = array(
                     'value'         => $value,
+                    'id'            => $entry['id'],
                     'attributes'    => $attributes
                 );
             }
@@ -522,7 +524,7 @@ class FileDriverManager
      * @param array    $newvals New values fom conversion
      * @param Document $doc     Document element
      *
-     * @return EADFileFormat
+     * @return MatriculesFileFormat
      */
     private function _updateMatRecord($data, $newvals,
         Entity\Document $doc
@@ -616,12 +618,36 @@ class FileDriverManager
             );
         }
 
+        $this->_addSubElements(
+            $fragid,
+            $indexes,
+            $dates,
+            $daos,
+            $parents_titles
+        );
+
+        return $fragid;
+    }
+
+    /**
+     * Adds sub elements
+     *
+     * @param string $fid     Fragment id
+     * @param array  $indexes Indexes
+     * @param array  $dates   Dates
+     * @param array  $daos    Daos
+     * @param array  $ptitles Parents titles
+     *
+     * @return void
+     */
+    private function _addSubElements($fid, $indexes, $dates, $daos, $ptitles)
+    {
         if ( count($indexes) > 0 ) {
             //handle indexes
             $this->_storeSubElements(
                 'ead_indexes',
                 $indexes,
-                $fragid
+                $fid
             );
         }
 
@@ -630,7 +656,7 @@ class FileDriverManager
             $this->_storeSubElements(
                 'ead_dates',
                 $dates,
-                $fragid
+                $fid
             );
         }
 
@@ -639,20 +665,19 @@ class FileDriverManager
             $this->_storeSubElements(
                 'ead_daos',
                 $daos,
-                $fragid
+                $fid
             );
         }
 
-        if ( count($parents_titles) > 0 ) {
+        if ( count($ptitles) > 0 ) {
             //handle parents_titles
             $this->_storeSubElements(
                 'ead_parent_title',
-                $parents_titles,
-                $fragid
+                $ptitles,
+                $fid
             );
         }
 
-        return $fragid;
     }
 
     /**
@@ -788,13 +813,9 @@ class FileDriverManager
         if ( $obj->hasChanges() ) {
             $values = $obj->toArray();
 
-            $indexes = $values['indexes'];
             unset($values['indexes']);
-            $dates = $values['dates'];
             unset($values['dates']);
-            $daos = $values['daos'];
             unset($values['daos']);
-            $parents_titles = $values['parents_titles'];
             unset($values['parents_titles']);
 
             $stmt = null;
@@ -817,7 +838,64 @@ class FileDriverManager
             $values['where1'] = $fragment['uniqid'];
             $add = $stmt->execute($values);
 
-            //TODO: take care of removals!
+            $removed = $obj->getRemoved();
+            if ( count($removed) > 0 ) {
+                foreach ( $removed as $r ) {
+                    $meta = $this->_entityManager->getClassMetadata(get_class($r));
+                    //table name from entity
+                    $table_name = $meta->getTablename();
+
+                    $delete = $this->_zdb->delete($table_name)
+                        ->where(
+                            array(
+                                'id' => $r->getId()
+                            )
+                        );
+                    $this->_zdb->execute($delete);
+                }
+            }
+
+            //take care of new related data
+            $indexes = $obj->getIndexes();
+            $indexes_to_store = array();
+            foreach ( $indexes as $index ) {
+                if ( $index->getId() === null ) {
+                    $indexes_to_store[] = $index->toArray();
+                }
+            }
+
+            $dates = $obj->getDates();
+            $dates_to_store = array();
+            foreach ( $dates as $date ) {
+                if ( $date->getId() === null ) {
+                    $dates_to_store[] = $date->toArray();
+                }
+            }
+
+            $daos = $obj->getDaos();
+            $daos_to_store = array();
+            foreach ( $daos as $dao ) {
+                if ( $dao->getId() === null ) {
+                    $daos_to_store[] = $dao->toArray();
+                }
+            }
+
+            $p_titles = $obj->getParentsTitles();
+            $p_titles_to_store = array();
+            foreach ( $p_titles as $p_title ) {
+                if ( $p_title->getId() === null ) {
+                    $p_titles_to_store[] = $p_title->toArray();
+                }
+            }
+
+            $this->_addSubElements(
+                $fragment['uniqid'],
+                $indexes_to_store,
+                $dates_to_store,
+                $daos_to_store,
+                $p_titles_to_store
+            );
+
         }
 
         return $obj;

@@ -277,6 +277,19 @@ class EADDates
     }
 
     /**
+     * Set id
+     *
+     * @param int $id Id
+     *
+     * @return EADDates
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * Set date
      *
      * @param string $date Date (textual)

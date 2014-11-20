@@ -191,6 +191,19 @@ class EADIndexes
     }
 
     /**
+     * Set id
+     *
+     * @param int $id Id
+     *
+     * @return EADIndexes
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * Set type
      *
      * @param string $type Type

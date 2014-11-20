@@ -139,6 +139,19 @@ class EADDaos
     }
 
     /**
+     * Set id
+     *
+     * @param int $id Id
+     *
+     * @return EADDaos
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * Set href
      *
      * @param string $href Hyperlink
