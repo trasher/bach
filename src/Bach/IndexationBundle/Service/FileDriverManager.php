@@ -799,7 +799,10 @@ class FileDriverManager
             $i = 0;
             foreach ( $parents_titles as $ptitle ) {
                 $pid = $pids[$i];
-                $fragment['parents_titles'][$pid] = $ptitle['unittitle'];
+                $fragment['parents_titles'][$pid] = array(
+                    'id'    => $ptitle['id'],
+                    'value' => $ptitle['unittitle']
+                );
                 $i++;
             }
         }

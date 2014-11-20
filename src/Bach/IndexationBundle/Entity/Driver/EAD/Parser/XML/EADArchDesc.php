@@ -265,7 +265,9 @@ class EADArchDesc
                     array_merge(
                         $parents,
                         array(
-                            $nodeid => $current_title
+                            $nodeid => array(
+                                'value' => $current_title
+                            )
                         )
                     )
                 );
@@ -312,7 +314,7 @@ class EADArchDesc
     {
         $result = array();
 
-        if ( $parents !== null ) {
+        if ( $parents !== null && count($parents) > 0 ) {
             $result['parents'] = $parents;
         }
 

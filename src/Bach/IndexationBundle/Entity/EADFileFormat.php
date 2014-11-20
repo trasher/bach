@@ -883,7 +883,7 @@ class EADFileFormat extends FileFormat
             $found = false;
             $title = $ptitle->getTitle();
             foreach ( $data as $new_ptitle ) {
-                if ( $title === $new_ptitle ) {
+                if ( $title === $new_ptitle['value'] ) {
                     $found = true;
                     break;
                 }
@@ -900,7 +900,7 @@ class EADFileFormat extends FileFormat
             $unique = true;
 
             foreach ( $this->parents_titles as $i ) {
-                if ( $i->getTitle() == $ptitle ) {
+                if ( $i->getTitle() == $ptitle['value'] ) {
                     $unique = false;
                     break;
                 }
@@ -912,7 +912,7 @@ class EADFileFormat extends FileFormat
                     $id = $ptitle['id'];
                     unset($ptitle['id']);
                 }
-                $parent_title = new EADParentTitle($this, $ptitle);
+                $parent_title = new EADParentTitle($this, $ptitle['value']);
                 if ( $id !== null ) {
                     $parent_title->setId($id);
                 }
