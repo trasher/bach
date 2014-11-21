@@ -915,53 +915,53 @@ class FileDriverManager
         &$doctrine_entity, &$preprocessor
     ) {
         //Import driver configuration
-        if (array_key_exists('drivers', $this->_conf)) {
-            if (array_key_exists($format, $this->_conf['drivers'])) {
-                $format_conf = $this->_conf['drivers'][$format];
-                if (array_key_exists('mapper', $format_conf)) {
-                    try {
-                        $reflection = new \ReflectionClass(
-                            $format_conf['mapper']
+        if (array_key_exists($format, $this->_conf['drivers'])) {
+            $format_conf = $this->_conf['drivers'][$format];
+            if (array_key_exists('mapper', $format_conf)
+                && $this->_mapper === null
+            ) {
+                try {
+                    $reflection = new \ReflectionClass(
+                        $format_conf['mapper']
+                    );
+
+                    $expected = 'Bach\IndexationBundle' .
+                        '\DriverMapperInterface';
+                    $interfaces = $reflection->getInterfaceNames();
+
+                    if ( !in_array($expected, $interfaces)) {
+                        throw new \RuntimeException(
+                            'Found mapper does not implements ' . $expected
                         );
-
-                        $expected = 'Bach\IndexationBundle' .
-                            '\DriverMapperInterface';
-                        $interfaces = $reflection->getInterfaceNames();
-
-                        if ( !in_array($expected, $interfaces)) {
-                            throw new \RuntimeException(
-                                'Found mapper does not implements ' . $expected
-                            );
-                        }
-                        $this->_mapper = $reflection->newInstance();
-                    } catch (\RuntimeException $e) {
-                        throw $e;
                     }
+                    $this->_mapper = $reflection->newInstance();
+                } catch (\RuntimeException $e) {
+                    throw $e;
                 }
+            }
 
-                if ( array_key_exists('fileformat', $format_conf) ) {
-                    $fileformat_class = $format_conf['fileformat'];
-                } else {
-                    throw new \RuntimeException(
-                        'Driver configuration for ' . $format .
-                        ' is missing the fileformat entry.'
-                    );
-                }
+            if ( array_key_exists('fileformat', $format_conf) ) {
+                $fileformat_class = $format_conf['fileformat'];
+            } else {
+                throw new \RuntimeException(
+                    'Driver configuration for ' . $format .
+                    ' is missing the fileformat entry.'
+                );
+            }
 
-                if ( array_key_exists('doctrine', $format_conf) ) {
-                    $doctrine_entity = $format_conf['doctrine'];
-                } else {
-                    throw new \RuntimeException(
-                        'Driver configuration for ' . $format .
-                        ' is missing the doctrine entry.'
-                    );
-                }
+            if ( array_key_exists('doctrine', $format_conf) ) {
+                $doctrine_entity = $format_conf['doctrine'];
+            } else {
+                throw new \RuntimeException(
+                    'Driver configuration for ' . $format .
+                    ' is missing the doctrine entry.'
+                );
+            }
 
-                if ( array_key_exists('preprocessor', $format_conf)
-                    && is_null($preprocessor)
-                ) {
-                    $preprocessor = $format_conf['preprocessor'];
-                }
+            if ( array_key_exists('preprocessor', $format_conf)
+                && is_null($preprocessor)
+            ) {
+                $preprocessor = $format_conf['preprocessor'];
             }
         }
 
@@ -1001,7 +1001,9 @@ class FileDriverManager
                     'Bach\IndexationBundle\Entity\Driver\\'.
                     $file->getBasename().'\\Driver'
                 );
-                if ('Bach\IndexationBundle\Entity\FileDriver' == $reflection->getParentClass()->getName()) {
+
+                $expected = 'Bach\IndexationBundle\Entity\FileDriver';
+                if ($expected == $reflection->getParentClass()->getName()) {
                     $configuration = array();
                     if ( array_key_exists('drivers', $this->_conf) ) {
                         $basename = strtolower($file->getBasename());
