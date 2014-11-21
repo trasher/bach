@@ -408,6 +408,76 @@ class EADFileFormat extends FileFormat
                 );
             }
         }
+
+        //check for sub-elements removal
+        $this->_checkRemovals($data);
+    }
+
+    /**
+     * Check for elements that have all been removed
+     *
+     * @param array $data Data
+     *
+     * @return void
+     */
+    private function _checkRemovals($data)
+    {
+        //check if indexes has been removed
+        if ( !isset($data['descriptors'])
+            && $this->indexes->count() > 0
+        ) {
+            $this->onPropertyChanged(
+                'indexes',
+                $this->indexes,
+                new ArrayCollection()
+            );
+            foreach ( $this->indexes as $index ) {
+                $this->removeIndex($index);
+                $this->removed[] = $index;
+            }
+        }
+
+        if ( !isset($data['cDate'])
+            && $this->dates->count() > 0
+        ) {
+            $this->onPropertyChanged(
+                'dates',
+                $this->dates,
+                new ArrayCollection()
+            );
+            foreach ( $this->dates as $date ) {
+                $this->removeDate($date);
+                $this->removed[] = $date;
+            }
+        }
+
+        if ( !isset($data['daolist'])
+            && $this->daos->count() > 0
+        ) {
+            $this->onPropertyChanged(
+                'daos',
+                $this->daos,
+                new ArrayCollection()
+            );
+            foreach ( $this->daos as $dao ) {
+                $this->removeDao($dao);
+                $this->removed[] = $dao;
+            }
+        }
+
+        if ( !isset($data['parents_titles'])
+            && $this->parents_titles->count() > 0
+        ) {
+            $this->onPropertyChanged(
+                'parents_titles',
+                $this->parents_titles,
+                new ArrayCollection()
+            );
+            foreach ( $this->parents_titles as $ptitle ) {
+                $this->removeParentTitle($ptitle);
+                $this->removed[] = $ptitle;
+            }
+        }
     }
 
     /**
