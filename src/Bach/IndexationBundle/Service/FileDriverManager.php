@@ -53,6 +53,7 @@ use Bach\IndexationBundle\Entity\FileFormat;
 use Bach\IndexationBundle\Entity;
 use Bach\IndexationBundle\Entity\DataBag;
 use Bach\IndexationBundle\Service\ZendDb;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Convert an input file into a FileFormat object
@@ -77,6 +78,7 @@ class FileDriverManager
     private $_zdb;
     private $_stmts = array();
     public $used_mem = array();
+    private $_mapper;
 
     /**
      * Constructor
@@ -120,14 +122,12 @@ class FileDriverManager
             throw new \DomainException('Unsupported file format: ' . $format);
         }
 
-        $mapper = null;
         $fileformat_class = null;
         $doctrine_entity = null;
         $docid = $doc->getId();
 
         $this->_getConfiguration(
             $format,
-            $mapper,
             $fileformat_class,
             $doctrine_entity,
             $preprocessor
@@ -162,26 +162,16 @@ class FileDriverManager
 
             if ( $format === 'ead' ) {
                 //handle eadheader
-                $eadheader = $mapper->translateHeader(
+                $eadheader = $this->_mapper->translateHeader(
                     $results['eadheader']
                 );
 
-                $stmt = null;
-                if ( isset($this->_stmts['select_eadheader']) ) {
-                    $stmt = $this->_stmts['select_eadheader'];
-                } else {
-                    $select = $this->_zdb->select('ead_header')
-                        ->limit(1)
-                        ->where(
-                            array(
-                                'headerId' => ':headerId'
-                            )
-                        );
-                    $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                        $select
-                    );
-                    $this->_stmts['select_eadheader'] = $stmt;
-                }
+                $stmt = $this->_getSelectStatement(
+                    'select_eadheader',
+                    'ead_header',
+                    'headerId',
+                    1
+                );
 
                 $eadh_results = $stmt->execute(
                     array(
@@ -189,6 +179,7 @@ class FileDriverManager
                     )
                 );
                 $eadh = $eadh_results->current();
+                $header_obj = null;
 
                 if ( $eadh === false ) {
                     //EAD header does not exists yet. Store it.
@@ -254,142 +245,53 @@ class FileDriverManager
                 }
 
                 //handle archdesc
-                $mapper->setEadId($eadheader['headerId']);
-                $archdesc = $mapper->translate($results['archdesc']);
+                $this->_mapper->setEadId($eadheader['headerId']);
 
-                $stmt = null;
-                if ( isset($this->_stmts['select_record']) ) {
-                    $stmt = $this->_stmts['select_record'];
-                } else {
-                    $select = $this->_zdb->select('ead_file_format')
-                        ->limit(1)
-                        ->where(
-                            array(
-                                'fragmentid' => ':fragmentid'
-                            )
-                        );
-                    $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                        $select
-                    );
-                    $this->_stmts['select_record'] = $stmt;
-                }
-
-                $archdesc_results = $stmt->execute(
-                    array(
-                        'where1' => $archdesc['fragmentid']
-                    )
+                $handledArchdesc = $this->_handleEadComponent(
+                    $results['archdesc'],
+                    $docid,
+                    $doc,
+                    $headerid,
+                    $header_obj
                 );
-                $eada = $archdesc_results->current();
 
-                if ( $eada === false ) {
-                    $archdesc_obj = new Entity\EADFileFormat(
-                        $archdesc
-                    );
-                    $archdesc = $archdesc_obj->toArray();
-                    //EAD archdesc does not exists yet. Store it.
-                    $archdescid = $this->_storeEadFragment(
-                        $archdesc,
-                        $headerid,
-                        null,
-                        $docid
-                    );
-                } else {
-                    $archdescid = $eada['uniqid'];
-
-                    $archdesc_obj = $this->_updateEadFragment(
-                        $eada,
-                        $archdesc,
-                        $header_obj,
-                        null,
-                        $doc
-                    );
-                }
+                $archdescid = $handledArchdesc['id'];
+                $archdesc_obj = $handledArchdesc['obj'];
 
                 $results = $results['elements'];
 
                 foreach ($results as &$result) {
-                    $fragment = $mapper->translate(
-                        $result
+                    $this->_handleEadComponent(
+                        $result,
+                        $docid,
+                        $doc,
+                        $headerid,
+                        $header_obj,
+                        $archdescid,
+                        $archdesc_obj
                     );
-
-                    $stmt = null;
-                    if ( isset($this->_stmts['select_record']) ) {
-                        $stmt = $this->_stmts['select_record'];
-                    } else {
-                        $select = $this->_zdb->select('ead_file_format')
-                            ->limit(1)
-                            ->where(
-                                array(
-                                    'fragmentid' => ':fragmentid'
-                                )
-                            );
-                        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                            $select
-                        );
-                        $this->_stmts['select_record'] = $stmt;
-                    }
-
-                    $fragment_results = $stmt->execute(
-                        array(
-                            'where1' => $fragment['fragmentid']
-                        )
-                    );
-                    $eadf = $fragment_results->current();
-
-                    if ( $eadf === false ) {
-                        $fragment = new Entity\EADFileFormat(
-                            $fragment
-                        );
-                        $fragment = $fragment->toArray();
-
-                        //EAD fragment does not exists yet. Store it.
-                        $this->_storeEadFragment(
-                            $fragment,
-                            $headerid,
-                            $archdescid,
-                            $docid
-                        );
-                    } else {
-                        $this->_updateEadFragment(
-                            $eadf,
-                            $fragment,
-                            $header_obj,
-                            $archdesc_obj,
-                            $doc
-                        );
-                    }
 
                     $count++;
                 }
             } elseif ( $format === 'matricules' ) {
                 foreach ($results as &$result) {
-                    $record = $mapper->translate(
+                    $record = $this->_mapper->translate(
                         $result
                     );
 
-                    $stmt = null;
-                    if ( isset($this->_stmts['select_record']) ) {
-                        $stmt = $this->_stmts['select_record'];
-                    } else {
-                        $select = $this->_zdb->select('matricules_file_format')
-                            ->limit(1)
-                            ->where(
-                                array(
-                                    'id' => ':id'
-                                )
-                            );
-                        $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                            $select
-                        );
-                        $this->_stmts['select_record'] = $stmt;
-                    }
+                    $stmt = $this->_getSelectStatement(
+                        'select_record',
+                        'matricules_file_format',
+                        'id',
+                        1
+                    );
 
-                    $db_records = $stmt->execute(
+                    $db_results = $stmt->execute(
                         array(
                             'where1' => $record['id'][0]['value']
                         )
                     );
-                    $db_record = $db_records->current();
+                    $db_record = $db_results->current();
 
                     if ( $db_record === false ) {
                         $record = new Entity\MatriculesFileFormat(
@@ -424,6 +326,104 @@ class FileDriverManager
         }
 
         $this->used_mem[$docid] = memory_get_usage() - $start_memory;
+    }
+
+    /**
+     * Get select statement
+     *
+     * @param string $name  Statement name
+     * @param string $table Table name
+     * @param string $field Field name
+     * @param int    $limit Limit clause
+     *
+     * @return StatementInterface
+     */
+    private function _getSelectStatement($name, $table, $field, $limit = null)
+    {
+        $stmt = null;
+        if ( isset($this->_stmts[$name]) ) {
+            $stmt = $this->_stmts[$name];
+        } else {
+            $select = $this->_zdb->select($table)
+                ->where(
+                    array(
+                        $field => ':' . $field
+                    )
+                );
+            if ( $limit !== null ) {
+                $select->limit($limit);
+            }
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                $select
+            );
+            $this->_stmts[$name] = $stmt;
+        }
+        return $stmt;
+    }
+
+    /**
+     * Handle an EAD component (c* and archdesc)
+     *
+     * @param array         $data         Data from databag
+     * @param int           $docid        Document id
+     * @param Document      $doc          Document entity instance
+     * @param int           $headerid     Header id
+     * @param EADHeader     $header_obj   EADHeader instance
+     * @param int           $archdescid   Archdesc id
+     * @param EADFileFormat $archdesc_obj archdesc instance
+     *
+     * @return array(
+     *  'id'    => object id
+     *  'obj'   => object instance
+     * )
+     */
+    private function _handleEadComponent($data, $docid, $doc, $headerid,
+        $header_obj, $archdescid = null, $archdesc_obj = null
+    ) {
+        $translated = $this->_mapper->translate($data);
+
+        $stmt = $this->_getSelectStatement(
+            'select_record',
+            'ead_file_format',
+            'fragmentid',
+            1
+        );
+
+        $db_results = $stmt->execute(
+            array(
+                'where1' => $translated['fragmentid']
+            )
+        );
+        $db_record = $db_results->current();
+
+        if ( $db_record === false ) {
+            $obj = new Entity\EADFileFormat(
+                $translated
+            );
+            $fragment = $obj->toArray();
+            //EAD archdesc does not exists yet. Store it.
+            $id = $this->_storeEadFragment(
+                $fragment,
+                $headerid,
+                $archdescid,
+                $docid
+            );
+        } else {
+            $id = $db_record['uniqid'];
+
+            $obj = $this->_updateEadFragment(
+                $db_record,
+                $translated,
+                $header_obj,
+                $archdesc_obj,
+                $doc
+            );
+        }
+
+        return array(
+            'id'    => $id,
+            'obj'   => $obj
+        );
     }
 
     /**
@@ -554,32 +554,52 @@ class FileDriverManager
         $obj->hydrate($newvals);
 
         if ( $obj->hasChanges() ) {
-            $values = $obj->toArray();
-
-            $stmt = null;
-            if ( isset($this->_stmts['update_record']) ) {
-                $stmt = $this->_stmts['update_record'];
-            } else {
-                $update_fields = array();
-                foreach ( array_keys($values) as $field ) {
-                    $update_fields[$field] = ':' . $field;
-                }
-                $update = $this->_zdb->update('matricules_file_format')
-                    ->set($update_fields)
-                    ->where(array('uniqid' => ':uniqid'));
-                $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                    $update
-                );
-                $this->_stmts['update_record'] = $stmt;
-            }
-
-            $values['where1'] = $data['uniqid'];
-            $add = $stmt->execute($values);
+            $this->_updateRecord($obj);
         }
 
         return $obj;
     }
 
+    /**
+     * Store a FileFormat record in database
+     *
+     * @param FileFormat $obj   FileFormat object
+     * @param array      $unset Values to unset
+     *
+     * @return void
+     */
+    private function _updateRecord(FileFormat $obj, $unset = array())
+    {
+        $values = $obj->toArray();
+
+        foreach ( $unset as $uns ) {
+            unset($values[$uns]);
+        }
+
+        $stmt = null;
+        if ( isset($this->_stmts['update_record']) ) {
+            $stmt = $this->_stmts['update_record'];
+        } else {
+            $meta = $this->_entityManager->getClassMetadata(get_class($obj));
+            //table name from entity
+            $table_name = $meta->getTablename();
+
+            $update_fields = array();
+            foreach ( array_keys($values) as $field ) {
+                $update_fields[$field] = ':' . $field;
+            }
+            $update = $this->_zdb->update($table_name)
+                ->set($update_fields)
+                ->where(array('uniqid' => ':uniqid'));
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
+                $update
+            );
+            $this->_stmts['update_record'] = $stmt;
+        }
+
+        $values['where1'] = $values['uniqid'];
+        $add = $stmt->execute($values);
+    }
 
     /**
      * Stores an EAD fragment in database
@@ -628,6 +648,25 @@ class FileDriverManager
 
         return $fragid;
     }
+
+    /**
+     * Get new sub elements
+     *
+     * @param ArrayCollection $subs Sub elements collection
+     *
+     * @return array
+     */
+    private function _getNewSubElements(ArrayCollection $subs)
+    {
+        $return = array();
+        foreach ( $subs as $sub ) {
+            if ( $sub->getId() === null ) {
+                $return[] = $sub->toArray();
+            }
+        }
+        return $return;
+    }
+
 
     /**
      * Adds sub elements
@@ -709,21 +748,12 @@ class FileDriverManager
         );
 
         //handle indexes
-        $stmt = null;
-        if ( isset($this->_stmts['select_indexes']) ) {
-            $stmt = $this->_stmts['select_indexes'];
-        } else {
-            $select = $this->_zdb->select('ead_indexes')
-                ->where(
-                    array(
-                        'eadfile_id' => ':eadfile_id'
-                    )
-                );
-            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                $select
-            );
-            $this->_stmts['select_indexes'] = $stmt;
-        }
+        $stmt = $this->_getSelectStatement(
+            'select_indexes',
+            'ead_indexes',
+            'eadfile_id'
+        );
+
         $indexes = $stmt->execute($where);
         $fragment['descriptors'] = $this->_elementsAsArray(
             $indexes,
@@ -733,21 +763,12 @@ class FileDriverManager
         );
 
         //handle dates
-        $stmt = null;
-        if ( isset($this->_stmts['select_dates']) ) {
-            $stmt = $this->_stmts['select_dates'];
-        } else {
-            $select = $this->_zdb->select('ead_dates')
-                ->where(
-                    array(
-                        'eadfile_id' => ':eadfile_id'
-                    )
-                );
-            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                $select
-            );
-            $this->_stmts['select_dates'] = $stmt;
-        }
+        $stmt = $this->_getSelectStatement(
+            'select_dates',
+            'ead_dates',
+            'eadfile_id'
+        );
+
         $dates = $stmt->execute($where);
         $fragment['cDate'] = $this->_elementsAsArray(
             $dates,
@@ -756,21 +777,12 @@ class FileDriverManager
         );
 
         //handle daos
-        $stmt = null;
-        if ( isset($this->_stmts['select_daos']) ) {
-            $stmt = $this->_stmts['select_daos'];
-        } else {
-            $select = $this->_zdb->select('ead_daos')
-                ->where(
-                    array(
-                        'eadfile_id' => ':eadfile_id'
-                    )
-                );
-            $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                $select
-            );
-            $this->_stmts['select_daos'] = $stmt;
-        }
+        $stmt = $this->_getSelectStatement(
+            'select_daos',
+            'ead_daos',
+            'eadfile_id'
+        );
+
         $daos = $stmt->execute($where);
         $fragment['daolist'] = $this->_elementsAsArray(
             $daos,
@@ -778,22 +790,14 @@ class FileDriverManager
             array()
         );
 
+        //handle parents
         if ( $fragment['parents'] ) {
-            $stmt = null;
-            if ( isset($this->_stmts['select_ptitles']) ) {
-                $stmt = $this->_stmts['select_ptitles'];
-            } else {
-                $select = $this->_zdb->select('ead_parent_title')
-                    ->where(
-                        array(
-                            'eadfile_id' => ':eadfile_id'
-                        )
-                    );
-                $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                    $select
-                );
-                $this->_stmts['select_ptitles'] = $stmt;
-            }
+            $stmt = $this->_getSelectStatement(
+                'select_ptitles',
+                'ead_parent_title',
+                'eadfile_id'
+            );
+
             $parents_titles = $stmt->execute($where);
             $pids = explode('/', $fragment['parents']);
             $i = 0;
@@ -814,32 +818,15 @@ class FileDriverManager
         $obj->hydrate($newvals);
 
         if ( $obj->hasChanges() ) {
-            $values = $obj->toArray();
-
-            unset($values['indexes']);
-            unset($values['dates']);
-            unset($values['daos']);
-            unset($values['parents_titles']);
-
-            $stmt = null;
-            if ( isset($this->_stmts['update_record']) ) {
-                $stmt = $this->_stmts['update_record'];
-            } else {
-                $update_fields = array();
-                foreach ( array_keys($values) as $field ) {
-                    $update_fields[$field] = ':' . $field;
-                }
-                $update = $this->_zdb->update('ead_file_format')
-                    ->set($update_fields)
-                    ->where(array('uniqid' => ':uniqid'));
-                $stmt = $this->_zdb->sql->prepareStatementForSqlObject(
-                    $update
-                );
-                $this->_stmts['update_record'] = $stmt;
-            }
-
-            $values['where1'] = $fragment['uniqid'];
-            $add = $stmt->execute($values);
+            $this->_updateRecord(
+                $obj,
+                array(
+                    'indexes',
+                    'dates',
+                    'daos',
+                    'parents_titles'
+                )
+            );
 
             $removed = $obj->getRemoved();
             if ( count($removed) > 0 ) {
@@ -859,37 +846,10 @@ class FileDriverManager
             }
 
             //take care of new related data
-            $indexes = $obj->getIndexes();
-            $indexes_to_store = array();
-            foreach ( $indexes as $index ) {
-                if ( $index->getId() === null ) {
-                    $indexes_to_store[] = $index->toArray();
-                }
-            }
-
-            $dates = $obj->getDates();
-            $dates_to_store = array();
-            foreach ( $dates as $date ) {
-                if ( $date->getId() === null ) {
-                    $dates_to_store[] = $date->toArray();
-                }
-            }
-
-            $daos = $obj->getDaos();
-            $daos_to_store = array();
-            foreach ( $daos as $dao ) {
-                if ( $dao->getId() === null ) {
-                    $daos_to_store[] = $dao->toArray();
-                }
-            }
-
-            $p_titles = $obj->getParentsTitles();
-            $p_titles_to_store = array();
-            foreach ( $p_titles as $p_title ) {
-                if ( $p_title->getId() === null ) {
-                    $p_titles_to_store[] = $p_title->toArray();
-                }
-            }
+            $indexes_to_store = $this->_getNewSubElements($obj->getIndexes());
+            $dates_to_store = $this->_getNewSubElements($obj->getDates());
+            $daos_to_store = $this->_getNewSubElements($obj->getDaos());
+            $p_titles_to_store = $this->_getNewSubElements($obj->getParentsTitles());
 
             $this->_addSubElements(
                 $fragment['uniqid'],
@@ -945,14 +905,13 @@ class FileDriverManager
      * Load driver configuration
      *
      * @param string $format           Data type
-     * @param string $mapper           Mapper name
      * @param string $fileformat_class File format class
      * @param string $doctrine_entity  Doctrine entity name
      * @param string $preprocessor     Preprocessor
      *
      * @return void
      */
-    private function _getConfiguration($format, &$mapper, &$fileformat_class,
+    private function _getConfiguration($format, &$fileformat_class,
         &$doctrine_entity, &$preprocessor
     ) {
         //Import driver configuration
@@ -974,7 +933,7 @@ class FileDriverManager
                                 'Found mapper does not implements ' . $expected
                             );
                         }
-                        $mapper = $reflection->newInstance();
+                        $this->_mapper = $reflection->newInstance();
                     } catch (\RuntimeException $e) {
                         throw $e;
                     }
