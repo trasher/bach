@@ -77,7 +77,7 @@
                 fullScreen.onAdd = function(map){
                     var className = 'leaflet-control-zoom-fullscreen', container;
                     var container = zoomControl._container;
-                    this._createButton(this.options.title, className, container, this.toogleFullScreen, map);
+                    this._createButton(this.options.title, className, container, this.toggleFullScreen, this);
                     return container;
                 }
                 map.addControl(fullScreen);
