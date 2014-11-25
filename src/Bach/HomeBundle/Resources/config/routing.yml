@@ -44,7 +44,7 @@ bach_archives:
 
 bach_search_form_homepage:
     pattern:  /archives/search_form/{form_name}
-    defaults: { _controller: BachHomeBundle:Default:main }
+    defaults: { _controller: BachHomeBundle:Default:search }
     requirements:
         _method: GET
 
