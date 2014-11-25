@@ -87,6 +87,8 @@ class Version101 extends BachMigration implements ContainerAwareInterface
      */
     public function up(Schema $schema)
     {
+        $this->checkDbPlatform();
+
         $columns = array(
             'id' => array(
                 'type'     => 'string',
@@ -178,6 +180,12 @@ class Version101 extends BachMigration implements ContainerAwareInterface
             )
         );
         $this->createTable($schema, 'details', $columns, 'id');
+
+        $table = $schema->getTable('facets');
+        $table->addColumn(
+            'on_home',
+            'boolean'
+        );
     }
 
     /**
@@ -190,5 +198,7 @@ class Version101 extends BachMigration implements ContainerAwareInterface
     public function down(Schema $schema)
     {
         $schema->dropTable('details');
+        $table = $schema->getTable('facets');
+        $table->dropColumn('on_home');
     }
 }

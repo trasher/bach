@@ -157,6 +157,13 @@ class FacetsAdmin extends Admin
                     'label'     => _('Activate facet')
                 )
             )->add(
+                'on_home',
+                null,
+                array(
+                    'required'  => false,
+                    'label'     => _('Show on homepage')
+                )
+            )->add(
                 'fr_label',
                 null,
                 array(
@@ -256,6 +263,13 @@ class FacetsAdmin extends Admin
                 array(
                     'editable'  => true,
                     'label'     => _('Active')
+                )
+            )->add(
+                'on_home',
+                null,
+                array(
+                    'editable'  => true,
+                    'label'     => _('Home')
                 )
             )->add(
                 'fr_label',
