@@ -74,7 +74,6 @@ twig:
             maps: '%feature.maps%'
             register: '%feature.register%'
             comments: '%feature.comments%'
-            autocomplete: '%feature.autocomplete%'
         default_url: '%default_url%'
         logo_url: '%logo_url%'
 
