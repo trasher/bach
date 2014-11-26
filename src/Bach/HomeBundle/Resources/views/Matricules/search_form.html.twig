@@ -197,7 +197,6 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block autocomplete %}
-    {% if features.autocomplete %}
     $('#searchQuery_query').autocomplete({
         source: function(request, response) {
             $.getJSON(
@@ -217,7 +216,6 @@ POSSIBILITY OF SUCH DAMAGE.
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
-    {% endif %}
 {% endblock %}
 
 {# Binded when not in mobile mode #}
