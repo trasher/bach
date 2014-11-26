@@ -53,6 +53,7 @@ use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\MatriculesViewParams;
 use Bach\HomeBundle\Entity\Comment;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Bach matricules controller
@@ -536,4 +537,59 @@ class MatriculesController extends SearchController
     {
         return 'matricules_view_params';
     }
+
+    /**
+     * Retrieve fragment informations from image
+     *
+     * @param string $path Image path
+     * @param string $img  Image name
+     * @param string $ext  Image extension
+     *
+     * @return void
+     */
+    public function infosImageAction($path, $img, $ext)
+    {
+        $qry_string = null;
+        if ( $img !== null && $ext !== null ) {
+            $qry_string = $img . '.' . $ext;
+        }
+        if ( $path !== null ) {
+            $qry_string = $path . '/' . $qry_string;
+        }
+        $docs = [];
+
+        $client = $this->get($this->entryPoint());
+        $query = $client->createSelect();
+        $query->setQuery(
+            'start_dao:' . $qry_string . ' or end_dao:' . $qry_string
+        );
+        $query->setFields(
+            'id, nom, txt_prenoms, classe'
+        );
+        $query->setStart(0)->setRows(1);
+
+        $rs = $client->select($query);
+        $docs = $rs->getDocuments();
+        $response = null;
+
+        if ( count($docs) > 0 ) {
+            $doc = $docs[0];
+
+            //link to document
+            $doc_url = $this->get('router')->generate(
+                'bach_display_matricules',
+                array(
+                    'docid' => $doc['id']
+                )
+            );
+
+            $class = new \DateTime($doc['classe']);
+            $response = '<a href="' . $doc_url . '">' .
+                $doc['nom'] . ' ' . $doc['txt_prenoms'] .
+                ' (' . $class->format('Y') . ')' . '</a>';
+        }
+
+        return new Response($response, 200);
+    }
+
 }

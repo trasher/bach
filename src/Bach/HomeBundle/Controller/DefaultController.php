@@ -908,11 +908,12 @@ class DefaultController extends SearchController
         $query->setStart(0)->setRows(1);
 
         $rs = $client->select($query);
-        $docs  = $rs->getDocuments();
-        $doc = $docs[0];
+        $docs = $rs->getDocuments();
         $parents_docs = null;
+        $response = null;
 
-        if ( $doc ) {
+        if ( count($docs) > 0 ) {
+            $doc = $docs[0];
             $parents = explode('/', $doc['parents']);
             if ( count($parents) > 0 ) {
                 $pquery = $client->createSelect();
@@ -960,6 +961,31 @@ class DefaultController extends SearchController
             );
             $response .= ' » <a href="' . $doc_url . '">' .
                 $doc['cUnittitle'] . '</a>';
+        } else {
+            if ( $this->container->getParameter('feature.matricules') ) {
+                //we did not find any restuls in archives, try with matricules.
+                $route = 'remote_matimage_infos';
+                $params = array(
+                    'path'  => $path,
+                    'img'   => $img,
+                    'ext'   => $ext
+                );
+                if ( $path === null ) {
+                    $route = 'remote_matimage_infos_nopath';
+                    unset($params['path']);
+                }
+                if ( $img === null ) {
+                    $route = 'remote_matimage_infos_noimg';
+                    unset($params['img']);
+                    unset($params['ext']);
+                }
+
+                $redirectUrl = $this->get('router')->generate(
+                    $route,
+                    $params
+                );
+                return new RedirectResponse($redirectUrl);
+            }
         }
 
         return new Response($response, 200);

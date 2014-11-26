@@ -189,7 +189,9 @@ class MatriculesFileFormat extends FileFormat
         'oNom'                  => 'alphaOnlySort',
         'oTxt_prenoms'          => 'alphaOnlySort',
         'oLieu_naissance'       => 'alphaOnlySort',
-        'oLieu_enregistrement'  => 'alphaOnlySort'
+        'oLieu_enregistrement'  => 'alphaOnlySort',
+        'start_dao'             => 'ancestor_path',
+        'end_dao'               => 'ancestor_path'
     );
 
     /**

@@ -875,4 +875,15 @@ abstract class SearchController extends Controller
 
         return $this->redirect($url, 301);
     }
+
+    /**
+     * Retrieve fragment informations from image
+     *
+     * @param string $path Image path
+     * @param string $img  Image name
+     * @param string $ext  Image extension
+     *
+     * @return void
+     */
+    abstract public function infosImageAction($path, $img, $ext);
 }

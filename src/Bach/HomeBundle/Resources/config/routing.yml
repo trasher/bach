@@ -229,7 +229,7 @@ dynamic_css:
     defaults: { _controller: BachHomeBundle:Default:dynamicCss, _format: css }
     requirements:
         _method: GET
-        
+
 dynamic_js:
     pattern: /scripts/{name}.js
     defaults: { _controller: BachHomeBundle:Default:dynamicJs, _format: js }
@@ -251,6 +251,25 @@ remote_image_infos:
 remote_image_infos_noimg:
     pattern: /infosimage/{path}
     defaults: { _controller: BachHomeBundle:Default:infosImage, img: null, ext: null}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+
+remote_matimage_infos_nopath:
+    pattern: /matricules/infosimage/{img}.{ext}
+    defaults: { _controller: BachHomeBundle:Matricules:infosImage, path: null}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+remote_matimage_infos:
+    pattern: /matricules/infosimage/{path}/{img}.{ext}
+    defaults: { _controller: BachHomeBundle:Matricules:infosImage}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+remote_matimage_infos_noimg:
+    pattern: /matricules/infosimage/{path}
+    defaults: { _controller: BachHomeBundle:Matricules:infosImage, img: null, ext: null}
     requirements:
         _method: GET
         path: '(.+)?'
