@@ -127,6 +127,8 @@ class MatriculesController extends SearchController
         $searchResults = null;
 
         $factory = $this->get($this->factoryName());
+
+        //FIXME: try to avoid those 2 calls
         $factory->setGeolocFields($this->getGeolocFields());
         $factory->setDateField($this->date_field);
 
@@ -134,8 +136,9 @@ class MatriculesController extends SearchController
             $tpl_vars['filters'] = $filters;
         }
 
+        $container = new SolariumQueryContainer();
+
         if ( $query_terms !== null ) {
-            $container = new SolariumQueryContainer();
             $container->setOrder($view_params->getOrder());
 
             $container->setField($this->getContainerFieldName(), $query_terms);
@@ -148,8 +151,13 @@ class MatriculesController extends SearchController
             );
 
             $container->setFilters($filters);
-            $factory->prepareQuery($container);
+        } else {
+            $container->setNoResults();
+        }
 
+        $factory->prepareQuery($container);
+
+        if ( $query_terms !== null ) {
             $conf_facets = $this->getDoctrine()
                 ->getRepository('BachHomeBundle:Facets')
                 ->findBy(
@@ -159,12 +167,17 @@ class MatriculesController extends SearchController
                     ),
                     array('position' => 'ASC')
                 );
+        } else {
+            //TODO: facets that must be shown on homepage
+            $conf_facets = array();
+        }
 
-            $searchResults = $factory->performQuery(
-                $container,
-                $conf_facets
-            );
+        $searchResults = $factory->performQuery(
+            $container,
+            $conf_facets
+        );
 
+        if ( $query_terms !== null ) {
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
@@ -191,14 +204,10 @@ class MatriculesController extends SearchController
                 $tpl_vars['suggestions'] = $suggestions;
             }
 
-            $this->handleYearlyResults($factory, $tpl_vars);
         }
 
-        $slider_dates = $factory->getSliderDates($filters);
-
-        if ( is_array($slider_dates) ) {
-            $tpl_vars = array_merge($tpl_vars, $slider_dates);
-        }
+        $this->handleYearlyResults($factory, $tpl_vars);
+        $this->handleGeoloc($factory);
 
         $tpl_vars['form'] = $form->createView();
 

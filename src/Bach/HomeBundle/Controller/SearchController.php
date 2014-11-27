@@ -166,34 +166,7 @@ abstract class SearchController extends Controller
             $request = $this->getRequest();
             $session = $request->getSession();
             $fields = $this->getGeolocFields();
-
-            $query = $factory->getQuery();
-            $rs = null;
-
-            if ( $query === null ) {
-                $query = $this->get($this->entryPoint())->createSelect();
-                $query->setQuery('*:*');
-
-                if ( $this->search_form !== null ) {
-                    $search_forms = $this->container->getParameter('search_forms');
-                    $filter = $search_forms[$this->search_form]['filter'];
-                    $query->createFilterQuery('search_form')
-                        ->setQuery('+(' . $filter . ')');
-                }
-
-                $query->setStart(0)->setRows(0);
-
-                $facetSet = $query->getFacetSet();
-                $facetSet->setLimit(-1);
-                $facetSet->setMinCount(1);
-                foreach ( $fields as $field ) {
-                    $facetSet->createFacetField($field)->setField($field);
-                }
-
-                $rs = $this->get($this->entryPoint())->select($query);
-            } else {
-                $rs = $factory->getResultset();
-            }
+            $rs = $factory->getResultset();
 
             foreach ( $fields as $field ) {
                 $map_facets[$field] = $rs->getFacetSet()->getFacet($field);
@@ -214,7 +187,7 @@ abstract class SearchController extends Controller
      * @param array                $searchResults Search results
      * @param Filters              $filters       Active filters
      * @param string               $facet_name    Facet name
-     * @param array                &$tpl_vars     Template variables
+     * @param array                $tpl_vars      Template variables
      *
      * @return void
      */
@@ -625,6 +598,8 @@ abstract class SearchController extends Controller
         $factory = $this->get($this->factoryName());
 
         $geoloc = $this->getGeolocFields();
+
+        //FIXME: try to avoid those 2 calls
         $factory->setGeolocFields($this->getGeolocFields());
         $factory->setDateField($this->date_field);
 
@@ -808,19 +783,14 @@ abstract class SearchController extends Controller
     /**
      * Handle yearly results
      *
-     * @param SolariumQueryFactory $factory   Factory instance
-     * @param array                &$tpl_vars Template variables
+     * @param SolariumQueryFactory $factory  Factory instance
+     * @param array                $tpl_vars Template variables
      *
      * @return void
      */
     protected function handleYearlyResults($factory, &$tpl_vars)
     {
-        $params = null;
-        if ( $this->search_form !== null ) {
-            $search_forms = $this->container->getParameter('search_forms');
-            $params = $search_forms[$this->search_form];
-        }
-        $by_year = $factory->getResultsByYear($params);
+        $by_year = $factory->getResultsByYear();
         if ( count($by_year) > 0 ) {
             $tpl_vars['by_year'] = $by_year;
             $date_min = new \DateTime($by_year[0][0] . '-01-01');

@@ -169,6 +169,8 @@ class DefaultController extends SearchController
         $tpl_vars['q'] = urlencode($query_terms);
 
         $factory = $this->get($this->factoryName());
+
+        //FIXME: try to avoid those 2 calls
         $factory->setGeolocFields($this->getGeolocFields());
         $factory->setDateField($this->date_field);
 
@@ -196,8 +198,9 @@ class DefaultController extends SearchController
             $current_form = $this->search_form;
         }
 
+        $container = new SolariumQueryContainer();
+
         if ( !is_null($query_terms) ) {
-            $container = new SolariumQueryContainer();
             $container->setOrder($view_params->getOrder());
 
             if ( $this->search_form !== null ) {
@@ -223,9 +226,13 @@ class DefaultController extends SearchController
             if ( $filters->count() > 0 ) {
                 $tpl_vars['filters'] = $filters;
             }
+        } else {
+            $container->setNoResults();
+        }
 
-            $factory->prepareQuery($container);
+        $factory->prepareQuery($container);
 
+        if ( !is_null($query_terms) ) {
             $conf_facets = $this->getDoctrine()
                 ->getRepository('BachHomeBundle:Facets')
                 ->findBy(
@@ -235,12 +242,17 @@ class DefaultController extends SearchController
                     ),
                     array('position' => 'ASC')
                 );
+        } else {
+            //TODO: facets that must be shown on homepage
+            $conf_facets = array();
+        }
 
-            $searchResults = $factory->performQuery(
-                $container,
-                $conf_facets
-            );
+        $searchResults = $factory->performQuery(
+            $container,
+            $conf_facets
+        );
 
+        if ( !is_null($query_terms) ) {
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
@@ -272,7 +284,6 @@ class DefaultController extends SearchController
             }
             $tpl_vars['resultEnd'] = $resultEnd;
         } else {
-            $this->handleGeoloc($factory);
             $show_tagcloud = $this->container->getParameter('feature.tagcloud');
             if ( $show_tagcloud ) {
                 $tagcloud = $factory->getTagCloud(
@@ -286,12 +297,8 @@ class DefaultController extends SearchController
             }
         }
 
-        $slider_dates = $factory->getSliderDates($filters, $search_form_params);
-        if ( is_array($slider_dates) ) {
-            $tpl_vars = array_merge($tpl_vars, $slider_dates);
-        }
-
         $this->handleYearlyResults($factory, $tpl_vars);
+        $this->handleGeoloc($factory);
 
         $tpl_vars['form'] = $form->createView();
 

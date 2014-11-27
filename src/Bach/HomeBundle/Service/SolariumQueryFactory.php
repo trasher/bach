@@ -183,63 +183,67 @@ class SolariumQueryFactory
         $hl_fields = '';
         $this->_query->getSpellcheck();
 
-        foreach ( $container->getFilters() as $name=>$value ) {
-            switch ( $name ) {
-            case 'date_begin':
-                $end = '*';
-                if ( $container->getFilters()->offsetExists('date_end') ) {
-                    $end = $container->getFilters()->offsetGet('date_end') .
-                        'T23:59:59Z';
-                }
-                $this->_query->createFilterQuery($name)
-                    ->setQuery(
-                        '+' . $this->_date_field . ':[' . $value . 'T00:00:00Z TO ' .
-                        $end . ']'
-                    );
-                break;
-            case 'date_end':
-                if ( !$container->getFilters()->offsetExists('date_begin') ) {
+        $filters = $container->getFilters();
+
+        if ( count($filters) > 0 ) {
+            foreach ( $container->getFilters() as $name=>$value ) {
+                switch ( $name ) {
+                case 'date_begin':
+                    $end = '*';
+                    if ( $container->getFilters()->offsetExists('date_end') ) {
+                        $end = $container->getFilters()->offsetGet('date_end') .
+                            'T23:59:59Z';
+                    }
                     $this->_query->createFilterQuery($name)
                         ->setQuery(
-                            '+' . $this->_date_field . ':[* TO ' . $value .
-                            'T23:59:59Z]'
+                            '+' . $this->_date_field . ':[' . $value . 'T00:00:00Z TO ' .
+                            $end . ']'
                         );
-                }
-                break;
-            case 'dao':
-                $query = null;
-                if ( $value === _('Yes') ) {
-                    $query = '+' . $name . ':*';
-                } else {
-                    $query = '-' . $name . ':*';
-                }
-                $this->_query->createFilterQuery($name)
-                    ->setQuery($query);
-                break;
-            case 'geoloc':
-                $query = '';
-                foreach ( $value as $v ) {
-                    $query .= '+(';
-                    foreach ( $this->_geoloc as $field ) {
-                        $query .= ' ' . $field . ':"' .
-                            str_replace('"', '\"', $v) . '"';
+                    break;
+                case 'date_end':
+                    if ( !$container->getFilters()->offsetExists('date_begin') ) {
+                        $this->_query->createFilterQuery($name)
+                            ->setQuery(
+                                '+' . $this->_date_field . ':[* TO ' . $value .
+                                'T23:59:59Z]'
+                            );
                     }
-                    $query .= ')';
-                }
+                    break;
+                case 'dao':
+                    $query = null;
+                    if ( $value === _('Yes') ) {
+                        $query = '+' . $name . ':*';
+                    } else {
+                        $query = '-' . $name . ':*';
+                    }
+                    $this->_query->createFilterQuery($name)
+                        ->setQuery($query);
+                    break;
+                case 'geoloc':
+                    $query = '';
+                    foreach ( $value as $v ) {
+                        $query .= '+(';
+                        foreach ( $this->_geoloc as $field ) {
+                            $query .= ' ' . $field . ':"' .
+                                str_replace('"', '\"', $v) . '"';
+                        }
+                        $query .= ')';
+                    }
 
-                $this->_query->createFilterQuery('geoloc')
-                    ->setQuery($query);
-                break;
-            default:
-                $i = 0;
-                foreach ( $value as $v ) {
-                    $this->_query->createFilterQuery($name . $i)
-                        ->setQuery(
-                            '+' . $name . ':"' . str_replace('"', '\"', $v) . '"'
-                        );
-                    $i++;
+                    $this->_query->createFilterQuery('geoloc')
+                        ->setQuery($query);
+                    break;
+                default:
+                    $i = 0;
+                    foreach ( $value as $v ) {
+                        $this->_query->createFilterQuery($name . $i)
+                            ->setQuery(
+                                '+' . $name . ':"' . str_replace('"', '\"', $v) . '"'
+                            );
+                        $i++;
+                    }
+                    break;
                 }
-                break;
             }
         }
 
@@ -412,79 +416,16 @@ class SolariumQueryFactory
     }
 
     /**
-     * Get extreme dates from index stats
-     *
-     * @param array  $filters     Active filters
-     * @param array  $search_form Search form parameters
-     * @param string $field       Date field name
-     *
-     * @return array
-     */
-    public function getSliderDates(Filters $filters,
-        $search_form = null, $field = null
-    ) {
-        if ( $field !== null ) {
-            $this->_date_field = $field;
-        }
-
-        list($min_date, $max_date) = $this->_loadDatesFromStats(true, $search_form);
-
-        $results = array(
-            'min_date'          => null,
-            'selected_min_date' => null,
-            'max_date'          => null,
-            'selected_max_date' => null
-        );
-
-        if ( $min_date && $max_date ) {
-            $php_min_date = new \DateTime($min_date);
-            $php_max_date = new \DateTime($max_date);
-
-            $diff = $php_min_date->diff($php_max_date);
-
-            if ( $diff->y === 0 ) {
-                return;
-            }
-
-            $results['min_date'] = (int)$php_min_date->format('Y');
-            if ( $filters->offsetExists('date_begin') ) {
-                $dbegin = explode(
-                    '-',
-                    $filters->offsetGet('date_begin')
-                );
-                $results['selected_min_date'] = (int)$dbegin[0];
-            } else {
-                $results['selected_min_date'] = $results['min_date'];
-            }
-            $results['max_date'] = (int)$php_max_date->format('Y');
-            if ( $filters->offsetExists('date_end') ) {
-                $dend = explode(
-                    '-',
-                    $filters->offsetGet('date_end')
-                );
-                $results['selected_max_date'] = (int)$dend[0];
-            } else {
-                $results['selected_max_date'] = $results['max_date'];
-            }
-
-            return $results;
-        }
-    }
-
-    /**
      * Get number of results per year, to draw plot
      *
-     * @param array $search_form Search form configuration
-     *
      * @return array
      */
-    public function getResultsByYear($search_form = null)
+    public function getResultsByYear()
     {
         if ( !isset($this->_rs) ) {
-            $container = new SolariumQueryContainer();
-            $container->setSearchForm($search_form);
-            $container->setFilters(new Filters());
-            $this->performQuery($container, array());
+            throw new \RuntimeException(
+                'A query must have been performed already.'
+            );
         }
 
         $facetSet = $this->_rs->getFacetSet();
@@ -606,24 +547,11 @@ class SolariumQueryFactory
     /**
      * Load dates bounds from index stats
      *
-     * @param boolean $all         Use *:* as a query if true,
-     *                             use current query if false
-     * @param array   $search_form Search form parameters
-     *
      * @return array
      */
-    private function _loadDatesFromStats($all, $search_form = null)
+    private function _loadDatesFromStats()
     {
-        $query = $this->_client->createSelect();
-        if ( $all === true ) {
-            $query->setQuery('*:*');
-            if ( $search_form !== null ) {
-                $query->createFilterQuery('search_form')
-                    ->setQuery('+(' . $search_form['filter'] . ')');
-            }
-        } else {
-            $query = clone $this->_query;
-        }
+        $query = clone $this->_query;
         $query->setRows(0);
         $stats = $query->getStats();
 
@@ -639,6 +567,9 @@ class SolariumQueryFactory
             $min_date = $statsResults[$this->_date_field]->getMin();
             $max_date = $statsResults[$this->_date_field]->getMax();
         }
+
+        $min_date = new \DateTime($min_date);
+        $max_date = new \DateTime($max_date);
 
         return array($min_date, $max_date);
     }
@@ -713,7 +644,7 @@ class SolariumQueryFactory
      */
     public function setDatesBounds()
     {
-        list($low,$up) = $this->_getDates();
+        list($low,$up) = $this->_loadDatesFromStats();
 
         if ( !isset($this->_date_gap) ) {
             $this->_low_date = $low->format('Y-01-01') . 'T00:00:00Z';
@@ -739,19 +670,6 @@ class SolariumQueryFactory
             $gap = ceil($diff->y / $maxdiff);
         }
         return $gap;
-    }
-
-    /**
-     * Get dates bounds within query
-     *
-     * @return array
-     */
-    private function _getDates()
-    {
-        list($min_date, $max_date) = $this->_loadDatesFromStats(false);
-        $low = new \DateTime($min_date);
-        $up = new \DateTime($max_date);
-        return array($low, $up);
     }
 
     /**

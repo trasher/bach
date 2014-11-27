@@ -41,9 +41,6 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block title_extend %}{% if q is defined and q|trim != '' %} - {{ _('Search on "%term"')|replace({'%term': q}) }}{% endif %}{% endblock %}
 
 {% block css %}
-    {% if min_date is defined and max_date is defined -%}
-    <link href="{{ asset('css/jqrangeslider/iThing-min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    {% endif %}
     {% if show_maps -%}
     {% stylesheets
         'js/leaflet/leaflet.css'
@@ -60,12 +57,12 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block menu %}
-    {% if min_date is defined and max_date is defined or show_maps %}
+    {% if by_year is defined or show_maps %}
         <ul class="interactions">
         {% if show_maps -%}
             <li><a id="sh_map" href="?show_map={% if show_map == true %}off{% else %}on{% endif %}" title="{{ _('Shows or hides map') }}"{% if show_map == false %} class="disabled"{% endif %}><img src="{% include '::images/map.html.twig' %}" alt="{{ _('Show/Hide map') }}"/></a></li>
         {%- endif %}
-        {% if min_date is defined and max_date is defined -%}
+        {% if by_year is defined -%}
             <li><a id="sh_daterange" href="?show_daterange={% if show_daterange == true %}off{% else %}on{% endif %}" title="{{ _('Shows or hides date range graph') }}"{% if show_daterange == false %} class="disabled"{% endif %}><img src="{% include '::images/calendar.html.twig' %}" alt="{{ _('Show/Hide date range') }}"/></a></li>
         {%- endif %}
         </ul>
@@ -297,7 +294,7 @@ POSSIBILITY OF SUCH DAMAGE.
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
-    {% if min_date is defined and max_date is defined -%}
+    {% if by_year is defined -%}
     {% javascripts
         'js/flot/jquery.flot.min.js'
         'js/flot/jquery.flot.selection.min.js'
@@ -353,15 +350,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% endif %}
                 var n = _new_loc.indexOf('?');
                 var _new_loc = _new_loc.substring(0, n != -1 ? n : _new_loc.lenght);
-
-    {% if selected_min_date is defined and selected_max_date is defined %}
-                if ( min_date == '{{ selected_min_date }}'
-                    && max_date == '{{ selected_max_date }}'
-                ) {
-                    //nothing has changed!
-                    return false;
-                }
-    {% endif %}
 
                 _new_loc += '?filter_field[]=date_begin&filter_value[]=' + min_date +
                     '&filter_field[]=date_end&filter_value[]=' + max_date;
@@ -426,9 +414,9 @@ POSSIBILITY OF SUCH DAMAGE.
             });
             {% endif %}
 
-            var _is_first_load = true;
 
             {% if by_year is defined -%}
+            var _is_first_load = true;
             var plot_options = {
                 series: {
                     bars: {
