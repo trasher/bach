@@ -112,25 +112,16 @@ class MatriculesController extends SearchController
             $query_terms = '*:*';
         }
 
-        if ( $view_params->advancedSearch() ) {
-            $form = $this->createForm(
-                new MatriculesType(),
-                null
-            );
-            $tpl_vars['search_path'] = 'bach_matricules';
-        } else {
-            $form = $this->createForm(
-                new SearchQueryFormType(
-                    $query_terms,
-                    !is_null($query_terms)
-                ),
-                null
-            );
-            $tpl_vars['search_path'] = 'bach_matricules_do_search';
-        }
+        $form = $this->createForm(
+            new SearchQueryFormType(
+                $query_terms,
+                !is_null($query_terms)
+            ),
+            null
+        );
+        $tpl_vars['search_path'] = 'bach_matricules_do_search';
 
         $form->handleRequest($request);
-        $data = $form->getData();
 
         $resultCount = null;
         $searchResults = null;
@@ -143,18 +134,11 @@ class MatriculesController extends SearchController
             $tpl_vars['filters'] = $filters;
         }
 
-        if ( $view_params->advancedSearch() && count($data) > 0
-            || !$view_params->advancedSearch() && $query_terms !== null
-        ) {
+        if ( $query_terms !== null ) {
             $container = new SolariumQueryContainer();
             $container->setOrder($view_params->getOrder());
 
-            if ( $view_params->advancedSearch() ) {
-                $container->setField($this->getContainerFieldName(), $data);
-            } else {
-                $container->setField($this->getContainerFieldName(), $query_terms);
-            }
-
+            $container->setField($this->getContainerFieldName(), $query_terms);
             $container->setField(
                 "pager",
                 array(
@@ -201,12 +185,7 @@ class MatriculesController extends SearchController
                 $tpl_vars
             );
 
-            $suggestions = null;
-            if ( $view_params->advancedSearch() ) {
-                $suggestions = $factory->getSuggestions(implode(' ', $data));
-            } else {
-                $suggestions = $factory->getSuggestions($query_terms);
-            }
+            $suggestions = $factory->getSuggestions($query_terms);
 
             if ( isset($suggestions) && $suggestions->count() > 0 ) {
                 $tpl_vars['suggestions'] = $suggestions;
@@ -221,13 +200,7 @@ class MatriculesController extends SearchController
             $tpl_vars = array_merge($tpl_vars, $slider_dates);
         }
 
-        if ( $view_params->advancedSearch() ) {
-            $tpl_vars['adv_form'] = $form->createView();
-        } else {
-            $tpl_vars['form'] = $form->createView();
-        }
-
-        //$tpl_vars['has_advanced'] = true;
+        $tpl_vars['form'] = $form->createView();
 
         $tpl_vars['resultStart'] = ($page - 1)
             * $view_params->getResultsbyPage() + 1;
@@ -487,15 +460,7 @@ class MatriculesController extends SearchController
      */
     protected function getContainerFieldName()
     {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-        $view_params = $session->get($this->getParamSessionName());
-
-        if ( $view_params->advancedSearch() ) {
-            return 'adv_matricules';
-        } else {
-            return 'matricules';
-        }
+        return 'matricules';
     }
 
     /**

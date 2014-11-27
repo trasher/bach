@@ -75,7 +75,6 @@ class ViewParams
     protected $order = self::ORDER_RELEVANCE;
     private $_show_map = true;
     private $_show_daterange = true;
-    private $_advanced_search = false;
 
     private $_request;
 
@@ -258,16 +257,6 @@ class ViewParams
     }
 
     /**
-     * Show advanced search form or simple one
-     *
-     * @return boolean
-     */
-    public function advancedSearch()
-    {
-        return $this->_advanced_search;
-    }
-
-    /**
      * Bind request
      *
      * @param Request $request     Request to bind to
@@ -314,18 +303,6 @@ class ViewParams
                 break;
             case 'off':
                 $this->setShowDaterange(false);
-                break;
-            }
-        }
-
-        if ( $request->get('adv_search') ) {
-            $set_cookie = true;
-            switch ( $request->get('adv_search') ) {
-            case 'true':
-                $this->_advanced_search = true;
-                break;
-            default:
-                $this->_advanced_search = false;
                 break;
             }
         }

@@ -197,7 +197,6 @@ POSSIBILITY OF SUCH DAMAGE.
         {% block intro %}{% endblock %}
     {% endif %}
 
-    {% if form is defined %}
     <form action="{{ path(block('do_search_path'), {'form_name': search_form}) }}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
             {{ form_widget(form.query) }}
@@ -209,18 +208,8 @@ POSSIBILITY OF SUCH DAMAGE.
             {% endif %}
             {{ form_widget(form._token) }}
             {{ form_widget(form.perform_search) }}
-            {% if has_advanced is defined %}
-            <span id="adv_link"><a href="?adv_search=true" title="{{ _('Switch to advanced search form') }}">{{ _('Advanced search') }}</a></span>
-            {% endif %}
         </div>
     </form>
-    {% endif %}
-
-    {% if adv_form is defined %}
-        {{ form(adv_form) }}
-        <span id="adv_link"><a href="?adv_search=false" title="{{ _('Switch to simple search form') }}">{{ _('Simple search') }}</a></span>
-    {% endif  %}
-
 
     {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
     <aside id="suggestions">
@@ -235,14 +224,12 @@ POSSIBILITY OF SUCH DAMAGE.
     </aside>
     {% endif %}
 
-        {% if min_date is defined and max_date is defined -%}
-        {% if by_year is defined %}
-        <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select dates period') }}"></div>
-        {% endif %}
-        {%- endif %}
-        {% if show_maps -%}
-        <div id="map" class="hidden"></div>
-        {%- endif %}
+    {% if by_year is defined %}
+    <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select dates period') }}"></div>
+    {% endif %}
+    {% if show_maps -%}
+    <div id="map" class="hidden"></div>
+    {%- endif %}
 
     {% if searchResults is defined %}
     <section id="search_results" role="main">
@@ -439,7 +426,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
             {% endif %}
 
-            {% if min_date is defined and max_date is defined %}
             var _is_first_load = true;
 
             {% if by_year is defined -%}
@@ -498,7 +484,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 _dates_plot.removeClass('hidden');
                 _initPlot();
             }
-                {% endif %}
             {% endif %}
 
             _setCookie = function() {
