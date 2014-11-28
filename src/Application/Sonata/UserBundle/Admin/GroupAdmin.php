@@ -70,8 +70,8 @@ class GroupAdmin extends SonataGroupAdmin
     {
 
         $roles = [
-            'machin'    => 'truc',
-            'bidule'    => 'chose'
+            'ROLE_ARCHIVIST'    => _('Archivist'),
+            'ROLE_ADMIN'    => _('Administrator')
         ];
 
         $formMapper
@@ -81,12 +81,10 @@ class GroupAdmin extends SonataGroupAdmin
                 'choice',
                 array(
                     'choices' => $roles,
+                    'expanded' => true,
+                    'multiple' => true,
+                    'required' => false
                 )
-            /*->add('roles', 'sonata_security_roles', array(
-                'expanded' => true,
-                'multiple' => true,
-                'required' => false
-            ))*/
             );
     }
 }
