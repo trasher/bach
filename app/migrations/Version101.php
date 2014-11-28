@@ -186,6 +186,11 @@ class Version101 extends BachMigration implements ContainerAwareInterface
             'on_home',
             'boolean'
         );
+
+        $this->connection->executeQuery(
+            "UPDATE facets SET `solr_field_name` = 'cDateBegin'" .
+            " WHERE `solr_field_name` = 'cDate'"
+        );
     }
 
     /**
@@ -200,5 +205,10 @@ class Version101 extends BachMigration implements ContainerAwareInterface
         $schema->dropTable('details');
         $table = $schema->getTable('facets');
         $table->dropColumn('on_home');
+        $this->connection->executeQuery(
+            "UPDATE facets SET `solr_field_name` = 'cDate'" .
+            " WHERE `solr_field_name` = 'cDateBegin'"
+        );
+
     }
 }
