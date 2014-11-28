@@ -110,6 +110,20 @@ class Filters extends \ArrayObject
                 $request->get('range_date_max')
             );
         }
+
+        if ( $request->get('cDateBegin_range_date_min') ) {
+            $this->addFilter(
+                'date_begin',
+                $request->get('cDateBegin_range_date_min')
+            );
+        }
+        if ( $request->get('cDateBegin_range_date_max') ) {
+            $this->addFilter(
+                'date_end',
+                $request->get('cDateBegin_range_date_max')
+            );
+        }
+
     }
 
     /**
