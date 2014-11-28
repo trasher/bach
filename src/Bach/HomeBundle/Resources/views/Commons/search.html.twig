@@ -94,6 +94,12 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
 
+        {% if facets is defined and facets|length > 0 %}
+            {% for facet_field, facet in facets%}
+                <h3>{{ facet.label }}</h3>
+                
+            {% endfor %}
+        {% endif %}
         {% if facets is defined and facets|length > 0 and searchResults|length > 0 %}
         <h2>{{ _('Refine Query') }}</h2>
         <div id="facets">
