@@ -170,6 +170,16 @@ class MatriculesController extends SearchController
         } else {
             //TODO: facets that must be shown on homepage
             $conf_facets = array();
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active' => true,
+                        'form'   => 'matricules',
+                        'on_home'=> true
+                    ),
+                    array('position' => 'ASC')
+                );
         }
 
         $searchResults = $factory->performQuery(
