@@ -52,6 +52,7 @@ use Bach\HomeBundle\Entity\Filters;
 use Doctrine\ORM\EntityRepository;
 use Bach\HomeBundle\Entity\TagCloud;
 use Bach\AdministrationBundle\Entity\SolrCore\Fields;
+use Solarium\QueryType\Select\Query\Component\FacetSet;
 
 /**
  * Bach Solarium query factory
@@ -73,9 +74,10 @@ class SolariumQueryFactory
     private $_spellcheck;
     private $_query;
     private $_rs;
+    private $_stats;
     private $_qry_facets_fields = array(
         'dao',
-        'cDate'
+        'cDateBegin'
     );
     private $_query_fields;
 
@@ -133,9 +135,6 @@ class SolariumQueryFactory
             $this->setDatesBounds();
         }
 
-        //dynamically create facets
-        $this->_addFacets($facets);
-
         $facetSet = $this->_query->getFacetSet();
         if ( isset($this->_low_date)
             && isset($this->_up_date)
@@ -154,12 +153,15 @@ class SolariumQueryFactory
             $stats->createField($this->_date_field);
         }
 
+        //dynamically create facets
+        $this->_addFacets($facets, $facetSet);
+
         $this->_request = $this->_client->createRequest($this->_query);
         $rs = $this->_client->select($this->_query);
 
         $rsStats = $rs->getStats();
         if ( $rsStats ) {
-            $stats = $rsStats->getResults();
+            $this->_stats = $rsStats->getResults();
         }
 
         $this->_highlitght = $rs->getHighlighting();
@@ -311,13 +313,13 @@ class SolariumQueryFactory
     /**
      * Dynamically add facets to query
      *
-     * @param array $facets Facets
+     * @param array    $facets   Facets list
+     * @param FacetSet $facetSet FacetSet
      *
      * @return void
      */
-    private function _addFacets($facets)
+    private function _addFacets($facets, FacetSet $facetSet)
     {
-        $facetSet = $this->_query->getFacetSet();
         $facetSet->setLimit(-1);
         $facetSet->setMinCount(1);
         $map_facet = array();
@@ -342,23 +344,18 @@ class SolariumQueryFactory
                     $fmq->createQuery(_('Yes'), 'dao:*');
                     $fmq->createQuery(_('No'), '-dao:*');
                     break;
-                case 'cDate':
-                    if ( isset($this->_low_date) && isset($this->_up_date) ) {
-                        $fr = $facetSet->createFacetRange(
-                            $facet->getSolrFieldName()
-                        );
-                        $fr->setField($this->_date_field);
-                        $fr->setStart($this->_low_date);
-                        $gap = $this->_getGap(
-                            new \DateTime($this->_low_date),
-                            new \DateTime($this->_up_date)
-                        );
-                        $fr->setgap('+' . $gap . 'YEARS');
-                        $fr->setEnd($this->_up_date);
+                case 'cDateBegin':
+                    $stats = $this->_query->getStats();
+                    $exists  = $stats->getField($this->_date_field);
+                    if ( !$exists ) {
+                        $stats->createField($this->_date_field);
                     }
                     break;
                 default:
-                    throw new \RuntimeException('Unknown facet query field!');
+                    throw new \RuntimeException(
+                        'Unknown facet query field ' .
+                        $facet->getSolrFieldName()  . '!'
+                    );
                     break;
                 }
             }
@@ -635,6 +632,16 @@ class SolariumQueryFactory
     public function getResultset()
     {
         return $this->_rs;
+    }
+
+    /**
+     * Get stats
+     *
+     * @return Solarium\QueryType\Select\Result\Stats\Result[]
+     */
+    public function getStats()
+    {
+        return $this->_stats;
     }
 
     /**

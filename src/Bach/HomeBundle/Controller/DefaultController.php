@@ -110,7 +110,7 @@ class DefaultController extends SearchController
      */
     protected function getFacetsDateFields()
     {
-        return array('cDate');
+        return array('cDateBegin');
     }
 
     /**
@@ -283,6 +283,7 @@ class DefaultController extends SearchController
                 $resultEnd = $resultCount;
             }
             $tpl_vars['resultEnd'] = $resultEnd;
+            $tpl_vars['stats'] = $factory->getStats();
         } else {
             $show_tagcloud = $this->container->getParameter('feature.tagcloud');
             if ( $show_tagcloud ) {

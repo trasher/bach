@@ -310,6 +310,10 @@ p {
 
 [id=menu] div.ui-accordion-content.range_date {
     padding: 0;
+    overflow: visible;
+}
+[id=menu] div.ui-accordion-content.range_date .date_range {
+    margin: .8em 1em .2em;
 }
 [id=menu] div.ui-accordion-content.range_date ol {
     margin-left: 2.7em;
@@ -420,8 +424,17 @@ p {
     padding: .2em 0 .2em .2em;
 }
 
-[id=range_date_min], [id=range_date_max] {
+.range_date input[type=text] {
     width: 2.3em;
+}
+
+.range_date .buttons_container {
+    text-align: right;
+    display: block;
+}
+
+.range_date input[type=submit] {
+    margin-top: .5em;
 }
 
 /**

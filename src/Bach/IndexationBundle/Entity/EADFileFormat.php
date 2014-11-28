@@ -341,7 +341,7 @@ class EADFileFormat extends FileFormat
         'uniqid',
         'cScopcontent',
         'cDateNormal',
-        'cDateBegin',
+        'cDate',
         'cDateEnd',
         'archDescOrigination',
         'subject_w_expanded',

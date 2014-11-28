@@ -234,65 +234,29 @@ abstract class SearchController extends Controller
                 }
             }
 
-            foreach ( $field_facets as $item=>$count ) {
-                if ( !$filters->offsetExists($solr_field)
-                    || !$filters->hasValue($solr_field, $item)
-                ) {
-                    if ( in_array($solr_field, $this->getFacetsDateFields()) ) {
-                        $start = null;
-                        $end = null;
-
-                        if ( strpos('|', $item) !== false ) {
-                            list($start, $end) = explode('|', $item);
-                        } else {
-                            $start = $item;
-                        }
-                        $bdate = new \DateTime($start);
-
-                        $edate = null;
-                        if ( !$end ) {
-                            $edate = new \DateTime($start);
-                            $edate->add(
-                                new \DateInterval(
-                                    'P' . $factory->getDateGap()  . 'Y'
-                                )
-                            );
-                            $edate->sub(new \DateInterval('PT1S'));
-                        } else {
-                            $edate = new \DateTime($end);
-                        }
-                        if ( !isset($facet_labels[$solr_field]) ) {
-                            $facet_labels[$solr_field] = array();
-                        }
-
-                        $item = $bdate->format('Y-m-d\TH:i:s\Z') . '|' .
-                            $edate->format('Y-m-d\TH:i:s\Z');
-
-                        $ys = $bdate->format('Y');
-                        $ye = $edate->format('Y');
-
-                        if ( $ys != $ye ) {
-                            $facet_labels[$solr_field][$item] = $ys . '-' . $ye;
-                        } else {
-                            $facet_labels[$solr_field][$item] = $ys;
-                        }
-                    }
-
-                    if ( $solr_field == 'headerId' && count($docs_titles) > 0 ) {
-                        foreach ( $docs_titles as $title ) {
-                            if ( $title['headerId'] === $item ) {
-                                $facet_labels[$solr_field][$item]
-                                    = $title['headerTitle'];
-                                break;
+            if ( $field_facets !== null ) {
+                foreach ( $field_facets as $item=>$count ) {
+                    if ( !$filters->offsetExists($solr_field)
+                        || !$filters->hasValue($solr_field, $item)
+                    ) {
+                        if ( $solr_field == 'headerId' && count($docs_titles) > 0 ) {
+                            foreach ( $docs_titles as $title ) {
+                                if ( $title['headerId'] === $item ) {
+                                    $facet_labels[$solr_field][$item]
+                                        = $title['headerTitle'];
+                                    break;
+                                }
                             }
                         }
+                        $values[$item] = $count;
                     }
-                    $values[$item] = $count;
                 }
             }
 
-            if ( count($values) > 0 ) {
-                if ( $facet->getSolrFieldName() !== 'dao' ) {
+            if ( count($values) > 0
+                || in_array($solr_field, $this->getFacetsDateFields())
+            ) {
+                if ( $solr_field !== 'dao' ) {
                     //facet order
                     $facet_order = $request->get('facet_order');
                     if ( $facet_name !== null ) {
@@ -320,18 +284,6 @@ abstract class SearchController extends Controller
                         if ( $v == 0 ) {
                             $do = false;
                         }
-                    }
-                }
-
-                if ( in_array(
-                    $facet->getSolrFieldName(),
-                    $this->getFacetsDateFields()
-                ) ) {
-                    if ( count($values) == 1
-                        && (in_array(1, $values)
-                        || strpos('|', array_keys($values)[0]) === false)
-                    ) {
-                        $do = false;
                     }
                 }
 
@@ -366,29 +318,6 @@ abstract class SearchController extends Controller
             $geoloc = $this->getGeolocFields();
             foreach ( $geoloc as $field ) {
                 $map_facets[$field] = $facetset->getFacet($field);
-            }
-        }
-
-        foreach ( $this->getFacetsDateFields() as $date_field ) {
-            if ( $filters->offsetExists($date_field) ) {
-                //set label for current date range filter
-                if ( !isset($facet_labels[$date_field])) {
-                    $facet_labels[$date_field] = array();
-                }
-
-                $cdate = $filters->offsetGet($date_field);
-                list($start, $end) = explode('|', $cdate);
-                $bdate = new \DateTime($start);
-                $edate = new \DateTime($end);
-
-                $ys = $bdate->format('Y');
-                $ye = $edate->format('Y');
-
-                if ( $ys != $ye ) {
-                    $facet_labels[$date_field][$cdate] = $ys . '-' . $ye;
-                } else {
-                    $facet_labels[$date_field][$cdate] = $ys;
-                }
             }
         }
 

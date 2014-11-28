@@ -99,56 +99,78 @@ POSSIBILITY OF SUCH DAMAGE.
         <div id="facets">
             {% for facet_field,facet in facets %}
                 <h3>{{ facet.label }}</h3>
-                <div{% if facet_field == 'cDate' %} class="range_date"{% endif %}>
-                {% if facet_field == 'cDate' %}
-                    <form id="cDate_change">
+                <div{% if facet_field == 'cDateBegin' %} class="range_date"{% endif %}>
+                {% if facet_field == 'cDateBegin' %}
+                    <form id="{{ facet_field }}_change">
                         <ul>
                             <li>
-                                <label for="range_date_min">{{ _('From:') }}</label>
-                                <input type="text" name="range_date_min" id="range_date_min" value="{{ by_year_min }}"/>
-                                <label for="range_date_max"> {{ _('to:') }}</label>
-                                <input type="text" name="range_date_max" id="range_date_max" value="{{ by_year_max }}"/>
-                                <input type="submit" id="range_date_set" value="{{ _('Go') }}"/>
+                                <label for="{{ facet_field }}_range_date_min">{{ _('From:') }}</label>
+                                <input type="text" name="{{ facet_field }}_range_date_min" id="{{ facet_field }}_range_date_min" value="{{ stats[facet_field].min|date('Y') }}"/>
+                                <label for="{{ facet_field }}_range_date_max"> {{ _('to:') }}</label>
+                                <input type="text" name="{{ facet_field }}_range_date_max" id="{{ facet_field }}_range_date_max" value="{{ stats[facet_field].max|date('Y') }}"/>
+                                <div id="{{ facet_field }}_range" class="date_range"></div>
+                                <span class="buttons_container"><input type="submit" id="{{ facet_field }}_range_date_set" value="{{ _('Go') }}"/></span>
                             </li>
                         </ul>
                     </form>
                     <script type="text/javascript">
                         $(function(){
-                            $('#range_date_min,#range_date_max').spinner({
+                            $('#{{ facet_field }}_range_date_min,#{{ facet_field }}_range_date_max').spinner({
                                 min: {{ by_year_min }},
                                 max: {{ by_year_max }},
                                 page: 100,
-                                value: $(this).val()
+                                value: $(this).val(),
+                                change: updateSlider,
+                                stop: updateSlider
                             });
-                            $('#range_date_set').button();
-                            $('#cDate_change').on('submit', function(){
+                            $('#{{ facet_field }}_range_date_set').button();
+                            $('#{{ facet_field }}_change').on('submit', function(){
                                 //check for date input validity
-                                var _min = $('#range_date_min').val();
-                                var _max = $('#range_date_max').val();
+                                var _min = $('#{{ facet_field }}_range_date_min').val();
+                                var _max = $('#{{ facet_field }}_range_date_max').val();
 
                                 var _valid = true;
 
                                 if ( isNaN(_min) || _min % 1 != 0 ) {
                                     alert('{{ _('Please enter an integer as start date!')|escape('js') }}');
                                     _valid = false;
-                                } else if (_min < {{by_year_min }})  {
-                                    alert('{{ _('Start date must be greater than %date')|escape('js') }}'.replace('%date', {{ by_year_min }}));
+                                } else if (_min < {{ stats[facet_field].min|date('Y') }})  {
+                                    alert('{{ _('Start date must be greater than %date')|escape('js') }}'.replace('%date', {{ stats[facet_field].min|date('Y') }}));
                                     _valid = false;
                                 }
 
                                 if ( isNaN(_max) || _max % 1 != 0 ) {
                                     alert('{{ _('Please enter an integer as end date!')|escape('js') }}');
                                     _valid = false;
-                                } else if (_max > {{by_year_max }})  {
-                                    alert('{{ _('End date must be earlier than %date')|escape('js') }}'.replace('%date', {{ by_year_max }}));
+                                } else if (_max > {{stats[facet_field].max|date('Y')  }})  {
+                                    alert('{{ _('End date must be earlier than %date')|escape('js') }}'.replace('%date', {{ stats[facet_field].max|date('Y') }}));
                                     _valid = false;
                                 }
 
                                 return _valid;
                             });
+
+                            var {{ facet_field }}_slider = $('#{{ facet_field }}_range').slider({
+                                range: true,
+                                min: {{ stats[facet_field].min|date('Y') }},
+                                max: {{ stats[facet_field].max|date('Y') }},
+                                values: [{{ stats[facet_field].min|date('Y') }}, {{ stats[facet_field].max|date('Y') }}],
+                                slide: function(event, ui) {
+                                    $('#{{ facet_field }}_range_date_min').val(ui.values[0]);
+                                    $('#{{ facet_field }}_range_date_max').val(ui.values[1]);
+                                }
+                            });
+
+                            function updateSlider() {
+                                {{ facet_field }}_slider.slider(
+                                    'values',
+                                    [$('#{{ facet_field }}_range_date_min').val(), $('#{{ facet_field }}_range_date_max').val()]
+                                );
+                            }
                         });
                     </script>
                 {% endif %}
+                {% if facet.content|length > 0 %}
                     <ol>
                     {% set index_name = facet.index_name %}
 
@@ -172,6 +194,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         <li class="show_more"><a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page, facet_name: index_name}) }}">{{ _('Show more (%count left)')|replace({'%count': facet.content|length-10}) }}</a></li>
                     {% endif %}
                     </ol>
+                {% endif %}
                 </div>
             {% endfor %}
         </div>
@@ -290,6 +313,7 @@ POSSIBILITY OF SUCH DAMAGE.
         'js/jquery-ui/jquery.ui.autocomplete.min.js'
         'js/jquery-ui/jquery.ui.spinner.min.js'
         'js/jquery-ui/jquery.ui.tabs.min.js'
+        'js/jquery-ui/jquery.ui.slider.min.js'
         output='assetic/js/compiled/search_jquery-ui.js'
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
@@ -416,7 +440,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
             {% if by_year is defined -%}
-            var _is_first_load = true;
             var plot_options = {
                 series: {
                     bars: {

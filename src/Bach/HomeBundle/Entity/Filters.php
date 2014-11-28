@@ -134,7 +134,7 @@ class Filters extends \ArrayObject
             }
             $this->offsetSet($field, $value);
             break;
-        case 'cDate':
+        case 'cDateBegin':
         case 'classe':
         case 'date_enregistrement':
         case 'annee_naissance':
@@ -187,7 +187,10 @@ class Filters extends \ArrayObject
         switch ( $field ) {
         case 'date_begin':
         case 'date_end':
-        case 'cDate':
+        case 'cDateBegin':
+        case 'classe':
+        case 'date_enregistrement':
+        case 'annee_naissance':
         case 'dao':
             if ( $this->offsetExists($field) ) {
                 $this->offsetUnset($field);
