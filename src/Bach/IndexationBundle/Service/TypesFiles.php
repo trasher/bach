@@ -44,7 +44,6 @@
 
 namespace Bach\IndexationBundle\Service;
 
-use Symfony\Component\Finder\Finder;
 
 /**
  * Files to publish
@@ -101,18 +100,20 @@ class TypesFiles
         }
 
         foreach ( $this->_formats as $format ) {
-            $finder = new Finder();
-            $finder->followLinks()
-                ->ignoreDotFiles(true)
-                ->ignoreVCS(true)
-                -> ignoreUnreadableDirs(true)
-                ->sortByType();
-
             $path = $this->_paths[$format];
             if ( $paths === null ) {
                 if ( file_exists($path) && is_dir($path) ) {
+                    $fs_files = new \RecursiveIteratorIterator(
+                        new \RecursiveDirectoryIterator(
+                            $path,
+                            \FilesystemIterator::SKIP_DOTS
+                            | \FilesystemIterator::FOLLOW_SYMLINKS
+                        )
+                    );
+
                     $existing_files[$format] = $this->_parseExistingFiles(
-                        $finder->files()->in($path)
+                        $format,
+                        $fs_files
                     );
                 }
             } else {
@@ -123,9 +124,18 @@ class TypesFiles
                     }
                     if ( file_exists($path . $p) ) {
                         if ( is_dir($path . $p) ) {
+                            $fs_files = new \RecursiveIteratorIterator(
+                                new \RecursiveDirectoryIterator(
+                                    $path . $p,
+                                    \FilesystemIterator::SKIP_DOTS
+                                    | \FilesystemIterator::FOLLOW_SYMLINKS
+                                )
+                            );
+
                             $files = $this->_parseExistingFiles(
-                                $finder->files()->in($path . $p),
-                                $path . $p
+                                $format,
+                                $fs_files,
+                                $path
                             );
                             $found_files = array_merge(
                                 $found_files,
@@ -157,18 +167,29 @@ class TypesFiles
     /**
      * Parse existing files into an array for display
      *
-     * @param Iterator $finder Finder results iterator
+     * @param string   $format Current format
+     * @param Iterator $finder RecursiveIteratorIterator results
      * @param string   $path   Parent path to prepend
      *
      * @return array
      */
-    private function _parseExistingFiles($finder, $path = null)
+    private function _parseExistingFiles($format, $finder, $path = null)
     {
         $existing_files = array();
         foreach ( $finder as $found ) {
             if ( !$found->isDir() ) {
-                $parent = $found->getRelativePath();
                 $filename = $found->getFileName();
+                if ( strrpos($filename, '.', -strlen($filename)) !== false ) {
+                    continue;
+                }
+                $parent = ltrim(
+                    str_replace(
+                        realpath($this->_paths[$format]),
+                        '',
+                        $found->getPathInfo()->getRealpath()
+                    ),
+                    '/'
+                );
 
                 if ( $parent !== '' ) {
                     $filename = $parent . '/' . $filename;
