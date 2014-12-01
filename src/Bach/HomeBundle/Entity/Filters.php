@@ -124,6 +124,43 @@ class Filters extends \ArrayObject
             );
         }
 
+        if ( $request->get('date_enregistrement_range_date_min') ) {
+            $this->addFilter(
+                'date_begin',
+                $request->get('date_enregistrement_range_date_min')
+            );
+        }
+        if ( $request->get('date_enregistrement_range_date_max') ) {
+            $this->addFilter(
+                'date_end',
+                $request->get('date_enregistrement_range_date_max')
+            );
+        }
+        if ( $request->get('annee_naissance_range_date_min') ) {
+            $this->addFilter(
+                'date_begin',
+                $request->get('annee_naissance_range_date_min')
+            );
+        }
+        if ( $request->get('annee_naissance_range_date_max') ) {
+            $this->addFilter(
+                'date_end',
+                $request->get('annee_naissance_range_date_max')
+            );
+        }
+        if ( $request->get('classe_range_date_min') ) {
+            $this->addFilter(
+                'date_begin',
+                $request->get('classe_range_date_min')
+            );
+        }
+        if ( $request->get('classe_range_date_max') ) {
+            $this->addFilter(
+                'date_end',
+                $request->get('classe_range_date_max')
+            );
+        }
+ 
     }
 
     /**

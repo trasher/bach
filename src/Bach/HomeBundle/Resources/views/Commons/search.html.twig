@@ -101,8 +101,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <div id="facets">
             {% for facet_field,facet in facets %}
                 <h3>{{ facet.label }}</h3>
-                <div{% if facet_field == 'cDateBegin' %} class="range_date"{% endif %}>
-                {% if facet_field == 'cDateBegin' %}
+                <div{% if facet_field == 'cDateBegin' or facet_field == 'date_enregistrement' %} class="range_date"{% endif %}>
+                {% if facet_field == 'cDateBegin' or facet_field == 'date_enregistrement' %}
                     <form id="{{ facet_field }}_change">
                         <ul>
                             <li>

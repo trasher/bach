@@ -215,6 +215,7 @@ class MatriculesController extends SearchController
 
         }
 
+        $tpl_vars['stats'] = $factory->getStats();
         $this->handleYearlyResults($factory, $tpl_vars);
         $this->handleGeoloc($factory);
 

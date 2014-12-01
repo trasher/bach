@@ -77,7 +77,8 @@ class SolariumQueryFactory
     private $_stats;
     private $_qry_facets_fields = array(
         'dao',
-        'cDateBegin'
+        'cDateBegin',
+        'date_enregistrement',
     );
     private $_query_fields;
 
@@ -345,6 +346,27 @@ class SolariumQueryFactory
                     $fmq->createQuery(_('No'), '-dao:*');
                     break;
                 case 'cDateBegin':
+                    $stats = $this->_query->getStats();
+                    $exists  = $stats->getField($this->_date_field);
+                    if ( !$exists ) {
+                        $stats->createField($this->_date_field);
+                    }
+                    break;
+                case 'date_enregistrement':
+                    $stats = $this->_query->getStats();
+                    $exists  = $stats->getField($this->_date_field);
+                    if ( !$exists ) {
+                        $stats->createField($this->_date_field);
+                    }
+                    break;
+                case 'classe':
+                    $stats = $this->_query->getStats();
+                    $exists  = $stats->getField($this->_date_field);
+                    if ( !$exists ) {
+                        $stats->createField($this->_date_field);
+                    }
+                    break;
+                case 'annee_naissance':
                     $stats = $this->_query->getStats();
                     $exists  = $stats->getField($this->_date_field);
                     if ( !$exists ) {
