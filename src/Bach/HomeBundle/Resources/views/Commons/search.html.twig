@@ -94,14 +94,10 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
 
-        {% if facets is defined and facets|length > 0 %}
-            {% for facet_field, facet in facets%}
-                <h3>{{ facet.label }}</h3>
-                
-            {% endfor %}
-        {% endif %}
-        {% if facets is defined and facets|length > 0 and searchResults|length > 0 %}
+        {% if facets is defined and facets|length > 0 and (searchResults is  not defined or searchResults|length > 0) %}
+            {% if searchResults is defined %}
         <h2>{{ _('Refine Query') }}</h2>
+            {% endif %}
         <div id="facets">
             {% for facet_field,facet in facets %}
                 <h3>{{ facet.label }}</h3>
@@ -199,6 +195,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         </li>
                     {% endfor %}
                     {% if facet.content|length > 10 and not (facet_name is defined and facet_name == index_name) %}
+                        {% if q == '' %}
+                            {% set q = '*:*' %}
+                        {% endif %}
                         <li class="show_more"><a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page, facet_name: index_name}) }}">{{ _('Show more (%count left)')|replace({'%count': facet.content|length-10}) }}</a></li>
                     {% endif %}
                     </ol>
@@ -354,9 +353,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block mobile_js_on %}
-    {% if searchResults is defined and searchResults|length > 0 %}
     $('.show_more a').unbind('click');
-    {% endif %}
 {% endblock %}
 
 {% block mobile_js_off %}
@@ -400,7 +397,11 @@ POSSIBILITY OF SUCH DAMAGE.
                 collapsible: true
             });
 
-            {% if searchResults is defined and searchResults|length > 0 %}
+            {% if q != '' %}
+                {% set qt = q %}
+            {% else %}
+                {% set qt = '*:*' %}
+            {% endif %}
             $('.show_more a').click(function() {
                 var _this = $(this);
                 var _facet_name = $(_this.parents('div')[0]).prev('h3').text();
@@ -411,9 +412,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 var _width = $(window).width() * 0.8;
                 var _height = $(window).height() * 0.8;
 
-                var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page})|raw }}/', '');
+                var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: qt, page: page})|raw }}/', '');
                 _index = _index.substr(_index.lastIndexOf('/')+1);
-                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: q, name: 'THENAME'})|raw }}'.replace('THENAME', _index);
+                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: qt, name: 'THENAME'})|raw }}'.replace('THENAME', _index);
 
                 $.ajax({
                     url: _url,
@@ -437,7 +438,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
                 return false;
             });
-            {% endif %}
 
             {% if available_orders|length > 0 %}
             $('#results_order').change(function(){

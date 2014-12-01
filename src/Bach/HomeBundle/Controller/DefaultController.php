@@ -243,7 +243,6 @@ class DefaultController extends SearchController
                     array('position' => 'ASC')
                 );
         } else {
-            //TODO: facets that must be shown on homepage
             $conf_facets = array();
             $conf_facets = $this->getDoctrine()
                 ->getRepository('BachHomeBundle:Facets')
@@ -262,19 +261,20 @@ class DefaultController extends SearchController
             $conf_facets
         );
 
+        $this->handleFacets(
+            $factory,
+            $conf_facets,
+            $searchResults,
+            $filters,
+            $facet_name,
+            $tpl_vars
+        );
+
         if ( !is_null($query_terms) ) {
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
 
-            $this->handleFacets(
-                $factory,
-                $conf_facets,
-                $searchResults,
-                $filters,
-                $facet_name,
-                $tpl_vars
-            );
             $suggestions = $factory->getSuggestions($query_terms);
 
             $tpl_vars['resultCount'] = $resultCount;

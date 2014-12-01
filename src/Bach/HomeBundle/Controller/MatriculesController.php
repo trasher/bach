@@ -168,7 +168,6 @@ class MatriculesController extends SearchController
                     array('position' => 'ASC')
                 );
         } else {
-            //TODO: facets that must be shown on homepage
             $conf_facets = array();
             $conf_facets = $this->getDoctrine()
                 ->getRepository('BachHomeBundle:Facets')
@@ -187,6 +186,15 @@ class MatriculesController extends SearchController
             $conf_facets
         );
 
+        $this->handleFacets(
+            $factory,
+            $conf_facets,
+            $searchResults,
+            $filters,
+            $facet_name,
+            $tpl_vars
+        );
+
         if ( $query_terms !== null ) {
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
@@ -197,15 +205,6 @@ class MatriculesController extends SearchController
             $tpl_vars['scSearchResults'] = $scSearchResults;
             $tpl_vars['totalPages'] = ceil(
                 $resultCount/$view_params->getResultsbyPage()
-            );
-
-            $this->handleFacets(
-                $factory,
-                $conf_facets,
-                $searchResults,
-                $filters,
-                $facet_name,
-                $tpl_vars
             );
 
             $suggestions = $factory->getSuggestions($query_terms);
