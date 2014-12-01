@@ -140,6 +140,7 @@ class LoadDefaultFacets implements FixtureInterface
             $facet->setFrLabel($data['fr_label']);
             $facet->setEnLabel($data['en_label']);
             $facet->setActive(true);
+            $facet->setOnHome(false);
             $facet->setForm($data['form']);
             $facet->setPosition($i);
             $manager->persist($facet);
