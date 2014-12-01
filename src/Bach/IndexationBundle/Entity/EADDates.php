@@ -245,7 +245,7 @@ class EADDates
                 if ( $this->end !== null ) {
                     if ( count($matches) <= 3 ) {
                         //day is not provided. set to last.
-                        $this->end->modify('last day of this month');
+                        $this->end->modify('last day of december');
                     }
                     if ( count($matches) == 2 ) {
                         //month is not provided. set to 1st.
