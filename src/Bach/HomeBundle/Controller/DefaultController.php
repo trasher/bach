@@ -293,7 +293,6 @@ class DefaultController extends SearchController
                 $resultEnd = $resultCount;
             }
             $tpl_vars['resultEnd'] = $resultEnd;
-            $tpl_vars['stats'] = $factory->getStats();
         } else {
             $show_tagcloud = $this->container->getParameter('feature.tagcloud');
             if ( $show_tagcloud ) {
@@ -308,6 +307,7 @@ class DefaultController extends SearchController
             }
         }
 
+        $tpl_vars['stats'] = $factory->getStats();
         $this->handleYearlyResults($factory, $tpl_vars);
         $this->handleGeoloc($factory);
 
