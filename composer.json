@@ -43,8 +43,8 @@
         "zendframework/zend-stdlib": "2.3.*"
     },
     "require-dev": {
-        "atoum/atoum": "dev-master",
-        "atoum/atoum-bundle": "dev-master",
+        "atoum/atoum": "1.0.x",
+        "atoum/atoum-bundle": "1.2.*@dev",
         "jns/xhprof-bundle": "dev-master",
         "facebook/xhprof": "*@dev",
         "elao/web-profiler-extra-bundle" : "dev-master"
