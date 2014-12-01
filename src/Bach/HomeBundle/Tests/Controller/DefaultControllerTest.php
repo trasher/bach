@@ -103,7 +103,7 @@ class DefaultController extends ControllerTest
 
         //a successfull request, with filtering only
         $this->request->GET(
-            '/search?filter_field=cSubject&filter_value=enjeux+internationaux'
+            '/archives/search?filter_field=cSubject&filter_value=enjeux+internationaux'
         )
             ->hasStatus(200)
             ->hasCharset('UTF-8')
@@ -114,14 +114,14 @@ class DefaultController extends ControllerTest
             ->hasElement('#search_results')
             ->hasChild('article');
 
-        $this->request->GET('/search/Cayenne?view=thumbs')
+        $this->request->GET('/archives/search/default/Cayenne?view=thumbs')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
             ->hasElement('#search_results')
             ->hasChild('article.thumbs');
 
-        $this->request->GET('/search/Cayenne?result_order=1')
+        $this->request->GET('/archives/search/default/Cayenne?result_order=1')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
