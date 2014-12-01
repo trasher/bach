@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-28 09:23+0200\n"
+"POT-Creation-Date: 2014-12-01 10:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,39 +33,39 @@ msgstr ""
 msgid "Publish"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:344
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:352
 msgid "Document %doc successfully deleted from Solr in %time"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:352
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:360
 #, php-format
 msgid "Solr failed to remove document %doc!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:459
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:466
 msgid "%core core has been truncated in %time"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:467
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:476
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:474
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:483
 #, php-format
 msgid "Solr failed to empty %core core!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:502
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:509
 msgid "Could not validate non EAD documents (for now)."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:523
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:530
 #, php-format
 msgid "Corresponding file for %docid document no longer exists on disk."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:551
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:558
 msgid "Document %docid% is valid and DTD compliant!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:557
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:564
 msgid "%type% document %docid% is not valid!"
 msgstr ""
 
@@ -259,7 +259,7 @@ msgstr ""
 
 #: src/Bach/IndexationBundle/Command/ListCommand.php:109
 #: src/Bach/IndexationBundle/Command/RepublishCommand.php:109
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:152
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:162
 msgid "Unknown type! Please choose one of:"
 msgstr ""
 
@@ -301,7 +301,7 @@ msgid "You may not use \"quiet\" and \"verbose\" together."
 msgstr ""
 
 #: src/Bach/IndexationBundle/Command/GeolocCommand.php:149
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:137
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:147
 msgid "Running in dry mode"
 msgstr ""
 
@@ -380,93 +380,97 @@ msgstr ""
 msgid "Localization finished: %found% found, %fail% fail on %total entries"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:90
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:85
 msgid "Maximum results retrived from Solr."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:133
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:127
 msgid "%found components found, but only %retrieved has been retrieved!"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:134
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:128
 msgid "OAI export has failed :("
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:148
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:142
 msgid "OAI documents will be stored in %path"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:177
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:171
 msgid "Change %id"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:183
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:177
 msgid "Create %id"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:218
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:212
 msgid "Remove %id"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:89
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:93
 msgid "Documents type"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:93
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:97
 msgid "Documents names or directories to proceed"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:98
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:102
 msgid "Assume yes for all questions"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:103
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:107
 msgid "Publish only in solr (full-import)"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:108
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:112
 msgid "Do not really publish."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:113
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:117
 msgid "Do not check if file has been modified"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:164
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:122
+msgid "Give stats informations (memory used, etc)"
+msgstr ""
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:174
 msgid "Publishing \"%type\" documents."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:176
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:186
 msgid "Following files are about to be published: "
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:186
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:196
 msgid "yes"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:186
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:196
 msgid "no"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:190
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:200
 msgid "Are you ok (y/n)?"
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:201
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:211
 msgid "Publication begins..."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:247
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:257
 #, php-format
 msgid "Document %doc has not been changed, no publication required."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:290
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:307
 #, php-format
 msgid "Document %doc has been successfully published."
 msgstr ""
 
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:328
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:356
 msgid "Command canceled by user."
 msgstr ""
 
