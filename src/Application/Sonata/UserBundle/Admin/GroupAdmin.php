@@ -68,10 +68,12 @@ class GroupAdmin extends SonataGroupAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-
+        //use Bach specific roles only, not all the stuff available.
         $roles = [
+            'ROLE_USER'         => _('User'),
+            'ROLE_CONTENT_ADMIN'=> _('Content administrator'),
             'ROLE_ARCHIVIST'    => _('Archivist'),
-            'ROLE_ADMIN'    => _('Administrator')
+            'ROLE_ADMIN'        => _('Administrator')
         ];
 
         $formMapper
