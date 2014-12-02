@@ -86,6 +86,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
                 <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
             {% endif %}
+                <a href="{{ path('bach_display_document_rdf', {'docid': document.fragmentid}) }}">{{ _('RDF') }}</a>
             </aside>
         {% endif%}
         {% endif %}
