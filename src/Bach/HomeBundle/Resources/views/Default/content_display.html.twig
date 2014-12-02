@@ -30,7 +30,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 #}
-
+    <article about="{{ docid }}" class="show_fragment">
     {% if ariane is defined or archdesc is defined %}
         <ul class="breadcrumb">
             {% if archdesc is defined %}
@@ -54,7 +54,6 @@ POSSIBILITY OF SUCH DAMAGE.
         </ul>
     {% endif %}
 
-    <article about="{{ docid }}" class="show_fragment">
         <header>
             <h2 property="dc:title">
                 {%- if document.cUnittitle is defined -%}
@@ -97,6 +96,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {% else %}
             {% set hasComments = false %}
         {% endif %}
+        <div class="content">
         {{ displayFragment(document.fragment, docid, search_form, true, hasChildren, hasComments, count_children, ajax)|raw }}
         {% if not children == false %}
             <section id="children_documents">
@@ -155,11 +155,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% endfor %}
             </section>
         {% endif %}
+        </div>
     </article>
 
     <script src="{{ path('dynamic_js', {name: 'tabs'}) }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
-            _doTabs('article.show_fragment');
+            _doTabs('article.show_fragment div.content');
         });
     </script>
