@@ -79,6 +79,8 @@ class SolariumQueryFactory
         'dao',
         'cDateBegin',
         'date_enregistrement',
+        'classe',
+        'annee_naissance'
     );
     private $_query_fields;
 
@@ -89,7 +91,7 @@ class SolariumQueryFactory
     private $_geoloc;
 
     private $_date_field;
-
+    private $_dates_fields;
     /**
      * Factory constructor
      *
@@ -152,6 +154,11 @@ class SolariumQueryFactory
 
             $stats = $this->_query->getStats();
             $stats->createField($this->_date_field);
+            if ( $this->_dates_fields != null ) {
+                foreach ( $this->_dates_fields as $date_field ) {
+                    $stats->createField($date_field);
+                }
+            }
         }
 
         //dynamically create facets
@@ -356,21 +363,21 @@ class SolariumQueryFactory
                     $stats = $this->_query->getStats();
                     $exists  = $stats->getField($this->_date_field);
                     if ( !$exists ) {
-                        $stats->createField($this->_date_field);
+                        $stats->createField('date_enregistrement');
                     }
                     break;
                 case 'classe':
                     $stats = $this->_query->getStats();
                     $exists  = $stats->getField($this->_date_field);
                     if ( !$exists ) {
-                        $stats->createField($this->_date_field);
+                        $stats->createField('classe');
                     }
                     break;
                 case 'annee_naissance':
                     $stats = $this->_query->getStats();
                     $exists  = $stats->getField($this->_date_field);
                     if ( !$exists ) {
-                        $stats->createField($this->_date_field);
+                        $stats->createField('annee_naissance');
                     }
                     break;
                 default:
@@ -576,21 +583,27 @@ class SolariumQueryFactory
 
         $stats->createField($this->_date_field);
 
+        if ( $this->_dates_fields != null ) {
+            foreach ( $this->_dates_fields as $date_field ) {
+                $stats->createField($date_field);
+            }
+        }
         $rs = $this->_client->select($query);
         $rsStats = $rs->getStats();
         $statsResults = $rsStats->getResults();
-
-        $min_date = null;
-        $max_date = null;
-        if ( isset($statsResults[$this->_date_field]) ) {
-            $min_date = $statsResults[$this->_date_field]->getMin();
-            $max_date = $statsResults[$this->_date_field]->getMax();
+        $dates_min_max = array();
+        foreach ( $statsResults as $date_field => $statResult ) {
+            $min_date = null;
+            $max_date = null;
+            if ( isset($statsResults[$this->_date_field]) ) {
+                $min_date = $statsResults[$date_field]->getMin();
+                $max_date = $statsResults[$date_field]->getMax();
+            }
+            $dates_min_max[$date_field]['min_date'] = new \DateTime($min_date);
+            $dates_min_max[$date_field]['max_date'] = new \DateTime($max_date);
         }
 
-        $min_date = new \DateTime($min_date);
-        $max_date = new \DateTime($max_date);
-
-        return array($min_date, $max_date);
+        return $dates_min_max;
     }
 
     /**
@@ -673,7 +686,8 @@ class SolariumQueryFactory
      */
     public function setDatesBounds()
     {
-        list($low,$up) = $this->_loadDatesFromStats();
+        $low = $this->_loadDatesFromStats()[$this->_date_field]['min_date'];
+        $up = $this->_loadDatesFromStats()[$this->_date_field]['max_date'];
 
         if ( !isset($this->_date_gap) ) {
             $this->_low_date = $low->format('Y-01-01') . 'T00:00:00Z';
@@ -734,6 +748,19 @@ class SolariumQueryFactory
     {
         $this->_date_field = $field;
     }
+
+    /**
+     * Set dates fields
+     *
+     * @param array $fields Fields name
+     *
+     * @return void
+     */
+    public function setDatesFields($fields)
+    {
+        $this->_dates_fields = $fields;
+    }
+
 
     /**
      * Get tag cloud

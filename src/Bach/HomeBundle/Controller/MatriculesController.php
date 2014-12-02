@@ -68,7 +68,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class MatriculesController extends SearchController
 {
-    protected $date_field = 'date_enregistrement';
+    protected $dates_fields_mat = array(
+        'date_enregistrement',
+        'classe',
+        'annee_naissance'
+    );
 
     /**
      * Search page
@@ -126,11 +130,47 @@ class MatriculesController extends SearchController
         $resultCount = null;
         $searchResults = null;
 
+        if ( $query_terms !== null ) {
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active'    => true,
+                        'form'      => 'matricules'
+                    ),
+                    array('position' => 'ASC')
+                );
+        } else {
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active' => true,
+                        'form'   => 'matricules',
+                        'on_home'=> true
+                    ),
+                    array('position' => 'ASC')
+                );
+        }
+        if ( $this->container->hasParameter('date.matricules') ) {
+            $current_date = $this->container->getParameter('date.matricules');
+        } else {
+            $current_date = 'date_enregistrement';
+        }
         $factory = $this->get($this->factoryName());
 
         //FIXME: try to avoid those 2 calls
         $factory->setGeolocFields($this->getGeolocFields());
-        $factory->setDateField($this->date_field);
+        $factory->setDateField($current_date);
+        $dates_fields = array();
+        foreach ( $conf_facets as $conf_facet ) {
+            if ( in_array($conf_facet->getSolrFieldName(), $this->dates_fields_mat)
+                && $conf_facet->getSolrFieldName() != $current_date
+            ) {
+                array_push($dates_fields, $conf_facet->getSolrFieldName());
+            }
+        }
+        $factory->setDatesFields($dates_fields);
 
         if ( $filters->count() > 0 ) {
             $tpl_vars['filters'] = $filters;
@@ -156,30 +196,6 @@ class MatriculesController extends SearchController
         }
 
         $factory->prepareQuery($container);
-
-        if ( $query_terms !== null ) {
-            $conf_facets = $this->getDoctrine()
-                ->getRepository('BachHomeBundle:Facets')
-                ->findBy(
-                    array(
-                        'active'    => true,
-                        'form'      => 'matricules'
-                    ),
-                    array('position' => 'ASC')
-                );
-        } else {
-            $conf_facets = array();
-            $conf_facets = $this->getDoctrine()
-                ->getRepository('BachHomeBundle:Facets')
-                ->findBy(
-                    array(
-                        'active' => true,
-                        'form'   => 'matricules',
-                        'on_home'=> true
-                    ),
-                    array('position' => 'ASC')
-                );
-        }
 
         $searchResults = $factory->performQuery(
             $container,
