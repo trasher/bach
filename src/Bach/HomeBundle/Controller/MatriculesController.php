@@ -152,8 +152,8 @@ class MatriculesController extends SearchController
                     array('position' => 'ASC')
                 );
         }
-        if ( $this->container->hasParameter('date.matricules') ) {
-            $current_date = $this->container->getParameter('date.matricules');
+        if ( $this->container->hasParameter('matricules_histogram') ) {
+            $current_date = $this->container->getParameter('matricules_histogram');
         } else {
             $current_date = 'date_enregistrement';
         }
