@@ -160,35 +160,33 @@ class Filters extends \ArrayObject
      */
     public function removeFilter($field, $value)
     {
-        switch ( $field ) {
-        case 'date_begin':
-        case 'date_end':
-        case 'cDateBegin':
-        case 'classe':
-        case 'date_enregistrement':
-        case 'annee_naissance':
-        case 'dao':
-            if ( $this->offsetExists($field) ) {
-                $this->offsetUnset($field);
-            }
-            break;
-        default:
-            if ( $this->offsetExists($field)
-                && $this->hasValue($field, $value)
-            ) {
-                $offset = $this->offsetGet($field);
-                if ( $offset->count() > 1 ) {
-                    $iterator = $offset->getIterator();
-                    while ( $iterator->valid() ) {
-                        if ( $iterator->current() === $value ) {
-                            $offset->offsetUnset($iterator->key());
-                            break;
-                        }
-                        $iterator->next();
-                    }
-                } else {
-                    //field contains only one value, unset
+        if ( preg_match('/date_.*_(min|max)/', $field) ) {
+            $this->offsetUnset($field);
+        } else {
+            switch ( $field ) {
+            case 'dao':
+                if ( $this->offsetExists($field) ) {
                     $this->offsetUnset($field);
+                }
+                break;
+            default:
+                if ( $this->offsetExists($field)
+                    && $this->hasValue($field, $value)
+                ) {
+                    $offset = $this->offsetGet($field);
+                    if ( $offset->count() > 1 ) {
+                        $iterator = $offset->getIterator();
+                        while ( $iterator->valid() ) {
+                            if ( $iterator->current() === $value ) {
+                                $offset->offsetUnset($iterator->key());
+                                break;
+                            }
+                            $iterator->next();
+                        }
+                    } else {
+                        //field contains only one value, unset
+                        $this->offsetUnset($field);
+                    }
                 }
             }
         }

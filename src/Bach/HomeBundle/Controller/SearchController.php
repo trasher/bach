@@ -202,10 +202,16 @@ abstract class SearchController extends Controller
         $facetset = $searchResults->getFacetSet();
 
         $facet_names = array(
-            'geoloc'        => _('Map selection'),
-            'date_begin'    => _('Start date'),
-            'date_end'      => _('End date'),
-            'headerId'      => _('Document')
+            'geoloc'                       => _('Map selection'),
+            'date_cDateBegin_min'          => _('Start date'),
+            'date_cDateBegin_max'          => _('End date'),
+            'date_classe_min'              => _('Start class date'),
+            'date_classe_max'              => _('End class date'),
+            'date_date_enregistrement_min' => _('Start record date'),
+            'date_date_enregistrement_max' => _('End record date'),
+            'date_annee_naissance_min'     => _('Start birth date'),
+            'date_annee_naissance_max'     => _('End birth date'),
+            'headerId'                     => _('Document')
         );
         $facet_labels = array();
         $docs_titles = array();
