@@ -1,3 +1,6 @@
+1.0.4 (2014-12-05)
+- Fix OAI populate command
+
 1.0.3 (2014-11-20)
 - Fix missing translation
 - Fix ACLs in administration UI
