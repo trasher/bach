@@ -154,7 +154,7 @@ EOF
         $existing = iterator_to_array($existing);
 
         foreach ( $list as $fragment ) {
-            $path = $oai_path . '/' . $fragment['fragmentid'] . '.xml';
+            $path = rtrim($oai_path, '/') . '/' . $fragment['fragmentid'] . '.xml';
             if ( isset($existing[$path]) ) {
                 //remove existing path to get removed fragments list
                 unset($existing[$path]);
@@ -204,8 +204,8 @@ EOF
                 );
             }
         }
-
-        foreach ( $existing as $path=>$file ) {
+        var_dump(count($existing));
+        /*foreach ( $existing as $path=>$file ) {
             $msg = str_replace(
                 '%id',
                 $file->getBaseName('.' . $file->getExtension()),
@@ -216,6 +216,6 @@ EOF
             $logger->info($msg);
 
             unlink($path);
-        }
+        }*/
     }
 }
