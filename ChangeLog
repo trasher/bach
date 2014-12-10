@@ -1,3 +1,6 @@
+1.0.5 (2014-12-10)
+- Fix OAI populate command to display unittile like Bach
+
 1.0.4 (2014-12-05)
 - Fix OAI populate command
 

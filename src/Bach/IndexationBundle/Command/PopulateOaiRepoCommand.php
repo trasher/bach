@@ -182,15 +182,15 @@ EOF
             $title = (string)$frag->did->unittitle;
 
             //handle parents titles
+            $title .= $fragment['archDescUnitTitle'];
             $title .= ' (';
             if ( count($fragment['parents_titles']) > 0 ) {
                 $parents_titles = $fragment['parents_titles'];;
-                $parents_titles = array_reverse($parents_titles);
+                //$parents_titles = array_reverse($parents_titles);
                 foreach ( $parents_titles as $parent ) {
                     $title .= $parent . ' ; ';
                 }
             }
-            $title .= $fragment['archDescUnitTitle'];
             $title .= ')';
             $frag->did->unittitle = $title;
 
@@ -204,7 +204,6 @@ EOF
                 );
             }
         }
-        var_dump(count($existing));
         /*foreach ( $existing as $path=>$file ) {
             $msg = str_replace(
                 '%id',
