@@ -182,13 +182,19 @@ EOF
             $title = (string)$frag->did->unittitle;
 
             //handle parents titles
-            $title .= $fragment['archDescUnitTitle'];
             $title .= ' (';
+            $title .= $fragment['archDescUnitTitle'] . ' ; ';
             if ( count($fragment['parents_titles']) > 0 ) {
-                $parents_titles = $fragment['parents_titles'];;
+                $parents_titles = $fragment['parents_titles'];
                 //$parents_titles = array_reverse($parents_titles);
+                $countParents = 0;
                 foreach ( $parents_titles as $parent ) {
-                    $title .= $parent . ' ; ';
+                    if ( (count($parents_titles)-1) > $countParents ) {
+                        $title .= $parent . ' ; ';
+                    } else {
+                        $title .= $parent;
+                    }
+                    $countParents++;
                 }
             }
             $title .= ')';
@@ -204,7 +210,7 @@ EOF
                 );
             }
         }
-        /*foreach ( $existing as $path=>$file ) {
+        foreach ( $existing as $path=>$file ) {
             $msg = str_replace(
                 '%id',
                 $file->getBaseName('.' . $file->getExtension()),
@@ -215,6 +221,6 @@ EOF
             $logger->info($msg);
 
             unlink($path);
-        }*/
+        }
     }
 }
