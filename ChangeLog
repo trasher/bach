@@ -1,3 +1,6 @@
+1.0.6 (2014-12-11)
+- Fix OAI populate with format of fmsh (only example we have)
+
 1.0.5 (2014-12-10)
 - Fix OAI populate command to display unittile like Bach
 
