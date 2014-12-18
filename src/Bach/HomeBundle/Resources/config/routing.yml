@@ -268,3 +268,8 @@ remote_image_infos_noimg:
         _method: GET
         path: '(.+)?'
 
+footer_link:
+    pattern: /footer/{type}
+    defaults: {_controller: BachHomeBundle:Default:footerLink}
+    requirements:
+        _method: GET

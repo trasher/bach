@@ -184,7 +184,7 @@ p {
 [id=wrapper] {
     margin-left: 22em;
     overflow: auto;
-    height: 100%;
+    height: 97%;
     padding: 0 0 0 5%;
 }
 
@@ -1776,6 +1776,17 @@ figure section .flashplayer {
 
 .htmlplayer.standalone {
     display: inline-block;
+}
+
+#footer_wrapper {
+    position: fixed;
+    height: 3%;
+    left: 27em;
+    bottom: 0px;
+}
+
+#footer {
+    margin-top:10px;
 }
 
 /* Mobile view */
