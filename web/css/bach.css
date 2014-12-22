@@ -1783,6 +1783,7 @@ figure section .flashplayer {
     height: 3%;
     left: 27em;
     bottom: 0px;
+    padding-bottom: 5px;
 }
 
 #footer {
