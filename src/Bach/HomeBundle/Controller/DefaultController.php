@@ -1008,4 +1008,19 @@ class DefaultController extends SearchController
 
         return new Response($response, 200);
     }
+
+    /**
+     * Display page of credits or general conditions
+     *
+     * @param string $type type of document to render
+     *
+     * @return void
+     */
+    public function footerLinkAction($type)
+    {
+        return $this->render(
+            'BachHomeBundle:Default:credits.html.twig',
+            array('type'=>$type)
+        );
+    }
 }
