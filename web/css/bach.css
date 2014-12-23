@@ -1781,9 +1781,12 @@ figure section .flashplayer {
 #footer_wrapper {
     position: fixed;
     height: 3%;
-    left: 27em;
+    left: 25.7em;
     bottom: 0px;
+    background-color: #d1c6c0;
     padding-bottom: 5px;
+    padding-left: 1.2em;
+    width: 100%;
 }
 
 #footer {
