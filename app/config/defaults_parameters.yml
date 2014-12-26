@@ -93,6 +93,7 @@ parameters:
     feature.social: true
     feature.register: false
     feature.heritage: true
+    matricules_histogram: 'annee_naissance'
 
     #UI parameters
     viewer_uri: http://viewer.localhost/
