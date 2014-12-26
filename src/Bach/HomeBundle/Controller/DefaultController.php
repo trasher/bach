@@ -1180,7 +1180,7 @@ class DefaultController extends SearchController
     public function footerLinkAction($type)
     {
         return $this->render(
-            'BachHomeBundle:Default:credits.html.twig',
+            '::credits.html.twig',
             array('type'=>$type)
         );
     }
