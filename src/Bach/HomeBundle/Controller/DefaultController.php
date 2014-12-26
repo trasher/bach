@@ -1023,4 +1023,19 @@ class DefaultController extends SearchController
             array('type'=>$type)
         );
     }
+
+    /**
+     * Display page of credits or general conditions
+     *
+     * @param string $type type of document to render
+     *
+     * @return void
+     */
+    public function footerLinkAction($type)
+    {
+        return $this->render(
+            '::credits.html.twig',
+            array('type'=>$type)
+        );
+    }
 }
