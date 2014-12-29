@@ -48,6 +48,14 @@ POSSIBILITY OF SUCH DAMAGE.
             <!--[if lte IE 8]>
                 <div id="oldie"><strong>{{ _('Your browser is quite old, some features may not work.') }}</strong><br/>{{ _('You may have a better experience with a more recent or an alternative one.') }}</div>
             <![endif]-->
+            {% block headCookie %}
+            {% if cookie_param is not defined %}
+                <div id="head_cookie">
+                    <a class="alert">x</a>
+                    En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de [ Cookies ou autres traceurs ] pour vous proposer [Par exemple, des publicités ciblées adaptés à vos centres d’intérêts] et [ Par exemple, réaliser des statistiques de visites].
+                </div>
+            {% endif %}
+            {% endblock %}
             {% block navigation %}{% endblock %}
             {% block login %}{% endblock %}
             {% block flash_messages %}{% endblock %}

@@ -1814,6 +1814,28 @@ figure section .flashplayer {
     margin-top:10px;
 }
 
+#head_cookie {
+    position: absolute;
+    background-color: #d1c6c0;
+    margin: 10px;
+    top: 0px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+#head_cookie .alert {
+    position: relative;
+    top: -5px;
+    float: right;
+    color: black;
+}
+
+#head_cookie .alert:hover, #head_cookie .alert:focus {
+    cursor: pointer;
+    opacity: 0.4;
+    text-decoration: none;
+}
+
 /* Mobile view */
 @media ( max-width : 767px) {
     /** Reset widths and heights */

@@ -199,6 +199,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block content %}
+    {{ block ('headCookie')}}
     {{ block('navigation') }}
     {{ block('login') }}
     {{ block('flash_messages') }}
