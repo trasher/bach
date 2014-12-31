@@ -361,6 +361,17 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block javascripts %}
+
+            $(".alert").click(function() {
+                $.ajax({
+                    url: "http://bach.localhost/app_dev.php/cookie",
+                    type: "GET",
+                    success: function() {
+                        $("#head_cookie").remove();
+                    }
+                });
+                return false;
+            });
             $.cookie.json = true;
             var _view_params = $.cookie('{{ cookie_param_name }}');
 

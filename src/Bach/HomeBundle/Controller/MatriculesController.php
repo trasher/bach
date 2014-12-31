@@ -96,10 +96,14 @@ class MatriculesController extends SearchController
 
         $this->search_form = $form_name;
 
-        /** Manage view parameters */
+        /* Manage view parameters */
         $view_params = $this->handleViewParams();
 
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
+
+        if (isset($_COOKIE[$this->getCookieName()]) ) {
+            $tpl_vars['cookie_param'] = true;
+        }
 
         $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {

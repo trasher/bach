@@ -745,15 +745,13 @@ abstract class SearchController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        /** Manage view parameters */
+        /* Manage view parameters */
         $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
             $view_params = $this->get($this->getViewParamsServicename());
         }
         //take care of user view params
-        if ( isset($_COOKIE[$this->getCookieName()]) ) {
-            $view_params->bindCookie($this->getCookieName());
-        }
+        $view_params->bindCookie($this->getCookieName());
 
         //set current view parameters according to request
         $view_params->bind($request, $this->getCookieName());

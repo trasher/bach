@@ -279,3 +279,9 @@ footer_link:
     defaults: {_controller: BachHomeBundle:Default:footerLink}
     requirements:
         _method: GET
+
+authorized_cookie:
+    pattern: /cookie
+    defaults: {_controller: BachHomeBundle:Default:authorizedCookie }
+    requirements:
+        _method: GET

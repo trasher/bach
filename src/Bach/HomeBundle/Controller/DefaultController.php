@@ -168,6 +168,11 @@ class DefaultController extends SearchController
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
         $tpl_vars['q'] = urlencode($query_terms);
 
+        /* not display warning about cookies */
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $tpl_vars['cookie_param'] = true;
+        }
+
         $factory = $this->get($this->factoryName());
 
         //FIXME: try to avoid those 2 calls
@@ -1022,5 +1027,21 @@ class DefaultController extends SearchController
             'BachHomeBundle:Default:credits.html.twig',
             array('type'=>$type)
         );
+    }
+
+    /**
+     * Create a cookie
+     *
+     * @return void
+     */
+    public function authorizedCookieAction()
+    {
+        $view_params = $this->get($this->getViewParamsServicename());
+        $_cook = new \stdClass();
+        $_cook->map = $view_params->showMap();
+        $_cook->daterange = $view_params->showDaterange();
+        $expire = 365 * 24 * 3600;
+        setcookie($this->getCookieName(), json_encode($_cook), time()+$expire, '/');
+        return new Response();
     }
 }
