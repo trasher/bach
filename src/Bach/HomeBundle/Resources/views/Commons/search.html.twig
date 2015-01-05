@@ -374,14 +374,14 @@ POSSIBILITY OF SUCH DAMAGE.
             function filterOnDate(min_date, max_date) {
                 {% if q is defined and q != '' -%}
                 var _new_loc = document.location.href;
-                {% else -%}
+                {% else %}
                 var _new_loc = '{{ path(block('search_path'), {form_name: search_form})|raw }}';
                 {% endif %}
                 var n = _new_loc.indexOf('?');
                 var _new_loc = _new_loc.substring(0, n != -1 ? n : _new_loc.lenght);
 
-                _new_loc += '?filter_field[]=date_cDateBegin_min&filter_value[]=' + min_date +
-                    '&filter_field[]=date_cDateBegin_max&filter_value[]=' + max_date;
+                _new_loc += '?filter_field[]=date_{{ current_date }}_min&filter_value[]=' + min_date +
+                    '&filter_field[]=date_{{ current_date }}_max&filter_value[]=' + max_date;
                 document.location = _new_loc;
             }
 

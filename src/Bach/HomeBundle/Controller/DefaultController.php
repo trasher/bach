@@ -316,7 +316,7 @@ class DefaultController extends SearchController
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $tpl_vars['suggestions'] = $suggestions;
         }
-
+        $tpl_vars['current_date'] = 'cDateBegin';
         return $this->render(
             'BachHomeBundle:Default:index.html.twig',
             $tpl_vars

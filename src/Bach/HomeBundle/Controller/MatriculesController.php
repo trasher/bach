@@ -245,7 +245,7 @@ class MatriculesController extends SearchController
             $resultEnd = $resultCount;
         }
         $tpl_vars['resultEnd'] = $resultEnd;
-
+        $tpl_vars['current_date'] = $current_date;
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(
