@@ -1024,7 +1024,7 @@ class DefaultController extends SearchController
     public function footerLinkAction($type)
     {
         return $this->render(
-            'BachHomeBundle:Default:credits.html.twig',
+            '::credits.html.twig',
             array('type'=>$type)
         );
     }
@@ -1038,10 +1038,22 @@ class DefaultController extends SearchController
     {
         $view_params = $this->get($this->getViewParamsServicename());
         $_cook = new \stdClass();
-        $_cook->map = $view_params->showMap();
-        $_cook->daterange = $view_params->showDaterange();
+        $_cook->map = $this->container->getParameter('display.show_maps');
+        $_cook->daterange = $this->container->getParameter('display.show_daterange');
         $expire = 365 * 24 * 3600;
         setcookie($this->getCookieName(), json_encode($_cook), time()+$expire, '/');
         return new Response();
+    }
+
+    /**
+     * Display page about cookies
+     *
+     * @return void
+     */
+    public function cookieLinkAction()
+    {
+        return $this->render(
+            '::cookies.html.twig'
+        );
     }
 }

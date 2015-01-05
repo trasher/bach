@@ -1819,13 +1819,14 @@ figure section .flashplayer {
     background-color: #d1c6c0;
     margin: 10px;
     top: 0px;
-    padding: 10px;
+    padding: 12px;
     z-index: 1000;
 }
 
 #head_cookie .alert {
     position: relative;
-    top: -5px;
+    top: -10px;
+    left: 5px;
     float: right;
     color: black;
 }

@@ -226,6 +226,26 @@ POSSIBILITY OF SUCH DAMAGE.
     <script type="text/javascript">
         {% block javascripts %}{% endblock %}
 
+            var clickCookie = function() {
+                if( $("#head_cookie").length > 0 ) {
+                    console.log($("#head_cookie").length);
+                    $.ajax({
+                        url: "/cookie",
+                        type: "GET",
+                        success: function() {
+                            $("#head_cookie").remove();
+                        }
+                    });
+                    return false;
+                }
+            };
+
+            $("body").click( function(e) {
+                if ( !$(e.target).is("#head_cookie") ) {
+                    clickCookie();
+                }
+            });
+
         _mobile = function(){
             if ( window.innerWidth < 768 ) {
                 //hide per default on mobile

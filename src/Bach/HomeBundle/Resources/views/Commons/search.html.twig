@@ -362,16 +362,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% block javascripts %}
 
-            $(".alert").click(function() {
-                $.ajax({
-                    url: "http://bach.localhost/app_dev.php/cookie",
-                    type: "GET",
-                    success: function() {
-                        $("#head_cookie").remove();
-                    }
-                });
-                return false;
-            });
             $.cookie.json = true;
             var _view_params = $.cookie('{{ cookie_param_name }}');
 
@@ -414,6 +404,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% set qt = '*:*' %}
             {% endif %}
             $('.show_more a').click(function() {
+                clickCookie();
                 var _this = $(this);
                 var _facet_name = $(_this.parents('div')[0]).prev('h3').text();
 
@@ -521,6 +512,7 @@ POSSIBILITY OF SUCH DAMAGE.
             }
 
             $('#sh_daterange').on('click', function(){
+                clickCookie();
                 $('#dates_plot').toggleClass('hidden');
                 if ( !plot) {
                     _initPlot();

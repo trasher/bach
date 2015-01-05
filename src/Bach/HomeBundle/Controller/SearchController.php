@@ -466,7 +466,7 @@ abstract class SearchController extends Controller
      */
     protected function getCookieName()
     {
-        return 'bach_' . $this->getParamSessionName();
+        return 'bach_cookie';
     }
 
     /**

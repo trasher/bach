@@ -285,3 +285,9 @@ authorized_cookie:
     defaults: {_controller: BachHomeBundle:Default:authorizedCookie }
     requirements:
         _method: GET
+
+cookie_link:
+    pattern: /cookielink
+    defaults: {_controller: BachHomeBundle:Default:cookieLink}
+    requirements:
+        _method: GET
