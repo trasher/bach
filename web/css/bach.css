@@ -1813,10 +1813,11 @@ figure section .flashplayer {
     padding-bottom: 5px;
     padding-left: 1.2em;
     width: 100%;
+    min-height: 20px;
 }
 
 #footer {
-    margin-top:10px;
+    margin-top: 0.5%;
 }
 
 #head_cookie {
@@ -1978,5 +1979,15 @@ figure section .flashplayer {
 
     .fb_iframe_widget > span {
         vertical-align: baseline!important;
+    }
+    #footer_wrapper {
+        position: static;
+        left: 0;
+        bottom: 0px;
+        background-color: #d1c6c0;
+        width: 100%;
+        min-height: 20px;
+        margin-top:10;%
+        height: 15%;
     }
 }
