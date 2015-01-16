@@ -351,12 +351,21 @@ class EADArchDesc
                             $node->ownerDocument->saveXML($node)
                         )
                     );
-                    $result[$field][] = array(
-                        'value'         => $value,
-                        'attributes'    => $this->_parseAttributes(
-                            $node->attributes
-                        )
-                    );
+                    if ( $field !== './/controlaccess//geogname[@latitude and @longitude]' ) {
+                        $result[$field][] = array(
+                            'value'         => $value,
+                            'attributes'    => $this->_parseAttributes(
+                                $node->attributes
+                            )
+                        );
+                    } else {
+                        $result[$field][$value] = array(
+                            'value'         => $value,
+                            'attributes'    => $this->_parseAttributes(
+                                $node->attributes
+                            )
+                        );
+                    }
                 }
             }
         }

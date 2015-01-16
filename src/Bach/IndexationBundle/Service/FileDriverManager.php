@@ -110,11 +110,12 @@ class FileDriverManager
      * @param Document $doc          Document
      * @param boolean  $transaction  Whether to use DB transaction or not
      * @param string   $preprocessor Preprocessor, if any (defaults to null)
+     * @param array    $geonames     Geoloc data
      *
      * @return FileFormat the normalized file object
      */
     public function convert(DataBag $bag, $format, $doc, $transaction = true,
-        $preprocessor = null
+        $preprocessor = null, &$geonames = null
     ) {
         $start_memory = memory_get_usage();
 
@@ -261,6 +262,17 @@ class FileDriverManager
                 $results = $results['elements'];
 
                 foreach ($results as &$result) {
+                    if ( isset(
+                        $result['c']['.//controlaccess//geogname[@latitude and @longitude]'])
+                    ) {
+                        $result['geolocalized']
+                            = $result['c']['.//controlaccess//geogname[@latitude and @longitude]'];
+                        $geonames = array_merge(
+                            $geonames,
+                            $result['geolocalized']
+                        );
+                        unset($result['geolocalized']);
+                    }
                     $this->_handleEadComponent(
                         $result,
                         $docid,

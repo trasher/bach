@@ -170,12 +170,17 @@ class ZendDb
      * Instanciate an insert query
      *
      * @param string $table Table name, without prefix
+     * @param array  $data  Data to insert
      *
      * @return Insert
      */
-    public function insert($table)
+    public function insert($table, $data = null)
     {
-        return $this->_sql->insert($table);
+        if ( $data == null ) {
+            return $this->_sql->insert($table);
+        } else {
+            return $this->_sql->insert($table)->values($data);
+        }
     }
 
     /**

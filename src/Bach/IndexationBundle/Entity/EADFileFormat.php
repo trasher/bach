@@ -398,6 +398,7 @@ class EADFileFormat extends FileFormat
                     $this->onPropertyChanged($key, $this->$key, $value);
                     $this->$key = $value;
                 }
+            } elseif ($key === 'geolocalized' ) {
             } elseif ($key === 'cDate') {
                 $this->parseDates($value);
             } elseif ( $key == 'daolist' ) {

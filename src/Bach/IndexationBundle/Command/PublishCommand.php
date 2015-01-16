@@ -52,9 +52,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 Use Symfony\Component\HttpFoundation\File\File;
 use Bach\IndexationBundle\Entity\Document;
+use Bach\IndexationBundle\Entity\Geoloc;
 use Bach\IndexationBundle\Entity\IntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
 use Bach\IndexationBundle\Service\ZendDb;
+use Zend\Db\ResultSet\ResultSet;
 
 /**
  * Publication command
@@ -71,6 +73,8 @@ class PublishCommand extends ContainerAwareCommand
 {
     private $_insert_doc_stmt;
     private $_update_doc_stmt;
+    private $_insert_geo_stmt;
+    private $_update_geo_stmt;
 
     /**
      * Configures command
@@ -231,6 +235,7 @@ EOF
                 $no_check_changes = $input->getOption('no-change-check');
 
                 $docs = array();
+                $geonames = array();
 
                 foreach ( $files_to_publish[$type] as $ftp ) {
                     $f = new File($ftp);
@@ -299,7 +304,7 @@ EOF
                         $task = new IntegrationTask($document);
 
                         if ( $dry === false ) {
-                            $integrationService->integrate($task);
+                            $integrationService->integrate($task, $geonames);
                             $logger->info(
                                 str_replace(
                                     '%doc',
@@ -309,6 +314,55 @@ EOF
                             );
 
                         }
+                        if ( !empty($geonames) ) {
+                            $zdb = $this->getContainer()->get('zend_db');
+
+                            try {
+                                $zdb->connection->beginTransaction();
+                                /* get geoloc in database
+                                 * and treatment to match with geodata in ead
+                                 */
+                                $select = $zdb->select('geoloc');
+                                $stmt = $zdb->sql->prepareStatementForSqlObject(
+                                    $select
+                                );
+                                $result = $stmt->execute();
+
+                                $results = new ResultSet();
+                                $rows = $results->initialize($result)->toArray();
+                                $zdb->connection->commit();
+                            } catch ( \Exception $e ) {
+                                $zdb->connection->rollBack();
+                                throw $e;
+                            }
+
+                            $resultsSelect = array();
+                            foreach ( $rows as $key => $row ) {
+                                $resultSelect                 = array();
+                                $resultSelect['indexed_name'] = $row['indexed_name'];
+                                $resultSelect['lon']          = $row['lon'];
+                                $resultSelect['lat']          = $row['lat'];
+                                $resultSelect['id']           = $row['id'];
+                                $resultsSelect[$resultSelect['indexed_name']]
+                                    = $resultSelect;
+                            }
+                            /***************************************************/
+
+                            if ( $dry === false ) {
+                                try {
+                                    $zdb->connection->beginTransaction();
+                                    $this->_storeGeodata(
+                                        $zdb,
+                                        $geonames,
+                                        $resultsSelect
+                                    );
+                                    $zdb->connection->commit();
+                                } catch ( \Exception $e ) {
+                                    $zdb->connection->rollBack();
+                                    throw $e;
+                                }
+                            }
+                        }
 
                         unset($task);
                     } else {
@@ -316,6 +370,7 @@ EOF
                     }
                     unset($document, $exists);
                 }
+
             }
 
             if ( $type === 'matricules' && count($docs) > 0 ) {
@@ -344,7 +399,7 @@ EOF
                     throw $e;
                 }
 
-                $integrationService->integrateAll($tasks, $progress);
+                $integrationService->integrateAll($tasks, $progress, $geonames);
             }
 
             $this->_solrFullImport($output, $type, $progress, $dry);
@@ -384,6 +439,66 @@ EOF
 
             $output->writeln('Time elapsed: ' . $elapsed);
             $output->writeln('Memory peak: ' . $peak);
+        }
+    }
+
+
+    /**
+     * Store Geodata
+     *
+     * @param ZendDb $zdb           ZDB instance
+     * @param array  $geonames      Contains geodata in ead file
+     * @param array  $resultsSelect Contains geodata store in database
+     *
+     * @return void
+     */
+    private function _storeGeodata(ZendDb $zdb, array $geonames, array $resultsSelect)
+    {
+        $geonamesUpdate = array_intersect_key($resultsSelect, $geonames);
+        $geonamesInsert = array_diff_key($geonames, $geonamesUpdate);
+        $stmt = null;
+        foreach ( $geonamesInsert as $key => $geonameInsert ) {
+            $insertObject = array();
+            $insertObject['lat']    = $geonames[$key]['attributes']['latitude'];
+            $insertObject['lon']    = $geonames[$key]['attributes']['longitude'];
+            $insertObject['indexed_name'] = $geonames[$key]['value'];
+            $insertObject['found']  = '1';
+
+            if ( $this->_insert_geo_stmt === null ) {
+                $insert = $zdb->insert('geoloc')
+                    ->values($insertObject);
+                $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+                $this->_insert_geo_stmt = $stmt;
+            } else {
+                $stmt = $this->_insert_geo_stmt;
+            }
+            $stmt->execute($insertObject);
+        }
+        $stmt = null;
+        foreach ( $geonamesUpdate as $key => $geonameUpdate ) {
+            $updateObject = array();
+            $updateObject['lat']    = $geonames[$key]['attributes']['latitude'];
+            $updateObject['lon']    = $geonames[$key]['attributes']['longitude'];
+            $updateObject['indexed_name'] = $geonames[$key]['value'];
+            $updateObject['id']     = $geonameUpdate['id'];
+            $updateObject['found']  = '1';
+
+            if ( $this->_update_geo_stmt === null ) {
+                $update = $zdb->update('geoloc')
+                    ->set($updateObject)
+                    ->where(
+                        array('id' => ':id'
+                        )
+                    );
+                $stmt = $zdb->sql->prepareStatementForSqlObject(
+                    $update
+                );
+                $this->_update_geo_stmt = $stmt;
+            } else {
+                $stmt = $this->_update_geo_stmt;
+            }
+            $updateObject['where1'] = $updateObject['id'];
+            $stmt->execute($updateObject);
         }
     }
 

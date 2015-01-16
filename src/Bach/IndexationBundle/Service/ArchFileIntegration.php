@@ -113,11 +113,12 @@ class ArchFileIntegration
      * Proceed task database integration
      *
      * @param IntegrationTask $task        Task to proceed
+     * @param array           $geonames Geoloc data
      * @param boolean         $transaction Wether to flush
      *
      * @return void
      */
-    public function integrate(IntegrationTask $task, $transaction = true)
+    public function integrate(IntegrationTask $task, &$geonames, $transaction = true)
     {
         $spl = new \SplFileInfo($task->getPath());
         $doc = $task->getDocument();
@@ -129,7 +130,8 @@ class ArchFileIntegration
             $format,
             $doc,
             $transaction,
-            $preprocessor
+            $preprocessor,
+            $geonames
         );
     }
 
@@ -138,10 +140,11 @@ class ArchFileIntegration
      *
      * @param array          $tasks    Tasks to integrate
      * @param ProgressHelper $progress Progress bar
+     * @param array          $geonames Geoloc data
      *
      * @return void
      */
-    public function integrateAll($tasks, ProgressHelper $progress)
+    public function integrateAll($tasks, ProgressHelper $progress, &$geonames)
     {
         $count = 0;
         $cleared = false;
@@ -154,7 +157,7 @@ class ArchFileIntegration
                     $task->setDocument($doc);
                 }
                 $progress->advance();
-                $this->integrate($task, false);
+                $this->integrate($task, $geonames, false);
                 $count++;
             }
             $this->_zdb->connection->commit();

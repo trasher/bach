@@ -172,7 +172,8 @@ class DefaultController extends Controller
 
                 $integrationService = $this->container
                     ->get('bach.indexation.process.arch_file_integration');
-                $integrationService->integrate($task);
+                $geonames = array();
+                $integrationService->integrate($task, $geonames);
 
                 $configreader = $this->container
                     ->get('bach.administration.configreader');

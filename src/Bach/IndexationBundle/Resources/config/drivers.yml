@@ -106,4 +106,5 @@ drivers:
                     - .//controlaccess//title
                     - .//controlaccess//function
                     - accessrestrict//legalstatus[1]
+                    - .//controlaccess//geogname[@latitude and @longitude]
 
