@@ -127,10 +127,18 @@ class DefaultController extends ControllerTest
             ->crawler
             ->hasElement('#search_results')
             ->hasChild('article');
+
+        $this->request->GET('/cookielink')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8');
+
+        $this->request->GET('/footer/legals')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8');
     }
 
     /**
-     * test facet listing
+     * Test facet listing
      *
      * @return void
      */
