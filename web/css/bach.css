@@ -963,6 +963,7 @@ h2.back a:hover {
     right: 0;
     bottom: 0;
     padding: .2em .5em;
+    z-index: 1000;
 }
 
 /**
