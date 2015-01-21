@@ -61,15 +61,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 class SearchQueryFormType extends AbstractType
 {
     private $_value = "";
+    private $_keep;
 
     /**
      * Instanciate search form
      *
-     * @param string $value Search term (default to empty string)
+     * @param string  $value Search term (default to empty string)
+     * @param boolean $keep  Wheter to display keep filters checkbox
      */
-    public function __construct($value = '')
+    public function __construct($value = '', $keep = true)
     {
         $this->_value = $value;
+        $this->_keep = $keep;
     }
 
     /**
@@ -92,7 +95,19 @@ class SearchQueryFormType extends AbstractType
                      'autocomplete' => 'off',
                 )
             )
-        )->add(
+        );
+        if ( $this->_keep === true ) {
+            $builder->add(
+                'keep_filters',
+                'checkbox',
+                array(
+                    'data'      => true,
+                    'label'     => _('Keep filters'),
+                    'required'  => false
+                )
+            );
+        }
+        $builder->add(
             'perform_search',
             'submit',
             array(

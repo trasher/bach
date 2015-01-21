@@ -58,6 +58,7 @@ namespace Bach\HomeBundle\Entity;
 class SearchQuery
 {
     protected $query;
+    public $keep_filters;
 
     /**
      * Set query

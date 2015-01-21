@@ -36,22 +36,15 @@ bach_homepage:
         _method: GET
 
 bach_archives:
-    pattern:  /archives
-    defaults: { _controller: BachHomeBundle:Default:main }
-    requirements:
-        _method: GET
-
-
-bach_search:
     pattern: /archives/search/{form_name}/{query_terms}/{page}/{facet_name}
     defaults: { _controller: BachHomeBundle:Default:search, 'form_name': 'default', 'query_terms': null, 'page': 1, 'facet_name': null }
     requirements:
-        _method: GET
+        _method: GET|POST
         page: \d+
 
 bach_search_form_homepage:
     pattern:  /archives/search_form/{form_name}
-    defaults: { _controller: BachHomeBundle:Default:main }
+    defaults: { _controller: BachHomeBundle:Default:search }
     requirements:
         _method: GET
 
@@ -121,14 +114,8 @@ bach_geojson:
         _method: GET
 
 bach_matricules_geojson:
-    pattern: /matricules/geojson
-    defaults: {_controller: BachHomeBundle:Matricules:getGeoJson}
-    requirements:
-        _method: GET
-
-bach_geozones:
-    pattern: /geo/zones/{bbox}
-    defaults: {_controller: BachHomeBundle:Default:getZones}
+    pattern: /matricules/geojson/{form_name}
+    defaults: {_controller: BachHomeBundle:Matricules:getGeoJson, form_name: null}
     requirements:
         _method: GET
 
@@ -180,16 +167,10 @@ bach_remove_geoloc:
         _method: POST
 
 bach_matricules:
-    pattern:  /matricules
-    defaults: { _controller: BachHomeBundle:Matricules:main }
-    requirements:
-        _method: GET
-
-bach_matricules_search:
     pattern: /matricules/search/{query_terms}/{page}/{facet_name}
     defaults: { _controller: BachHomeBundle:Matricules:search, 'query_terms': null, 'page': 1, 'facet_name': null }
     requirements:
-        _method: GET
+        _method: GET|POST
         page: \d+
 
 bach_matricules_fullfacet:
@@ -249,6 +230,12 @@ dynamic_css:
     requirements:
         _method: GET
 
+dynamic_js:
+    pattern: /scripts/{name}.js
+    defaults: { _controller: BachHomeBundle:Default:dynamicJs, _format: js }
+    requirements:
+        _method: GET
+
 remote_image_infos_nopath:
     pattern: /infosimage/{img}.{ext}
     defaults: { _controller: BachHomeBundle:Default:infosImage, path: null}
@@ -268,8 +255,39 @@ remote_image_infos_noimg:
         _method: GET
         path: '(.+)?'
 
+remote_matimage_infos_nopath:
+    pattern: /matricules/infosimage/{img}.{ext}
+    defaults: { _controller: BachHomeBundle:Matricules:infosImage, path: null}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+remote_matimage_infos:
+    pattern: /matricules/infosimage/{path}/{img}.{ext}
+    defaults: { _controller: BachHomeBundle:Matricules:infosImage}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+remote_matimage_infos_noimg:
+    pattern: /matricules/infosimage/{path}
+    defaults: { _controller: BachHomeBundle:Matricules:infosImage, img: null, ext: null}
+    requirements:
+        _method: GET
+        path: '(.+)?'
+
 footer_link:
     pattern: /footer/{type}
     defaults: {_controller: BachHomeBundle:Default:footerLink}
+    requirements:
+        _method: GET
+
+authorized_cookie:
+    pattern: /cookie
+    defaults: {_controller: BachHomeBundle:Default:authorizedCookie }
+    requirements:
+        _method: GET
+
+cookie_link:
+    pattern: /cookielink
+    defaults: {_controller: BachHomeBundle:Default:cookieLink}
     requirements:
         _method: GET

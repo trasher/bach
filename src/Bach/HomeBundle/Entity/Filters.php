@@ -98,17 +98,15 @@ class Filters extends \ArrayObject
             }
         }
 
-        if ( $request->get('range_date_min') ) {
-            $this->addFilter(
-                'date_begin',
-                $request->get('range_date_min')
-            );
-        }
-        if ( $request->get('range_date_max') ) {
-            $this->addFilter(
-                'date_end',
-                $request->get('range_date_max')
-            );
+        $qry_params = $request->query->keys();
+        foreach ( $qry_params as $qry_p ) {
+            if ( preg_match('/(.*)_range_date_(min|max)/', $qry_p, $matches) ) {
+                $this->addFilter(
+                    'date_' . $matches[1] . '_' . $matches[2],
+                    $request->get($qry_p)
+                );
+
+            }
         }
     }
 
@@ -122,54 +120,32 @@ class Filters extends \ArrayObject
      */
     public function addFilter($field, $value)
     {
-        switch ( $field ) {
-        case 'date_begin':
-        case 'date_end':
+        if ( preg_match('/date_.*_(min|max)/', $field, $matches) ) {
             //only one start and end date allowed
             $php_date = \DateTime::createFromFormat('Y', $value);
-            if ( $field === 'date_begin' ) {
+            if ( $matches[1] === 'min' ) {
                 $value = $php_date->format('Y-01-01');
             } else {
                 $value = $php_date->format('Y-12-31');
             }
             $this->offsetSet($field, $value);
-            break;
-        case 'cDate':
-        case 'classe':
-        case 'date_enregistrement':
-        case 'annee_naissance':
-            if ( strpos('|', $value === false) ) {
-                throw new \RuntimeException('Invalid date range!');
-            } else {
-                list($start, $end) = explode('|', $value);
-                $bdate = new \DateTime($start);
-                $edate = new \DateTime($end);
-
-                $this->offsetSet(
-                    'date_begin',
-                    $bdate->format('Y-01-01')
-                );
-
-                $this->offsetSet(
-                    'date_end',
-                    $edate->format('Y-12-31')
-                );
-            }
-            break;
-        case 'dao':
-            //avoid mutliple values
-            $this->offsetSet($field, $value);
-            break;
-        default:
-            if ( !$this->offsetExists($field) ) {
-                //initialize filter field if it does not exists
-                $this->offsetSet(
-                    $field,
-                    new \ArrayObject(array($value))
-                );
-            } else if ( !$this->hasValue($field, $value) ) {
-                //check if value already exists in current filters
-                $this->offsetGet($field)->append($value);
+        } else {
+            switch ( $field ) {
+            case 'dao':
+                //avoid mutliple values
+                $this->offsetSet($field, $value);
+                break;
+            default:
+                if ( !$this->offsetExists($field) ) {
+                    //initialize filter field if it does not exists
+                    $this->offsetSet(
+                        $field,
+                        new \ArrayObject(array($value))
+                    );
+                } else if ( !$this->hasValue($field, $value) ) {
+                    //check if value already exists in current filters
+                    $this->offsetGet($field)->append($value);
+                }
             }
         }
     }
@@ -184,32 +160,33 @@ class Filters extends \ArrayObject
      */
     public function removeFilter($field, $value)
     {
-        switch ( $field ) {
-        case 'date_begin':
-        case 'date_end':
-        case 'cDate':
-        case 'dao':
-            if ( $this->offsetExists($field) ) {
-                $this->offsetUnset($field);
-            }
-            break;
-        default:
-            if ( $this->offsetExists($field)
-                && $this->hasValue($field, $value)
-            ) {
-                $offset = $this->offsetGet($field);
-                if ( $offset->count() > 1 ) {
-                    $iterator = $offset->getIterator();
-                    while ( $iterator->valid() ) {
-                        if ( $iterator->current() === $value ) {
-                            $offset->offsetUnset($iterator->key());
-                            break;
-                        }
-                        $iterator->next();
-                    }
-                } else {
-                    //field contains only one value, unset
+        if ( preg_match('/date_.*_(min|max)/', $field) ) {
+            $this->offsetUnset($field);
+        } else {
+            switch ( $field ) {
+            case 'dao':
+                if ( $this->offsetExists($field) ) {
                     $this->offsetUnset($field);
+                }
+                break;
+            default:
+                if ( $this->offsetExists($field)
+                    && $this->hasValue($field, $value)
+                ) {
+                    $offset = $this->offsetGet($field);
+                    if ( $offset->count() > 1 ) {
+                        $iterator = $offset->getIterator();
+                        while ( $iterator->valid() ) {
+                            if ( $iterator->current() === $value ) {
+                                $offset->offsetUnset($iterator->key());
+                                break;
+                            }
+                            $iterator->next();
+                        }
+                    } else {
+                        //field contains only one value, unset
+                        $this->offsetUnset($field);
+                    }
                 }
             }
         }

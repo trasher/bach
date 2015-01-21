@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "61e90873a3745dbb6ba1f5e133cb5584",
+    "hash": "fd8188af1aaeb29d90fd5f65a6335092",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -767,12 +767,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "1a9dffa64e33fdc10f4b4c3f5d7230b74d4a1021"
+                "reference": "f4fe9d9cc21a711d89d91d29c4a4e7945289cdd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/1a9dffa64e33fdc10f4b4c3f5d7230b74d4a1021",
-                "reference": "1a9dffa64e33fdc10f4b4c3f5d7230b74d4a1021",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/f4fe9d9cc21a711d89d91d29c4a4e7945289cdd0",
+                "reference": "f4fe9d9cc21a711d89d91d29c4a4e7945289cdd0",
                 "shasum": ""
             },
             "require": {
@@ -817,7 +817,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2014-08-18 18:03:07"
+            "time": "2014-10-30 14:49:25"
         },
         {
             "name": "doctrine/orm",
@@ -892,16 +892,16 @@
         },
         {
             "name": "egeloen/ckeditor-bundle",
-            "version": "2.5.0",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egeloen/IvoryCKEditorBundle.git",
-                "reference": "a3f595101e571788af94aded9417a90ccbf66496"
+                "reference": "702109e94cbda9deebbcc9604aa8654cf71f08ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egeloen/IvoryCKEditorBundle/zipball/a3f595101e571788af94aded9417a90ccbf66496",
-                "reference": "a3f595101e571788af94aded9417a90ccbf66496",
+                "url": "https://api.github.com/repos/egeloen/IvoryCKEditorBundle/zipball/702109e94cbda9deebbcc9604aa8654cf71f08ee",
+                "reference": "702109e94cbda9deebbcc9604aa8654cf71f08ee",
                 "shasum": ""
             },
             "require": {
@@ -943,20 +943,20 @@
             "keywords": [
                 "CKEditor"
             ],
-            "time": "2014-08-29 16:31:01"
+            "time": "2014-11-08 10:48:36"
         },
         {
             "name": "egeloen/json-builder",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egeloen/ivory-json-builder.git",
-                "reference": "0395f06db7bbb3c240667ab5f3152151051fb567"
+                "reference": "6209142ed808e9899473e9b6091b8a4f4d8de794"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egeloen/ivory-json-builder/zipball/0395f06db7bbb3c240667ab5f3152151051fb567",
-                "reference": "0395f06db7bbb3c240667ab5f3152151051fb567",
+                "url": "https://api.github.com/repos/egeloen/ivory-json-builder/zipball/6209142ed808e9899473e9b6091b8a4f4d8de794",
+                "reference": "6209142ed808e9899473e9b6091b8a4f4d8de794",
                 "shasum": ""
             },
             "require": {
@@ -976,7 +976,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Ivory\\JsonBuilder\\": ""
+                    "Ivory\\JsonBuilder\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -995,7 +995,7 @@
                 "builder",
                 "json"
             ],
-            "time": "2014-08-12 00:30:56"
+            "time": "2014-11-08 10:51:34"
         },
         {
             "name": "fp/lightopenid",
@@ -2446,12 +2446,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pix-digital/pixSortableBehaviorBundle.git",
-                "reference": "c6d91a4c693ac347892d145e87cdee4156e98c45"
+                "reference": "6d39d387b7d90eb8adc50e6704323c5c6b28dbbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pix-digital/pixSortableBehaviorBundle/zipball/c6d91a4c693ac347892d145e87cdee4156e98c45",
-                "reference": "c6d91a4c693ac347892d145e87cdee4156e98c45",
+                "url": "https://api.github.com/repos/pix-digital/pixSortableBehaviorBundle/zipball/6d39d387b7d90eb8adc50e6704323c5c6b28dbbb",
+                "reference": "6d39d387b7d90eb8adc50e6704323c5c6b28dbbb",
                 "shasum": ""
             },
             "require": {
@@ -2494,7 +2494,7 @@
                 "sonata",
                 "sortable"
             ],
-            "time": "2014-08-26 14:29:11"
+            "time": "2014-11-06 15:33:20"
         },
         {
             "name": "presta/sitemap-bundle",
@@ -2742,16 +2742,16 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "3.2.0",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/basdenooijer/solarium.git",
-                "reference": "f602c2020d1b57e7a3aa0c75088222ce31438aba"
+                "reference": "a9d8a52ba9fd8add04b2294fad997a004c1f2fab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basdenooijer/solarium/zipball/f602c2020d1b57e7a3aa0c75088222ce31438aba",
-                "reference": "f602c2020d1b57e7a3aa0c75088222ce31438aba",
+                "url": "https://api.github.com/repos/basdenooijer/solarium/zipball/a9d8a52ba9fd8add04b2294fad997a004c1f2fab",
+                "reference": "a9d8a52ba9fd8add04b2294fad997a004c1f2fab",
                 "shasum": ""
             },
             "require": {
@@ -2760,9 +2760,16 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "~3.7",
-                "squizlabs/php_codesniffer": "~1.4"
+                "satooshi/php-coveralls": "~0.6",
+                "squizlabs/php_codesniffer": "~1.4",
+                "zendframework/zendframework1": "~1.12"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "3.3.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Solarium\\": "library/"
@@ -2785,7 +2792,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2013-09-13 08:09:42"
+            "time": "2014-11-12 06:53:41"
         },
         {
             "name": "sonata-project/admin-bundle",
@@ -3799,16 +3806,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.21",
+            "version": "v2.3.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "0a6e90e0918d273ac451fc77c4887beffbeb368d"
+                "reference": "2f59c8df55b2273565e8898373ebc38457c10c32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/0a6e90e0918d273ac451fc77c4887beffbeb368d",
-                "reference": "0a6e90e0918d273ac451fc77c4887beffbeb368d",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/2f59c8df55b2273565e8898373ebc38457c10c32",
+                "reference": "2f59c8df55b2273565e8898373ebc38457c10c32",
                 "shasum": ""
             },
             "require": {
@@ -3863,7 +3870,7 @@
                 "ircmaxell/password-compat": "1.0.*",
                 "monolog/monolog": "~1.3",
                 "ocramius/proxy-manager": ">=0.3.1,<0.4-dev",
-                "propel/propel1": "1.6.*"
+                "propel/propel1": "~1.6"
             },
             "type": "library",
             "extra": {
@@ -3902,7 +3909,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-10-24 05:54:08"
+            "time": "2014-11-20 13:51:29"
         },
         {
             "name": "twig/extensions",
@@ -4096,21 +4103,123 @@
                 "negotiation"
             ],
             "time": "2014-10-02 07:26:00"
+        },
+        {
+            "name": "zendframework/zend-db",
+            "version": "2.3.3",
+            "target-dir": "Zend/Db",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendDb.git",
+                "reference": "2c0515b3d8e9d152165ff8081beb5adcbf380857"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendDb/zipball/2c0515b3d8e9d152165ff8081beb5adcbf380857",
+                "reference": "2c0515b3d8e9d152165ff8081beb5adcbf380857",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23"
+            },
+            "require-dev": {
+                "zendframework/zend-eventmanager": "self.version",
+                "zendframework/zend-servicemanager": "self.version",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "suggest": {
+                "zendframework/zend-eventmanager": "Zend\\EventManager component",
+                "zendframework/zend-servicemanager": "Zend\\ServiceManager component",
+                "zendframework/zend-stdlib": "Zend\\Stdlib component"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev",
+                    "dev-develop": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Db\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zf2",
+            "keywords": [
+                "db",
+                "zf2"
+            ],
+            "time": "2014-09-16 22:58:11"
+        },
+        {
+            "name": "zendframework/zend-stdlib",
+            "version": "2.3.3",
+            "target-dir": "Zend/Stdlib",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendStdlib.git",
+                "reference": "fa33e6647f830d0d2a1cb451efcdfe1bb9a66c33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/fa33e6647f830d0d2a1cb451efcdfe1bb9a66c33",
+                "reference": "fa33e6647f830d0d2a1cb451efcdfe1bb9a66c33",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23"
+            },
+            "require-dev": {
+                "zendframework/zend-eventmanager": "self.version",
+                "zendframework/zend-serializer": "self.version",
+                "zendframework/zend-servicemanager": "self.version"
+            },
+            "suggest": {
+                "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+                "zendframework/zend-serializer": "Zend\\Serializer component",
+                "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev",
+                    "dev-develop": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Stdlib\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zf2",
+            "keywords": [
+                "stdlib",
+                "zf2"
+            ],
+            "time": "2014-09-16 22:58:11"
         }
     ],
     "packages-dev": [
         {
             "name": "atoum/atoum",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "662e543db9302b92a9341180173890dfcdb8af34"
+                "reference": "bd1b0a525f5e5d3e2f21ca76a48c6b50946fc9b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/662e543db9302b92a9341180173890dfcdb8af34",
-                "reference": "662e543db9302b92a9341180173890dfcdb8af34",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/bd1b0a525f5e5d3e2f21ca76a48c6b50946fc9b0",
+                "reference": "bd1b0a525f5e5d3e2f21ca76a48c6b50946fc9b0",
                 "shasum": ""
             },
             "require": {
@@ -4171,7 +4280,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2014-10-07 11:28:16"
+            "time": "2014-12-01 09:14:19"
         },
         {
             "name": "atoum/atoum-bundle",
@@ -4180,16 +4289,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/AtoumBundle.git",
-                "reference": "fae972e659e2f41dbd8d3bf8344f3454b86e73b7"
+                "reference": "5973fff3995e399487914b3730fb0c9418321638"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/AtoumBundle/zipball/fae972e659e2f41dbd8d3bf8344f3454b86e73b7",
-                "reference": "fae972e659e2f41dbd8d3bf8344f3454b86e73b7",
+                "url": "https://api.github.com/repos/atoum/AtoumBundle/zipball/5973fff3995e399487914b3730fb0c9418321638",
+                "reference": "5973fff3995e399487914b3730fb0c9418321638",
                 "shasum": ""
             },
             "require": {
-                "atoum/atoum": "dev-master",
+                "atoum/atoum": "~1.0",
                 "fzaninotto/faker": "1.*",
                 "php": ">=5.3.3",
                 "symfony/console": "2.*",
@@ -4237,21 +4346,20 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2014-09-15 22:30:31"
+            "time": "2014-12-01 10:14:42"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
             "version": "dev-master",
-            "target-dir": "Elao/WebProfilerExtraBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Elao/WebProfilerExtraBundle.git",
-                "reference": "82061e8b00060db91bd6b76e405184f417f56c09"
+                "reference": "082755c2af114ead713259ec7472782917605aaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/82061e8b00060db91bd6b76e405184f417f56c09",
-                "reference": "82061e8b00060db91bd6b76e405184f417f56c09",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/082755c2af114ead713259ec7472782917605aaf",
+                "reference": "082755c2af114ead713259ec7472782917605aaf",
                 "shasum": ""
             },
             "require": {
@@ -4266,8 +4374,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Elao\\WebProfilerExtraBundle": "."
+                "psr-4": {
+                    "Elao\\WebProfilerExtraBundle\\": "."
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4292,7 +4400,7 @@
                 "extra",
                 "profiler"
             ],
-            "time": "2013-11-06 19:40:03"
+            "time": "2014-11-06 09:36:21"
         },
         {
             "name": "facebook/xhprof",
@@ -4446,7 +4554,6 @@
         "pixassociates/sortable-behavior-bundle": 20,
         "presta/sitemap-bundle": 20,
         "liip/doctrine-cache-bundle": 20,
-        "atoum/atoum": 20,
         "atoum/atoum-bundle": 20,
         "jns/xhprof-bundle": 20,
         "facebook/xhprof": 20,
@@ -4454,7 +4561,7 @@
     },
     "prefer-stable": false,
     "platform": {
-        "php": ">=5.3.3"
+        "php": ">=5.4"
     },
     "platform-dev": []
 }

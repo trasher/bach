@@ -156,7 +156,7 @@ EOF
         foreach ( $list as $fragment ) {
             $path = rtrim($oai_path, '/') . '/' . $fragment['fragmentid'] . '.xml';
             if ( isset($existing[$path]) ) {
-                //remove exiting path to get removed fragments list
+                //remove existing path to get removed fragments list
                 unset($existing[$path]);
             }
 

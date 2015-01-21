@@ -139,6 +139,19 @@ class EADDaos
     }
 
     /**
+     * Set id
+     *
+     * @param int $id Id
+     *
+     * @return EADDaos
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * Set href
      *
      * @param string $href Hyperlink
@@ -251,5 +264,17 @@ class EADDaos
     public function getEadfile()
     {
         return $this->eadfile;
+    }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+        unset($vars['eadfile']);
+        return $vars;
     }
 }

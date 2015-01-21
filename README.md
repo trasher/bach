@@ -6,7 +6,7 @@ Requirements
 
 In order to run Bach, you have to ensure requirements are met:
 
-* PHP version 5.3 or above (5.4 recommended for better performances)
+* PHP version 5.4 or above
 * One of the PostgreSQL or MySQL database server,
 * an available Solr 4.10 instance,
 * apache httpd server with mod_rewrite enabled

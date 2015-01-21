@@ -52,8 +52,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 Use Symfony\Component\HttpFoundation\File\File;
 use Bach\IndexationBundle\Entity\Document;
+use Bach\IndexationBundle\Entity\Geoloc;
 use Bach\IndexationBundle\Entity\IntegrationTask;
 use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
+use Bach\IndexationBundle\Service\ZendDb;
+use Zend\Db\ResultSet\ResultSet;
 
 /**
  * Publication command
@@ -68,6 +71,11 @@ use Bach\AdministrationBundle\Entity\SolrCore\SolrCoreAdmin;
  */
 class PublishCommand extends ContainerAwareCommand
 {
+    private $_insert_doc_stmt;
+    private $_update_doc_stmt;
+    private $_insert_geo_stmt;
+    private $_update_geo_stmt;
+
     /**
      * Configures command
      *
@@ -111,6 +119,11 @@ EOF
                 null,
                 InputOption::VALUE_NONE,
                 _('Do not check if file has been modified')
+            )->addOption(
+                'stats',
+                null,
+                InputOption::VALUE_NONE,
+                _('Give stats informations (memory used, etc)')
             );
     }
 
@@ -125,6 +138,11 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $count = 0;
+
+        $stats = $input->getOption('stats');
+        if ( $stats === true ) {
+            $start_time = new \DateTime();
+        }
 
         $dry = $input->getOption('dry-run');
         if ( $dry === true ) {
@@ -217,6 +235,7 @@ EOF
                 $no_check_changes = $input->getOption('no-change-check');
 
                 $docs = array();
+                $geonames = array();
 
                 foreach ( $files_to_publish[$type] as $ftp ) {
                     $f = new File($ftp);
@@ -270,15 +289,22 @@ EOF
                     if ( $type !== 'matricules' ) {
                         $progress->advance();
                         if ( $dry === false ) {
-                            $em->persist($document);
-                            $em->flush();
+                            $zdb = $this->getContainer()->get('zend_db');
+                            try {
+                                $zdb->connection->beginTransaction();
+                                $this->_storeDocument($zdb, $document);
+                                $zdb->connection->commit();
+                            } catch ( \Exception $e ) {
+                                $zdb->connection->rollBack();
+                                throw $e;
+                            }
                         }
 
                         //create a new task
                         $task = new IntegrationTask($document);
 
                         if ( $dry === false ) {
-                            $integrationService->integrate($task);
+                            $integrationService->integrate($task, $geonames);
                             $logger->info(
                                 str_replace(
                                     '%doc',
@@ -288,6 +314,55 @@ EOF
                             );
 
                         }
+                        if ( !empty($geonames) ) {
+                            $zdb = $this->getContainer()->get('zend_db');
+
+                            try {
+                                $zdb->connection->beginTransaction();
+                                /* get geoloc in database
+                                 * and treatment to match with geodata in ead
+                                 */
+                                $select = $zdb->select('geoloc');
+                                $stmt = $zdb->sql->prepareStatementForSqlObject(
+                                    $select
+                                );
+                                $result = $stmt->execute();
+
+                                $results = new ResultSet();
+                                $rows = $results->initialize($result)->toArray();
+                                $zdb->connection->commit();
+                            } catch ( \Exception $e ) {
+                                $zdb->connection->rollBack();
+                                throw $e;
+                            }
+
+                            $resultsSelect = array();
+                            foreach ( $rows as $key => $row ) {
+                                $resultSelect                 = array();
+                                $resultSelect['indexed_name'] = $row['indexed_name'];
+                                $resultSelect['lon']          = $row['lon'];
+                                $resultSelect['lat']          = $row['lat'];
+                                $resultSelect['id']           = $row['id'];
+                                $resultsSelect[$resultSelect['indexed_name']]
+                                    = $resultSelect;
+                            }
+                            /***************************************************/
+
+                            if ( $dry === false ) {
+                                try {
+                                    $zdb->connection->beginTransaction();
+                                    $this->_storeGeodata(
+                                        $zdb,
+                                        $geonames,
+                                        $resultsSelect
+                                    );
+                                    $zdb->connection->commit();
+                                } catch ( \Exception $e ) {
+                                    $zdb->connection->rollBack();
+                                    throw $e;
+                                }
+                            }
+                        }
 
                         unset($task);
                     } else {
@@ -295,24 +370,36 @@ EOF
                     }
                     unset($document, $exists);
                 }
+
             }
 
             if ( $type === 'matricules' && count($docs) > 0 ) {
                 $tasks = array();
                 $count = 0;
-                foreach ( $docs as $document ) {
-                    $count++;
-                    if ( $dry === false ) {
-                        $em->persist($document);
-                        if ( $count % 20000 === 0 ) {
-                            $em->flush();
-                        }
+
+                $zdb = $this->getContainer()->get('zend_db');
+                try {
+                    $zdb->connection->beginTransaction();
+
+                    $fields = array();
+                    foreach ( array_keys($docs[0]->toArray()) as $field ) {
+                        $fields[$field] = ':' . $field;
                     }
-                    $task = new IntegrationTask($document);
-                    $tasks[] = $task;
+
+                    foreach ( $docs as $document ) {
+                        $this->_storeDocument($zdb, $document);
+                        $task = new IntegrationTask($document);
+                        $tasks[] = $task;
+                        $count++;
+                    }
+                    unset($docs);
+                    $zdb->connection->commit();
+                } catch ( \Exception $e ) {
+                    $zdb->connection->rollBack();
+                    throw $e;
                 }
-                $em->flush();
-                $integrationService->integrateAll($tasks, $progress);
+
+                $integrationService->integrateAll($tasks, $progress, $geonames);
             }
 
             $this->_solrFullImport($output, $type, $progress, $dry);
@@ -326,6 +413,144 @@ EOF
             );
 
         }
+
+        if ( $stats === true ) {
+            $peak = $this->formatBytes(memory_get_peak_usage());
+
+            $end_time = new \DateTime();
+            $diff = $start_time->diff($end_time);
+
+            $hours = $diff->h;
+            $hours += $diff->days * 24;
+
+            $elapsed = str_replace(
+                array(
+                    '%hours',
+                    '%minutes',
+                    '%seconds'
+                ),
+                array(
+                    $hours,
+                    $diff->i,
+                    $diff->s
+                ),
+                '%hours:%minutes:%seconds'
+            );
+
+            $output->writeln('Time elapsed: ' . $elapsed);
+            $output->writeln('Memory peak: ' . $peak);
+        }
+    }
+
+
+    /**
+     * Store Geodata
+     *
+     * @param ZendDb $zdb           ZDB instance
+     * @param array  $geonames      Contains geodata in ead file
+     * @param array  $resultsSelect Contains geodata store in database
+     *
+     * @return void
+     */
+    private function _storeGeodata(ZendDb $zdb, array $geonames, array $resultsSelect)
+    {
+        $geonamesUpdate = array_intersect_key($resultsSelect, $geonames);
+        $geonamesInsert = array_diff_key($geonames, $geonamesUpdate);
+        $stmt = null;
+        foreach ( $geonamesInsert as $key => $geonameInsert ) {
+            $insertObject = array();
+            $insertObject['lat']    = $geonames[$key]['attributes']['latitude'];
+            $insertObject['lon']    = $geonames[$key]['attributes']['longitude'];
+            $insertObject['indexed_name'] = $geonames[$key]['value'];
+            $insertObject['found']  = '1';
+
+            if ( $this->_insert_geo_stmt === null ) {
+                $insert = $zdb->insert('geoloc')
+                    ->values($insertObject);
+                $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+                $this->_insert_geo_stmt = $stmt;
+            } else {
+                $stmt = $this->_insert_geo_stmt;
+            }
+            $stmt->execute($insertObject);
+        }
+        $stmt = null;
+        foreach ( $geonamesUpdate as $key => $geonameUpdate ) {
+            $updateObject = array();
+            $updateObject['lat']    = $geonames[$key]['attributes']['latitude'];
+            $updateObject['lon']    = $geonames[$key]['attributes']['longitude'];
+            $updateObject['indexed_name'] = $geonames[$key]['value'];
+            $updateObject['id']     = $geonameUpdate['id'];
+            $updateObject['found']  = '1';
+
+            if ( $this->_update_geo_stmt === null ) {
+                $update = $zdb->update('geoloc')
+                    ->set($updateObject)
+                    ->where(
+                        array('id' => ':id'
+                        )
+                    );
+                $stmt = $zdb->sql->prepareStatementForSqlObject(
+                    $update
+                );
+                $this->_update_geo_stmt = $stmt;
+            } else {
+                $stmt = $this->_update_geo_stmt;
+            }
+            $updateObject['where1'] = $updateObject['id'];
+            $stmt->execute($updateObject);
+        }
+    }
+
+    /**
+     * Store document
+     *
+     * @param ZendDb   $zdb      ZDB instance
+     * @param Document $document Document to store
+     *
+     * @return void
+     */
+    private function _storeDocument(ZendDb $zdb, Document $document)
+    {
+        $fields = array();
+        $values = $document->toArray();
+        foreach ( array_keys($values) as $field ) {
+            $fields[$field] = ':' . $field;
+        }
+
+        $stmt = null;
+        if ( $document->getId() === null ) {
+            if ( $this->_insert_doc_stmt === null ) {
+                $insert = $zdb->insert('documents')
+                    ->values($fields);
+                $stmt = $zdb->sql->prepareStatementForSqlObject(
+                    $insert
+                );
+                $this->_insert_doc_stmt = $stmt;
+            } else {
+                $stmt = $this->_insert_doc_stmt;
+            }
+        } else {
+            if ( $this->_update_doc_stmt === null ) {
+                $update = $zdb->update('documents')
+                    ->set($fields)
+                    ->where(
+                        array(
+                            'id' => ':id'
+                        )
+                    );
+                $stmt = $zdb->sql->prepareStatementForSqlObject(
+                    $update
+                );
+                $this->_update_doc_stmt = $stmt;
+            } else {
+                $stmt = $this->_update_doc_stmt;
+            }
+
+            $values['where1'] = $values['id'];
+        }
+
+        $stmt->execute($values);
     }
 
     /**
@@ -374,5 +599,25 @@ EOF
 
             }
         }
+    }
+
+    /**
+     * Format bytes to human readable value
+     *
+     * @param int $bytes Bytes
+     *
+     * @return string
+     */
+    public function formatBytes($bytes)
+    {
+        $multiplicator = 1;
+        if ( $bytes < 0 ) {
+            $multiplicator = -1;
+            $bytes = $bytes * $multiplicator;
+        }
+        $unit = array('b','kb','mb','gb','tb','pb');
+        $fmt = @round($bytes/pow(1024, ($i=floor(log($bytes, 1024)))), 2)
+            * $multiplicator . ' ' . $unit[$i];
+        return $fmt;
     }
 }

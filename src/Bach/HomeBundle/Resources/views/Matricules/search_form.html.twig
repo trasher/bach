@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block title_extend %} - {{ _('Matricules search') }}{% endblock %}
-{% block search_path %}bach_matricules_search{% endblock %}
+{% block search_path %}bach_matricules{% endblock %}
 {% block fullfacet_path %}bach_matricules_fullfacet{% endblock %}
 {% block do_search_path %}{{ search_path }}{% endblock %}
 {% block geojson_path %}bach_matricules_geojson{% endblock %}
@@ -130,7 +130,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </thead>
                 <tbody>
             {% for document in searchResults %}
-                <tr>
+                <tr vocab="http://schema.org/" typeof="Person">
                     <td class="actions">
                         <a class="display_doc" title="{{ _('Show record') }}" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Show record') }}</a>
                         {% if document.start_dao is defined %}
@@ -149,7 +149,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                     viewer/{{ document.start_dao }}
                                 {%- endif -%}
                             {% endset %}
-                            <a href="{{ viewer_uri ~ images_link }}" title="{{ _('Show related image') }}" target="_blank">
+                            <a href="{{ viewer_uri ~ images_link }}" title="{{ _('Show related image') }}" target="_blank" property="image">
                                 <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Show related image') }}"/>
                             </a>
                         {% endif %}
@@ -157,14 +157,14 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td>
                         {{ document.matricule }}
                     </td>
-                    <td>
+                    <td property="familyName">
                         {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
                         {%- else -%}
                             {{ document.nom }}
                         {%- endif -%}
                     </td>
-                    <td>
+                    <td property="givenName">
                         {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
                         {%- else -%}
@@ -173,7 +173,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             {% endfor %}
                         {%- endif -%}
                     </td>
-                    <td>{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
+                    <td property="birthDate">{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
                     <td>
                         {%- if hlSearchResults.getResult(document.id).getField('lieu_naissance')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('lieu_naissance')[0]|raw }}
@@ -197,7 +197,6 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block autocomplete %}
-    {% if features.autocomplete %}
     $('#searchQuery_query').autocomplete({
         source: function(request, response) {
             $.getJSON(
@@ -217,7 +216,6 @@ POSSIBILITY OF SUCH DAMAGE.
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
-    {% endif %}
 {% endblock %}
 
 {# Binded when not in mobile mode #}

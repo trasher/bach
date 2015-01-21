@@ -104,6 +104,11 @@ a {
     padding: .2em 1em;
 }
 
+.bioghist > .ui-tabs-nav li {
+    float: none !important;
+    white-space: normal !important;
+}
+
 .ui-tabs .ui-tabs-panel {
     padding: 1em .5em 0!important;
 }
@@ -310,6 +315,10 @@ p {
 
 [id=menu] div.ui-accordion-content.range_date {
     padding: 0;
+    overflow: visible;
+}
+[id=menu] div.ui-accordion-content.range_date .date_range {
+    margin: .8em 1em .2em;
 }
 [id=menu] div.ui-accordion-content.range_date ol {
     margin-left: 2.7em;
@@ -420,8 +429,17 @@ p {
     padding: .2em 0 .2em .2em;
 }
 
-[id=range_date_min], [id=range_date_max] {
+.range_date input[type=text] {
     width: 2.3em;
+}
+
+.range_date .buttons_container {
+    text-align: right;
+    display: block;
+}
+
+.range_date input[type=submit] {
+    margin-top: .5em;
 }
 
 /**
@@ -945,6 +963,7 @@ h2.back a:hover {
     right: 0;
     bottom: 0;
     padding: .2em .5em;
+    z-index: 1000;
 }
 
 /**
@@ -988,11 +1007,13 @@ h2.back a:hover {
 #dates_plot {
     height: 100px;
     width: 100%;
+    clear: right;
 }
 
 [id=map] {
     height: 300px;
     margin-bottom: 1em;
+    clear: right;
 }
 
 .nomapres {
@@ -1572,6 +1593,12 @@ div.sonata-bc .btn-primary:hover {
     margin-bottom: .2em;
 }
 
+#keepFilters {
+    padding: 0.5em;
+    text-align: right;
+    float: right
+}
+
 /**
  * ===== CDC =====
  */
@@ -1793,6 +1820,45 @@ figure section .flashplayer {
     margin-top:10px;
 }
 
+#footer_wrapper {
+    position: fixed;
+    height: 3%;
+    left: 25.7em;
+    bottom: 0px;
+    background-color: #d1c6c0;
+    padding-bottom: 5px;
+    padding-left: 1.2em;
+    width: 100%;
+    min-height: 20px;
+}
+
+#footer {
+    margin-top: 0.5%;
+}
+
+#head_cookie {
+    position: absolute;
+    background-color: #d1c6c0;
+    margin: 10px;
+    top: 0px;
+    padding: 12px;
+    z-index: 1000;
+}
+
+#head_cookie .alert {
+    position: relative;
+    top: -10px;
+    left: 5px;
+    float: right;
+    color: black;
+}
+
+#head_cookie .alert:hover, #head_cookie .alert:focus {
+    cursor: pointer;
+    opacity: 0.4;
+    text-decoration: none;
+}
+
 /* Mobile view */
 @media ( max-width : 767px) {
     /** Reset widths and heights */
@@ -1929,5 +1995,15 @@ figure section .flashplayer {
 
     .fb_iframe_widget > span {
         vertical-align: baseline!important;
+    }
+    #footer_wrapper {
+        position: static;
+        left: 0;
+        bottom: 0px;
+        background-color: #d1c6c0;
+        width: 100%;
+        min-height: 20px;
+        margin-top:10;%
+        height: 15%;
     }
 }

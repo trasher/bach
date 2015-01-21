@@ -31,9 +31,9 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 #}
 
-    <article about="{{ docid }}" class="show_fragment">
+    <article about="{{ docid }}" class="show_fragment" vocab="http://schema.org/" typeof="Person">
         <header>
-            <h2 property="dc:title">
+            <h2 property="name">
                 {{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}
             </h2>
         </header>
@@ -70,7 +70,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             viewer/{{ document.start_dao }}
                         {%- endif -%}
                     {% endset %}
-                    <a href="{{ viewer_uri ~ images_link }}" target="_blank"> >
+                    <a href="{{ viewer_uri ~ images_link }}" target="_blank" property="image">
                         <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/medium' }}" alt="{{ _('Show related image') }}"/>
                     </a>
                 </figure>
@@ -91,11 +91,11 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
                 <tr>
                     <th>{{ _('Name') }}</th>
-                    <td>{{ document.nom }}</td>
+                    <td property="familyName">{{ document.nom }}</td>
                 </tr>
                 <tr>
                     <th>{{ _('Surnames') }}</th>
-                    <td>{{ document.prenoms|join(' ') }}</td>
+                    <td property="givenName">{{ document.prenoms|join(' ') }}</td>
                 </tr>
                 <tr>
                     <th>{{ _('Class') }}</th>
@@ -103,7 +103,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
                 <tr>
                     <th>{{ _('Year of birth') }}</th>
-                    <td>{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
+                    <td property="birthDate">{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
                 </tr>
                 <tr>
                     <th>{{ _('Place of birth') }}</th>

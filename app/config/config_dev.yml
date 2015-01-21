@@ -35,8 +35,6 @@ imports:
 framework:
     router:   { resource: "%kernel.root_dir%/config/routing_dev.yml" }
     profiler: { only_exceptions: false }
-    templating:
-        assets_base_urls: /
 
 web_profiler:
     toolbar: true
@@ -66,8 +64,7 @@ atoum:
         AdministrationBundle: ~
 
 jns_xhprof:
-    location_web:    http://localhost/xhprof
-    enabled:         true
+    request_query_argument: ""
 
 web_profiler_extra:
     routing:

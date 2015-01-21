@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% extends '::base.html.twig' %}
 
-{% block search_path %}bach_search{%endblock %}
+{% block search_path %}bach_archives{%endblock %}
 {% block fullfacet_path %}bach_fullfacet{%endblock %}
 {% block do_search_path %}bach_do_search{% endblock %}
 {% block geojson_path %}bach_geojson{% endblock %}
@@ -41,9 +41,6 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block title_extend %}{% if q is defined and q|trim != '' %} - {{ _('Search on "%term"')|replace({'%term': q}) }}{% endif %}{% endblock %}
 
 {% block css %}
-    {% if min_date is defined and max_date is defined -%}
-    <link href="{{ asset('css/jqrangeslider/iThing-min.css') }}" type="text/css" rel="stylesheet" media="screen" />
-    {% endif %}
     {% if show_maps -%}
     {% stylesheets
         'js/leaflet/leaflet.css'
@@ -60,12 +57,12 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block menu %}
-    {% if min_date is defined and max_date is defined or show_maps %}
+    {% if by_year is defined or show_maps %}
         <ul class="interactions">
         {% if show_maps -%}
             <li><a id="sh_map" href="?show_map={% if show_map == true %}off{% else %}on{% endif %}" title="{{ _('Shows or hides map') }}"{% if show_map == false %} class="disabled"{% endif %}><img src="{% include '::images/map.html.twig' %}" alt="{{ _('Show/Hide map') }}"/></a></li>
         {%- endif %}
-        {% if min_date is defined and max_date is defined -%}
+        {% if by_year is defined -%}
             <li><a id="sh_daterange" href="?show_daterange={% if show_daterange == true %}off{% else %}on{% endif %}" title="{{ _('Shows or hides date range graph') }}"{% if show_daterange == false %} class="disabled"{% endif %}><img src="{% include '::images/calendar.html.twig' %}" alt="{{ _('Show/Hide date range') }}"/></a></li>
         {%- endif %}
         </ul>
@@ -97,61 +94,87 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
 
-        {% if facets is defined and facets|length > 0 and searchResults|length > 0 %}
+        {% if facets is defined and facets|length > 0 and (searchResults is  not defined or searchResults|length > 0) %}
+            {% if searchResults is defined %}
         <h2>{{ _('Refine Query') }}</h2>
+            {% endif %}
         <div id="facets">
             {% for facet_field,facet in facets %}
                 <h3>{{ facet.label }}</h3>
-                <div{% if facet_field == 'cDate' %} class="range_date"{% endif %}>
-                {% if facet_field == 'cDate' %}
-                    <form id="cDate_change">
+                <div{% if facet_field == 'cDateBegin' or facet_field == 'date_enregistrement' or facet_field == 'annee_naissance' or facet_field == 'classe' %} class="range_date"{% endif %}>
+                {% if facet_field == 'cDateBegin' or facet_field == 'date_enregistrement' or facet_field == 'annee_naissance' or facet_field == 'classe' %}
+                    <form id="{{ facet_field }}_change">
                         <ul>
                             <li>
-                                <label for="range_date_min">{{ _('From:') }}</label>
-                                <input type="text" name="range_date_min" id="range_date_min" value="{{ by_year_min }}"/>
-                                <label for="range_date_max"> {{ _('to:') }}</label>
-                                <input type="text" name="range_date_max" id="range_date_max" value="{{ by_year_max }}"/>
-                                <input type="submit" id="range_date_set" value="{{ _('Go') }}"/>
+                                <label for="{{ facet_field }}_range_date_min">{{ _('From:') }}</label>
+                                <input type="text" name="{{ facet_field }}_range_date_min" id="{{ facet_field }}_range_date_min" value="{{ stats[facet_field].min|date('Y') }}"/>
+                                <label for="{{ facet_field }}_range_date_max"> {{ _('to:') }}</label>
+                                <input type="text" name="{{ facet_field }}_range_date_max" id="{{ facet_field }}_range_date_max" value="{{ stats[facet_field].max|date('Y') }}"/>
+                                <div id="{{ facet_field }}_range" class="date_range"></div>
+                                <span class="buttons_container"><input type="submit" id="{{ facet_field }}_range_date_set" value="{{ _('Go') }}"/></span>
                             </li>
                         </ul>
                     </form>
                     <script type="text/javascript">
                         $(function(){
-                            $('#range_date_min,#range_date_max').spinner({
-                                min: {{ by_year_min }},
-                                max: {{ by_year_max }},
-                                page: 100,
-                                value: $(this).val()
-                            });
-                            $('#range_date_set').button();
-                            $('#cDate_change').on('submit', function(){
-                                //check for date input validity
-                                var _min = $('#range_date_min').val();
-                                var _max = $('#range_date_max').val();
+                            var _{{ facet_field }}_valid_min = {{ stats[facet_field].min|date('Y') }};
+                            var _{{ facet_field }}_valid_max = {{ stats[facet_field].max|date('Y') }};
 
+                            $('#{{ facet_field }}_range_date_min,#{{ facet_field }}_range_date_max').spinner({
+                                min: _{{ facet_field }}_valid_min,
+                                max: _{{ facet_field }}_valid_max,
+                                page: 100,
+                                value: $(this).val(),
+                                change: updateSlider,
+                                stop: updateSlider
+                            });
+                            $('#{{ facet_field }}_range_date_set').button();
+                            $('#{{ facet_field }}_change').on('submit', function(){
+                                //check for date input validity
+                                var _min = $('#{{ facet_field }}_range_date_min').val();
+                                var _max = $('#{{ facet_field }}_range_date_max').val();
                                 var _valid = true;
 
                                 if ( isNaN(_min) || _min % 1 != 0 ) {
                                     alert('{{ _('Please enter an integer as start date!')|escape('js') }}');
                                     _valid = false;
-                                } else if (_min < {{by_year_min }})  {
-                                    alert('{{ _('Start date must be greater than %date')|escape('js') }}'.replace('%date', {{ by_year_min }}));
+                                } else if (_min < _{{ facet_field }}_valid_min)  {
+                                    alert('{{ _('Start date must be greater than %date')|escape('js') }}'.replace('%date', _{{ facet_field }}_valid_min));
                                     _valid = false;
                                 }
 
                                 if ( isNaN(_max) || _max % 1 != 0 ) {
                                     alert('{{ _('Please enter an integer as end date!')|escape('js') }}');
                                     _valid = false;
-                                } else if (_max > {{by_year_max }})  {
-                                    alert('{{ _('End date must be earlier than %date')|escape('js') }}'.replace('%date', {{ by_year_max }}));
+                                } else if (_max > _{{ facet_field }}_valid_max)  {
+                                    alert('{{ _('End date must be earlier than %date')|escape('js') }}'.replace('%date', _{{ facet_field }}_valid_max));
                                     _valid = false;
                                 }
 
                                 return _valid;
                             });
+
+                            var {{ facet_field }}_slider = $('#{{ facet_field }}_range').slider({
+                                range: true,
+                                min: {{ stats[facet_field].min|date('Y') }},
+                                max: {{ stats[facet_field].max|date('Y') }},
+                                values: [_{{ facet_field }}_valid_min, _{{ facet_field }}_valid_max],
+                                slide: function(event, ui) {
+                                    $('#{{ facet_field }}_range_date_min').val(ui.values[0]);
+                                    $('#{{ facet_field }}_range_date_max').val(ui.values[1]);
+                                }
+                            });
+
+                            function updateSlider() {
+                                {{ facet_field }}_slider.slider(
+                                    'values',
+                                    [$('#{{ facet_field }}_range_date_min').val(), $('#{{ facet_field }}_range_date_max').val()]
+                                );
+                            }
                         });
                     </script>
                 {% endif %}
+                {% if facet.content|length > 0 %}
                     <ol>
                     {% set index_name = facet.index_name %}
 
@@ -172,9 +195,13 @@ POSSIBILITY OF SUCH DAMAGE.
                         </li>
                     {% endfor %}
                     {% if facet.content|length > 10 and not (facet_name is defined and facet_name == index_name) %}
+                        {% if q == '' %}
+                            {% set q = '*:*' %}
+                        {% endif %}
                         <li class="show_more"><a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page, facet_name: index_name}) }}">{{ _('Show more (%count left)')|replace({'%count': facet.content|length-10}) }}</a></li>
                     {% endif %}
                     </ol>
+                {% endif %}
                 </div>
             {% endfor %}
         </div>
@@ -197,24 +224,19 @@ POSSIBILITY OF SUCH DAMAGE.
         {% block intro %}{% endblock %}
     {% endif %}
 
-    {% if form is defined %}
     <form action="{{ path(block('do_search_path'), {'form_name': search_form}) }}" method="post" {{ form_enctype(form) }} name="search" id="search">
         <div>
             {{ form_widget(form.query) }}
+            {% if form.keep_filters is defined %}
+            <div id="keepFilters" title="{{ _('Unckeck if you do not want to keep existing filters with your new search') }}">
+                {{ form_label(form.keep_filters) }}
+                {{ form_widget(form.keep_filters) }}
+            </div>
+            {% endif %}
             {{ form_widget(form._token) }}
             {{ form_widget(form.perform_search) }}
-            {% if has_advanced is defined %}
-            <span id="adv_link"><a href="?adv_search=true" title="{{ _('Switch to advanced search form') }}">{{ _('Advanced search') }}</a></span>
-            {% endif %}
         </div>
     </form>
-    {% endif %}
-
-    {% if adv_form is defined %}
-        {{ form(adv_form) }}
-        <span id="adv_link"><a href="?adv_search=false" title="{{ _('Switch to simple search form') }}">{{ _('Simple search') }}</a></span>
-    {% endif  %}
-
 
     {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
     <aside id="suggestions">
@@ -229,14 +251,12 @@ POSSIBILITY OF SUCH DAMAGE.
     </aside>
     {% endif %}
 
-        {% if min_date is defined and max_date is defined -%}
-        {% if by_year is defined %}
-        <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select dates period') }}"></div>
-        {% endif %}
-        {%- endif %}
-        {% if show_maps -%}
-        <div id="map" class="hidden"></div>
-        {%- endif %}
+    {% if by_year is defined %}
+    <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select dates period') }}"></div>
+    {% endif %}
+    {% if show_maps -%}
+    <div id="map" class="hidden"></div>
+    {%- endif %}
 
     {% if searchResults is defined %}
     <section id="search_results" role="main">
@@ -300,11 +320,12 @@ POSSIBILITY OF SUCH DAMAGE.
         'js/jquery-ui/jquery.ui.autocomplete.min.js'
         'js/jquery-ui/jquery.ui.spinner.min.js'
         'js/jquery-ui/jquery.ui.tabs.min.js'
+        'js/jquery-ui/jquery.ui.slider.min.js'
         output='assetic/js/compiled/search_jquery-ui.js'
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
-    {% if min_date is defined and max_date is defined -%}
+    {% if by_year is defined -%}
     {% javascripts
         'js/flot/jquery.flot.min.js'
         'js/flot/jquery.flot.selection.min.js'
@@ -332,12 +353,15 @@ POSSIBILITY OF SUCH DAMAGE.
 {% endblock %}
 
 {% block mobile_js_on %}
-    {% if searchResults is defined and searchResults|length > 0 %}
     $('.show_more a').unbind('click');
-    {% endif %}
+{% endblock %}
+
+{% block mobile_js_off %}
+    $('#keepFilters').tooltip();
 {% endblock %}
 
 {% block javascripts %}
+
             $.cookie.json = true;
             var _view_params = $.cookie('{{ cookie_param_name }}');
 
@@ -351,23 +375,14 @@ POSSIBILITY OF SUCH DAMAGE.
             function filterOnDate(min_date, max_date) {
                 {% if q is defined and q != '' -%}
                 var _new_loc = document.location.href;
-                {% else -%}
+                {% else %}
                 var _new_loc = '{{ path(block('search_path'), {form_name: search_form})|raw }}';
                 {% endif %}
                 var n = _new_loc.indexOf('?');
                 var _new_loc = _new_loc.substring(0, n != -1 ? n : _new_loc.lenght);
 
-    {% if selected_min_date is defined and selected_max_date is defined %}
-                if ( min_date == '{{ selected_min_date }}'
-                    && max_date == '{{ selected_max_date }}'
-                ) {
-                    //nothing has changed!
-                    return false;
-                }
-    {% endif %}
-
-                _new_loc += '?filter_field[]=date_begin&filter_value[]=' + min_date +
-                    '&filter_field[]=date_end&filter_value[]=' + max_date;
+                _new_loc += '?filter_field[]=date_{{ current_date }}_min&filter_value[]=' + min_date +
+                    '&filter_field[]=date_{{ current_date }}_max&filter_value[]=' + max_date;
                 document.location = _new_loc;
             }
 
@@ -383,8 +398,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 collapsible: true
             });
 
-            {% if searchResults is defined and searchResults|length > 0 %}
+            {% if q != '' %}
+                {% set qt = q %}
+            {% else %}
+                {% set qt = '*:*' %}
+            {% endif %}
             $('.show_more a').click(function() {
+                clickCookie();
                 var _this = $(this);
                 var _facet_name = $(_this.parents('div')[0]).prev('h3').text();
 
@@ -394,9 +414,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 var _width = $(window).width() * 0.8;
                 var _height = $(window).height() * 0.8;
 
-                var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page})|raw }}/', '');
+                var _index = _this.attr('href').replace('{{ path(block('search_path'), {form_name: search_form, query_terms: qt, page: page})|raw }}/', '');
                 _index = _index.substr(_index.lastIndexOf('/')+1);
-                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: q, name: 'THENAME'})|raw }}'.replace('THENAME', _index);
+                var _url = '{{ path(block('fullfacet_path'), {form_name: search_form, query_terms: qt, name: 'THENAME'})|raw }}'.replace('THENAME', _index);
 
                 $.ajax({
                     url: _url,
@@ -420,7 +440,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
                 return false;
             });
-            {% endif %}
 
             {% if available_orders|length > 0 %}
             $('#results_order').change(function(){
@@ -429,8 +448,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
             {% endif %}
 
-            {% if min_date is defined and max_date is defined %}
-            var _is_first_load = true;
 
             {% if by_year is defined -%}
             var plot_options = {
@@ -488,7 +505,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 _dates_plot.removeClass('hidden');
                 _initPlot();
             }
-                {% endif %}
             {% endif %}
 
             _setCookie = function() {
@@ -496,6 +512,7 @@ POSSIBILITY OF SUCH DAMAGE.
             }
 
             $('#sh_daterange').on('click', function(){
+                clickCookie();
                 $('#dates_plot').toggleClass('hidden');
                 if ( !plot) {
                     _initPlot();

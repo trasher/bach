@@ -78,7 +78,6 @@ parameters:
     feature.maps: true
     feature.tagcloud: true
     feature.comments: true
-    feature.autocomplete: true
     display.show_maps: true
     display.show_daterange: true
     display.rows: 10
@@ -94,6 +93,7 @@ parameters:
     feature.social: true
     feature.register: false
     feature.heritage: true
+    matricules_histogram: 'annee_naissance'
 
     #UI parameters
     viewer_uri: http://viewer.localhost/
@@ -155,7 +155,6 @@ bach_home:
         videos: '%kernel.root_dir%/../data/videos/'
         musics: '%kernel.root_dir%/../data/musics/'
         misc: '%kernel.root_dir%/../data/files/'
-        html: '%kernel.root_dir%/../data/html/'
     search_forms: ~
 #        searchformname: #search form identifier
 #            menu_entry: 'My entry' #Will be displayed in main menu

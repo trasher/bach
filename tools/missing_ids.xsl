@@ -1,4 +1,12 @@
-{#
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Add id on c elements if missing.
+Run Saxon like:
+ java -jar /path/to/saxon9he.jar -t -s:source.xml -xsl:missing_ids.xsl > dest.xml
+
+Dest file will contains persistent ids for a same document.
+
 Copyright (c) 2014, Anaphore
 All rights reserved.
 
@@ -29,25 +37,30 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
 STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
-#}
 
-    {% set field_name = current_field.getSolrFieldName %}
-    <div id="{{ field_name }}">
-        <h4>{{ current_field.getLabel(lang) }}{% if lists[field_name] is defined %} ({{ lists[field_name] | length }}){% endif %}</h4>
-        <section id="list_{{ field_name }}">
-        {% if lists[field_name] is defined %}
-            <ul>
-            {% for field in lists[field_name] %}
-                <li>
-                {% if field_name == 'headerId' %}
-                    <a href="{{ path('bach_ead_html', {docid: field.headerId}) }}">{{ field.headerTitle }}</a>
-                {%- else -%}
-                    <a href="{{ path('bach_archives', {filter_field: field_name, filter_value: field.term, clear_filters: 1}) }}">{{ field.term }}</a> ({{ field.count }})
-                {%- endif -%}
-                </li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        </section>
-    </div>
+@author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+@license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
+@link     http://anaphore.eu
+-->
+<xsl:stylesheet
+    version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:template match="ead">
+        <xsl:apply-templates />
+    </xsl:template>
 
+    <xsl:template match="c[not(@id)]">
+        <c>
+            <xsl:attribute name="id">
+                <xsl:value-of select="generate-id(.)"/>
+            </xsl:attribute>
+            <xsl:apply-templates/>
+        </c>
+    </xsl:template>
+
+    <xsl:template match="*|@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="*|@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+</xsl:stylesheet>

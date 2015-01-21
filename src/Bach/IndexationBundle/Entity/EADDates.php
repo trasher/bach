@@ -245,7 +245,7 @@ class EADDates
                 if ( $this->end !== null ) {
                     if ( count($matches) <= 3 ) {
                         //day is not provided. set to last.
-                        $this->end->modify('last day of this month');
+                        $this->end->modify('last day of december');
                     }
                     if ( count($matches) == 2 ) {
                         //month is not provided. set to 1st.
@@ -274,6 +274,19 @@ class EADDates
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param int $id Id
+     *
+     * @return EADDates
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**
@@ -468,5 +481,28 @@ class EADDates
     public function isValid()
     {
         return $this->_is_valid;
+    }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+
+        foreach ( $vars as &$var ) {
+            if ( $var instanceof \DateTime ) {
+                $var = $var->format('Y-m-d H:m:s');
+            }
+        }
+
+        $vars['dend'] = $vars['end'];
+        unset($vars['end']);
+
+        unset($vars['eadfile']);
+        unset($vars['_is_valid']);
+        return $vars;
     }
 }

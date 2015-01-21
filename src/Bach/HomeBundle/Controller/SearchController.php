@@ -84,15 +84,6 @@ abstract class SearchController extends Controller
     }
 
     /**
-     * Default page
-     *
-     * @param string $form_name Search form name
-     *
-     * @return void
-     */
-    abstract public function mainAction($form_name = null);
-
-    /**
      * Search page
      *
      * @param string $query_terms Term(s) we search for
@@ -175,34 +166,7 @@ abstract class SearchController extends Controller
             $request = $this->getRequest();
             $session = $request->getSession();
             $fields = $this->getGeolocFields();
-
-            $query = $factory->getQuery();
-            $rs = null;
-
-            if ( $query === null ) {
-                $query = $this->get($this->entryPoint())->createSelect();
-                $query->setQuery('*:*');
-
-                if ( $this->search_form !== null ) {
-                    $search_forms = $this->container->getParameter('search_forms');
-                    $filter = $search_forms[$this->search_form]['filter'];
-                    $query->createFilterQuery('search_form')
-                        ->setQuery('+(' . $filter . ')');
-                }
-
-                $query->setStart(0)->setRows(0);
-
-                $facetSet = $query->getFacetSet();
-                $facetSet->setLimit(-1);
-                $facetSet->setMinCount(1);
-                foreach ( $fields as $field ) {
-                    $facetSet->createFacetField($field)->setField($field);
-                }
-
-                $rs = $this->get($this->entryPoint())->select($query);
-            } else {
-                $rs = $factory->getResultset();
-            }
+            $rs = $factory->getResultset();
 
             foreach ( $fields as $field ) {
                 $map_facets[$field] = $rs->getFacetSet()->getFacet($field);
@@ -223,7 +187,7 @@ abstract class SearchController extends Controller
      * @param array                $searchResults Search results
      * @param Filters              $filters       Active filters
      * @param string               $facet_name    Facet name
-     * @param array                &$tpl_vars     Template variables
+     * @param array                $tpl_vars      Template variables
      *
      * @return void
      */
@@ -238,10 +202,16 @@ abstract class SearchController extends Controller
         $facetset = $searchResults->getFacetSet();
 
         $facet_names = array(
-            'geoloc'        => _('Map selection'),
-            'date_begin'    => _('Start date'),
-            'date_end'      => _('End date'),
-            'headerId'      => _('Document')
+            'geoloc'                       => _('Map selection'),
+            'date_cDateBegin_min'          => _('Start date'),
+            'date_cDateBegin_max'          => _('End date'),
+            'date_classe_min'              => _('Start class date'),
+            'date_classe_max'              => _('End class date'),
+            'date_date_enregistrement_min' => _('Start record date'),
+            'date_date_enregistrement_max' => _('End record date'),
+            'date_annee_naissance_min'     => _('Start birth date'),
+            'date_annee_naissance_max'     => _('End birth date'),
+            'headerId'                     => _('Document')
         );
         $facet_labels = array();
         $docs_titles = array();
@@ -270,65 +240,29 @@ abstract class SearchController extends Controller
                 }
             }
 
-            foreach ( $field_facets as $item=>$count ) {
-                if ( !$filters->offsetExists($solr_field)
-                    || !$filters->hasValue($solr_field, $item)
-                ) {
-                    if ( in_array($solr_field, $this->getFacetsDateFields()) ) {
-                        $start = null;
-                        $end = null;
-
-                        if ( strpos('|', $item) !== false ) {
-                            list($start, $end) = explode('|', $item);
-                        } else {
-                            $start = $item;
-                        }
-                        $bdate = new \DateTime($start);
-
-                        $edate = null;
-                        if ( !$end ) {
-                            $edate = new \DateTime($start);
-                            $edate->add(
-                                new \DateInterval(
-                                    'P' . $factory->getDateGap()  . 'Y'
-                                )
-                            );
-                            $edate->sub(new \DateInterval('PT1S'));
-                        } else {
-                            $edate = new \DateTime($end);
-                        }
-                        if ( !isset($facet_labels[$solr_field]) ) {
-                            $facet_labels[$solr_field] = array();
-                        }
-
-                        $item = $bdate->format('Y-m-d\TH:i:s\Z') . '|' .
-                            $edate->format('Y-m-d\TH:i:s\Z');
-
-                        $ys = $bdate->format('Y');
-                        $ye = $edate->format('Y');
-
-                        if ( $ys != $ye ) {
-                            $facet_labels[$solr_field][$item] = $ys . '-' . $ye;
-                        } else {
-                            $facet_labels[$solr_field][$item] = $ys;
-                        }
-                    }
-
-                    if ( $solr_field == 'headerId' && count($docs_titles) > 0 ) {
-                        foreach ( $docs_titles as $title ) {
-                            if ( $title['headerId'] === $item ) {
-                                $facet_labels[$solr_field][$item]
-                                    = $title['headerTitle'];
-                                break;
+            if ( $field_facets !== null ) {
+                foreach ( $field_facets as $item=>$count ) {
+                    if ( !$filters->offsetExists($solr_field)
+                        || !$filters->hasValue($solr_field, $item)
+                    ) {
+                        if ( $solr_field == 'headerId' && count($docs_titles) > 0 ) {
+                            foreach ( $docs_titles as $title ) {
+                                if ( $title['headerId'] === $item ) {
+                                    $facet_labels[$solr_field][$item]
+                                        = $title['headerTitle'];
+                                    break;
+                                }
                             }
                         }
+                        $values[$item] = $count;
                     }
-                    $values[$item] = $count;
                 }
             }
 
-            if ( count($values) > 0 ) {
-                if ( $facet->getSolrFieldName() !== 'dao' ) {
+            if ( count($values) > 0
+                || in_array($solr_field, $this->getFacetsDateFields())
+            ) {
+                if ( $solr_field !== 'dao' ) {
                     //facet order
                     $facet_order = $request->get('facet_order');
                     if ( $facet_name !== null ) {
@@ -356,18 +290,6 @@ abstract class SearchController extends Controller
                         if ( $v == 0 ) {
                             $do = false;
                         }
-                    }
-                }
-
-                if ( in_array(
-                    $facet->getSolrFieldName(),
-                    $this->getFacetsDateFields()
-                ) ) {
-                    if ( count($values) == 1
-                        && (in_array(1, $values)
-                        || strpos('|', array_keys($values)[0]) === false)
-                    ) {
-                        $do = false;
                     }
                 }
 
@@ -402,29 +324,6 @@ abstract class SearchController extends Controller
             $geoloc = $this->getGeolocFields();
             foreach ( $geoloc as $field ) {
                 $map_facets[$field] = $facetset->getFacet($field);
-            }
-        }
-
-        foreach ( $this->getFacetsDateFields() as $date_field ) {
-            if ( $filters->offsetExists($date_field) ) {
-                //set label for current date range filter
-                if ( !isset($facet_labels[$date_field])) {
-                    $facet_labels[$date_field] = array();
-                }
-
-                $cdate = $filters->offsetGet($date_field);
-                list($start, $end) = explode('|', $cdate);
-                $bdate = new \DateTime($start);
-                $edate = new \DateTime($end);
-
-                $ys = $bdate->format('Y');
-                $ye = $edate->format('Y');
-
-                if ( $ys != $ye ) {
-                    $facet_labels[$date_field][$cdate] = $ys . '-' . $ye;
-                } else {
-                    $facet_labels[$date_field][$cdate] = $ys;
-                }
             }
         }
 
@@ -567,37 +466,7 @@ abstract class SearchController extends Controller
      */
     protected function getCookieName()
     {
-        return 'bach_' . $this->getParamSessionName();
-    }
-
-    /**
-     * Get geographical zones
-     *
-     * @param stirng $bbox Bounding box
-     *
-     * @return json
-     */
-    public function getZonesAction($bbox)
-    {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-        $factory = $this->get($this->factoryName());
-
-        $facets_name = $request->get('facets_name');
-
-        if ( !$facets_name ) {
-            $facets_name = 'map_facets';
-        }
-
-        $geojson = $factory->getGeoJson(
-            $session->get($facets_name),
-            $this->getDoctrine()
-                ->getRepository('BachIndexationBundle:Geoloc'),
-            $bbox,
-            true
-        );
-
-        return new JsonResponse($geojson);
+        return 'bach_cookie';
     }
 
     /**
@@ -664,6 +533,8 @@ abstract class SearchController extends Controller
         $factory = $this->get($this->factoryName());
 
         $geoloc = $this->getGeolocFields();
+
+        //FIXME: try to avoid those 2 calls
         $factory->setGeolocFields($this->getGeolocFields());
         $factory->setDateField($this->date_field);
 
@@ -847,19 +718,14 @@ abstract class SearchController extends Controller
     /**
      * Handle yearly results
      *
-     * @param SolariumQueryFactory $factory   Factory instance
-     * @param array                &$tpl_vars Template variables
+     * @param SolariumQueryFactory $factory  Factory instance
+     * @param array                $tpl_vars Template variables
      *
      * @return void
      */
     protected function handleYearlyResults($factory, &$tpl_vars)
     {
-        $params = null;
-        if ( $this->search_form !== null ) {
-            $search_forms = $this->container->getParameter('search_forms');
-            $params = $search_forms[$this->search_form];
-        }
-        $by_year = $factory->getResultsByYear($params);
+        $by_year = $factory->getResultsByYear();
         if ( count($by_year) > 0 ) {
             $tpl_vars['by_year'] = $by_year;
             $date_min = new \DateTime($by_year[0][0] . '-01-01');
@@ -879,15 +745,13 @@ abstract class SearchController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        /** Manage view parameters */
+        /* Manage view parameters */
         $view_params = $session->get($this->getParamSessionName());
         if ( !$view_params ) {
             $view_params = $this->get($this->getViewParamsServicename());
         }
         //take care of user view params
-        if ( isset($_COOKIE[$this->getCookieName()]) ) {
-            $view_params->bindCookie($this->getCookieName());
-        }
+        $view_params->bindCookie($this->getCookieName());
 
         //set current view parameters according to request
         $view_params->bind($request, $this->getCookieName());
@@ -914,4 +778,15 @@ abstract class SearchController extends Controller
 
         return $this->redirect($url, 301);
     }
+
+    /**
+     * Retrieve fragment informations from image
+     *
+     * @param string $path Image path
+     * @param string $img  Image name
+     * @param string $ext  Image extension
+     *
+     * @return void
+     */
+    abstract public function infosImageAction($path, $img, $ext);
 }

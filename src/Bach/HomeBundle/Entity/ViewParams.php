@@ -75,7 +75,6 @@ class ViewParams
     protected $order = self::ORDER_RELEVANCE;
     private $_show_map = true;
     private $_show_daterange = true;
-    private $_advanced_search = false;
 
     private $_request;
 
@@ -258,16 +257,6 @@ class ViewParams
     }
 
     /**
-     * Show advanced search form or simple one
-     *
-     * @return boolean
-     */
-    public function advancedSearch()
-    {
-        return $this->_advanced_search;
-    }
-
-    /**
      * Bind request
      *
      * @param Request $request     Request to bind to
@@ -318,23 +307,12 @@ class ViewParams
             }
         }
 
-        if ( $request->get('adv_search') ) {
-            $set_cookie = true;
-            switch ( $request->get('adv_search') ) {
-            case 'true':
-                $this->_advanced_search = true;
-                break;
-            default:
-                $this->_advanced_search = false;
-                break;
-            }
-        }
-
-        if ( $set_cookie === true ) {
+        if ( $set_cookie === true) {
             $_cook = new \stdClass();
             $_cook->map = $this->showMap();
             $_cook->daterange = $this->showDaterange();
-            setcookie($cookie_name, json_encode($_cook), 0, '/');
+            $expire = 365*24*3600;
+            setcookie($cookie_name, json_encode($_cook), time()+$expire, '/');
         }
     }
 
@@ -347,8 +325,10 @@ class ViewParams
      */
     public function bindCookie($name)
     {
-        $_cook = json_decode($_COOKIE[$name]);
-        $this->setShowMap($_cook->map);
-        $this->setShowDaterange($_cook->daterange);
+        if ( isset($_COOKIE[$name]) ) {
+            $_cook = json_decode($_COOKIE[$name]);
+            $this->setShowMap($_cook->map);
+            $this->setShowDaterange($_cook->daterange);
+        }
     }
 }

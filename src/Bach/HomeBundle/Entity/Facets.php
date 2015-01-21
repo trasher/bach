@@ -86,6 +86,13 @@ class Facets
     protected $active;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="on_home", type="boolean")
+     */
+    protected $on_home;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="fr_label", type="string", length=255)
@@ -177,6 +184,29 @@ class Facets
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Set on_home
+     *
+     * @param boolean $on_home On home
+     *
+     * @return Facets
+     */
+    public function setOnHome($on_home)
+    {
+        $this->on_home = $on_home;
+        return $this;
+    }
+
+    /**
+     * Get on_home
+     *
+     * @return boolean
+     */
+    public function getOnHome()
+    {
+        return $this->on_home;
     }
 
     /**

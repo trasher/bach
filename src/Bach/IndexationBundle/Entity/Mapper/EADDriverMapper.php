@@ -200,7 +200,8 @@ class EADDriverMapper implements DriverMapperInterface
             'fragment'     => 'fragment',
             'daolist'      => './/daoloc|.//dao|.//archref[not(contains(@href, \'http://\')) and contains(@href, \'.pdf\')]',
             'cTitle'       => './/controlaccess//title',
-            'cFunction'    => './/controlaccess//function'
+            'cFunction'    => './/controlaccess//function',
+            'geolocalized' => './/controlaccess//geogname[@latitude and @longitude]'
         );
         $descriptors = EADFileFormat::$descriptors;
 

@@ -231,7 +231,7 @@ class Fields
         case 'dao':
             return _('Digital substitute');
             break;
-        case 'cDate':
+        case 'cDateBegin':
             return _('Dates periods');
             break;
         case 'archDescUnitId':

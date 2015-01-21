@@ -207,7 +207,7 @@ class AddDependencyCallsCompilerPass extends CPass
 
         if ( $container->getParameter('feature.archives') === true ) {
             foreach ( $search_forms as $name=>$search_form ) {
-                $newid = 'sonata.admin.' . $name . 'facets';
+                $newid = 'sonata.admin.archives.' . $name . 'facets';
                 $definition = clone $facets_definition;
                 $definition->replaceArgument(0, $newid);
                 $definition->addArgument($name); //current form

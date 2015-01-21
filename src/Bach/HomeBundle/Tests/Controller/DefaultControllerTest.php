@@ -72,14 +72,14 @@ class DefaultController extends ControllerTest
             ->hasStatus(404);
 
         $this->request()->GET('/')
-            ->hasStatus(200)
+            ->hasStatus(302)
             ->hasCharset('UTF-8')
             ->crawler
             ->hasElement('#tagCloud');
 
         //those ones will work with FRANCT_0001 EAD document indexed...
         //a successfull request
-        $this->request->GET('/search/Cayenne')
+        $this->request->GET('/archives/search/default/Cayenne')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
@@ -89,7 +89,7 @@ class DefaultController extends ControllerTest
         //a not successfull request, with one spelling suggestion
         //FIXME: the french text will fail if app is in english...
         //We should find a fix for that.
-        $this->request->GET('/search/cyenne')
+        $this->request->GET('/archives/search/default/cyenne')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
@@ -103,7 +103,7 @@ class DefaultController extends ControllerTest
 
         //a successfull request, with filtering only
         $this->request->GET(
-            '/search?filter_field=cSubject&filter_value=enjeux+internationaux'
+            '/archives/search?filter_field=cSubject&filter_value=enjeux+internationaux'
         )
             ->hasStatus(200)
             ->hasCharset('UTF-8')
@@ -114,29 +114,37 @@ class DefaultController extends ControllerTest
             ->hasElement('#search_results')
             ->hasChild('article');
 
-        $this->request->GET('/search/Cayenne?view=thumbs')
+        $this->request->GET('/archives/search/default/Cayenne?view=thumbs')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
             ->hasElement('#search_results')
             ->hasChild('article.thumbs');
 
-        $this->request->GET('/search/Cayenne?result_order=1')
+        $this->request->GET('/archives/search/default/Cayenne?result_order=1')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler
             ->hasElement('#search_results')
             ->hasChild('article');
+
+        $this->request->GET('/cookielink')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8');
+
+        $this->request->GET('/footer/legals')
+            ->hasStatus(200)
+            ->hasCharset('UTF-8');
     }
 
     /**
-     * test facet listing
+     * Test facet listing
      *
      * @return void
      */
     public function testFacetList()
     {
-        $this->request->GET('/fullfacet/default/*:*/cSubject')
+        $this->request->GET('/archives/fullfacet/default/*:*/cSubject')
             ->hasStatus(200)
             ->hasCharset('UTF-8')
             ->crawler

@@ -54,6 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {% block js_calls %}
     {{ parent() }}
     <script src="{{ asset('js/jquery-ui/jquery.ui.tabs.min.js') }}" type="text/javascript"></script>
+    <script src="{{ path('dynamic_js', {name: 'tabs'}) }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -66,37 +67,7 @@ POSSIBILITY OF SUCH DAMAGE.
         };
 
         $(function() {
-            $('#browse_tabs > ul a').each(function(){
-                var _this = $(this);
-                var _href = _this.attr('href') + '/ajax';
-                if ( !_href.match(/^#.*/) ) {
-                    _this.attr('href', _href);
-                }
-            });
-
-            $('#browse_tabs').tabs({
-                active: $('#browse_tabs li.active').index(),
-                beforeLoad: function( event, ui ) {
-                    if ( ui.tab.data( "loaded" ) ) {
-                        event.preventDefault();
-                        return;
-                    }
-
-                    var _img = $('<figure id="loading"><p><img src="{{ asset('img/loading.png') }}" alt="{{ _('Loading...') }}"/><br/>{{ _('Currently loading...') }}</p></figure>');
-                    $('body').append(_img);
-
-                    ui.jqXHR.done(function() {
-                        ui.tab.data( "loaded", true );
-                    });
-                    ui.jqXHR.fail(function(){
-                        alert('{{ _('An error occured loading tab :(')|escape('js') }}');
-                        $('#loading').remove();
-                    });
-                },
-                load: function(event, ui){
-                    $('#loading').remove();
-                }
-            });
+            _doTabs('#browse_tabs');
 
             if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
                 $('#back2top').fadeOut();

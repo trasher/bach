@@ -404,6 +404,19 @@ class Geoloc
     }
 
     /**
+     * Set found
+     *
+     * @param boolean $found found status
+     *
+     * @return Geoloc
+     */
+    public function setFound($found)
+    {
+        $this->found = $found;
+        return $this;
+    }
+
+    /**
      * Array representation
      *
      * @return array

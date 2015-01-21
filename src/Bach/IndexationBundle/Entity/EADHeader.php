@@ -65,6 +65,8 @@ use Doctrine\Common\PropertyChangedListener;
  */
 class EADHeader implements NotifyPropertyChanged
 {
+    use PublishTrait;
+
     private $_listeners = array();
 
     /**
@@ -129,14 +131,15 @@ class EADHeader implements NotifyPropertyChanged
     /**
       * The constructor
       *
-      * @param array $data Data
+      * @param array   $data    Data
+      * @param boolean $changes Take care of changes
       */
-    public function __construct($data)
+    public function __construct($data, $changes = true)
     {
         $this->fragments = new ArrayCollection();
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
-        $this->parseData($data);
+        $this->parseData($data, $changes);
     }
 
     /**
@@ -154,12 +157,14 @@ class EADHeader implements NotifyPropertyChanged
     /**
      * Proceed data parsing
      *
-     * @param array $data Data
+     * @param array   $data    Data
+     * @param boolean $changes Take care of changes
      *
      * @return void
      */
-    protected function parseData($data)
+    protected function parseData($data, $changes = true)
     {
+        $this->check_changes = $changes;
         foreach ($data as $key=>$value) {
             if (property_exists($this, $key)) {
                 if ( $this->$key !== $value ) {
@@ -172,41 +177,6 @@ class EADHeader implements NotifyPropertyChanged
                 );
             }
         }
-    }
-
-    /**
-     * Notifies a property change
-     *
-     * @param string $propName Property name
-     * @param string $oldValue Old value of property
-     * @param string $newValue New value of property
-     *
-     * @return void
-     */
-    protected function onPropertyChanged($propName, $oldValue, $newValue)
-    {
-        if ( $this->_listeners) {
-            foreach ( $this->_listeners as $listener ) {
-                $listener->propertyChanged($this, $propName, $oldValue, $newValue);
-            }
-        }
-        if ( $propName !== 'updated' ) {
-            $now = new \DateTime();
-            $this->onPropertyChanged('updated', $this->updated, $now);
-            $this->updated = $now;
-        }
-    }
-
-    /**
-     * Hydrate existing entity
-     *
-     * @param array $data Data
-     *
-     * @return void
-     */
-    public function hydrate($data)
-    {
-        $this->parseData($data);
     }
 
     /**
@@ -458,5 +428,25 @@ class EADHeader implements NotifyPropertyChanged
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+        foreach ( $vars as &$var ) {
+            if ( $var instanceof \DateTime ) {
+                $var = $var->format('Y-m-d H:m:s');
+            }
+        }
+        unset($vars['_listeners']);
+        unset($vars['check_changes']);
+        unset($vars['fragments']);
+        unset($vars['has_changes']);
+        return $vars;
     }
 }

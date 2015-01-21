@@ -107,6 +107,19 @@ class EADParentTitle
     }
 
     /**
+     * Set id
+     *
+     * @param int $id Id
+     *
+     * @return EADParentTitle
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * Set title
      *
      * @param string $title Title
@@ -150,5 +163,19 @@ class EADParentTitle
     public function getEadfile()
     {
         return $this->eadfile;
+    }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+        $vars['unittitle'] = $vars['title'];
+        unset($vars['title']);
+        unset($vars['eadfile']);
+        return $vars;
     }
 }

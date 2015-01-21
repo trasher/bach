@@ -53,6 +53,7 @@ use Bach\HomeBundle\Form\Type\SearchQueryFormType;
 use Bach\HomeBundle\Entity\SearchQuery;
 use Bach\HomeBundle\Entity\MatriculesViewParams;
 use Bach\HomeBundle\Entity\Comment;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Bach matricules controller
@@ -67,67 +68,11 @@ use Bach\HomeBundle\Entity\Comment;
  */
 class MatriculesController extends SearchController
 {
-    protected $date_field = 'date_enregistrement';
-
-    /**
-     * Default page
-     *
-     * @param string $form_name Search form name
-     *
-     * @return void
-     */
-    public function mainAction($form_name = null)
-    {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-
-        $this->search_form = $form_name;
-
-        /** Manage view parameters */
-        $view_params = $this->handleViewParams();
-
-        $tpl_vars = $this->searchTemplateVariables($view_params);
-        $session->set($this->getFiltersName(), null);
-
-        if ( $view_params->advancedSearch() ) {
-            $form = $this->createForm(
-                new MatriculesType(),
-                null
-            );
-            $tpl_vars['search_path'] = 'bach_matricules_search';
-        } else {
-            $form = $this->createForm(
-                new SearchQueryFormType(),
-                null
-            );
-            $tpl_vars['search_path'] = 'bach_matricules_do_search';
-        }
-
-        $factory = $this->get($this->factoryName());
-        $factory->setDateField($this->date_field);
-
-        $slider_dates = $factory->getSliderDates(new Filters());
-
-        if ( is_array($slider_dates) ) {
-            $tpl_vars = array_merge($tpl_vars, $slider_dates);
-        }
-
-        if ( $view_params->advancedSearch() ) {
-            $tpl_vars['adv_form'] = $form->createView();
-        } else {
-            $tpl_vars['form'] = $form->createView();
-        }
-
-
-        $this->handleGeoloc($factory);
-
-        $this->handleYearlyResults($factory, $tpl_vars);
-
-        return $this->render(
-            'BachHomeBundle:Matricules:search_form.html.twig',
-            $tpl_vars
-        );
-    }
+    protected $dates_fields_mat = array(
+        'date_enregistrement',
+        'classe',
+        'annee_naissance'
+    );
 
     /**
      * Search page
@@ -151,10 +96,14 @@ class MatriculesController extends SearchController
 
         $this->search_form = $form_name;
 
-        /** Manage view parameters */
+        /* Manage view parameters */
         $view_params = $this->handleViewParams();
 
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
+
+        if (isset($_COOKIE[$this->getCookieName()]) ) {
+            $tpl_vars['cookie_param'] = true;
+        }
 
         $filters = $session->get($this->getFiltersName());
         if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
@@ -171,57 +120,21 @@ class MatriculesController extends SearchController
             $query_terms = '*:*';
         }
 
-        if ( $view_params->advancedSearch() ) {
-            $form = $this->createForm(
-                new MatriculesType(),
-                null
-            );
-            $tpl_vars['search_path'] = 'bach_matricules_search';
-        } else {
-            $form = $this->createForm(
-                new SearchQueryFormType($query_terms),
-                null
-            );
-            $tpl_vars['search_path'] = 'bach_matricules_do_search';
-        }
+        $form = $this->createForm(
+            new SearchQueryFormType(
+                $query_terms,
+                !is_null($query_terms)
+            ),
+            null
+        );
+        $tpl_vars['search_path'] = 'bach_matricules_do_search';
 
         $form->handleRequest($request);
-        $data = $form->getData();
 
         $resultCount = null;
         $searchResults = null;
 
-        $factory = $this->get($this->factoryName());
-        $factory->setGeolocFields($this->getGeolocFields());
-        $factory->setDateField($this->date_field);
-
-        if ( $filters->count() > 0 ) {
-            $tpl_vars['filters'] = $filters;
-        }
-
-        if ( $view_params->advancedSearch() && count($data) > 0
-            || !$view_params->advancedSearch() && $query_terms !== null
-        ) {
-            $container = new SolariumQueryContainer();
-            $container->setOrder($view_params->getOrder());
-
-            if ( $view_params->advancedSearch() ) {
-                $container->setField($this->getContainerFieldName(), $data);
-            } else {
-                $container->setField($this->getContainerFieldName(), $query_terms);
-            }
-
-            $container->setField(
-                "pager",
-                array(
-                    "start"     => ($page - 1) * $view_params->getResultsbyPage(),
-                    "offset"    => $view_params->getResultsbyPage()
-                )
-            );
-
-            $container->setFilters($filters);
-            $factory->prepareQuery($container);
-
+        if ( $query_terms !== null ) {
             $conf_facets = $this->getDoctrine()
                 ->getRepository('BachHomeBundle:Facets')
                 ->findBy(
@@ -231,12 +144,78 @@ class MatriculesController extends SearchController
                     ),
                     array('position' => 'ASC')
                 );
+        } else {
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active' => true,
+                        'form'   => 'matricules',
+                        'on_home'=> true
+                    ),
+                    array('position' => 'ASC')
+                );
+        }
+        if ( $this->container->hasParameter('matricules_histogram') ) {
+            $current_date = $this->container->getParameter('matricules_histogram');
+        } else {
+            $current_date = 'date_enregistrement';
+        }
+        $factory = $this->get($this->factoryName());
 
-            $searchResults = $factory->performQuery(
-                $container,
-                $conf_facets
+        //FIXME: try to avoid those 2 calls
+        $factory->setGeolocFields($this->getGeolocFields());
+        $factory->setDateField($current_date);
+        $dates_fields = array();
+        foreach ( $conf_facets as $conf_facet ) {
+            if ( in_array($conf_facet->getSolrFieldName(), $this->dates_fields_mat)
+                && $conf_facet->getSolrFieldName() != $current_date
+            ) {
+                array_push($dates_fields, $conf_facet->getSolrFieldName());
+            }
+        }
+        $factory->setDatesFields($dates_fields);
+
+        if ( $filters->count() > 0 ) {
+            $tpl_vars['filters'] = $filters;
+        }
+
+        $container = new SolariumQueryContainer();
+
+        if ( $query_terms !== null ) {
+            $container->setOrder($view_params->getOrder());
+
+            $container->setField($this->getContainerFieldName(), $query_terms);
+            $container->setField(
+                "pager",
+                array(
+                    "start"     => ($page - 1) * $view_params->getResultsbyPage(),
+                    "offset"    => $view_params->getResultsbyPage()
+                )
             );
 
+            $container->setFilters($filters);
+        } else {
+            $container->setNoResults();
+        }
+
+        $factory->prepareQuery($container);
+
+        $searchResults = $factory->performQuery(
+            $container,
+            $conf_facets
+        );
+
+        $this->handleFacets(
+            $factory,
+            $conf_facets,
+            $searchResults,
+            $filters,
+            $facet_name,
+            $tpl_vars
+        );
+
+        if ( $query_terms !== null ) {
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
@@ -248,42 +227,19 @@ class MatriculesController extends SearchController
                 $resultCount/$view_params->getResultsbyPage()
             );
 
-            $this->handleFacets(
-                $factory,
-                $conf_facets,
-                $searchResults,
-                $filters,
-                $facet_name,
-                $tpl_vars
-            );
-
-            $suggestions = null;
-            if ( $view_params->advancedSearch() ) {
-                $suggestions = $factory->getSuggestions(implode(' ', $data));
-            } else {
-                $suggestions = $factory->getSuggestions($query_terms);
-            }
+            $suggestions = $factory->getSuggestions($query_terms);
 
             if ( isset($suggestions) && $suggestions->count() > 0 ) {
                 $tpl_vars['suggestions'] = $suggestions;
             }
 
-            $this->handleYearlyResults($factory, $tpl_vars);
         }
 
-        $slider_dates = $factory->getSliderDates($filters);
+        $tpl_vars['stats'] = $factory->getStats();
+        $this->handleYearlyResults($factory, $tpl_vars);
+        $this->handleGeoloc($factory);
 
-        if ( is_array($slider_dates) ) {
-            $tpl_vars = array_merge($tpl_vars, $slider_dates);
-        }
-
-        if ( $view_params->advancedSearch() ) {
-            $tpl_vars['adv_form'] = $form->createView();
-        } else {
-            $tpl_vars['form'] = $form->createView();
-        }
-
-        //$tpl_vars['has_advanced'] = true;
+        $tpl_vars['form'] = $form->createView();
 
         $tpl_vars['resultStart'] = ($page - 1)
             * $view_params->getResultsbyPage() + 1;
@@ -293,7 +249,7 @@ class MatriculesController extends SearchController
             $resultEnd = $resultCount;
         }
         $tpl_vars['resultEnd'] = $resultEnd;
-
+        $tpl_vars['current_date'] = $current_date;
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(
@@ -454,12 +410,14 @@ class MatriculesController extends SearchController
             if ($form->isValid()) {
                 $q = $query->getQuery();
                 $redirectUrl = $this->get('router')->generate(
-                    'bach_matricules_search',
+                    'bach_matricules',
                     array('query_terms' => $q)
                 );
 
                 $session = $this->getRequest()->getSession();
-                $session->set($this->getFiltersName(), null);
+                if ( $form->getData()->keep_filters != 1 ) {
+                    $session->set($this->getFiltersName(), null);
+                }
                 $view_params = $session->get($this->getParamSessionName());
                 $view_params->setOrder(
                     (int)$this->getRequest()->get('results_order')
@@ -518,22 +476,20 @@ class MatriculesController extends SearchController
      */
     protected function getUniqueFacet($name)
     {
-        $conf_facets = array();
+        $form_name = 'matricules';
+        if ( $this->search_form !== null ) {
+            $form_name = $this->search_form;
+        }
 
-        $fields = array(
-            'nom'                   => 'Nom',
-            'prenoms'               => 'Prénom',
-            'classe'                => 'Classe',
-            'lieu_naissance'        => 'Lieu de naissance',
-            'lieu_enregistrement'   => 'Lieu d\'enregistrement'
-        );
-
-        $facet = new Facets();
-        $facet->setSolrFieldName($name);
-        $facet->setFrLabel($fields[$name]);
-        $conf_facets[] = $facet;
-
-        return $conf_facets;
+        return $this->getDoctrine()
+            ->getRepository('BachHomeBundle:Facets')
+            ->findBy(
+                array(
+                    'active'            => true,
+                    'solr_field_name'   => $name,
+                    'form'              => $form_name
+                )
+            );
     }
 
     /**
@@ -543,15 +499,7 @@ class MatriculesController extends SearchController
      */
     protected function getContainerFieldName()
     {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-        $view_params = $session->get($this->getParamSessionName());
-
-        if ( $view_params->advancedSearch() ) {
-            return 'adv_matricules';
-        } else {
-            return 'matricules';
-        }
+        return 'matricules';
     }
 
     /**
@@ -571,7 +519,7 @@ class MatriculesController extends SearchController
      */
     protected function getSearchUri()
     {
-        return 'bach_matricules_search';
+        return 'bach_matricules';
     }
 
     /**
@@ -593,4 +541,59 @@ class MatriculesController extends SearchController
     {
         return 'matricules_view_params';
     }
+
+    /**
+     * Retrieve fragment informations from image
+     *
+     * @param string $path Image path
+     * @param string $img  Image name
+     * @param string $ext  Image extension
+     *
+     * @return void
+     */
+    public function infosImageAction($path, $img, $ext)
+    {
+        $qry_string = null;
+        if ( $img !== null && $ext !== null ) {
+            $qry_string = $img . '.' . $ext;
+        }
+        if ( $path !== null ) {
+            $qry_string = $path . '/' . $qry_string;
+        }
+        $docs = [];
+
+        $client = $this->get($this->entryPoint());
+        $query = $client->createSelect();
+        $query->setQuery(
+            'start_dao:' . $qry_string . ' or end_dao:' . $qry_string
+        );
+        $query->setFields(
+            'id, nom, txt_prenoms, classe'
+        );
+        $query->setStart(0)->setRows(1);
+
+        $rs = $client->select($query);
+        $docs = $rs->getDocuments();
+        $response = null;
+
+        if ( count($docs) > 0 ) {
+            $doc = $docs[0];
+
+            //link to document
+            $doc_url = $this->get('router')->generate(
+                'bach_display_matricules',
+                array(
+                    'docid' => $doc['id']
+                )
+            );
+
+            $class = new \DateTime($doc['classe']);
+            $response = '<a href="' . $doc_url . '">' .
+                $doc['nom'] . ' ' . $doc['txt_prenoms'] .
+                ' (' . $class->format('Y') . ')' . '</a>';
+        }
+
+        return new Response($response, 200);
+    }
+
 }

@@ -45,6 +45,7 @@
 namespace Bach\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Bach Migration abstract class
@@ -75,5 +76,35 @@ abstract class BachMigration extends AbstractMigration
             'Migration can only be executed safely on ' .
             implode(', ', $this->_known_dbs) . '.'
         );
+    }
+
+    /**
+     * Create a table from schema
+     *
+     * @param Schema $schema  Database schema
+     * @param string $name    Table name
+     * @param array  $columns Table columns
+     * @param mixed  $pkey    Primary key as string or array
+     *
+     * @return Table
+     */
+    protected function createTable(Schema $schema, $name, $columns, $pkey)
+    {
+        $table = $schema->createTable($name);
+
+        foreach ( $columns as $colname=>$column ) {
+            $table->addColumn(
+                $colname,
+                $column['type'],
+                $column['options']
+            );
+        }
+
+        if ( !is_array($pkey) ) {
+            $pkey = array($pkey);
+        }
+        $table->setPrimaryKey($pkey);
+
+        return $table;
     }
 }

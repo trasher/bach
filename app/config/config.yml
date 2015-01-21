@@ -47,6 +47,7 @@ framework:
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
+        assets_base_urls: /
     default_locale:  "%locale%"
     session:         ~
 
@@ -73,7 +74,6 @@ twig:
             maps: '%feature.maps%'
             register: '%feature.register%'
             comments: '%feature.comments%'
-            autocomplete: '%feature.autocomplete%'
         default_url: '%default_url%'
         logo_url: '%logo_url%'
 
@@ -208,6 +208,8 @@ sonata_user:
     admin:
         user:
             class: Application\Sonata\UserBundle\Admin\UserAdmin
+        group:
+            class: Application\Sonata\UserBundle\Admin\GroupAdmin
 
     profile:
         form:
@@ -292,11 +294,6 @@ services:
         arguments: [ @kernel ]
         tags:
             - { name: twig.extension }
-    bach.twig.html_export:
-        class: Bach\HomeBundle\Twig\HtmlExportExists
-        arguments: [ '%bach_files_html%'  ]
-        tags:
-            - { name: twig.extension }
     sonata_user.profile.form.type:
         class: Application\Sonata\UserBundle\Form\Type\ProfileType
         arguments: [%fos_user.model.user.class%]
@@ -311,3 +308,13 @@ presta_sitemap:
 liip_theme:
     themes: %bach_themes%
     active_theme: %bach_default_theme%
+
+jns_xhprof:
+    location_web:    http://xhprof-gui.localhost/
+    enabled:         true
+    request_query_argument: "_profile"
+    exclude_patterns: ['/assetic/']
+    command: "option"
+    command_option_name: "profile"
+    entity_class: Bach\HomeBundle\Entity\XhprofDetail
+    enable_xhgui: true

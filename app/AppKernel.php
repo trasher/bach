@@ -107,7 +107,8 @@ class AppKernel extends Kernel
             new FM\ElfinderBundle\FMElfinderBundle(),
             new Presta\SitemapBundle\PrestaSitemapBundle(),
             new Liip\DoctrineCacheBundle\LiipDoctrineCacheBundle(),
-            new Liip\ThemeBundle\LiipThemeBundle()
+            new Liip\ThemeBundle\LiipThemeBundle(),
+            new Jns\Bundle\XhprofBundle\JnsXhprofBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'console'))) {
@@ -115,7 +116,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new atoum\AtoumBundle\AtoumAtoumBundle();
-            $bundles[] = new Jns\Bundle\XhprofBundle\JnsXhprofBundle();
+            //$bundles[] = new Jns\Bundle\XhprofBundle\JnsXhprofBundle();
             $bundles[] = new Elao\WebProfilerExtraBundle\WebProfilerExtraBundle();
         }
 

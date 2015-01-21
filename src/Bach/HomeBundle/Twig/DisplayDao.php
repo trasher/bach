@@ -440,7 +440,7 @@ class DisplayDao extends \Twig_Extension
         );
         switch ( self::_getType($dao) ) {
         case self::SERIES:
-            $ret = '<a href="' . $viewer . 'series/' . $dao . '" target="_blank">';
+            $ret = '<a href="' . $viewer . 'series/' . $dao . '" target="_blank" property="image">';
             $ret .= '<img src="' . $viewer . 'ajax/representative/' .
                 rtrim($dao, '/') .  '/format/' . $format  . '" alt="' . $dao . '"/>';
             if ( $daotitle !== null ) {
@@ -449,7 +449,7 @@ class DisplayDao extends \Twig_Extension
             $ret .= '</a>';
             break;
         case self::IMAGE:
-            $ret = '<a href="' . $viewer . 'viewer/' . $dao . '" target="_blank">';
+            $ret = '<a href="' . $viewer . 'viewer/' . $dao . '" target="_blank" property="image">';
             $ret .= '<img src="' . $viewer . 'ajax/img/' . $dao .
                 '/format/' . $format . '" alt="' . $dao .'"/>';
             if ( $daotitle !== null ) {
@@ -459,14 +459,14 @@ class DisplayDao extends \Twig_Extension
             break;
         case self::SOUND:
             $href = '/file/music/' . $dao;
-            $ret .= '<audio controls="controls" width="300" height="30">';
+            $ret .= '<audio controls="controls" width="300" height="30" property="audio">';
             $ret .= '<source src="' . $href  . '"/>';
             $ret .= '</audio>';
             break;
         case self::VIDEO:
             $href = '/file/video/' . $dao;
             $ret = '<div class="htmlplayer standalone">';
-            $ret .= '<video controls="controls" width="300" height="300">';
+            $ret .= '<video controls="controls" width="300" height="300" property="video">';
             $ret .= '<source src="' . $href  . '"/>';
             $ret .= '<a href="' . $href . '" target="_blank">' .
                 _('Your browser does not support this video format, you may want to download file and watch it offline') . '</a>';

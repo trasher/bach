@@ -168,7 +168,9 @@ class HtmlIntro extends \Twig_Extension
         };
 
         $doclink_callback = function ($matches) use ($router) {
-            if ( strpos($matches[1], 'http://') === 0 ) {
+            if ( strpos($matches[1], 'http://') === 0
+                || strpos($matches[1], 'https://') === 0
+            ) {
                 return $matches[0];
             } else if ( $matches[1] === 'cdc' ) {
                 $href = $router->generate('bach_classification');
@@ -194,7 +196,7 @@ class HtmlIntro extends \Twig_Extension
 
         $filters_callback = function ($matches) use ($router, $request) {
             $href = $router->generate(
-                'bach_search',
+                'bach_archives',
                 array(
                     'query_terms'   => $request->get('query_terms'),
                     'filter_field'  => $matches[1],

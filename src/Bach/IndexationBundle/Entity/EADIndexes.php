@@ -46,7 +46,7 @@
 namespace Bach\IndexationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Bach\IndexationBundle\Entity\Geoloc;
 /**
  * EAD indexes entity
  *
@@ -167,6 +167,11 @@ class EADIndexes
         $this->eadfile = $ead;
         $this->name = $data['value'];
         $this->type = $type;
+        if ( $type == 'cGeogname' ) {
+            $ent = new Geoloc();
+            $ent->setName(explode(" ", $data['value'])[0]);
+            $ent->setIndexedName($data['value']);
+        }
         foreach ( $data['attributes'] as $attr=>$value) {
             switch ( $attr ){
             case 'role':
@@ -174,8 +179,21 @@ class EADIndexes
             case 'normal':
                 $this->$attr = $value;
                 break;
+            case 'latitude' :
+                $ent->setLat($value);
+                $lat = $ent->getLat();
+                break;
+            case 'longitude' :
+                $ent->setLon($value);
+                $lon = $ent->getLon();
+                break;
             default:
                 //attribute is not mapped, no action
+            }
+        }
+        if ( $type == 'cGeogname' ) {
+            if ( !empty( $lat ) && !empty( $lon ) ) {
+                $ent->setFound(true);
             }
         }
     }
@@ -188,6 +206,19 @@ class EADIndexes
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param int $id Id
+     *
+     * @return EADIndexes
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**
@@ -465,4 +496,17 @@ class EADIndexes
     {
         return $this->rules;
     }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = get_object_vars($this);
+        unset($vars['eadfile']);
+        return $vars;
+    }
+
 }

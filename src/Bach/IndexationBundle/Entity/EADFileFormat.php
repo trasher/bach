@@ -167,15 +167,16 @@ class EADFileFormat extends FileFormat
     /**
      * The constructor
      *
-     * @param array $data The input data
+     * @param array   $data    The input data
+     * @param boolean $changes Take care of changes
      */
-    public function __construct($data)
+    public function __construct($data, $changes = true)
     {
         $this->indexes = new ArrayCollection();
         $this->dates = new ArrayCollection();
         $this->daos = new ArrayCollection();
         $this->parents_titles = new ArrayCollection();
-        parent::__construct($data);
+        parent::__construct($data, $changes);
     }
 
     /**
@@ -340,7 +341,7 @@ class EADFileFormat extends FileFormat
         'uniqid',
         'cScopcontent',
         'cDateNormal',
-        'cDateBegin',
+        'cDate',
         'cDateEnd',
         'archDescOrigination',
         'subject_w_expanded',
@@ -379,14 +380,15 @@ class EADFileFormat extends FileFormat
     /**
      * Proceed data parsing
      *
-     * @param array $data Data
+     * @param array   $data    Data
+     * @param boolean $changes Take care of changes
      *
      * @return void
      */
-    protected function parseData($data)
+    protected function parseData($data, $changes = true)
     {
+        $this->check_changes = $changes;
         foreach ($data as $key=>$value) {
-            /*if ( in_array($key, self::$known_indexes) ) {*/
             if ( $key === 'descriptors' ) {
                 $this->parseIndexes($value);
             } else if ( $key === 'parents_titles' ) {
@@ -396,6 +398,7 @@ class EADFileFormat extends FileFormat
                     $this->onPropertyChanged($key, $this->$key, $value);
                     $this->$key = $value;
                 }
+            } elseif ($key === 'geolocalized' ) {
             } elseif ($key === 'cDate') {
                 $this->parseDates($value);
             } elseif ( $key == 'daolist' ) {
@@ -404,6 +407,76 @@ class EADFileFormat extends FileFormat
                 throw new \RuntimeException(
                     __CLASS__ . ' - Key ' . $key . ' is not known!'
                 );
+            }
+        }
+
+        //check for sub-elements removal
+        $this->_checkRemovals($data);
+    }
+
+    /**
+     * Check for elements that have all been removed
+     *
+     * @param array $data Data
+     *
+     * @return void
+     */
+    private function _checkRemovals($data)
+    {
+        //check if indexes has been removed
+        if ( !isset($data['descriptors'])
+            && $this->indexes->count() > 0
+        ) {
+            $this->onPropertyChanged(
+                'indexes',
+                $this->indexes,
+                new ArrayCollection()
+            );
+            foreach ( $this->indexes as $index ) {
+                $this->removeIndex($index);
+                $this->removed[] = $index;
+            }
+        }
+
+        if ( !isset($data['cDate'])
+            && $this->dates->count() > 0
+        ) {
+            $this->onPropertyChanged(
+                'dates',
+                $this->dates,
+                new ArrayCollection()
+            );
+            foreach ( $this->dates as $date ) {
+                $this->removeDate($date);
+                $this->removed[] = $date;
+            }
+        }
+
+        if ( !isset($data['daolist'])
+            && $this->daos->count() > 0
+        ) {
+            $this->onPropertyChanged(
+                'daos',
+                $this->daos,
+                new ArrayCollection()
+            );
+            foreach ( $this->daos as $dao ) {
+                $this->removeDao($dao);
+                $this->removed[] = $dao;
+            }
+        }
+
+        if ( !isset($data['parents_titles'])
+            && $this->parents_titles->count() > 0
+        ) {
+            $this->onPropertyChanged(
+                'parents_titles',
+                $this->parents_titles,
+                new ArrayCollection()
+            );
+            foreach ( $this->parents_titles as $ptitle ) {
+                $this->removeParentTitle($ptitle);
+                $this->removed[] = $ptitle;
             }
         }
     }
@@ -594,7 +667,16 @@ class EADFileFormat extends FileFormat
                 }
 
                 if ( $unique === true ) {
-                    $this->addIndex(new EADIndexes($this, $type, $index));
+                    $id = null;
+                    if ( isset($index['id']) ) {
+                        $id = $index['id'];
+                        unset($index['id']);
+                    }
+                    $idx = new EADIndexes($this, $type, $index);
+                    if ( $id !== null ) {
+                        $idx->setId($id);
+                    }
+                    $this->addIndex($idx);
                     $has_changed = true;
                 }
             }
@@ -709,6 +791,10 @@ class EADFileFormat extends FileFormat
                 }
 
                 if ( $unique === true ) {
+                    $id = null;
+                    if ( isset($date['id']) ) {
+                        $odate->setId($date['id']);
+                    }
                     $this->addDate($odate);
                     $has_changed = true;
                 }
@@ -796,7 +882,16 @@ class EADFileFormat extends FileFormat
             }
 
             if ( $unique === true ) {
-                $this->addDao(new EADDaos($this, $dao));
+                $id = null;
+                if ( isset($dao['id']) ) {
+                    $id = $dao['id'];
+                    unset($dao['id']);
+                }
+                $ndao = new EADDaos($this, $dao);
+                if ( $id !== null ) {
+                    $ndao->setId($id);
+                }
+                $this->addDao($ndao);
                 $has_changed = true;
             }
         }
@@ -859,7 +954,7 @@ class EADFileFormat extends FileFormat
             $found = false;
             $title = $ptitle->getTitle();
             foreach ( $data as $new_ptitle ) {
-                if ( $title === $new_ptitle ) {
+                if ( $title === $new_ptitle['value'] ) {
                     $found = true;
                     break;
                 }
@@ -876,14 +971,23 @@ class EADFileFormat extends FileFormat
             $unique = true;
 
             foreach ( $this->parents_titles as $i ) {
-                if ( $i->getTitle() == $ptitle ) {
+                if ( $i->getTitle() == $ptitle['value'] ) {
                     $unique = false;
                     break;
                 }
             }
 
             if ( $unique === true ) {
-                $this->addParentTitle(new EADParentTitle($this, $ptitle));
+                $id = null;
+                if ( isset($ptitle['id']) ) {
+                    $id = $ptitle['id'];
+                    unset($ptitle['id']);
+                }
+                $parent_title = new EADParentTitle($this, $ptitle['value']);
+                if ( $id !== null ) {
+                    $parent_title->setId($id);
+                }
+                $this->addParentTitle($parent_title);
                 $has_changed = true;
             }
         }
@@ -1056,5 +1160,36 @@ class EADFileFormat extends FileFormat
     public function getArchdesc()
     {
         return $this->archdesc;
+    }
+
+    /**
+     * Get array representation
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $vars = parent::toArray();
+        /*$vars = get_object_vars($this);
+        foreach ( $vars as &$var ) {
+            if ( $var instanceof ArrayCollection ) {
+                $subvars = array();
+                foreach ( $var as $subvar ) {
+                    $subvars[] = $subvar->toArray();
+                }
+                $var = $subvars;
+            }
+
+            if ( $var instanceof \DateTime ) {
+                $var = $var->format('Y-m-d H:m:s');
+            }
+        }*/
+        unset($vars['eadheader']);
+        unset($vars['archdesc']);
+        /*unset($vars['document']);
+        unset($vars['removed']);
+        unset($vars['has_changes']);
+        unset($vars['check_changes']);*/
+        return $vars;
     }
 }

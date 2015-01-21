@@ -98,11 +98,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% if view == 'list' or view == 'txtlist' %}
                     <aside>
                         {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-                        {% if html_export_exists(document.headerId) %}
-                            <a href="{{ path('bach_htmldoc', {'docid': document.headerId}) }}{% if subid != 'description' %}#{{ subid  }}{% endif %}">{{ _('Locate in document tree') }}</a>
-                        {% else %}
-                            <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
-                        {% endif %}
+                        <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
                     </aside>
                     {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}
                     {% endif %}
@@ -150,11 +146,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {# Binded when in mobile mode #}
 {% block mobile_js_on %}
+    {{ parent() }}
     $('.display_doc').unbind('click');
 {% endblock %}
 
 {% block autocomplete %}
-    {% if features.autocomplete %}
     function split(val) {
         return val.split(/ +/);
     }
@@ -189,7 +185,6 @@ POSSIBILITY OF SUCH DAMAGE.
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
-    {% endif %}
 {% endblock %}
 
 {% block player %}

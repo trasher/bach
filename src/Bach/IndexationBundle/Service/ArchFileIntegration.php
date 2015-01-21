@@ -64,6 +64,7 @@ class ArchFileIntegration
     private $_manager;
     private $_factory;
     private $_entityManager;
+    private $_zdb;
 
     /**
      * Instanciate Service
@@ -71,13 +72,15 @@ class ArchFileIntegration
      * @param FileDriverManager $manager       The file driver manager
      * @param DataBagFactory    $factory       The databag factory instance
      * @param EntityManager     $entityManager The entity manager
+     * @param ZendDb            $zdb           Zend database wrapper
      */
     public function __construct(FileDriverManager $manager,
-        DataBagFactory $factory, EntityManager $entityManager
+        DataBagFactory $factory, EntityManager $entityManager, ZendDb $zdb
     ) {
         $this->_manager = $manager;
         $this->_factory = $factory;
         $this->_entityManager = $entityManager;
+        $this->_zdb = $zdb;
     }
 
     /**
@@ -109,12 +112,13 @@ class ArchFileIntegration
     /**
      * Proceed task database integration
      *
-     * @param IntegrationTask $task  Task to proceed
-     * @param boolean         $flush Wether to flush
+     * @param IntegrationTask $task        Task to proceed
+     * @param array           $geonames Geoloc data
+     * @param boolean         $transaction Wether to flush
      *
      * @return void
      */
-    public function integrate(IntegrationTask $task, $flush = true)
+    public function integrate(IntegrationTask $task, &$geonames, $transaction = true)
     {
         $spl = new \SplFileInfo($task->getPath());
         $doc = $task->getDocument();
@@ -125,8 +129,9 @@ class ArchFileIntegration
             $this->_factory->encapsulate($spl),
             $format,
             $doc,
-            $flush,
-            $preprocessor
+            $transaction,
+            $preprocessor,
+            $geonames
         );
     }
 
@@ -135,32 +140,29 @@ class ArchFileIntegration
      *
      * @param array          $tasks    Tasks to integrate
      * @param ProgressHelper $progress Progress bar
+     * @param array          $geonames Geoloc data
      *
      * @return void
      */
-    public function integrateAll($tasks, ProgressHelper $progress)
+    public function integrateAll($tasks, ProgressHelper $progress, &$geonames)
     {
         $count = 0;
         $cleared = false;
-        foreach ( $tasks as $task) {
-            if ( $cleared ) {
-                $doc = $task->getDocument();
-                $doc = $this->_entityManager->merge($doc);
-                $task->setDocument($doc);
+        try {
+            $this->_zdb->connection->beginTransaction();
+            foreach ( $tasks as $task) {
+                if ( $cleared ) {
+                    $doc = $task->getDocument();
+                    $doc = $this->_entityManager->merge($doc);
+                    $task->setDocument($doc);
+                }
+                $progress->advance();
+                $this->integrate($task, $geonames, false);
+                $count++;
             }
-            $progress->advance();
-            $this->integrate($task, false);
-            $count++;
-
-            if ( $count % 20000 === 0 ) {
-                $this->_entityManager->flush();
-                $this->_entityManager->clear();
-                $cleared = true;
-            }
+            $this->_zdb->connection->commit();
+        } catch ( \Exception $e ) {
+            $this->_zdb->connection->rollBack();
         }
-
-        $this->_entityManager->flush();
-        $this->_entityManager->clear();
-
     }
 }

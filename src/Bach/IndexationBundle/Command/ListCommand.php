@@ -49,6 +49,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * List files that are known
@@ -82,6 +83,11 @@ EOF
                 'type',
                 InputArgument::OPTIONAL,
                 'Documents type to list. If omitted, all types will be listed.'
+            )->addOption(
+                'stats',
+                null,
+                InputOption::VALUE_NONE,
+                _('Give stats informations (memory used, etc)')
             );
     }
 
@@ -95,6 +101,11 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $stats = $input->getOption('stats');
+        if ( $stats === true ) {
+            $start_time = new \DateTime();
+        }
+
         $container = $this->getContainer();
 
         $known_types = $container->getParameter('bach.types');
@@ -128,5 +139,52 @@ EOF
                 $type . '/' . implode("\n" .$type . '/', $files[$type])
             );
         }
+
+        if ( $stats === true ) {
+            $peak = $this->formatBytes(memory_get_peak_usage());
+
+            $end_time = new \DateTime();
+            $diff = $start_time->diff($end_time);
+
+            $hours = $diff->h;
+            $hours += $diff->days * 24;
+
+            $elapsed = str_replace(
+                array(
+                    '%hours',
+                    '%minutes',
+                    '%seconds'
+                ),
+                array(
+                    $hours,
+                    $diff->i,
+                    $diff->s
+                ),
+                '%hours:%minutes:%seconds'
+            );
+
+            $output->writeln('Time elapsed: ' . $elapsed);
+            $output->writeln('Memory peak: ' . $peak);
+        }
+    }
+
+    /**
+     * Format bytes to human readable value
+     *
+     * @param int $bytes Bytes
+     *
+     * @return string
+     */
+    public function formatBytes($bytes)
+    {
+        $multiplicator = 1;
+        if ( $bytes < 0 ) {
+            $multiplicator = -1;
+            $bytes = $bytes * $multiplicator;
+        }
+        $unit = array('b','kb','mb','gb','tb','pb');
+        $fmt = @round($bytes/pow(1024, ($i=floor(log($bytes, 1024)))), 2)
+            * $multiplicator . ' ' . $unit[$i];
+        return $fmt;
     }
 }
