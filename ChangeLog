@@ -1,3 +1,28 @@
+1.1.0.0 (2015-01-21)
+- Update translations
+- Fix a display issue on back2top button
+- Update solr 4.10.3
+- Add feature Geodata to enrich EAD location
+- Add feature to manage cookie
+- Fix histogram
+- Add general conditions of use
+- Fix dates filters
+- Move slider in record date facet
+- Add dates in facets
+- Prevent https links in intro files
+- Add RDFa informations
+- Fix minors map display issues
+- Add feature to Display facets on homepage
+- Fix Admin users/groups
+- Add feuture to update model database with migrations
+- Rework solr queries on homepage/search pages
+- Update requirements for Bach (PHP 5.4 is required)
+- Some fixes on specific search forms
+- Update 3rd party libs
+- Some factorizations
+- Use ZendDb to publish matricules and to handle documents
+- Add a checkbox to keep filters
+
 1.0.8 (2014-12-23)
 - Fix the location of the credits template
 
