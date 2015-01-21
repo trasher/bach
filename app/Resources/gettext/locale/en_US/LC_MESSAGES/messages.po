@@ -171,41 +171,41 @@ msgstr "Register an account"
 msgid "Registration is disabled."
 msgstr "Registration is disabled."
 
-#~ msgid "An error occured loading tab :("
-#~ msgstr "An error occured loading tab :("
+msgid "An error occured loading tab :("
+msgstr "An error occured loading tab :("
 
-#~ msgid "Search in matricules"
-#~ msgstr "Search in matricules"
+msgid "Search in matricules"
+msgstr "Search in matricules"
 
-#~ msgid "Matricules search"
-#~ msgstr "Matricules search"
+msgid "Matricules search"
+msgstr "Matricules search"
 
-#~ msgid "Show related image"
-#~ msgstr "Show related image"
+msgid "Show related image"
+msgstr "Show related image"
 
-#~ msgid "Name"
-#~ msgstr "Name"
+msgid "Name"
+msgstr "Name"
 
-#~ msgid "Surnames"
-#~ msgstr "Surnames"
+msgid "Surnames"
+msgstr "Surnames"
 
-#~ msgid "Class"
-#~ msgstr "Class"
+msgid "Class"
+msgstr "Class"
 
-#~ msgid "Place of recording"
-#~ msgstr "Place of recording"
+msgid "Place of recording"
+msgstr "Place of recording"
 
-#~ msgid "Show record"
-#~ msgstr "Show record"
+msgid "Show record"
+msgstr "Show record"
 
-#~ msgid "Consult document"
-#~ msgstr "Consult document"
+msgid "Consult document"
+msgstr "Consult document"
 
-#~ msgid "Matricule"
-#~ msgstr "Matricule"
+msgid "Matricule"
+msgstr "Matricule"
 
-#~ msgid "Year of birth"
-#~ msgstr "Year of birth"
+msgid "Year of birth"
+msgstr "Year of birth"
 
-#~ msgid "Place of birth"
-#~ msgstr "Place of birth"
+msgid "Place of birth"
+msgstr "Place of birth"

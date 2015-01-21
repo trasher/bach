@@ -174,41 +174,41 @@ msgstr "Enregistrer un compte"
 msgid "Registration is disabled."
 msgstr "L'enregistrement est désactivé."
 
-#~ msgid "An error occured loading tab :("
-#~ msgstr "Une erreur est survenue au chargement de l'onglet :("
+msgid "An error occured loading tab :("
+msgstr "Une erreur est survenue au chargement de l'onglet :("
 
-#~ msgid "Search in matricules"
-#~ msgstr "Chercher dans les matricules"
+msgid "Search in matricules"
+msgstr "Chercher dans les matricules"
 
-#~ msgid "Matricules search"
-#~ msgstr "Recherche de matricules"
+msgid "Matricules search"
+msgstr "Recherche de matricules"
 
-#~ msgid "Show related image"
-#~ msgstr "Afficher l'image relative"
+msgid "Show related image"
+msgstr "Afficher l'image relative"
 
-#~ msgid "Name"
-#~ msgstr "Nom"
+msgid "Name"
+msgstr "Nom"
 
-#~ msgid "Surnames"
-#~ msgstr "Prénoms"
+msgid "Surnames"
+msgstr "Prénoms"
 
-#~ msgid "Class"
-#~ msgstr "Classe"
+msgid "Class"
+msgstr "Classe"
 
-#~ msgid "Place of recording"
-#~ msgstr "Lieu d'enregistrement"
+msgid "Place of recording"
+msgstr "Lieu d'enregistrement"
 
-#~ msgid "Show record"
-#~ msgstr "Afficher l'enregistrement"
+msgid "Show record"
+msgstr "Afficher l'enregistrement"
 
-#~ msgid "Consult document"
-#~ msgstr "Consulter le document"
+msgid "Consult document"
+msgstr "Consulter le document"
 
-#~ msgid "Matricule"
-#~ msgstr "Matricule"
+msgid "Matricule"
+msgstr "Matricule"
 
-#~ msgid "Year of birth"
-#~ msgstr "Année de naissance"
+msgid "Year of birth"
+msgstr "Année de naissance"
 
-#~ msgid "Place of birth"
-#~ msgstr "Lieu de naissance"
+msgid "Place of birth"
+msgstr "Lieu de naissance"
