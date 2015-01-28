@@ -74,6 +74,7 @@ class DisplayDao extends \Twig_Extension
     const FLASH = 5;
     const MISC = 6;
     const EXTERNAL = 7;
+    const XML=8;
 
     /**
      * Main constructor
@@ -180,7 +181,8 @@ class DisplayDao extends \Twig_Extension
                     self::FLASH     => array(),
                     self::SOUND     => array(),
                     self::FLA_SOUND => array(),
-                    self::MISC     => array()
+                    self::MISC      => array(),
+                    self::XML       => array()
                 );
 
                 foreach ( $xml_dg->children() as $node_name => $xml_dao ) {
@@ -271,6 +273,14 @@ class DisplayDao extends \Twig_Extension
                     }
                     $res .= '</div>';
                 }
+                if ( count($results[self::XML]) > 0 ) {
+                    $res .= '<div>';
+                    foreach ( $results[self::XML] as $other ) {
+                        $res .= $other;
+                    }
+                    $res .= '</div>';
+                }
+
 
                 $res .= '</section>';
             }
@@ -284,7 +294,8 @@ class DisplayDao extends \Twig_Extension
                 self::FLASH     => array(),
                 self::SOUND     => array(),
                 self::FLA_SOUND => array(),
-                self::MISC     => array()
+                self::MISC      => array(),
+                self::XML       => array()
             );
 
             foreach ( $daos as $d ) {
@@ -370,6 +381,16 @@ class DisplayDao extends \Twig_Extension
                 }
                 $res .= '</section>';
             }
+            if ( count($results[self::XML]) > 0 ) {
+                $res .= '<section id="other">';
+                $res .= '<header><h4>' . _('XML documents') .
+                    '</h4></header>';
+                foreach ( $results[self::XML] as $other ) {
+                    $res .= $other;
+                }
+                $res .= '</section>';
+            }
+
         }
 
         //end root element
@@ -454,6 +475,13 @@ class DisplayDao extends \Twig_Extension
                 '/format/' . $format . '" alt="' . $dao .'"/>';
             if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
+            }
+            $ret .= '</a>';
+            break;
+        case self::XML:
+            $ret = '<a href="/document/' . str_replace('.xml', '', $dao) . '" target="_blank">';
+            if ( $daotitle !== null ) {
+                $ret .= '<span class="title">'. _('document') . ' : ' .str_replace('.xml', '', $dao) . '</span>';
             }
             $ret .= '</a>';
             break;
@@ -776,6 +804,9 @@ class DisplayDao extends \Twig_Extension
         } else if ( preg_match($img_reg, $dao, $matches) ) {
             //document is an image
             $type = self::IMAGE;
+        } else if ( strpos($dao, '.xml') !== false ) {
+            //document is a xml file
+            $type = self::XML;
         } else if ( preg_match($all_reg, $dao, $matches) ) {
             //document is a unkonwn file
             $type = self::MISC;
