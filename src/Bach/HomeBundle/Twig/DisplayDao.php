@@ -473,9 +473,9 @@ class DisplayDao extends \Twig_Extension
             $ret = '<a href="' . $viewer . 'viewer/' . $dao . '" target="_blank" property="image">';
             $ret .= '<img src="' . $viewer . 'ajax/img/' . $dao .
                 '/format/' . $format . '" alt="' . $dao .'"/>';
-            if ( $daotitle !== null ) {
+            /*if ( $daotitle !== null ) {
                 $ret .= '<span class="title">' . $daotitle . '</span>';
-            }
+            }*/
             $ret .= '</a>';
             break;
         case self::XML:
