@@ -96,7 +96,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {% else %}
             {% set hasComments = false %}
         {% endif %}
-        <div class="content">
+        <div class="content frag">
         {{ displayFragment(document.fragment, docid, search_form, true, hasChildren, hasComments, count_children, ajax)|raw }}
         {% if not children == false %}
             <section id="children_documents">
@@ -161,6 +161,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <script src="{{ path('dynamic_js', {name: 'tabs'}) }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
-            _doTabs('article.show_fragment div.content');
+            _doTabs('div.show_fragment');
+            _doTabs('div.frag');
         });
     </script>

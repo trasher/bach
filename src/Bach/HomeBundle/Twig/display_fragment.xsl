@@ -460,7 +460,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="date" mode="full">
         <xsl:variable name="parent-name" select="local-name(parent::node())"/>
-        <xsl:choose>
+    <xsl:choose>
             <xsl:when test="$parent-name = 'change'">
                 <dt>
                     <xsl:apply-templates mode="full"/>
@@ -494,7 +494,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="head" mode="full">
         <!-- Count *real* descriptors from controlaccess to prevent empty title display -->
         <xsl:variable name="descriptors_count" select="count(../*[local-name() != 'head' and not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')])"/>
-        <xsl:if test="text() != '' and (local-name(parent::node()) = 'controlaccess' and $descriptors_count &gt; 0)">
+        <xsl:if test="(text() != '' and $descriptors_count &gt; 0)">
             <!-- Count direct parent that have a head child. That will include current node -->
             <xsl:variable name="count" select="count(ancestor::*/head)"/>
             <header>

@@ -1147,8 +1147,10 @@ body > #loading {
 
 [id=social] {
     float: right;
-    margin-top: .6em;
+    margin-top: .8em;
     text-align: right;
+    position: relative;
+    z-index: 10;
 }
 
 [id=social] .button {
@@ -1825,9 +1827,11 @@ figure section .flashplayer {
     position: absolute;
     background-color: #d1c6c0;
     margin: 10px;
-    top: 0px;
+    bottom: 3%;
+    right: 0.5%;
     padding: 12px;
     z-index: 1000;
+    position: fixed;
 }
 
 #head_cookie .alert {
