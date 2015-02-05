@@ -66,7 +66,15 @@ class MainDecorator extends SolariumQueryDecoratorAbstract
      */
     protected function getDefaultQueryFields()
     {
-        return 'descriptors^2 cUnittitle^1 parents_titles^1 fulltext^0.1';
+        if ( $this->getWeight() ) {
+            $requestWeight = '';
+            foreach ( $this->getWeight() as $key => $simpleWeight ) {
+                $requestWeight .= $key . '^' . $simpleWeight .' ';
+            }
+            return $requestWeight;
+        } else {
+            return 'descriptors^2 cUnittitle^1 parents_titles^1 fulltext^0.1';
+        }
     }
 
     /**

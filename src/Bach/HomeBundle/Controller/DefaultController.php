@@ -228,6 +228,14 @@ class DefaultController extends SearchController
 
             //Add filters to container
             $container->setFilters($filters);
+
+            $weight = array(
+                "descriptors" => $this->container->getParameter('weight.descriptors'),
+                "cUnittitle" => $this->container->getParameter('weight.cUnittitle'),
+                "parents_titles" => $this->container->getParameter('weight.parents_titles'),
+                "fulltext" => $this->container->getParameter('weight.fulltext')
+            );
+            $container->setWeight($weight);
             if ( $filters->count() > 0 ) {
                 $tpl_vars['filters'] = $filters;
             }

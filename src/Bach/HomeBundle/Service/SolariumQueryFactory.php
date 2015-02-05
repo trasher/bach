@@ -304,6 +304,7 @@ class SolariumQueryFactory
                         $search_form['query_fields']
                     );
                 }
+                $this->_decorators[$name]->setWeight($container->getWeight());
                 $this->_decorators[$name]->decorate($this->_query, $value);
                 if ( method_exists($this->_decorators[$name], 'getHlFields') ) {
                     if ( trim($hl_fields) !== '' ) {

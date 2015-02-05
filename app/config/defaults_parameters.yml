@@ -148,6 +148,10 @@ parameters:
     #mailer_host: localhost
     #mailer_user: null
     #mailer_password: null
+    weight.descriptors: 2
+    weight.cUnittitle : 1
+    weight.parents_titles: 1
+    weight.fulltext: 0.1
 
 bach_home:
     #Paths to retrieve different types of files

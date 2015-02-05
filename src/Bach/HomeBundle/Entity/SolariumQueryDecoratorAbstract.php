@@ -59,16 +59,21 @@ abstract class SolariumQueryDecoratorAbstract
 {
     protected $targetField;
     protected $qf;
+    protected $weight;
 
     /**
      * Main constructor
      *
-     * @param string $qf Query fields to override defaults
+     * @param string $qf     Query fields to override defaults
+     * @param array  $weight Weight in query
      */
-    public function __construct($qf = null)
+    public function __construct($qf = null, $weight = null)
     {
         if ( $qf !== null ) {
             $this->setQueryFields($qf);
+        }
+        if ( $weight !== null ) {
+            $this->setWeight($weight);
         }
     }
 
@@ -106,6 +111,28 @@ abstract class SolariumQueryDecoratorAbstract
     public function setQueryFields($qf)
     {
         $this->qf = $qf;
+    }
+
+    /**
+     * Set weight
+     *
+     * @param array $weight weight in query
+     *
+     * @return void
+     */
+    public function setWeight($weight)
+    {
+        $this->weight = $weight;
+    }
+
+    /**
+     * Get weight query
+     *
+     * @return array
+     */
+    public function getWeight()
+    {
+        return $this->weight;
     }
 
     /**
