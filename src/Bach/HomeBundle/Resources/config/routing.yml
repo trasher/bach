@@ -41,7 +41,6 @@ bach_archives:
     requirements:
         _method: GET|POST
         page: \d+
-        query_terms: ".+"
 
 bach_search_form_homepage:
     pattern:  /archives/search_form/{form_name}
@@ -173,7 +172,6 @@ bach_matricules:
     requirements:
         _method: GET|POST
         page: \d+
-        query_terms: ".+"
 
 bach_matricules_fullfacet:
     pattern: /matricules/fullfacet/{query_terms}/{name}
