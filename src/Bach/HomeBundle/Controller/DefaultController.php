@@ -659,6 +659,11 @@ class DefaultController extends SearchController
             }
         }
 
+        /* not display warning about cookies */
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $tpl_vars['cookie_param'] = true;
+        }
+
         return $this->render(
             $tpl,
             $tpl_vars
@@ -760,6 +765,11 @@ class DefaultController extends SearchController
                     new SearchQuery()
                 );
                 $tpl_vars['form'] = $form->createView();
+
+                /* not display warning about cookies */
+                if ( isset($_COOKIE[$this->getCookieName()]) ) {
+                    $tpl_vars['cookie_param'] = true;
+                }
 
                 return $this->render(
                     'BachHomeBundle:Default:html.html.twig',

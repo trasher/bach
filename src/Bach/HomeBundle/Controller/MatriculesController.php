@@ -333,6 +333,11 @@ class MatriculesController extends SearchController
             $tplParams['ajax'] = false;
         }
 
+        /* not display warning about cookies */
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $tpl_vars['cookie_param'] = true;
+        }
+
         return $this->render(
             $tpl,
             $tplParams
