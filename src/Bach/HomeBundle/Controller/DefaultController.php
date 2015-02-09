@@ -495,6 +495,11 @@ class DefaultController extends SearchController
             }
         }
 
+        /* not display warning about cookies */
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $tpl_vars['cookie_param'] = true;
+        }
+
         $tpl_vars['lists'] = $lists;
 
         if ( $ajax === false ) {
@@ -691,6 +696,11 @@ class DefaultController extends SearchController
         $tpl_vars['docid'] = '';
         $tpl_vars['xml_file'] = $cdc_path;
         $tpl_vars['cdc'] = true;
+
+        /* not display warning about cookies */
+        if ( isset($_COOKIE[$this->getCookieName()]) ) {
+            $tpl_vars['cookie_param'] = true;
+        }
 
         return $this->render(
             'BachHomeBundle:Default:html.html.twig',
