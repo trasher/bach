@@ -135,6 +135,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
             _parent.prepend(_expand);
         });
+        window.location.href = window.location.hash; // fix gap betwwen anchor and display
     });
     {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
 {% endblock %}
