@@ -46,6 +46,7 @@ namespace Bach\HomeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Bach files controller
@@ -232,5 +233,56 @@ class FilesController extends Controller
         fclose($out);
         fclose($file);
 
+    }
+    /**
+     * Display all RDF files in a list
+     *
+     * @return void
+     */
+    public function listRdfAction()
+    {
+        $path = $this->container->getParameter('rdf_files_path');
+        $files = array();
+        if ($repo = opendir($path)) {
+            while (false !== ($file = readdir($repo))) {
+                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                if (strpos($ext, 'rdf') !== false) {
+                    array_push($files, $file);
+                }
+            }
+        }
+        return $this->render(
+            'BachHomeBundle:Default:listrdf.html.twig',
+            array(
+                'listrdfs'  => $files
+            )
+        );
+    }
+
+    /**
+     * Download rdf file
+     *
+     * @param string $file File name
+     *
+     * @return void
+     */
+    public function downloadRdfAction($file)
+    {
+        $path = $this->container->getParameter('rdf_files_path');
+
+        $path .= $file;
+        $fileOpen = fopen($path, 'rb');
+        $out = fopen('php://output', 'wb');
+
+        $response = new Response();
+
+        $response->headers
+            ->set('Content-type', 'application/force-download');
+        $response->headers
+            ->set('Content-Disposition', 'attachment;filename="' . $file . '";');
+        stream_copy_to_stream($fileOpen, $out);
+        fclose($out);
+        fclose($fileOpen);
+        return $response;
     }
 }
