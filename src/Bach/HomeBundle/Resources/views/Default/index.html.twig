@@ -81,7 +81,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
                     <header>
                         <h3 property="dc:title">
-                            <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
+                            <a href="{{ path('bach_display_document',{docid: document.fragmentid}) }}" class="display_doc">
                             {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
                                 {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
                             {%- elseif document.cUnittitle is defined -%}

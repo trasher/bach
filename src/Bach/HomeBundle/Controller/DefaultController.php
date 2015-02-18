@@ -205,6 +205,8 @@ class DefaultController extends SearchController
 
         $container = new SolariumQueryContainer();
 
+        $fragCurrentResearch = null;
+        $fragCurrentResearch = array();
         if ( !is_null($query_terms) ) {
             $container->setOrder($view_params->getOrder());
 
@@ -218,11 +220,16 @@ class DefaultController extends SearchController
             );
             $container->setField($this->getContainerFieldName(), $query_terms);
 
+            $resultVisibility = 1;
+            if ($page !== 1) {
+                $resultVisibility += 1;
+            }
+
             $container->setField(
                 "pager",
                 array(
                     "start"     => ($page - 1) * $view_params->getResultsbyPage(),
-                    "offset"    => $view_params->getResultsbyPage()
+                    "offset"    => $view_params->getResultsbyPage() + $resultVisibility
                 )
             );
 
@@ -295,7 +302,34 @@ class DefaultController extends SearchController
             $tpl_vars['totalPages'] = ceil(
                 $resultCount/$view_params->getResultsbyPage()
             );
-            $tpl_vars['searchResults'] = $searchResults;
+
+            /******************* begin of work about navigation *******************/
+            $countResult = 0;
+            if ($page == 1 && $countResult == 0) {
+                array_push($fragCurrentResearch, 'empty');
+                $countResult++;
+            }
+            $searchFinalResults = array();
+            foreach ( $searchResults->getDocuments() as $key => $document ) {
+                array_push(
+                    $fragCurrentResearch,
+                    $searchResults->getDocuments()[$key]['fragmentid']
+                );
+                if (($countResult !== 0)
+                    &&
+                    (($countResult < count($searchResults->getDocuments())-1)
+                    || $page == $tpl_vars['totalPages'] || ($page == 1 && $countResult < count($searchResults->getDocuments())) )
+                ) {
+                    array_push(
+                        $searchFinalResults,
+                        $searchResults->getDocuments()[$key]
+                    );
+                }
+                    $countResult++;
+            }
+            /***********************************************************************/
+
+            $tpl_vars['searchResults'] = $searchFinalResults;
             $tpl_vars['hlSearchResults'] = $hlSearchResults;
             $tpl_vars['scSearchResults'] = $scSearchResults;
             $tpl_vars['resultStart'] = ($page - 1)
@@ -329,6 +363,8 @@ class DefaultController extends SearchController
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $tpl_vars['suggestions'] = $suggestions;
         }
+        $session->set('currentResearch', $fragCurrentResearch);
+        $session->set('currentPage', $page);
         $tpl_vars['current_date'] = 'cDateBegin';
         return $this->render(
             'BachHomeBundle:Default:index.html.twig',
@@ -664,6 +700,7 @@ class DefaultController extends SearchController
             $tpl_vars['cookie_param'] = true;
         }
 
+        $resultCurrent = $this->getRequest()->getSession()->get('currentResearch');
         return $this->render(
             $tpl,
             $tpl_vars
