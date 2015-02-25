@@ -221,15 +221,21 @@ class DefaultController extends SearchController
             $container->setField($this->getContainerFieldName(), $query_terms);
 
             $resultVisibility = 1;
+            $prevResultTab = 0;
             if ($page !== 1) {
                 $resultVisibility += 1;
+                $prevResultTab = 1;
             }
 
             $container->setField(
                 "pager",
                 array(
-                    "start"     => ($page - 1) * $view_params->getResultsbyPage(),
-                    "offset"    => $view_params->getResultsbyPage() + $resultVisibility
+                    "start"     => (
+                        ($page - 1) * $view_params->getResultsbyPage()
+                    )
+                    - $prevResultTab,
+                    "offset"    => $view_params->getResultsbyPage()
+                                    + $resultVisibility
                 )
             );
 
@@ -303,10 +309,12 @@ class DefaultController extends SearchController
                 $resultCount/$view_params->getResultsbyPage()
             );
 
-            /******************* begin of work about navigation *******************/
+            /*********************** need to be improved ************************/
+            $titleDocResults = array();
             $countResult = 0;
             if ($page == 1 && $countResult == 0) {
                 array_push($fragCurrentResearch, 'empty');
+                array_push($titleDocResults, 'empty');
                 $countResult++;
             }
             $searchFinalResults = array();
@@ -315,10 +323,14 @@ class DefaultController extends SearchController
                     $fragCurrentResearch,
                     $searchResults->getDocuments()[$key]['fragmentid']
                 );
+                array_push(
+                    $titleDocResults,
+                    $searchResults->getDocuments()[$key]['cUnittitle']
+                );
                 if (($countResult !== 0)
-                    &&
-                    (($countResult < count($searchResults->getDocuments())-1)
-                    || $page == $tpl_vars['totalPages'] || ($page == 1 && $countResult < count($searchResults->getDocuments())) )
+                    && (($countResult < count($searchResults->getDocuments())-1)
+                    || $page == $tpl_vars['totalPages'] || ($page == 1
+                    && $countResult < count($searchResults->getDocuments())) )
                 ) {
                     array_push(
                         $searchFinalResults,
@@ -364,6 +376,7 @@ class DefaultController extends SearchController
             $tpl_vars['suggestions'] = $suggestions;
         }
         $session->set('currentResearch', $fragCurrentResearch);
+        $session->set('currentTitle', $titleDocResults);
         $session->set('currentPage', $page);
         $tpl_vars['current_date'] = 'cDateBegin';
         return $this->render(
