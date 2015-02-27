@@ -66,7 +66,27 @@ POSSIBILITY OF SUCH DAMAGE.
                 {%- endif -%}
             </h2>
         </header>
-        {% if context or document.previous_id is defined or document.next_id is defined %}
+        {% if previousIdResearch is defined or nextIdResearch is defined %}
+        <aside>
+            {% if previousIdResearch is defined and previousIdResearch != 'empty' %}
+                <a id="prev_comp" href="{{ path('bach_display_document', {docid: previousIdResearch}) }}" title="{{ _('Display previous component (%title)')|replace({'%title': previousTitle}) }}">
+                    {{ _('Previous component') }}
+                </a>
+            {% endif %}
+            {% if nextIdResearch is defined %}
+                {% if previousIdResearch is defined %} {% endif %}
+                <a id="next_comp" href="{{ path('bach_display_document', {docid: nextIdResearch}) }}" title="{{ _('Display next component (%title)')|replace({'%title': nextTitle}) }}">
+                    {{ _('Next component') }}
+                </a>
+            {% endif %}
+            {% if context == true %}
+                {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
+            {% endif %}
+        <a href="{{ path('bach_archives', {form_name: search_form, query_terms: currentQuery, page: currentPage }) }}">Return to search</a>
+        </aside>
+
+        {% elseif context or document.previous_id is defined or document.next_id is defined %}
             <aside>
             {% if context and document.previous_id is defined %}
                 <a id="prev_comp" href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ document.previous_id}) }}" title="{{ _('Display previous component (%title)')|replace({'%title': document.previous_title}) }}">
@@ -74,7 +94,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </a>
             {% endif %}
             {% if context and document.next_id is defined %}
-                {% if document.previous_id is defined %} {% endif %}
+                {% if document.next_id is defined %} {% endif %}
                 <a id="next_comp" href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ document.next_id}) }}" title="{{ _('Display next component (%title)')|replace({'%title': document.next_title}) }}">
                     {{ _('Next component') }}
                 </a>

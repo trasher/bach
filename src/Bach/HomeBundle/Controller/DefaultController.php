@@ -207,6 +207,7 @@ class DefaultController extends SearchController
 
         $fragCurrentResearch = null;
         $fragCurrentResearch = array();
+        $titleDocResults = array();
         if ( !is_null($query_terms) ) {
             $container->setOrder($view_params->getOrder());
 
@@ -310,7 +311,6 @@ class DefaultController extends SearchController
             );
 
             /*********************** need to be improved ************************/
-            $titleDocResults = array();
             $countResult = 0;
             if ($page == 1 && $countResult == 0) {
                 array_push($fragCurrentResearch, 'empty');
@@ -378,6 +378,8 @@ class DefaultController extends SearchController
         $session->set('currentResearch', $fragCurrentResearch);
         $session->set('currentTitle', $titleDocResults);
         $session->set('currentPage', $page);
+        $session->set('currentQuery', $query_terms);
+        $session->set('currentForm', $form_name);
         $tpl_vars['current_date'] = 'cDateBegin';
         return $this->render(
             'BachHomeBundle:Default:index.html.twig',
@@ -713,7 +715,46 @@ class DefaultController extends SearchController
             $tpl_vars['cookie_param'] = true;
         }
 
-        $resultCurrent = $this->getRequest()->getSession()->get('currentResearch');
+        /************************* research navigation *********************/
+        $session = $this->getRequest()->getSession();
+        if (!empty($session->get('currentResearch'))
+            && ($docid === $session->get('currentResearch')[0] && $session->get('currentResearch')[0] != 'empty')
+            || $docid === $session->get('currentResearch')[count($session->get('currentResearch'))-1]
+        ) {
+            $page = 1;
+            if ($docid === $session->get('currentResearch')[0]) {
+                $page = $session->get('currentPage') - 1;
+            } else if ($docid === $session->get('currentResearch')[count($session->get('currentResearch'))-1]) {
+                $page = $session->get('currentPage') + 1;
+            }
+            // separer recherche pure et remplissage tableau de la searchAction
+            // enregistrer plusieurs recherches en session (par défaut 3)
+            $this->searchAction(
+                $session->get('currentQuery'),
+                $page,
+                null,
+                $session->get('currentForm')
+            );
+
+        }
+        var_dump($session->get('currentResearch'));
+        $tpl_vars['currentQuery'] = $session->get('currentQuery');
+        $tpl_vars['currentPage'] = $session->get('currentPage');
+        foreach ($session->get('currentResearch')
+            as $key => $fragResult) {
+            if ($fragResult  == $docid) {
+                $tpl_vars['previousIdResearch']
+                    = $session->get('currentResearch')[$key-1];
+                $tpl_vars['previousTitle']
+                    = $session->get('currentTitle')[$key-1];
+                $tpl_vars['nextIdResearch']
+                    = $session->get('currentResearch')[$key+1];
+                $tpl_vars['nextTitle']
+                    = $session->get('currentTitle')[$key+1];
+                break;
+            }
+        }
+        /********************************************************************/
         return $this->render(
             $tpl,
             $tpl_vars
