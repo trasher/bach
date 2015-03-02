@@ -380,6 +380,7 @@ class DefaultController extends SearchController
         $session->set('currentPage', $page);
         $session->set('currentQuery', $query_terms);
         $session->set('currentForm', $form_name);
+        $session->set('currentNbResults', $view_params->getResultsbyPage());
         $tpl_vars['current_date'] = 'cDateBegin';
         return $this->render(
             'BachHomeBundle:Default:index.html.twig',
@@ -719,7 +720,8 @@ class DefaultController extends SearchController
         $session = $this->getRequest()->getSession();
         if (!empty($session->get('currentResearch'))
             && ($docid === $session->get('currentResearch')[0] && $session->get('currentResearch')[0] != 'empty')
-            || $docid === $session->get('currentResearch')[count($session->get('currentResearch'))-1]
+            || ($docid === $session->get('currentResearch')[count($session->get('currentResearch'))-1]
+            && !( count($session->get('currentResearch')) < $session->get('currentNbResults')))
         ) {
             $page = 1;
             if ($docid === $session->get('currentResearch')[0]) {
@@ -727,8 +729,6 @@ class DefaultController extends SearchController
             } else if ($docid === $session->get('currentResearch')[count($session->get('currentResearch'))-1]) {
                 $page = $session->get('currentPage') + 1;
             }
-            // separer recherche pure et remplissage tableau de la searchAction
-            // enregistrer plusieurs recherches en session (par défaut 3)
             $this->searchAction(
                 $session->get('currentQuery'),
                 $page,
@@ -737,20 +737,24 @@ class DefaultController extends SearchController
             );
 
         }
-        var_dump($session->get('currentResearch'));
-        $tpl_vars['currentQuery'] = $session->get('currentQuery');
-        $tpl_vars['currentPage'] = $session->get('currentPage');
+        $tpl_vars['currentQuery']       = $session->get('currentQuery');
+        $tpl_vars['currentPage']        = $session->get('currentPage');
+        $tpl_vars['currentNbResults']   = $session->get('currentNbResults');
         foreach ($session->get('currentResearch')
             as $key => $fragResult) {
             if ($fragResult  == $docid) {
-                $tpl_vars['previousIdResearch']
-                    = $session->get('currentResearch')[$key-1];
-                $tpl_vars['previousTitle']
-                    = $session->get('currentTitle')[$key-1];
-                $tpl_vars['nextIdResearch']
-                    = $session->get('currentResearch')[$key+1];
-                $tpl_vars['nextTitle']
-                    = $session->get('currentTitle')[$key+1];
+                if (isset($session->get('currentResearch')[$key-1])) {
+                    $tpl_vars['previousIdResearch']
+                        = $session->get('currentResearch')[$key-1];
+                    $tpl_vars['previousTitle']
+                        = $session->get('currentTitle')[$key-1];
+                }
+                if (isset($session->get('currentResearch')[$key+1])) {
+                    $tpl_vars['nextIdResearch']
+                        = $session->get('currentResearch')[$key+1];
+                    $tpl_vars['nextTitle']
+                        = $session->get('currentTitle')[$key+1];
+                }
                 break;
             }
         }
