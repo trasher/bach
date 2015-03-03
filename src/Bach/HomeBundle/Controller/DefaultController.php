@@ -297,7 +297,7 @@ class DefaultController extends SearchController
             $tpl_vars
         );
 
-        if ( !is_null($query_terms) ) {
+        if (!is_null($query_terms)) {
             $hlSearchResults = $factory->getHighlighting();
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
@@ -348,7 +348,7 @@ class DefaultController extends SearchController
                 * $view_params->getResultsbyPage() + 1;
             $resultEnd = ($page - 1) * $view_params->getResultsbyPage()
                 + $view_params->getResultsbyPage();
-            if ( $resultEnd > $resultCount ) {
+            if ($resultEnd > $resultCount ) {
                 $resultEnd = $resultCount;
             }
             $tpl_vars['resultEnd'] = $resultEnd;
@@ -375,12 +375,16 @@ class DefaultController extends SearchController
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $tpl_vars['suggestions'] = $suggestions;
         }
+
+        /***************** replace with already presents elements ******************/
         $session->set('currentResearch', $fragCurrentResearch);
         $session->set('currentTitle', $titleDocResults);
         $session->set('currentPage', $page);
         $session->set('currentQuery', $query_terms);
         $session->set('currentForm', $form_name);
         $session->set('currentNbResults', $view_params->getResultsbyPage());
+        /***************************************************************************/
+
         $tpl_vars['current_date'] = 'cDateBegin';
         return $this->render(
             'BachHomeBundle:Default:index.html.twig',
@@ -718,10 +722,8 @@ class DefaultController extends SearchController
 
         /************************* research navigation *********************/
         $session = $this->getRequest()->getSession();
-        if (!empty($session->get('currentResearch'))
-            && ($docid === $session->get('currentResearch')[0] && $session->get('currentResearch')[0] != 'empty')
-            || ($docid === $session->get('currentResearch')[count($session->get('currentResearch'))-1]
-            && !( count($session->get('currentResearch')) < $session->get('currentNbResults')))
+        if (!empty($session->get('currentResearch')) && ($docid === $session->get('currentResearch')[0] && $session->get('currentResearch')[0] != 'empty')
+            || ($docid === $session->get('currentResearch')[count($session->get('currentResearch'))-1] && !( count($session->get('currentResearch')) < $session->get('currentNbResults')))
         ) {
             $page = 1;
             if ($docid === $session->get('currentResearch')[0]) {
