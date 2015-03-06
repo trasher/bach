@@ -494,7 +494,7 @@ class DisplayDao extends \Twig_Extension
         case self::VIDEO:
             $href = '/file/video/' . $dao;
             $ret = '<div class="htmlplayer standalone">';
-            $ret .= '<video controls="controls" width="300" height="300" property="video">';
+            $ret .= '<video poster="/img/play_large.png" preload="none" controls="controls" width="300" height="300" property="video">';
             $ret .= '<source src="' . $href  . '"/>';
             $ret .= '<a href="' . $href . '" target="_blank">' .
                 _('Your browser does not support this video format, you may want to download file and watch it offline') . '</a>';

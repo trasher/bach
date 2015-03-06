@@ -1807,6 +1807,16 @@ figure section .flashplayer {
     display: inline-block;
 }
 
+video[poster] {
+    width: 140px;
+    height: 140px;
+}
+
+#videos > .htmlplayer > video[poster] {
+    width: 300px;
+    height: 300px;
+}
+
 #footer_wrapper {
     position: fixed;
     height: 3%;
