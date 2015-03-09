@@ -1051,9 +1051,13 @@ class DefaultController extends SearchController
      */
     public function footerLinkAction($type)
     {
+        if (isset($_COOKIE[$this->getCookieName()])) {
+             $tpl_vars['cookie_param'] = true;
+        }
+        $tpl_vars['type'] = $type;
         return $this->render(
             '::credits.html.twig',
-            array('type'=>$type)
+            $tpl_vars
         );
     }
 
