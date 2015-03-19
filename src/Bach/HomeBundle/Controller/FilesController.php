@@ -214,4 +214,29 @@ class FilesController extends Controller
         fclose($file);
 
     }
+
+    /**
+     * Display the ChangeLog file
+     *
+     * @return void
+     */
+    public function displayChangelogAction()
+    {
+        $path = $this->get('kernel')->getRootDir();
+        $path .= '/../ChangeLog';
+
+        $file = fopen($path, 'rb');
+        $out = fopen('php://output', 'wb');
+
+        $mime = mime_content_type($path);
+        header('Cache-Control: public');
+        header('Content-type: ' . $mime);
+        header('Content-Length:' . filesize($path));
+        stream_copy_to_stream($file, $out);
+
+        fclose($out);
+        fclose($file);
+
+    }
+
 }

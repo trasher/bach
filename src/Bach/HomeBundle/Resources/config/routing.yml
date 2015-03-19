@@ -291,3 +291,9 @@ cookie_link:
     defaults: {_controller: BachHomeBundle:Default:cookieLink}
     requirements:
         _method: GET
+
+display_changelog:
+    pattern: /displayChangelog
+    defaults: {_controller: BachHomeBundle:Files:displayChangelog}
+    requirements:
+        _method: GET
