@@ -69,14 +69,14 @@ POSSIBILITY OF SUCH DAMAGE.
         {% if previousIdResearch is defined or nextIdResearch is defined %}
         <aside>
             {% if previousIdResearch is defined and previousIdResearch != 'empty' %}
-                <a id="prev_comp" href="{{ path('bach_display_document', {docid: previousIdResearch}) }}" title="{{ _('Display previous component (%title)')|replace({'%title': previousTitle}) }}">
-                    {{ _('Previous component') }}
+                <a id="prev_comp" href="{{ path('bach_display_document', {docid: previousIdResearch}) }}" title="{{ _('Display previous result (%title)')|replace({'%title': previousTitle}) }}">
+                    {{ _('Previous result') }}
                 </a>
             {% endif %}
             {% if nextIdResearch is defined %}
                 {% if previousIdResearch is defined %} {% endif %}
-                <a id="next_comp" href="{{ path('bach_display_document', {docid: nextIdResearch}) }}" title="{{ _('Display next component (%title)')|replace({'%title': nextTitle}) }}">
-                    {{ _('Next component') }}
+                <a id="next_comp" href="{{ path('bach_display_document', {docid: nextIdResearch}) }}" title="{{ _('Display next result (%title)')|replace({'%title': nextTitle}) }}">
+                    {{ _('Next result') }}
                 </a>
             {% endif %}
             {% if context == true %}
