@@ -135,7 +135,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
             _parent.prepend(_expand);
         });
-        if ( window.location.href.indexOf("classification-scheme") == -1 ) {
+        if ( window.location.href.indexOf("classification-scheme") == -1 && document.referrer.indexOf("classification-scheme") == -1) {
             window.location.href = window.location.hash; // fix gap betwwen anchor and display
         }
     });
