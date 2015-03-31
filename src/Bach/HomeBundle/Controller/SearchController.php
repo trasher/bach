@@ -602,7 +602,7 @@ abstract class SearchController extends Controller
                 if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
                     setlocale(LC_COLLATE, 'fr_FR.utf8');
                 }
-                ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
+                ksort($values, SORT_FLAG_CASE | SORT_LOCALE_STRING);
             } else {
                 //fallback for PHP < 5.4
                 ksort($values, SORT_LOCALE_STRING);
