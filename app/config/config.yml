@@ -76,6 +76,7 @@ twig:
             comments: '%feature.comments%'
         default_url: '%default_url%'
         logo_url: '%logo_url%'
+        tracker: '%tracker%'
 
 # Assetic Configuration
 assetic:

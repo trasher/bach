@@ -73,5 +73,22 @@ POSSIBILITY OF SUCH DAMAGE.
     </div> {# /#wrapper #}
 
     {% block main_js %}{% endblock %}
+    {% if tracker is not null %}
+        <!-- Piwik -->
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="//stats.anaphore.eu/";
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', {{ tracker }}]);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
+            </script>
+        <noscript><p><img src="//stats.anaphore.eu/piwik.php?idsite={{ tracker }}" style="border:0;" alt="" /></p></noscript>
+        <!-- End Piwik Code -->
+    {% endif %}
 </body>
 </html>
