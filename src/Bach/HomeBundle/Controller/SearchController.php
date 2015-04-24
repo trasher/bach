@@ -114,7 +114,7 @@ abstract class SearchController extends Controller
             'show_pics'         => $view_params->showPics(),
             'show_map'          => $view_params->showMap(),
             'show_daterange'    => $view_params->showDaterange(),
-            'view'              => $view_params->getView(),
+            //'view'              => $view_params->getView(),
             'results_order'     => $view_params->getOrder(),
             'available_orders'  => $this->getOrders(),
             'available_views'   => $this->getViews(),
@@ -138,15 +138,18 @@ abstract class SearchController extends Controller
      */
     protected function commonTemplateVariables()
     {
-        $show_maps = $this->container->getParameter('feature.maps');
-        $viewer_uri = $this->container->getParameter('viewer_uri');
-        $covers_dir = $this->container->getParameter('covers_dir');
+        $show_maps        = $this->container->getParameter('feature.maps');
+        $viewer_uri       = $this->container->getParameter('viewer_uri');
+        $covers_dir       = $this->container->getParameter('covers_dir');
+        $viewDisplayParam = $this->container->getParameter('display.show_param');
+
 
         $tpl_vars = array(
             'viewer_uri'        => $viewer_uri,
             'show_maps'         => $show_maps,
             'covers_dir'        => $covers_dir,
-            'cookie_param_name' => $this->getCookieName()
+            'cookie_param_name' => $this->getCookieName(),
+            'view'              => $viewDisplayParam
         );
 
         return $tpl_vars;

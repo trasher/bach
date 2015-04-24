@@ -326,6 +326,7 @@ class DefaultController extends SearchController
 
         $tpl_vars['form'] = $form->createView();
 
+        $tpl_vars['view'] = $view_params->getView();
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $tpl_vars['suggestions'] = $suggestions;
         }
@@ -377,6 +378,7 @@ class DefaultController extends SearchController
                 $view_params = $session->get($this->getParamSessionName());
                 $view_params->setOrder((int)$request->get('results_order'));
                 $session->set($this->getParamSessionName(), $view_params);
+                $url_vars['view'] = $view_params->getView();
                 //check for filtering informations
                 if ( $request->get('filter_field')
                     && $request->get('filter_value')
@@ -392,7 +394,6 @@ class DefaultController extends SearchController
                 if ( $this->search_form !== null ) {
                     $url_vars['form_name'] = $this->search_form;
                 }
-
                 $redirectUrl = $this->get('router')->generate(
                     $route,
                     $url_vars

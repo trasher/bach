@@ -96,7 +96,7 @@ services:
 
     bach.home.ead_view_params:
         class: Bach\HomeBundle\Entity\ViewParams
-        arguments: [ '%display.ead.show_maps%', '%display.ead.show_daterange%', '%display.ead.rows%' ]
+        arguments: [ '%display.ead.show_maps%', '%display.ead.show_daterange%', '%display.ead.rows%', '%display.ead.show_param%' ]
 
     bach.home.matricules_view_params:
         class: Bach\HomeBundle\Entity\MatriculesViewParams
