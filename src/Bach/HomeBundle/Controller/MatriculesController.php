@@ -100,7 +100,9 @@ class MatriculesController extends SearchController
         $view_params = $this->handleViewParams();
 
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
-
+        if ($tpl_vars['view'] == 'txtlist') {
+            $tpl_vars['view'] = 'list';
+        }
         if (isset($_COOKIE[$this->getCookieName()]) ) {
             $tpl_vars['cookie_param'] = true;
         }
@@ -184,7 +186,6 @@ class MatriculesController extends SearchController
 
         if ( $query_terms !== null ) {
             $container->setOrder($view_params->getOrder());
-
             $container->setField($this->getContainerFieldName(), $query_terms);
             $container->setField(
                 "pager",
@@ -428,6 +429,7 @@ class MatriculesController extends SearchController
                     (int)$this->getRequest()->get('results_order')
                 );
                 $session->set($this->getParamSessionName(), $view_params);
+
             }
         }
         return new RedirectResponse($redirectUrl);

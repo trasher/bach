@@ -114,7 +114,7 @@ abstract class SearchController extends Controller
             'show_pics'         => $view_params->showPics(),
             'show_map'          => $view_params->showMap(),
             'show_daterange'    => $view_params->showDaterange(),
-            //'view'              => $view_params->getView(),
+            'view'              => $view_params->getView(),
             'results_order'     => $view_params->getOrder(),
             'available_orders'  => $this->getOrders(),
             'available_views'   => $this->getViews(),
