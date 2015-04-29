@@ -141,7 +141,7 @@ abstract class SearchController extends Controller
         $show_maps        = $this->container->getParameter('feature.maps');
         $viewer_uri       = $this->container->getParameter('viewer_uri');
         $covers_dir       = $this->container->getParameter('covers_dir');
-        $viewDisplayParam = $this->container->getParameter('display.show_param');
+        $viewDisplayParam = $this->container->getParameter('display.ead.show_param');
 
 
         $tpl_vars = array(
