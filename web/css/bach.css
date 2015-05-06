@@ -851,6 +851,7 @@ h2.back a:hover {
 [id=display_facets] li {
     width: 22em;
     display: inline-block;
+    padding: 3px 0;
 }
 
 [id=live-search] {
@@ -861,6 +862,21 @@ h2.back a:hover {
 
 [id=live-search] fieldset, [id=live-search] input {
     font-size: .9em;
+}
+
+[id=facets_list]{
+    -moz-column-count: 4;
+    -webkit-column-count: 4;
+    column-count: 4;
+    /*-moz-column-width: 25%;
+    -webkit-column-width: 25%;
+    column-width: 25%;
+
+    -moz-column-gap: 40px;
+    -webkit-column-gap: 40px;
+    column-gap: 40px;
+    column-gap: 1em;
+    column-rule: thin solid black;*/
 }
 
 .show_fragment > aside > * {
