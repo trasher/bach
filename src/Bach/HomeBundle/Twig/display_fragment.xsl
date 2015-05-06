@@ -318,6 +318,9 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <xsl:when test="local-name() = 'bibliography'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliography:')"/>
                                 </xsl:when>
+                                <xsl:when test="local-name() = 'userestrict'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Userestrict:')"/>
+                                </xsl:when>
                                 <xsl:when test="local-name() = 'bioghist'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Biography or history:')"/>
                                 </xsl:when>
@@ -368,7 +371,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess" mode="full">
+    <xsl:template match="odd|custodhist|arrangement|relatedmaterial|bibliography|userestrict|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess" mode="full">
         <xsl:call-template name="section_content">
             <xsl:with-param name="title">
                 <xsl:choose>

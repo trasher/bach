@@ -297,6 +297,9 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Bibliography:':
             return _('Bibliography:');
             break;
+        case 'Userestrict:':
+            return _('Userestrict:');
+            break;
         case 'Biography or history:':
             return _('Biography or history:');
             break;

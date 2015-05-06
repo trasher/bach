@@ -103,7 +103,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <xsl:apply-templates mode="presentation"/>
     </xsl:template>
 
-    <xsl:template match="unitid|unittitle|unitdate|extent" mode="presentation">
+    <xsl:template match="unitid|unittitle|unitdate|extent|physfacet|genreform" mode="presentation">
         <tr>
             <th>
                 <xsl:choose>
@@ -124,6 +124,12 @@ POSSIBILITY OF SUCH DAMAGE.
                             <xsl:when test="local-name() = 'extent'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Extent')"/>
                             </xsl:when>
+                             <xsl:when test="local-name() = 'genreform'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Genreform')"/>
+                            </xsl:when>
+                             <xsl:when test="local-name() = 'physfacet'">
+                                <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Physfacet')"/>
+                            </xsl:when>
                         </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -134,7 +140,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </tr>
     </xsl:template>
 
-    <xsl:template match="physdesc|origination|langmaterial" mode="presentation">
+    <xsl:template match="physdesc|origination|langmaterial|repository" mode="presentation">
         <tr>
             <th>
                 <xsl:choose>
@@ -150,6 +156,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     <xsl:when test="local-name() ='langmaterial'">
                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Language')"/>
                     </xsl:when>
+                    <xsl:when test="local-name() = 'repository'">
+                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Repository')"/>
+                    </xsl:when>
                 </xsl:choose>
             </th>
             <td>
@@ -160,8 +169,8 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <!-- head elements are handled from their parents -->
-    <xsl:template match="custodhist/head|separatedmaterial/head|acqinfo/head|bioghist/head|scopecontent/head|processinfo/head|otherfindaid/head|accessrestrict/head" mode="contents"/>
-    <xsl:template match="custodhist|separatedmaterial|acqinfo|bioghist|scopecontent|processinfo|otherfindaid|accessrestrict" mode="presentation">
+    <xsl:template match="custodhist/head|separatedmaterial/head|acqinfo/head|bibliography/head|//relatedmaterial/head|userestrict/head|odd/head|bioghist/head|scopecontent/head|processinfo/head|otherfindaid/head|accessrestrict/head" mode="contents"/>
+    <xsl:template match="custodhist|separatedmaterial|acqinfo|bibliography|//relatedmaterial|userestrict|odd|bioghist|scopecontent|processinfo|otherfindaid|accessrestrict" mode="presentation">
         <xsl:variable name="current" select="local-name()"/>
         <xsl:choose>
             <xsl:when test="./*[local-name() = $current]">
@@ -194,6 +203,15 @@ POSSIBILITY OF SUCH DAMAGE.
                                     <xsl:when test="local-name() ='acqinfo'">
                                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Acquisition information')"/>
                                     </xsl:when>
+                                    <xsl:when test="local-name() ='bibliography'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Bibliography')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='relatedmaterial'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Related material')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='userestrict'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Condition of use')"/>
+                                    </xsl:when>
                                     <xsl:when test="local-name() ='bioghist'">
                                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Biography or history')"/>
                                     </xsl:when>
@@ -205,6 +223,9 @@ POSSIBILITY OF SUCH DAMAGE.
                                     </xsl:when>
                                     <xsl:when test="local-name() ='otherfindaid'">
                                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Other finding aid')"/>
+                                    </xsl:when>
+                                    <xsl:when test="local-name() ='odd'">
+                                        <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Odd')"/>
                                     </xsl:when>
                                 </xsl:choose>
                             </xsl:otherwise>
@@ -225,6 +246,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="genreform[@source = 'liste-typedocAC']" mode="contents"/>
     <xsl:template match="physdesc/extent" mode="contents"/>
+    <xsl:template match="physdesc/genreform" mode="contents"/>
+    <xsl:template match="physdesc/physfacet" mode="contents"/>
 
     <xsl:template match="p" mode="contents">
         <p>
@@ -635,7 +658,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <xsl:apply-templates select="."/>
     </xsl:template>
     <xsl:template match="text()">
-        <xsl:copy-of select="normalize-space(.)"/>
+        <xsl:copy-of select="translate(., '&#xA;&#xD;', '  ')"/>
     </xsl:template>
 
     <xsl:template match="lb" mode="contents">
