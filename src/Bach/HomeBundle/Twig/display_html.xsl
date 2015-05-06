@@ -177,22 +177,30 @@ POSSIBILITY OF SUCH DAMAGE.
                 <!-- Until now, if an element contains an element with the same name,
                      the first one is empty (or has just a header); we can ignore it -->
                 <xsl:if test="head">
-                    <tr>
-                        <th colspan="2">
-                            <xsl:value-of select="head"/>
-                        </th>
-                    </tr>
+                    <section class="{local-name()}">
+                        <header>
+                            <xsl:variable name="count" select="count(ancestor::*/head)"/>
+                            <xsl:element name="h{$count + 2}">
+                                <xsl:value-of select="head"/>
+                            </xsl:element>
+                        </header>
+                    </section>
                 </xsl:if>
                 <xsl:apply-templates mode="presentation"/>
             </xsl:when>
             <xsl:otherwise>
-                <tr>
-                    <th>
+                <section class="{local-name()}">
+                    <header>
                         <xsl:choose>
                             <xsl:when test="head">
+                             <xsl:variable name="count" select="count(ancestor::*/head)"/>
+                            <xsl:element name="h{$count + 2}">
                                 <xsl:value-of select="head"/>
+                            </xsl:element>
                             </xsl:when>
                             <xsl:otherwise>
+                            <xsl:variable name="count" select="count(ancestor::*/head)"/>
+                            <xsl:element name="h{$count + 2}">
                                 <xsl:choose>
                                     <xsl:when test="local-name() ='accessrestrict'">
                                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Legal status')"/>
@@ -228,13 +236,12 @@ POSSIBILITY OF SUCH DAMAGE.
                                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Odd')"/>
                                     </xsl:when>
                                 </xsl:choose>
+                            </xsl:element>
                             </xsl:otherwise>
                         </xsl:choose>
-                    </th>
-                    <td>
-                        <xsl:apply-templates mode="contents"/>
-                    </td>
-                </tr>
+                        </header>
+                    <xsl:apply-templates mode="contents"/>
+                </section>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
