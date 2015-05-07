@@ -324,7 +324,7 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Add comment':
             return _('Add comment');
             break;
-        case 'Repository':
+        case 'Repository:':
             return _('Repository:');
             break;
         case 'Language:':
