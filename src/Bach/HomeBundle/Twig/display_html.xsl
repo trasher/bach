@@ -58,9 +58,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Presentation')"/>
                 </h3>
                 <div id="inventory_presentation">
-                    <table>
-                        <xsl:apply-templates mode="presentation"/>
-                    </table>
+                        <dl>
+                            <xsl:apply-templates mode="presentation"/>
+                        </dl>
                 </div>
                 <h3 id="contents">
                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Contents')"/>
@@ -104,8 +104,8 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="unitid|unittitle|unitdate|extent|physfacet|genreform" mode="presentation">
-        <tr>
-            <th>
+        <dt>
+            <h3>
                 <xsl:choose>
                     <xsl:when test="@label">
                         <xsl:value-of select="@label"/>
@@ -133,16 +133,16 @@ POSSIBILITY OF SUCH DAMAGE.
                         </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
-            </th>
-            <td>
-                <xsl:value-of select="."/>
-            </td>
-        </tr>
+            </h3>
+        </dt>
+        <dd>
+            <xsl:value-of select="."/>
+        </dd>
     </xsl:template>
 
     <xsl:template match="physdesc|origination|langmaterial|repository" mode="presentation">
-        <tr>
-            <th>
+        <dt>
+            <h3>
                 <xsl:choose>
                     <xsl:when test="@label">
                         <xsl:value-of select="@label"/>
@@ -160,11 +160,11 @@ POSSIBILITY OF SUCH DAMAGE.
                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Repository')"/>
                     </xsl:when>
                 </xsl:choose>
-            </th>
-            <td>
-                <xsl:apply-templates mode="contents"/>
-            </td>
-        </tr>
+           </h3>
+        </dt>
+        <dd>
+            <xsl:apply-templates mode="contents"/>
+        </dd>
         <xsl:apply-templates mode="presentation"/>
     </xsl:template>
 
