@@ -938,8 +938,22 @@ h2.back a:hover {
 }
 
 [id=inventory_contents] h3, [id=inventory_contents] h3.ui-accordion-header {
-    font-size: 1.4em;
+    font-size: 1.4em !important;
     line-height: 1.4em;
+    font-weight: bold;
+    overflow: auto;
+}
+
+[id=inventory_contents] h4, [id=inventory_contents] h4.ui-accordion-header {
+    font-size: 1.2em !important;
+    line-height: 1.2em;
+    font-weight: bold;
+    overflow: auto;
+}
+
+[id=inventory_contents] h5, [id=inventory_contents] h5.ui-accordion-header {
+    font-size: 1em !important;
+    line-height: 1em;
     font-weight: bold;
     overflow: auto;
 }
