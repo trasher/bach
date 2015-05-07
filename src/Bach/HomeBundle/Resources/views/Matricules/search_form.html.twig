@@ -69,7 +69,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         {%- endif -%}
                     {% endset %}
                     <a href="{{ viewer_uri ~ images_link }}" target="_blank" >
-                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ _('Show related image') }}"/>
+                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}"/>
                     </a>
                 {% else %}
                     <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
@@ -132,7 +132,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% for document in searchResults %}
                 <tr vocab="http://schema.org/" typeof="Person">
                     <td class="actions">
-                        <a class="display_doc" title="{{ _('Show record') }}" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Show record') }}</a>
+                        <a class="display_doc" title="{{ _('Scan') }}" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Scan') }}</a>
                         {% if document.start_dao is defined %}
                             {% set series_name %}
                                 {%- for i in document.start_dao|split('/') -%}
@@ -149,8 +149,8 @@ POSSIBILITY OF SUCH DAMAGE.
                                     viewer/{{ document.start_dao }}
                                 {%- endif -%}
                             {% endset %}
-                            <a href="{{ viewer_uri ~ images_link }}" title="{{ _('Show related image') }}" target="_blank" property="image">
-                                <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Show related image') }}"/>
+                            <a href="{{ viewer_uri ~ images_link }}" title="{{ _('Show full record') }}" target="_blank" property="image">
+                                <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Show full record') }}"/>
                             </a>
                         {% endif %}
                     </td>

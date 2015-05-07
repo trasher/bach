@@ -71,7 +71,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         {%- endif -%}
                     {% endset %}
                     <a href="{{ viewer_uri ~ images_link }}" target="_blank" property="image">
-                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/medium' }}" alt="{{ _('Show related image') }}"/>
+                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/medium' }}" alt="{{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}"/>
                     </a>
                 </figure>
             {% endif %}

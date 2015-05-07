@@ -115,7 +115,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% endif %}
                     {% if features.archives and features.browse %}
                     <li{% if app.request.attributes.get('_route') == 'bach_browse' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_browse') }}">{{ _('Browse') }}</a>
+                        <a href="{{ path('bach_browse') }}">{{ _('Consult index') }}</a>
                     </li>
                     {% endif %}
                     {% if features.expos %}
