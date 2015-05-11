@@ -849,7 +849,7 @@ h2.back a:hover {
 }
 
 [id=display_facets] li {
-    width: 22em;
+    width: 100%;
     display: inline-block;
     padding: 3px 0;
 }

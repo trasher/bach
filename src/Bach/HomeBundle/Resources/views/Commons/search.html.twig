@@ -187,9 +187,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         <li>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, filter_field: index_name, filter_value: facet}) }}">
                             {% if facet_labels[index_name] is defined %}
-                                {{ facet_labels[index_name][facet] }} ({{ count }})
+                                {{ facet_labels[index_name][facet]|capitalize }} ({{ count }})
                             {% else %}
-                                {{ facet }} ({{ count }})
+                                {{ facet|capitalize }} ({{ count }})
                             {% endif %}
                             </a>
                         </li>
