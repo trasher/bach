@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app@20140305100944\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-05-07 17:04+0200\n"
-"PO-Revision-Date: 2015-05-07 17:05+0100\n"
+"PO-Revision-Date: 2015-05-11 16:50+0100\n"
 "Last-Translator: Sebastien Chaptal <sebastien.chaptal@anaphore.eu>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -164,7 +164,6 @@ msgid "Classification scheme"
 msgstr "Cadre de classement"
 
 #: app/Resources/gettext/twig.cache.php:13779
-#, fuzzy
 msgid "Consult index"
 msgstr "Consulter les index"
 
