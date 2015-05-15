@@ -449,7 +449,7 @@ class DisplayEADFragment extends \Twig_Extension
                 $ret .= '>' . $value . '</a>';
 
                 if ( $count < count($out['values']) ) {
-                    $ret .= ', ';
+                    $ret .= ' • ';
                 }
             }
             $ret .='</div>';
