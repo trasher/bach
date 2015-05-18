@@ -470,10 +470,10 @@ class DisplayHtml extends \Twig_Extension
             return _('Repository');
             break;
         case 'Physfacet':
-            return _('Physfacet');
+            return _('Physical support');
             break;
-         case 'Genreform':
-            return _('Genreform');
+        case 'Genreform':
+            return _('Type');
             break;
         case 'Odd':
             return _('Odd');
