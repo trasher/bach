@@ -103,9 +103,9 @@ POSSIBILITY OF SUCH DAMAGE.
         <xsl:apply-templates mode="presentation"/>
     </xsl:template>
 
-    <xsl:template match="unitid|unittitle|unitdate|extent|physfacet|genreform" mode="presentation">
+    <xsl:template match="unitid|unittitle|unitdate" mode="presentation">
         <dt>
-            <h3>
+            <h2>
                 <xsl:choose>
                     <xsl:when test="@label">
                         <xsl:value-of select="@label"/>
@@ -121,6 +121,25 @@ POSSIBILITY OF SUCH DAMAGE.
                             <xsl:when test="local-name() = 'unitid'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Class number')"/>
                             </xsl:when>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </h2>
+        </dt>
+        <dd>
+            <xsl:value-of select="."/>
+        </dd>
+    </xsl:template>
+
+    <xsl:template match="extent|physfacet|genreform" mode="presentation">
+        <dt>
+            <h3>
+                <xsl:choose>
+                    <xsl:when test="@label">
+                        <xsl:value-of select="@label"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
                             <xsl:when test="local-name() = 'extent'">
                                 <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Extent')"/>
                             </xsl:when>
@@ -142,7 +161,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="physdesc|origination|langmaterial|repository" mode="presentation">
         <dt>
-            <h3>
+            <h2>
                 <xsl:choose>
                     <xsl:when test="@label">
                         <xsl:value-of select="@label"/>
@@ -160,7 +179,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::i18nFromXsl', 'Repository')"/>
                     </xsl:when>
                 </xsl:choose>
-           </h3>
+           </h2>
         </dt>
         <dd>
             <xsl:apply-templates mode="contents"/>
@@ -670,11 +689,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="lb" mode="contents">
         <xsl:apply-templates select="."/>
-    </xsl:template>
-    <xsl:template match="lb">
-        <xsl:if test="not(preceding-sibling::lb)">
-            <br/>
-        </xsl:if>
     </xsl:template>
     <!-- ***** END GENERIC TAGS ***** -->
 
