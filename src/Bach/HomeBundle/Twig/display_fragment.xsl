@@ -336,6 +336,9 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <xsl:when test="local-name() = 'physdesc'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
                                 </xsl:when>
+                                <xsl:when test="local-name() = 'processinfo'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'processinfo')"/>
+                                </xsl:when>
                                 <xsl:when test="local-name() = 'controlaccess'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Descriptors')"/>
                                 </xsl:when>
@@ -371,7 +374,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="odd|custodhist|arrangement|relatedmaterial|bibliography|userestrict|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess" mode="full">
+    <xsl:template match="accessrestrict|legalstatus|odd|processinfo|custodhist|arrangement|relatedmaterial|bibliography|userestrict|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess|origination" mode="full">
         <xsl:call-template name="section_content">
             <xsl:with-param name="title">
                 <xsl:choose>

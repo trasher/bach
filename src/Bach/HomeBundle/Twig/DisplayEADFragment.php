@@ -336,6 +336,9 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Bibliographic informations':
             return _('Bibliographic informations');
             break;
+        case 'processinfo':
+            return _('Information process');
+            break;
         default:
             if ( strpos($ref, 'dyndescr_') === 0 ) {
                 return self::guessDynamicFieldLabel($ref);
