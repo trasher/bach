@@ -220,6 +220,12 @@ class SolariumQueryContainer
         case MatriculesViewParams::ORDER_RECORDPLACE:
             return 'oLieu_enregistrement';
             break;
+        case MatriculesViewParams::ORDER_RECORDYEAR:
+            return 'date_enregistrement';
+            break;
+        case MatriculesViewParams::ORDER_COTE:
+            return 'cote';
+            break;
         }
         return $this->_order;
     }

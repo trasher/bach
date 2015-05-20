@@ -75,48 +75,71 @@ POSSIBILITY OF SUCH DAMAGE.
                     </a>
                 </figure>
             {% endif %}
-
             <table>
                 <tr>
                     <th>{{ _('Identifier') }}</th>
                     <td>{{ document.id }}</td>
                 </tr>
+
+                {% if 'cote' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Cote') }}</th>
                     <td>{{ document.cote }}</td>
                 </tr>
+                {% endif %}
+
+                {% if 'matricule' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Matricule') }}</th>
                     <td>{{ document.matricule }}</td>
                 </tr>
+                {% endif %}
+                {% if 'nom' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Name') }}</th>
                     <td property="familyName">{{ document.nom }}</td>
                 </tr>
+                {% endif %}
+
+                {% if 'prenoms' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Surnames') }}</th>
                     <td property="givenName">{{ document.prenoms|join(' ') }}</td>
                 </tr>
+                {% endif %}
+
+                {% if 'classe' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Class') }}</th>
                     <td>{% if document.classe is defined %}{{document.classe|date('Y') }}{% else %}-{% endif %}</td>
                 </tr>
+                {%endif%}
+
+                {% if 'annee_naissance' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Year of birth') }}</th>
                     <td property="birthDate">{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
                 </tr>
+                {% endif %}
+
+                {% if 'lieu_naissance' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Place of birth') }}</th>
                     <td>{{ document.lieu_naissance }}</td>
                 </tr>
-                {#<tr>
+                {% endif %}
+                {% if 'date_enregistrement' in matricules_listparameters %}
+                <tr>
                     <th>{{ _('Year of recording') }}</th>
                     <td>{% if document.date_enregistrement is defined %}{{document.date_enregistrement|date('Y') }}{% else %}-{% endif %}</td>
-                </tr>#}
+                </tr>
+                {% endif %}
+                {% if 'lieu_enregistrement' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Place of recording') }}</th>
                     <td>{{ document.lieu_enregistrement }}</td>
                 </tr>
+                {% endif %}
             </table>
         </section>
         {% if comments is defined %}

@@ -80,21 +80,27 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% set name %}
                     {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
                         {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
-                    {%- else -%}
+                    {%- elseif document.nom is defined -%}
                         {{ document.nom|trim }}
+                    {% else %}
+                        {{ '' }}
                     {%- endif -%}
                     {% endset %}
                     {% set surname %}
                     {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
                         {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
-                    {%- else -%}
+                    {%- elseif document.prenoms is defined-%}
                         {%- for prenom in document.prenoms -%}
                         {{ prenom ~ ' ' }}
                         {%- endfor -%}
                     {%- endif -%}
                     {% endset %}
-                    {% set birth_date = document.annee_naissance|date('Y') %}
-                    {% set full = name ~ ' ' ~ surname|trim ~ ', ' ~ birth_date %}
+                    {% if document.annee_naissance is defined %}
+                        {% set birth_date = document.annee_naissance|date('Y') %}
+                    {% else %}
+                        {% set birth_date = '' %}
+                    {% endif %}
+                        {% set full = name ~ ' ' ~ surname|trim ~ ', ' ~ birth_date %}
                     {{ full |raw }}
                 </a>
             </h3>
@@ -105,27 +111,52 @@ POSSIBILITY OF SUCH DAMAGE.
                 <thead>
                     <tr>
                         <th></th>
-                        <th>
-                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_MATRICULE') })|raw }}">{{ _('Matricule') }}</a>
-                        </th>
+                        {% if 'matricule' in matricules_searchparameters %}
+                            <th>
+                                <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_MATRICULE') })|raw }}">{{ _('Matricule') }}</a>
+                            </th>
+                        {% endif %}
+                        {% if 'nom' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_NAME')})|raw }}">{{ _('Name') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'prenoms' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_SURNAME')})|raw }}">{{ _('Surnames') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'annee_naissance' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_BIRTHYEAR')})|raw }}">{{ _('Year of birth') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'lieu_naissance' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_BIRTHPLACE')})|raw }}">{{ _('Place of birth') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'classe' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_CLASS')})|raw }}">{{ _('Class') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'lieu_enregistrement' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_RECORDPLACE')})|raw }}">{{ _('Place of recording') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'date_enregistrement' in matricules_searchparameters %}
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_RECORDYEAR')})|raw }}">{{ _('Record year') }}</a>
+                        </th>
+                        {% endif %}
+                        {% if 'cote' in matricules_searchparameters %}
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_COTE')})|raw }}">{{ _('Classification') }}</a>
+                        </th>
+                        {% endif %}
+ 
                     </tr>
                 </thead>
                 <tbody>
@@ -154,9 +185,12 @@ POSSIBILITY OF SUCH DAMAGE.
                             </a>
                         {% endif %}
                     </td>
-                    <td>
-                        {{ document.matricule }}
-                    </td>
+                    {% if 'matricule' in matricules_searchparameters %}
+                        <td>
+                            {{ document.matricule }}
+                        </td>
+                    {% endif %}
+                    {% if 'nom' in matricules_searchparameters %}
                     <td property="familyName">
                         {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
@@ -164,6 +198,9 @@ POSSIBILITY OF SUCH DAMAGE.
                             {{ document.nom }}
                         {%- endif -%}
                     </td>
+                    {% endif %}
+
+                    {% if 'prenoms' in matricules_searchparameters %}
                     <td property="givenName">
                         {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
@@ -173,6 +210,8 @@ POSSIBILITY OF SUCH DAMAGE.
                             {% endfor %}
                         {%- endif -%}
                     </td>
+                    {% endif %}
+                    {% if 'annee_naissance' in matricules_searchparameters %}
                     <td property="birthDate">{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
                     <td>
                         {%- if hlSearchResults.getResult(document.id).getField('lieu_naissance')|length > 0 -%}
@@ -181,7 +220,11 @@ POSSIBILITY OF SUCH DAMAGE.
                             {% if document.lieu_naissance is defined %}{{ document.lieu_naissance }}{% endif %}
                         {%- endif -%}
                     </td>
+                    {% endif %}
+                    {% if 'classe' in matricules_searchparameters %}
                     <td>{% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}</td>
+                    {% endif %}
+                    {% if 'lieu_enregistrement' in matricules_searchparameters %}
                     <td>
                         {%- if hlSearchResults.getResult(document.id).getField('lieu_enregistrement')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('lieu_enregistrement')[0]|raw }}
@@ -189,6 +232,18 @@ POSSIBILITY OF SUCH DAMAGE.
                             {{ document.lieu_enregistrement }}
                         {%- endif -%}
                     </td>
+                    {% endif %}
+                    {% if 'date_enregistrement' in matricules_searchparameters %}
+                    <td>
+                        {% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}
+                    </td>
+                    {% endif %}
+                    {% if 'cote' in matricules_searchparameters %}
+                    <td>
+                        {{ document.cote }}
+                    </td>
+                    {% endif %}
+
                 </tr>
             {% endfor %}
                 </tbody>

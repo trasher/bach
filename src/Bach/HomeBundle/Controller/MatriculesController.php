@@ -163,6 +163,7 @@ class MatriculesController extends SearchController
         } else {
             $current_date = 'date_enregistrement';
         }
+
         $factory = $this->get($this->factoryName());
 
         //FIXME: try to avoid those 2 calls
@@ -251,6 +252,16 @@ class MatriculesController extends SearchController
         }
         $tpl_vars['resultEnd'] = $resultEnd;
         $tpl_vars['current_date'] = $current_date;
+
+        if ($this->container->hasParameter('matricules_listparameters')) {
+            $tpl_vars['matricules_listparameters']
+                = $this->container->getParameter('matricules_listparameters');
+        }
+        if ($this->container->hasParameter('matricules_searchparameters')) {
+            $tpl_vars['matricules_searchparameters']
+                = $this->container->getParameter('matricules_searchparameters');
+        }
+
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(
@@ -336,9 +347,17 @@ class MatriculesController extends SearchController
 
         /* not display warning about cookies */
         if ( isset($_COOKIE[$this->getCookieName()]) ) {
-            $tpl_vars['cookie_param'] = true;
+            $tplParams['cookie_param'] = true;
         }
 
+        if ($this->container->hasParameter('matricules_listparameters')) {
+            $tplParams['matricules_listparameters']
+                = $this->container->getParameter('matricules_listparameters');
+        }
+        if ($this->container->hasParameter('matricules_searchparameters')) {
+            $tplParams['matricules_searchparameters']
+                = $this->container->getParameter('matricules_searchparameters');
+        }
         return $this->render(
             $tpl,
             $tplParams
@@ -449,7 +468,9 @@ class MatriculesController extends SearchController
             MatriculesViewParams::ORDER_BIRTHYEAR   => _('Year of birth'),
             MatriculesViewParams::ORDER_BIRTHPLACE  => _('Place of birth'),
             MatriculesViewParams::ORDER_CLASS       => _('Class'),
-            MatriculesViewParams::ORDER_RECORDPLACE => _('Place of recording')
+            MatriculesViewParams::ORDER_RECORDPLACE => _('Place of recording'),
+            MatriculesViewParams::ORDER_RECORDYEAR  => _('Year of recording'),
+            MatriculesViewParams::ORDER_COTE        => _('Classification')
         );
         return $orders;
     }

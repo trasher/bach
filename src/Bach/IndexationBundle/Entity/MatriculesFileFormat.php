@@ -87,7 +87,7 @@ class MatriculesFileFormat extends FileFormat
     protected $lieu_enregistrement;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $classe;
 

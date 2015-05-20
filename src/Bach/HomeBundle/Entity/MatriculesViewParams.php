@@ -62,6 +62,8 @@ class MatriculesViewParams extends ViewParams
     const ORDER_BIRTHPLACE = 14;
     const ORDER_CLASS = 15;
     const ORDER_RECORDPLACE = 16;
+    const ORDER_COTE = 17;
+    const ORDER_RECORDYEAR = 18;
 
     /**
      * Set order
@@ -72,14 +74,16 @@ class MatriculesViewParams extends ViewParams
      */
     public function setOrder($order)
     {
-        if ( $order === self::ORDER_RELEVANCE
+        if ($order === self::ORDER_RELEVANCE
             || $order === self::ORDER_MATRICULE
             || $order === self::ORDER_NAME
             || $order === self::ORDER_SURNAME
-            || $order === self:: ORDER_BIRTHYEAR
-            || $order === self:: ORDER_BIRTHPLACE
-            || $order === self:: ORDER_CLASS
+            || $order === self::ORDER_BIRTHYEAR
+            || $order === self::ORDER_BIRTHPLACE
+            || $order === self::ORDER_CLASS
             || $order === self::ORDER_RECORDPLACE
+            || $order === self::ORDER_COTE
+            || $order === self::ORDER_RECORDYEAR
         ) {
             $this->order = $order;
         } else {
