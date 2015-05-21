@@ -252,7 +252,16 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 
     {% if by_year is defined %}
-    <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select dates period') }}"></div>
+        {% if current_date == 'date_enregistrement' %}
+            {% set display_date = _('record date') %}
+        {% elseif current_date == 'classe' %}
+            {% set display_date = _('class') %}
+        {% elseif current_date == 'date_naissance' %}
+            {% set display_date = _('birthdate') %}
+        {% else %}
+            {% set display_date = '' %}
+        {%endif%}
+    <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select %datetype period'|replace({'%datetype':display_date})) }}"></div>
     {% endif %}
     {% if show_maps -%}
     <div id="map" class="hidden"></div>
