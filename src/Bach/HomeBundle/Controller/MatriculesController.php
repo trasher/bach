@@ -461,17 +461,49 @@ class MatriculesController extends SearchController
      */
     protected function getOrders()
     {
-        $orders = array(
-            MatriculesViewParams::ORDER_MATRICULE   => _('Matricule'),
-            MatriculesViewParams::ORDER_NAME        => _('Name'),
-            MatriculesViewParams::ORDER_SURNAME     => _('Surname'),
-            MatriculesViewParams::ORDER_BIRTHYEAR   => _('Year of birth'),
-            MatriculesViewParams::ORDER_BIRTHPLACE  => _('Place of birth'),
-            MatriculesViewParams::ORDER_CLASS       => _('Class'),
-            MatriculesViewParams::ORDER_RECORDPLACE => _('Place of recording'),
-            MatriculesViewParams::ORDER_RECORDYEAR  => _('Year of recording'),
-            MatriculesViewParams::ORDER_COTE        => _('Classification')
-        );
+        $orders = array();
+        $listSearchParamaters
+            = $this->container->getParameter('matricules_searchparameters');
+        foreach ($listSearchParamaters as $searchParameter) {
+            switch ($searchParameter) {
+            case 'cote':
+                $orders[MatriculesViewParams::ORDER_COTE]
+                    = _('Classification');
+                break;
+            case 'date_enregistrement':
+                $orders[MatriculesViewParams::ORDER_RECORDYEAR]
+                    = _('Year of recording');
+                break;
+            case 'lieu_enregistrement':
+                $orders[MatriculesViewParams::ORDER_RECORDPLACE]
+                    = _('Place of recording');
+                break;
+            case 'classe':
+                $orders[MatriculesViewParams::ORDER_CLASS]
+                    = _('Class');
+                break;
+            case 'nom':
+                $orders[MatriculesViewParams::ORDER_NAME]
+                    = _('Name');
+                break;
+            case 'prenoms':
+                $orders[MatriculesViewParams::ORDER_SURNAME]
+                    = _('Surname');
+                break;
+            case 'matricule':
+                $orders[MatriculesViewParams::ORDER_MATRICULE]
+                    = _('Matricule');
+                break;
+            case 'annee_naissance':
+                $orders[MatriculesViewParams::ORDER_BIRTHYEAR]
+                    = _('Year of birth');
+                break;
+            case 'lieu_naissance':
+                $orders[MatriculesViewParams::ORDER_BIRTHPLACE]
+                    = _('Place of birth');
+                break;
+            }
+        }
         return $orders;
     }
 
