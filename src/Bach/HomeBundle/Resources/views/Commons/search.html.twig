@@ -261,7 +261,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {% else %}
             {% set display_date = '' %}
         {%endif%}
-    <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select %datetype period'|replace({'%datetype':display_date})) }}"></div>
+    <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select %datetype% period')|replace({'%datetype%':display_date}) }}"></div>
     {% endif %}
     {% if show_maps -%}
     <div id="map" class="hidden"></div>
