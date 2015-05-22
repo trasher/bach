@@ -312,8 +312,8 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Untitled unit':
             return _('Untitled unit');
             break;
-        case 'Content':
-            return _('Content');
+        case 'Description':
+            return _('Description');
             break;
         case 'Documents':
             return _('Documents');

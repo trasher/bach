@@ -75,7 +75,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <xsl:if test="$cdc = 'false'">
                     <ul>
                         <xsl:if test="count(./*[not(local-name() = 'did')]) + count(./did/*[not(local-name() = 'unittitle')]) &gt; 0">
-                            <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Content')"/></a></li>
+                            <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Description')"/></a></li>
                         </xsl:if>
                         <xsl:if test=".//dao|.//daoloc">
                             <li><a href="#relative_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Documents')"/></a></li>
