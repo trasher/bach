@@ -69,7 +69,11 @@ POSSIBILITY OF SUCH DAMAGE.
                         {%- endif -%}
                     {% endset %}
                     <a href="{{ viewer_uri ~ images_link }}" target="_blank" >
+                    {% if document.nom is defined or document.prenom is defined %}
                         <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}"/>
+                    {% else %}
+                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ _('Scan') }}"/>
+                    {% endif %}
                     </a>
                 {% else %}
                     <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
