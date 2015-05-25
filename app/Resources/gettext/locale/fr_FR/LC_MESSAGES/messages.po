@@ -241,12 +241,3 @@ msgstr "L'enregistrement est désactivé."
 
 #~ msgid "An error occured loading tab :("
 #~ msgstr "Une erreur est survenue au chargement de l'onglet :("
-
-#~ msgid "Matricule"
-#~ msgstr "Matricule"
-
-#~ msgid "Year of birth"
-#~ msgstr "Année de naissance"
-
-#~ msgid "Place of birth"
-#~ msgstr "Lieu de naissance"
