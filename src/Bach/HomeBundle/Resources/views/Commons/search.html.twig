@@ -259,7 +259,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {% elseif current_date == 'annee_naissance' %}
             {% set display_date = _('birthdate') %}
         {% else %}
-            {% set display_date = '' %}
+            {% set display_date =  _('Date')|lower %}
         {%endif%}
     <div id="dates_plot" class="hidden" title="{{ _('Click and drag to select %datetype% period')|replace({'%datetype%':display_date}) }}"></div>
     {% endif %}
