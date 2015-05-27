@@ -178,7 +178,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <ol>
                     {% set index_name = facet.index_name %}
 
-                    {% if facet_name is defined and facet_name == index_name %}
+                    {% if facet_name is defined and facet_name == index_name or facet.content|length < 20 %}
                         {% set facet_content = facet.content %}
                     {% else %}
                         {% set facet_content = facet.content[:10] %}
@@ -198,7 +198,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         {% if q == '' %}
                             {% set q = '*:*' %}
                         {% endif %}
+                        {% if facet_content|length != facet.content|length %}
                         <li class="show_more"><a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, page: page, facet_name: index_name}) }}">{{ _('Show more (%count left)')|replace({'%count': facet.content|length-10}) }}</a></li>
+                        {% endif %}
                     {% endif %}
                     </ol>
                 {% endif %}
