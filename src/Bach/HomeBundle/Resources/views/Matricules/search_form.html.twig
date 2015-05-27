@@ -198,7 +198,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td property="familyName">
                         {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
-                        {%- else -%}
+                        {%- elseif document.nom is defined -%}
                             {{ document.nom }}
                         {%- endif -%}
                     </td>
@@ -208,7 +208,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td property="givenName">
                         {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
-                        {%- else -%}
+                        {%- elseif document.prenoms is defined -%}
                             {% for prenom in document.prenoms %}
                                 {{ prenom }}
                             {% endfor %}

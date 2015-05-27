@@ -34,7 +34,17 @@ POSSIBILITY OF SUCH DAMAGE.
     <article about="{{ docid }}" class="show_fragment" vocab="http://schema.org/" typeof="Person">
         <header>
             <h2 property="name">
-                {{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}
+        {% if document.nom is defined %}
+            {% set nomMatricule = document.nom %}
+        {% else %}
+            {% set nomMatricule = '' %}
+        {% endif %}
+        {% if document.prenoms is defined %}
+            {% set prenomsMatricules = document.prenoms %}
+        {% else %}
+            {% set prenomsMatricules = '' %}
+        {% endif %}
+                {{ nomMatricule ~ ' ' ~ prenomsMatricules|join(' ') }}
             </h2>
         </header>
         {% if features.social %}{{ socialButtons() }}{% endif %}
@@ -71,7 +81,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         {%- endif -%}
                     {% endset %}
                     <a href="{{ viewer_uri ~ images_link }}" target="_blank" property="image">
-                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/medium' }}" alt="{{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}"/>
+                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/medium' }}" alt="{{ nomMatricule ~ ' ' ~ prenomsMatricules|join(' ') }}"/>
                     </a>
                 </figure>
             {% endif %}
@@ -97,14 +107,14 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% if 'nom' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Name') }}</th>
-                    <td property="familyName">{{ document.nom }}</td>
+                    <td property="familyName">{{ nomMatricule }}</td>
                 </tr>
                 {% endif %}
 
                 {% if 'prenoms' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Surnames') }}</th>
-                    <td property="givenName">{{ document.prenoms|join(' ') }}</td>
+                    <td property="givenName">{{ prenomsMatricules|join(' ') }}</td>
                 </tr>
                 {% endif %}
 
@@ -125,7 +135,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% if 'lieu_naissance' in matricules_listparameters %}
                 <tr>
                     <th>{{ _('Place of birth') }}</th>
-                    <td>{{ document.lieu_naissance }}</td>
+                    <td>{%if document.lieu_naissance is defined%}{{ document.lieu_naissance }}{%endif%}</td>
                 </tr>
                 {% endif %}
                 {% if 'date_enregistrement' in matricules_listparameters %}
