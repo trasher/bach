@@ -124,7 +124,11 @@
                     {% include '::loader.js.twig' with {'parent_elt': '#map', 'silent_error': true} %}
                     success: function(data) {
                         if ( data.data.length == 0 ) {
+                         {% if (centerlat is not null) and (centerlon is not null) and (zoommap is not null) %}
+                            map.setView([{{centerlat}}, {{centerlon}}],{{zoommap}});
+                         {% else %}
                             map.setView([47.010, 5.087], 5);
+                         {% endif %}
                             var _div = $('<div class="nomapres">{{ _('No geolocalized places were found!') }} </div>');
                             {% if from_search %}
                             var _a = $('<a href="#" id="nores_hide">{{ _('Hide map') }}</a>');

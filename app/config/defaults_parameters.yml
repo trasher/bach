@@ -148,6 +148,9 @@ parameters:
     default_url: bach_archives
     logo_url: %default_url%
     tracker: null
+    centerlat: null
+    centerlon: null
+    zoommap: null
     #mail parameters (not used for now)
     #mailer_transport: smtp
     #mailer_host: localhost

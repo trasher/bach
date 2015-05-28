@@ -77,6 +77,10 @@ twig:
         default_url: '%default_url%'
         logo_url: '%logo_url%'
         tracker: '%tracker%'
+        #Center map on specific point
+        centerlat: '%centerlat%'
+        centerlon: '%centerlon%'
+        zoommap: '%zoommap%'
 
 # Assetic Configuration
 assetic:
