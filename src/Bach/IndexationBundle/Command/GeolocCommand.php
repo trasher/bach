@@ -407,6 +407,13 @@ EOF
 
                 $result = $nominatim->proceed($toponym);
 
+                $the_original= $toponym->getOriginal();
+                $limit = ' ; canton';
+                $position = strripos($the_original, ')');
+                $end = substr($the_original, $position);
+                $replace = substr_replace($the_original, $limit, $position);
+                $replace .= $end;
+                $toponym->setOriginal($replace);
                 $ent = new Geoloc();
                 if ( $result !== false ) {
                     $ent->hydrate($toponym, $result);

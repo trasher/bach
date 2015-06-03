@@ -288,6 +288,18 @@ class Toponym
     }
 
     /**
+     * Set original name
+     *
+     * @param string $_original set original
+     *
+     * @return void
+     */
+    public function setOriginal($_original)
+    {
+        $this->_original = $_original;
+    }
+
+    /**
      * Can current toponym be localized on OSM?
      *
      * @return boolean
@@ -305,6 +317,7 @@ class Toponym
         if ( $this->_nomination !== null
             && $this->_nomination !== 'département'
             && $this->_nomination !== 'commune'
+            && $this->_nomination !== 'canton'
             && $can === true
         ) {
             $can = false;
