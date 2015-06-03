@@ -118,6 +118,12 @@ EOF
                 null,
                 InputOption::VALUE_NONE,
                 _('Include results marked as not found')
+            )
+            ->addOption(
+                'deleteword',
+                null,
+                InputOption::VALUE_REQUIRED,
+                _('Drop part of sentence in data')
             );
     }
 
@@ -159,6 +165,8 @@ EOF
                 '</fg=green;options=bold>'
             );
         }
+
+        $drop = $input->getOption('deleteword');
 
         $database = $input->getOption('database');
         $know_databases = array(
@@ -331,6 +339,10 @@ EOF
             }
 
             $bdd_places = array_merge($bdd_places, $query->getResult());
+        }
+
+        foreach ($bdd_places as &$bdd_place) {
+            $bdd_place = str_replace($drop, '', $bdd_place);
         }
 
         $places = array();
