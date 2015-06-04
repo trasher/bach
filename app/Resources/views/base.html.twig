@@ -256,6 +256,9 @@ POSSIBILITY OF SUCH DAMAGE.
             } else {
                 //tooltip on each a and input search
                 $('a, input[type=text]').tooltip();
+                $('a[property="image"]').focus(function(evt) {
+                    $(evt.currentTarget).tooltip("close");
+                });
                 //unbind elements and remove class when resizing
                 $('#navigation > ul').removeClass('hidden');
                 $('#navigation').unbind('click');
