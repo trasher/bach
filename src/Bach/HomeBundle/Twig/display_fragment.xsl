@@ -591,13 +591,13 @@ POSSIBILITY OF SUCH DAMAGE.
                     <span class="unitid" property="dc:identifier">
                         <xsl:value-of select="unitid"/>
                     </span>
-                    <xsl:if test="langmaterial">
+                    <!--<xsl:if test="langmaterial">
                         <xsl:text> - </xsl:text>
-                    </xsl:if>
+                    </xsl:if>-->
                 </xsl:if>
-                <xsl:if test="langmaterial">
+                <!--<xsl:if test="langmaterial">
                     <xsl:value-of select="langmaterial"/>
-                </xsl:if>
+                </xsl:if>-->
             </header>
         </xsl:if>
     </xsl:template>
