@@ -160,6 +160,7 @@ parameters:
     weight.cUnittitle : 1
     weight.parents_titles: 1
     weight.fulltext: 0.1
+    collapsecdc: false
 
 bach_home:
     #Paths to retrieve different types of files

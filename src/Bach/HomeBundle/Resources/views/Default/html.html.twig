@@ -139,6 +139,12 @@ POSSIBILITY OF SUCH DAMAGE.
              && window.location.href.indexOf("#") != -1) {
             window.location.href = window.location.hash; // fix gap betwwen anchor and display
         }
+        {% if collapsecdc == true %}
+        if(window.location.href.indexOf("classification-scheme") != -1) {
+            $('input[type=checkbox]').prop('checked', false);
+        }
+        {% endif %}
+
     });
     {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
 {% endblock %}

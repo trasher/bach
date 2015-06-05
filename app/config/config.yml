@@ -81,6 +81,7 @@ twig:
         centerlat: '%centerlat%'
         centerlon: '%centerlon%'
         zoommap: '%zoommap%'
+        collapsecdc: '%collapsecdc%'
 
 # Assetic Configuration
 assetic:
