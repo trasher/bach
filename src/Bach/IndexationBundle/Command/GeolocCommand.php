@@ -339,6 +339,11 @@ EOF
             }
 
             $bdd_places = array_merge($bdd_places, $query->getResult());
+            $_orginal_bdd_places= array();
+            if (isset($bdd_places)) {
+                $_orginal_bdd_places = $bdd_places;
+            }
+
         }
 
         foreach ($bdd_places as &$bdd_place) {
@@ -406,14 +411,15 @@ EOF
                 );
 
                 $result = $nominatim->proceed($toponym);
-
                 $the_original= $toponym->getOriginal();
-                $limit = ' ; canton';
+                $limit = $drop;
                 $position = strripos($the_original, ')');
                 $end = substr($the_original, $position);
                 $replace = substr_replace($the_original, $limit, $position);
                 $replace .= $end;
-                $toponym->setOriginal($replace);
+                if (isset($_orginal_bdd_places) && array_search(array('name' => $replace), $_orginal_bdd_places)) {
+                    $toponym->setOriginal($replace);
+                }
                 $ent = new Geoloc();
                 if ( $result !== false ) {
                     $ent->hydrate($toponym, $result);
