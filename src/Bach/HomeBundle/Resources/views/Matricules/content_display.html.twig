@@ -45,23 +45,24 @@ POSSIBILITY OF SUCH DAMAGE.
             {% set prenomsMatricules = '' %}
         {% endif %}
                 {{ nomMatricule ~ ' ' ~ prenomsMatricules|join(' ') }}
+        {% if features.social and (features.comments == false) %}<div id="matriculesSocial">{{ socialButtons() }}</div>{% endif %}
             </h2>
         </header>
-        {% if features.social %}{{ socialButtons() }}{% endif %}
+        {% if features.social and features.comments %}<div id="social">{{ socialButtons() }}</div>{% endif %}
         {% if comments is defined %}
             {% set hasComments = true %}
         {% else %}
             {% set hasComments = false %}
         {% endif %}
+            {%- if features.comments -%}
         <ul>
             <li><a href="#matricule_record">{{ _('Record') }}</a></li>
-            {%- if features.comments -%}
             {%- if comments is defined -%}
             <li><a href="#comments">{{ _('Comments') }}</a></li>
             {%- endif -%}
             <li><a href="{{ path('bach_add_comment', {type: 'matricules',docid: docid}) }}">{{ _('Add comment') }}</a></li>
-            {%- endif -%}
         </ul>
+            {%- endif -%}
         <section id="matricule_record">
             {% if document.start_dao is defined %}
                 <figure class="fright">

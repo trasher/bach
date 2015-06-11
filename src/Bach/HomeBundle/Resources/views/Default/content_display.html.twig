@@ -85,7 +85,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% endif %}
             </aside>
         {% endif %}
-        {% if features.social %}{{ socialButtons() }}{% endif %}
+        {% if features.social %}<div id="social">{{ socialButtons() }}</div>{% endif %}
         {% if children == false %}
             {% set hasChildren = false %}
         {% else %}
