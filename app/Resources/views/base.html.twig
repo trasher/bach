@@ -259,6 +259,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 $('a[property="image"]').focus(function(evt) {
                     $(evt.currentTarget).tooltip("close");
                 });
+                $('figure.result_pic a ').focus(function(evt) {
+                    $(evt.currentTarget).tooltip("close");
+                });
                 //unbind elements and remove class when resizing
                 $('#navigation > ul').removeClass('hidden');
                 $('#navigation').unbind('click');
