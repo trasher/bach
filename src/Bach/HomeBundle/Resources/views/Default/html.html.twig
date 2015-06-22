@@ -128,7 +128,7 @@ POSSIBILITY OF SUCH DAMAGE.
             var _this = $(this);
             _this.hide();
             var _parent = _this.parent('li');
-            var _expand = $('<a class="expand" href="#' + _parent.attr('id') + '" title="{{ _('Expand/Hide informations') }}">{{ _('Informations') }}</a>');
+            var _expand = $('<a class="expand" href="#' + _parent.attr('id') + '" title="{{ _('Expand/Hide informations') }}">&#9432;</a>');
             _expand.on('click', function(){
                 $(this).toggleClass('expanded').nextAll('.extended_informations').toggle();
                 return false;
