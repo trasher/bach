@@ -267,6 +267,9 @@ class DisplayEADFragment extends \Twig_Extension
         case 'subject:':
             return _('Subject:');
             break;
+        case 'famname:':
+            return _('Personal name:');
+            break;
         case 'persname:':
             return _('Personal name:');
             break;
@@ -404,7 +407,9 @@ class DisplayEADFragment extends \Twig_Extension
             $n = simplexml_import_dom($node);
 
             $name = null;
-            if ( isset($n['source']) ) {
+            if ( isset($n['source']) && isset($n['role']) ) {
+                $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['source'] . '|' . $n['role'];
+            } else if ( isset($n['source']) ) {
                 $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['source'];
             } else if ( isset($n['role']) ) {
                 $name = 'dyndescr_c' . ucwords($n->getName()) . '_' . $n['role'];
@@ -427,6 +432,7 @@ class DisplayEADFragment extends \Twig_Extension
                 break;
             case 'name':
             case 'persname':
+            case 'famname':
             case 'corpname':
                 $output[$name]['property'] = 'foaf:name';
                 break;

@@ -197,7 +197,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="subject|geogname|persname|corpname|name|function" mode="full">
+    <xsl:template match="subject|geogname|persname|famname|corpname|name|function" mode="full">
         <xsl:if test="not(parent::controlaccess)">
             <a>
                 <xsl:attribute name="link">
@@ -361,7 +361,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </xsl:if>
                 <xsl:apply-templates mode="full"/>
                 <xsl:if test="local-name() = 'controlaccess'">
-                    <xsl:variable name="nodes" select="subject|geogname|persname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
+                    <xsl:variable name="nodes" select="subject|geogname|persname|famname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
                     <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::showDescriptors', $nodes, $docid)"/>
                 </xsl:if>
             </section>
@@ -625,7 +625,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="controlaccess" mode="resume">
-        <xsl:variable name="nodes" select="subject|geogname|persname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
+        <xsl:variable name="nodes" select="subject|geogname|persname|famname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
         <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::showDescriptors', $nodes, $docid)"/>
     </xsl:template>
 

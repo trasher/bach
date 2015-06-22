@@ -270,7 +270,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="controlaccess" mode="presentation">
-        <xsl:variable name="nodes" select="subject|geogname|persname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
+        <xsl:variable name="nodes" select="subject|geogname|persname|famname|corpname|name|function|genreform[not(@source='liste-niveau') and not(@source='liste-typedocAC') and not(@type='typir')]"/>
         <xsl:copy-of select="php:function('Bach\HomeBundle\Twig\DisplayHtml::showDescriptors', $nodes, $docid)/descriptors/*"/>
     </xsl:template>
 

@@ -306,7 +306,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </xsl:template>
 
-    <xsl:key name="indexing" match="subject|geogname|persname|corpname|name|function|genreform" use="concat(generate-id(..), '_', local-name())"/>
+    <xsl:key name="indexing" match="subject|geogname|persname|famname|corpname|name|function|genreform" use="concat(generate-id(..), '_', local-name())"/>
     <xsl:template match="controlaccess" mode="extends">
         <div class="contents">
             <xsl:apply-templates/>
