@@ -313,7 +313,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Arrangement:')"/>
                                 </xsl:when>
                                 <xsl:when test="local-name() = 'relatedmaterial'">
-                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Related material:')"/>
+                                    <xsl:value-of select="php:function('bach\homebundle\twig\displayeadfragment::i18nfromxsl', 'related material:')"/>
                                 </xsl:when>
                                 <xsl:when test="local-name() = 'bibliography'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliography:')"/>
@@ -345,6 +345,9 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <xsl:when test="local-name() = 'imprint'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Publication informations')"/>
                                 </xsl:when>
+                                <xsl:when test="local-name() = 'originalsloc'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Original localisation')"/>
+                                </xsl:when>
                                 <xsl:when test="local-name() = 'repository'">
                                     <xsl:choose>
                                         <xsl:when test="@label">
@@ -374,7 +377,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="accessrestrict|legalstatus|odd|processinfo|custodhist|arrangement|relatedmaterial|bibliography|userestrict|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess|origination" mode="full">
+    <xsl:template match="accessrestrict|legalstatus|odd|processinfo|custodhist|arrangement|relatedmaterial|originalsloc|bibliography|userestrict|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess|origination" mode="full">
         <xsl:call-template name="section_content">
             <xsl:with-param name="title">
                 <xsl:choose>

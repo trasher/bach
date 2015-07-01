@@ -339,6 +339,10 @@ class DisplayEADFragment extends \Twig_Extension
         case 'processinfo':
             return _('Information process');
             break;
+        case 'Original localisation':
+            return _('Original localisation');
+            break;
+
         default:
             if ( strpos($ref, 'dyndescr_') === 0 ) {
                 return self::guessDynamicFieldLabel($ref);
