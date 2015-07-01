@@ -188,8 +188,8 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <!-- head elements are handled from their parents -->
-    <xsl:template match="custodhist/head|separatedmaterial/head|acqinfo/head|bibliography/head|//relatedmaterial/head|userestrict/head|odd/head|bioghist/head|scopecontent/head|processinfo/head|otherfindaid/head|accessrestrict/head|arrangement/head" mode="contents"/>
-    <xsl:template match="custodhist|separatedmaterial|acqinfo|bibliography|//relatedmaterial|userestrict|odd|bioghist|scopecontent|processinfo|otherfindaid|accessrestrict|arrangement" mode="presentation">
+    <xsl:template match="custodhist/head|separatedmaterial/head|acqinfo/head|bibliography/head|//relatedmaterial/head|userestrict/head|odd/head|bioghist/head|scopecontent/head|processinfo/head|otherfindaid/head|accessrestrict/head|arrangement/head|originalsloc/head" mode="contents"/>
+    <xsl:template match="custodhist|separatedmaterial|acqinfo|bibliography|//relatedmaterial|userestrict|odd|bioghist|scopecontent|processinfo|otherfindaid|accessrestrict|arrangement|originalsloc" mode="presentation">
         <xsl:variable name="current" select="local-name()"/>
         <xsl:choose>
             <xsl:when test="./*[local-name() = $current]">
