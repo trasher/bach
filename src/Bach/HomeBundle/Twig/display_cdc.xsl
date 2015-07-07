@@ -212,11 +212,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xsl:template match="list">
         <xsl:variable name="proceed" select="php:function('Bach\HomeBundle\Twig\DisplayCdc::hasPublished', ., //dadocs)"/>
-        <xsl:if test="$proceed">
+        <!--<xsl:if test="$proceed">-->
             <ul>
                 <xsl:apply-templates/>
             </ul>
-        </xsl:if>
+        <!--</xsl:if>-->
     </xsl:template>
 
     <xsl:template match="defitem|change">
@@ -362,7 +362,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </xsl:template>
 
     <xsl:template match="text()">
-        <xsl:copy-of select="normalize-space(.)"/>
+        <xsl:copy-of select="translate(., '&#xA;&#xD;', '  ')"/>
     </xsl:template>
 
     <xsl:template match="lb">
