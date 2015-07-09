@@ -331,6 +331,24 @@ POSSIBILITY OF SUCH DAMAGE.
             <xsl:when test="$parent-name = 'list'">
                 <li>
                     <xsl:apply-templates mode="contents"/>
+                    <xsl:element name="a">
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="archref/@href" />
+                        </xsl:attribute>
+                        <xsl:if test="archref/@title">
+                            <xsl:attribute name="title">
+                                <xsl:value-of select="archref/@title" />
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:choose>
+                            <xsl:when test="archref/@title">
+                                <xsl:value-of select="archref/@title" />
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="archref/@href" />
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:element>
                 </li>
             </xsl:when>
             <xsl:when test="$parent-name = 'defitem' or $parent-name = 'change'">
