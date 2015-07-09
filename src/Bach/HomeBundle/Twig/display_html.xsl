@@ -333,7 +333,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     <xsl:apply-templates mode="contents"/>
                     <xsl:element name="a">
                         <xsl:attribute name="href">
-                            <xsl:value-of select="archref/@href" />
+                            <xsl:variable name="varhref" select="archref/@href"/>
+                                <xsl:value-of select="translate($varhref, '.xml', '')" />
+
                         </xsl:attribute>
                         <xsl:if test="archref/@title">
                             <xsl:attribute name="title">
@@ -345,7 +347,8 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <xsl:value-of select="archref/@title" />
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:value-of select="archref/@href" />
+                                <xsl:variable name="varhref" select="archref/@href"/>
+                                <xsl:value-of select="translate($varhref, '.xml', '')" />
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:element>
