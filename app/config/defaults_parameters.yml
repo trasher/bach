@@ -161,7 +161,13 @@ parameters:
     weight.parents_titles: 1
     weight.fulltext: 0.1
     collapsecdc: false
-
+    print:
+       header:
+            image: '%kernel.root_dir%/../web/img/smlogo.png'
+            content: 'Bach'
+       footer:
+            image: '%kernel.root_dir%/../web/img/smlogo.png'
+            content: '© Anaphore'
 bach_home:
     #Paths to retrieve different types of files
     files:

@@ -53,6 +53,7 @@ use Bach\HomeBundle\Entity\Filters;
 use Bach\HomeBundle\Entity\ViewParams;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Bach\HomeBundle\Entity\Pdf;
 
 /**
  * Bach home controller
@@ -521,10 +522,11 @@ class DefaultController extends SearchController
      * @param int     $docid Document unique identifier
      * @param int     $page  Page
      * @param boolean $ajax  Called from ajax
+     * @param boolean $print Know if print
      *
      * @return void
      */
-    public function displayDocumentAction($docid, $page = 1, $ajax = false)
+    public function displayDocumentAction($docid, $page = 1, $ajax = false, $print = false)
     {
         $with_context = true;
 
@@ -664,6 +666,7 @@ class DefaultController extends SearchController
         if ( isset($_COOKIE[$this->getCookieName()]) ) {
             $tpl_vars['cookie_param'] = true;
         }
+        $tpl_vars['print'] = $print;
 
         return $this->render(
             $tpl,
@@ -1089,4 +1092,269 @@ class DefaultController extends SearchController
             '::cookies.html.twig'
         );
     }
+
+    /**
+     * Print a pdf with a document
+     *
+     * @param string $docid id of document
+     *
+     * @return void
+     */
+    public function printPdfDocAction($docid)
+    {
+        $params = $this->container->getParameter('print');
+        $tpl_vars['docid'] = $docid;
+        $content = '<style>' . file_get_contents('css/bach_print.css'). '</style>';
+        $content .= $this->displayDocumentAction(
+            $docid,
+            1,
+            'ajax',
+            true
+        )->getContent();
+        $pdf = new Pdf($params);
+        $pdf->setFont('helvetica', '', 12);
+        $pdf->addPage();
+        $pdf->setTopMargin(20);
+        $pdf->writeHTML($content);
+        $pdf->download();
+    }
+
+    /**
+     * Print a pdf with a list of result
+     *
+     * @param string $docid id of document
+     *
+     * @return void
+     */
+    public function printPdfResultsPageAction(
+        $query_terms = null, $page = 1,
+        $facet_name = null, $form_name = null
+    ) {
+        $params = $this->container->getParameter('print');
+        $content = '<style>' . file_get_contents('css/bach_print.css'). '</style>';
+        $content .= $this->printSearch(
+            $query_terms,
+            $page,
+            $facet_name,
+            $form_name
+        )->getContent();
+        $pdf = new Pdf($params);
+        $pdf->setFont('helvetica', '', 12);
+        $pdf->addPage();
+        $pdf->setTopMargin(20);
+        $pdf->writeHTML($content);
+        $pdf->download();
+    }
+
+
+    /**
+     * Print search page
+     *
+     * @param string $query_terms Term(s) we search for
+     * @param int    $page        Page
+     * @param string $facet_name  Display more terms in suggests
+     * @param string $form_name   Search form name
+     *
+     * @return void
+     */
+    public function printSearch($query_terms = null, $page = 1,
+        $facet_name = null, $form_name = null
+    ) {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        if ( $query_terms !== null ) {
+            $query_terms = urldecode($query_terms);
+        }
+
+        if ( $form_name !== 'default' ) {
+            $this->search_form = $form_name;
+        }
+
+        /** Manage view parameters */
+        $view_params = $this->handleViewParams();
+
+        $filters = $session->get($this->getFiltersName());
+        if ( !$filters instanceof Filters || $request->get('clear_filters') ) {
+            $filters = new Filters();
+            $session->set($this->getFiltersName(), null);
+        }
+
+        $filters->bind($request);
+        $session->set($this->getFiltersName(), $filters);
+
+        if ( ($request->get('filter_field') || $filters->count() > 0)
+            && is_null($query_terms)
+        ) {
+            $query_terms = '*:*';
+        }
+
+        $tpl_vars = $this->searchTemplateVariables($view_params, $page);
+        $tpl_vars['q'] = urlencode($query_terms);
+
+        $factory = $this->get($this->factoryName());
+
+        //FIXME: try to avoid those 2 calls
+        $factory->setGeolocFields($this->getGeolocFields());
+        $factory->setDateField($this->date_field);
+
+        // On effectue une recherche
+        $form = $this->createForm(
+            new SearchQueryFormType(
+                $query_terms,
+                !is_null($query_terms)
+            ),
+            new SearchQuery()
+        );
+
+        $search_forms = null;
+        if ( $this->search_form !== null ) {
+            $search_forms = $this->container->getParameter('search_forms');
+        }
+
+        $search_form_params = null;
+        if ( $search_forms !== null ) {
+            $search_form_params = $search_forms[$this->search_form];
+        }
+
+        $current_form = 'main';
+        if ( $search_form_params !== null ) {
+            $current_form = $this->search_form;
+        }
+
+        $container = new SolariumQueryContainer();
+
+        if ( !is_null($query_terms) ) {
+            $container->setOrder($view_params->getOrder());
+
+            if ( $this->search_form !== null ) {
+                $container->setSearchForm($search_forms[$this->search_form]);
+            }
+
+            $container->setField(
+                'show_pics',
+                $view_params->showPics()
+            );
+            $container->setField($this->getContainerFieldName(), $query_terms);
+
+            $container->setField(
+                "pager",
+                array(
+                    "start"     => ($page - 1) * $view_params->getResultsbyPage(),
+                    "offset"    => $view_params->getResultsbyPage()*2
+                )
+            );
+
+            //Add filters to container
+            $container->setFilters($filters);
+
+            $weight = array(
+                "descriptors" => $this->container->getParameter('weight.descriptors'),
+                "cUnittitle" => $this->container->getParameter('weight.cUnittitle'),
+                "parents_titles" => $this->container->getParameter('weight.parents_titles'),
+                "fulltext" => $this->container->getParameter('weight.fulltext')
+            );
+            $container->setWeight($weight);
+            if ( $filters->count() > 0 ) {
+                $tpl_vars['filters'] = $filters;
+            }
+        } else {
+            $container->setNoResults();
+        }
+
+        $factory->prepareQuery($container);
+
+        if ( !is_null($query_terms) ) {
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active'    => true,
+                        'form'      => $current_form
+                    ),
+                    array('position' => 'ASC')
+                );
+        } else {
+            $conf_facets = array();
+            $conf_facets = $this->getDoctrine()
+                ->getRepository('BachHomeBundle:Facets')
+                ->findBy(
+                    array(
+                        'active' => true,
+                        'form'   => $current_form,
+                        'on_home'=> true
+                    ),
+                    array('position' => 'ASC')
+                );
+        }
+
+        $searchResults = $factory->performQuery(
+            $container,
+            $conf_facets
+        );
+
+        $this->handleFacets(
+            $factory,
+            $conf_facets,
+            $searchResults,
+            $filters,
+            $facet_name,
+            $tpl_vars
+        );
+
+        if ( !is_null($query_terms) ) {
+            $hlSearchResults = $factory->getHighlighting();
+            $scSearchResults = $factory->getSpellcheck();
+            $resultCount = $searchResults->getNumFound();
+
+            $suggestions = $factory->getSuggestions($query_terms);
+
+            $tpl_vars['resultCount'] = $resultCount;
+            $tpl_vars['resultByPage'] = $view_params->getResultsbyPage()*2;
+            $tpl_vars['totalPages'] = ceil(
+                $resultCount/$view_params->getResultsbyPage()*2
+            );
+            $tpl_vars['searchResults'] = $searchResults;
+            $tpl_vars['hlSearchResults'] = $hlSearchResults;
+            $tpl_vars['scSearchResults'] = $scSearchResults;
+            $tpl_vars['resultStart'] = ($page - 1)
+                * $view_params->getResultsbyPage() + 1;
+            $resultEnd = $view_params->getResultsbyPage() * 2 + 1;
+            if ( $resultEnd > $resultCount ) {
+                $resultEnd = $resultCount;
+            }
+            $tpl_vars['resultEnd'] = $resultEnd;
+        } else {
+            $show_tagcloud = $this->container->getParameter('feature.tagcloud');
+            if ( $show_tagcloud ) {
+                $tagcloud = $factory->getTagCloud(
+                    $this->getDoctrine()->getManager(),
+                    $search_form_params
+                );
+
+                if ( $tagcloud ) {
+                    $tpl_vars['tagcloud'] = $tagcloud;
+                }
+            }
+        }
+
+        $tpl_vars['stats'] = $factory->getStats();
+        $this->handleYearlyResults($factory, $tpl_vars);
+        $this->handleGeoloc($factory);
+
+        $tpl_vars['form'] = $form->createView();
+
+        $tpl_vars['view'] = $view_params->getView();
+        if ( isset($suggestions) && $suggestions->count() > 0 ) {
+            $tpl_vars['suggestions'] = $suggestions;
+        }
+        $tpl_vars['current_date'] = 'cDateBegin';
+        return $this->render(
+            'BachHomeBundle:Commons:searchPrint.html.twig',
+            $tpl_vars
+        );
+    }
+
+
+
 }

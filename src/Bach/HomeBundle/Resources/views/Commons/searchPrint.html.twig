@@ -1,0 +1,116 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+
+{% block container %}
+
+    {% if filters is defined %}
+        <h2>Liste des filtres</h2>
+        {% for filter_name,values in filters %}
+            <h3>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{{ _('Unknown filter') }}{% endif %}</h3>
+                {% for value in values %}
+                        {{ value }}
+                {% endfor %}
+        {% endfor %}
+    {% endif %}
+    {% if searchResults is defined %}
+    <section id="search_results" role="main">
+        {% if searchResults|length > 0 %}
+        <div class="results_count">
+            {% if resultCount == 1 %}
+                {{ _('1 result') }}
+            {% else %}
+                {{ _('Results %resultStart% to %resultEnd% on %resultCount%')|replace({'%resultStart%': resultStart, '%resultEnd%': resultEnd, '%resultCount%': resultCount}) }}
+            {% endif %}
+            {% if available_orders|length > 0 or available_views|length > 0 %}
+            {% spaceless %}
+            {% endspaceless %}
+            {% endif %}
+        </div>
+    {% block show_results %}
+            {% for document in searchResults %}
+                <article id="result_{{ document.fragmentid }}" role="document" about="{{ document.fragmentid }}"{% if view == 'thumbs' %} class="thumbs"{% endif %}>
+                    <div{% if not show_pics %} class="nopic"{% endif %}>
+                    {%- if (view == 'list' or view == 'txtlist') and (document.parents_titles is defined or document.archDescUnitTitle is defined) -%}
+                        <ul class="breadcrumb">
+                        {%- if document.archDescUnitTitle is defined -%}
+                            <li>
+                                <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ document.archDescUnitTitle }}</a>
+                            </li>
+                        {%- endif -%}
+                        {%- if document.parents_titles is defined -%}
+                            {% set parents_ids = document.parents|split('/') %}
+                            {% for ptitle in document.parents_titles %}
+                                <li>
+                                    <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ parents_ids[loop.index0]}) }}" property="dc:isPartOf">
+                                        {{ ptitle }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {%- endif -%}
+                        </ul>
+                    {%- endif -%}
+
+                    <header>
+                        <h3 property="dc:title">
+                            <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
+                            {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
+                                {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
+                            {%- elseif document.cUnittitle is defined -%}
+                                {{ document.cUnittitle }}
+                            {%- else -%}
+                                {{ _('Untitled unit') }}
+                            {%- endif -%}
+                            {%- if document.cDate is defined and document.cDate != '' -%}
+                                <span class="date" property="dc:date"> • {{ document.cDate }}</span>
+                            {%- endif -%}
+                            </a>
+                        </h3>
+                    </header>
+                    {% if view == 'list' or view == 'txtlist' %}
+                    <aside>
+                        {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                        <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
+                    </aside>
+                    {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}
+                    {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+    {% endblock%}
+        {% else %}
+            <p>{{ _('No result found.') }}</p>
+        {% endif %}
+    </section>
+    {% endif %}
+{% endblock %}

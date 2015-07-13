@@ -1898,6 +1898,19 @@ video[poster] {
     text-decoration: none;
 }
 
+.printLink {
+    background-image: url(../img/printsm.png);
+    text-indent: -9999px;
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#change_view > .printLink {
+    margin-top: 3px;
+}
+
 /* Mobile view */
 @media ( max-width : 767px) {
     /** Reset widths and heights */

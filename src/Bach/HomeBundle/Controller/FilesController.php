@@ -233,5 +233,4 @@ class FilesController extends Controller
         fclose($file);
 
     }
-
 }

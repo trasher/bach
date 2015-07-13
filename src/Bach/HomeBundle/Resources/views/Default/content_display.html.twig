@@ -67,6 +67,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </h2>
         </header>
         {% if context or document.previous_id is defined or document.next_id is defined %}
+        {% if print == false %}
             <aside>
             {% if context and document.previous_id is defined %}
                 <a id="prev_comp" href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ document.previous_id}) }}" title="{{ _('Display previous component (%title)')|replace({'%title': document.previous_title}) }}">
@@ -84,8 +85,14 @@ POSSIBILITY OF SUCH DAMAGE.
                 <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
             {% endif %}
             </aside>
+        {% endif%}
         {% endif %}
-        {% if features.social %}<div id="social">{{ socialButtons() }}</div>{% endif %}
+        {% if features.social and print == false%}
+        <div id="social">
+            <a href="{{ path('print_doc', {'docid':docid})}}" class="printLink" title="{{ _('Print') }}"></a>
+            {{ socialButtons() }}
+            </div>
+        {% endif %}
         {% if children == false %}
             {% set hasChildren = false %}
         {% else %}
@@ -127,7 +134,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% endif %}
             </section>
         {% endif %}
-        {% if comments is defined %}
+        {% if comments is defined and print == false %}
             <section id="comments">
                 <header>
                     <h3>{{ _('User comments') }}</h3>
@@ -157,7 +164,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {% endif %}
         </div>
     </article>
-
+{%if print == false %}
     <script src="{{ path('dynamic_js', {name: 'tabs'}) }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
@@ -165,3 +172,4 @@ POSSIBILITY OF SUCH DAMAGE.
             _doTabs('div.frag');
         });
     </script>
+{% endif%}

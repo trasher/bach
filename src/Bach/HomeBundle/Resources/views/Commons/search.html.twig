@@ -281,6 +281,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% if available_orders|length > 0 or available_views|length > 0 %}
             {% spaceless %}
             <nav id="change_view">
+            <a href="{{ path('print_results_page', { form_name: search_form, query_terms: q, page: page })}}" class="printLink" >{{ _('Print') }}</a>
                 {% if available_orders|length > 0 %}
                 <label for="results_order">{{ _('Order:') }}</label>
                 <select name="results_order" id="results_order">
