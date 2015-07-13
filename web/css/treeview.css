@@ -29,7 +29,7 @@
 .css-treeview input + label + ul,
 .css-treeview input + label + section + ul
 {
-    margin: 0 0 0 16px;
+    margin: 0 0 0 17px;
 }
 
 .css-treeview input ~ ul
@@ -61,26 +61,26 @@
 .css-treeview label,
 {
     display: inline-block;
-    height: 16px;
-    line-height: 16px;
+    height: 18px;
+    line-height: 18px;
     vertical-align: middle;
 }
 
 .css-treeview label
 {
-    width: 16px;
+    width: 18px;
     vertical-align: middle;
-    background-position: 0 -32px;
-    padding-left: 16px;
+    background-position: 0 -34px;
+    padding-left: 18px;
 }
 
 .css-treeview .standalone {
-    padding-left: 16px;
+    padding-left: 18px;
 }
 
 .css-treeview input:checked + label
 {
-    background-position: 0 -16px;
+    background-position: 0 -18px;
 }
 
 .css-treeview a.display_doc {
