@@ -57,6 +57,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:param name="cdc" select="'false'"/>
     <xsl:param name="docid"/>
     <xsl:param name="cote_location" select="''"/>
+    <xsl:param name="print" select="''"/>
 
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12|archdesc">
         <xsl:variable name="id">
@@ -77,7 +78,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         <xsl:if test="count(./*[not(local-name() = 'did')]) + count(./did/*[not(local-name() = 'unittitle')]) &gt; 0">
                             <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Description')"/></a></li>
                         </xsl:if>
-                        <xsl:if test=".//dao|.//daoloc">
+                        <xsl:if test=".//dao|.//daoloc and $print= 'false'">
                             <li><a href="#relative_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Documents')"/></a></li>
                         </xsl:if>
                         <xsl:if test="not($children = '')">
@@ -113,7 +114,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     </div>
                 </xsl:if>
 
-                <xsl:if test=".//dao|.//daoloc">
+                <xsl:if test=".//dao|.//daoloc and $print = 'false'">
                     <figure id="relative_documents">
                         <header>
                             <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>

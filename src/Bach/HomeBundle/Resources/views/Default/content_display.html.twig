@@ -34,21 +34,23 @@ POSSIBILITY OF SUCH DAMAGE.
     {% if ariane is defined or archdesc is defined %}
         <ul class="breadcrumb">
             {% if archdesc is defined %}
-                <li>
-                    <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ archdesc }}</a>
-                </li>
+                {% if print == false %}
+                    <li>
+                        <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ archdesc }}</a>
+                    </li>
+                {% else %}
+                    {{ archdesc }} &#187;
+                {% endif %}
             {% endif %}
             {% if ariane is defined %}
                 {% for fil in ariane %}
-                <li>
-                    <a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">
+                    {% if print == false %}<li><a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">{% endif %}
                     {%- if fil.cUnittitle is defined -%}
                         {{ fil.cUnittitle }}
                     {%- else -%}
                         {{ _('Untitled unit') }}
                     {%- endif -%}
-                    </a>
-                </li>
+                    {% if print == false %}</a></li>{% endif%}
                 {% endfor %}
             {% endif %}
         </ul>
@@ -103,8 +105,13 @@ POSSIBILITY OF SUCH DAMAGE.
         {% else %}
             {% set hasComments = false %}
         {% endif %}
+        {% if print != false %}
+            {% set printTest = true %}
+        {% else %}
+            {% set printTest = 'false' %}
+        {% endif %}
         <div class="content frag">
-        {{ displayFragment(document.fragment, docid, search_form, true, hasChildren, hasComments, count_children, ajax)|raw }}
+        {{ displayFragment(document.fragment, docid, search_form, true, hasChildren, hasComments, count_children, ajax, printTest)|raw }}
         {% if not children == false %}
             <section id="children_documents">
                 <header>

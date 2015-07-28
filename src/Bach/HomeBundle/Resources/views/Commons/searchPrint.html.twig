@@ -33,60 +33,49 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 {% block container %}
-
+requete : {{ q }}
     {% if filters is defined %}
         <h2>Liste des filtres</h2>
         {% for filter_name,values in filters %}
-            <h3>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{{ _('Unknown filter') }}{% endif %}</h3>
+            -><strong>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{{ _('Unknown filter') }}{% endif %}</strong>
+                {% if values is not iterable %}
+                    {% set values = []|merge([values]) %}
+                {% endif %}
                 {% for value in values %}
-                        {{ value }}
+                        {{ value }}<br />
                 {% endfor %}
         {% endfor %}
     {% endif %}
     {% if searchResults is defined %}
-    <section id="search_results" role="main">
+    <section role="main">
         {% if searchResults|length > 0 %}
-        <div class="results_count">
+        <div>
             {% if resultCount == 1 %}
                 {{ _('1 result') }}
             {% else %}
                 {{ _('Results %resultStart% to %resultEnd% on %resultCount%')|replace({'%resultStart%': resultStart, '%resultEnd%': resultEnd, '%resultCount%': resultCount}) }}
             {% endif %}
-            {% if available_orders|length > 0 or available_views|length > 0 %}
-            {% spaceless %}
-            {% endspaceless %}
-            {% endif %}
         </div>
     {% block show_results %}
             {% for document in searchResults %}
-                <article id="result_{{ document.fragmentid }}" role="document" about="{{ document.fragmentid }}"{% if view == 'thumbs' %} class="thumbs"{% endif %}>
-                    <div{% if not show_pics %} class="nopic"{% endif %}>
+                <h2>Resultat n°{{ loop.index }}</h2>
                     {%- if (view == 'list' or view == 'txtlist') and (document.parents_titles is defined or document.archDescUnitTitle is defined) -%}
                         <ul class="breadcrumb">
                         {%- if document.archDescUnitTitle is defined -%}
-                            <li>
-                                <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_description'}) }}" property="dc:isPartOf">{{ document.archDescUnitTitle }}</a>
-                            </li>
+                                {{ document.archDescUnitTitle }} 
+                            <br />
                         {%- endif -%}
                         {%- if document.parents_titles is defined -%}
                             {% set parents_ids = document.parents|split('/') %}
                             {% for ptitle in document.parents_titles %}
-                                <li>
-                                    <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ parents_ids[loop.index0]}) }}" property="dc:isPartOf">
-                                        {{ ptitle }}
-                                    </a>
-                                </li>
+                                 &#187; {{ ptitle }}
                             {% endfor %}
                             {%- endif -%}
                         </ul>
                     {%- endif -%}
 
-                    <header>
                         <h3 property="dc:title">
-                            <a href="{{ path('bach_display_document', {docid: document.fragmentid}) }}" class="display_doc">
-                            {%- if hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')|length > 0 -%}
-                                {{ hlSearchResults.getResult(document.fragmentid).getField('cUnittitle')[0]|raw }}
-                            {%- elseif document.cUnittitle is defined -%}
+                            {%- if document.cUnittitle is defined -%}
                                 {{ document.cUnittitle }}
                             {%- else -%}
                                 {{ _('Untitled unit') }}
@@ -94,18 +83,12 @@ POSSIBILITY OF SUCH DAMAGE.
                             {%- if document.cDate is defined and document.cDate != '' -%}
                                 <span class="date" property="dc:date"> • {{ document.cDate }}</span>
                             {%- endif -%}
-                            </a>
                         </h3>
-                    </header>
                     {% if view == 'list' or view == 'txtlist' %}
-                    <aside>
                         {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-                        <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
-                    </aside>
-                    {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}
+                    {{ displayFragment(document.fragment, document.fragmentid, search_form, false, false, false, 5, false, true)|raw }}
                     {% endif %}
-                    </div>
-                </article>
+                <hr />
             {% endfor %}
     {% endblock%}
         {% else %}

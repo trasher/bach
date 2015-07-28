@@ -144,13 +144,13 @@ class DisplayEADFragment extends \Twig_Extension
      * @return string
      */
     public function display($fragment, $docid, $form_name = 'default', $full = false,
-        $hasChildren = false, $hasComments = false, $countSub = 0, $ajax = false
+        $hasChildren = false, $hasComments = false, $countSub = 0, $ajax = false,
+        $print = false
     ) {
         $proc = new \XsltProcessor();
         $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_fragment.xsl')
         );
-
         $router = $this->_router;
         $request = $this->_request;
         $callback = function ($matches) use ($router, $request, $form_name) {
@@ -180,6 +180,7 @@ class DisplayEADFragment extends \Twig_Extension
         $proc->setParameter('', 'cote_location', $this->_cote_location);
         $comments_enabled = $this->_comms ? 'true' : 'false';
         $proc->setParameter('', 'comments_enabled', $comments_enabled);
+        $proc->setParameter('', 'print', $print);
 
         if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
@@ -201,7 +202,15 @@ class DisplayEADFragment extends \Twig_Extension
             $callback,
             $text
         );
-
+        // delete link and images for printing
+        if ($print === true) {
+            $text = preg_replace('/<a href=\"(.*?)\">(.*?)<\/a>/', "\\2", $text);
+            $text = preg_replace(
+                '@<section class="otherfindaid"[^>]*?>.*?</section>@si',
+                '',
+                $text
+            );
+        }
         if ( $docid !== '' ) {
             $add_comment_path = $router->generate(
                 'bach_add_comment',

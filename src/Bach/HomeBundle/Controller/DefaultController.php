@@ -1182,7 +1182,6 @@ class DefaultController extends SearchController
 
         $filters->bind($request);
         $session->set($this->getFiltersName(), $filters);
-
         if ( ($request->get('filter_field') || $filters->count() > 0)
             && is_null($query_terms)
         ) {
@@ -1190,13 +1189,14 @@ class DefaultController extends SearchController
         }
 
         $tpl_vars = $this->searchTemplateVariables($view_params, $page);
-        $tpl_vars['q'] = urlencode($query_terms);
+
+        if ($query_terms != '*:*') {
+            $tpl_vars['q'] = preg_replace('/[^A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ\-]/', ' ', $query_terms);
+        } else {
+            $tpl_vars['q'] = "*:*";
+        }
 
         $factory = $this->get($this->factoryName());
-
-        //FIXME: try to avoid those 2 calls
-        $factory->setGeolocFields($this->getGeolocFields());
-        $factory->setDateField($this->date_field);
 
         // On effectue une recherche
         $form = $this->createForm(
@@ -1303,11 +1303,7 @@ class DefaultController extends SearchController
         );
 
         if ( !is_null($query_terms) ) {
-            $hlSearchResults = $factory->getHighlighting();
-            $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
-
-            $suggestions = $factory->getSuggestions($query_terms);
 
             $tpl_vars['resultCount'] = $resultCount;
             $tpl_vars['resultByPage'] = $view_params->getResultsbyPage()*2;
@@ -1315,8 +1311,6 @@ class DefaultController extends SearchController
                 $resultCount/$view_params->getResultsbyPage()*2
             );
             $tpl_vars['searchResults'] = $searchResults;
-            $tpl_vars['hlSearchResults'] = $hlSearchResults;
-            $tpl_vars['scSearchResults'] = $scSearchResults;
             $tpl_vars['resultStart'] = ($page - 1)
                 * $view_params->getResultsbyPage() + 1;
             $resultEnd = $view_params->getResultsbyPage() * 2 + 1;
@@ -1324,30 +1318,11 @@ class DefaultController extends SearchController
                 $resultEnd = $resultCount;
             }
             $tpl_vars['resultEnd'] = $resultEnd;
-        } else {
-            $show_tagcloud = $this->container->getParameter('feature.tagcloud');
-            if ( $show_tagcloud ) {
-                $tagcloud = $factory->getTagCloud(
-                    $this->getDoctrine()->getManager(),
-                    $search_form_params
-                );
-
-                if ( $tagcloud ) {
-                    $tpl_vars['tagcloud'] = $tagcloud;
-                }
-            }
         }
-
-        $tpl_vars['stats'] = $factory->getStats();
-        $this->handleYearlyResults($factory, $tpl_vars);
-        $this->handleGeoloc($factory);
 
         $tpl_vars['form'] = $form->createView();
 
         $tpl_vars['view'] = $view_params->getView();
-        if ( isset($suggestions) && $suggestions->count() > 0 ) {
-            $tpl_vars['suggestions'] = $suggestions;
-        }
         $tpl_vars['current_date'] = 'cDateBegin';
         return $this->render(
             'BachHomeBundle:Commons:searchPrint.html.twig',
