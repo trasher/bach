@@ -159,7 +159,7 @@ class FilesController extends Controller
         $height = 300;
 
         list($owidth, $oheight) = getimagesize($path);
-        if ( $owidth > 300 || $oheight > 300 ) {
+        if ($owidth >= 300 || $oheight >= 300) {
             $ratio_orig = $owidth/$oheight;
             if ($width/$height > $ratio_orig) {
                 $width = $height*$ratio_orig;
@@ -186,6 +186,23 @@ class FilesController extends Controller
         } else {
             $width = $owidth;
             $height = $oheight;
+            $image_p = imagecreatetruecolor($width, $height);
+            $image = imagecreatefromjpeg($path);
+            imagecopyresampled(
+                $image_p,
+                $image,
+                0,
+                0,
+                0,
+                0,
+                $width,
+                $height,
+                $owidth,
+                $oheight
+            );
+
+            imagejpeg($image_p, null, 100);
+
         }
     }
 
