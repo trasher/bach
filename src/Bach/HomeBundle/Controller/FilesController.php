@@ -155,55 +155,33 @@ class FilesController extends Controller
         header('Cache-Control: public');
         header('Content-type: ' . $mime);
 
-        $width = 300;
-        $height = 300;
+        $width = 214;
+        $height = 214;
 
         list($owidth, $oheight) = getimagesize($path);
-        if ($owidth >= 300 || $oheight >= 300) {
-            $ratio_orig = $owidth/$oheight;
-            if ($width/$height > $ratio_orig) {
-                $width = $height*$ratio_orig;
-            } else {
-                $height = $width/$ratio_orig;
-            }
-
-            $image_p = imagecreatetruecolor($width, $height);
-            $image = imagecreatefromjpeg($path);
-            imagecopyresampled(
-                $image_p,
-                $image,
-                0,
-                0,
-                0,
-                0,
-                $width,
-                $height,
-                $owidth,
-                $oheight
-            );
-
-            imagejpeg($image_p, null, 100);
+        $ratio_orig = $owidth/$oheight;
+        if ($width/$height > $ratio_orig) {
+            $width = $height*$ratio_orig;
         } else {
-            $width = $owidth;
-            $height = $oheight;
-            $image_p = imagecreatetruecolor($width, $height);
-            $image = imagecreatefromjpeg($path);
-            imagecopyresampled(
-                $image_p,
-                $image,
-                0,
-                0,
-                0,
-                0,
-                $width,
-                $height,
-                $owidth,
-                $oheight
-            );
-
-            imagejpeg($image_p, null, 100);
-
+            $height = $width/$ratio_orig;
         }
+
+        $image_p = imagecreatetruecolor($width, $height);
+        $image = imagecreatefromjpeg($path);
+        imagecopyresampled(
+            $image_p,
+            $image,
+            0,
+            0,
+            0,
+            0,
+            $width,
+            $height,
+            $owidth,
+            $oheight
+        );
+
+        imagejpeg($image_p, null, 100);
     }
 
     /**
