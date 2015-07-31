@@ -45,7 +45,12 @@ POSSIBILITY OF SUCH DAMAGE.
             {% set prenomsMatricules = '' %}
         {% endif %}
                 {{ nomMatricule ~ ' ' ~ prenomsMatricules|join(' ') }}
-        {% if features.social and (features.comments == false) %}<div id="matriculesSocial">{{ socialButtons() }}</div>{% endif %}
+        {% if features.social and (features.comments == false)  and print is not defined %}
+            <div id="matriculesSocial">
+            <a href="{{ path('print_matdoc', {'docid':docid})}}" class="printLink" title="{{ _('Print') }}"></a>
+                {{ socialButtons() }}
+            </div>
+        {% endif %}
             </h2>
         </header>
         {% if features.social and features.comments %}<div id="social">{{ socialButtons() }}</div>{% endif %}
@@ -81,9 +86,11 @@ POSSIBILITY OF SUCH DAMAGE.
                             viewer/{{ document.start_dao }}
                         {%- endif -%}
                     {% endset %}
+                    {% if print is not defined %}
                     <a href="{{ viewer_uri ~ images_link }}" target="_blank" property="image">
                         <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/medium' }}" alt="{{ nomMatricule ~ ' ' ~ prenomsMatricules|join(' ') }}"/>
                     </a>
+                    {% endif %}
                 </figure>
             {% endif %}
             <table>
@@ -183,6 +190,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {% endif %}
     </article>
 
+{% if print is not defined %}
     <script type="text/javascript">
         $(function() {
             $('article.show_fragment > ul a').each(function(){
@@ -218,4 +226,4 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
     </script>
-
+{% endif %}
