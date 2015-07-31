@@ -73,7 +73,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <xsl:choose>
             <xsl:when test="$full = 1">
-                <xsl:if test="$cdc = 'false'">
+                <xsl:if test="$cdc = 'false' and $print = 'false'">
                     <ul>
                         <xsl:if test="count(./*[not(local-name() = 'did')]) + count(./did/*[not(local-name() = 'unittitle')]) &gt; 0">
                             <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Description')"/></a></li>
@@ -94,7 +94,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 </xsl:if>
 
                 <xsl:if test="count(./*[not(local-name() = 'did')]) + count(./did/*[not(local-name() = 'unittitle')]) &gt; 0">
-                    <div id="{$id}">
                         <xsl:attribute name="class">
                             <xsl:text>content</xsl:text>
                             <xsl:if test="/archdesc">
@@ -111,7 +110,6 @@ POSSIBILITY OF SUCH DAMAGE.
                         <xsl:if test="$cote_location = 'bottom' and did/unitid">
                             <xsl:apply-templates select="did/unitid" mode="cote"/>
                         </xsl:if>
-                    </div>
                 </xsl:if>
 
                 <xsl:if test=".//dao|.//daoloc and $print = 'false'">
@@ -126,7 +124,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 </xsl:if>
             </xsl:when>
             <xsl:otherwise>
-                <div id="{$id}">
+                <xsl:choose>
+                <xsl:when test="$print = 1">
+                        <xsl:apply-templates select="did" mode="resume"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div id="{$id}">
                     <xsl:attribute name="class">
                         <xsl:text>content</xsl:text>
                         <xsl:if test="/archdesc">
@@ -134,7 +137,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         </xsl:if>
                     </xsl:attribute>
                     <xsl:apply-templates mode="resume"/>
-                </div>
+                    </div>
+                </xsl:otherwise>
+            </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -258,13 +263,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="title" mode="full">
         <xsl:choose>
             <xsl:when test="not(parent::bibref)">
-                <div>
+                <!--<div>-->
                     <strong>
                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Title:')"/>
                         <xsl:text> </xsl:text>
                     </strong>
                     <xsl:value-of select="."/>
-                </div>
+                    <!--</div>-->
             </xsl:when>
             <xsl:otherwise>
                 <strong>

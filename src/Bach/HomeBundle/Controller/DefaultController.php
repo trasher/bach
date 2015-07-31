@@ -1112,9 +1112,7 @@ class DefaultController extends SearchController
             true
         )->getContent();
         $pdf = new Pdf($params);
-        $pdf->setFont('helvetica', '', 12);
         $pdf->addPage();
-        $pdf->setTopMargin(20);
         $pdf->writeHTML($content);
         $pdf->download();
     }
@@ -1139,9 +1137,7 @@ class DefaultController extends SearchController
             $form_name
         )->getContent();
         $pdf = new Pdf($params);
-        $pdf->setFont('helvetica', '', 12);
         $pdf->addPage();
-        $pdf->setTopMargin(20);
         $pdf->writeHTML($content);
         $pdf->download();
     }

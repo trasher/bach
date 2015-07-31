@@ -1187,7 +1187,7 @@ body > #loading {
 
 [id=matriculesSocial] {
     float: right;
-    margin-top: .4em;
+    margin-top: .2em;
     text-align: right;
     position: relative;
     z-index: 10;

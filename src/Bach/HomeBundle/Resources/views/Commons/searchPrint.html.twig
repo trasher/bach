@@ -33,11 +33,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 {% block container %}
-requete : {{ q }}
+    <strong>Recherche</strong> : {{ q }}
     {% if filters is defined %}
-        <h2>Liste des filtres</h2>
+        <h3>Liste des filtres</h3>
         {% for filter_name,values in filters %}
-            -><strong>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{{ _('Unknown filter') }}{% endif %}</strong>
+            -><strong>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{{ _('Unknown filter') }}{% endif %}:</strong>
                 {% if values is not iterable %}
                     {% set values = []|merge([values]) %}
                 {% endif %}
@@ -49,48 +49,45 @@ requete : {{ q }}
     {% if searchResults is defined %}
     <section role="main">
         {% if searchResults|length > 0 %}
-        <div>
+            <div>
             {% if resultCount == 1 %}
-                {{ _('1 result') }}
+                    {{ _('1 result') }}
             {% else %}
                 {{ _('Results %resultStart% to %resultEnd% on %resultCount%')|replace({'%resultStart%': resultStart, '%resultEnd%': resultEnd, '%resultCount%': resultCount}) }}
             {% endif %}
-        </div>
-    {% block show_results %}
-            {% for document in searchResults %}
-                <h2>Resultat n°{{ loop.index }}</h2>
-                    {%- if (view == 'list' or view == 'txtlist') and (document.parents_titles is defined or document.archDescUnitTitle is defined) -%}
-                        <ul class="breadcrumb">
-                        {%- if document.archDescUnitTitle is defined -%}
-                                {{ document.archDescUnitTitle }} 
-                            <br />
-                        {%- endif -%}
-                        {%- if document.parents_titles is defined -%}
-                            {% set parents_ids = document.parents|split('/') %}
-                            {% for ptitle in document.parents_titles %}
-                                 &#187; {{ ptitle }}
-                            {% endfor %}
-                            {%- endif -%}
-                        </ul>
-                    {%- endif -%}
+            </div>
+            <hr />
 
-                        <h3 property="dc:title">
-                            {%- if document.cUnittitle is defined -%}
-                                {{ document.cUnittitle }}
-                            {%- else -%}
-                                {{ _('Untitled unit') }}
+            {% block show_results %}
+                {% for document in searchResults %}
+                    <h2>Resultat n°{{ loop.index }}</h2>
+                        {%- if (document.parents_titles is defined or document.archDescUnitTitle is defined) -%}
+                            {%- if document.archDescUnitTitle is defined -%}
+                                    {{ document.archDescUnitTitle }}
+                                <br />
                             {%- endif -%}
-                            {%- if document.cDate is defined and document.cDate != '' -%}
-                                <span class="date" property="dc:date"> • {{ document.cDate }}</span>
-                            {%- endif -%}
-                        </h3>
-                    {% if view == 'list' or view == 'txtlist' %}
-                        {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-                    {{ displayFragment(document.fragment, document.fragmentid, search_form, false, false, false, 5, false, true)|raw }}
-                    {% endif %}
-                <hr />
-            {% endfor %}
-    {% endblock%}
+                            {%- if document.parents_titles is defined -%}
+                                {% set parents_ids = document.parents|split('/') %}
+                                {% for ptitle in document.parents_titles %}
+                                        &#187; {{ ptitle }}
+                                {% endfor %}
+                                {%- endif -%}
+                        {%- endif -%}
+
+                            <h3 property="dc:title">
+                                {%- if document.cUnittitle is defined -%}
+                                    {{ document.cUnittitle }}
+                                {%- else -%}
+                                    {{ _('Untitled unit') }}
+                                {%- endif -%}
+                                {%- if document.cDate is defined and document.cDate != '' -%}
+                                    <span class="date" property="dc:date"> • {{ document.cDate }}</span>
+                                {%- endif -%}
+                            </h3>
+                        {{ displayFragment(document.fragment, document.fragmentid, search_form, false, false, false, 5, false, true)|raw }}
+                    <hr />
+                {% endfor %}
+            {% endblock%}
         {% else %}
             <p>{{ _('No result found.') }}</p>
         {% endif %}

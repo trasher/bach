@@ -71,6 +71,8 @@ class Pdf extends \TCPDF
         parent::__construct($orientation, 'mm', 'A4', true, 'UTF-8');
         $this->_params = $params;
         $this->setCreator('Bach - ' . PDF_CREATOR);
+        $this->setFont('helvetica', '', 8);
+        $this->setTopMargin(20);
         $this->setTitle('document Bach');
     }
 
@@ -83,7 +85,7 @@ class Pdf extends \TCPDF
     {
         $image = $this->_params['header']['image'];
         $content = $this->_params['header']['content'];
-
+        $this->setFont('helvetica', '', 9);
         if (file_exists($image)) {
             $this->SetY(5);
             $this->writeHTML(
@@ -115,7 +117,7 @@ class Pdf extends \TCPDF
     {
         $image = $this->_params['footer']['image'];
         $content = $this->_params['footer']['content'];
-        $this->setFont('helvetica', '', 12);
+        $this->setFont('helvetica', '', 8);
         if (file_exists($image)) {
             $this->SetY(280);
             $this->writeHTML(
