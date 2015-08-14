@@ -80,6 +80,7 @@ parameters:
     feature.comments: true
     display.show_maps: true
     display.show_daterange: true
+    display.disable_select_daterange: false
     display.rows: 10
     display.show_param: 'list'
     display.ead.rows: '%display.rows%'

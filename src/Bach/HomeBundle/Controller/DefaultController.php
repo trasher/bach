@@ -331,6 +331,8 @@ class DefaultController extends SearchController
         if ( isset($suggestions) && $suggestions->count() > 0 ) {
             $tpl_vars['suggestions'] = $suggestions;
         }
+        $tpl_vars['disable_select_daterange']
+            = $this->container->getParameter('display.disable_select_daterange');
         $tpl_vars['current_date'] = 'cDateBegin';
         return $this->render(
             'BachHomeBundle:Default:index.html.twig',

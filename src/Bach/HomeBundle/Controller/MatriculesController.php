@@ -263,6 +263,8 @@ class MatriculesController extends SearchController
                 = $this->container->getParameter('matricules_searchparameters');
         }
 
+        $tpl_vars['disable_select_daterange']
+            = $this->container->getParameter('display.disable_select_daterange');
         return $this->render(
             'BachHomeBundle:Matricules:search_form.html.twig',
             array_merge(
