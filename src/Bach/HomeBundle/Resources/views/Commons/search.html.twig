@@ -63,8 +63,17 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a id="sh_map" href="?show_map={% if show_map == true %}off{% else %}on{% endif %}" title="{{ _('Shows or hides map') }}"{% if show_map == false %} class="disabled"{% endif %}><img src="{% include '::images/map.html.twig' %}" alt="{{ _('Show/Hide map') }}"/></a></li>
         {%- endif %}
         {% if by_year is defined -%}
+            {% if current_date == 'date_enregistrement' %}
+                {% set display_date = _('record date') %}
+            {% elseif current_date == 'classe' %}
+                {% set display_date = _('class') %}
+            {% elseif current_date == 'annee_naissance' %}
+                {% set display_date = _('birthdate') %}
+            {% else %}
+                {% set display_date =  _('Date')|lower %}
+            {%endif%}
             <li><a id="sh_daterange" href="?show_daterange={% if show_daterange == true %}off{% else %}on{% endif %}"  {% if disable_select_daterange == true %}
-title="{{ _('Show or hide the graph of distribution of birth dates') }}" {% else %} title="{{ _('Shows or hides date range graph') }}" {% endif %} {% if show_daterange == false %} class="disabled"{% endif %}><img src="{% include '::images/calendar.html.twig' %}" alt="{{ _('Show/Hide date range') }}"/></a></li>
+title="{{ _('Show or hide the graph of distribution by %datetype%')|replace({'%datetype%':display_date}) }}" {% else %} title="{{ _('Shows or hides date range graph') }}" {% endif %} {% if show_daterange == false %} class="disabled"{% endif %}><img src="{% include '::images/calendar.html.twig' %}" alt="{{ _('Show/Hide date range') }}"/></a></li>
         {%- endif %}
         </ul>
     {% endif %}
