@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Bach\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-19 10:59+0200\n"
-"PO-Revision-Date: 2015-08-19 11:00+0200\n"
+"PO-Revision-Date: 2015-09-02 14:59+0100\n"
 "Last-Translator: Sebastien Chaptal <sebastien.chaptal@anaphore.eu>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.1\n"
 
 #: src/Bach/HomeBundle/Twig/DisplayCdc.php:192
 #: src/Bach/HomeBundle/Twig/DisplayCdc.php:254
@@ -896,7 +896,7 @@ msgstr "date de naissance"
 
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:634
 msgid "Show or hide the graph of distribution by %datetype%"
-msgstr "Afficher ou masquer le graphique de répartition par %datetype%"
+msgstr "Affiche ou masque le graphique de répartition par %datetype%"
 
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:638
 msgid "Shows or hides date range graph"
