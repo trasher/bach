@@ -187,13 +187,21 @@ title="{{ _('Show or hide the graph of distribution by %datetype%')|replace({'%d
                 {% if facet.content|length > 0 %}
                     <ol>
                     {% set index_name = facet.index_name %}
-
                     {% if facet_name is defined and facet_name == index_name or facet.content|length < 20 %}
                         {% set facet_content = facet.content %}
                     {% else %}
-                        {% set facet_content = facet.content[:10] %}
+                        {% set facet_content = [] %}
+                        {% set compteur = 0 %}
+                        {% for facet,count in facet.content if compteur < 10 %}
+                            {% set facet_content = facet_content|merge( {('*-#'~facet):(count)} ) %}
+                            {% set compteur = loop.index %}
+                        {% endfor %}
                     {% endif %}
                     {% for facet,count in facet_content %}
+                        {% if facet|split('*-#')[1] is not defined %}
+                        {% else %}
+                            {% set facet = facet|split('*-#')[1]%}
+                        {% endif %}
                         <li>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, filter_field: index_name, filter_value: facet}) }}">
                             {% if facet_labels[index_name] is defined %}
