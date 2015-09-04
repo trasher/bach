@@ -1642,6 +1642,10 @@ div.sonata-bc .btn-primary:hover {
     float: right
 }
 
+#newSearch {
+    padding-top: 0.6em;
+}
+
 /**
  * ===== CDC =====
  */

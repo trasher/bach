@@ -257,7 +257,15 @@ title="{{ _('Show or hide the graph of distribution by %datetype%')|replace({'%d
             {{ form_widget(form.perform_search) }}
         </div>
     </form>
-
+    {% if searchResults is defined %}
+    <div id="newSearch">
+        {% if matricules_listparameters is defined %}
+            <a href="{{ path('bach_matricules') ~ "?clear_filters=1" }}" title="{{ _('New search')}}">{{_('Start a new search')}}</a>
+        {% else %}
+            <a href="{{ path('bach_archives') ~ "?clear_filters=1" }}" title="{{ _('New search') }}">{{ _('Start a new search')}}</a>
+        {% endif %}
+    </div>
+    {% endif %}
     {% if suggestions is defined and searchResults is defined and searchResults|length > 0 %}
     <aside id="suggestions">
         <strong>{{ _('Additionnal search suggestions:') }}</strong><br/>
