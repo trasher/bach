@@ -94,6 +94,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </xsl:if>
 
                 <xsl:if test="count(./*[not(local-name() = 'did')]) + count(./did/*[not(local-name() = 'unittitle')]) &gt; 0">
+                    <div id="{$id}">
                         <xsl:attribute name="class">
                             <xsl:text>content</xsl:text>
                             <xsl:if test="/archdesc">
@@ -110,6 +111,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         <xsl:if test="$cote_location = 'bottom' and did/unitid">
                             <xsl:apply-templates select="did/unitid" mode="cote"/>
                         </xsl:if>
+                    </div>
                 </xsl:if>
 
                 <xsl:if test=".//dao|.//daoloc and $print = 'false'">
