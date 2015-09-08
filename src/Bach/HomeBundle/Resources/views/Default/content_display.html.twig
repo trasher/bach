@@ -120,13 +120,17 @@ POSSIBILITY OF SUCH DAMAGE.
                 <ul>
                 {% for child in children %}
                     <li>
+                        {% if print == false %}
                         <a href="{{ path('bach_display_document', {docid: child.fragmentid}) }}" property="dc:hasPart">
+                        {% endif %}
                         {%- if child.cUnittitle is defined -%}
                             {{ child.cUnittitle }}
                         {%- else -%}
                             {{ _('Untitled unit') }}
                         {%- endif -%}
+                        {% if print == false %}
                         </a>
+                        {% endif %}
                     </li>
                 {% endfor %}
                 </ul>
