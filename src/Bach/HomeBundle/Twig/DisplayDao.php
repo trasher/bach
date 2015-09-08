@@ -187,6 +187,9 @@ class DisplayDao extends \Twig_Extension
 
                 foreach ( $xml_dg->children() as $node_name => $xml_dao ) {
                     if ( $node_name === 'dao' || $node_name === 'daoloc' ) {
+                        if( isset($xml_dao['role']) && (string)$xml_dao['role'] == 'thumbnails' ) {
+                            break;
+                        }
                         $dao = (string)$xml_dao['href'];
                         $daotitle = null;
                         if ( $xml_dao['title'] ) {
