@@ -69,7 +69,11 @@ POSSIBILITY OF SUCH DAMAGE.
                         {%- endif -%}
                     {% endset %}
                     <a href="{{ viewer_uri ~ images_link }}" target="_blank" >
-                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ _('Show related image') }}"/>
+                    {% if document.nom is defined or document.prenom is defined %}
+                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ document.nom ~ ' ' ~ document.prenoms|join(' ') }}"/>
+                    {% else %}
+                        <img src="{{ viewer_uri ~ 'ajax/img/' ~ document.start_dao ~ '/format/thumb' }}" alt="{{ _('Scan') }}"/>
+                    {% endif %}
                     </a>
                 {% else %}
                     <img src="{% include '::images/noimage.html.twig' %}" alt=""/>
@@ -80,21 +84,27 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% set name %}
                     {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
                         {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
-                    {%- else -%}
+                    {%- elseif document.nom is defined -%}
                         {{ document.nom|trim }}
+                    {% else %}
+                        {{ '' }}
                     {%- endif -%}
                     {% endset %}
                     {% set surname %}
                     {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
                         {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
-                    {%- else -%}
+                    {%- elseif document.prenoms is defined-%}
                         {%- for prenom in document.prenoms -%}
                         {{ prenom ~ ' ' }}
                         {%- endfor -%}
                     {%- endif -%}
                     {% endset %}
-                    {% set birth_date = document.annee_naissance|date('Y') %}
-                    {% set full = name ~ ' ' ~ surname|trim ~ ', ' ~ birth_date %}
+                    {% if document.annee_naissance is defined %}
+                        {% set birth_date = document.annee_naissance|date('Y') %}
+                    {% else %}
+                        {% set birth_date = '' %}
+                    {% endif %}
+                        {% set full = name ~ ' ' ~ surname|trim ~ ', ' ~ birth_date %}
                     {{ full |raw }}
                 </a>
             </h3>
@@ -105,34 +115,59 @@ POSSIBILITY OF SUCH DAMAGE.
                 <thead>
                     <tr>
                         <th></th>
-                        <th>
-                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_MATRICULE') })|raw }}">{{ _('Matricule') }}</a>
-                        </th>
+                        {% if 'matricule' in matricules_searchparameters %}
+                            <th>
+                                <!--<a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_MATRICULE') })|raw }}">-->{{ _('Matricule') }}<!--</a>-->
+                            </th>
+                        {% endif %}
+                        {% if 'nom' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_NAME')})|raw }}">{{ _('Name') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'prenoms' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_SURNAME')})|raw }}">{{ _('Surnames') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'annee_naissance' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_BIRTHYEAR')})|raw }}">{{ _('Year of birth') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'lieu_naissance' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_BIRTHPLACE')})|raw }}">{{ _('Place of birth') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'classe' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_CLASS')})|raw }}">{{ _('Class') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'lieu_enregistrement' in matricules_searchparameters %}
                         <th>
                             <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_RECORDPLACE')})|raw }}">{{ _('Place of recording') }}</a>
                         </th>
+                        {% endif %}
+                        {% if 'date_enregistrement' in matricules_searchparameters %}
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_RECORDYEAR')})|raw }}">{{ _('Record year') }}</a>
+                        </th>
+                        {% endif %}
+                        {% if 'cote' in matricules_searchparameters %}
+                        <th>
+                            <a href="{{ path(block('search_path'), {form_name: search_form, query_terms: q, results_order: constant('Bach\\HomeBundle\\Entity\\MatriculesViewParams::ORDER_COTE')})|raw }}">{{ _('Classification') }}</a>
+                        </th>
+                        {% endif %}
+ 
                     </tr>
                 </thead>
                 <tbody>
             {% for document in searchResults %}
                 <tr vocab="http://schema.org/" typeof="Person">
                     <td class="actions">
-                        <a class="display_doc" title="{{ _('Show record') }}" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Show record') }}</a>
+                        <a class="display_doc" title="{{ _('Detailled description') }}" href="{{ path('bach_display_matricules', {'docid': document.id}) }}">{{ _('Detailled description') }}</a>
                         {% if document.start_dao is defined %}
                             {% set series_name %}
                                 {%- for i in document.start_dao|split('/') -%}
@@ -149,30 +184,38 @@ POSSIBILITY OF SUCH DAMAGE.
                                     viewer/{{ document.start_dao }}
                                 {%- endif -%}
                             {% endset %}
-                            <a href="{{ viewer_uri ~ images_link }}" title="{{ _('Show related image') }}" target="_blank" property="image">
-                                <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Show related image') }}"/>
+                            <a href="{{ viewer_uri ~ images_link }}" title="{{ _('Scan') }}" target="_blank" property="image">
+                                <img src="{{ asset('img/img_link.png') }}" alt="{{ _('Scan') }}"/>
                             </a>
                         {% endif %}
                     </td>
-                    <td>
-                        {{ document.matricule }}
-                    </td>
+                    {% if 'matricule' in matricules_searchparameters %}
+                        <td>
+                            {{ document.matricule }}
+                        </td>
+                    {% endif %}
+                    {% if 'nom' in matricules_searchparameters %}
                     <td property="familyName">
                         {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
-                        {%- else -%}
+                        {%- elseif document.nom is defined -%}
                             {{ document.nom }}
                         {%- endif -%}
                     </td>
+                    {% endif %}
+
+                    {% if 'prenoms' in matricules_searchparameters %}
                     <td property="givenName">
                         {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
-                        {%- else -%}
+                        {%- elseif document.prenoms is defined -%}
                             {% for prenom in document.prenoms %}
                                 {{ prenom }}
                             {% endfor %}
                         {%- endif -%}
                     </td>
+                    {% endif %}
+                    {% if 'annee_naissance' in matricules_searchparameters %}
                     <td property="birthDate">{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
                     <td>
                         {%- if hlSearchResults.getResult(document.id).getField('lieu_naissance')|length > 0 -%}
@@ -181,7 +224,11 @@ POSSIBILITY OF SUCH DAMAGE.
                             {% if document.lieu_naissance is defined %}{{ document.lieu_naissance }}{% endif %}
                         {%- endif -%}
                     </td>
+                    {% endif %}
+                    {% if 'classe' in matricules_searchparameters %}
                     <td>{% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}</td>
+                    {% endif %}
+                    {% if 'lieu_enregistrement' in matricules_searchparameters %}
                     <td>
                         {%- if hlSearchResults.getResult(document.id).getField('lieu_enregistrement')|length > 0 -%}
                             {{ hlSearchResults.getResult(document.id).getField('lieu_enregistrement')[0]|raw }}
@@ -189,6 +236,18 @@ POSSIBILITY OF SUCH DAMAGE.
                             {{ document.lieu_enregistrement }}
                         {%- endif -%}
                     </td>
+                    {% endif %}
+                    {% if 'date_enregistrement' in matricules_searchparameters %}
+                    <td>
+                        {% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}
+                    </td>
+                    {% endif %}
+                    {% if 'cote' in matricules_searchparameters %}
+                    <td>
+                        {{ document.cote }}
+                    </td>
+                    {% endif %}
+
                 </tr>
             {% endfor %}
                 </tbody>
@@ -227,11 +286,11 @@ POSSIBILITY OF SUCH DAMAGE.
         event.stopImmediatePropagation();
         event.preventDefault();
 
-        var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
+        var _elt = $('<div id="display_doc" title="{{ _('Detailled description')|escape('js') }}"></div>');
         _elt.appendTo('body');
 
-        var _width = $(window).width() * 0.8;
-        var _height = $(window).height() * 0.8;
+        var _width = $(window).width() * 0.5;
+        var _height = $(window).height() * 0.6;
 
         $.ajax({
             url: $(this).attr('href') + '/ajax',

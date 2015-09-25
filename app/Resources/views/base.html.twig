@@ -115,7 +115,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% endif %}
                     {% if features.archives and features.browse %}
                     <li{% if app.request.attributes.get('_route') == 'bach_browse' %} class="active"{% endif %}>
-                        <a href="{{ path('bach_browse') }}">{{ _('Browse') }}</a>
+                        <a href="{{ path('bach_browse') }}">{{ _('Consult index') }}</a>
                     </li>
                     {% endif %}
                     {% if features.expos %}
@@ -256,6 +256,12 @@ POSSIBILITY OF SUCH DAMAGE.
             } else {
                 //tooltip on each a and input search
                 $('a, input[type=text]').tooltip();
+                $('a[property="image"]').focus(function(evt) {
+                    $(evt.currentTarget).tooltip("close");
+                });
+                $('figure.result_pic a ').focus(function(evt) {
+                    $(evt.currentTarget).tooltip("close");
+                });
                 //unbind elements and remove class when resizing
                 $('#navigation > ul').removeClass('hidden');
                 $('#navigation').unbind('click');

@@ -57,6 +57,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:param name="cdc" select="'false'"/>
     <xsl:param name="docid"/>
     <xsl:param name="cote_location" select="''"/>
+    <xsl:param name="print" select="''"/>
 
     <xsl:template match="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12|archdesc">
         <xsl:variable name="id">
@@ -72,12 +73,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <xsl:choose>
             <xsl:when test="$full = 1">
-                <xsl:if test="$cdc = 'false'">
+                <xsl:if test="$cdc = 'false' and $print = 'false'">
                     <ul>
                         <xsl:if test="count(./*[not(local-name() = 'did')]) + count(./did/*[not(local-name() = 'unittitle')]) &gt; 0">
-                            <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Content')"/></a></li>
+                            <li><a href="#{$id}"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Description')"/></a></li>
                         </xsl:if>
-                        <xsl:if test=".//dao|.//daoloc">
+                        <xsl:if test=".//dao|.//daoloc and $print= 'false'">
                             <li><a href="#relative_documents"><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Documents')"/></a></li>
                         </xsl:if>
                         <xsl:if test="not($children = '')">
@@ -113,7 +114,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     </div>
                 </xsl:if>
 
-                <xsl:if test=".//dao|.//daoloc">
+                <xsl:if test=".//dao|.//daoloc and $print = 'false'">
                     <figure id="relative_documents">
                         <header>
                             <h3><xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Relative documents')"/></h3>
@@ -125,7 +126,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 </xsl:if>
             </xsl:when>
             <xsl:otherwise>
-                <div id="{$id}">
+                <xsl:choose>
+                <xsl:when test="$print = 1">
+                        <xsl:apply-templates select="did" mode="resume"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div id="{$id}">
                     <xsl:attribute name="class">
                         <xsl:text>content</xsl:text>
                         <xsl:if test="/archdesc">
@@ -133,7 +139,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         </xsl:if>
                     </xsl:attribute>
                     <xsl:apply-templates mode="resume"/>
-                </div>
+                    </div>
+                </xsl:otherwise>
+            </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -257,13 +265,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <xsl:template match="title" mode="full">
         <xsl:choose>
             <xsl:when test="not(parent::bibref)">
-                <div>
+                <!--<div>-->
                     <strong>
                         <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Title:')"/>
                         <xsl:text> </xsl:text>
                     </strong>
                     <xsl:value-of select="."/>
-                </div>
+                    <!--</div>-->
             </xsl:when>
             <xsl:otherwise>
                 <strong>
@@ -313,10 +321,13 @@ POSSIBILITY OF SUCH DAMAGE.
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Arrangement:')"/>
                                 </xsl:when>
                                 <xsl:when test="local-name() = 'relatedmaterial'">
-                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Related material:')"/>
+                                    <xsl:value-of select="php:function('bach\homebundle\twig\displayeadfragment::i18nfromxsl', 'related material:')"/>
                                 </xsl:when>
                                 <xsl:when test="local-name() = 'bibliography'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Bibliography:')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'userestrict'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Userestrict:')"/>
                                 </xsl:when>
                                 <xsl:when test="local-name() = 'bioghist'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Biography or history:')"/>
@@ -333,11 +344,17 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <xsl:when test="local-name() = 'physdesc'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Physical description')"/>
                                 </xsl:when>
+                                <xsl:when test="local-name() = 'processinfo'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'processinfo')"/>
+                                </xsl:when>
                                 <xsl:when test="local-name() = 'controlaccess'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Descriptors')"/>
                                 </xsl:when>
                                 <xsl:when test="local-name() = 'imprint'">
                                     <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Publication informations')"/>
+                                </xsl:when>
+                                <xsl:when test="local-name() = 'originalsloc'">
+                                    <xsl:value-of select="php:function('Bach\HomeBundle\Twig\DisplayEADFragment::i18nFromXsl', 'Original localisation')"/>
                                 </xsl:when>
                                 <xsl:when test="local-name() = 'repository'">
                                     <xsl:choose>
@@ -368,7 +385,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="odd|custodhist|arrangement|relatedmaterial|bibliography|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess" mode="full">
+    <xsl:template match="accessrestrict|legalstatus|odd|processinfo|custodhist|arrangement|relatedmaterial|originalsloc|bibliography|userestrict|bioghist|acqinfo|separatedmaterial|otherfindaid|repository|physdesc|container|controlaccess|origination" mode="full">
         <xsl:call-template name="section_content">
             <xsl:with-param name="title">
                 <xsl:choose>
@@ -585,13 +602,13 @@ POSSIBILITY OF SUCH DAMAGE.
                     <span class="unitid" property="dc:identifier">
                         <xsl:value-of select="unitid"/>
                     </span>
-                    <xsl:if test="langmaterial">
+                    <!--<xsl:if test="langmaterial">
                         <xsl:text> - </xsl:text>
-                    </xsl:if>
+                    </xsl:if>-->
                 </xsl:if>
-                <xsl:if test="langmaterial">
+                <!--<xsl:if test="langmaterial">
                     <xsl:value-of select="langmaterial"/>
-                </xsl:if>
+                </xsl:if>-->
             </header>
         </xsl:if>
     </xsl:template>

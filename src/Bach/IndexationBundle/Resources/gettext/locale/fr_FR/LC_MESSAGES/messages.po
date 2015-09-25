@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: src/Bach/IndexationBundle@20131025143701\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-01 10:21+0100\n"
-"PO-Revision-Date: 2014-12-01 10:23+0100\n"
-"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2015-05-22 15:13+0200\n"
+"PO-Revision-Date: 2015-05-22 15:15+0100\n"
+"Last-Translator: Sebastien Chaptal <sebastien.chaptal@anaphore.eu>\n"
+"Language-Team: \n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.6\n"
 
 #: src/Bach/IndexationBundle/Form/Type/DocumentType.php:91
 msgid "File to publish"
@@ -33,248 +33,244 @@ msgstr "Ajouter à la queue"
 msgid "Publish"
 msgstr "Publier"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:352
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:353
 msgid "Document %doc successfully deleted from Solr in %time"
 msgstr "Le document %doc a été supprimé de Solr en %time"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:360
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:361
 #, php-format
 msgid "Solr failed to remove document %doc!"
 msgstr "Échec de suppression du document %doc dans Solr !"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:466
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:467
 msgid "%core core has been truncated in %time"
 msgstr "Le noyau %core a été vidé en %time"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:474
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:483
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:475
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:484
 #, php-format
 msgid "Solr failed to empty %core core!"
 msgstr "Échec en vidant le noyau Solr %core !"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:509
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:510
 msgid "Could not validate non EAD documents (for now)."
 msgstr "Impossible de valider des documents non EAD (pour le moment)."
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:530
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:531
 #, php-format
 msgid "Corresponding file for %docid document no longer exists on disk."
 msgstr ""
 "Le fichier correspondant au document %docid n'existe plus sur le disque."
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:558
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:559
 msgid "Document %docid% is valid and DTD compliant!"
 msgstr "Le document %docid% est valide et conforme à la DTD !"
 
-#: src/Bach/IndexationBundle/Controller/DefaultController.php:564
+#: src/Bach/IndexationBundle/Controller/DefaultController.php:565
 msgid "%type% document %docid% is not valid!"
 msgstr "Le document %type% %docid% n'est pas valide !"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:107
-msgid "Validation results"
-msgstr "Résultats de la validation"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:131
-msgid "Show/hide errors"
-msgstr "Afficher/Masquer les erreurs"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:211
-msgid "Publication tasks"
-msgstr "Tâches de publication"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:218
-msgid "Remove all finished tasks"
-msgstr "Supprimer toutes les tâches terminées"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:220
-msgid "Remove finished"
-msgstr "Supprimer terminées"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:224
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:606
-msgid "Refresh"
-msgstr "Rafraîchir"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:234
-msgid "File name"
-msgstr "Nom de fichier"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:238
-msgid "Format"
-msgstr "Format"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:242
-msgid "Size"
-msgstr "Taille"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:284
-msgid "No publication in queue"
-msgstr "Pas de publication dans la queue"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:297
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1041
-msgid "Publication queue"
-msgstr "Queue de publication"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:302
-msgid ""
-"Publication queue list all documents that are waiting to be published. "
-"Publication happens depending on server parameters. Line color will inform "
-"you about publication success or failure."
-msgstr ""
-"La queue de publication liste tous les documents qui attendent d'être "
-"publiés. La publication est effectuée en fonction des paramètres du serveur. "
-"La couleur de la ligne vous informera du succès ou de l'échec de la "
-"publication."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:411
-msgid "Send a new file"
-msgstr "Envoyer un nouveau fichier"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:455
-msgid "Publication help"
-msgstr "Aide de la publication"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:460
-msgid ""
-"Publication process will extract all useful informations from a file. Select "
-"file you want to publish and its format.<br/>Then you will choose either to "
-"proceed publication, or to add the job to the queue for a further "
-"publication (used for bg files)."
-msgstr ""
-"Le processus de publication extrait les informations utiles d'un fichier. "
-"Sélectionnez le fichier que vous souhaitez publier ainsi son format.<br/"
-">Ensuite, vous pourrez choisir soit de procéder à sa publication, soit de "
-"l'ajouter à la queue pour une publication ultérieure (utile notamment pour "
-"les fichiers volumineux)."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:596
-msgid "Remove all published documents on all cores"
-msgstr "Supprimer tous les documents publiés sur tous les noyaux"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:598
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:822
-msgid "Remove all"
-msgstr "Supprimer tous"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:604
-msgid "Refresh all cores list"
-msgstr "Rafraîchir la liste de tous les noyaux"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:657
-msgid "Loading..."
-msgstr "Chargement..."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:659
-msgid "Currently loading..."
-msgstr "En cours de chargement..."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:670
-msgid "An error occured loading tab :("
-msgstr "Une erreur est survenue au chargement de l'onglet :("
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:684
-msgid ""
-"Do you really want to remove all published document?\n"
-"\n"
-"This can not be undone!"
-msgstr ""
-"Voulez-vous vraiment supprimer tous les documents publiés ?\n"
-"\n"
-"Cela ne peut être annulé !"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:695
-msgid "Please select at least one document."
-msgstr "Veuillez sélectionner au moins un document."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:702
-msgid "Do you want to remove selected document?"
-msgstr "Voulez-vous supprimer le document sélectionné ?"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:707
-#, php-format
-msgid "Do you want to remove all %count selected documents?"
-msgstr "Voulez-vous supprimer l'ensemble des %count documents ?"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:812
-msgid "Published \"%type\" documents"
-msgstr "Documents \"%type\" publiés"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:820
-msgid "Remove all published documents for \"%type\""
-msgstr "Supprimer tous les documents publiés pour « %type »"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:837
-msgid "Remove selected documents"
-msgstr "Supprimer les documents sélectionnés"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:839
-msgid "Remove selected"
-msgstr "Supprimer la sélection"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:845
-msgid "Identifier"
-msgstr "Identifiant"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:849
-msgid "File"
-msgstr "Fichier"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:853
-msgid "Creation"
-msgstr "Création"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:857
-msgid "Modification"
-msgstr "Modification"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:905
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:909
-msgid "Y-m-d h:i:s A"
-msgstr "d/m/Y H:i:s"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:917
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:921
-msgid "Validate against EAD DTD"
-msgstr "Valider avec la DTD EAD"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:938
-msgid "No documents published yet."
-msgstr "Pas de document publié pour le moment."
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:951
-msgid "Document validation"
-msgstr "Validation du document"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:959
-msgid "An error occured trying to validate document :("
-msgstr "Une erreur est survenue lors de la validation du document :("
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1020
-msgid "Manage publishing"
-msgstr "Gérer la publication"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1031
-msgid "Published documents"
-msgstr "Documents publiés"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1052
-msgid "Publish new file"
-msgstr "Publier un nouveau fichier"
-
-#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1057
-msgid "Help"
-msgstr "Aide"
 
 #: src/Bach/IndexationBundle/Command/ProceedQueueCommand.php:73
 msgid "Proceed publication queue"
 msgstr "Traiter la queue de publication"
 
-#: src/Bach/IndexationBundle/Command/ListCommand.php:109
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:97
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:85
+msgid "Documents type"
+msgstr "Type de documents"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:101
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:89
+msgid "Documents names or directories to proceed"
+msgstr "Noms des documents ou des dossiers à traiter"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:106
+msgid "Assume yes for all questions"
+msgstr "Répondre oui à toutes les questions"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:111
+msgid "Publish only in solr (full-import)"
+msgstr "Publier dans Solr uniquement (full-import)"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:116
+msgid "Do not really publish."
+msgstr "Ne pas publier réellement."
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:121
+msgid "Do not check if file has been modified"
+msgstr "Ne pas vérifier si le fichier a été modifié"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:126
+#: src/Bach/IndexationBundle/Command/ListCommand.php:90
+msgid "Give stats informations (memory used, etc)"
+msgstr "Affiche des statistiques (mémoire utilisée, etc)"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:151
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:148
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:149
+msgid "Running in dry mode"
+msgstr "Lancer en mode essai"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:166
+#: src/Bach/IndexationBundle/Command/ListCommand.php:120
 #: src/Bach/IndexationBundle/Command/RepublishCommand.php:109
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:162
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:169
 msgid "Unknown type! Please choose one of:"
 msgstr "Type inconnu ! Veuillez choisir entre :"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:178
+msgid "Publishing \"%type\" documents."
+msgstr "Publication des documents \"%type%\"."
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:190
+msgid "Following files are about to be published: "
+msgstr "Les fichiers suivants vont être publiés :"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:200
+msgid "yes"
+msgstr "oui"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:200
+msgid "no"
+msgstr "non"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:204
+msgid "Are you ok (y/n)?"
+msgstr "Êtes-vous d'accord (o/n) ?"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:215
+msgid "Publication begins..."
+msgstr "Démarrage de la publication"
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:262
+#, php-format
+msgid "Document %doc has not been changed, no publication required."
+msgstr "Le document %doc n'a pas changé, la publication n'est pas requise."
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:312
+#, php-format
+msgid "Document %doc has been successfully published."
+msgstr "Le document %doc a été publié avec succès."
+
+#: src/Bach/IndexationBundle/Command/PublishCommand.php:411
+msgid "Command canceled by user."
+msgstr "Commande annulée par l'utilisateur."
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:85
+msgid "Maximum results retrived from Solr."
+msgstr "Résultats maximum trouvés depuis SOlr."
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:127
+msgid "%found components found, but only %retrieved has been retrieved!"
+msgstr "%found composants toruvés, mais seulement %retrieved récupérés !"
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:128
+msgid "OAI export has failed :("
+msgstr "L'export OAI a échoué :("
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:142
+msgid "OAI documents will be stored in %path"
+msgstr "Les documents OAI seront stockés dans %path"
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:171
+msgid "Change %id"
+msgstr "Modification %id"
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:177
+msgid "Create %id"
+msgstr "Création %id"
+
+#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:217
+msgid "Remove %id"
+msgstr "Suppression %id"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:94
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:90
+msgid "Limit number of results."
+msgstr "Limiter le nombre de résultats."
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:99
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:95
+msgid "Do not store anything, just query nominatim."
+msgstr "Ne rien stocker, juste interroger nominatim."
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:104
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:100
+msgid "Just give a try with parameted occurences, do not store anything."
+msgstr "Effectuer un essai avec des occurrences  paramétrées, ne rien stocker."
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:109
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:105
+msgid "Quiet mode"
+msgstr "Mode silencieux"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:114
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:110
+msgid "Verbose mode"
+msgstr "Mode verbeux"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:119
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:238
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:120
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:217
+msgid "Include results marked as not found"
+msgstr "Inclure les résultats marqués comme introuvables"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:139
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:140
+msgid "You may not use \"quiet\" and \"verbose\" together."
+msgstr ""
+"Vous ne devriez pas utiliser « silencieux » et « verbeux » en même temps."
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:157
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:158
+msgid "Running in test mode"
+msgstr "Lancer en mode test"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:181
+#, php-format
+msgid "Process \"%database\" documents."
+msgstr "Traitement  des documents : \"%database\"."
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:193
+msgid "Following files are about to be process: "
+msgstr "Les fichiers suivants vont être publiés :"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:201
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:165
+msgid "EAD indexes"
+msgstr "Index EAD"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:202
+msgid "Matricules"
+msgstr "Matricules"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:207
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:172
+msgid "for"
+msgstr "pour"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:210
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:215
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:175
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:180
+msgid "Unknown database!"
+msgstr "Base inconnue !"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:212
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:177
+msgid "Please enter either:"
+msgstr "Merci de choisir entre :"
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:228
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:194
+msgid "Set limit to %i entries."
+msgstr "Fixe la limite à %i entrées."
+
+#: src/Bach/IndexationBundle/Command/GeodataCommand.php:256
+#: src/Bach/IndexationBundle/Command/GeolocCommand.php:253
+msgid "Query ead:"
+msgstr "Requête EAD :"
 
 #: src/Bach/IndexationBundle/Command/GeolocCommand.php:85
 msgid "Use specified value for localizations to find (may use % joker)"
@@ -282,52 +278,9 @@ msgstr ""
 "Utiliser la valeur spécifiée pour trouver les localisations (utilisation du "
 "joker % possible)"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:90
-msgid "Limit number of results."
-msgstr "Limiter le nombre de résultats."
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:95
-msgid "Do not store anything, just query nominatim."
-msgstr "Ne rien stocker, juste interroger nominatim."
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:100
-msgid "Just give a try with parameted occurences, do not store anything."
-msgstr "Effectuer un essai avec des occurrences  paramétrées, ne rien stocker."
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:105
-msgid "Quiet mode"
-msgstr "Mode silencieux"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:110
-msgid "Verbose mode"
-msgstr "Mode verbeux"
-
 #: src/Bach/IndexationBundle/Command/GeolocCommand.php:115
 msgid "Limit queries to specified database"
 msgstr "Limiter les requêtes à une base spécifique"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:120
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:217
-msgid "Include results marked as not found"
-msgstr "Inclure les résultats marqués comme introuvables"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:140
-msgid "You may not use \"quiet\" and \"verbose\" together."
-msgstr ""
-"Vous ne devriez pas utiliser « silencieux » et « verbeux » en même temps."
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:149
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:147
-msgid "Running in dry mode"
-msgstr "Lancer en mode essai"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:158
-msgid "Running in test mode"
-msgstr "Lancer en mode test"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:165
-msgid "EAD indexes"
-msgstr "Index EAD"
 
 #: src/Bach/IndexationBundle/Command/GeolocCommand.php:166
 msgid "Matricules places of birth"
@@ -337,31 +290,10 @@ msgstr "Lieux de naissance matricules"
 msgid "Matricules places of recording"
 msgstr "Lieux d'enregistrement matricules"
 
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:172
-msgid "for"
-msgstr "pour"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:175
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:180
-msgid "Unknown database!"
-msgstr "Base inconnue !"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:177
-msgid "Please enter either:"
-msgstr "Merci de choisir entre :"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:194
-msgid "Set limit to %i entries."
-msgstr "Fixe la limite à %i entrées."
-
 #: src/Bach/IndexationBundle/Command/GeolocCommand.php:207
 #, php-format
 msgid "Search on: %search"
 msgstr "Chercher sur : %search"
-
-#: src/Bach/IndexationBundle/Command/GeolocCommand.php:253
-msgid "Query ead:"
-msgstr "Requête EAD :"
 
 #: src/Bach/IndexationBundle/Command/GeolocCommand.php:291
 msgid "Query matricules born:"
@@ -397,110 +329,212 @@ msgid "Localization finished: %found% found, %fail% fail on %total entries"
 msgstr ""
 "Localisation terminée : %found trouvés, %fail échecs sur %total entrées"
 
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:85
-msgid "Maximum results retrived from Solr."
-msgstr "Résultats maximum trouvés depuis SOlr."
-
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:127
-msgid "%found components found, but only %retrieved has been retrieved!"
-msgstr "%found composants toruvés, mais seulement %retrieved récupérés !"
-
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:128
-msgid "OAI export has failed :("
-msgstr "L'export OAI a échoué :("
-
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:142
-msgid "OAI documents will be stored in %path"
-msgstr "Les documents OAI seront stockés dans %path"
-
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:171
-msgid "Change %id"
-msgstr "Modification %id"
-
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:177
-msgid "Create %id"
-msgstr "Création %id"
-
-#: src/Bach/IndexationBundle/Command/PopulateOaiRepoCommand.php:212
-msgid "Remove %id"
-msgstr "Suppression %id"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:93
-msgid "Documents type"
-msgstr "Type de documents"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:97
-msgid "Documents names or directories to proceed"
-msgstr "Noms des documents ou des dossiers à traiter"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:102
-msgid "Assume yes for all questions"
-msgstr "Répondre oui à toutes les questions"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:107
-msgid "Publish only in solr (full-import)"
-msgstr "Publier dans Solr uniquement (full-import)"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:112
-msgid "Do not really publish."
-msgstr "Ne pas publier réellement."
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:117
-msgid "Do not check if file has been modified"
-msgstr "Ne pas vérifier si le fichier a été modifié"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:122
-msgid "Give stats informations (memory used, etc)"
-msgstr "Affiche des statistiques (mémoire utilisée, etc)"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:174
-msgid "Publishing \"%type\" documents."
-msgstr "Publication des documents \"%type%\"."
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:186
-msgid "Following files are about to be published: "
-msgstr "Les fichiers suivants vont être publiés :"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:196
-msgid "yes"
-msgstr "oui"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:196
-msgid "no"
-msgstr "non"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:200
-msgid "Are you ok (y/n)?"
-msgstr "Êtes-vous d'accord (o/n) ?"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:211
-msgid "Publication begins..."
-msgstr "Démarrage de la publication"
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:257
-#, php-format
-msgid "Document %doc has not been changed, no publication required."
-msgstr "Le document %doc n'a pas changé, la publication n'est pas requise."
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:307
-#, php-format
-msgid "Document %doc has been successfully published."
-msgstr "Le document %doc a été publié avec succès."
-
-#: src/Bach/IndexationBundle/Command/PublishCommand.php:356
-msgid "Command canceled by user."
-msgstr "Commande annulée par l'utilisateur."
-
 #: src/Bach/IndexationBundle/Entity/Document.php:170
 #, php-format
 msgid "Cannot create upload directory %dir"
 msgstr "Impossible de créer le dossier de dépôt %dir"
 
-#: src/Bach/IndexationBundle/Entity/Geoloc.php:436
+#: src/Bach/IndexationBundle/Entity/Geoloc.php:449
 msgid "New geoloc entry"
 msgstr "Nouvelle entrée de géolocalisation"
 
-#: src/Bach/IndexationBundle/Service/TypesFiles.php:145
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:169
+msgid "Remove all published documents on all cores"
+msgstr "Supprimer tous les documents publiés sur tous les noyaux"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:171
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:907
+msgid "Remove all"
+msgstr "Supprimer tous"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:177
+msgid "Refresh all cores list"
+msgstr "Rafraîchir la liste de tous les noyaux"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:179
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:589
+msgid "Refresh"
+msgstr "Rafraîchir"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:230
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:232
+msgid "Currently loading..."
+msgstr "En cours de chargement..."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:243
+msgid "An error occured loading tab :("
+msgstr "Une erreur est survenue au chargement de l'onglet :("
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:257
+msgid ""
+"Do you really want to remove all published document?\n"
+"\n"
+"This can not be undone!"
+msgstr ""
+"Voulez-vous vraiment supprimer tous les documents publiés ?\n"
+"\n"
+"Cela ne peut être annulé !"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:268
+msgid "Please select at least one document."
+msgstr "Veuillez sélectionner au moins un document."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:275
+msgid "Do you want to remove selected document?"
+msgstr "Voulez-vous supprimer le document sélectionné ?"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:280
+#, php-format
+msgid "Do you want to remove all %count selected documents?"
+msgstr "Voulez-vous supprimer l'ensemble des %count documents ?"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:332
+msgid "Manage publishing"
+msgstr "Gérer la publication"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:343
+msgid "Published documents"
+msgstr "Documents publiés"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:353
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:662
+msgid "Publication queue"
+msgstr "Queue de publication"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:364
+msgid "Publish new file"
+msgstr "Publier un nouveau fichier"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:369
+msgid "Help"
+msgstr "Aide"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:420
+msgid "Validation results"
+msgstr "Résultats de la validation"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:444
+msgid "Show/hide errors"
+msgstr "Afficher/Masquer les erreurs"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:576
+msgid "Publication tasks"
+msgstr "Tâches de publication"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:583
+msgid "Remove all finished tasks"
+msgstr "Supprimer toutes les tâches terminées"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:585
+msgid "Remove finished"
+msgstr "Supprimer terminées"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:599
+msgid "File name"
+msgstr "Nom de fichier"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:603
+msgid "Format"
+msgstr "Format"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:607
+msgid "Size"
+msgstr "Taille"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:649
+msgid "No publication in queue"
+msgstr "Pas de publication dans la queue"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:667
+msgid ""
+"Publication queue list all documents that are waiting to be published. "
+"Publication happens depending on server parameters. Line color will inform "
+"you about publication success or failure."
+msgstr ""
+"La queue de publication liste tous les documents qui attendent d'être "
+"publiés. La publication est effectuée en fonction des paramètres du serveur. "
+"La couleur de la ligne vous informera du succès ou de l'échec de la "
+"publication."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:776
+msgid "Send a new file"
+msgstr "Envoyer un nouveau fichier"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:820
+msgid "Publication help"
+msgstr "Aide de la publication"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:825
+msgid ""
+"Publication process will extract all useful informations from a file. Select "
+"file you want to publish and its format.<br/>Then you will choose either to "
+"proceed publication, or to add the job to the queue for a further "
+"publication (used for bg files)."
+msgstr ""
+"Le processus de publication extrait les informations utiles d'un fichier. "
+"Sélectionnez le fichier que vous souhaitez publier ainsi son format.<br/"
+">Ensuite, vous pourrez choisir soit de procéder à sa publication, soit de "
+"l'ajouter à la queue pour une publication ultérieure (utile notamment pour "
+"les fichiers volumineux)."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:897
+msgid "Published \"%type\" documents"
+msgstr "Documents \"%type\" publiés"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:905
+msgid "Remove all published documents for \"%type\""
+msgstr "Supprimer tous les documents publiés pour « %type »"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:922
+msgid "Remove selected documents"
+msgstr "Supprimer les documents sélectionnés"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:924
+msgid "Remove selected"
+msgstr "Supprimer la sélection"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:930
+msgid "Identifier"
+msgstr "Identifiant"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:934
+msgid "File"
+msgstr "Fichier"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:938
+msgid "Creation"
+msgstr "Création"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:942
+msgid "Modification"
+msgstr "Modification"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:990
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:994
+msgid "Y-m-d h:i:s A"
+msgstr "d/m/Y H:i:s"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1002
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1006
+msgid "Validate against EAD DTD"
+msgstr "Valider avec la DTD EAD"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1023
+msgid "No documents published yet."
+msgstr "Pas de document publié pour le moment."
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1036
+msgid "Document validation"
+msgstr "Validation du document"
+
+#: src/Bach/IndexationBundle/Resources/gettext/twig.cache.php:1044
+msgid "An error occured trying to validate document :("
+msgstr "Une erreur est survenue lors de la validation du document :("
+
+#: src/Bach/IndexationBundle/Service/TypesFiles.php:155
 msgid "File or directory %path does not exists!"
 msgstr "Le fichier ou le dossier %path n'existe pas !"
 

@@ -1,0 +1,204 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+
+{% block container %}
+
+<h1>{{ _('Search in matricules') }}</h1>
+requete : {{ q }}
+    {% if filters is defined %}
+        <h2>Liste des filtres</h2>
+        {% for filter_name,values in filters %}
+            -><strong>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}:{% else %}{{ _('Unknown filter') }}:{% endif %}</strong>
+                {% if values is not iterable %}
+                    {% set values = []|merge([values]) %}
+                {% endif %}
+                {% for value in values %}
+                        {{ value }}<br />
+                {% endfor %}
+        {% endfor %}
+    {% endif %}
+    {% if searchResults is defined %}
+    <section role="main">
+        {% if searchResults|length > 0 %}
+        <div>
+            {% if resultCount == 1 %}
+                {{ _('1 result') }}
+            {% else %}
+                {{ _('Results %resultStart% to %resultEnd% on %resultCount%')|replace({'%resultStart%': resultStart, '%resultEnd%': resultEnd, '%resultCount%': resultCount}) }}
+            {% endif %}
+        </div>
+
+{% block show_results %}
+            <table class="list matricules" align="center" border="1">
+                <thead>
+                    <tr>
+                        <th></th>
+                        {% if 'matricule' in matricules_searchparameters %}
+                        <th>
+                            {{ _('Matricule') }}
+                        </th>
+                        {% endif %}
+                        {% if 'nom' in matricules_searchparameters %}
+                        <th>
+                            {{ _('Name') }}
+                        </th>
+                        {% endif %}
+                        {% if 'prenoms' in matricules_searchparameters %}
+                        <th>
+                            {{ _('Surnames') }}
+                        </th>
+                        {% endif %}
+                        {% if 'annee_naissance' in matricules_searchparameters %}
+                        <th>
+                            {{ _('Year of birth') }}
+                        </th>
+                        {% endif %}
+                        {% if 'lieu_naissance' in matricules_searchparameters %}
+                        <th>
+                            {{ _('Place of birth') }}
+                        </th>
+                        {% endif %}
+                        {% if 'classe' in matricules_searchparameters %}
+                        <th>
+                            {{ _('Class') }}
+                        </th>
+                        {% endif %}
+                        {% if 'lieu_enregistrement' in matricules_searchparameters %}
+                        <th>
+                            {{ _('Place of recording') }}
+                        </th>
+                        {% endif %}
+                        {% if 'date_enregistrement' in matricules_searchparameters %}
+                        <th>
+                           {{ _('Record year') }}
+                        </th>
+                        {% endif %}
+                        {% if 'cote' in matricules_searchparameters %}
+                        <th>
+                            {{ _('Classification') }}
+                        </th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+            {% for document in searchResults %}
+                <tr vocab="http://schema.org/" typeof="Person">
+                    <td class="actions">
+                        {% if document.start_dao is defined %}
+                            {% set series_name %}
+                                {%- for i in document.start_dao|split('/') -%}
+                                    {%- if not loop.last -%}
+                                        /{{ i }}
+                                    {%- endif -%}
+                                {%- endfor -%}
+                            {% endset %}
+                            {% set images_link %}
+                                {%- if viewer_uri[-1:1] != '/' -%}/{%- endif -%}
+                                {%- if document.end_dao is defined and document.start_dao != document.end_dao -%}
+                                    series{{ series_name }}?s={{ document.start_dao|split('/')|slice(-1,1)[0] }}&e={{ document.end_dao|split('/')|slice(-1,1)[0] }}
+                                {%- else -%}
+                                    viewer/{{ document.start_dao }}
+                                {%- endif -%}
+                            {% endset %}
+                            <a href="{{ viewer_uri ~ images_link }}" title="{{ _('Scan') }}" target="_blank" property="image"><img src="{{ asset('img/img_link.png') }}" alt="{{ _('Scan') }}"/></a>
+                        {% endif %}
+                    </td>
+                    {% if 'matricule' in matricules_searchparameters %}
+                        <td>
+                            {{ document.matricule }}
+                        </td>
+                    {% endif %}
+                    {% if 'nom' in matricules_searchparameters %}
+                    <td property="familyName">
+                        {%- if hlSearchResults.getResult(document.id).getField('txt_nom')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.id).getField('txt_nom')[0]|raw }}
+                        {%- elseif document.nom is defined -%}
+                            {{ document.nom }}
+                        {%- endif -%}
+                    </td>
+                    {% endif %}
+
+                    {% if 'prenoms' in matricules_searchparameters %}
+                    <td property="givenName">
+                        {%- if hlSearchResults.getResult(document.id).getField('txt_prenoms')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.id).getField('txt_prenoms')[0]|raw }}
+                        {%- elseif document.prenoms is defined -%}
+                            {% for prenom in document.prenoms %}
+                                {{ prenom }}
+                            {% endfor %}
+                        {%- endif -%}
+                    </td>
+                    {% endif %}
+                    {% if 'annee_naissance' in matricules_searchparameters %}
+                    <td property="birthDate">{% if document.annee_naissance is defined %}{{document.annee_naissance|date('Y') }}{% else %}-{% endif %}</td>
+                    <td>
+                        {%- if hlSearchResults.getResult(document.id).getField('lieu_naissance')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.id).getField('lieu_naissance')[0]|raw }}
+                        {%- else -%}
+                            {% if document.lieu_naissance is defined %}{{ document.lieu_naissance }}{% endif %}
+                        {%- endif -%}
+                    </td>
+                    {% endif %}
+                    {% if 'classe' in matricules_searchparameters %}
+                    <td>{% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}</td>
+                    {% endif %}
+                    {% if 'lieu_enregistrement' in matricules_searchparameters %}
+                    <td>
+                        {%- if hlSearchResults.getResult(document.id).getField('lieu_enregistrement')|length > 0 -%}
+                            {{ hlSearchResults.getResult(document.id).getField('lieu_enregistrement')[0]|raw }}
+                        {%- else -%}
+                            {{ document.lieu_enregistrement }}
+                        {%- endif -%}
+                    </td>
+                    {% endif %}
+                    {% if 'date_enregistrement' in matricules_searchparameters %}
+                    <td>
+                        {% if document.classe is defined %}{{ document.classe|date('Y') }}{% else %}-{% endif %}
+                    </td>
+                    {% endif %}
+                    {% if 'cote' in matricules_searchparameters %}
+                    <td>
+                        {{ document.cote }}
+                    </td>
+                    {% endif %}
+
+                </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+{% endblock %}
+
+{%endif%}
+{%endif%}
+{%endblock%}

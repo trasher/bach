@@ -602,7 +602,8 @@ p {
 [id=search_results] article figure {
     float:left;
     width: 150px;
-    height: 150px;
+    min-height: 150px;
+    max-height: 200px;
     margin: .5em 0;
     text-align: center;
     overflow: hidden;
@@ -849,8 +850,9 @@ h2.back a:hover {
 }
 
 [id=display_facets] li {
-    width: 22em;
+    width: 100%;
     display: inline-block;
+    padding: 3px 0;
 }
 
 [id=live-search] {
@@ -861,6 +863,21 @@ h2.back a:hover {
 
 [id=live-search] fieldset, [id=live-search] input {
     font-size: .9em;
+}
+
+[id=facets_list]{
+    -moz-column-count: 4;
+    -webkit-column-count: 4;
+    column-count: 4;
+    /*-moz-column-width: 25%;
+    -webkit-column-width: 25%;
+    column-width: 25%;
+
+    -moz-column-gap: 40px;
+    -webkit-column-gap: 40px;
+    column-gap: 40px;
+    column-gap: 1em;
+    column-rule: thin solid black;*/
 }
 
 .show_fragment > aside > * {
@@ -922,19 +939,28 @@ h2.back a:hover {
 }
 
 [id=inventory_contents] h3, [id=inventory_contents] h3.ui-accordion-header {
-    font-size: 1.4em;
+    font-size: 1.4em !important;
     line-height: 1.4em;
+    font-weight: bold;
+    overflow: auto;
+}
+
+[id=inventory_contents] h4, [id=inventory_contents] h4.ui-accordion-header {
+    font-size: 1.2em !important;
+    line-height: 1.2em;
+    font-weight: bold;
+    overflow: auto;
+}
+
+[id=inventory_contents] h5, [id=inventory_contents] h5.ui-accordion-header {
+    font-size: 1em !important;
+    line-height: 1em;
     font-weight: bold;
     overflow: auto;
 }
 
 [id=inventory_contents].ui-accordion .ui-accordion-content {
     padding: .5em;
-}
-
-
-[id=inventory_contents].ui-accordion #inventory_presentation.ui-accordion-content {
-    padding: 0 0 .5em 0;
 }
 
 [id=inventory_contents] table {
@@ -1151,9 +1177,24 @@ body > #loading {
     text-align: right;
     position: relative;
     z-index: 10;
+    padding-right: 10px;
 }
 
 [id=social] .button {
+    display: inline;
+    float: right;
+}
+
+[id=matriculesSocial] {
+    float: right;
+    margin-top: .2em;
+    text-align: right;
+    position: relative;
+    z-index: 10;
+    padding-right: 10px;
+}
+
+[id=matriculesSocial] .button {
     display: inline;
     float: right;
 }
@@ -1601,6 +1642,10 @@ div.sonata-bc .btn-primary:hover {
     float: right
 }
 
+#newSearch {
+    padding-top: 0.6em;
+}
+
 /**
  * ===== CDC =====
  */
@@ -1627,7 +1672,6 @@ div.sonata-bc .btn-primary:hover {
 }
 
 #cdccontrol, #doccontrol {
-    float: right;
     margin-right: .5em;
     text-align: right;
 }
@@ -1807,6 +1851,16 @@ figure section .flashplayer {
     display: inline-block;
 }
 
+video[poster] {
+    width: 140px;
+    height: 140px;
+}
+
+#videos > .htmlplayer > video[poster] {
+    width: 300px;
+    height: 300px;
+}
+
 #footer_wrapper {
     position: fixed;
     height: 3%;
@@ -1846,6 +1900,19 @@ figure section .flashplayer {
     cursor: pointer;
     opacity: 0.4;
     text-decoration: none;
+}
+
+.printLink {
+    background-image: url(../img/printsm.png);
+    text-indent: -9999px;
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#change_view > .printLink {
+    margin-top: 3px;
 }
 
 /* Mobile view */

@@ -63,7 +63,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% block footer %}
                 <div id="footer_wrapper">
                     <div id="footer">
-                        &copy; 2014 Bach | {{ _('Designed by Anaphore') }} |
+                        &copy; {{ "now"|date("Y") }} Bach | {{ _('Designed by Anaphore') }} |
                         <a href="{{ path("footer_link", {'type':  'legals'}) }}" target="_blank">{{ _('general conditions of use') }}</a> |
                         <a href="{{ path("footer_link", {'type': 'credits'}) }}" target="_blank">{{ _('credits') }}</a>
                     </div>
@@ -73,5 +73,24 @@ POSSIBILITY OF SUCH DAMAGE.
     </div> {# /#wrapper #}
 
     {% block main_js %}{% endblock %}
+{% block tracker %}
+    {% if tracker is not null %}
+        <!-- Piwik -->
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="//stats.anaphore.eu/";
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', {{ tracker }}]);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
+            </script>
+        <noscript><p><img src="//stats.anaphore.eu/piwik.php?idsite={{ tracker }}" style="border:0;" alt="" /></p></noscript>
+        <!-- End Piwik Code -->
+    {% endif %}
+{% endblock %}
 </body>
 </html>

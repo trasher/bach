@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: src/Bach/AdministrationBundle@20131025144736\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-28 09:25+0200\n"
-"PO-Revision-Date: 2014-07-28 09:26+0100\n"
-"Last-Translator: Johan Cwiklinski <johan.cwiklinski@anaphore.eu>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2015-05-11 16:41+0100\n"
+"Last-Translator: Sebastien Chaptal <sebastien.chaptal@anaphore.eu>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.5\n"
+"Language-Team: \n"
 
 #: src/Bach/AdministrationBundle/Controller/CoreAdminController.php:137
 #: src/Bach/AdministrationBundle/Command/CreatecoreCommand.php:129
@@ -224,7 +224,7 @@ msgstr "Titre"
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:214
 msgid "Descriptors"
-msgstr "Descritpeurs"
+msgstr "Descripteurs"
 
 #: src/Bach/AdministrationBundle/Entity/SolrCore/Fields.php:217
 msgid "File title"

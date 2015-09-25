@@ -457,6 +457,27 @@ class DisplayHtml extends \Twig_Extension
         case 'Other finding aid':
             return _('Other finding aid');
             break;
+        case 'Condition of use':
+            return _('Condition of use');
+            break;
+        case 'Related material':
+            return _('Related material');
+            break;
+        case 'Bibliography':
+            return _('Bibliography');
+            break;
+        case 'Repository':
+            return _('Repository');
+            break;
+        case 'Physfacet':
+            return _('Physical support');
+            break;
+        case 'Genreform':
+            return _('Type');
+            break;
+        case 'Odd':
+            return _('Odd');
+            break;
         default:
             //Should we really throw an exception here?
             //return _($ref);

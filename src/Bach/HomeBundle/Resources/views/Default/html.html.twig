@@ -128,13 +128,23 @@ POSSIBILITY OF SUCH DAMAGE.
             var _this = $(this);
             _this.hide();
             var _parent = _this.parent('li');
-            var _expand = $('<a class="expand" href="#' + _parent.attr('id') + '" title="{{ _('Expand/Hide informations') }}">{{ _('Informations') }}</a>');
+            var _expand = $('<a class="expand" href="#' + _parent.attr('id') + '" title="{{ _('Expand/Hide informations') }}">&#9432;</a>');
             _expand.on('click', function(){
                 $(this).toggleClass('expanded').nextAll('.extended_informations').toggle();
                 return false;
             });
             _parent.prepend(_expand);
         });
+        if ( window.location.href.indexOf("classification-scheme") == -1 && document.referrer.indexOf("classification-scheme") == -1 
+             && window.location.href.indexOf("#") != -1) {
+            window.location.href = window.location.hash; // fix gap betwwen anchor and display
+        }
+        {% if collapsecdc == true %}
+        if(window.location.href.indexOf("classification-scheme") != -1) {
+            $('input[type=checkbox]').prop('checked', false);
+        }
+        {% endif %}
+
     });
     {% include 'BachHomeBundle:Default:jsplayer.js.twig' %}
 {% endblock %}
@@ -162,7 +172,7 @@ POSSIBILITY OF SUCH DAMAGE.
         event.stopImmediatePropagation();
         event.preventDefault();
 
-        var _elt = $('<div id="display_doc" title="{{ _('Consult document')|escape('js') }}"></div>');
+        var _elt = $('<div id="display_doc" title="{{ _('Detailled description')|escape('js') }}"></div>');
         _elt.appendTo('body');
 
         $.ajax({

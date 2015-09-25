@@ -64,6 +64,7 @@ class SolariumQueryContainer
     private $_order = ViewParams::ORDER_RELEVANCE;
     private $_search_form;
     private $_no_results;
+    private $_weight;
 
     /**
      * Set field
@@ -125,6 +126,29 @@ class SolariumQueryContainer
     {
         return $this->_filters[$name];
     }
+
+    /**
+     * Get weight
+     *
+     * @return array
+     */
+    public function getWeight()
+    {
+        return $this->_weight;
+    }
+
+    /**
+     * Set Weight
+     *
+     * @param array $weight parameter weight in query
+     *
+     * @return array
+     */
+    public function setWeight($weight)
+    {
+        $this->_weight = $weight;
+    }
+
 
     /**
      * Is field known?
@@ -195,6 +219,12 @@ class SolariumQueryContainer
             break;
         case MatriculesViewParams::ORDER_RECORDPLACE:
             return 'oLieu_enregistrement';
+            break;
+        case MatriculesViewParams::ORDER_RECORDYEAR:
+            return 'date_enregistrement';
+            break;
+        case MatriculesViewParams::ORDER_COTE:
+            return 'cote';
             break;
         }
         return $this->_order;

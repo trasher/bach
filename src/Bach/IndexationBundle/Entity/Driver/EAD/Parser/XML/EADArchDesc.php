@@ -186,7 +186,10 @@ class EADArchDesc
                             }
                             $topcopy = array();
                             foreach ( $parent[$descriptor] as $pdesc ) {
-                                if ( !in_array($pdesc, $result[$descriptor]) ) {
+                                if (!in_array($pdesc, $result[$descriptor])
+                                    && isset($pdesc['attributes']['source'])
+                                    && $pdesc['attributes']['source']!='liste-niveau'
+                                ) {
                                     $topcopy[] = $pdesc;
                                     $xpath_qry = $descriptor;
                                     foreach ( $pdesc['attributes'] as

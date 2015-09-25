@@ -144,13 +144,13 @@ class DisplayEADFragment extends \Twig_Extension
      * @return string
      */
     public function display($fragment, $docid, $form_name = 'default', $full = false,
-        $hasChildren = false, $hasComments = false, $countSub = 0, $ajax = false
+        $hasChildren = false, $hasComments = false, $countSub = 0, $ajax = false,
+        $print = false
     ) {
         $proc = new \XsltProcessor();
         $proc->importStylesheet(
             simplexml_load_file(__DIR__ . '/display_fragment.xsl')
         );
-
         $router = $this->_router;
         $request = $this->_request;
         $callback = function ($matches) use ($router, $request, $form_name) {
@@ -180,6 +180,7 @@ class DisplayEADFragment extends \Twig_Extension
         $proc->setParameter('', 'cote_location', $this->_cote_location);
         $comments_enabled = $this->_comms ? 'true' : 'false';
         $proc->setParameter('', 'comments_enabled', $comments_enabled);
+        $proc->setParameter('', 'print', $print);
 
         if ( $hasChildren === true ) {
             $proc->setParameter('', 'children', 'true');
@@ -201,7 +202,15 @@ class DisplayEADFragment extends \Twig_Extension
             $callback,
             $text
         );
-
+        // delete link and images for printing
+        if ($print === true) {
+            $text = preg_replace('/<a href=\"(.*?)\">(.*?)<\/a>/', "\\2", $text);
+            $text = preg_replace(
+                '@<section class="otherfindaid"[^>]*?>.*?</section>@si',
+                '',
+                $text
+            );
+        }
         if ( $docid !== '' ) {
             $add_comment_path = $router->generate(
                 'bach_add_comment',
@@ -297,6 +306,9 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Bibliography:':
             return _('Bibliography:');
             break;
+        case 'Userestrict:':
+            return _('Userestrict:');
+            break;
         case 'Biography or history:':
             return _('Biography or history:');
             break;
@@ -309,8 +321,8 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Untitled unit':
             return _('Untitled unit');
             break;
-        case 'Content':
-            return _('Content');
+        case 'Description':
+            return _('Description');
             break;
         case 'Documents':
             return _('Documents');
@@ -321,7 +333,7 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Add comment':
             return _('Add comment');
             break;
-        case 'Repository':
+        case 'Repository:':
             return _('Repository:');
             break;
         case 'Language:':
@@ -333,6 +345,13 @@ class DisplayEADFragment extends \Twig_Extension
         case 'Bibliographic informations':
             return _('Bibliographic informations');
             break;
+        case 'processinfo':
+            return _('Information process');
+            break;
+        case 'Original localisation':
+            return _('Original localisation');
+            break;
+
         default:
             if ( strpos($ref, 'dyndescr_') === 0 ) {
                 return self::guessDynamicFieldLabel($ref);
@@ -446,7 +465,7 @@ class DisplayEADFragment extends \Twig_Extension
                 $ret .= '>' . $value . '</a>';
 
                 if ( $count < count($out['values']) ) {
-                    $ret .= ', ';
+                    $ret .= ' • ';
                 }
             }
             $ret .='</div>';

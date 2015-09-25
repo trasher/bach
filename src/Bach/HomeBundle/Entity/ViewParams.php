@@ -71,7 +71,7 @@ class ViewParams
 
     private $_show_pics = true;
     private $_results_by_page = 10;
-    private $_view = self::VIEW_LIST;
+    private $_view = self::VIEW_TEXT_LIST;
     protected $order = self::ORDER_RELEVANCE;
     private $_show_map = true;
     private $_show_daterange = true;
@@ -81,15 +81,17 @@ class ViewParams
     /**
      * Constructor
      *
-     * @param boolean $show_map       Whether to display map
-     * @param boolean $show_daterange Whether to diplay date range
-     * @param int     $rows           Number of rows to display
+     * @param boolean $show_map         Whether to display map
+     * @param boolean $show_daterange   Whether to diplay date range
+     * @param int     $rows             Number of rows to display
+     * @param string  $viewDisplayParam Type of display
      */
-    public function __construct($show_map, $show_daterange, $rows)
+    public function __construct($show_map, $show_daterange, $rows, $viewDisplayParam)
     {
         $this->_show_map = $show_map;
         $this->_show_daterange = $show_daterange;
         $this->_results_by_page = $rows;
+        $this->_view = $viewDisplayParam;
     }
 
     /**

@@ -87,9 +87,15 @@ img[longdesc]:after {
 
 
 /** Hide elements we do not want to print */
-.header, [id=navigation], .access, [id=user_login], .show_fragment > aside, .show_fragment > ul, .interactions  {
+.header, [id=navigation], .access, [id=user_login], .show_fragment > aside, .show_fragment > ul, .interactions,
+#footer_wrapper, #matriculesSocial, #social, #dates_plot, #map, .result_pic, article > div > aside, #keepFilters, #navigation, #facets, .pagination {
     display: none;
 }
+
+a[href]:after {
+    content:"";
+}
+
 
 /** Take care of figures titles */
 figure  span.title {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mapper for Matricules data
+ * Bach 1.0.2 migration file
  *
  * PHP version 5
  *
@@ -35,47 +35,84 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category Indexation
+ * @category Migrations
  * @package  Bach
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
+ * @author   Sebastien Chaptal <sebastien.chaptal@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
 
-namespace Bach\IndexationBundle\Entity\Mapper;
+namespace Bach\Migrations;
 
-use Bach\IndexationBundle\DriverMapperInterface;
+require_once 'BachMigration.php';
+
+use Doctrine\DBAL\Schema\Schema;
+use Bach\HomeBundle\Entity\Comment;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Mapper for Matricules data
+ * Bach 1.0.2 migration file
  *
- * PHP version 5
- *
- * @category Indexation
+ * @category Migrations
  * @package  Bach
- * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Vincent Fleurette <vincent.fleurette@anaphore.eu>
+ * @author   Sebastien Chaptal <sebastien.chaptal@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
-class MatriculesDriverMapper implements DriverMapperInterface
+class Version102 extends BachMigration implements ContainerAwareInterface
 {
+    private $_container;
+
     /**
-     * Translate elements
+     * Sets container
      *
-     * @param arrya $data Document data
+     * @param ContainerInterface $container Container
      *
-     * @return array
+     * @return void
      */
-    public function translate($data)
+    public function setContainer(ContainerInterface $container = null)
     {
-        //replace double spaces in surnames with simple space
-        if (!empty($data['prenoms'])) {
-            $data['prenoms'][0]['value'] = str_replace(
-                '  ',
-                ' ',
-                $data['prenoms'][0]['value']
-            );
-        }
-        return $data;
+        $this->_container = $container;
+    }
+
+    /**
+     * Ups database schema
+     *
+     * @param Schema $schema Database schema
+     *
+     * @return void
+     */
+    public function up(Schema $schema)
+    {
+        $this->checkDbPlatform();
+
+        $table = $schema->getTable('matricules_file_format');
+        $this->addSql(
+            "ALTER TABLE matricules_file_format MODIFY `classe` DATE NULL"
+        );
+    }
+
+    /**
+     * Downs database schema
+     *
+     * @param Schema $schema Database Schema
+     *
+     * @return void
+     */
+    public function down(Schema $schema)
+    {
+        $this->checkDbPlatform();
+
+        $table = $schema->getTable('matricules_file_format');
+        $this->addSql(
+            "UPDATE matricules_file_format SET `classe` = NOW()" .
+            " WHERE `classe` IS NULL"
+        );
+        $this->addSql(
+            "ALTER TABLE matricules_file_format MODIFY `classe` DATE NOT NULL"
+        );
     }
 }

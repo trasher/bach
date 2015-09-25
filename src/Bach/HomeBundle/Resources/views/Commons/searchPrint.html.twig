@@ -1,0 +1,96 @@
+{#
+Copyright (c) 2014, Anaphore
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    (1) Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    (2) Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+    (3)The name of the author may not be used to
+   endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+#}
+
+
+{% block container %}
+    <strong>Recherche</strong> : {{ q }}
+    {% if filters is defined %}
+        <h3>Liste des filtres</h3>
+        {% for filter_name,values in filters %}
+            -><strong>{% if facet_names[filter_name] is defined %} {{ facet_names[filter_name] }}{% else %}{{ _('Unknown filter') }}{% endif %}:</strong>
+                {% if values is not iterable %}
+                    {% set values = []|merge([values]) %}
+                {% endif %}
+                {% for value in values %}
+                        {{ value }}<br />
+                {% endfor %}
+        {% endfor %}
+    {% endif %}
+    {% if searchResults is defined %}
+    <section role="main">
+        {% if searchResults|length > 0 %}
+            <div>
+            {% if resultCount == 1 %}
+                    {{ _('1 result') }}
+            {% else %}
+                {{ _('Results %resultStart% to %resultEnd% on %resultCount%')|replace({'%resultStart%': resultStart, '%resultEnd%': resultEnd, '%resultCount%': resultCount}) }}
+            {% endif %}
+            </div>
+            <hr />
+
+            {% block show_results %}
+                {% for document in searchResults %}
+                    <h2>Resultat n°{{ loop.index }}</h2>
+                        {%- if (document.parents_titles is defined or document.archDescUnitTitle is defined) -%}
+                            {%- if document.archDescUnitTitle is defined -%}
+                                    {{ document.archDescUnitTitle }}
+                                <br />
+                            {%- endif -%}
+                            {%- if document.parents_titles is defined -%}
+                                {% set parents_ids = document.parents|split('/') %}
+                                {% for ptitle in document.parents_titles %}
+                                        &#187; {{ ptitle }}
+                                {% endfor %}
+                                {%- endif -%}
+                        {%- endif -%}
+
+                            <h3 property="dc:title">
+                                {%- if document.cUnittitle is defined -%}
+                                    {{ document.cUnittitle }}
+                                {%- else -%}
+                                    {{ _('Untitled unit') }}
+                                {%- endif -%}
+                                {%- if document.cDate is defined and document.cDate != '' -%}
+                                    <span class="date" property="dc:date"> • {{ document.cDate }}</span>
+                                {%- endif -%}
+                            </h3>
+                        {{ displayFragment(document.fragment, document.fragmentid, search_form, false, false, false, 5, false, true)|raw }}
+                    <hr />
+                {% endfor %}
+            {% endblock%}
+        {% else %}
+            <p>{{ _('No result found.') }}</p>
+        {% endif %}
+    </section>
+    {% endif %}
+{% endblock %}

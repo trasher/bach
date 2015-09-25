@@ -138,15 +138,18 @@ abstract class SearchController extends Controller
      */
     protected function commonTemplateVariables()
     {
-        $show_maps = $this->container->getParameter('feature.maps');
-        $viewer_uri = $this->container->getParameter('viewer_uri');
-        $covers_dir = $this->container->getParameter('covers_dir');
+        $show_maps        = $this->container->getParameter('feature.maps');
+        $viewer_uri       = $this->container->getParameter('viewer_uri');
+        $covers_dir       = $this->container->getParameter('covers_dir');
+        $viewDisplayParam = $this->container->getParameter('display.ead.show_param');
+
 
         $tpl_vars = array(
             'viewer_uri'        => $viewer_uri,
             'show_maps'         => $show_maps,
             'covers_dir'        => $covers_dir,
-            'cookie_param_name' => $this->getCookieName()
+            'cookie_param_name' => $this->getCookieName(),
+            'view'              => $viewDisplayParam
         );
 
         return $tpl_vars;
@@ -466,7 +469,8 @@ abstract class SearchController extends Controller
      */
     protected function getCookieName()
     {
-        return 'bach_cookie';
+        $host = str_replace('.', '_', $this->getRequest()->getHost());
+        return $host . '_bach_cookie';
     }
 
     /**
@@ -601,7 +605,7 @@ abstract class SearchController extends Controller
                 if ( $this->getRequest()->getLocale() == 'fr_FR' ) {
                     setlocale(LC_COLLATE, 'fr_FR.utf8');
                 }
-                ksort($values, SORT_FLAG_CASE | SORT_NATURAL);
+                ksort($values, SORT_FLAG_CASE | SORT_LOCALE_STRING);
             } else {
                 //fallback for PHP < 5.4
                 ksort($values, SORT_LOCALE_STRING);

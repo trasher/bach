@@ -1,3 +1,60 @@
+1.2 (2015-09-25)
+
+- Remove sub title link in pdf
+- Remove thumbnail image serie in search result document display
+- Fix display tab content in display result
+- Add link to start a new search
+- Fix a bad display in matricules facet
+- Add parameter to disable plot selection
+- Add print result feature
+- Add possibility to add thumbnail to pdf thumbnail
+- Fix otherfindaid html xsl link
+- Add original loc and localisation in the XSL
+- Add originalsloc in html fragment
+- Fix test 'liste-niveau' in eadarchdesc
+- Fix tooltip focus in ead search
+- Change size of popup result
+- Fix text for the hover selection histogram
+- Add parameter for collapse content in cdc
+- Fix xsl remove format langmaterial
+- Fix tooltip focus
+- Add possibility to delete word in geodata command 
+- Add parameter to set map on specific point
+- Display all facet if there are less than 20
+- Fix some display issues in matricules
+- Replace content tab label by description label
+- Update footer year
+- Revert capitalize in list facet
+- Custom hover display on date histogram
+- Customize matricule element for displaying
+- Update display ead fragment to show processinfo
+- Add exception in feature heritage for list-level (list-nivea)
+- Replace , by • to separate descriptors in result
+- Fix for displaying collapse buttons
+- Fix overlap of column and add capitalize in facet list
+- Fix display of inventory presentation
+- Fix display header for presentation inventory
+- Fix display elements in the view html and fragment xsl
+- Change view in facets list popup 
+- Change popup document title
+- Fix thumbnail matricule display 
+- Update translations
+- Fix some display issues
+- Update footer year
+- Add a viewparam to display archives and matricules search
+- Add a block tracker in bach template
+- Add possibility to include a piwik tracker
+- Fix accent order in filter facet list
+- Add referrer to fix loop cdc
+- Add display of separatedmaterial content in cdc
+- Add legal status and credits page
+- Add changelog preview
+- Fix for width videos
+- Update 3rd party libs
+- Fix display issue in cdc (gap betwwen anchor and display)
+- Change cookie name for every bach instance
+- Add parameter(s) to weight queries in Bach
+
 1.1.1.0 (2015-01-30)
 - Xml detection in content
 - Label display in notice fragment

@@ -192,8 +192,8 @@ bach_matricules_suggest:
         _method: GET
 
 bach_display_matricules:
-    pattern: /matricules/show/{docid}/{ajax}
-    defaults: { _controller BachHomeBundle:Matricules:displayDocument, ajax: false }
+    pattern: /matricules/show/{docid}/{ajax}/{print}
+    defaults: { _controller BachHomeBundle:Matricules:displayDocument, ajax: false, print: false }
     requirements:
         _method: GET
 
@@ -289,5 +289,37 @@ authorized_cookie:
 cookie_link:
     pattern: /cookielink
     defaults: {_controller: BachHomeBundle:Default:cookieLink}
+    requirements:
+        _method: GET
+
+display_changelog:
+    pattern: /displayChangelog
+    defaults: {_controller: BachHomeBundle:Files:displayChangelog}
+    requirements:
+        _method: GET
+
+print_doc:
+    pattern: /printDoc/{docid}
+    defaults: {_controller: BachHomeBundle:Default:printPdfDoc}
+    requirements:
+        _method: GET
+
+print_results_page:
+    pattern: /printResultsPage/{form_name}/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:Default:printPdfResultsPage, 'form_name': 'default', 'query_terms': null, 'page': 1, 'facet_name': null }
+    requirements:
+        _method: GET|POST
+        page: \d+
+
+print_matresults_page:
+    pattern: /printMatResultsPage/{form_name}/{query_terms}/{page}/{facet_name}
+    defaults: { _controller: BachHomeBundle:Matricules:printPdfMatResultsPage, 'form_name': 'default', 'query_terms': null, 'page': 1, 'facet_name': null }
+    requirements:
+        _method: GET|POST
+        page: \d+
+
+print_matdoc:
+    pattern: /printMatdoc/{docid}
+    defaults: {_controller: BachHomeBundle:Matricules:printPdfMatdoc}
     requirements:
         _method: GET

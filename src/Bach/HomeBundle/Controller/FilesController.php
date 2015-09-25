@@ -155,38 +155,33 @@ class FilesController extends Controller
         header('Cache-Control: public');
         header('Content-type: ' . $mime);
 
-        $width = 300;
-        $height = 300;
+        $width = 214;
+        $height = 214;
 
         list($owidth, $oheight) = getimagesize($path);
-        if ( $owidth > 300 || $oheight > 300 ) {
-            $ratio_orig = $owidth/$oheight;
-            if ($width/$height > $ratio_orig) {
-                $width = $height*$ratio_orig;
-            } else {
-                $height = $width/$ratio_orig;
-            }
-
-            $image_p = imagecreatetruecolor($width, $height);
-            $image = imagecreatefromjpeg($path);
-            imagecopyresampled(
-                $image_p,
-                $image,
-                0,
-                0,
-                0,
-                0,
-                $width,
-                $height,
-                $owidth,
-                $oheight
-            );
-
-            imagejpeg($image_p, null, 100);
+        $ratio_orig = $owidth/$oheight;
+        if ($width/$height > $ratio_orig) {
+            $width = $height*$ratio_orig;
         } else {
-            $width = $owidth;
-            $height = $oheight;
+            $height = $width/$ratio_orig;
         }
+
+        $image_p = imagecreatetruecolor($width, $height);
+        $image = imagecreatefromjpeg($path);
+        imagecopyresampled(
+            $image_p,
+            $image,
+            0,
+            0,
+            0,
+            0,
+            $width,
+            $height,
+            $owidth,
+            $oheight
+        );
+
+        imagejpeg($image_p, null, 100);
     }
 
     /**
@@ -200,6 +195,30 @@ class FilesController extends Controller
     {
         $path = $this->container->getParameter('html_intros_path');
         $path .= '/' . $name;
+
+        $file = fopen($path, 'rb');
+        $out = fopen('php://output', 'wb');
+
+        $mime = mime_content_type($path);
+        header('Cache-Control: public');
+        header('Content-type: ' . $mime);
+        header('Content-Length:' . filesize($path));
+        stream_copy_to_stream($file, $out);
+
+        fclose($out);
+        fclose($file);
+
+    }
+
+    /**
+     * Display the ChangeLog file
+     *
+     * @return void
+     */
+    public function displayChangelogAction()
+    {
+        $path = $this->get('kernel')->getRootDir();
+        $path .= '/../ChangeLog';
 
         $file = fopen($path, 'rb');
         $out = fopen('php://output', 'wb');

@@ -80,13 +80,17 @@ parameters:
     feature.comments: true
     display.show_maps: true
     display.show_daterange: true
+    display.disable_select_daterange: false
     display.rows: 10
+    display.show_param: 'list'
     display.ead.rows: '%display.rows%'
     display.ead.show_maps: '%display.show_maps%'
     display.ead.show_daterange: '%display.show_daterange%'
+    display.ead.show_param: '%display.show_param%'
     display.matricules.rows: 20
     display.matricules.show_maps: '%display.show_maps%'
     display.matricules.show_daterange: '%display.show_daterange%'
+    display.matricules.show_param: '%display.show_param%'
     cote_location: 'bottom' #either top or bottom
     #other
     feature.openid: false
@@ -94,6 +98,8 @@ parameters:
     feature.register: false
     feature.heritage: true
     matricules_histogram: 'annee_naissance'
+    matricules_listparameters: ['cote', 'date_enregistrement', 'lieu_enregistrement', 'classe', 'nom', 'prenoms', 'matricule', 'annee_naissance', 'lieu_naissance']
+    matricules_searchparameters: ['cote', 'date_enregistrement', 'lieu_enregistrement', 'classe', 'nom', 'prenoms', 'matricule', 'annee_naissance', 'lieu_naissance']
 
     #UI parameters
     viewer_uri: http://viewer.localhost/
@@ -142,13 +148,27 @@ parameters:
 
     default_url: bach_archives
     logo_url: %default_url%
-
+    tracker: null
+    centerlat: null
+    centerlon: null
+    zoommap: null
     #mail parameters (not used for now)
     #mailer_transport: smtp
     #mailer_host: localhost
     #mailer_user: null
     #mailer_password: null
-
+    weight.descriptors: 2
+    weight.cUnittitle : 1
+    weight.parents_titles: 1
+    weight.fulltext: 0.1
+    collapsecdc: false
+    print:
+       header:
+            image: '%kernel.root_dir%/../web/img/smlogo.png'
+            content: 'Bach'
+       footer:
+            image: '%kernel.root_dir%/../web/img/smlogo.png'
+            content: '© Anaphore'
 bach_home:
     #Paths to retrieve different types of files
     files:
