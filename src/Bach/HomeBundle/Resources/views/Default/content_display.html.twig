@@ -66,7 +66,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {%- if document.cDate is defined and document.cDate != '' -%}
                     <span class="date" property="dc:date"> • {{ document.cDate }}</span>
                 {%- endif -%}
-              {% if context == true %}
+              {% if context == true and print == false %}
                 {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
                 <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}" class="treeLink" title="{{ _('Locate in document tree') }}">{{ _('Locate in document tree') }}</a>
             {% endif %}
