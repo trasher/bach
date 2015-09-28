@@ -1909,6 +1909,29 @@ video[poster] {
     width: 24px;
     display: inline-block;
     margin-right: 10px;
+    vertical-align: text-bottom;
+}
+
+.treeLink {
+    background-image: url(../img/treeview.png);
+    background-size: 20px 20px;
+    text-indent: -9999px;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: -3px;
+}
+
+.treeLinkResults {
+    background-image: url(../img/treeview.png);
+    background-size: 18px 18px;
+    text-indent: -9999px;
+    height: 18px;
+    width: 18px;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: text-bottom;
 }
 
 #change_view > .printLink {

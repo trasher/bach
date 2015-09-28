@@ -92,14 +92,12 @@ POSSIBILITY OF SUCH DAMAGE.
                             {%- if document.cDate is defined and document.cDate != '' -%}
                                 <span class="date" property="dc:date"> • {{ document.cDate }}</span>
                             {%- endif -%}
-                            </a>
+                     {% if view == 'list' or view == 'txtlist' %}
+                        {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                        <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}" class="treeLinkResults" title="{{ _('Locate in document tree') }}" >{{ _('Locate in document tree') }}</a>
+                           </a>
                         </h3>
                     </header>
-                    {% if view == 'list' or view == 'txtlist' %}
-                    <aside>
-                        {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-                        <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
-                    </aside>
                     {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}
                     {% endif %}
                     </div>

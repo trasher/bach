@@ -66,8 +66,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 {%- if document.cDate is defined and document.cDate != '' -%}
                     <span class="date" property="dc:date"> • {{ document.cDate }}</span>
                 {%- endif -%}
-            </h2>
-        </header>
+              {% if context == true %}
+                {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}" class="treeLink" title="{{ _('Locate in document tree') }}">{{ _('Locate in document tree') }}</a>
+            {% endif %}
+           </h2>
+       </header>
         {% if context or document.previous_id is defined or document.next_id is defined %}
         {% if print == false %}
             <aside>
@@ -81,10 +85,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 <a id="next_comp" href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ document.next_id}) }}" title="{{ _('Display next component (%title)')|replace({'%title': document.next_title}) }}">
                     {{ _('Next component') }}
                 </a>
-            {% endif %}
-            {% if context == true %}
-                {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-                <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
             {% endif %}
             </aside>
         {% endif%}
