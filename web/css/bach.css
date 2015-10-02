@@ -1938,6 +1938,12 @@ video[poster] {
     margin-top: 3px;
 }
 
+ul.legalsList {
+    list-style: initial;
+    list-style-position: inside;
+    padding-left: 20px;
+}
+
 /* Mobile view */
 @media ( max-width : 767px) {
     /** Reset widths and heights */
