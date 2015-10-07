@@ -38,6 +38,7 @@
  * @category Templating
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Sebastien Chaptal <sebastien.chaptal@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
@@ -145,7 +146,7 @@ class DisplayEADFragment extends \Twig_Extension
      */
     public function display($fragment, $docid, $form_name = 'default', $full = false,
         $hasChildren = false, $hasComments = false, $countSub = 0, $ajax = false,
-        $print = false
+        $print = false, $highlight = false
     ) {
         $proc = new \XsltProcessor();
         $proc->importStylesheet(
@@ -210,6 +211,41 @@ class DisplayEADFragment extends \Twig_Extension
                 '',
                 $text
             );
+        }
+        // highlight in descriptors
+        if ($highlight != false && $print == false) {
+            $nodeXML = simplexml_load_string($text);
+            $subjectNode = $nodeXML->xpath('//a');
+            if ($highlight->getField('subject_w_expanded') != false) {
+                foreach ($subjectNode as &$sub) {
+                    foreach($highlight->getField('subject_w_expanded') as $high){
+                        if (strip_tags($high) == (string)$sub[0]) {
+                            $sub[0] = $high;
+                        }
+                    }
+                }
+            }
+            if ($highlight->getField('cGenreform') != false) {
+                foreach ($subjectNode as &$sub) {
+                    foreach($highlight->getField('cGenreform') as $high){
+                        if (strip_tags($high) == (string)$sub[0]) {
+                            $sub[0] = $high;
+                        }
+                    }
+                }
+            }
+            if ($highlight->getField('cGeogname') != false) {
+                foreach ($subjectNode as &$sub) {
+                    foreach($highlight->getField('cGeogname') as $high){
+                        if (strip_tags($high) == (string)$sub[0]) {
+                            $sub[0] = $high;
+                        }
+                    }
+                }
+            }
+
+            $text = $nodeXML->asXML();
+            $text = htmlspecialchars_decode($text);
         }
         if ( $docid !== '' ) {
             $add_comment_path = $router->generate(
