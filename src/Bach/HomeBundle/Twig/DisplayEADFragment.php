@@ -213,8 +213,8 @@ class DisplayEADFragment extends \Twig_Extension
             );
         }
         // highlight in descriptors
-        if ($highlight != false && $print == false) {
-            $nodeXML = simplexml_load_string($text);
+        if ($highlight != false && $print == 'false') {
+            $nodeXML = simplexml_load_string('<div>'.$text.'</div>');
             $subjectNode = $nodeXML->xpath('//a');
             if ($highlight->getField('subject_w_expanded') != false) {
                 foreach ($subjectNode as &$sub) {
@@ -244,8 +244,44 @@ class DisplayEADFragment extends \Twig_Extension
                 }
             }
 
+            if ($full == true) {
+                $wordHighArray = array();
+                foreach ($highlight->getFields() as $fieldArray) {
+                    foreach ( $fieldArray as $field) {
+                        preg_match_all('/<em class="hl">(.*?)<\/em>/', $field, $matches);
+                        if (!in_array($matches[1][0], $wordHighArray, true)) {
+                            array_push($wordHighArray, $matches[1][0]);
+                        }
+                    }
+                }
+            }
             $text = $nodeXML->asXML();
             $text = htmlspecialchars_decode($text);
+            $allWord = array_unique(
+                array_merge(
+                    $wordHighArray,
+                    explode(" ", $request->getSession()->get('query_terms'))
+                )
+            );
+            if ($full == true) {
+                $result = preg_match_all(
+                    '@<section class="scopecontent"[^>]*?>.*?</section>@si',
+                    $text,
+                    $matches
+                );
+
+                if (!empty($matches[0][0])) {
+                    $result = $matches[0][0];
+                    foreach ($allWord as $wordHigh) {
+                        $result = str_replace(
+                            $wordHigh,
+                            '<em class="hl">'.$wordHigh.'</em>',
+                            $result
+                        );
+                    }
+                    $text = str_replace($matches[0][0], $result, $text);
+                }
+            }
         }
         if ( $docid !== '' ) {
             $add_comment_path = $router->generate(
