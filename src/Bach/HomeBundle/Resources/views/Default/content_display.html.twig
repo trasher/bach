@@ -46,7 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% for fil in ariane %}
                     {% if print == false %}<li><a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">{% endif %}
                     {% set testHighlight = 0 %}
-                        {% if highlight.getField('parents_titles') %}
+                        {% if highlight is not null and highlight.getField('parents_titles') %}
                             {% for ptitleHighlight in highlight.getField('parents_titles') if testHighlight == 0 %}
                                 {% if ptitleHighlight|striptags in fil.cUnittitle %}
                                     {% set testHighlight = 1 %}
@@ -67,7 +67,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <header>
             <h2 property="dc:title">
-                {%- if highlight.getField('cUnittitle')|length > 0 -%}
+                {%- if highlight is not null and highlight.getField('cUnittitle')|length > 0 -%}
                     {{ highlight.getField('cUnittitle')[0]|raw }}
                 {%- elseif document.cUnittitle is defined -%}
                     {{ document.cUnittitle }}

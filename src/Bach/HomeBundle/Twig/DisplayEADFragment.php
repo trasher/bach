@@ -212,57 +212,56 @@ class DisplayEADFragment extends \Twig_Extension
                 $text
             );
         }
-        // highlight in descriptors
-        if ($highlight != false && $print == 'false') {
-            $nodeXML = simplexml_load_string('<div>'.$text.'</div>');
-            $subjectNode = $nodeXML->xpath('//a');
-            if ($highlight->getField('subject_w_expanded') != false) {
-                foreach ($subjectNode as &$sub) {
-                    foreach($highlight->getField('subject_w_expanded') as $high){
-                        if (strip_tags($high) == (string)$sub[0]) {
-                            $sub[0] = $high;
-                        }
-                    }
-                }
-            }
-            if ($highlight->getField('cGenreform') != false) {
-                foreach ($subjectNode as &$sub) {
-                    foreach($highlight->getField('cGenreform') as $high){
-                        if (strip_tags($high) == (string)$sub[0]) {
-                            $sub[0] = $high;
-                        }
-                    }
-                }
-            }
-            if ($highlight->getField('cGeogname') != false) {
-                foreach ($subjectNode as &$sub) {
-                    foreach($highlight->getField('cGeogname') as $high){
-                        if (strip_tags($high) == (string)$sub[0]) {
-                            $sub[0] = $high;
-                        }
-                    }
-                }
-            }
 
-            if ($full == true) {
-                $wordHighArray = array();
-                foreach ($highlight->getFields() as $fieldArray) {
-                    foreach ( $fieldArray as $field) {
-                        preg_match_all('/<em class="hl">(.*?)<\/em>/', $field, $matches);
-                        if (!in_array($matches[1][0], $wordHighArray, true)) {
-                            array_push($wordHighArray, $matches[1][0]);
-                        }
+        // highlight in descriptors
+        if ($highlight != false ) {
+            $wordHighArray = array();
+            foreach ($highlight->getFields() as $fieldArray) {
+                foreach ( $fieldArray as $field) {
+                    preg_match_all('/<em class="hl">(.*?)<\/em>/', $field, $matches);
+                    if (!in_array($matches[1][0], $wordHighArray, true)) {
+                        array_push($wordHighArray, $matches[1][0]);
                     }
                 }
             }
-            $text = $nodeXML->asXML();
-            $text = htmlspecialchars_decode($text);
             $allWord = array_unique(
                 array_merge(
                     $wordHighArray,
                     explode(" ", $request->getSession()->get('query_terms'))
                 )
             );
+            $getLink = preg_match_all(
+                '/<a href=\"(.*?)\>(.*?)<\/a>/',
+                $text,
+                $matches
+            );
+
+            // need to rebuild the link because link has the search word
+            foreach ($allWord as $wordHigh) {
+                foreach ($matches[1] as $key => $link) {
+                    if (strpos($link, $wordHigh) != false) {
+                        $result = str_replace(
+                            $wordHigh,
+                            '<em class="hl">'.$wordHigh.'</em>',
+                            $matches[2][$key]
+                        );
+                        $finalLink = '<a href="'.$matches[1][$key].'>'.$result.'</a>';
+                        $text = str_replace(
+                            $matches[0][$key],
+                            $finalLink,
+                            $text
+                        );
+                        for ($key2 = $key; $key2 < count($matches[0]); $key2++) {
+                            if ($matches[0][$key2] === $matches[0][$key]) {
+                                $matches[0][$key2] = $finalLink;
+                                $matches[2][$key2] = $result;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $text = htmlspecialchars_decode($text);
             if ($full == true) {
                 $result = preg_match_all(
                     '@<section class="scopecontent"[^>]*?>.*?</section>@si',
@@ -283,6 +282,7 @@ class DisplayEADFragment extends \Twig_Extension
                 }
             }
         }
+
         if ( $docid !== '' ) {
             $add_comment_path = $router->generate(
                 'bach_add_comment',
