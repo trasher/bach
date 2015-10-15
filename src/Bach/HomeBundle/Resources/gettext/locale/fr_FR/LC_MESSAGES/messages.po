@@ -477,7 +477,7 @@ msgstr "Unité sans intutilé"
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:433
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:811
 msgid "Locate in document tree"
-msgstr "Situer dans l'arborescence"
+msgstr "Voir dans l'inventaire"
 
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:460
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:1138
