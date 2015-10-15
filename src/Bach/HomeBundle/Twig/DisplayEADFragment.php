@@ -38,6 +38,7 @@
  * @category Templating
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Sebastien Chaptal <sebastien.chaptal@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
@@ -145,7 +146,7 @@ class DisplayEADFragment extends \Twig_Extension
      */
     public function display($fragment, $docid, $form_name = 'default', $full = false,
         $hasChildren = false, $hasComments = false, $countSub = 0, $ajax = false,
-        $print = false
+        $print = false, $highlight = false
     ) {
         $proc = new \XsltProcessor();
         $proc->importStylesheet(
@@ -211,6 +212,77 @@ class DisplayEADFragment extends \Twig_Extension
                 $text
             );
         }
+
+        // highlight in descriptors
+        if ($highlight != false ) {
+            $wordHighArray = array();
+            foreach ($highlight->getFields() as $fieldArray) {
+                foreach ( $fieldArray as $field) {
+                    preg_match_all('/<em class="hl">(.*?)<\/em>/', $field, $matches);
+                    if (!in_array($matches[1][0], $wordHighArray, true)) {
+                        array_push($wordHighArray, $matches[1][0]);
+                    }
+                }
+            }
+            $allWord = array_unique(
+                array_merge(
+                    $wordHighArray,
+                    explode(" ", $request->getSession()->get('query_terms'))
+                )
+            );
+            $getLink = preg_match_all(
+                '/<a href=\"(.*?)\>(.*?)<\/a>/',
+                $text,
+                $matches
+            );
+
+            // need to rebuild the link because link has the search word
+            foreach ($allWord as $wordHigh) {
+                foreach ($matches[1] as $key => $link) {
+                    if (strpos($link, $wordHigh) != false) {
+                        $result = str_replace(
+                            $wordHigh,
+                            '<em class="hl">'.$wordHigh.'</em>',
+                            $matches[2][$key]
+                        );
+                        $finalLink = '<a href="'.$matches[1][$key].'>'.$result.'</a>';
+                        $text = str_replace(
+                            $matches[0][$key],
+                            $finalLink,
+                            $text
+                        );
+                        for ($key2 = $key; $key2 < count($matches[0]); $key2++) {
+                            if ($matches[0][$key2] === $matches[0][$key]) {
+                                $matches[0][$key2] = $finalLink;
+                                $matches[2][$key2] = $result;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $text = htmlspecialchars_decode($text);
+            if ($full == true) {
+                $result = preg_match_all(
+                    '@<section class="scopecontent"[^>]*?>.*?</section>@si',
+                    $text,
+                    $matches
+                );
+
+                if (!empty($matches[0][0])) {
+                    $result = $matches[0][0];
+                    foreach ($allWord as $wordHigh) {
+                        $result = str_replace(
+                            $wordHigh,
+                            '<em class="hl">'.$wordHigh.'</em>',
+                            $result
+                        );
+                    }
+                    $text = str_replace($matches[0][0], $result, $text);
+                }
+            }
+        }
+
         if ( $docid !== '' ) {
             $add_comment_path = $router->generate(
                 'bach_add_comment',

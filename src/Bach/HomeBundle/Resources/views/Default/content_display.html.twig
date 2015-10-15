@@ -45,11 +45,20 @@ POSSIBILITY OF SUCH DAMAGE.
             {% if ariane is defined %}
                 {% for fil in ariane %}
                     {% if print == false %}<li><a href="{{ path('bach_display_document', {docid: fil.fragmentid}) }}" property="dc:isPartOf">{% endif %}
-                    {%- if fil.cUnittitle is defined -%}
-                        {{ fil.cUnittitle }}
-                    {%- else -%}
-                        {{ _('Untitled unit') }}
-                    {%- endif -%}
+                    {% set testHighlight = 0 %}
+                        {% if highlight is not null and highlight.getField('parents_titles') %}
+                            {% for ptitleHighlight in highlight.getField('parents_titles') if testHighlight == 0 %}
+                                {% if ptitleHighlight|striptags in fil.cUnittitle %}
+                                    {% set testHighlight = 1 %}
+                                    {{ fil.cUnittitle|replace({ (ptitleHighlight|striptags): ptitleHighlight })|raw }}
+                                {% endif %}
+                            {% endfor %}
+                        {% if testHighlight == 0%}
+                            {{ fil.cUnittitle }}
+                        {% endif%}
+                        {% else %}
+                            {{ fil.cUnittitle }}
+                        {% endif %}
                     {% if print == false %}</a></li>{% endif%}
                 {% endfor %}
             {% endif %}
@@ -58,7 +67,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <header>
             <h2 property="dc:title">
-                {%- if document.cUnittitle is defined -%}
+                {%- if highlight is not null and highlight.getField('cUnittitle')|length > 0 -%}
+                    {{ highlight.getField('cUnittitle')[0]|raw }}
+                {%- elseif document.cUnittitle is defined -%}
                     {{ document.cUnittitle }}
                 {%- else -%}
                     {{ _('Untitled unit') }}
@@ -66,8 +77,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 {%- if document.cDate is defined and document.cDate != '' -%}
                     <span class="date" property="dc:date"> • {{ document.cDate }}</span>
                 {%- endif -%}
-            </h2>
-        </header>
+              {% if context == true and print == false %}
+                {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}" class="treeLink" title="{{ _('Locate in document tree') }}">{{ _('Locate in document tree') }}</a>
+            {% endif %}
+           </h2>
+       </header>
         {% if context or document.previous_id is defined or document.next_id is defined %}
         {% if print == false %}
             <aside>
@@ -81,10 +96,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 <a id="next_comp" href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ document.next_id}) }}" title="{{ _('Display next component (%title)')|replace({'%title': document.next_title}) }}">
                     {{ _('Next component') }}
                 </a>
-            {% endif %}
-            {% if context == true %}
-                {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-                <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
             {% endif %}
             </aside>
         {% endif%}
@@ -111,7 +122,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {% set printTest = 'false' %}
         {% endif %}
         <div class="content frag">
-        {{ displayFragment(document.fragment, docid, search_form, true, hasChildren, hasComments, count_children, ajax, printTest)|raw }}
+        {{ displayFragment(document.fragment, docid, search_form, true, hasChildren, hasComments, count_children, ajax, printTest, highlight)|raw }}
         {% if not children == false %}
             <section id="children_documents">
                 <header>

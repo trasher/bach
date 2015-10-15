@@ -289,6 +289,11 @@ class DefaultController extends SearchController
             $scSearchResults = $factory->getSpellcheck();
             $resultCount = $searchResults->getNumFound();
 
+            $session->set('highlight', $hlSearchResults);
+            $query_session = str_replace("AND", " ", $query_terms);
+            $query_session = str_replace("OR", " ", $query_session);
+            $query_session = str_replace("NOT", " ", $query_session);
+            $session->set('query_terms', $query_session);
             $suggestions = $factory->getSuggestions($query_terms);
 
             $tpl_vars['resultCount'] = $resultCount;
@@ -536,6 +541,14 @@ class DefaultController extends SearchController
             $with_context = false;
         }
 
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        if ($session->get('highlight')) {
+            $highlight = $session->get('highlight')->getResult($docid);
+        } else {
+            $highlight = null;
+        }
+
         $client = $this->get($this->entryPoint());
         $query = $client->createSelect();
         $query->setQuery('fragmentid:"' . $docid . '"');
@@ -668,8 +681,9 @@ class DefaultController extends SearchController
         if ( isset($_COOKIE[$this->getCookieName()]) ) {
             $tpl_vars['cookie_param'] = true;
         }
-        $tpl_vars['print'] = $print;
 
+        $tpl_vars['print'] = $print;
+        $tpl_vars['highlight']= $highlight;
         return $this->render(
             $tpl,
             $tpl_vars

@@ -71,7 +71,20 @@ POSSIBILITY OF SUCH DAMAGE.
                             {% for ptitle in document.parents_titles %}
                                 <li>
                                     <a href="{{ path('bach_display_document', {docid: document.headerId ~ '_' ~ parents_ids[loop.index0]}) }}" property="dc:isPartOf">
+                                        {% set testHighlight = 0 %}
+                                    {% if hlSearchResults.getResult(document.fragmentid).getField('parents_titles') %}
+                                        {% for ptitleHighlight in hlSearchResults.getResult(document.fragmentid).getField('parents_titles') if testHighlight == 0 %}
+                                            {% if ptitleHighlight|striptags in ptitle %}
+                                                {% set testHighlight = 1 %}
+                                                {{ ptitle|replace({ (ptitleHighlight|striptags): ptitleHighlight })|raw }}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if testHighlight == 0%}
+                                            {{ ptitle }}
+                                        {% endif%}
+                                    {% else %}
                                         {{ ptitle }}
+                                    {% endif %}
                                     </a>
                                 </li>
                             {% endfor %}
@@ -93,14 +106,13 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <span class="date" property="dc:date"> • {{ document.cDate }}</span>
                             {%- endif -%}
                             </a>
+                     {% if view == 'list' or view == 'txtlist' %}
+                        {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
+                        <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}" class="treeLinkResults" title="{{ _('Locate in document tree') }}" >{{ _('Locate in document tree') }}</a>
                         </h3>
                     </header>
-                    {% if view == 'list' or view == 'txtlist' %}
-                    <aside>
-                        {% set subid = document.fragmentid|replace({(document.headerId ~ '_'): ''}) %}
-                        <a href="{{ path('bach_ead_html', {'docid': document.headerId}) }}#{{ subid }}">{{ _('Locate in document tree') }}</a>
-                    </aside>
-                    {{ displayFragment(document.fragment, document.fragmentid, search_form)|raw }}
+                    {% set rend = displayFragment(document.fragment, document.fragmentid, search_form,false,false,false,0,false,false, hlSearchResults.getResult(document.fragmentid)) %}
+                    {{ rend|raw }}
                     {% endif %}
                     </div>
                 </article>

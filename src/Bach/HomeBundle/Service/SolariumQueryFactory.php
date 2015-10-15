@@ -62,6 +62,7 @@ use Solarium\QueryType\Select\Query\Component\FacetSet;
  * @category Search
  * @package  Bach
  * @author   Johan Cwiklinski <johan.cwiklinski@anaphore.eu>
+ * @author   Sebastien Chaptal <sebastien.chaptal@anaphore.eu>
  * @license  BSD 3-Clause http://opensource.org/licenses/BSD-3-Clause
  * @link     http://anaphore.eu
  */
@@ -315,11 +316,28 @@ class SolariumQueryFactory
             }
         }
 
+        $hl->setSnippets(10);
         $hl->setFields($hl_fields);
         /** TODO: find a better way to do */
         if ( strpos($hl_fields, 'cUnittitle') !== false ) {
             //on highlithed unititles, we always want the full string
             $hl->getField('cUnittitle')->setFragSize(0);
+        }
+        if ( strpos($hl_fields, 'parents_titles') !== false ) {
+            //on highlithed parents_titles, we always want the full string
+            $hl->getField('parents_titles')->setFragSize(0);
+        }
+        if ( strpos($hl_fields, 'subject_w_expanded') !== false ) {
+            //on highlithed parents_titles, we always want the full string
+            $hl->getField('subject_w_expanded')->setFragSize(0);
+        }
+        if ( strpos($hl_fields, 'cSubject') !== false ) {
+            //on highlithed cSubject, we always want the full string
+            $hl->getField('cSubject')->setFragSize(0);
+        }
+        if ( strpos($hl_fields, 'cGeogname') !== false ) {
+            //on highlithed cSubject, we always want the full string
+            $hl->getField('cGeogname')->setFragSize(0);
         }
 
         if ( $container->noResults() ) {

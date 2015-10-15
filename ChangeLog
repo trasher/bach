@@ -1,3 +1,11 @@
+1.2.1 (2015-10-15)
+
+- Add highlight in breadcrumb, descriptors and display document page
+- Add tree view icon in results
+- Fix a display issues in suggestions
+- Fix a display issue in legals page
+- Update translations
+
 1.2 (2015-09-25)
 
 - Remove sub title link in pdf
