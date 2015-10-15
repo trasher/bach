@@ -543,7 +543,11 @@ class DefaultController extends SearchController
 
         $request = $this->getRequest();
         $session = $request->getSession();
-        $highlight = $session->get('highlight')->getResult($docid);
+        if ($session->get('highlight')) {
+            $highlight = $session->get('highlight')->getResult($docid);
+        } else {
+            $highlight = null;
+        }
 
         $client = $this->get($this->entryPoint());
         $query = $client->createSelect();
