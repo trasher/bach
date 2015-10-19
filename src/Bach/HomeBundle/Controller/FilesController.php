@@ -46,6 +46,7 @@ namespace Bach\HomeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Bach files controller
@@ -231,6 +232,7 @@ class FilesController extends Controller
 
         fclose($out);
         fclose($file);
+        return new Response();
 
     }
 }
