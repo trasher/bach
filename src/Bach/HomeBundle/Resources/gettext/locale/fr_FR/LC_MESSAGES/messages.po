@@ -158,7 +158,7 @@ msgstr "Voir les résultats de recherche en miniatures"
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:7142
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:7905
 msgid "Classification"
-msgstr "Côte"
+msgstr "Cote"
 
 #: src/Bach/HomeBundle/Controller/MatriculesController.php:483
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:6728
