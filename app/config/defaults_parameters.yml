@@ -152,6 +152,11 @@ parameters:
     centerlat: null
     centerlon: null
     zoommap: null
+    label.cdc: null
+    label.archives: null
+    label.matricules: null
+    label.expos: null
+    label.browse: null
     #mail parameters (not used for now)
     #mailer_transport: smtp
     #mailer_host: localhost
