@@ -103,6 +103,6 @@ class MainDecorator extends SolariumQueryDecoratorAbstract
      */
     public function getHlFields()
     {
-        return '*';
+        return 'cUnittitle,parents_titles,subject_w_expanded,cSubject,cGeogname';
     }
 }
