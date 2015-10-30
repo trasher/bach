@@ -763,7 +763,7 @@ msgstr "classe"
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:4065
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:4878
 msgid "birthdate"
-msgstr "date de naissance"
+msgstr "année de naissance"
 
 #: src/Bach/HomeBundle/Resources/gettext/twig.cache.php:4086
 msgid "Show or hide the graph of distribution by %datetype%"
